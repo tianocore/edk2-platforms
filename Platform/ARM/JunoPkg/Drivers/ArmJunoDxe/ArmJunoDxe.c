@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2013-2015, ARM Limited. All rights reserved.
+*  Copyright (c) 2013-2017, ARM Limited. All rights reserved.
 *
 *  This program and the accompanying materials
 *  are licensed and made available under the terms and conditions of the BSD License
@@ -33,9 +33,10 @@
 #include <Library/IoLib.h>
 #include <Library/PrintLib.h>
 
-
+#ifndef DYNAMIC_TABLES_FRAMEWORK
 // This GUID must match the FILE_GUID in ArmPlatformPkg/ArmJunoPkg/AcpiTables/AcpiTables.inf
 STATIC CONST EFI_GUID mJunoAcpiTableFile = { 0xa1dd808e, 0x1e95, 0x4399, { 0xab, 0xc0, 0x65, 0x3c, 0x82, 0xe8, 0x53, 0x0c } };
+#endif
 
 typedef struct {
   ACPI_HID_DEVICE_PATH      AcpiDevicePath;
@@ -487,11 +488,13 @@ ArmJunoEntryPoint (
 
   GetJunoRevision(JunoRevision);
 
+#ifndef DYNAMIC_TABLES_FRAMEWORK
   //
   // Try to install the ACPI Tables
   //
   Status = LocateAndInstallAcpiFromFv (&mJunoAcpiTableFile);
   ASSERT_EFI_ERROR (Status);
+#endif
 
   //
   // Setup R1/R2 options if not already done.
@@ -516,6 +519,7 @@ ArmJunoEntryPoint (
                     &EndOfDxeEvent
                     );
 
+#ifndef DYNAMIC_TABLES_FRAMEWORK
     // Declare the related ACPI Tables
     EfiCreateProtocolNotifyEvent (
         &gEfiAcpiTableProtocolGuid,
@@ -524,6 +528,7 @@ ArmJunoEntryPoint (
         NULL,
         &mAcpiRegistration
         );
+#endif
   }
 
   //
