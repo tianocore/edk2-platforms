@@ -38,6 +38,10 @@
   DT_SUPPORT                     = FALSE
 
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+  !include DynamicTablesPkg/DynamicTables.dsc.inc
+  !include Platform/ARM/VExpressPkg/ConfigurationManager/ConfigurationManager.dsc.inc
+!endif
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -128,6 +132,15 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x1c090000
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x25
+
+  ## PL011 Serial Debug UART
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1c0a0000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
+
+  # SBSA Generic Watchdog
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|59
 
   ## PL031 RealTimeClock
   gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x1C170000
@@ -255,8 +268,10 @@
 !endif
   }
 
+!ifndef DYNAMIC_TABLES_FRAMEWORK
   MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   Platform/ARM/VExpressPkg/AcpiTables/AcpiTables.inf
+!endif
 
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf

@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2011 - 2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2011 - 2018, ARM Limited. All rights reserved.
 #
 #  This program and the accompanying materials
 #  are licensed and made available under the terms and conditions of the BSD License
@@ -97,9 +97,19 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
 
   # ACPI Support
   #
-  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+!ifndef DYNAMIC_TABLES_FRAMEWORK
+  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF RuleOverride=ACPITABLE Platform/ARM/VExpressPkg/AcpiTables/AcpiTables.inf
+!else
+  # Configuration Manager
+  INF Platform/ARM/VExpressPkg/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
+
+  #
+  # Dynamic Table fdf
+  #
+  !include DynamicTablesPkg/DynamicTables.fdf.inc
+!endif
 
   #
   # Multiple Console IO support
@@ -319,8 +329,10 @@ READ_LOCK_STATUS   = TRUE
     VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
   }
 
+!ifndef DYNAMIC_TABLES_FRAMEWORK
 [Rule.Common.USER_DEFINED.ACPITABLE]
   FILE FREEFORM = $(NAMED_GUID) {
     RAW ACPI               |.acpi
     RAW ASL                |.aml
   }
+!endif
