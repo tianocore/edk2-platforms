@@ -1,0 +1,60 @@
+#/** @file
+#
+#  Copyright (c) 2015, Linaro Limited. All rights reserved.
+#  Copyright (c) 2015, Hisilicon Limited. All rights reserved.
+#  Copyright (c) 2017, Jeremy Linton
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution. The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DwUsbDxe
+  FILE_GUID                      = 72d78ea6-4dee-11e3-8100-f3842a48d0a0
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = DwUsbEntryPoint
+
+[Sources.common]
+  DwUsbDxe.c
+  ComponentName.c
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  TimerLib
+  UefiLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UncachedMemoryAllocationLib
+  CacheMaintenanceLib
+
+[Guids]
+  gEfiEventExitBootServicesGuid                 ## consume
+
+[Protocols]
+  gEfiDriverBindingProtocolGuid
+  gUsbDeviceProtocolGuid
+  gEfiUsbHcProtocolGuid                         ## produce
+  gEfiPciIoProtocolGuid                         ## TO_START
+
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/Drivers/Usb/DwUsbDxe/DwUsbDxe.dec
+
+[Pcd]
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbBaseAddress
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbSysCtrlBaseAddress

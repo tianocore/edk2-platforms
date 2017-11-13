@@ -1,0 +1,47 @@
+## @file
+#
+#  Initialize Designware USB controller via dummy PCI device
+#
+#  Copyright (c) 2016, Linaro, Ltd. All rights reserved.<BR>
+#  Copyright (c) 2016, Jeremy Linton
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010019
+  BASE_NAME                      = DwNonPcieUsbDxe
+  FILE_GUID                      = 298e1629-54bb-4763-8c66-e43f934a555d
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = DwNonPciUsbDxeEntryPoint
+
+[Sources]
+  InitController.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Synopsys/Usb/DwUsbDxe/DwUsbDxe.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IoLib
+  NonDiscoverableDeviceRegistrationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Pcd]
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbBaseAddress
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbSysCtrlBaseAddress
+
+[Depex]
+  TRUE

@@ -129,6 +129,9 @@ READ_LOCK_STATUS   = TRUE
   # USB Host Support
   #
   INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  INF Silicon/Synopsys/Usb/DwUsbHostDxe/DwUsbHostDxe.inf
+  INF Silicon/Synopsys/Usb/DwNonPci/DwNonPciUsbDxe.inf
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
 
   #
   # USB Mass Storage Support

@@ -109,6 +109,10 @@
 
   # USB Requirements
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
+  DmaLib|Platform/Hisilicon/HiKey/Library/ArmDmaLib/ArmDmaLib.inf
+
+  UncachedMemoryAllocationLib|Platform/Hisilicon/HiKey/Library/UncachedMemoryAllocationLib/UncachedMemoryAllocationLib.inf
+  NonDiscoverableDeviceRegistrationLib|MdeModulePkg/Library/NonDiscoverableDeviceRegistrationLib/NonDiscoverableDeviceRegistrationLib.inf
 
   # Network Libraries
   UefiScsiLib|MdePkg/Library/UefiScsiLib/UefiScsiLib.inf
@@ -330,7 +334,11 @@
   gEmbeddedTokenSpaceGuid.PcdDwEmmcDxeBaseAddress|0xF723D000
   gEmbeddedTokenSpaceGuid.PcdDwEmmcDxeClockFrequencyInHz|100000000
 
+  # DW USB controller
   #
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbBaseAddress|0xF72c0000
+  gDwUsbDxeTokenSpaceGuid.PcdDwUsbSysCtrlBaseAddress|0xF7030000
+
   #
   # Fastboot
   #
@@ -399,6 +407,9 @@
   # USB Host Support
   #
   MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  Silicon/Synopsys/Usb/DwUsbHostDxe/DwUsbHostDxe.inf
+  Silicon/Synopsys/Usb/DwNonPci/DwNonPciUsbDxe.inf
+  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
 
   #
   # USB Mass Storage Support

@@ -34,3 +34,7 @@
 [PcdsFixedAtBuild.common]
   gHiKeyTokenSpaceGuid.PcdAndroidFastbootNvmDevicePath|L""|VOID*|0x00000001
   gHiKeyTokenSpaceGuid.PcdArmFastbootFlashLimit|L""|VOID*|0x00000002
+  
+  # This PCD will free the unallocated buffers if their size reach this threshold.
+  # We set the default value to 512MB.
+  gArmTokenSpaceGuid.PcdArmFreeUncachedMemorySizeThreshold|0x20000000|UINT64|0x00000003
