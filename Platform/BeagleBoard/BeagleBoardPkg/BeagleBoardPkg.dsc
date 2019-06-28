@@ -65,7 +65,7 @@
   # Uncomment (and comment out the next line) For RealView Debugger. The Standard IO window
   # in the debugger will show load and unload commands for symbols. You can cut and paste this
   # into the command window to load symbols. We should be able to use a script to do this, but
-  # the version of RVD I have does not support scipts accessing system memory.
+  # the version of RVD I have does not support scripts accessing system memory.
   #
 #  PeCoffExtraActionLib|ArmPkg/Library/RvdPeCoffExtraActionLib/RvdPeCoffExtraActionLib.inf
   PeCoffExtraActionLib|ArmPkg/Library/DebugPeCoffExtraActionLib/DebugPeCoffExtraActionLib.inf
@@ -287,7 +287,7 @@
 # Values are in EFI Pages (4K). DXE Core will make sure that
 # at least this much of each type of memory can be allocated
 # from a single memory range. This way you only end up with
-# maximum of two fragements for each type in the memory map
+# maximum of two fragments for each type in the memory map
 # (the memory used, and the free memory that was prereserved
 # but not used).
 #

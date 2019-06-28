@@ -55,7 +55,7 @@ ClockInit (
                           | CM_ICLKEN_PER_EN_GPIO5_ENABLE
                           | CM_ICLKEN_PER_EN_GPIO6_ENABLE);
 
-  // Turn on functional & inteface clocks to various wakeup modules.
+  // Turn on functional & interface clocks to various wakeup modules.
   MmioOr32(CM_FCLKEN_WKUP, CM_FCLKEN_WKUP_EN_GPIO1_ENABLE
                            | CM_FCLKEN_WKUP_EN_WDT2_ENABLE);
   MmioOr32(CM_ICLKEN_WKUP, CM_ICLKEN_WKUP_EN_GPIO1_ENABLE

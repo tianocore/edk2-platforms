@@ -96,7 +96,7 @@ main (int argc, char **argv)
     return -5;
   }
 
-  // Search for a match by reading every possition of the file
+  // Search for a match by reading every position of the file
   // into a buffer that is as big as the maximum search key size.
   // Then we can search the keys for a match. If no match
   // copy the old file character to the new file. If it is a match
@@ -124,8 +124,8 @@ main (int argc, char **argv)
     InFilePos++;
   }
 
-  // We stoped searching when we got to the point that we could no longer match.
-  // So the last few bytes of the file are not copied in the privous loop
+  // We stopped searching when we got to the point that we could no longer match.
+  // So the last few bytes of the file are not copied in the previous loop
   fseek (In, InFilePos, SEEK_SET);
   while ((c = fgetc (In)) != EOF) {
     fputc (c, Out);
