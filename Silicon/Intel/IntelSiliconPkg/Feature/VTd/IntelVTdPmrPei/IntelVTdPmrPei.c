@@ -58,7 +58,7 @@ typedef struct {
               +------------------+ <------- EfiMemoryTop
               |   PEI allocated  |
   =========== +==================+ <=============== PHMR.Base
-       ^      |    Commom Buf    |
+       ^      |    Common Buf    |
        |      |  --------------  |
   DMA Buffer  |   * DMA FREE *   |
        |      |  --------------  |
@@ -721,7 +721,7 @@ VTdInfoNotify (
     //
 
     //
-    // NOTE: We need reinit VTdInfo because previous information might be overriden.
+    // NOTE: We need reinit VTdInfo because previous information might be overridden.
     //
     InitVTdInfo ();
 

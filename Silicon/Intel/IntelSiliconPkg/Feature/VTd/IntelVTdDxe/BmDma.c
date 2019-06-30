@@ -284,7 +284,7 @@ IoMmuMap (
   gBS->RestoreTPL (OriginalTpl);
 
   //
-  // The DeviceAddress is the address of the maped buffer below 4GB
+  // The DeviceAddress is the address of the mapped buffer below 4GB
   //
   *DeviceAddress = MapInfo->DeviceAddress;
   //

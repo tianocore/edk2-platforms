@@ -149,7 +149,7 @@ CollectProcessorInfo (
   in MicrocodeFmpPrivate must be initialized.
 
   The MicrocodeInformation (DescriptorCount/ImageDescriptor/MicrocodeInfo)
-  in MicrocodeFmpPrivate may not be avaiable in this function.
+  in MicrocodeFmpPrivate may not be available in this function.
 
   @param[in]   MicrocodeFmpPrivate        The Microcode driver private data
   @param[in]   DescriptorCount            The count of Microcode ImageDescriptor allocated.

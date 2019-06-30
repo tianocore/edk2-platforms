@@ -209,7 +209,7 @@ ScanBusCallbackRegisterPciDevice (
   @param[in]  Bus                   The bus of the source.
   @param[in]  Callback              The callback function in PCI scan.
 
-  @retval EFI_SUCCESS           The PCI devices under the bus are scaned.
+  @retval EFI_SUCCESS           The PCI devices under the bus are scanned.
 **/
 EFI_STATUS
 ScanPciBus (

@@ -202,7 +202,7 @@ ReturnUefiMemoryMap (
     //
     // Use size returned back plus 1 descriptor for the AllocatePool.
     // We don't just multiply by 2 since the "for" loop below terminates on
-    // EfiMemoryMapEnd which is dependent upon EfiMemoryMapSize. Otherwize
+    // EfiMemoryMapEnd which is dependent upon EfiMemoryMapSize. Otherwise
     // we process bogus entries and create bogus E820 entries.
     //
     EfiMemoryMap = (EFI_MEMORY_DESCRIPTOR *) AllocatePool (EfiMemoryMapSize);

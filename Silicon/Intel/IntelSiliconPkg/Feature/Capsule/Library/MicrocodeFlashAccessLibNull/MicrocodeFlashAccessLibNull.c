@@ -12,7 +12,7 @@
 #include <Library/MicrocodeFlashAccessLib.h>
 
 /**
-  Perform microcode write opreation.
+  Perform microcode write operation.
 
   @param[in] FlashAddress      The address of flash device to be accessed.
   @param[in] Buffer            The pointer to the data buffer.

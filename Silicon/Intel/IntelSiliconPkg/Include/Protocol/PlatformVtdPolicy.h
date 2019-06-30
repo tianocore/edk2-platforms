@@ -43,7 +43,7 @@ typedef struct {
 
   @param[in]  This                  The protocol instance pointer.
   @param[in]  DeviceHandle          Device Identifier in UEFI.
-  @param[out] DeviceInfo            DeviceInfo for indentify the VTd engine in ACPI Table
+  @param[out] DeviceInfo            DeviceInfo for identify the VTd engine in ACPI Table
                                     and the VTd page entry.
 
   @retval EFI_SUCCESS           The VtdIndex and SourceId are returned.

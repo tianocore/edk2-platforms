@@ -61,7 +61,7 @@ DumpDmarDeviceScopeEntry (
     break;
   case EFI_ACPI_DEVICE_SCOPE_ENTRY_TYPE_PCI_BRIDGE:
     DEBUG ((DEBUG_INFO,
-      "        PCI Sub-hierachy\n"
+      "        PCI Sub-hierarchy\n"
       ));
     break;
   default:

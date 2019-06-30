@@ -322,7 +322,7 @@ SetDmaProtectedRange (
 }
 
 /**
-  Diable DMA protection.
+  Disable DMA protection.
 
   @param VTdInfo            The VTd engine context information.
   @param EngineMask         The mask of the VTd engine to be accessed.

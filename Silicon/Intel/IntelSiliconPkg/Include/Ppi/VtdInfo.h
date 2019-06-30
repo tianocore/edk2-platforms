@@ -26,7 +26,7 @@
 //   the reserved DMA address in PEI for eary graphic (such as RMRR for graphic UMA)
 //
 // The reported information can be and might be a subset of full DMAR table, e.g.
-//   if some data is not avaiable (such as ANDD),
+//   if some data is not available (such as ANDD),
 //   if some data is not needed (such as RMRR for legacy USB).
 //
 typedef EFI_ACPI_DMAR_HEADER EDKII_VTD_INFO_PPI;

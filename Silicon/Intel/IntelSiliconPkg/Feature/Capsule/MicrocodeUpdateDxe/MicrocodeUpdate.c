@@ -193,7 +193,7 @@ CollectProcessorInfo (
   in MicrocodeFmpPrivate must be initialized.
 
   The MicrocodeInformation (DescriptorCount/ImageDescriptor/MicrocodeInfo)
-  in MicrocodeFmpPrivate may not be avaiable in this function.
+  in MicrocodeFmpPrivate may not be available in this function.
 
   @param[in]   MicrocodeFmpPrivate        The Microcode driver private data
   @param[in]   DescriptorCount            The count of Microcode ImageDescriptor allocated.
@@ -235,7 +235,7 @@ GetMicrocodeInfo (
     if (MicrocodeEntryPoint->HeaderVersion == 0x1 && MicrocodeEntryPoint->LoaderRevision == 0x1) {
       //
       // It is the microcode header. It is not the padding data between microcode patches
-      // becasue the padding data should not include 0x00000001 and it should be the repeated
+      // because the padding data should not include 0x00000001 and it should be the repeated
       // byte format (like 0xXYXYXYXY....).
       //
       if (MicrocodeEntryPoint->DataSize == 0) {
