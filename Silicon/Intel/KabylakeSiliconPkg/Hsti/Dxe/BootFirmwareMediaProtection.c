@@ -167,7 +167,7 @@ CheckBootFirmwareMediaProtection (
       FreePool (HstiErrorString);
     }
   } else {
-    if ((Cpptv & B_PCH_SPI_SFDPX_VSCCX_CPPTV) == 1) {
+    if ((Cpptv & B_PCH_SPI_SFDPX_VSCCX_CPPTV) == B_PCH_SPI_SFDPX_VSCCX_CPPTV) {
 
       HstiErrorString = BuildHstiErrorString (HSTI_BYTE0_BOOT_FIRMWARE_MEDIA_PROTECTION_ERROR_CODE_6 ,HSTI_SPI_FLASH_CONFIGURATION, HSTI_BYTE0_BOOT_FIRMWARE_MEDIA_PROTECTION_ERROR_STRING_6);
       Status = HstiLibAppendErrorString (
