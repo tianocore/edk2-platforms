@@ -174,7 +174,7 @@ SecPlatformMain (
     //
     CopyMem (CopyDestinationPointer, mPeiCoreFvLocationPpiList, sizeof (mPeiCoreFvLocationPpiList));
     TopOfTemporaryRamPpiIndex = 1;
-    (UINT8 *) CopyDestinationPointer += sizeof(mPeiCoreFvLocationPpiList);
+    CopyDestinationPointer += sizeof(mPeiCoreFvLocationPpiList);
   }
   CopyMem (CopyDestinationPointer, mPeiSecPlatformPpi, sizeof(mPeiSecPlatformPpi));
   //
