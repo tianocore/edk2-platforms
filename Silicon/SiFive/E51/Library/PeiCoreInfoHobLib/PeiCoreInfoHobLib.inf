@@ -1,0 +1,47 @@
+## @file
+#  Library instance to create core information HOB
+#
+#  Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001b
+  BASE_NAME                      = SiliconSiFiveE51CoreInfoLib
+  FILE_GUID                      = 80A59B85-1245-4309-AC58-2CFA4199B46C
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SiliconSiFiveE51CoreInfoLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = RISCV64
+#
+
+[Sources]
+ CoreInfoHob.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  RiscVPlatformPkg/RiscVPlatformPkg.dec
+  RiscVPkg/RiscVPkg.dec
+  Silicon/SiFive/SiFive.dec
+
+[LibraryClasses]
+  BaseLib
+  FirmwareContextProcessorSpecificLib
+  MemoryAllocationLib
+  PcdLib
+  PrintLib
+
+[FixedPcd]
+  gEfiSiFiveSiliconTokenSpaceGuid.PcdSiFiveE51CoreGuid
+  gUefiRiscVPkgTokenSpaceGuid.PcdProcessorSmbiosGuidHobGuid
+  gUefiRiscVPkgTokenSpaceGuid.PcdProcessorSmbiosType4GuidHobGuid
+  gUefiRiscVPkgTokenSpaceGuid.PcdProcessorSmbiosType7GuidHobGuid
+  gUefiRiscVPkgTokenSpaceGuid.PcdProcessorSpecificDataGuidHobGuid
+
