@@ -187,6 +187,18 @@ F: Platform/Intel/Tools/
 M: Bob Feng <bob.c.feng@intel.com>
 M: Liming Gao <liming.gao@intel.com>
 
+Platform/SiFive/U5Series
+F: Abner Chang <abner.chang@hpe.com>
+F: Gilbert Chen <gilbert.chen@hpe.com>
+
+Platform/SiFive/U5Series/FreedomU500VC707Board
+F: Abner Chang <abner.chang@hpe.com>
+F: Gilbert Chen <gilbert.chen@hpe.com>
+
+Platform/SiFive/U5Series/FreedomU540HiFiveUnleashedBoard
+F: Abner Chang <abner.chang@hpe.com>
+F: Gilbert Chen <gilbert.chen@hpe.com>
+
 Silicon/Intel/IntelSiliconPkg
 F: Silicon/Intel/IntelSiliconPkg/
 M: Ray Ni <ray.ni@intel.com>
@@ -254,3 +266,7 @@ F: Platform/Socionext/
 F: Silicon/Socionext/
 M: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 M: Leif Lindholm <leif.lindholm@linaro.org>
+
+Silicon/SiFive
+F: Abner Chang <abner.chang@hpe.com>
+F: Gilbert Chen <gilbert.chen@hpe.com>
