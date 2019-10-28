@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2013-2018, ARM Limited. All rights reserved.
+#  Copyright (c) 2013-2019, Arm Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -20,12 +20,12 @@
 
 [FD.BL33_AP_UEFI]
 BaseAddress   = 0xE0000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
-Size          = 0x000F8000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
+Size          = 0x000F9000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
 BlockSize     = 0x00001000
-NumBlocks     = 0xF8
+NumBlocks     = 0xF9
 
 ################################################################################
 #
@@ -43,7 +43,7 @@ NumBlocks     = 0xF8
 #
 ################################################################################
 
-0x00000000|0x000F8000
+0x00000000|0x000F9000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
