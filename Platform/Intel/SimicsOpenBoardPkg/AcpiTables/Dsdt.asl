@@ -17,7 +17,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 1, "INTEL ", "SIMICS  ", 4) {
   Name (GPIC, Zero)
   Method (_PIC, 1, NotSerialized)  // _PIC: Interrupt Model
   {
-      GPIC = Arg0
+      Store(Arg0, GPIC)
   }
   //
   //  System Bus
@@ -372,7 +372,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 1, "INTEL ", "SIMICS  ", 4) {
 
             Package () {0x000EFFFF, 0x00, 0, 16},
             Package () {0x000EFFFF, 0x01, 0, 17},
-            Package () {0x000EFFFF, 0x02, 0C, 18},
+            Package () {0x000EFFFF, 0x02, 0x0C, 18},
             Package () {0x000EFFFF, 0x03, 0, 19},
 
             Package () {0x000FFFFF, 0x00, 0, 16},
