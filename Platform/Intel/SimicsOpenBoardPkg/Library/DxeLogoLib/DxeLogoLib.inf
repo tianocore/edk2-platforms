@@ -6,7 +6,7 @@
 # 2) BDS boot device connect interface;
 # 3) BDS Misc interfaces for mainting boot variable, ouput string, etc.
 #
-# Copyright (c) 2007 - 2019 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2007 - 2022 Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -41,15 +41,11 @@
   MdeModulePkg/MdeModulePkg.dec
   SimicsOpenBoardPkg/OpenBoardPkg.dec
 
-[FeaturePcd]
-  gEfiMdePkgTokenSpaceGuid.PcdUgaConsumeSupport
-
 [Sources]
   Logo.c
 
 [Protocols]
   gEfiGraphicsOutputProtocolGuid                ## SOMETIMES_CONSUMES
-  gEfiUgaDrawProtocolGuid                       ## SOMETIMES_CONSUMES
   gEfiBootLogoProtocolGuid                      ## SOMETIMES_CONSUMES
   gEfiUserManagerProtocolGuid                   ## CONSUMES
   gEfiOemBadgingProtocolGuid                    ## CONSUMES

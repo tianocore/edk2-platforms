@@ -1,7 +1,7 @@
 /** @file
   BDS Lib functions which contain all the code to connect console device
 
-  Copyright (c) 2006 - 2019 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2006 - 2022 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -10,7 +10,6 @@
 #include <Protocol/SimpleTextOut.h>
 #include <OemBadging.h>
 #include <Protocol/GraphicsOutput.h>
-#include <Protocol/UgaDraw.h>
 #include <Library/BaseLib.h>
 #include <Library/UefiLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -300,9 +299,6 @@ EnableBootLogo (
   UINTN                         Height;
   UINTN                         Width;
   EFI_GRAPHICS_OUTPUT_BLT_PIXEL *Blt;
-  EFI_UGA_DRAW_PROTOCOL         *UgaDraw;
-  UINT32                        ColorDepth;
-  UINT32                        RefreshRate;
   EFI_GRAPHICS_OUTPUT_PROTOCOL  *GraphicsOutput;
   EFI_BOOT_LOGO_PROTOCOL        *BootLogo;
   UINTN                         NumberOfLogos;
@@ -317,18 +313,10 @@ EnableBootLogo (
   UINTN                         NewWidth;
   UINT64                        BufferSize;
 
-  UgaDraw = NULL;
   //
   // Try to open GOP first
   //
   Status = gBS->HandleProtocol (gST->ConsoleOutHandle, &gEfiGraphicsOutputProtocolGuid, (VOID **) &GraphicsOutput);
-  if (EFI_ERROR (Status) && FeaturePcdGet (PcdUgaConsumeSupport)) {
-    GraphicsOutput = NULL;
-    //
-    // Open GOP failed, try to open UGA
-    //
-    Status = gBS->HandleProtocol (gST->ConsoleOutHandle, &gEfiUgaDrawProtocolGuid, (VOID **) &UgaDraw);
-  }
   if (EFI_ERROR (Status)) {
     return EFI_UNSUPPORTED;
   }
@@ -351,11 +339,6 @@ EnableBootLogo (
     SizeOfX = GraphicsOutput->Mode->Info->HorizontalResolution;
     SizeOfY = GraphicsOutput->Mode->Info->VerticalResolution;
 
-  } else if (UgaDraw != NULL && FeaturePcdGet (PcdUgaConsumeSupport)) {
-    Status = UgaDraw->GetMode (UgaDraw, &SizeOfX, &SizeOfY, &ColorDepth, &RefreshRate);
-    if (EFI_ERROR (Status)) {
-      return EFI_UNSUPPORTED;
-    }
   } else {
     return EFI_UNSUPPORTED;
   }
@@ -503,19 +486,6 @@ EnableBootLogo (
                             Height,
                             Width * sizeof (EFI_GRAPHICS_OUTPUT_BLT_PIXEL)
                             );
-      } else if (UgaDraw != NULL && FeaturePcdGet (PcdUgaConsumeSupport)) {
-        Status = UgaDraw->Blt (
-                            UgaDraw,
-                            (EFI_UGA_PIXEL *) Blt,
-                            EfiUgaBltBufferToVideo,
-                            0,
-                            0,
-                            (UINTN) DestX,
-                            (UINTN) DestY,
-                            Width,
-                            Height,
-                            Width * sizeof (EFI_UGA_PIXEL)
-                            );
       } else {
         Status = EFI_UNSUPPORTED;
       }
@@ -619,19 +589,6 @@ Done:
                           LogoWidth,
                           LogoHeight,
                           LogoWidth * sizeof (EFI_GRAPHICS_OUTPUT_BLT_PIXEL)
-                          );
-    } else if (UgaDraw != NULL && FeaturePcdGet (PcdUgaConsumeSupport)) {
-      Status = UgaDraw->Blt (
-                          UgaDraw,
-                          (EFI_UGA_PIXEL *) LogoBlt,
-                          EfiUgaVideoToBltBuffer,
-                          LogoDestX,
-                          LogoDestY,
-                          0,
-                          0,
-                          LogoWidth,
-                          LogoHeight,
-                          LogoWidth * sizeof (EFI_UGA_PIXEL)
                           );
     } else {
       Status = EFI_UNSUPPORTED;
