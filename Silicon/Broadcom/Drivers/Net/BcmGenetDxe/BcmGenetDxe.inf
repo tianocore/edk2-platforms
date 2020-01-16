@@ -1,0 +1,42 @@
+## @file
+#
+# Copyright (c) 2020, Jeremy Linton All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = BcmGenetDxe
+  FILE_GUID                      = e2b1eaf3-50b7-4ae1-b79e-ec8020cb57ac
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 0.1
+  ENTRY_POINT                    = GenetEntryPoint
+
+[Sources]
+  Genet.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/RaspberryPi/RaspberryPi.dec
+  Silicon/Broadcom/Drivers/Net/BcmNet.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseLib
+  IoLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gRaspberryPiFirmwareProtocolGuid              ## CONSUMES
+
+[FixedPcd]
+  gBcmNetTokenSpaceGuid.PcdBcmGenetRegistersAddress
+  gBcmNetTokenSpaceGuid.PcdBcmGenetRpiMacInit
+
+[Depex]
+  gRaspberryPiFirmwareProtocolGuid

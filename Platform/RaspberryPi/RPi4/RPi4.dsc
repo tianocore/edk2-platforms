@@ -346,6 +346,9 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"EDK2-DEV"
 
+  # Use the Raspberry Pi VideoCore for Genet MAC initialization
+  gBcmNetTokenSpaceGuid.PcdBcmGenetRpiMacInit|TRUE
+
 !if $(SECURE_BOOT_ENABLE) == TRUE
   # override the default values from SecurityPkg to ensure images from all sources are verified in secure boot
   gEfiSecurityPkgTokenSpaceGuid.PcdOptionRomImageVerificationPolicy|0x04
@@ -402,6 +405,7 @@
   gRaspberryPiTokenSpaceGuid.PcdExtendedMemoryBase|0x40000000
   gBcm27xxTokenSpaceGuid.PcdBcm27xxRegistersAddress|0xfc000000
   gBcm283xTokenSpaceGuid.PcdBcm283xRegistersAddress|0xfe000000
+  gBcmNetTokenSpaceGuid.PcdBcmGenetRegistersAddress|0xfd580000
 
   # PCIe specific addresses
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciRegBase|0xfd500000
@@ -648,6 +652,7 @@
   # Networking stack
   #
 !include NetworkPkg/Network.dsc.inc
+  Silicon/Broadcom/Drivers/Net/BcmGenetDxe/BcmGenetDxe.inf
 
   #
   # RNG
