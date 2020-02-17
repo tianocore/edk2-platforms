@@ -31,7 +31,6 @@
   DebugLib
   IoLib
   RiscVCpuLib
-  RiscVOpensbiLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
 

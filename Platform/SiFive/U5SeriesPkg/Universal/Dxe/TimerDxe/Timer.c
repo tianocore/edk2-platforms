@@ -9,10 +9,7 @@
 
 #include "Timer.h"
 #include <IndustryStandard/RiscVOpensbi.h>
-#include <sbi/riscv_asm.h>
-#include <sbi/riscv_encoding.h>
 #include <sbi/riscv_io.h>
-#include <sbi/riscv_atomic.h>
 #include <U5Clint.h>
 
 STATIC volatile VOID * const p_mtime = (VOID *)CLINT_REG_MTIME;

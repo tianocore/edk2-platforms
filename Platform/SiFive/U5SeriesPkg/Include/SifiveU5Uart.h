@@ -1,6 +1,6 @@
 /** @file
   SiFive U5 series UART header file. This is the wrapper file
-  of sifive-uart.h under opensib include/sbi_utils/serial.
+  of sifive-uart.h under opensbi include/sbi_utils/serial.
 
   Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 
