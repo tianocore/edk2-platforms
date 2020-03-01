@@ -28,8 +28,9 @@
   #
   # Network definition
   #
-  DEFINE NETWORK_TLS_ENABLE       = FALSE
-  DEFINE NETWORK_HTTP_BOOT_ENABLE = FALSE
+  DEFINE NETWORK_TLS_ENABLE             = FALSE
+  DEFINE NETWORK_HTTP_BOOT_ENABLE       = TRUE
+  DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
 
   #
   # Defines for default states.  These can be changed on the command line.
@@ -339,6 +340,11 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdFixedMediaImageVerificationPolicy|0x04
   gEfiSecurityPkgTokenSpaceGuid.PcdRemovableMediaImageVerificationPolicy|0x04
 !endif
+
+  #
+  # NETSEC Info
+  #
+  gEfiNetworkPkgTokenSpaceGuid.PcdAllowHttpConnections|TRUE
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
