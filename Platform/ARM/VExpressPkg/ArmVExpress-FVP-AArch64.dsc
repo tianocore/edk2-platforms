@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2011-2018, ARM Limited. All rights reserved.
+#  Copyright (c) 2011-2020, Arm Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -126,7 +126,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x1c0a0000
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
-  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x25
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x26
 
   ## PL011 Serial Debug UART (DBG2)
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1c0b0000

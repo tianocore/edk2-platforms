@@ -204,7 +204,7 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
   // Debug Serial Port
   {
     FixedPcdGet64 (PcdSerialDbgRegisterBase),                 // BaseAddress
-    38,                                                       // Interrupt
+    39,                                                       // Interrupt
     FixedPcdGet64 (PcdSerialDbgUartBaudRate),                 // BaudRate
     FixedPcdGet32 (PcdSerialDbgUartClkInHz),                  // Clock
     EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART   // Port subtype
