@@ -19,7 +19,6 @@
 extern CHAR8  dsdt_aml_code[];
 extern CHAR8  ssdtjunousb_aml_code[];
 extern CHAR8  ssdtpci_aml_code[];
-extern CHAR8  ssdtuart_aml_code[];
 
 /** The configuration manager version
 */
@@ -186,7 +185,7 @@ extern CHAR8  ssdtuart_aml_code[];
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT   11
+#define PLAT_ACPI_TABLE_COUNT   10
 
 /** The number of platform generic timer blocks
 */

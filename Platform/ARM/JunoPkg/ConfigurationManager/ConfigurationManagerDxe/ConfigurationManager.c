@@ -83,13 +83,6 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdt),
       (EFI_ACPI_DESCRIPTION_HEADER*)ssdtjunousb_aml_code
     },
-    // SSDT table describing the PL011 UART
-    {
-      EFI_ACPI_6_2_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-      0, // Unused
-      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdt),
-      (EFI_ACPI_DESCRIPTION_HEADER*)ssdtuart_aml_code
-    },
     // PPTT Table
     {
       EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,

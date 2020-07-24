@@ -25,7 +25,6 @@
   AslTables/Dsdt.asl
   AslTables/SsdtJunoUsb.asl
   AslTables/SsdtPci.asl
-  AslTables/SsdtUart.asl
 
 [Packages]
   ArmPkg/ArmPkg.dec
