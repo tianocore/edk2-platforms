@@ -1,7 +1,7 @@
 ## @file
 #  dsc include file for Configuration Manager
 #
-#  Copyright (c) 2017 - 2018, ARM Limited. All rights reserved.
+#  Copyright (c) 2017 - 2020, Arm Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -16,10 +16,4 @@
 
 [Components.common]
   # Configuration Manager
-  Platform/ARM/VExpressPkg/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxe.inf {
-    <LibraryClasses>
-    # Platform ASL Tables
-    PlatformAslTablesLib|Platform/ARM/VExpressPkg/ConfigurationManager/PlatformASLTablesLib/PlatformASLTablesLib.inf
-  <BuildOptions>
-   *_*_*_PLATFORM_FLAGS = -I$(BIN_DIR)/Platform/ARM/VExpressPkg/ConfigurationManager/PlatformASLTablesLib/PlatformASLTablesLib/OUTPUT
-  }
+  Platform/ARM/VExpressPkg/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxe.inf

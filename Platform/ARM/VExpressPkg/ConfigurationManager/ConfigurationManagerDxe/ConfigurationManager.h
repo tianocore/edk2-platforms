@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2017 - 2019, ARM Limited. All rights reserved.
+  Copyright (c) 2017 - 2020, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -11,6 +11,12 @@
 
 #ifndef CONFIGURATION_MANAGER_H__
 #define CONFIGURATION_MANAGER_H__
+
+/** C array containing the compiled AML template.
+    This symbol is defined in the auto generated C file
+    containing the AML bytecode array.
+*/
+extern CHAR8  dsdt_aml_code[];
 
 /** The configuration manager version.
 */
