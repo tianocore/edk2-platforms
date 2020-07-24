@@ -114,7 +114,7 @@ extern CHAR8  dsdt_aml_code[];
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT       6
+#define PLAT_ACPI_TABLE_COUNT       7
 
 /** The number of platform generic timer blocks
 */
@@ -173,6 +173,9 @@ typedef struct PlatformRepositoryInfo {
 
   /// Serial port information for the DBG2 UART port
   CM_ARM_SERIAL_PORT_INFO               DbgSerialPort;
+
+  /// Standard Serial Ports
+  CM_ARM_SERIAL_PORT_INFO               StdSerialPort[2];
 
   /// GIC ITS information
   CM_ARM_GIC_ITS_INFO                   GicItsInfo;
