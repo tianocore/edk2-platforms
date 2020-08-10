@@ -33,11 +33,9 @@
   Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
 
 [LibraryClasses]
-  ArmPlatformLib
   PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
-  UefiRuntimeServicesTableLib
 
 [Protocols]
   gEdkiiConfigurationManagerProtocolGuid
