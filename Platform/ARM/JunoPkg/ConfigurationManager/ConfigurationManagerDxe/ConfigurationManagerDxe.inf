@@ -35,11 +35,10 @@
   Platform/ARM/JunoPkg/ArmJuno.dec
 
 [LibraryClasses]
-  ArmPlatformLib
+  IoLib
   PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
-  UefiRuntimeServicesTableLib
 
 [Protocols]
   gEdkiiConfigurationManagerProtocolGuid
