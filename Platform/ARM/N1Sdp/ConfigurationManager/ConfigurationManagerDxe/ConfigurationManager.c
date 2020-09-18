@@ -794,7 +794,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
   },
 
   {
-    // SMMUv3 Node
+    // SMMUv3 Node - PCIe
     {
       // Reference token for this Iort node
       REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_pcie]),
@@ -823,7 +823,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       // Index into the array of ID mapping
       1
     },
-    // SMMUv3 Node
+    // SMMUv3 Node - CCIX
     {
       // Reference token for this Iort node
       REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_ccix]),
@@ -852,7 +852,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       // Index into the array of ID mapping
       1
     },
-    //Remote Chip SMMU V3 setting
+    //Remote Chip SMMU V3 setting - Remote PCIe
     {
       REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_remote_pcie]),
       2,
@@ -867,6 +867,165 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       748,
       0,
       1
+    }
+  },
+
+  // PMCG Info
+  {
+    // Primary SMMU PMCG PCIe - TCU
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[0]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_BASE_ADDRESS_TCU1 + TCU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_IRQ_TCU1,
+      // Page 1 Base address
+      (SMMU_PCIE_BASE_ADDRESS_TCU1 + TCU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_pcie])
+    },
+    // Primary SMMU PMCG PCIe - TBU1
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[1]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_IRQ_TBU1,
+      // Page 1 Base address
+      (SMMU_PCIE_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_pcie])
+    },
+    // Primary SMMU PMCG PCIe - TBU0
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[2]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_IRQ_TBU0,
+      // Page 1 Base address
+      (SMMU_PCIE_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_pcie])
+    },
+
+    // Primary SMMU PMCG CCIX - TCU
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[3]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_CCIX_BASE_ADDRESS_TCU0 + TCU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_CCIX_IRQ_TCU0,
+      // Page 1 Base address
+      (SMMU_CCIX_BASE_ADDRESS_TCU0 + TCU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_ccix]),
+    },
+    // Primary SMMU PMCG CCIX - TBU1
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[4]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_CCIX_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_CCIX_IRQ_TBU1,
+      // Page 1 Base address
+      (SMMU_CCIX_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_ccix]),
+    },
+    // Primary SMMU PMCG CCIX - TBU0
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[5]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_CCIX_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_CCIX_IRQ_TBU0,
+      // Page 1 Base address
+      (SMMU_CCIX_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_ccix]),
+    },
+
+    // Remote SMMU PMCG PCIe - TCU
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[6]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TCU1 + TCU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_REMOTE_IRQ_TCU1,
+      // Page 1 Base address
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TCU1 + TCU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_remote_pcie]),
+    },
+    // Remote SMMU PMCG PCIe - TBU1
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[7]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_REMOTE_IRQ_TBU1,
+      // Page 1 Base address
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TBU1 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_remote_pcie]),
+    },
+    // Remote SMMU PMCG PCIe - TBU0
+    {
+      // An unique token used to identify this object
+      REFERENCE_TOKEN (PmcgSmmuInfo[8]),
+      // Number of ID mappings
+      0,
+      // Reference token for the ID mapping array
+      CM_NULL_TOKEN,
+      // Base Address for performance monitor counter group
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE0_OFFSET),
+      // GSIV for the Overflow interrupt
+      SMMU_PCIE_REMOTE_IRQ_TBU0,
+      // Page 1 Base address
+      (SMMU_PCIE_REMOTE_BASE_ADDRESS_TBU0 + TBU_PMCG_PAGE1_OFFSET),
+      // Reference token for the IORT node associated with this node
+      REFERENCE_TOKEN (SmmuV3Info[Smmuv3info_remote_pcie]),
     }
   },
 
@@ -1862,6 +2021,7 @@ GetArmNameSpaceObject (
   UINT32                            ItsGroupInfoCount;
   UINT32                            ItsIdentifierArrayCount;
   UINT32                            SmmuV3InfoCount;
+  UINT32                            PmcgSmmuInfoCount;
   UINT32                            DeviceIdMappingCount;
   UINT32                            RootComplexInfoCount;
 
@@ -1882,6 +2042,7 @@ GetArmNameSpaceObject (
     ItsGroupInfoCount = Its_max;
     ItsIdentifierArrayCount = Its_max;
     SmmuV3InfoCount = Smmuv3info_max;
+    PmcgSmmuInfoCount = Smmuv3info_max * 3;
     DeviceIdMappingCount = Devicemapping_max;
     RootComplexInfoCount = Root_pcie_max;
   } else {
@@ -1891,6 +2052,7 @@ GetArmNameSpaceObject (
     ItsGroupInfoCount = Its_master_chip_max;
     ItsIdentifierArrayCount = Its_master_chip_max;
     SmmuV3InfoCount = Smmuv3info_master_chip_max;
+    PmcgSmmuInfoCount = Smmuv3info_master_chip_max * 3;
     DeviceIdMappingCount = Devicemapping_master_chip_max;
     RootComplexInfoCount = Root_pcie_master_chip_max;
   }
@@ -1998,6 +2160,16 @@ GetArmNameSpaceObject (
                  PlatformRepo->SmmuV3Info,
                  sizeof (PlatformRepo->SmmuV3Info),
                  SmmuV3InfoCount,
+                 CmObject
+                 );
+      break;
+
+    case EArmObjPmcg:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PmcgSmmuInfo,
+                 sizeof (PlatformRepo->PmcgSmmuInfo),
+                 PmcgSmmuInfoCount,
                  CmObject
                  );
       break;
