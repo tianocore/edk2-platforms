@@ -79,6 +79,7 @@
   # Basic
   #
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
+  RngLib|MdePkg/Library/BaseRngLibNull/BaseRngLibNull.inf
 !if $(SSE2_ENABLE) == TRUE
   BaseMemoryLib|MdePkg/Library/BaseMemoryLibSse2/BaseMemoryLibSse2.inf
 !else
@@ -146,6 +147,9 @@
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
 !endif
   FmpAuthenticationLib|MdeModulePkg/Library/FmpAuthenticationLibNull/FmpAuthenticationLibNull.inf
+  FmpDependencyLib|FmpDevicePkg/Library/FmpDependencyLib/FmpDependencyLib.inf
+  FmpDependencyCheckLib|FmpDevicePkg/Library/FmpDependencyCheckLibNull/FmpDependencyCheckLibNull.inf
+  FmpDependencyDeviceLib|FmpDevicePkg/Library/FmpDependencyDeviceLibNull/FmpDependencyDeviceLibNull.inf
   IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
   PlatformFlashAccessLib|Vlv2TbltDevicePkg/Feature/Capsule/Library/PlatformFlashAccessLib/PlatformFlashAccessLib.inf
   MicrocodeFlashAccessLib|Vlv2TbltDevicePkg/Feature/Capsule/Library/PlatformFlashAccessLib/PlatformFlashAccessLib.inf
