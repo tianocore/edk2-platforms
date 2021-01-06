@@ -53,7 +53,7 @@ Build instructions from the top level edk2-platforms Readme.md apply.
 
 # Booting the firmware
 
-1. Format a uSD card as FAT32
+1. Format a SD card as FAT32
 2. Copy the generated `RPI_EFI.fd` firmware onto the partition
 3. Download and copy the following files from https://github.com/raspberrypi/firmware/tree/master/boot
   - `bcm2710-rpi-3-b.dtb` (for Pi 3B)
