@@ -1,0 +1,85 @@
+## @file
+# Azure Pipeline build file for building a platform.
+#
+# Platform: FVP
+# OS: Ubuntu
+# Toolchain: GCC5
+#
+#  Copyright (c) Microsoft Corporation.
+#  Copyright (c) 2021, Arm Ltd. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+trigger:
+  - master
+  - stable/*
+pr:
+  - master
+  - stable/*
+
+jobs:
+  - job: Platform_CI
+    variables:
+      package: 'VExpressPkg'
+      vm_image: 'ubuntu-18.04'
+      should_run: false
+      run_flags: ""
+
+    #Use matrix to speed up the build process
+    strategy:
+        matrix:
+
+          FVP_DEBUG:
+            Build.File: "Platform/ARM/$(package)/PlatformBuild.py"
+            Build.Arch: "AARCH64"
+            Build.Flags: ""
+            Build.Target: "DEBUG"
+            Run.Flags: $(run_flags)
+            Run: $(should_run)
+
+          FVP_RELEASE:
+            Build.File: "Platform/ARM/$(package)/PlatformBuild.py"
+            Build.Arch: "AARCH64"
+            Build.Flags: ""
+            Build.Target: "RELEASE"
+            Run.Flags: $(run_flags)
+            Run: $(should_run)
+
+          FVP_DEBUG_DYNAMIC_TABLES:
+            Build.File: "Platform/ARM/$(package)/PlatformBuild.py"
+            Build.Arch: "AARCH64"
+            Build.Flags: "BLD_*_DYNAMIC_TABLES_FRAMEWORK=1"
+            Build.Target: "DEBUG"
+            Run.Flags: $(run_flags)
+            Run: $(should_run)
+
+          FVP_RELEASE_DYNAMIC_TABLES:
+            Build.File: "Platform/ARM/$(package)/PlatformBuild.py"
+            Build.Arch: "AARCH64"
+            Build.Flags: "BLD_*_DYNAMIC_TABLES_FRAMEWORK=1"
+            Build.Target: "RELEASE"
+            Run.Flags: $(run_flags)
+            Run: $(should_run)
+
+    workspace:
+      clean: all
+
+    pool:
+      vmImage: $(vm_image)
+
+    steps:
+    - template: ../../../.azurepipelines/templates/platform-build-run-steps.yml
+      parameters:
+        tool_chain_tag: GCC5
+        build_pkg: $(package)
+        build_target: $(Build.Target)
+        build_arch: $(Build.Arch)
+        build_file: $(Build.File)
+        build_flags: $(Build.Flags)
+        run_flags: $(Run.Flags)
+        extra_install_step:
+        - bash: sudo apt-get update
+          displayName: Update Apt
+          condition: and(gt(variables.pkg_count, 0), succeeded())
+        - bash: sudo apt-get install gcc g++ make uuid-dev
+          displayName: Install Packages
+          condition: and(gt(variables.pkg_count, 0), succeeded())
