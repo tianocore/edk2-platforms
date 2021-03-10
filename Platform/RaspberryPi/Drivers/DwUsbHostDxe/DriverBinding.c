@@ -140,7 +140,7 @@ DriverStart (
    * UsbBusDxe as of b4e96b82b4e2e47e95014b51787ba5b43abac784 expects
    * the HCD to do this. There is no agent invoking DwHcReset anymore.
    */
-  DwHcReset (&DwHc->DwUsbOtgHc, 0);
+  DwHcReset (&DwHc->DwUsbOtgHc, EFI_USB_HC_RESET_HOST_CONTROLLER);
   DwHcSetState (&DwHc->DwUsbOtgHc, EfiUsbHcStateOperational);
 
   Status = gBS->InstallMultipleProtocolInterfaces (
