@@ -721,8 +721,6 @@ GetArmNameSpaceObject (
   UINTN                             Smmuv3Count;
   UINTN                             ItsGroupCount;
   UINTN                             ItsIdentifierArrayCount;
-  UINTN                             RootComplexCount;
-  UINTN                             DeviceIdMappingArrayCount;
   UINTN                             PciConfigSpaceCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
@@ -739,15 +737,11 @@ GetArmNameSpaceObject (
     Smmuv3Count = 1;
     ItsGroupCount = 1;
     ItsIdentifierArrayCount = ARRAY_SIZE (PlatformRepo->ItsIdentifierArray);
-    RootComplexCount = 1;
-    DeviceIdMappingArrayCount = ARRAY_SIZE (PlatformRepo->DeviceIdMapping);
     PciConfigSpaceCount = 1;
   } else {
     Smmuv3Count = 0;
     ItsGroupCount = 0;
     ItsIdentifierArrayCount = 0;
-    RootComplexCount = 0;
-    DeviceIdMappingArrayCount = 0;
     PciConfigSpaceCount = 0;
   }
 
