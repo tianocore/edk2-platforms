@@ -31,28 +31,28 @@ InactiveFunction(
   
   PcdSmbiosRecord = PcdGetPtr (PcdSmbiosType126Inactive);
 
-    //
-    // Create table size based on string lengths
-    //
-    TableSize = sizeof (SMBIOS_TABLE_TYPE126) + 1 + 1;
-    SmbiosRecord = AllocateZeroPool (TableSize);
-    if (SmbiosRecord == NULL) {
-        ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
-        return EFI_OUT_OF_RESOURCES;
-    }  
+  //
+  // Create table size based on string lengths
+  //
+  TableSize = sizeof (SMBIOS_TABLE_TYPE126) + 1 + 1;
+  SmbiosRecord = AllocateZeroPool (TableSize);
+  if (SmbiosRecord == NULL) {
+      ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
+      return EFI_OUT_OF_RESOURCES;
+  }  
 
-    //
-    // Fill in type 126 fields
-    //
-    SmbiosRecord->Hdr.Type = SMBIOS_TYPE_INACTIVE;
-    SmbiosRecord->Hdr.Length = sizeof (SMBIOS_TABLE_TYPE126);
-    SmbiosRecord->Hdr.Handle = 0;
+  //
+  // Fill in type 126 fields
+  //
+  SmbiosRecord->Hdr.Type = SMBIOS_TYPE_INACTIVE;
+  SmbiosRecord->Hdr.Length = sizeof (SMBIOS_TABLE_TYPE126);
+  SmbiosRecord->Hdr.Handle = 0;
 
-    //
-    // Full smbios record, call smbios protocol to add this record.
-    //
-    Status = AddSmbiosRecord (Smbios, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *) SmbiosRecord);
+  //
+  // Full smbios record, call smbios protocol to add this record.
+  //
+  Status = AddSmbiosRecord (Smbios, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *) SmbiosRecord);
     
-    FreePool (SmbiosRecord);
-    return Status;
+  FreePool (SmbiosRecord);
+  return Status;
 }        

@@ -12,43 +12,43 @@ EFI_STATUS
 EFIAPI
 BiosVendorFunction( // Type 0
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 SystemManufacturerFunction( // Type 1
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 BaseBoardManufacturerFunction( // Type 2
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 ChassisManufacturerFunction( // Type 3
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 ProcessorInformationFunction( // Type 4
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 MemoryControllerFunction( // Type 5
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 MemoryModuleInformationFunction( // Type 6
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -66,7 +66,7 @@ EFI_STATUS
 EFIAPI
 SystemSlotsFunction( // Type 9
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -84,19 +84,19 @@ EFI_STATUS
   EFIAPI
   SystemConfigurationOptionsFunction( // Type 12
      IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 BiosLanguageFunction( // Type 13
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 GroupAssociationsFunction( // Type 14
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -114,13 +114,13 @@ EFI_STATUS
 EFIAPI
 MemoryDeviceFunction( // Type 17
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 g32bitMemoryErrorInformationFunction( // Type 18
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -138,7 +138,7 @@ EFI_STATUS
 EFIAPI
 PointingDeviceFunction( // Type 21
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -162,7 +162,7 @@ EFI_STATUS
 EFIAPI
 SystemPowerControlsFunction( // Type 25
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -186,7 +186,7 @@ EFI_STATUS
 EFIAPI
 ElectricalCurrentProbeFunction( // Type 29
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -198,13 +198,13 @@ EFI_STATUS
 EFIAPI
 BISEntryPointFunction( // Type 31
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
 BootInfoStatusFunction( // Type 32
   IN  EFI_SMBIOS_PROTOCOL   *Smbios
-  );
+);
 
 EFI_STATUS
 EFIAPI
@@ -288,7 +288,7 @@ typedef
 EFI_STATUS
 (EFIAPI EFI_BASIC_SMBIOS_DATA_FUNCTION) (
   IN  EFI_SMBIOS_PROTOCOL  *Smbios
-  );
+);
 
 typedef struct {
   EFI_BASIC_SMBIOS_DATA_FUNCTION *Function;

@@ -23,17 +23,17 @@ OnBoardDevicesInformationFunction(
 	IN  EFI_SMBIOS_PROTOCOL*            Smbios
 )
 {
-	EFI_STATUS                          Status;
+  EFI_STATUS                          Status;
   CHAR8                               *DescriptionStr;
   UINTN                               DescriptionStrLen;
-	SMBIOS_TABLE_TYPE10                 *SmbiosRecord;
-	SMBIOS_TABLE_TYPE10                 *PcdSmbiosRecord;
-	EFI_SMBIOS_HANDLE                   SmbiosHandle;
+  SMBIOS_TABLE_TYPE10                 *SmbiosRecord;
+  SMBIOS_TABLE_TYPE10                 *PcdSmbiosRecord;
+  EFI_SMBIOS_HANDLE                   SmbiosHandle;
   UINTN                               SourceSize;
   UINTN                               TotalSize;
   UINTN                               StringOffset;
 
-	PcdSmbiosRecord = PcdGetPtr(PcdSmbiosType10OnBoardDevicesInformation);
+  PcdSmbiosRecord = PcdGetPtr(PcdSmbiosType10OnBoardDevicesInformation);
 
   //
   // Get Designation String.
@@ -47,7 +47,7 @@ OnBoardDevicesInformationFunction(
   //
   SourceSize = PcdGetSize (PcdSmbiosType9SystemSlots);
   TotalSize = SourceSize + DescriptionStrLen + 1 + 1;
-	SmbiosRecord = AllocateZeroPool(TotalSize);
+  SmbiosRecord = AllocateZeroPool(TotalSize);
   if (SmbiosRecord == NULL) {
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     return EFI_OUT_OF_RESOURCES;
@@ -56,19 +56,18 @@ OnBoardDevicesInformationFunction(
   //
   // Copy the data to the table
   //
-	CopyMem(SmbiosRecord, PcdSmbiosRecord, SourceSize);
-
-	SmbiosRecord->Hdr.Type = SMBIOS_TYPE_ONBOARD_DEVICE_INFORMATION;
-	SmbiosRecord->Hdr.Length = sizeof(SMBIOS_TABLE_TYPE10);
-	SmbiosRecord->Hdr.Handle = 0;
-
+  CopyMem(SmbiosRecord, PcdSmbiosRecord, SourceSize);
+  SmbiosRecord->Hdr.Type = SMBIOS_TYPE_ONBOARD_DEVICE_INFORMATION;
+  SmbiosRecord->Hdr.Length = sizeof(SMBIOS_TABLE_TYPE10);
+  SmbiosRecord->Hdr.Handle = 0;
   StringOffset = SmbiosRecord->Hdr.Length;
   CopyMem ((UINT8 *)SmbiosRecord + StringOffset, DescriptionStr, DescriptionStrLen);
-	//
-	// Now we have got the full smbios record, call smbios protocol to add this record.
-	//
-	Status = AddSmbiosRecord(Smbios, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER*)SmbiosRecord);
-
-	FreePool(SmbiosRecord);
-	return Status;
+  
+  //
+  // Now we have got the full smbios record, call smbios protocol to add this record.
+  //
+  Status = AddSmbiosRecord(Smbios, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER*)SmbiosRecord);
+  
+  FreePool(SmbiosRecord);
+  return Status;
 }
