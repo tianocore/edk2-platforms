@@ -101,7 +101,8 @@ DATA = {
   #Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
-!if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
+  ## disable secureboot for now 4/13/2021
+!if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == FALSE
   #  Signature: gEfiAuthenticatedVariableGuid = { 0xaaf32c78, 0x947b, 0x439a, { 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92 }}
   0x78, 0x2c, 0xf3, 0xaa, 0x7b, 0x94, 0x9a, 0x43,
   0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92,
@@ -332,6 +333,9 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = A881D567-6CB0-4eee-8435-2E72D33E45B5
+
+#added 5/17/21 for bds menu
+#INF RuleOverride = UI MdeModulePkg/Application/UiApp/UiApp.inf
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/CoreUefiBootInclude.fdf
 INF  $(PLATFORM_SI_PACKAGE)/Pch/PchInit/Dxe/PchInitDxeCnl.inf
@@ -660,6 +664,14 @@ FvNameGuid         = BE3DF86F-E464-44A3-83F7-0D27E6B88C27
 
 !include AdvancedFeaturePkg/Include/PostMemory.fdf
 
+#v added 3/29/21
+FILE DRIVER = 4e7bf25f-fc50-4589-9efd-00a96e6ccf63 {
+      SECTION PE32 = edk2-non-osi\Drivers\Intel\UndiDriver\E9406X3.EFI
+      SECTION UI = "E7006X3"
+	}
+#^ added 3/29/21
+
+
 !if gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdTbtEnable == TRUE
 INF  $(PLATFORM_BOARD_PACKAGE)/Features/Tbt/TbtInit/Dxe/TbtDxe.inf
 INF  $(PLATFORM_BOARD_PACKAGE)/Features/PciHotPlug/PciHotPlug.inf
@@ -706,4 +718,10 @@ FILE FV_IMAGE = 5248467B-B87B-4E74-AC02-398AF4BCB712 {
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/RuleInclude.fdf
 
-
+# added 5/17/21 for bds menu
+[Rule.Common.UEFI_APPLICATION.UI]
+  FILE APPLICATION = $(NAMED_GUID) {
+    PE32      PE32                     $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI        STRING="Enter Setup"
+    VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }

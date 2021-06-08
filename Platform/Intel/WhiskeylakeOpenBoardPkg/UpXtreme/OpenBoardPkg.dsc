@@ -18,7 +18,16 @@
   DEFINE      PEI_ARCH                  = IA32
   DEFINE      DXE_ARCH                  = X64
   DEFINE      TOP_MEMORY_ADDRESS        = 0x0
-
+  #v added 3/16/21
+  DEFINE NETWORK_ENABLE                        = TRUE
+  DEFINE NETWORK_IP4_ENABLE                    = TRUE
+  DEFINE NETWORK_ISCSI_ENABLE                  = FALSE
+  DEFINE NETWORK_VLAN_ENABLE                   = TRUE
+  DEFINE NETWORK_IPSEC_ENABLE                  = TRUE
+  DEFINE NETWORK_TLS_ENABLE                    = TRUE
+  DEFINE NETWORK_HTTP_BOOT_ENABLE              = TRUE
+  DEFINE NETWORK_HTTP_ENABLE				   = TRUE
+  DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS        = TRUE
   #
   # Default value for OpenBoardPkg.fdf use
   #
@@ -155,11 +164,12 @@
   SiliconPolicyUpdateLib|$(PROJECT)/FspWrapper/Library/PeiSiliconPolicyUpdateLibFsp/PeiSiliconPolicyUpdateLibFsp.inf
   TimerLib|$(PLATFORM_BOARD_PACKAGE)/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
 
+# commented this section out
 [LibraryClasses.common.PEIM]
   #######################################
   # Silicon Initialization Package
   #######################################
-  SiliconInitLib|$(PLATFORM_SI_PACKAGE)/Library/PeiSiliconInitLib/PeiSiliconInitLib.inf
+ SiliconInitLib|$(PLATFORM_SI_PACKAGE)/Library/PeiSiliconInitLib/PeiSiliconInitLib.inf
 
   #######################################
   # Platform Package
@@ -205,7 +215,19 @@
   # Edk2 Packages
   #######################################
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-
+#v added 3/16/21
+#changed MdeModulePkg to NetworkPkg
+#  DpcLib|NetworkPkg/Library/DxeDpcLib/DxeDpcLib.inf
+#  NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
+#  IpIoLib|NetworkPkg/Library/DxeIpIoLib/DxeIpIoLib.inf
+#  UdpIoLib|NetworkPkg/Library/DxeUdpIoLib/DxeUdpIoLib.inf
+#  TcpIoLib|NetworkPkg/Library/DxeTcpIoLib/DxeTcpIoLib.inf
+#  HttpLib|NetworkPkg/Library/DxeHttpLib/DxeHttpLib.inf
+#  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+#  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+#  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+#  TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
+#^ added 3/16/21
   #######################################
   # Platform Package
   #######################################
@@ -350,6 +372,14 @@
   MdeModulePkg/Universal/Console/GraphicsOutputDxe/GraphicsOutputDxe.inf
   UefiCpuPkg/CpuDxe/CpuDxe.inf
 
+  #added 5/17/21 for bds menu
+  MdeModulePkg/Application/UiApp/UiApp.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
+  }
+  
   #
   # eMMC/SD Card
   #
