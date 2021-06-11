@@ -26,7 +26,7 @@
   # Stage 5 - boot to OS with security boot enabled
   # Stage 6 - boot with advanced features enabled
   #
-  gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
+  gMinPlatformPkgTokenSpaceGuid.PcdBootStage|6
 
   #
   # 0: FSP Wrapper is running in Dispatch mode.
@@ -146,10 +146,10 @@
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 4
   gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly|FALSE
 !endif
-
+# changed pcduefisecurebootenable to false 4/13/21
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 5
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable|TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable|TRUE
+  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable|FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable|FALSE
 !endif
 
 !if $(TARGET) == DEBUG
@@ -165,10 +165,21 @@
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdMultiBoardSupport|TRUE
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdTbtEnable|FALSE
 
+  #added 4/1/21
+  ######################################
+  # Board Configuration
+  ######################################
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 4
+	 gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable|TRUE
+	# Capsule Update
+	# SMBIOS 
+  !endif
+
 [PcdsFixedAtBuild.common]
   ######################################
   # Edk2 Configuration
   ######################################
+  
 !if $(TARGET) == RELEASE
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x0
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x3
@@ -179,7 +190,7 @@
 !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
   gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|0x1
 !endif
-
+  
   gEfiMdeModulePkgTokenSpaceGuid.PcdAriSupport|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserFieldTextColor|0x01
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserSubtitleTextColor|0x0
@@ -399,7 +410,7 @@
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdRtd3Tbt|0x1
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdRtd3TbtClkReq|0x1
 
-  gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdDciEnable|FALSE
+  gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdDciEnable|TRUE
 
 [PcdsDynamicHii.X64.DEFAULT]
   ######################################
