@@ -1,5 +1,5 @@
 ## @file
-# Generate capsules for Vlv2TbltDevicePkg
+# Generate capsules for Whiskey Lake
 #   openssl must be install and in path
 #
 # Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
@@ -25,7 +25,7 @@ import datetime
 #
 __prog__        = 'GenCapsuleAll'
 __copyright__   = 'Copyright (c) 2019, Intel Corporation. All rights reserved.'
-__description__ = 'Generate Vlv2Tbl2DevicePkg capsules.\n'
+__description__ = 'Generate WhiskeyLake capsules.\n'
 
 #
 # Globals
@@ -33,6 +33,10 @@ __description__ = 'Generate Vlv2Tbl2DevicePkg capsules.\n'
 gWorkspace = ''
 gBaseToolsPath = ''
 gArgs      = None
+
+gPlatformBoardPkg = 'WhiskeylakeOpenBoardPkg'
+gBoard = 'UpXtreme'
+
 
 def LogAlways(Message):
     sys.stdout.write (__prog__ + ': ' + Message + '\n')
@@ -170,6 +174,9 @@ def GenCapsuleDevice (BaseName, PayloadFileName, Guid, Version, Lsv, CapsulesPat
         Command = Command + ' -v'
 
     Log (Command)
+    LogAlways (Command)
+    #LogAlways ("\nPress Enter key to continue \n")
+    #input("\n")
 
     Process = subprocess.Popen(Command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     ProcessOutput = Process.communicate()
@@ -201,6 +208,9 @@ def GenCapsuleDevice (BaseName, PayloadFileName, Guid, Version, Lsv, CapsulesPat
     else:
         Command = 'gcab --create firmware.cab firmware.bin firmware.metainfo.xml'
     Log (Command)
+    LogAlways (Command)
+    #LogAlways ("\nPress Enter key to continue \n")
+    #input("\n")
 
     Process = subprocess.Popen(Command, cwd=CapsulesPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     ProcessOutput = Process.communicate()
@@ -241,6 +251,7 @@ if __name__ == '__main__':
     #
     # Create command line argument parser object
     #
+
     parser = argparse.ArgumentParser (
                         prog = __prog__,
                         description = __description__ + __copyright__,
@@ -291,12 +302,13 @@ if __name__ == '__main__':
     gArgs, remaining = parser.parse_known_args()
     gArgs.BuildType = 'all'
     for BuildType in ['all', 'fds', 'genc', 'genmake', 'clean', 'cleanall', 'modules', 'libraries', 'run']:
+       
         if BuildType in remaining:
             gArgs.BuildType = BuildType
             remaining.remove(BuildType)
             break
     gArgs.Remaining = ' '.join(remaining)
-
+   
     #
     # Get WORKSPACE environment variable
     #
@@ -308,6 +320,7 @@ if __name__ == '__main__':
     #
     # Get PACKAGES_PATH and generate prioritized list of paths
     #
+    
     PathList = [gWorkspace]
     try:
         PathList += os.environ['PACKAGES_PATH'].split(os.pathsep)
@@ -317,6 +330,7 @@ if __name__ == '__main__':
     #
     # Determine full path to BaseTools
     #
+
     for Path in PathList:
         if os.path.exists (os.path.join (Path, 'BaseTools')):
             gBaseToolsPath = os.path.join (Path, 'BaseTools')
@@ -334,12 +348,30 @@ if __name__ == '__main__':
             OutputDirectory = Line.strip().split('=')[1].strip()
             break
 
+    OutputDirectory = OutputDirectory.split('/')[0]     
+    OutputDirectory = OutputDirectory + '/' + gPlatformBoardPkg + '/' + gBoard
+
     #
     # Determine full paths to EDK II build directory, EDK II build output
     # directory and the CPU arch of the UEFI phase.
     #
     CommandDir = os.path.dirname(sys.argv[0])
+	
     EdkiiBuildDir = os.path.join (gWorkspace, OutputDirectory)
+    LogAlways("\n*** EdkiiBuildDir is")
+    LogAlways(EdkiiBuildDir)
+
+    LogAlways("\n*** OutputDirecory is")
+    LogAlways(OutputDirectory)
+    LogAlways("\n*** PlatformBoardPkg is")
+    LogAlways(gPlatformBoardPkg)
+    LogAlways("\n*** Board is")
+    LogAlways(gBoard)
+ 
+    LogAlways("\n*** OutputDirecory after cat is")
+    LogAlways(OutputDirectory)
+
+
     EdkiiBuildOutput = os.path.join (EdkiiBuildDir, gArgs.BuildTarget + '_' + gArgs.ToolChain)
     UefiArch = gArgs.Arch[0][0]
     if len (gArgs.Arch) > 1:
@@ -365,33 +397,50 @@ if __name__ == '__main__':
     #
     #  Copy CapsuleApp
     #
+    LogAlways("\n*** CapsulesSubDir is")
+    LogAlways(CapsulesSubDir)
+
+    LogAlways("\n*** gBaseToolsPath is")
+    LogAlways(gBaseToolsPath)
+
+    LogAlways("\n*** gWorkspace is")
+    LogAlways(gWorkspace)
+
+    LogAlways("\n*** EdkiiBuildOutput is")
+    LogAlways(EdkiiBuildOutput)
+    #LogAlways("\nPress a Key to continue")
+
+    #input("\n")
+	
     Copy ((EdkiiBuildOutput, UefiArch, 'CapsuleApp.efi'), (CapsulesPath, CapsulesSubDir))
 
     #
     # Generate capsules for the Red Sample Device
     #
-    GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000010,0x00000000, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000011,0x00000000, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000012,0x00000000, CapsulesPath, CapsulesSubDir)
-
-    #
-    # Generate capsules for the Green Sample Device
-    #
-    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000020,0x00000020, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000021,0x00000020, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000022,0x00000020, CapsulesPath, CapsulesSubDir)
-
-    #
-    # Generate capsules for the Blue Sample Device
-    #
-    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000010,0x00000000, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000011,0x00000000, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000012,0x00000012, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000013,0x00000012, CapsulesPath, CapsulesSubDir)
-    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000014,0x00000012, CapsulesPath, CapsulesSubDir)
-
+    #GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000010,0x00000000, CapsulesPath, CapsulesSubDir)
+    #GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000011,0x00000000, CapsulesPath, CapsulesSubDir)
+    #GenCapsuleSampleDevice('Red','72e2945a-00da-448e-9aa7-075ad840f9d4',0x00000012,0x00000000, CapsulesPath, CapsulesSubDir)
+#
+#    #
+#    # Generate capsules for the Green Sample Device
+#    #
+#    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000020,0x00000020, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000021,0x00000020, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Green','79179bfd-704d-4c90-9e02-0ab8d968c18a',0x00000022,0x00000020, CapsulesPath, CapsulesSubDir)
+#
+#    #
+#    # Generate capsules for the Blue Sample Device
+#    #
+#    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000010,0x00000000, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000011,0x00000000, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000012,0x00000012, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000013,0x00000012, CapsulesPath, CapsulesSubDir)
+#    GenCapsuleSampleDevice('Blue','149da854-7d19-4faa-a91e-862ea1324be6',0x00000014,0x00000012, CapsulesPath, CapsulesSubDir)
+#
     #
     # Generate capsules for Minnow Max Firmware Updates
     #
-    RomFileName = os.path.join (EdkiiBuildOutput, 'FV', 'VLV.fd')
-    GenCapsuleDevice('MinnowMax', RomFileName,'4096267b-da0a-42eb-b5eb-fef31d207cb4',0x0000000C,0x00000000, CapsulesPath, CapsulesSubDir)
+    RomFileName = os.path.join (EdkiiBuildOutput, 'FV', 'UpXtremeIFWI.bin')
+    GenCapsuleDevice('UpXtreme', RomFileName,'A12B2802-BF37-4886-A307-C060F7929F8F',0x0000000C,0x00000000, CapsulesPath, CapsulesSubDir)
+    #GenCapsuleDevice('upXtreme', RomFileName,'4096267b-da0a-42eb-b5eb-fef31d207cb4',0x0000000C,0x00000000, CapsulesPath, CapsulesSubDir)
+LogAlways ("\n *** Capsule update files in directory :  \n *** " + CapsulesPath + CapsulesSubDir + "\nEnd of Post-BUILD")	
