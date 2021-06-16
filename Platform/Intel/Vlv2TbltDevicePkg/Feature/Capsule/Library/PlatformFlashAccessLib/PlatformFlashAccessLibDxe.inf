@@ -1,0 +1,57 @@
+## @file
+#  Platform flash device access library.
+#
+#  Platform flash device access library instance.
+#
+#  Copyright (c) 2016 - 2018, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformFlashAccessLibDxe
+  MODULE_UNI_FILE                = PlatformFlashAccessLibNull.uni
+  FILE_GUID                      = A0534D92-9776-4E4E-9234-C9DC1849DBB5
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformFlashAccessLibDxe
+  LIBRARY_CLASS                  = MicrocodeFlashAccessLib
+  CONSTRUCTOR                    = PerformFlashAccessLibConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC
+#
+
+[Sources]
+  PlatformFlashAccessLibDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  SignedCapsulePkg/SignedCapsulePkg.dec
+  WhiskeylakeOpenBoardPkg/OpenBoardPkg.dec
+  CoffeelakeSiliconPkg/SiPkg.dec 
+
+[LibraryClasses]
+  BaseMemoryLib
+  IoLib
+  PcdLib
+  DebugLib
+  MemoryAllocationLib
+  CacheMaintenanceLib
+
+[Guids]
+  gEdkiiSystemFmpCapsuleConfigFileGuid          ## SOMETIMES_CONSUMES ## GUID
+
+[Protocols]
+  gEfiSpiProtocolGuid                          ## CONSUMES
+
+[Pcd]
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashChipBase         ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashChipSize         ## SOMETIMES_CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress      ## SOMETIMES_CONSUMES
+
