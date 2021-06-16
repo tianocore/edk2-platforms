@@ -18,6 +18,32 @@
   DEFINE      PEI_ARCH                  = IA32
   DEFINE      DXE_ARCH                  = X64
   DEFINE      TOP_MEMORY_ADDRESS        = 0x0
+  
+  
+  
+  # Defined for Capsule Update, we generated this GUID
+  DEFINE FMP_WHISKEY_LAKE_SYSTEM =  214a15d8-7c3b-4a1c-b63b-dee0251beb38
+
+  #
+  # Copied from MinnowMaxConfig.dsc
+  # Capsule Pubic Certificate.  Default is EDK_TEST.  Options are:
+  #   SAMPLE_DEVELOPMENT                    - Only signtool SAMPLE_DEVELOPMENT
+  #   SAMPLE_DEVELOPMENT_SAMPLE_PRODUCTION  - Both signtool SAMPLE_DEVELOPMENT and SAMPLE_PRODUCTION
+  #   EDKII_TEST                            - Only openssl EDK II test certificate
+  #   NEW_ROOT                              - Only openssl new VLV2 certificate
+  #
+  DEFINE CAPSULE_PKCS7_CERT = EDKII_TEST
+
+  #
+  # Used to enable/disable capsule update features.  The default is FALSE for disabled.
+  # Add -D CAPSULE_ENABLE to the build command line to enable capsule update features.
+  # The build process generates a capsule update image along with the UEFI application 
+  # CapsuleApp.efi.  These 2 files must be transferred to storage media to in order for 
+  # a user to boot to UEFI Shell and use CapsuleApp.efi to submit the signed capsule.
+  # Once the system is rebooted, the signed capsule is authenticated and the firmware is
+  # update with the new system firmware version.
+  #
+  DEFINE CAPSULE_ENABLE = TRUE
 
   #
   # Default value for OpenBoardPkg.fdf use
@@ -39,7 +65,8 @@
   #
   # Include PCD configuration for this board.
   #
-  !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
+  !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
+
   !include OpenBoardPkgPcd.dsc
   !include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
 
@@ -83,6 +110,16 @@
 !include $(PLATFORM_PACKAGE)/Include/Dsc/CoreDxeInclude.dsc
 !include $(PLATFORM_SI_PACKAGE)/SiPkgDxe.dsc
 
+
+!if $(CAPSULE_ENABLE)
+  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf
+!endif
+
+!if $(CAPSULE_ENABLE)
+  !include WhiskeylakeOpenBoardPkg/UpXtreme/FmpWhiskeyLakeSystem.dsc
+!endif
+
 #######################################
 # Build Option Includes
 #######################################
@@ -94,6 +131,21 @@
 # Library Class section - list of all Library Classes needed by this board.
 #
 ################################################################################
+
+[LibraryClasses]
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+!if $(CAPSULE_ENABLE)
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeCapsuleLib.inf
+!else
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
+!endif
+  EdkiiSystemCapsuleLib|SignedCapsulePkg/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
+  FmpAuthenticationLib|MdeModulePkg/Library/FmpAuthenticationLibNull/FmpAuthenticationLibNull.inf
+  IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
+  #PlatformFlashAccessLib|WhiskeylakeOpenBoardPkg/Features/Capsule/Library/PlatformFlashAccessLib/PlatformFlashAccessLibDxe.inf
+  PlatformFlashAccessLib|SignedCapsulePkg\Library\PlatformFlashAccessLibNull\PlatformFlashAccessLibNull.inf
 
 [LibraryClasses.common]
   #######################################
@@ -233,7 +285,16 @@
   #######################################
   DxePolicyBoardConfigLib|$(PROJECT)/Library/DxePolicyBoardConfigLib/DxePolicyBoardConfigLib.inf
 
+
+[LibraryClasses.common.DXE_RUNTIME_DRIVER]
+!if $(CAPSULE_ENABLE)
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
+!endif
+
+
+
 [LibraryClasses.X64.DXE_RUNTIME_DRIVER]
+
   #######################################
   # Edk2 Packages
   #######################################
@@ -337,7 +398,45 @@
 #######################################
 # @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
 #        is completed
+
+
+!if $(CAPSULE_ENABLE) == TRUE
+  MdeModulePkg/Universal/CapsulePei/CapsulePei.inf
+!endif
+
 [Components.X64]
+
+!if $(CAPSULE_ENABLE) == TRUE
+  MdeModulePkg/Universal/CapsulePei/CapsuleX64.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+      MemoryAllocationLib|MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
+      HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
+      CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/SecPeiCpuExceptionHandlerLib.inf
+
+  }
+!endif
+
+!if $(CAPSULE_ENABLE) || $(MICOCODE_CAPSULE_ENABLE)
+  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf
+!endif
+
+!if $(CAPSULE_ENABLE)
+  !include FmpWhiskeyLakeSystem.dsc
+!endif
+
+!if $(MICOCODE_CAPSULE_ENABLE)
+  IntelSiliconPkg/Feature/Capsule/MicrocodeUpdateDxe/MicrocodeUpdateDxe.inf {
+    <LibraryClasses>
+      DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+      SerialPortLib|MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
+  }
+!endif
+
+
+
   #######################################
   # Edk2 Packages
   #######################################
@@ -450,4 +549,16 @@
 !endif
   BoardModulePkg/LegacySioDxe/LegacySioDxe.inf
   BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf
+
+
+#######################################
+# PCD Section
+#######################################
+
+[PcdsDynamicExDefault.common.DEFAULT]
+!if $(CAPSULE_ENABLE)
+  #gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("$(FMP_WHISKEY_LAKE_SYSTEM)")}|VOID*|0x10
+  #gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0x31, 0x1c, 0x96, 0x20, 0xdc, 0x66, 0xa5, 0x48, 0x89, 0x1c, 0x25, 0x43, 0x8b, 0xde, 0x14, 0x30}
+!endif
 

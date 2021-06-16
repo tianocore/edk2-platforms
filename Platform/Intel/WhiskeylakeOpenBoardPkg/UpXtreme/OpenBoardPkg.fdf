@@ -12,6 +12,7 @@
 [Defines]
    !include $(PROJECT)/Include/Fdf/FlashMapInclude.fdf
 
+
 ################################################################################
 #
 # FD Section
@@ -76,6 +77,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize           = gSiPkgTokenSpaceG
 # Fv Size can be adjusted
 #
 ################################################################################
+
+
 gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 #NV_VARIABLE_STORE
@@ -246,6 +249,7 @@ INF IntelFsp2WrapperPkg/FspmWrapperPeim/FspmWrapperPeim.inf
 INF $(PLATFORM_PACKAGE)/PlatformInit/SiliconPolicyPei/SiliconPolicyPeiPreMem.inf
 INF $(PLATFORM_BOARD_PACKAGE)/BiosInfo/BiosInfo.inf
 
+
 [FV.FvPostMemoryUncompact]
 BlockSize          = $(FLASH_BLOCK_SIZE)
 FvAlignment        = 16
@@ -286,6 +290,13 @@ FILE FREEFORM = 7BB28B99-61BB-11D5-9A5D-0090273FC14D {
 }
 !endif # PcdPeiDisplayEnable
 
+!if $(CAPSULE_ENABLE) == TRUE
+INF  MdeModulePkg/Universal/CapsulePei/CapsulePei.inf
+#!if $(DXE_ARCHITECTURE) == "X64"
+INF  MdeModulePkg/Universal/CapsulePei/CapsuleX64.inf
+#!endif
+!endif
+
 
 [FV.FvPostMemory]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -312,6 +323,7 @@ FILE FV_IMAGE = 244FAAF4-FAE1-4892-8B7D-7EF84CBFA709 {
         SECTION FV_IMAGE = FvPostMemoryUncompact
       }
 }
+
 
 [FV.FvUefiBootUncompact]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -363,6 +375,14 @@ INF  IntelFsp2WrapperPkg/FspWrapperNotifyDxe/FspWrapperNotifyDxe.inf
 
 INF  $(PLATFORM_PACKAGE)/Test/TestPointStubDxe/TestPointStubDxe.inf
 
+!if $(CAPSULE_ENABLE)
+INF  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+#
+# UP Xtreme Whiskey Lake Firmware FMP
+#
+INF  FILE_GUID = $(FMP_WHISKEY_LAKE_SYSTEM) FmpDevicePkg/FmpDxe/FmpDxe.inf
+!endif
+
 
 [FV.FvUefiBoot]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -389,6 +409,7 @@ FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
          SECTION FV_IMAGE = FvUefiBootUncompact
        }
      }
+
 
 [FV.FvOsBootUncompact]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -489,6 +510,7 @@ FILE FV_IMAGE = D4632741-510C-44E3-BE21-C3D6D7881485 {
          SECTION FV_IMAGE = FvLateSilicon
        }
      }
+
 
 [FV.FvSecurityPreMemory]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -695,6 +717,89 @@ FILE FV_IMAGE = 5248467B-B87B-4E74-AC02-398AF4BCB712 {
        }
      }
 
+
+
+# Added FMP code 
+
+#!if $(CAPSULE_ENABLE)
+#INF  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+#
+# Whiskey Lake System Firmware FMP
+#
+#INF  FILE_GUID = $(FMP_WHISKEY_LAKE_SYSTEM) FmpDevicePkg/FmpDxe/FmpDxe.inf
+
+#!endif
+
+
+!if $(CAPSULE_ENABLE)
+#[FV.CapsuleDispatchFv]
+#FvAlignment        = 16
+#ERASE_POLARITY     = 1
+#MEMORY_MAPPED      = TRUE
+#STICKY_WRITE       = TRUE
+#LOCK_CAP           = TRUE
+#LOCK_STATUS        = TRUE
+#WRITE_DISABLED_CAP = TRUE
+#WRITE_ENABLED_CAP  = TRUE
+#WRITE_STATUS       = TRUE
+#WRITE_LOCK_CAP     = TRUE
+#WRITE_LOCK_STATUS  = TRUE
+#READ_DISABLED_CAP  = TRUE
+#READ_ENABLED_CAP   = TRUE
+#READ_STATUS        = TRUE
+#READ_LOCK_CAP      = TRUE
+#READ_LOCK_STATUS   = TRUE
+
+#INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+
+[FV.SystemFirmwareUpdateCargo]
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+FILE RAW = 781E965A-4061-7357-C785-694D102F87FF { # PcdEdkiiSystemFirmwareFileGuid
+    FD = UpXtreme
+  }
+
+!endif
+
+!if $(CAPSULE_ENABLE)
+[FmpPayload.FmpPayloadSystemFirmwarePkcs7]
+IMAGE_HEADER_INIT_VERSION = 0x02
+IMAGE_TYPE_ID             = 781E965A-4061-7357-C785-694D102F87FF # PcdSystemFmpCapsuleImageTypeIdGuid
+IMAGE_INDEX               = 0x1
+HARDWARE_INSTANCE         = 0x0
+MONOTONIC_COUNT           = 0x2
+CERTIFICATE_GUID          = 4AAFD29D-68DF-49EE-8AA9-347D375665A7 # PKCS7
+
+FV = SystemFirmwareUpdateCargo
+!endif
+
+!if $(CAPSULE_ENABLE)
+[Capsule.WhiskeylakeOpenBoardPkgFirmwareUpdateCapsuleFmpPkcs7]
+CAPSULE_GUID                = 292C3508-2D4F-47EB-A4EC-B67C61269BE9 # gEfiFmpCapsuleGuid
+CAPSULE_FLAGS               = PersistAcrossReset,InitiateReset
+CAPSULE_HEADER_SIZE         = 0x20
+CAPSULE_HEADER_INIT_VERSION = 0x1
+
+FMP_PAYLOAD = FmpPayloadSystemFirmwarePkcs7
+!endif
+
+
+
 ################################################################################
 #
 # Rules are use with the [FV] section's module INF type to define
@@ -706,4 +811,11 @@ FILE FV_IMAGE = 5248467B-B87B-4E74-AC02-398AF4BCB712 {
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/RuleInclude.fdf
 
-
+[Rule.Common.PEIM.FMP_IMAGE_DESC]
+  FILE PEIM = $(NAMED_GUID) {
+     RAW BIN                  |.acpi
+     PEI_DEPEX PEI_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
+     PE32      PE32    Align=4K          $(INF_OUTPUT)/$(MODULE_NAME).efi
+     UI       STRING="$(MODULE_NAME)" Optional
+     VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
