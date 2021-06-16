@@ -110,6 +110,14 @@ gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioDataPort|0x4f|UINT16|0x9000001F
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioIndexDefaultPort|0x164E|UINT16|0x90000021
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioDataDefaultPort|0x164F|UINT16|0x90000022
 
+# PCDs for System Firmware FMP instance
+  gPlatformModuleTokenSpaceGuid.PcdSystemFirmwareFmpLowestSupportedVersion|0x00000000|UINT32|0x40000100
+  gPlatformModuleTokenSpaceGuid.PcdSystemFirmwareFmpVersion|0x00000001|UINT32|0x40000101
+  gPlatformModuleTokenSpaceGuid.PcdSystemFirmwareFmpVersionString|L"Unknown"|VOID*|0x40000102
+  gPlatformModuleTokenSpaceGuid.PcdSystemFirmwareFmpVersionName|L"0x00000001"|VOID*|0x40000103
+
+
+
 [PcdsDynamic]
 # Board GPIO Table
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdBoardGpioTable|0|UINT32|0x00000040
@@ -550,6 +558,8 @@ gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdH8S2113SIO                           |
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdNCT6776FCOM                          |FALSE|BOOLEAN|0x00100107
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdNCT6776FSIO                          |FALSE|BOOLEAN|0x00100108
 gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdNCT6776FHWMON                        |FALSE|BOOLEAN|0x00100109
+
+
 
 [PcdsDynamicEx]
 
