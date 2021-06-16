@@ -5,7 +5,6 @@
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-#
 #**/
 
 !if $(CAPSULE_PKCS7_CERT) == SAMPLE_DEVELOPMENT_SAMPLE_PRODUCTION

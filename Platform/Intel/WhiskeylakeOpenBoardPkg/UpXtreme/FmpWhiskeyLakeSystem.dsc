@@ -5,7 +5,6 @@
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-#
 #**/
 
   FmpDevicePkg/FmpDxe/FmpDxe.inf {
