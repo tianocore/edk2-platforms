@@ -190,7 +190,7 @@ EDKII_PLATFORM_REPOSITORY_INFO Cn913xDbPlatformRepositoryInfo = {
     0,                                                                   // BaudRate
     0,                                                                   // Clock
     EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERFACE_TYPE_16450, // Port subtype,
-    0,                                                                   // BaseAddressLength
+    0x100,                                                                   // BaseAddressLength
     1                                                                    // AccessSize
   },
   // Debug Serial Port
