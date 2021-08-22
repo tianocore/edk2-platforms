@@ -308,10 +308,6 @@ WriteDDRBertTable (
 {
   VOID *Blk = (VOID *)BERT_DDR_OFFSET;
 
-  /*
-   * writing sizeof data to ddr produces alignment error
-   * this is a temporary workaround
-   */
   CopyMem (Blk, Data, BERT_DDR_LENGTH);
 }
 
@@ -325,9 +321,7 @@ AcpiPopulateBert (
 {
   APEI_CRASH_DUMP_BERT_ERROR *DDRError;
 
-  DDRError =
-    (APEI_CRASH_DUMP_BERT_ERROR *)
-    AllocateZeroPool (sizeof (APEI_CRASH_DUMP_BERT_ERROR));
+  DDRError = (APEI_CRASH_DUMP_BERT_ERROR *)AllocateZeroPool (BERT_DDR_LENGTH);
 
   if (DDRError == NULL) {
     return EFI_OUT_OF_RESOURCES;
