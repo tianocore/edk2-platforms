@@ -78,6 +78,9 @@
   # ACPI platform wide _OSC
   gArmMorelloTokenSpaceGuid.PcdOscLpiEnable|0|UINT32|0x00000059
 
+  # Base address of Cadence QSPI controller configuration registers
+  gArmMorelloTokenSpaceGuid.PcdCadenceQspiDxeRegBaseAddress|0x1C050000|UINT32|0x0000002D
+
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
