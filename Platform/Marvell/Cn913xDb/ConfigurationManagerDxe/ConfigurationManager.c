@@ -188,22 +188,22 @@ EDKII_PLATFORM_REPOSITORY_INFO Cn913xDbPlatformRepositoryInfo = {
     FixedPcdGet64(PcdSerialRegisterBase),                                // BaseAddress
     51,                                                                  // Interrupt
     0,                                                                   // BaudRate
-    200000000,                                                                   // Clock
+    200000000,                                                           // Clock
     EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERFACE_TYPE_16450, // Port subtype,
-    0x100,                                                                   // BaseAddressLength
-    1,                                                                    // AccessSize
+    0x100,                                                               // BaseAddressLength
+    1,                                                                   // AccessSize
     1,
     2
   },
   // Debug Serial Port
   {
     CN913X_DBG2_UART_REG_BASE,                                                   // BaseAddress
-    38,                                                                          // Interrupt
+    121,                                                                          // Interrupt
     FixedPcdGet64 (PcdSerialDbgUartBaudRate),                                    // BaudRate
-    200000000,                                                                           // Clock
+    200000000,                                                                   // Clock
     EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_16550_SUBSET_COMPATIBLE_WITH_MS_DBGP_SPEC, // Port subtype
-    0,                                                                           // BaseAddressLength
-    1,                                                                            // AccessSize
+    0x100,                                                                       // BaseAddressLength
+    1,                                                                           // AccessSize
     1,
     2
   },
