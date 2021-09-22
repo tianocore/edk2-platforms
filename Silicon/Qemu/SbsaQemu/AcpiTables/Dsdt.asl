@@ -6,6 +6,7 @@
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
+#include <IndustryStandard/Acpi60.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
 
 #define LINK_DEVICE(Uid, LinkName, Irq)                                        \
@@ -25,8 +26,9 @@
             Address, Pin, Link, Zero                                           \
           }
 
-DefinitionBlock ("DsdtTable.aml", "DSDT", 1, "LINARO", "SBSAQEMU",
-                 FixedPcdGet32 (PcdAcpiDefaultOemRevision)) {
+DefinitionBlock ("DsdtTable.aml", "DSDT",
+                 EFI_ACPI_6_0_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_REVISION,
+                 "LINARO", "SBSAQEMU", FixedPcdGet32 (PcdAcpiDefaultOemRevision)) {
   Scope (_SB) {
     // UART PL011
     Device (COM0) {
