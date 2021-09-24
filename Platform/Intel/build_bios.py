@@ -195,7 +195,6 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
         if return_code == 0 and result is not None and isinstance(result,
                                                                   dict):
             config.update(result)
-
     # nmake BaseTools source
     # and enable BaseTools source build
     shell = True
@@ -424,7 +423,11 @@ def build(config):
     shell = True
     if os.name == "posix":
         shell = False
-
+        print('==========================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=====hello========\n')
+    print('==========================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=============\n')
+    print("Now the PATH is as: {}".format(config["PATH"]))
+    print("Now the EDK_TOOLS_PATH is as: {}".format(config["EDK_TOOLS_PATH"]))
+    
     _, _, _, exit_code = execute_script(command, config, shell=shell)
     if exit_code != 0:
         build_failed(config)
