@@ -1,0 +1,43 @@
+## @file
+#  Platform DXE driver for Morello SoC Platform
+#
+#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PlatformDxe
+  FILE_GUID                      = D75DB98F-5750-47C8-A46F-3140965537FC
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ArmMorelloEntryPoint
+
+[Sources.common]
+  PlatformDxeSoc.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiRamDiskProtocolGuid
+
+[FeaturePcd]
+  gArmMorelloTokenSpaceGuid.PcdRamDiskSupported
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdRamDiskBase
+  gArmMorelloTokenSpaceGuid.PcdRamDiskSize
+
+[Depex]
+  gEfiRamDiskProtocolGuid
+
+[Guids]
+  gEfiVirtualCdGuid      ## SOMETIMES_CONSUMES   ## GUID
