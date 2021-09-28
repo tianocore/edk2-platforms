@@ -91,6 +91,14 @@ typedef struct {
   UINT64  LocalDdrSize;  ///< Local DDR memory size in Bytes
 } MORELLO_PLAT_INFO_FVP;
 
+typedef struct {
+  UINT64    LocalDdrSize;    ///< Local DDR memory size in Bytes
+  UINT64    RemoteDdrSize;   ///< Remote DDR memory size in Bytes
+  UINT8     RemoteChipCount; ///< Remote chip count in C2C mode
+  UINT8     Mode;            ///< 0 - Single Chip, 1 - Chip to Chip (C2C)
+  UINT32    SccConfig;       ///< Contains SCC configuration from BOOT_GPR1 register
+} MORELLO_PLAT_INFO_SOC;
+
 #pragma pack()
 
 typedef struct {
