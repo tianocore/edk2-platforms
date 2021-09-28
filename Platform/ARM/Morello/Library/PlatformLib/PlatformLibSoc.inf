@@ -1,0 +1,44 @@
+## @file
+#  Platform Library for Morello SoC platform.
+#
+#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = ArmMorelloLib
+  FILE_GUID                      = 7858ED56-9716-454F-90D7-D117B05063EA
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[Sources.common]
+  PlatformLib.c
+  PlatformLibMemSoc.c
+
+[Sources.AARCH64]
+  AArch64/Helper.S | GCC
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
+
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+[Guids]
+  gEfiHobListGuid          ## CONSUMES  ## SystemTable
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
