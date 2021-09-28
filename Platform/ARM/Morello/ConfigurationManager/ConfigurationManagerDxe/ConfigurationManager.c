@@ -814,7 +814,7 @@ GetArchCommonNameSpaceObject (
   PlatformRepo   = This->PlatRepoInfo;
   CommonPlatRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
 
-  // Search for the FVP platform specific Arch Common namespace objects
+  // Search for the FVP/SoC platform specific Arch Common namespace objects
   Status = GetArchCommonNameSpaceObjectPlat (This, CmObjectId, Token, CmObject);
 
   // Get the object if not found in the platform specific search

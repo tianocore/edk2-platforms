@@ -255,7 +255,7 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[++Index].PhysicalBase = PcdGet32 (PcdPciMmio32Base);
   VirtualMemoryTable[Index].VirtualBase    = PcdGet32 (PcdPciMmio32Base);
   VirtualMemoryTable[Index].Length         = PcdGet32 (PcdPciMmio32Size) +
-                                             PcdGet32 (PcdPciIoSize);
+                                             FixedPcdGet32 (PcdPciIoSize);
   VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   LOG_MEM ("PCI MMIO32 & IO Region          : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 

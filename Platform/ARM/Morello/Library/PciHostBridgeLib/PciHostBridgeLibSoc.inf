@@ -1,5 +1,5 @@
 ## @file
-#  Platform Library for Morello SoC platform.
+#  PCI Host Bridge Library instance for ARM Morello SoC platform.
 #
 #  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
 #
@@ -9,54 +9,49 @@
 
 [Defines]
   INF_VERSION                    = 0x0001001B
-  BASE_NAME                      = ArmMorelloLib
-  FILE_GUID                      = 7858ED56-9716-454F-90D7-D117B05063EA
-  MODULE_TYPE                    = BASE
+  BASE_NAME                      = PciHostBridgeLib
+  FILE_GUID                      = 82f5bd18-4e07-11ec-81d3-0242ac130003
+  MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = ArmPlatformLib
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+#
+# The following information is for reference only and not required by the build
+# tools.
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  PciHostBridgeLibSoc.c
 
 [Packages]
   ArmPkg/ArmPkg.dec
-  ArmPlatformPkg/ArmPlatformPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   Platform/ARM/Morello/MorelloPlatform.dec
 
-[Sources.common]
-  PlatformLib.c
-  PlatformLibMemSoc.c
-
-[Sources.AARCH64]
-  AArch64/Helper.S | GCC
-
 [FixedPcd]
-  gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
-
   gArmTokenSpaceGuid.PcdPciBusMax
   gArmTokenSpaceGuid.PcdPciBusMin
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gArmTokenSpaceGuid.PcdPciIoBase
   gArmTokenSpaceGuid.PcdPciIoSize
   gArmTokenSpaceGuid.PcdPciMmio32Base
   gArmTokenSpaceGuid.PcdPciMmio32Size
   gArmTokenSpaceGuid.PcdPciMmio64Base
   gArmTokenSpaceGuid.PcdPciMmio64Size
 
-  gArmMorelloTokenSpaceGuid.PcdCcixBusMax
   gArmMorelloTokenSpaceGuid.PcdCcixBusMin
-  gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMax
+  gArmMorelloTokenSpaceGuid.PcdCcixIoBase
   gArmMorelloTokenSpaceGuid.PcdCcixIoSize
   gArmMorelloTokenSpaceGuid.PcdCcixMmio32Base
   gArmMorelloTokenSpaceGuid.PcdCcixMmio32Size
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Base
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size
 
-  gArmTokenSpaceGuid.PcdArmPrimaryCore
-  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
-  gArmTokenSpaceGuid.PcdSystemMemoryBase
-  gArmTokenSpaceGuid.PcdSystemMemorySize
+[Protocols]
+  gEfiCpuIo2ProtocolGuid          ## CONSUMES
 
-[Guids]
-  gEfiHobListGuid          ## CONSUMES  ## SystemTable
-
-[Ppis]
-  gArmMpCoreInfoPpiGuid
+[Depex]
+  gEfiCpuIo2ProtocolGuid

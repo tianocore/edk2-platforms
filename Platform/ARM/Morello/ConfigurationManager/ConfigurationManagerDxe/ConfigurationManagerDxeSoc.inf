@@ -1,0 +1,72 @@
+## @file
+#  Configuration Manager Dxe
+#
+#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = ConfigurationManagerDxe
+  FILE_GUID                      = BF8FBCEE-AD95-466B-9185-50A1BB651DDA
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ConfigurationManagerDxeInitialize
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  AslTables/DsdtSoc.asl
+  ConfigurationManager.c
+  ConfigurationManager.h
+  ConfigurationManagerSoc.c
+  ConfigurationManagerSoc.h
+  Platform.h
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEdkiiConfigurationManagerProtocolGuid
+
+[FixedPcd]
+  ## PL011 Serial Debug UART
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz
+
+  gArmPlatformTokenSpaceGuid.PL011UartClkInHz
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt
+
+  gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
+  gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum
+
+  # SBSA Generic Watchdog
+  gArmTokenSpaceGuid.PcdGenericWatchdogControlBase
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
+  gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
+
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+
+[Depex]
+  TRUE
