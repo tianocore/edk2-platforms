@@ -1,0 +1,31 @@
+trigger:
+  - master
+  - stable/*
+pr:
+  - master
+  - stable/*
+
+jobs:
+  - job: Edk2Platform_CI_Windows
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - powershell: |
+        echo "##vso[task.setvariable variable=IASL_PREFIX;]C:\tools\ASL\"
+        echo "##vso[task.setvariable variable=NASM_PREFIX;]C:\Program Files\NASM\"
+      displayName: Windows EDK II Prerequisites
+
+    # Set default
+    - bash: |
+        echo "##vso[task.setvariable variable=pkg_count]${{ 1 }}"
+
+    - script: echo "##vso[task.setvariable variable=edk2platforms_targetBranch;]edk2platformsCI"
+      displayName: Specify the PR targetBranch of edk2platforms
+
+
+
+    - script: |
+        echo $(edk2platforms_targetBranch)
+        echo $(pkg_count)
+        echo $(NASM_PREFIX) 
+      displayName: test

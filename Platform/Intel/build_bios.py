@@ -142,7 +142,6 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
     config["BASE_TOOLS_PATH"] = config["EDK_TOOLS_PATH"]
     config["EDK_TOOLS_BIN"] = os.path.join(config["WORKSPACE"],
                                            config["EDK_TOOLS_BIN"])
-
     #
     # Board may have different FSP binary between API and Dispatch modes.
     # In API mode if FSP_BIN_PKG_FOR_API_MODE is assigned, it should
@@ -159,7 +158,6 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
     config['BOARD_PKG_PCD_DSC'] = os.path.join(config["WORKSPACE_PLATFORM"],
                                                config['BOARD_PKG_PCD_DSC'])
     config["CONF_PATH"] = os.path.join(config["WORKSPACE"], "Conf")
-
     # get the python path
     if os.environ.get("PYTHON_HOME") is None:
         if os.environ.get("PYTHONPATH") is not None:

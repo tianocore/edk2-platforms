@@ -1,0 +1,17 @@
+trigger:
+  - master
+  - stable/*
+pr:
+  - master
+  - stable/*
+
+resources:
+  pipelines:
+  - pipeline: TestForEdk2platforms
+    project: upl
+    source: edk2platform
+
+- script: echo "##vso[task.setvariable variable=edk2platforms_targetBranch;]$(System.PullRequest.targetBranch)"
+  displayName: Specify the PR targetBranch of edk2platforms
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+
