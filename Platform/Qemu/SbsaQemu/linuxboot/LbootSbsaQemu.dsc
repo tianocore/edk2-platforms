@@ -21,7 +21,6 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Qemu/SbsaQemu/linuxboot/LbootSbsaQemu.fdf
 
-
   #
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
@@ -487,9 +486,9 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciExpressBarSize|0x10000000
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPciExpressBarLimit|0xFFFFFFFF
 
-  gArmTokenSpaceGuid.PcdPciIoTranslation|0x7fff0000
-  gArmTokenSpaceGuid.PcdPciMmio32Translation|0x0
-  gArmTokenSpaceGuid.PcdPciMmio64Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x7fff0000
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
   ## If TRUE, OvmfPkg/AcpiPlatformDxe will not wait for PCI
   #  enumeration to complete before installing ACPI tables.
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|FALSE
