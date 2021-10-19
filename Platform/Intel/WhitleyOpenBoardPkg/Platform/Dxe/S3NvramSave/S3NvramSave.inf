@@ -43,7 +43,9 @@
   LargeVariableWriteLib
 
 [Guids]
-  gFspNonVolatileStorageHobGuid # CONSUMES
+  gFspNonVolatileStorageHobGuid  # CONSUMES
+  gFspNonVolatileStorageHob2Guid # CONSUMES
+  gFspNvsBufferVariableGuid      # PRODUCES
 
 [Pcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdPeiSyshostMemorySize

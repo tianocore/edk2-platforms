@@ -437,6 +437,7 @@ typedef struct {
   UINT8    VtdPciAcsCtlBit2;
   UINT8    VtdPciAcsCtlBit3;
   UINT8    VtdPciAcsCtlBit4;
+  UINT8    AltAttenTable[TOTAL_PORTS_VAR];    //On Setup
 } SOCKET_IIO_CONFIGURATION;
 #pragma pack()
 

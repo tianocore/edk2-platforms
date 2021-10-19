@@ -192,7 +192,7 @@ formset
             flags       = NUMERIC_SIZE_4 | INTERACTIVE | RESET_REQUIRED,
             option text = STRING_TOKEN(STR_ADVANCED_SYSTAB_ACPI), value = SYSTEM_TABLE_MODE_ACPI, flags = 0;
             option text = STRING_TOKEN(STR_ADVANCED_SYSTAB_BOTH), value = SYSTEM_TABLE_MODE_BOTH, flags = DEFAULT;
-            option text = STRING_TOKEN(STR_ADVANCED_SYSTAB_DT), value = SYSTEM_TABLE_MODE_DT, flags = DEFAULT;
+            option text = STRING_TOKEN(STR_ADVANCED_SYSTAB_DT), value = SYSTEM_TABLE_MODE_DT, flags =0;
         endoneof;
 
 #if (RPI_MODEL == 4)

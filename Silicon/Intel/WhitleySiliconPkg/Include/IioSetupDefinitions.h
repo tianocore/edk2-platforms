@@ -57,4 +57,8 @@
 #define IIO_BIFURCATE_x2x2x2x2x2x2x2x2  0x19
 #define IIO_BIFURCATE_AUTO              0xFF
 
+#define IIO_OPTION_AUTO    2
+#define IIO_OPTION_ENABLE  1
+#define IIO_OPTION_DISABLE 0
+
 #endif /* _IIOSETUPDEFINITIONS_H_ */

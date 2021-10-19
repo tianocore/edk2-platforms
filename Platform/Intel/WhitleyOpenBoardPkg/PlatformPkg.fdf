@@ -672,8 +672,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   INF  BoardModulePkg/LegacySioDxe/LegacySioDxe.inf
   INF  MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 
-  INF  MinPlatformPkg/Acpi/AcpiTables/AcpiPlatform.inf
-
+  INF  WhitleyOpenBoardPkg/Features/AcpiVtd/AcpiVtd.inf
   INF  MinPlatformPkg/Acpi/AcpiSmm/AcpiSmm.inf
 
 [FV.FvOsBoot]

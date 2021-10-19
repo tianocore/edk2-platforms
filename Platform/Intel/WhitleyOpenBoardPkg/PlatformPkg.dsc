@@ -637,6 +637,7 @@
 
 [LibraryClasses.Common]
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  PeiLib|MinPlatformPkg/Library/PeiLib/PeiLib.inf
 
 [Components.IA32]
   UefiCpuPkg/SecCore/SecCore.inf
@@ -649,8 +650,9 @@
       # Beware of circular dependencies on PCD if you want to use another DebugLib instance.
       #
       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
-      NULL|$(FSP_BIN_PKG)/Library/FspPcdListLibNull/FspPcdListLibNull.inf              # Include FSP DynamicEx PCD
-      NULL|$(FSP_BIN_PKG)/Library/FspPcdListLibNull/FspPcdListLibNullFvLateSilicon.inf # Include FvLateSilicon DynamicEx PCD
+      NULL|$(FSP_BIN_PKG)/Library/FspPcdListLibNull/FspPcdListLibNull.inf                 # Include FSP DynamicEx PCD
+      NULL|$(FSP_BIN_PKG)/Library/FspPcdListLibNull/FspPcdListLibNullFvLateSilicon.inf    # Include FvLateSilicon DynamicEx PCD
+      NULL|$(FSP_BIN_PKG)/Library/FspPcdListLibNull/FspPcdListLibNullFvLateOpenBoard.inf  # Include FvLateBoard DynamicEx PCD
   }
   $(RP_PKG)/Universal/PeiExStatusCodeRouter/ExReportStatusCodeRouterPei.inf
   $(RP_PKG)/Universal/PeiExStatusCodeHandler/ExStatusCodeHandlerPei.inf
@@ -740,10 +742,7 @@
 
   $(RP_PKG)/Features/Pci/Dxe/PciPlatform/PciPlatform.inf
 
-  $(PLATFORM_PKG)/Acpi/AcpiTables/AcpiPlatform.inf {
-    <LibraryClasses>
-      BoardAcpiTableLib|$(RP_PKG)/Library/BoardAcpiLib/DxeBoardAcpiTableLib.inf
-  }
+  $(RP_PKG)/Features/AcpiVtd/AcpiVtd.inf
 
   $(PLATFORM_PKG)/Acpi/AcpiSmm/AcpiSmm.inf {
     <LibraryClasses>

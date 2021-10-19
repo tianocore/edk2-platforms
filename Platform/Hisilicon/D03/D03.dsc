@@ -124,7 +124,7 @@
 
 [PcdsFixedAtBuild.common]
   gArmPlatformTokenSpaceGuid.PcdCoreCount|8
-  gArmTokenSpaceGuid.PcdPciIoTranslation|0
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
 

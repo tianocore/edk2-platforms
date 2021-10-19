@@ -111,30 +111,6 @@ static int U500_final_init(bool cold_boot)
     return 0;
 }
 
-static u32 U500_pmp_region_count(u32 hartid)
-{
-    return 1;
-}
-
-static int U500_pmp_region_info(u32 hartid, u32 index,
-                 ulong *prot, ulong *addr, ulong *log2size)
-{
-    int ret = 0;
-
-    switch (index) {
-    case 0:
-        *prot = PMP_R | PMP_W | PMP_X;
-        *addr = 0;
-        *log2size = __riscv_xlen;
-        break;
-    default:
-        ret = -1;
-        break;
-    };
-
-    return ret;
-}
-
 static int U500_console_init(void)
 {
     unsigned long peri_in_freq;
@@ -196,15 +172,12 @@ static int U500_timer_init(bool cold_boot)
  */
 static u32 u500_hart_index2id[U500_BOOTABLE_HART_COUNT] = {0, 1, 2, 3};
 
-static int U500_system_reset(u32 type)
+static void U500_system_reset(u32 type, u32 second_param)
 {
     /* For now nothing to do. */
-    return 0;
 }
 
 const struct sbi_platform_operations platform_ops = {
-    .pmp_region_count = U500_pmp_region_count,
-    .pmp_region_info = U500_pmp_region_info,
     .final_init = U500_final_init,
     .console_putc = sifive_uart_putc,
     .console_getc = sifive_uart_getc,

@@ -1,6 +1,6 @@
 /** @file
 
-Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -9,13 +9,17 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/LargeVariableReadLib.h>
 #include <Ppi/ReadOnlyVariable2.h>
 
 /**
-  Returns the status whether get the variable success. The function retrieves 
-  variable  through the ReadOnlyVariable2 PPI GetVariable().  The 
-  returned buffer is allocated using AllocatePool().  The caller is responsible
-  for freeing this buffer with FreePool().
+  Returns the status whether get the variable success. The function retrieves
+  variable  through the ReadOnlyVariable2 PPI GetVariable().
+
+  If the *Size is 0, the returned buffer is allocated using AllocatePool().
+  The buffer is not expected to be freed as PEI does not support a FreePool().
+
+  If the *Size is non-0, this function just uses caller allocated *Value.
 
   If Name  is NULL, then ASSERT().
   If Guid  is NULL, then ASSERT().
@@ -108,6 +112,71 @@ PeiGetVariable (
   return Status;
 }
 
+/**
+  This function returns a "large variable". A large variable is stored across multiple
+  UEFI Variables. This function retrieves the multiple UEFI Variables using
+  ReadOnlyVariable2 PPI GetVariable().
+  The function uses AllocatePages () to allocate the buffer.
+  The caller is responsible for freeing this buffer with FreePages().
+
+  If Name  is NULL, then ASSERT().
+  If Guid  is NULL, then ASSERT().
+  If Value is NULL, then ASSERT().
+
+  @param[in]  Name  The pointer to a Null-terminated Unicode string.
+  @param[in]  Guid  The pointer to an EFI_GUID structure
+  @param[out] Value The buffer point saved the variable info.
+  @param[out] Size  The buffer size of the variable.
+
+  @return EFI_OUT_OF_RESOURCES      Allocate buffer failed.
+  @return EFI_SUCCESS               Find the specified variable.
+  @return Others Errors             Return errors from call to gRT->GetVariable.
+
+**/
+EFI_STATUS
+EFIAPI
+PeiGetLargeVariable (
+  IN  CHAR16    *Name,
+  IN  EFI_GUID  *Guid,
+  OUT VOID      **Value,
+  OUT UINTN     *Size  OPTIONAL
+  )
+{
+  EFI_STATUS                        Status;
+  UINTN                             VariableSize;
+  VOID                              *VariableData;
+
+  ASSERT (Name != NULL);
+  ASSERT (Guid != NULL);
+  ASSERT (Value != NULL);
+
+  VariableSize = 0;
+  VariableData = NULL;
+  Status = GetLargeVariable (Name, Guid, &VariableSize, NULL);
+  if (Status == EFI_BUFFER_TOO_SMALL) {
+    VariableData = AllocatePages (EFI_SIZE_TO_PAGES (VariableSize));
+    if (VariableData == NULL) {
+      DEBUG ((DEBUG_ERROR, "Error: Cannot create VariableData, out of memory!\n"));
+      ASSERT (FALSE);
+      return EFI_OUT_OF_RESOURCES;
+    }
+    Status = GetLargeVariable (Name, Guid, &VariableSize, VariableData);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "Error: Unable to read UEFI variable Status: %r\n", Status));
+      ASSERT_EFI_ERROR (Status);
+      return Status;
+    }
+    if (Value != NULL) {
+      *Value = VariableData;
+    }
+    if (Size != NULL) {
+      *Size = VariableSize;
+    }
+    return EFI_SUCCESS;
+  }
+  return Status;
+}
+
 EFI_PEI_FILE_HANDLE
 InternalGetFfsHandleFromAnyFv (
   IN CONST  EFI_GUID           *NameGuid
@@ -139,7 +208,7 @@ InternalGetFfsHandleFromAnyFv (
 
 /**
   Finds the file in any FV and gets file Address and Size
-  
+
   @param[in]  NameGuid             File GUID
   @param[out] Address              Pointer to the File Address
   @param[out] Size                 Pointer to File Size
@@ -162,7 +231,7 @@ PeiGetFfsFromAnyFv (
   if (FfsHandle == NULL) {
     return EFI_NOT_FOUND;
   }
-  
+
   //
   // Need get size
   //
@@ -185,7 +254,7 @@ PeiGetFfsFromAnyFv (
   @param[in]   SectionInstance   The Instance of Section to be found
   @param[out]  OutSectionBuffer  The section found, including SECTION_HEADER
   @param[out]  OutSectionSize    The size of section found, including SECTION_HEADER
-  
+
   @retval EFI_SUCCESS                Successfull in reading the section from FV
 **/
 EFI_STATUS
@@ -263,7 +332,7 @@ PeiGetSectionFromAnyFv  (
   EFI_COMMON_SECTION_HEADER  *Section;
   VOID                       *FileBuffer;
   UINTN                      FileBufferSize;
-  
+
   Status = PeiGetFfsFromAnyFv (NameGuid, &FileBuffer, &FileBufferSize);
   if (EFI_ERROR(Status)) {
     return Status;
@@ -282,6 +351,6 @@ PeiGetSectionFromAnyFv  (
     *Size = SECTION_SIZE(Section) - sizeof (EFI_COMMON_SECTION_HEADER);
     *Address = (UINT8 *)*Address + sizeof (EFI_COMMON_SECTION_HEADER);
   }
-  
+
   return EFI_SUCCESS;
 }

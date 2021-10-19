@@ -223,7 +223,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
-  gArmTokenSpaceGuid.PcdPciIoTranslation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x0
 
 ################################################################################
 #

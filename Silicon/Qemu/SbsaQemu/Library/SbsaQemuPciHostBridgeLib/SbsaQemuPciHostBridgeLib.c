@@ -96,7 +96,7 @@ STATIC PCI_ROOT_BRIDGE mRootBridge = {
 
   /* PCI_ROOT_BRIDGE_APERTURE Mem; MMIO aperture below 4GB which can be used by
      the root bridge
-     (gArmTokenSpaceGuid.PcdPciMmio32Translation as 0x0) */
+     (gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation as 0x0) */
   {
     FixedPcdGet32 (PcdPciMmio32Base),
     FixedPcdGet32 (PcdPciMmio32Base) + FixedPcdGet32 (PcdPciMmio32Size) - 1,
@@ -104,7 +104,7 @@ STATIC PCI_ROOT_BRIDGE mRootBridge = {
 
   /* PCI_ROOT_BRIDGE_APERTURE MemAbove4G; MMIO aperture above 4GB which can be
      used by the root bridge.
-     (gArmTokenSpaceGuid.PcdPciMmio64Translation as 0x0) */
+     (gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation as 0x0) */
   {
     FixedPcdGet64 (PcdPciMmio64Base),
     FixedPcdGet64 (PcdPciMmio64Base) + FixedPcdGet64 (PcdPciMmio64Size) - 1

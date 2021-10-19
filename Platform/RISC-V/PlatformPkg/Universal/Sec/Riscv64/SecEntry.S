@@ -21,6 +21,8 @@
 .text
 .align 3
 
+    .globl _start_warm
+
 ASM_FUNC (_ModuleEntryPoint)
   /*
    * Jump to warm-boot if this is not the selected core booting,
@@ -75,11 +77,6 @@ _scratch_init:
   sd    a4, SBI_SCRATCH_FW_START_OFFSET(tp)
   sd    a5, SBI_SCRATCH_FW_SIZE_OFFSET(tp)
 
-  /*
-   * Note: fw_next_arg1() uses a0, a1, and ra
-  */
-  call  fw_next_arg1
-  sd    a0, SBI_SCRATCH_NEXT_ARG1_OFFSET(tp) /* Save agr1 in scratch buffer*/
   /*
    Note: fw_next_addr()uses a0, a1, and ra
   */
@@ -498,23 +495,6 @@ _reset_regs:
   li    t5, 0
   li    t6, 0
   csrw  CSR_MSCRATCH, 0
-  ret
-
-  .align 3
-  .section .entry, "ax", %progbits
-  .global fw_prev_arg1
-fw_prev_arg1:
-
-  /* We return previous arg1 in 'a0' */
-  add   a0, zero, zero
-  ret
-
-  .align 3
-  .section .entry, "ax", %progbits
-  .global fw_next_arg1
-fw_next_arg1:
-  /* We return next arg1 in 'a0' */
-  li    a0, FixedPcdGet32(PcdRiscVPeiFvBase)
   ret
 
   .align 3

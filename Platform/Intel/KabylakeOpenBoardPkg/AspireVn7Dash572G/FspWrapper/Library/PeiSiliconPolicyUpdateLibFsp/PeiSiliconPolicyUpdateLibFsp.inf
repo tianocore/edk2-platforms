@@ -1,7 +1,7 @@
 ## @file
 #  Provide FSP wrapper platform related function.
 #
-# Copyright (c) 2017 - 2020 Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2021 Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -74,7 +74,6 @@
   PchInfoLib
   PchHsioLib
   PchPcieRpLib
-  MemoryAllocationLib
   SiPolicyLib
   PeiLib
 
@@ -134,9 +133,11 @@
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdAudioConnector
 
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGraphicsVbtGuid
+  gIntelFsp2WrapperTokenSpaceGuid.PcdFspmUpdDataAddress
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdRootPort4ClkInfo
 
 [Guids]
-  gFspNonVolatileStorageHobGuid                 ## CONSUMES
+  gFspNvsBufferVariableGuid                     ## CONSUMES
   gTianoLogoGuid                                ## CONSUMES
   gEfiMemoryOverwriteControlDataGuid
 

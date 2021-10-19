@@ -251,7 +251,7 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Major|0
   gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Minor|2
   gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Revision|2
-  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.BuildNumber|0x0033
+  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.BuildNumber|0x003a
 
   #
   # MRC DEFAULT SETTINGS
@@ -516,7 +516,7 @@
       WhitleySiliconPkg/WhitleySiliconPkg.dec
   }
 
-[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamicEx]
   gEfiCpRcPkgTokenSpaceGuid.PcdPeiTemporaryRamRcHeapBase|0xFE800000|UINT32|0x00000020
   gEfiCpRcPkgTokenSpaceGuid.PcdPeiTemporaryRamRcHeapSize|0|UINT32|0x00000021
   gEfiCpRcPkgTokenSpaceGuid.PcdNvDimmEn|FALSE|BOOLEAN|0x00000035
@@ -526,7 +526,7 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdOemMtsConfigValue|0xD|UINT16|0x0000003C
   gEfiCpRcPkgTokenSpaceGuid.PcdSerialPortEnable|TRUE|BOOLEAN|0x0000003D
 
-[PcdsDynamic, PcdsDynamicEx]
+[PcdsDynamicEx]
   gEfiCpRcPkgTokenSpaceGuid.PcdSyshostMemoryAddress|0x00000000|UINT64|0x00000048
   gEfiCpRcPkgTokenSpaceGuid.PcdMemMapHostMemoryAddress|0x00000000|UINT64|0x00000049
   gEfiCpRcPkgTokenSpaceGuid.PcdDprMemSize|0x00300000|UINT32|0x0000004A

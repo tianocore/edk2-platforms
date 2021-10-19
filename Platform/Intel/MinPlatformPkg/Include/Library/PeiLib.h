@@ -1,6 +1,6 @@
 /** @file
 
-Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -11,11 +11,11 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <PiPei.h>
 
 /**
-  Returns the status whether get the variable success. The function retrieves 
+  Returns the status whether get the variable success. The function retrieves
   variable  through the ReadOnlyVariable2 PPI GetVariable().
 
   If the *Size is 0, the returned buffer is allocated using AllocatePool().
-  The caller is responsible for freeing this buffer with FreePool().
+  The buffer is not expected to be freed as PEI does not support a FreePool().
 
   If the *Size is non-0, this function just uses caller allocated *Value.
 
@@ -39,8 +39,38 @@ PeiGetVariable (
   );
 
 /**
+  This function returns a "large variable". A large variable is stored across multiple
+  UEFI Variables. This function retrieves the multiple UEFI Variables using
+  ReadOnlyVariable2 PPI GetVariable().
+  The function uses AllocatePages () to allocate the buffer.
+  The caller is responsible for freeing this buffer with FreePages().
+
+  If Name  is NULL, then ASSERT().
+  If Guid  is NULL, then ASSERT().
+  If Value is NULL, then ASSERT().
+
+  @param[in]  Name  The pointer to a Null-terminated Unicode string.
+  @param[in]  Guid  The pointer to an EFI_GUID structure
+  @param[out] Value The buffer point saved the variable info.
+  @param[out] Size  The buffer size of the variable.
+
+  @return EFI_OUT_OF_RESOURCES      Allocate buffer failed.
+  @return EFI_SUCCESS               Find the specified variable.
+  @return Others Errors             Return errors from call to gRT->GetVariable.
+
+**/
+EFI_STATUS
+EFIAPI
+PeiGetLargeVariable (
+  IN  CHAR16    *Name,
+  IN  EFI_GUID  *Guid,
+  OUT VOID      **Value,
+  OUT UINTN     *Size  OPTIONAL
+  );
+
+/**
   Finds the file in any FV and gets file Address and Size
-  
+
   @param[in]  NameGuid             File GUID
   @param[out] Address              Pointer to the File Address
   @param[out] Size                 Pointer to File Size
@@ -57,7 +87,7 @@ PeiGetFfsFromAnyFv (
 
 /**
   Finds the section in any FV and gets section Address and Size
-  
+
   @param[in]  NameGuid             File GUID
   @param[in]  SectionType          The SectionType of Section to be found
   @param[in]  SectionInstance      The Instance of Section to be found

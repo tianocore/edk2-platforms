@@ -49,7 +49,7 @@
   gCpuPkgTokenSpaceGuid.PcdCpuIcelakeFamilyFlag|FALSE|BOOLEAN|0x10000038
   gCpuPkgTokenSpaceGuid.PcdCpuSelectLfpAsBspFlag|FALSE|BOOLEAN|0x1000000F
 
-[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamicEx]
 
   ## Indicates the platform type: desktop, mobile or server.<BR><BR>
   #  0 - desktop<BR>

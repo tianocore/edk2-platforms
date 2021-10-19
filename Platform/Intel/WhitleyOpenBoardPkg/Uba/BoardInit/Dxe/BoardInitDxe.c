@@ -68,6 +68,16 @@ BoardInitDxeDriverEntry (
       ASSERT_EFI_ERROR (Status);
       break;
 
+    case TypeWilsonCitySMT:
+      Status = gBS->InstallProtocolInterface(
+        &Handle,
+        &gEfiPlatformTypeWilsonCitySMTProtocolGuid,
+        EFI_NATIVE_INTERFACE,
+        NULL
+      );
+      ASSERT_EFI_ERROR(Status);
+      break;
+
     case TypeCooperCityRP:
       Status = gBS->InstallProtocolInterface (
         &Handle,
@@ -80,7 +90,7 @@ BoardInitDxeDriverEntry (
 
     default:
       // CAN'T GO TO HERE.
-      ASSERT_EFI_ERROR (FALSE);
+      ASSERT (FALSE);
   }
 
   return Status;

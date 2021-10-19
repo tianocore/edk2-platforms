@@ -1,5 +1,6 @@
 #
 #  Copyright (c) 2013-2018, ARM Limited. All rights reserved.
+#  (C) Copyright 2021 Hewlett Packard Enterprise Development LP<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -178,7 +179,7 @@
   gArmTokenSpaceGuid.PcdPciMmio64Size|0x100000000
 
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x40000000
-  gArmTokenSpaceGuid.PcdPciIoTranslation|0x5f800000
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x5f800000
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
 
   # List of Device Paths that support BootMonFs

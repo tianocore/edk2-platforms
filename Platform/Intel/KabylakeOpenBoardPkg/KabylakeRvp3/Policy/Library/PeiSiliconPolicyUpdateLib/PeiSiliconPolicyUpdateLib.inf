@@ -50,7 +50,7 @@
   gHsioPciePreMemConfigGuid                     ## CONSUMES
   gHsioSataPreMemConfigGuid                     ## CONSUMES
   gSaMiscPeiPreMemConfigGuid                    ## CONSUMES
-  gFspNonVolatileStorageHobGuid                 ## CONSUMES
+  gFspNvsBufferVariableGuid                     ## CONSUMES
 
 [Pcd]
   gSiPkgTokenSpaceGuid.PcdPeiMinMemorySize

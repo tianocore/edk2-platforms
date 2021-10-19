@@ -2,7 +2,7 @@
   Implementation of Fsp Misc UPD Initialization.
 
 
-  Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2020 - 2021, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -18,11 +18,9 @@
 #include <FspmUpd.h>
 #include <FspsUpd.h>
 
-#include <Library/MemoryAllocationLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DebugPrintErrorLevelLib.h>
 #include <Library/PciLib.h>
-#include <Ppi/ReadOnlyVariable2.h>
 #include <Guid/MemoryOverwriteControl.h>
 #include <PchAccess.h>
 #include <Platform.h>
@@ -46,54 +44,17 @@ PeiFspMiscUpdUpdatePreMem (
   )
 {
   EFI_STATUS                        Status;
-  EFI_PEI_READ_ONLY_VARIABLE2_PPI   *VariableServices;
-  UINTN                             VariableSize;
-  VOID                              *MemorySavedData;
+  UINTN                             FspNvsBufferSize;
+  VOID                              *FspNvsBufferPtr;
 
-  Status = PeiServicesLocatePpi (
-             &gEfiPeiReadOnlyVariable2PpiGuid,
-             0,
-             NULL,
-             (VOID **) &VariableServices
-             );
-  if (EFI_ERROR (Status)) {
-    ASSERT_EFI_ERROR (Status);
-    return Status;
-  }
-
-  VariableSize = 0;
-  MemorySavedData = NULL;
-  Status = VariableServices->GetVariable (
-                               VariableServices,
-                               L"MemoryConfig",
-                               &gFspNonVolatileStorageHobGuid,
-                               NULL,
-                               &VariableSize,
-                               MemorySavedData
-                               );
-  if (Status == EFI_BUFFER_TOO_SMALL) {
-    MemorySavedData = AllocatePool (VariableSize);
-    if (MemorySavedData == NULL) {
-      ASSERT (MemorySavedData != NULL);
-      return EFI_OUT_OF_RESOURCES;
-    }
-
-    DEBUG ((DEBUG_INFO, "VariableSize is 0x%x\n", VariableSize));
-    Status = VariableServices->GetVariable (
-                                 VariableServices,
-                                 L"MemoryConfig",
-                                 &gFspNonVolatileStorageHobGuid,
-                                 NULL,
-                                 &VariableSize,
-                                 MemorySavedData
-                                 );
-    if (Status == EFI_SUCCESS) {
-      FspmUpd->FspmArchUpd.NvsBufferPtr = MemorySavedData;
-    } else {
-      FspmUpd->FspmArchUpd.NvsBufferPtr = NULL;
-      DEBUG ((DEBUG_ERROR, "Fail to retrieve Variable:\"MemoryConfig\" gMemoryConfigVariableGuid, Status = %r\n", Status));
-      ASSERT_EFI_ERROR (Status);
-    }
+  FspNvsBufferPtr   = NULL;
+  FspNvsBufferSize  = 0;
+  Status = PeiGetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferPtr, &FspNvsBufferSize);
+  if (Status == EFI_SUCCESS) {
+    FspmUpd->FspmArchUpd.NvsBufferPtr = FspNvsBufferPtr;
+  } else {
+    DEBUG ((DEBUG_INFO, "Cannot create FSP NVS Buffer, UEFI variable does not exist (this is likely a first boot)\n"));
+    FspmUpd->FspmArchUpd.NvsBufferPtr = NULL;
   }
 
   FspmUpd->FspmConfig.TsegSize              = FixedPcdGet32 (PcdTsegSize);

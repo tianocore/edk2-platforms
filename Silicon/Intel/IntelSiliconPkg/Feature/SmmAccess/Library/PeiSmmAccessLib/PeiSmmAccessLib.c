@@ -252,19 +252,7 @@ PeiInstallSmmAccessPpi (
   EFI_SMRAM_HOB_DESCRIPTOR_BLOCK  *DescriptorBlock;
   SMM_ACCESS_PRIVATE_DATA         *SmmAccessPrivate;
   VOID                            *HobList;
-  EFI_BOOT_MODE                   BootMode;
 
-  Status = PeiServicesGetBootMode (&BootMode);
-  if (EFI_ERROR (Status)) {
-    //
-    // If not in S3 boot path. do nothing
-    //
-    return EFI_SUCCESS;
-  }
-
-  if (BootMode != BOOT_ON_S3_RESUME) {
-    return EFI_SUCCESS;
-  }
   //
   // Initialize private data
   //

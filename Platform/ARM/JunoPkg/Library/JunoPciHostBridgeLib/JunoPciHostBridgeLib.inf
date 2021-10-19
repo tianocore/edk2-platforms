@@ -2,6 +2,7 @@
 #  PCI Host Bridge Library instance for ARM Juno
 #
 #  Copyright (c) 2017, Linaro Ltd. All rights reserved.<BR>
+#  (C) Copyright 2021 Hewlett Packard Enterprise Development LP<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -51,13 +52,13 @@
   gArmTokenSpaceGuid.PcdPciBusMax
   gArmTokenSpaceGuid.PcdPciIoBase
   gArmTokenSpaceGuid.PcdPciIoSize
-  gArmTokenSpaceGuid.PcdPciIoTranslation
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
   gArmTokenSpaceGuid.PcdPciMmio32Base
   gArmTokenSpaceGuid.PcdPciMmio32Size
-  gArmTokenSpaceGuid.PcdPciMmio32Translation
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
   gArmTokenSpaceGuid.PcdPciMmio64Base
   gArmTokenSpaceGuid.PcdPciMmio64Size
-  gArmTokenSpaceGuid.PcdPciMmio64Translation
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation
 
   gArmJunoTokenSpaceGuid.PcdPcieControlBaseAddress
   gArmJunoTokenSpaceGuid.PcdPcieRootPortBaseAddress

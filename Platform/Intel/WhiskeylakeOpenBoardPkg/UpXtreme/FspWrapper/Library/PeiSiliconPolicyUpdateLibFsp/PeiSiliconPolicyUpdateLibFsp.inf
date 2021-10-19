@@ -2,7 +2,7 @@
 #  FSP silicon policy updates for the Up Xtreme board.
 #
 #
-#  Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+#  Copyright (c) 2020 - 2021, Intel Corporation. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -136,7 +136,7 @@
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdBoardBomId
 
 [Guids]
-  gFspNonVolatileStorageHobGuid                 ## CONSUMES
+  gFspNvsBufferVariableGuid                     ## CONSUMES
   gTianoLogoGuid                                ## CONSUMES
   gEfiMemoryOverwriteControlDataGuid
 

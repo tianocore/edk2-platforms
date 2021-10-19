@@ -1,7 +1,7 @@
 /** @file
   Implementation of Fsp Misc UPD Initialization.
 
-Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -16,7 +16,6 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <FspmUpd.h>
 #include <FspsUpd.h>
 
-#include <Library/MemoryAllocationLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DebugPrintErrorLevelLib.h>
 #include <Library/PciLib.h>
@@ -38,24 +37,22 @@ PeiFspMiscUpdUpdatePreMem (
 {
   EFI_STATUS                        Status;
   UINTN                             VariableSize;
-  VOID                              *MemorySavedData;
+  VOID                              *FspNvsBufferPtr;
   UINT8                             MorControl;
   VOID                              *MorControlPtr;
 
   //
   // Initialize S3 Data variable (S3DataPtr). It may be used for warm and fast boot paths.
   //
-  VariableSize = 0;
-  MemorySavedData = NULL;
-  Status = PeiGetVariable (
-             L"MemoryConfig",
-             &gFspNonVolatileStorageHobGuid,
-             &MemorySavedData,
-             &VariableSize
-             );
-  DEBUG ((DEBUG_INFO, "Get L\"MemoryConfig\" gFspNonVolatileStorageHobGuid - %r\n", Status));
-  DEBUG ((DEBUG_INFO, "MemoryConfig Size - 0x%x\n", VariableSize));
-  FspmUpd->FspmArchUpd.NvsBufferPtr = MemorySavedData;
+  FspNvsBufferPtr = NULL;
+  VariableSize    = 0;
+
+  Status = PeiGetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferPtr, &VariableSize);
+  if (Status == EFI_SUCCESS) {
+    DEBUG ((DEBUG_INFO, "Get L\"FspNvsBuffer\" gFspNvsBufferVariableGuid - %r\n", Status));
+    DEBUG ((DEBUG_INFO, "FspNvsBuffer Size - 0x%x\n", VariableSize));
+    FspmUpd->FspmArchUpd.NvsBufferPtr = FspNvsBufferPtr;
+  }
 
   if (FspmUpd->FspmArchUpd.NvsBufferPtr != NULL) {
     //

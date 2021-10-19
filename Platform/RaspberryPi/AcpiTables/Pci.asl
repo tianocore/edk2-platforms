@@ -94,7 +94,7 @@ DefinitionBlock (__FILE__, "SSDT", 5, "RPIFDN", "RPI4PCIE", 2)
             1,                              // SANITIZED_PCIE_MMIO_LEN + SANITIZED_PCIE_PCI_MMIO_BEGIN
             SANITIZED_PCIE_CPU_MMIO_WINDOW, // SANITIZED_PCIE_PCI_MMIO_BEGIN - SANITIZED_PCIE_CPU_MMIO_WINDOW
             2                               // SANITIZED_PCIE_MMIO_LEN + 1
-            ,,,MMI1,,TypeTranslation
+            ,,,MMI1
           )
 
           // root port registers, not to be used if SMCCC is utilized

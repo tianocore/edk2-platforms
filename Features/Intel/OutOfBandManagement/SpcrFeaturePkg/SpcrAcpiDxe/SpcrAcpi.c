@@ -368,6 +368,8 @@ OutOfBandACPITableConstruction (
 
   Handle          = NULL;
 
+  gBS->CloseEvent (Event);
+
   SavedDevicePath = GetSpcrDevice();
   if (SavedDevicePath == NULL) {
     return;

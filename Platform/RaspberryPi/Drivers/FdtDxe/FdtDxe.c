@@ -334,6 +334,76 @@ CleanSimpleFramebuffer (
   return EFI_SUCCESS;
 }
 
+STATIC
+EFI_STATUS
+SyncPcie (
+  VOID
+  )
+{
+#if (RPI_MODEL == 4)
+  INTN          Node;
+  INTN          Retval;
+  UINT32        DmaRanges[7];
+
+  Node = fdt_path_offset (mFdtImage, "pcie0");
+  if (Node < 0) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'pcie0' alias\n", __FUNCTION__));
+    return EFI_NOT_FOUND;
+  }
+
+  // non translated 32-bit DMA window with a limit of 0xc0000000
+  DmaRanges[0] = cpu_to_fdt32 (0x02000000);
+  DmaRanges[1] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[2] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[3] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[4] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[5] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[6] = cpu_to_fdt32 (0xc0000000);
+
+  DEBUG ((DEBUG_INFO, "%a: Updating PCIe dma-ranges\n",  __FUNCTION__));
+
+  /*
+   * Match dma-ranges with the EDK2+ACPI setup we are using.  This works
+   * around a failure in Linux and OpenBSD to reset the PCIe/XHCI correctly
+   * when in DT mode.
+   */
+  Retval = fdt_setprop (mFdtImage, Node, "dma-ranges",
+                        DmaRanges,  sizeof DmaRanges);
+  if (Retval != 0) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate PCIe 'dma-ranges' property (%d)\n",
+      __FUNCTION__, Retval));
+    return EFI_NOT_FOUND;
+  }
+
+  /*
+   * Now that we are always running without DMA translation, and with a 3G
+   * limit, there shouldn't be a need to reset/reload the XHCI. The
+   * possible problem is that the PCIe root port is itself being reset (by
+   * Linux+DT). The RPi foundation claims this is needed as a pre-req to
+   * reloading the XHCI firmware, which also implies that a PCI fundamental
+   * reset should cause the XHCI itself to reset.  This isn't happening
+   * fully, otherwise reloading the firmware would be mandatory. As it is,
+   * recent kernels actually start to have problems following the XHCI
+   * reset notification mailbox!  Instead lets stop the kernel from
+   * triggering the mailbox by removing the node.
+   */
+
+  Node = fdt_path_offset (mFdtImage, "/scb/pcie@7d500000/pci@1,0");
+  if (Node < 0) {
+    // This can happen on CM4/etc which doesn't have an onboard XHCI
+    DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci@1/usb@1\n", __FUNCTION__));
+  } else {
+    Retval = fdt_del_node (mFdtImage, Node);
+    if (Retval != 0) {
+      DEBUG ((DEBUG_ERROR, "Failed to remove /scb/pcie@7d500000/pci@1/usb@1\n"));
+      return EFI_NOT_FOUND;
+    }
+  }
+
+#endif
+  return EFI_SUCCESS;
+}
+
 /**
   @param  ImageHandle   of the loaded driver
   @param  SystemTable   Pointer to the System Table
@@ -429,6 +499,11 @@ FdtDxeInitialize (
   Status = AddUsbCompatibleProperty ();
   if (EFI_ERROR (Status)) {
     Print (L"Failed to update USB compatible properties: %r\n", Status);
+  }
+
+  SyncPcie ();
+  if (EFI_ERROR (Status)) {
+    Print (L"Failed to update PCIe address ranges: %r\n", Status);
   }
 
   DEBUG ((DEBUG_INFO, "Installed devicetree at address %p\n", mFdtImage));

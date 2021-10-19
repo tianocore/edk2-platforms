@@ -58,11 +58,12 @@
 
 [Guids]
   gEfiPlatformInfoGuid
-  gFspNonVolatileStorageHobGuid
+  gFspNvsBufferVariableGuid      # CONSUMES
 
 [LibraryClasses]
   PeiServicesLib
   LargeVariableReadLib
+  PeiLib
 
 [Pcd]
   gIntelFsp2PkgTokenSpaceGuid.PcdTemporaryRamBase         ## CONSUMES

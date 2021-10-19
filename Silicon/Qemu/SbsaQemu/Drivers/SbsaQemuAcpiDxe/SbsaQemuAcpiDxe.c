@@ -71,7 +71,7 @@ AddMadtTable (
     0,                                     /* Mpidr */
     EFI_ACPI_6_0_GIC_ENABLED,              /* Flags */
     SBSAQEMU_MADT_GIC_PMU_IRQ,             /* PMU Irq */
-    FixedPcdGet32 (PcdGicDistributorBase), /* PhysicalBaseAddress */
+    0,                                     /* PhysicalBaseAddress */
     SBSAQEMU_MADT_GIC_VBASE,               /* GicVBase */
     SBSAQEMU_MADT_GIC_HBASE,               /* GicHBase */
     25,                                    /* GsivId */

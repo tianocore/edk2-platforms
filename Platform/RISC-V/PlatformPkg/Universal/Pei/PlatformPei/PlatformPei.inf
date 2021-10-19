@@ -3,7 +3,7 @@
 #
 #  This module provides platform specific function to detect boot mode.
 #
-#  Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -12,7 +12,7 @@
 [Defines]
   INF_VERSION                    = 0x0001001b
   BASE_NAME                      = PlatformPei
-  FILE_GUID                      = 222c386d-5abc-4fb4-b124-fbb82488acf4
+  FILE_GUID                      = 5592FC16-8FEF-4DE3-A6CF-6C59081E4EB7
   MODULE_TYPE                    = PEIM
   VERSION_STRING                 = 1.0
   ENTRY_POINT                    = InitializePlatform
@@ -51,7 +51,7 @@
   PeiServicesTablePointerLib
   PeimEntryPoint
   PcdLib
-  SiliconSiFiveU5MCCoreplexInfoLib
+  RiscVCoreplexInfoLib
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved
@@ -62,9 +62,10 @@
   gEfiMdePkgTokenSpaceGuid.PcdGuidedExtractHandlerTableAddress
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize
   gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdNumberofU5Cores
   gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdE5MCSupported
-
 
 [Ppis]
   gEfiPeiMasterBootModePpiGuid

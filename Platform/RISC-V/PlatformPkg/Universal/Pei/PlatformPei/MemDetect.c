@@ -1,7 +1,7 @@
 /**@file
   Memory Detection for Virtual Machines.
 
-  Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
   Copyright (c) 2006 - 2014, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -46,6 +46,10 @@ PublishPeiMemory (
   EFI_PHYSICAL_ADDRESS        MemoryBase;
   UINT64                      MemorySize;
 
+  //
+  // TODO: This value should come from platform
+  // configuration or the memory sizing code.
+  //
   MemoryBase = 0x80000000UL + 0x1000000UL;
   MemorySize = 0x40000000UL - 0x1000000UL; //1GB - 16MB
 
@@ -69,6 +73,9 @@ InitializeRamRegions (
   VOID
   )
 {
+  //
+  // TODO: This value should come from platform
+  // configuration or the memory sizing code.
+  //
   AddMemoryRangeHob(0x81000000UL, 0x81000000UL + 0x3F000000UL);
-
 }

@@ -1088,6 +1088,7 @@ gStructPcdTokenSpaceGuid.PcdSetup.Gen34ReEqualization|0x1                       
 gStructPcdTokenSpaceGuid.PcdSetup.Gen34TimeWindow|0x2                                              # Time Window (Gen3/4)
 gStructPcdTokenSpaceGuid.PcdSetup.Gen3LinkDegradation|0x1                                          # Gen3 Link Degradation
 gStructPcdTokenSpaceGuid.PcdSetup.Gen4LinkDegradation|0x1                                          # Gen4 Link Degradation
+gStructPcdTokenSpaceGuid.PcdSetup.HideWriteDataParityLogs|0x1                                      # Hide Data Parity Error Logs
 gStructPcdTokenSpaceGuid.PcdSetup.IioDmaErrorEn|0x1                                                # IIO Dma Error
 gStructPcdTokenSpaceGuid.PcdSetup.IioDmiErrorEn|0x1                                                # IIO Dmi Error
 gStructPcdTokenSpaceGuid.PcdSetup.IioErrRegistersClearEn|0x1                                       # IIO Error Registers Clear
@@ -1540,6 +1541,90 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ACPIPMEn[81]|0x0                    
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ACPIPMEn[82]|0x0                                       # ACPI PME Interrupt
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ACPIPMEn[83]|0x0                                       # ACPI PME Interrupt
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ATS|0x1                                                # ATS
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[0]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[1]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[2]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[3]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[4]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[5]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[6]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[7]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[8]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[9]|0x0                                   # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[10]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[11]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[12]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[13]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[14]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[15]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[16]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[17]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[18]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[19]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[20]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[21]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[22]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[23]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[24]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[25]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[26]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[27]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[28]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[29]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[30]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[31]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[32]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[33]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[34]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[35]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[36]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[37]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[38]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[39]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[40]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[41]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[42]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[43]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[44]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[45]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[46]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[47]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[48]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[49]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[50]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[51]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[52]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[53]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[54]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[55]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[56]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[57]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[58]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[59]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[60]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[61]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[62]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[63]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[64]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[65]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[66]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[67]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[68]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[69]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[70]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[71]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[72]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[73]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[74]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[75]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[76]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[77]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[78]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[79]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[80]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[81]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[82]|0x0                                  # Alt ATTEN Table
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.AltAttenTable[83]|0x0                                  # Alt ATTEN Table
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Cb3DmaEn[0]|0x1                                        # DMA
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Cb3DmaEn[1]|0x1                                        # DMA
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Cb3DmaEn[2]|0x1                                        # DMA
@@ -5089,8 +5174,8 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.P2PRdDis[80]|0x0                    
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.P2PRdDis[81]|0x0                                       # P2P Memory Read
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.P2PRdDis[82]|0x0                                       # P2P Memory Read
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.P2PRdDis[83]|0x0                                       # P2P Memory Read
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PCIe_AtomicOpReq|0x1                                   # PCIe Atomic Operation Request Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PCIe_LTR|0x2                                           # PCIe Latency Tolerance Reporting
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PCIe_AtomicOpReq|0x2                                   # PCIe Atomic Op Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PCIe_LTR|0x2                                           # PCIe LTR Support
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PCUF6Hide|0x0                                          # Hide PCU Func 6
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[1]|0x0                                        # Hide Port?
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[2]|0x0                                        # Hide Port?
@@ -5176,7 +5261,7 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[81]|0x0                    
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[82]|0x0                                       # Hide Port?
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[83]|0x0                                       # Hide Port?
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Pci64BitResourceAllocation|0x1                         # PCI 64-Bit Resource Allocation
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Pcie10bitTag|0x1                                       # PCIe 10-bit Tag Enable
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Pcie10bitTag|0x2                                       # PCIe 10-bit Tag Enable
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[0]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack1
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[1]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack2
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[2]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack3
@@ -5299,90 +5384,90 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICPortEnable[78]|0x0           
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICPortEnable[79]|0x0                              # Port 5D
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAcpiHotPlugEnable|0x0                              # PCIe ACPI Hot Plug
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAllocatingFlow|0x1                                 # PCIe Allocating Write Flows
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[0]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[1]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[2]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[3]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[4]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[5]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[6]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[7]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[8]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[9]|0x2                                        # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[10]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[11]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[12]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[13]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[14]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[15]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[16]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[17]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[18]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[19]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[20]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[21]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[22]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[23]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[24]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[25]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[26]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[27]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[28]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[29]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[30]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[31]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[32]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[33]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[34]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[35]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[36]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[37]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[38]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[39]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[40]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[41]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[42]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[43]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[44]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[45]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[46]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[47]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[48]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[49]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[50]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[51]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[52]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[53]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[54]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[55]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[56]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[57]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[58]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[59]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[60]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[61]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[62]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[63]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[64]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[65]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[66]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[67]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[68]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[69]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[70]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[71]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[72]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[73]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[74]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[75]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[76]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[77]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[78]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[79]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[80]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[81]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[82]|0x2                                       # PCI-E ASPM Support
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[83]|0x2                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[0]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[1]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[2]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[3]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[4]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[5]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[6]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[7]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[8]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[9]|0x4                                        # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[10]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[11]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[12]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[13]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[14]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[15]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[16]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[17]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[18]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[19]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[20]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[21]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[22]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[23]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[24]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[25]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[26]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[27]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[28]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[29]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[30]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[31]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[32]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[33]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[34]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[35]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[36]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[37]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[38]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[39]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[40]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[41]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[42]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[43]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[44]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[45]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[46]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[47]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[48]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[49]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[50]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[51]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[52]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[53]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[54]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[55]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[56]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[57]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[58]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[59]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[60]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[61]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[62]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[63]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[64]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[65]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[66]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[67]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[68]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[69]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[70]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[71]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[72]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[73]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[74]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[75]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[76]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[77]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[78]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[79]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[80]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[81]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[82]|0x4                                       # PCI-E ASPM Support
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAspm[83]|0x4                                       # PCI-E ASPM Support
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieBiosTrainEnable|0x1                                # PCIe Train by BIOS
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieCommonClock[0]|0x1                                 # PCI-E Port Clocking
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieCommonClock[1]|0x1                                 # PCI-E Port Clocking
@@ -5636,7 +5721,7 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieDataLinkFeatureExchangeEnable[80
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieDataLinkFeatureExchangeEnable[81]|0x1              # Data Link Feature Exchange
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieDataLinkFeatureExchangeEnable[82]|0x1              # Data Link Feature Exchange
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieDataLinkFeatureExchangeEnable[83]|0x1              # Data Link Feature Exchange
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieExtendedTagField|0x1                               # PCIe Extended Tag Enable
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieExtendedTagField|0x2                               # PCIe Extended Tag Support
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieGlobalAspm|0x1                                     # PCI-E ASPM Support (Global)
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieHotPlugEnable|0x0                                  # PCIe Hot Plug
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieHotPlugOnPort[1]|0x2                               # Hot Plug Capable
@@ -6311,7 +6396,7 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[80]|0x0           
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[81]|0x0                              # Link Speed
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[82]|0x0                              # Link Speed
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[83]|0x0                              # Link Speed
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePtm|0x0                                            # PCIe PTM Enable
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePtm|0x2                                            # PCIe PTM Support
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieRelaxedOrdering|0x1                                # Pcie Relaxed Ordering
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieSlotItemCtrl|0x0                                   # PCIe Slot Item Control
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieSlotOprom1|0x1                                     # PCIe Slot 1 OpROM
@@ -7570,7 +7655,7 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SetMemTested|0x1                 
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ShortStroke2GB|0x0                                  # 2GB Short Stroke Configuration
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SmartTestKey|0x0                                    # SmartTestKey
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SmbSpdAccess|0x0                                    # SPD-SMBUS Access
-gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SpareSwErrTh|0x4                                    # Sparing SW Error Match Threshold
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SpareSwErrTh|0x4                                    # SW Per Bank Threshold
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SpdPrintEn|0x0                                      # SPD Print
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.SpdPrintLength|0x0                                  # SPD Print Length
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.Srat|0x1                                            # Publish SRAT
@@ -7705,7 +7790,7 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.partialmirrorsize[3]|0x0         
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.pda|0x1                                             # PDA
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.pprErrInjTest|0x0                                   # PPR Error Injection test
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.pprType|0x2                                         # PPR Type
-gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.promoteMrcWarnings|0x1                              # MRC Promote Warnings
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.promoteMrcWarnings|0x0                              # MRC Promote Warnings
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.promoteWarnings|0x1                                 # Promote Warnings
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.readVrefCenter|0x1                                  # Read Vref Centering
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.refreshMode|0x2                                     # 2x Refresh Enable
@@ -7761,11 +7846,11 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.tRTP|0x0                         
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.tWR|0x0                                             # tWR
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.tWTR|0x0                                            # tWTR
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.thermalthrottlingsupport|0x2                        # Throttling Mode
-gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.timeWindow|0x0                                      # Correctable Error Time Window
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.timeWindow|0x18                                     # SW Correctable Error Time Window
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.turnaroundOpt|0x1                                   # Turnaround Time Optimization
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.turnaroundOptDdrt|0x1                               # Turnaround Time Optimization PMem
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.txEqCalibration|0x1                                 # Tx Eq Training
-gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.volMemMode|0x1                                      # Volatile Memory Mode
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.volMemMode|0x0                                      # Volatile Memory Mode
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.wrVrefCenter|0x1                                    # Write Vref Centering
 gStructPcdTokenSpaceGuid.PcdSocketMpLinkConfig.BusRatio[0]|0x1                                     # Bus Resources Allocation Ratio
 gStructPcdTokenSpaceGuid.PcdSocketMpLinkConfig.BusRatio[1]|0x1                                     # Bus Resources Allocation Ratio

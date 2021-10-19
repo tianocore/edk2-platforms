@@ -43,7 +43,7 @@
   UefiBootServicesTableLib
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdPciIoTranslation
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
 
 [Pcd]
   gSynQuacerTokenSpaceGuid.PcdPcieEnableMask

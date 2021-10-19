@@ -398,8 +398,8 @@ SiliconPolicyUpdatePreMem (
   SA_MISC_PEI_PREMEM_CONFIG     *MiscPeiPreMemConfig;
   MEMORY_CONFIG_NO_CRC          *MemConfigNoCrc;
   VOID                          *Buffer;
-  UINTN                         VariableSize;
-  VOID                          *MemorySavedData;
+  UINTN                         FspNvsBufferSize;
+  VOID                          *FspNvsBufferPtr;
   UINT8                         SpdAddressTable[4];
 
   DEBUG((DEBUG_INFO, "\nUpdating Policy in Pre-Mem\n"));
@@ -430,18 +430,13 @@ SiliconPolicyUpdatePreMem (
       // Note: AmberLake FSP does not implement the FSPM_ARCH_CONFIG_PPI added in FSP 2.1, hence
       // the platform specific S3DataPtr must be used instead.
       //
-      VariableSize = 0;
-      MemorySavedData = NULL;
-      Status = PeiGetVariable (
-                L"MemoryConfig",
-                &gFspNonVolatileStorageHobGuid,
-                &MemorySavedData,
-                &VariableSize
-                );
-      DEBUG ((DEBUG_INFO, "Get L\"MemoryConfig\" gFspNonVolatileStorageHobGuid - %r\n", Status));
-      DEBUG ((DEBUG_INFO, "MemoryConfig Size - 0x%x\n", VariableSize));
-      if (!EFI_ERROR (Status)) {
-        MiscPeiPreMemConfig->S3DataPtr = MemorySavedData;
+      FspNvsBufferPtr   = NULL;
+      FspNvsBufferSize  = 0;
+      Status = PeiGetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferPtr, &FspNvsBufferSize);
+      if (Status == EFI_SUCCESS) {
+        DEBUG ((DEBUG_INFO, "Get L\"FspNvsBuffer\" gFspNvsBufferVariableGuid - %r\n", Status));
+        DEBUG ((DEBUG_INFO, "FspNvsBuffer Size - 0x%x\n", FspNvsBufferSize));
+        MiscPeiPreMemConfig->S3DataPtr = FspNvsBufferPtr;
       }
 
       //

@@ -181,3 +181,4 @@
   gTianoLogoGuid                          ## CONSUMES
   gCnviConfigGuid                         ## CONSUMES
   gHdAudioPreMemConfigGuid                ## CONSUMES
+  gFspNvsBufferVariableGuid               ## CONSUMES

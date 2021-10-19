@@ -67,7 +67,7 @@ VarLibGetVariable (
              &gEfiPeiReadOnlyVariable2PpiGuid,
              0,
              NULL,
-             &VariablePpi
+             (VOID **) &VariablePpi
              );
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {
@@ -134,7 +134,7 @@ VarLibGetNextVariableName (
              &gEfiPeiReadOnlyVariable2PpiGuid,
              0,
              NULL,
-             &VariablePpi
+             (VOID **) &VariablePpi
              );
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {

@@ -7,6 +7,7 @@
 **/
 
 #include "S3NvramSave.h"
+#include <Guid/FspNonVolatileStorageHob2.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/LargeVariableReadLib.h>
 #include <Library/LargeVariableWriteLib.h>
@@ -80,21 +81,37 @@ SaveFspNonVolatileStorageHob (
   Status            = EFI_SUCCESS;
 
   DEBUG ((DEBUG_INFO, "Saving FSP / MRC Training Data\n"));
-  GuidHob = GetFirstGuidHob (&gFspNonVolatileStorageHobGuid);
+  //
+  // Firstly check version2 FspNvsHob.
+  //
+  GuidHob = GetFirstGuidHob (&gFspNonVolatileStorageHob2Guid);
   if (GuidHob != NULL) {
-    HobData  = GET_GUID_HOB_DATA (GuidHob);
-    DataSize = GET_GUID_HOB_DATA_SIZE (GuidHob);
+    HobData = (VOID *) (UINTN) ((FSP_NON_VOLATILE_STORAGE_HOB2 *) (UINTN) GuidHob)->NvsDataPtr;
+    DataSize = (UINTN) ((FSP_NON_VOLATILE_STORAGE_HOB2 *) (UINTN) GuidHob)->NvsDataLength;
+  } else {
+    //
+    // Fall back to version1 FspNvsHob
+    //
+    GuidHob = GetFirstGuidHob (&gFspNonVolatileStorageHobGuid);
+    if (GuidHob != NULL) {
+      HobData  = GET_GUID_HOB_DATA (GuidHob);
+      DataSize = GET_GUID_HOB_DATA_SIZE (GuidHob);
+    }
+  }
+  if (HobData != NULL) {
+    DEBUG ((DEBUG_INFO, "FspNvsHob.Size:       %d\n",   DataSize));
+    DEBUG ((DEBUG_INFO, "FspNvsHob.NvsDataPtr: 0x%x\n", HobData));
     if (DataSize > 0) {
 
       //
       // Check if the presently saved data is identical to the data given by MRC/FSP
       //
-      Status = GetLargeVariable (L"FspNvsBuffer", &gFspNonVolatileStorageHobGuid, &FspNvsBufferSize, NULL);
+      Status = GetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferSize, NULL);
       if (Status == EFI_BUFFER_TOO_SMALL) {
         if (FspNvsBufferSize == DataSize) {
           VariableData = AllocatePool (FspNvsBufferSize);
           if (VariableData != NULL) {
-            Status = GetLargeVariable (L"FspNvsBuffer", &gFspNonVolatileStorageHobGuid, &FspNvsBufferSize, VariableData);
+            Status = GetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferSize, VariableData);
             if (!EFI_ERROR (Status) && (FspNvsBufferSize == DataSize) && (0 == CompareMem (HobData, VariableData, DataSize))) {
               DataIsIdentical = TRUE;
             }
@@ -105,7 +122,7 @@ SaveFspNonVolatileStorageHob (
       Status = EFI_SUCCESS;
 
       if (!DataIsIdentical) {
-        Status = SetLargeVariable (L"FspNvsBuffer", &gFspNonVolatileStorageHobGuid, TRUE, DataSize, HobData);
+        Status = SetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, TRUE, DataSize, HobData);
         ASSERT_EFI_ERROR (Status);
         DEBUG ((DEBUG_INFO, "Saved size of FSP / MRC Training Data: 0x%x\n", DataSize));
       } else {

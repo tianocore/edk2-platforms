@@ -43,7 +43,7 @@
   gArmTokenSpaceGuid.PcdPciIoSize
   gArmTokenSpaceGuid.PcdPciMmio32Base
   gArmTokenSpaceGuid.PcdPciMmio32Size
-  gArmTokenSpaceGuid.PcdPciMmio32Translation
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
   gArmTokenSpaceGuid.PcdPciMmio64Base
   gArmTokenSpaceGuid.PcdPciMmio64Size
-  gArmTokenSpaceGuid.PcdPciMmio64Translation
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation

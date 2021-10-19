@@ -117,6 +117,13 @@ IsAspeedPresent (
  IoWrite8 (ASPEED2500_SIO_DATA_PORT, ASPEED2500_SIO_UART1);
  if (IoRead8 (ASPEED2500_SIO_DATA_PORT) == ASPEED2500_SIO_UART1) {
   //
+  // In ESPI mode, assume this SIO logic device always present.
+  //
+#ifdef ESPI_ENABLE
+  DeviceID = 0;
+  PresenceStatus = TRUE;
+#else
+  //
   //right now, maybe it is ASPEED. to detect the  device ID.
   //
   DeviceID = ReadAHBDword (SCU7C);
@@ -143,6 +150,7 @@ IsAspeedPresent (
   if ((DeviceID & 0xff0000ff) == 0x04000003) {
    PresenceStatus = TRUE;
   }
+#endif
  }
  IoWrite8 (ASPEED2500_SIO_INDEX_PORT, ASPEED2500_SIO_LOCK);
  return PresenceStatus;

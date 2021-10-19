@@ -9,7 +9,9 @@
 #include <Library/FspWrapperApiLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/PeiLib.h>
 #include <Ppi/FspmArchConfigPpi.h>
+#include <PolicyUpdateMacro.h>
 
 VOID
 EFIAPI
@@ -70,9 +72,11 @@ SiliconPolicyDonePreMem(
 )
 {
   EFI_STATUS                   Status;
+  UINTN                        FspNvsBufferSize;
+  VOID                         *FspNvsBufferPtr;
 #if FixedPcdGet8(PcdFspModeSelection) == 0
-  FSPM_ARCH_CONFIG_PPI                  *FspmArchConfigPpi;
-  EFI_PEI_PPI_DESCRIPTOR                *FspmArchConfigPpiDesc;
+  FSPM_ARCH_CONFIG_PPI         *FspmArchConfigPpi;
+  EFI_PEI_PPI_DESCRIPTOR       *FspmArchConfigPpiDesc;
 
   FspmArchConfigPpi = (FSPM_ARCH_CONFIG_PPI *) AllocateZeroPool (sizeof (FSPM_ARCH_CONFIG_PPI));
   if (FspmArchConfigPpi == NULL) {
@@ -80,7 +84,6 @@ SiliconPolicyDonePreMem(
     return EFI_OUT_OF_RESOURCES;
   }
   FspmArchConfigPpi->Revision            = 1;
-  FspmArchConfigPpi->NvsBufferPtr        = NULL;
   FspmArchConfigPpi->BootLoaderTolumSize = 0;
 
   FspmArchConfigPpiDesc = (EFI_PEI_PPI_DESCRIPTOR *) AllocateZeroPool (sizeof (EFI_PEI_PPI_DESCRIPTOR));
@@ -97,6 +100,18 @@ SiliconPolicyDonePreMem(
   Status = PeiServicesInstallPpi (FspmArchConfigPpiDesc);
   ASSERT_EFI_ERROR (Status);
 #endif
+
+  //
+  // Initialize S3 Data variable (S3DataPtr). It may be used for warm and fast boot paths.
+  //
+  FspNvsBufferPtr   = NULL;
+  FspNvsBufferSize  = 0;
+  Status = PeiGetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferPtr, &FspNvsBufferSize);
+  if (Status == EFI_SUCCESS) {
+    DEBUG ((DEBUG_INFO, "Get L\"FspNvsBuffer\" gFspNvsBufferVariableGuid - %r\n", Status));
+    DEBUG ((DEBUG_INFO, "FspNvsBuffer Size - 0x%x\n", FspNvsBufferSize));
+    UPDATE_POLICY (((FSPM_UPD *) FspmUpd)->FspmArchUpd.NvsBufferPtr, FspmArchConfigPpi->NvsBufferPtr, FspNvsBufferPtr);
+  }
 
   //
   // Install Policy Ready PPI

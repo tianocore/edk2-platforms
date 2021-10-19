@@ -13,7 +13,7 @@
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/LargeVariableReadLib.h>
-
+#include <Library/PeiLib.h>
 #include <FspmUpd.h>
 #include <Guid/PlatformInfo.h>
 #include <Ppi/UpiPolicyPpi.h>
@@ -24,38 +24,21 @@ GetFspNvsBuffer (
 )
 {
   EFI_STATUS          Status;
-  UINTN                     FspNvsBufferSize;
-  VOID                      *FspNvsBufferPtr;
+  UINTN               FspNvsBufferSize;
+  VOID                *FspNvsBufferPtr;
 
   FspNvsBufferPtr   = NULL;
   FspNvsBufferSize  = 0;
-  Status = GetLargeVariable (L"FspNvsBuffer", &gFspNonVolatileStorageHobGuid, &FspNvsBufferSize, NULL);
-  if (Status == EFI_BUFFER_TOO_SMALL) {
-    DEBUG ((DEBUG_INFO, "FspNvsBuffer Size = %d\n", FspNvsBufferSize));
-    FspNvsBufferPtr = AllocateZeroPool (FspNvsBufferSize);
-    if (FspNvsBufferPtr == NULL) {
-      DEBUG ((DEBUG_ERROR, "Error: Cannot create FspNvsBuffer, out of memory!\n"));
-    ASSERT (FALSE);
-    return NULL;
-  }
-    Status = GetLargeVariable (L"FspNvsBuffer", &gFspNonVolatileStorageHobGuid, &FspNvsBufferSize, FspNvsBufferPtr);
-    if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "Error: Unable to read FspNvsBuffer UEFI variable Status: %r\n", Status));
-      ASSERT_EFI_ERROR (Status);
-    return NULL;
-  }
-
+  Status = PeiGetLargeVariable (L"FspNvsBuffer", &gFspNvsBufferVariableGuid, &FspNvsBufferPtr, &FspNvsBufferSize);
+  if (Status == EFI_SUCCESS) {
     return FspNvsBufferPtr;
-
-  } else if (Status == EFI_NOT_FOUND) {
-    DEBUG ((DEBUG_INFO, "Cannot create FSP NVS Buffer, UEFI variable does not exist (this is likely a first boot)\n"));
   } else {
-    DEBUG ((DEBUG_ERROR, "Error: Unable to read FspNvsBuffer UEFI variable Status: %r\n", Status));
-    ASSERT_EFI_ERROR (Status);
-  }
-
+    DEBUG ((DEBUG_INFO, "Cannot create FSP NVS Buffer, UEFI variable does not exist (this is likely a first boot)\n"));
     return NULL;
   }
+
+
+}
 
 VOID
 EFIAPI

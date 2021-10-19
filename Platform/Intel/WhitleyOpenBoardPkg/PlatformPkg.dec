@@ -47,6 +47,7 @@
   #OEM SKU
   gOemSkuTokenSpaceGuid                               = { 0x9e37d253, 0xabf8, 0x4985, { 0x8e, 0x23, 0xba, 0xca, 0x10, 0x39, 0x56, 0x13 } }
   gPlatformKtiEparamUpdateDataGuid                    = { 0x7bc065cf, 0xafe8, 0x4396, { 0xae, 0x9f, 0xba, 0x27, 0xdf, 0xbe, 0xcf, 0x3d } }
+  gSmbiosTablesTokenSpaceGuid                         = { 0x5e80ad48, 0xf240, 0x4fe9, { 0x87, 0xef, 0x4b, 0x46, 0xf4, 0xde, 0x78, 0xa0 } }
   gPlatformGpioInitDataGuid                           = { 0x9282563e, 0xae17, 0x4e12, { 0xb1, 0xdc, 0x7, 0xf, 0x29, 0xf3, 0x71, 0x20 } }
 #
 # UBA_END
@@ -152,6 +153,7 @@
   gEfiIpmiBootGuid                                    = { 0x5c9b75ec, 0x8ec7, 0x45f2, { 0x8f, 0x8f, 0xc1, 0xd8, 0x8f, 0x3b, 0x93, 0x45 } }
   gEfiGenericIpmiDriverInstalledGuid                  = { 0x7cdad61a, 0x3df8, 0x4425, { 0x96, 0x8c, 0x66, 0x28, 0xc8, 0x35, 0xff, 0xce } }
 
+  gDmaRemapProtocolGuid                            = { 0x4e873773, 0x8391, 0x4e47, { 0xb7, 0xf4, 0xca, 0xfb, 0xdc, 0xc4, 0xb2, 0x04 } }
 
 [PcdsFixedAtBuild]
 
@@ -210,6 +212,9 @@
   gCpPlatFlashTokenSpaceGuid.PcdFlashCfrRegionSize|0x01000000|UINT32|0xF00000B0
   gCpPlatFlashTokenSpaceGuid.PcdFlashCfrRegionBase|0xFF900000|UINT32|0xF00000B1
 
+  #If True, extend PCR7 when VT-d disabled.
+  gPlatformTokenSpaceGuid.PcdConditionallyExtendPcr7|FALSE|BOOLEAN|0xE0000045
+
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   gPlatformTokenSpaceGuid.PcdShellFile|{ 0xB7, 0xD6, 0x7A, 0xC5, 0x15, 0x05, 0xA8, 0x40, 0x9D, 0x21, 0x55, 0x16, 0x52, 0x85, 0x4E, 0x37 }|VOID*|0x40000004
   ## Specify memory size with page number for a pre-allocated reserved memory to be used
@@ -250,6 +255,7 @@
 
   ## This value is used to save memory address of MRC data structure.
   gPlatformTokenSpaceGuid.PcdBoardTypeBitmask|0x00000000|UINT32|0x30000041
+  gPlatformTokenSpaceGuid.PcdHalfWidth|FALSE|BOOLEAN|0x30000042
 
 #
 # IMR0 programming values
@@ -288,6 +294,93 @@
 #    TRUE  - Intel (R) TXT feature enabled on the platform
 #    FALSE - Disable Intel(R) TXT feature on the platform
   gPlatformModuleTokenSpaceGuid.PcdProcessorLtsxEnable | TRUE|BOOLEAN|0x3000000f
+
+  #
+  # SMBIOS Type 0 - BIOS Information
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBiosVendor|"TBD"|VOID*|0x5B000000
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBiosVersion|"TBD"|VOID*|0x5B000001
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBiosReleaseDate|"TBD"|VOID*|0x5B000002
+
+  #
+  # SMBIOS Type 1 - System Information
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemManufacturer|"TBD"|VOID*|0x5B010000
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemProductName|"TBD"|VOID*|0x5B010001
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemVersion|"TBD"|VOID*|0x5B010002
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemSerialNumber|"TBD"|VOID*|0x5B010003
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemSkuNumber|"TBD"|VOID*|0x5B010004
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemFamily|"TBD"|VOID*|0x5B010005
+
+  #
+  # SMBIOS Type 2 - Base Board (or Module) Information
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardManufacturer|"TBD"|VOID*|0x5B020000
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardProductName|"TBD"|VOID*|0x5B020001
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardVersion|"TBD"|VOID*|0x5B020002
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardSerialNumber|"TBD"|VOID*|0x5B020003
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardAssetTag|"TBD"|VOID*|0x5B020004
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesBaseBoardLocationInChassis|"TBD"|VOID*|0x5B020005
+
+  #
+  # SMBIOS Type 3 - System Enclosure or Chassis Information
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesChassisManufacturer|"TBD"|VOID*|0x5B030000
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesChassisVersion|"TBD"|VOID*|0x5B030001
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesChassisSerialNumber|"TBD"|VOID*|0x5B030002
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesChassisAssetTag|"TBD"|VOID*|0x5B030003
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesChassisSkuNumber|"TBD"|VOID*|0x5B030004
+
+  #
+  # SMBIOS Type 11 - OEM Strings
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesOemString1|"TBD"|VOID*|0x5B0B0001
+
+  #
+  # SMBIOS Type 12 - System Configuration Options
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSysConfigOption1|"TBD"|VOID*|0x5B0C0001
+
+  #
+  # SMBIOS Type 14 - Group Associations
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTableType|0xDD|UINT8|0x5B0D0001
+
+  #
+  # SMBIOS Type 17 - Memory Device
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesMemorySerialNumberFormat|0x00|UINT8|0x5B110000
+
+  #
+  # SMBIOS Type 27 - Cooling Device
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesCoolingDeviceDescription|"TBD"|VOID*|0x5B1B0000
+
+  #
+  # SMBIOS Type 28 - Temperature Probe
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesTemperatureProbeDescription|"TBD"|VOID*|0x5B1C0000
+
+  #
+  # SMBIOS Type 34 - Management Device
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesManagementDeviceDescription|"TBD"|VOID*|0x5B220000
+
+  #
+  # SMBIOS Type 35 - Management Device Component
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesManagementDeviceComponentDescription|"TBD"|VOID*|0x5B230000
+
+  #
+  # SMBIOS Type 39 - System Power Supply
+  #
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyLocation|"TBD"|VOID*|0x5B270000
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyDeviceName|"TBD"|VOID*|0x5B270001
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyManufacturer|"TBD"|VOID*|0x5B270002
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplySerialNumber|"TBD"|VOID*|0x5B270003
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyAssetTagNumber|"TBD"|VOID*|0x5B270004
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyModelPartNumber|"TBD"|VOID*|0x5B270005
+  gSmbiosTablesTokenSpaceGuid.PcdSmbiosTablesSystemPowerSupplyRevisionLevel|"TBD"|VOID*|0x5B270006
 
 [PcdsFeatureFlag]
   gPlatformTokenSpaceGuid.PcdSupportUnsignedCapsuleImage|TRUE|BOOLEAN|0x00000020
@@ -366,6 +459,24 @@
   gOemSkuTokenSpaceGuid.PcdOemSkuSubBoardID|0x0|UINT16|0x00000008
 
   gOemSkuTokenSpaceGuid.PcdOemSkuMaxDimmSize|0x100|UINT32|0x00000009
+# Form factor is MemoryFormFactorDimm by default
+# MemoryFormFactorOther                    = 0x01
+# MemoryFormFactorUnknown                  = 0x02
+# MemoryFormFactorSimm                     = 0x03
+# MemoryFormFactorSip                      = 0x04
+# MemoryFormFactorChip                     = 0x05
+# MemoryFormFactorDip                      = 0x06
+# MemoryFormFactorZip                      = 0x07
+# MemoryFormFactorProprietaryCard          = 0x08
+# MemoryFormFactorDimm                     = 0x09
+# MemoryFormFactorTsop                     = 0x0A
+# MemoryFormFactorRowOfChips               = 0x0B
+# MemoryFormFactorRimm                     = 0x0C
+# MemoryFormFactorSodimm                   = 0x0D
+# MemoryFormFactorSrimm                    = 0x0E
+# MemoryFormFactorFbDimm                   = 0x0F
+# MemoryFormFactorDie                      = 0x10
+  gOemSkuTokenSpaceGuid.PcdOemSkuMemDevFormFactor|0x09|UINT8|0x10000010
 
 #
 # USB

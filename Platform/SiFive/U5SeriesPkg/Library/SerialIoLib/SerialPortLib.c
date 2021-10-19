@@ -19,6 +19,21 @@
 #define UART_REG_IP     5
 #define UART_IP_RXWM    0x02
 
+
+#define UART_REG_TXFIFO     0
+#define UART_REG_RXFIFO     1
+#define UART_REG_TXCTRL     2
+#define UART_REG_RXCTRL     3
+#define UART_REG_IE         4
+#define UART_REG_IP         5
+#define UART_REG_DIV        6
+
+#define UART_TXFIFO_FULL    0x80000000
+#define UART_RXFIFO_EMPTY   0x80000000
+#define UART_RXFIFO_DATA    0x000000ff
+#define UART_TXCTRL_TXEN    0x1
+#define UART_RXCTRL_RXEN    0x1
+
 //---------------------------------------------
 // UART Settings
 //---------------------------------------------
@@ -27,6 +42,68 @@
 #define SYS_CLK        FixedPcdGet32(PcdU5PlatformSystemClock)
 
 BOOLEAN Initiated = FALSE;
+
+/**
+  Get value from serial port register.
+
+  @param  RegIndex   Register index
+
+  @retval Vale returned from from serial port.
+
+**/
+UINT32 GetReg (
+  IN UINT32 RegIndex
+  )
+{
+  return MmioRead32 (FixedPcdGet32(PcdU5UartBase) + (RegIndex * 0x4));
+}
+
+/**
+  Set serial port register.
+
+  @param RegIndex   Register index
+  @param Value      Value write to Register
+
+**/
+VOID SetReg (
+  IN UINT32 RegIndex,
+  IN UINT32 Value
+  )
+{
+  MmioWrite32 (Value, FixedPcdGet32(PcdU5UartBase) + (RegIndex * 0x4));
+}
+
+/**
+  Character output to serial port.
+
+  @param Ch        The character to serial port.
+
+**/
+VOID SifiveUartPutChar (
+  IN UINT8 Ch
+  )
+{
+  while (GetReg (UART_REG_TXFIFO) & UART_TXFIFO_FULL);
+
+  SetReg (UART_REG_TXFIFO, Ch);
+}
+
+/**
+  Get character from serial port.
+
+  @retval character        The character from serial port.
+
+**/
+UINT32 SifiveUartGetChar (VOID)
+{
+  UINT32 Ret;
+
+  Ret = GetReg (UART_REG_RXFIFO);
+  if (!(Ret & UART_RXFIFO_EMPTY)) {
+    return Ret & UART_RXFIFO_DATA;
+  }
+  return -1;
+}
 
 /**
   Initialize the serial device hardware.
@@ -88,7 +165,7 @@ SerialPortWrite (
   }
 
   for(Index = 0; Index < NumberOfBytes; Index ++) {
-    sifive_uart_putc (Buffer [Index]);
+    SifiveUartPutChar (Buffer [Index]);
   }
 
   return Index;
@@ -119,7 +196,7 @@ SerialPortRead (
   }
 
   for (Index = 0; Index < NumberOfBytes; Index ++) {
-    Buffer [Index] = (UINT8)sifive_uart_getc ();
+    Buffer [Index] = (UINT8)SifiveUartGetChar ();
   }
 
   return Index;

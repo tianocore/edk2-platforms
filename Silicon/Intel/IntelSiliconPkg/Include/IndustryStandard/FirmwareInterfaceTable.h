@@ -17,6 +17,7 @@
 #define FIT_TYPE_00_HEADER                  0x00
 #define FIT_TYPE_01_MICROCODE               0x01
 #define FIT_TYPE_02_STARTUP_ACM             0x02
+#define FIT_TYPE_04_PROT_BOOT_POLICY        0x04
 #define FIT_TYPE_07_BIOS_STARTUP_MODULE     0x07
 #define FIT_TYPE_08_TPM_POLICY              0x08
 #define FIT_TYPE_09_BIOS_POLICY             0x09

@@ -601,17 +601,7 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 [PcdsFeatureFlag]
   gPlatformTokenSpaceGuid.PcdLockCsrSsidSvidRegister|TRUE|BOOLEAN|0x10000001
   gPlatformTokenSpaceGuid.PcdMultiPchEnabled          |FALSE|BOOLEAN|0x10000003
- gSiPkgTokenSpaceGuid.PcdSleEnable                    |FALSE|BOOLEAN|0xF0000007
-#gSiPkgTokenSpaceGuid.PcdIntegratedTouchEnable        |FALSE|BOOLEAN|0xF000000F
-#gSiPkgTokenSpaceGuid.PcdAmtEnable                    |FALSE|BOOLEAN|0xF0000010
-#gSiPkgTokenSpaceGuid.PcdPttEnable                    |FALSE|BOOLEAN|0xF0000011
-#gSiPkgTokenSpaceGuid.PcdSiliconInitTempMemBaseAddr  |0xFE600000|UINT32|0x00010055
-##
-## gSiPkgTokenSpaceGuid.PcdFwStsSmbiosType determines the SMBIOS OEM type (0x80 to 0xFF) defined
-## in SMBIOS, values 0-0x7F will be treated as disable FWSTS SMBIOS reporting.
-## FWSTS structure uses it as SMBIOS OEM type to provide FWSTS information.
-##
-#gSiPkgTokenSpaceGuid.PcdFwStsSmbiosType|0xDB|UINT8|0x00010047
+  gSiPkgTokenSpaceGuid.PcdSleEnable                    |FALSE|BOOLEAN|0xF0000007
 
   gPlatformTokenSpaceGuid.PcdUseRxTxMultiCastRegisters|FALSE|BOOLEAN|0x10000002
 
@@ -624,8 +614,7 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 
   gSiPkgTokenSpaceGuid.PcdHardwareLocalSemaphores|FALSE|BOOLEAN|0xF0000012
 
-### [PcdsFixedAtBuild, PcdsPatchableInModule]
-[PcdsFixedAtBuild,PcdsPatchableInModule,PcdsDynamic, PcdsDynamicEx]
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamicEx]
 #
 # SouthCluster
 #
@@ -670,7 +659,7 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 # VTD PCDs End
 #
 
-[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamicEx]
 #
 # SouthCluster
 #
@@ -968,7 +957,7 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
   #
   gSiPkgTokenSpaceGuid.PcdNumaAcpiDataStaticPointer|0|UINT64|0x5000000E
 
-[PcdsDynamic, PcdsDynamicEx]
+[PcdsDynamicEx]
   gPlatformTokenSpaceGuid.PcdFpgaSwSmiInputValue|0|UINT8|0x30000007
   gPlatformTokenSpaceGuid.PcdPlatformType|0x00000000|UINT8|0x3000004A
   gPlatformTokenSpaceGuid.ReservedB|FALSE|BOOLEAN|0x6000001D

@@ -398,16 +398,16 @@ DEFINE X64EMU_ENABLE  = FALSE
 
   gArmTokenSpaceGuid.PcdPciIoBase|0x1000
   gArmTokenSpaceGuid.PcdPciIoSize|0xF000
-  gArmTokenSpaceGuid.PcdPciIoTranslation|0xEFFF0000
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0xEFFF0000
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|16
 
   gArmTokenSpaceGuid.PcdPciMmio32Base|0x40000000
   gArmTokenSpaceGuid.PcdPciMmio32Size|0x80000000
-  gArmTokenSpaceGuid.PcdPciMmio32Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x0
 
   gArmTokenSpaceGuid.PcdPciMmio64Base|0x100000000
   gArmTokenSpaceGuid.PcdPciMmio64Size|0x7F00000000
-  gArmTokenSpaceGuid.PcdPciMmio64Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
 
   ## Use PCI emulation for ATA PassThru
   # gEfiMdeModulePkgTokenSpaceGuid.PcdAtaPassThruPciEmulation|TRUE

@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -13,6 +13,7 @@ UINTN                           mAdminPasswordTryCount = 0;
 
 BOOLEAN                         mNeedReVerify = TRUE;
 BOOLEAN                         mPasswordVerified = FALSE;
+EFI_HANDLE                      mSmmHandle = NULL;
 
 /**
   Verify if the password is correct.
@@ -613,6 +614,30 @@ EXIT:
 }
 
 /**
+  Performs Exit Boot Services UserAuthentication actions
+
+  @param[in] Protocol   Points to the protocol's unique identifier.
+  @param[in] Interface  Points to the interface instance.
+  @param[in] Handle     The handle on which the interface was installed.
+
+  @retval EFI_SUCCESS   Notification runs successfully.
+**/
+EFI_STATUS
+EFIAPI
+UaExitBootServices (
+  IN CONST EFI_GUID     *Protocol,
+  IN VOID               *Interface,
+  IN EFI_HANDLE         Handle
+  )
+{
+  DEBUG ((DEBUG_INFO, "Unregister User Authentication Smi\n"));
+
+  gSmst->SmiHandlerUnRegister(mSmmHandle);
+
+  return EFI_SUCCESS;
+}
+
+/**
   Main entry for this driver.
 
   @param ImageHandle     Image handle this driver.
@@ -629,10 +654,11 @@ PasswordSmmInit (
   )
 {
   EFI_STATUS                            Status;
-  EFI_HANDLE                            SmmHandle;
   EDKII_VARIABLE_LOCK_PROTOCOL          *VariableLock;
   CHAR16                                PasswordHistoryName[sizeof(USER_AUTHENTICATION_VAR_NAME)/sizeof(CHAR16) + 5];
   UINTN                                 Index;
+  EFI_EVENT                             ExitBootServicesEvent;
+  EFI_EVENT                             LegacyBootEvent;
 
   ASSERT (PASSWORD_HASH_SIZE == SHA256_DIGEST_SIZE);
   ASSERT (PASSWORD_HISTORY_CHECK_COUNT < 0xFFFF);
@@ -657,12 +683,19 @@ PasswordSmmInit (
     ASSERT_EFI_ERROR (Status);
   }
 
-  SmmHandle = NULL;
-  Status    = gSmst->SmiHandlerRegister (SmmPasswordHandler, &gUserAuthenticationGuid, &SmmHandle);
+  Status = gSmst->SmiHandlerRegister (SmmPasswordHandler, &gUserAuthenticationGuid, &mSmmHandle);
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
+  //
+  // Register for SmmExitBootServices and SmmLegacyBoot notification.
+  //
+  Status = gSmst->SmmRegisterProtocolNotify (&gEdkiiSmmExitBootServicesProtocolGuid, UaExitBootServices, &ExitBootServicesEvent);
+  ASSERT_EFI_ERROR (Status);
+  Status = gSmst->SmmRegisterProtocolNotify (&gEdkiiSmmLegacyBootProtocolGuid, UaExitBootServices, &LegacyBootEvent);
+  ASSERT_EFI_ERROR (Status);
 
   if (IsPasswordCleared()) {
     DEBUG ((DEBUG_INFO, "IsPasswordCleared\n"));

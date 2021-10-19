@@ -343,7 +343,7 @@ SetLargeVariable (
     // Check that it is possible to store the data using less than
     // MAX_VARIABLE_SPLIT variables
     //
-    if ((DataSize / (VariableSplitSize - MAX_VARIABLE_SPLIT_DIGITS)) > MAX_VARIABLE_SPLIT) {
+    if ((DataSize / ((UINTN) VariableSplitSize - MAX_VARIABLE_SPLIT_DIGITS)) > MAX_VARIABLE_SPLIT) {
       DEBUG ((
         DEBUG_ERROR,
         "SetLargeVariable: More than %d variables are needed to store the data, which exceeds the maximum supported\n",

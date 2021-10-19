@@ -19,10 +19,50 @@
 #include <Library/TimerLib.h>
 #include <Library/EfiResetSystemLib.h>
 #include <Library/ArmSmcLib.h>
+#include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
 #include <Library/UefiRuntimeLib.h>
 
 #include <IndustryStandard/ArmStdSmc.h>
+
+
+/**
+  Disconnect everything.
+  Modified from the UEFI 2.3 spec (May 2009 version)
+
+**/
+STATIC
+VOID
+DisconnectAll (
+  VOID
+  )
+{
+  EFI_STATUS Status;
+  UINTN HandleCount;
+  EFI_HANDLE *HandleBuffer;
+  UINTN HandleIndex;
+
+  /*
+   * Retrieve the list of all handles from the handle database
+   */
+  Status = gBS->LocateHandleBuffer (
+    AllHandles,
+    NULL,
+    NULL,
+    &HandleCount,
+    &HandleBuffer
+   );
+  if (EFI_ERROR (Status)) {
+      return;
+  }
+
+  for (HandleIndex = 0; HandleIndex < HandleCount; HandleIndex++) {
+    gBS->DisconnectController (HandleBuffer[HandleIndex], NULL, NULL);
+  }
+
+  gBS->FreePool(HandleBuffer);
+}
+
 
 /**
   Resets the entire platform.
@@ -52,6 +92,8 @@ LibResetSystem (
      * Only if still in UEFI.
      */
     EfiEventGroupSignal (&gRaspberryPiEventResetGuid);
+
+    DisconnectAll ();
 
     Delay = PcdGet32 (PcdPlatformResetDelay);
     if (Delay != 0) {

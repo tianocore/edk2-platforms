@@ -1,7 +1,7 @@
 # @file
 #  Flash definition file on SiFive VC707 (U500) RISC-V platform
 #
-#  Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2019-2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -99,7 +99,7 @@ INF  MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
 INF  MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
 # RISC-V Platform PEI Driver
-INF  Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board/Universal/Pei/PlatformPei/PlatformPei.inf
+INF  Platform/RISC-V/PlatformPkg/Universal/Pei/PlatformPei/PlatformPei.inf
 
 ################################################################################
 
@@ -178,6 +178,8 @@ INF  MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 INF  MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
 INF  MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
 INF  MdeModulePkg/Universal/MemoryTest/NullMemoryTestDxe/NullMemoryTestDxe.inf
+INF  FatPkg/EnhancedFatDxe/Fat.inf
+INF  MdeModulePkg/Universal/Disk/UdfDxe/UdfDxe.inf
 
 !ifndef $(SOURCE_DEBUG_ENABLE)
 INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
@@ -185,6 +187,7 @@ INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
 INF  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
+INF  OvmfPkg/LinuxInitrdDynamicShellCommand/LinuxInitrdDynamicShellCommand.inf
 INF  ShellPkg/Application/Shell/Shell.inf
 
 #

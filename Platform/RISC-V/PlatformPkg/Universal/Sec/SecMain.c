@@ -21,6 +21,7 @@
 #include <sbi/sbi_platform.h> // Reference to header file in opensbi
 #include <sbi/sbi_init.h>     // Reference to header file in opensbi
 #include <sbi/sbi_ecall.h>    // Reference to header file in opensbi
+#include <sbi/sbi_trap.h>     // Reference to header file in opensbi
 
 //
 // Indicates the boot hart (PcdBootHartId) OpenSBI initialization is done.
@@ -434,7 +435,7 @@ EFI_STATUS EFIAPI TemporaryRamDone (
 STATIC int SbiEcallFirmwareHandler (
   IN  unsigned long         ExtId,
   IN  unsigned long         FuncId,
-  IN  unsigned long        *Args,
+  IN  CONST struct sbi_trap_regs *TrapRegs,
   OUT unsigned long        *OutVal,
   OUT struct sbi_trap_info *OutTrap
   )
@@ -446,7 +447,7 @@ STATIC int SbiEcallFirmwareHandler (
       *OutVal = (unsigned long) sbi_scratch_thishart_ptr();
       break;
     case SBI_EXT_FW_MSCRATCH_HARTID_FUNC:
-      *OutVal = (unsigned long) sbi_hartid_to_scratch (Args[0]);
+      *OutVal = (unsigned long) sbi_hartid_to_scratch (TrapRegs->a0);
       break;
     default:
       Ret = SBI_ENOTSUPP;
@@ -557,6 +558,12 @@ VOID EFIAPI PeiCore (
              &FirmwareContext
              ));
   ThisSbiPlatform->firmware_context = (unsigned long)&FirmwareContext;
+
+  //
+  // Save Flattened Device tree in firmware context
+  //
+  FirmwareContext.FlattenedDeviceTree = FuncArg1;
+
   //
   // Set firmware context Hart-specific pointer
   //
@@ -648,6 +655,42 @@ RiscVOpenSbiHartSwitchMode (
 }
 
 /**
+  Get device tree address
+
+  @retval The address of Device Tree binary.
+**/
+VOID *
+EFIAPI
+GetDeviceTreeAddress (
+  VOID
+  )
+{
+  EFI_STATUS Status;
+  EFI_COMMON_SECTION_HEADER *FoundSection;
+
+  if (FixedPcdGet32 (PcdDeviceTreeAddress)) {
+      return (VOID *)*((unsigned long *)FixedPcdGet32 (PcdDeviceTreeAddress));
+  } else if (FixedPcdGet32 (PcdRiscVDtbFvBase)) {
+      Status = FindFfsFileAndSection (
+                 (EFI_FIRMWARE_VOLUME_HEADER *)FixedPcdGet32 (PcdRiscVDtbFvBase),
+                 EFI_FV_FILETYPE_FREEFORM,
+                 EFI_SECTION_RAW,
+                 &FoundSection
+               );
+      if (EFI_ERROR(Status)) {
+        DEBUG ((DEBUG_ERROR, "Platform Device Tree is not found from FV.\n"));
+        return NULL;
+      }
+      FoundSection ++;
+      return (VOID *)FoundSection;
+  } else {
+      DEBUG ((DEBUG_ERROR, "Must use DTB either from memory or compiled in FW. PCDs configured incorrectly.\n"));
+      ASSERT (FALSE);
+  }
+  return NULL;
+}
+
+/**
   This function initilizes hart specific information and SBI.
   For the boot hart, it boots system through PEI core and initial SBI in the DXE IPL.
   For others, it goes to initial SBI and halt.
@@ -685,6 +728,13 @@ VOID EFIAPI SecCoreStartUpWithStack(
   UINT64 BootHartDoneSbiInit;
   UINT64 NonBootHartMessageLockValue;
   EFI_RISCV_FIRMWARE_CONTEXT_HART_SPECIFIC *HartFirmwareContext;
+
+  Scratch->next_arg1 = (unsigned long)GetDeviceTreeAddress ();
+  if (Scratch->next_arg1 == (unsigned long)NULL) {
+    DEBUG ((DEBUG_ERROR, "Platform Device Tree is not found\n"));
+    ASSERT (FALSE);
+  }
+  DEBUG ((DEBUG_INFO, "DTB address: 0x%08x\n", Scratch->next_arg1));
 
   //
   // Setup EFI_RISCV_FIRMWARE_CONTEXT_HART_SPECIFIC for each hart.
