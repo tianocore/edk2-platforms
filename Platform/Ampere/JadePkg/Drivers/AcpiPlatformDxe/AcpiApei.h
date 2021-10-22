@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -46,7 +46,7 @@
 #define RASIP_CRASH_SIZE             0x1000
 #define HEST_NUM_ENTRIES_PER_SOC     3
 
-#define CURRENT_BERT_VERSION         0x11
+#define CURRENT_BERT_VERSION         0x12
 #define BERT_FLASH_OFFSET            0x91B30000ULL
 #define BERT_DDR_OFFSET              0x88230000ULL
 #define BERT_DDR_LENGTH              0x50000
@@ -75,12 +75,67 @@ typedef struct {
   EFI_ACPI_6_3_GENERIC_ERROR_DATA_ENTRY_STRUCTURE Ged;
   APEI_CRASH_DUMP_DATA                            Bed;
 } APEI_CRASH_DUMP_BERT_ERROR;
+
+/*
+ * The BERT regions is 0x50000 in size. The SPI-NOR sector size is 0x1000 (4KB).
+ * So there is 80 sectors available for BERT errors.
+ *
+ * BERT error record must be persistent across boots on catastrophic errors
+ * until the BMC and UEFI have had a chance to retrieve the information. To
+ * support this, the BERT is sectioned off into two different sections.
+ *
+ *  -----------------------------------
+ *  | BERT Error Record               | sectors 0-61 (4KB * 62 = 248KB)
+ *  |                                 |
+ *  -----------------------------------
+ *  | Unused/Reserved                 | sectors 62-78 (4KB * 17 = 68KB)
+ *  |                                 |
+ *  -----------------------------------
+ *  | BERT Error Record Status        | sector 79 (4KB x 1 = 4KB)
+ *  |                                 | offset 79 * 0x1000 = 0x4F000
+ *  -----------------------------------
+ *
+ *   BERT Error Record:
+ *     - Catastrophic Full BERT Error Record (persistent until read by BMC and UEFI)
+ *   BERT Error Record Status:
+ *     - DefaultBert: Indicate Default Bert Present
+ *       - Set by UEFI on boot and cleared by SCP on shutdown, reboot, or crash
+ *       - 0 = Default BERT not valid
+ *       - 1 = Default BERT valid
+ *     - Overflow: Indicate Full Crash Capture overflow before
+ *       - Set by SCP if PendingUefi or PendingBMC was set and to be cleared by UEFI
+ *         if PendingUefi and PendingBMC are cleared.
+ *       - 0 = No overflow
+ *       - 1 = Record has overflowed
+ *     - PendingUefi: Indicate Pending UEFI detection
+ *       - Set by SCP and to be cleared by UEFI
+ *       - 0 = Pending UEFI detection not valid
+ *       - 1 = Pending UEFI detection valid
+ *     - PendingBmc:  Indicate Pending BMC detection
+ *       - Set by SCP and to be cleared by BMC
+ *       - 0 = Pending BMC detection not valid
+ *       - 1 = Pending BMC detection valid
+ */
+
+typedef struct {
+  UINT8  Guid[16];             /* [0x00] set to AMPERE_GUID */
+  UINT8  BertRev;              /* [0x10] set to BERT revision */
+  UINT8  Reserved0[7];         /* [----] Reserved */
+  UINT8  DefaultBert;          /* [0x18] Indicate Default Bert Present */
+  UINT8  Overflow;             /* [----] Indicate Full Crash Capture overflow detected */
+  UINT8  PendingUefi;          /* [----] Indicate Pending UEFI detection */
+  UINT8  PendingBmc;           /* [----] Indicate Pending BMC detection */
+  UINT8  Reserved1[4];         /* [----] Reserved */
+} BERT_ERROR_STATUS;
+
+#define BERT_SPI_ADDRESS_STATUS      (BERT_FLASH_OFFSET + 0x4F000)
+
 #pragma pack()
 
 VOID
 EFIAPI
 CreateDefaultBertData (
-  APEI_BERT_ERROR_DATA *Data
+  APEI_CRASH_DUMP_DATA *Data
   );
 
 VOID
@@ -92,7 +147,9 @@ WrapBertErrorData (
 VOID
 EFIAPI
 PullBertSpinorData (
-  APEI_CRASH_DUMP_DATA *BertErrorData
+  UINT8 *BertData,
+  UINT64 BertSpiAddress,
+  UINTN Length
   );
 
 VOID
