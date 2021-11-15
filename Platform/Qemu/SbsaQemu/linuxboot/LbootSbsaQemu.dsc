@@ -180,7 +180,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
-  PlatformBootManagerLib|ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  PlatformBootManagerLib|ArmPkg/Library/LinuxBootBootManagerLib/LinuxBootBootManagerLib.inf
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
   PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
@@ -555,6 +555,10 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisManufacturer|L"QEMU"
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisAssetTag|L"AT0000"
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisSKU|L"SK0000"
+
+[PcdsDynamicExDefault]
+
+  gArmTokenSpaceGuid.PcdLinuxBootFileGuid|{ 0x47, 0x15, 0xA9, 0x1F, 0x23, 0xDB, 0x6A, 0x4F, 0x8A, 0xF8, 0x3B, 0x97, 0x82, 0xA7, 0xF9, 0x17 }
 
 ################################################################################
 #
