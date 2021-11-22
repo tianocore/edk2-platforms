@@ -249,3 +249,4 @@ READ_LOCK_STATUS   = TRUE
     }
   }
 
+!include ArmVirtPkg/ArmVirtRules.fdf.inc
