@@ -159,62 +159,69 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF MdeModulePkg/Core/Dxe/DxeMain.inf #freezes
-  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf #exception
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf 
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf 
 
   #
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
-  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf #freezes
-  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf #freezes
-  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf #exception
-  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf #exception
-  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf #freezes
-  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf #freezes
-  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf #exception
-  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf #exception
-  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf #exception
-  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf #exception
-  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf #exception
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf 
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf 
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf 
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf 
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf 
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf 
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf 
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf 
+  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf 
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf 
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf 
 
   #
   # Multiple Console IO support
   #
-  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf #exception
+  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf 
 
 
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf #freezes
-  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf #freezes
-  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf #freezes
-  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf #exception
+  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf 
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf 
+  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf 
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf 
 
 
   #
   # UEFI application (Shell Embedded Boot Loader)
   #
-  INF edk2-platforms/Platform/Qemu/SbsaQemu/linuxboot/linuxboot.inf #freezes
+  INF edk2-platforms/Platform/Qemu/SbsaQemu/linuxboot/linuxboot.inf 
 
   #
   # Bds
   #
-  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf #exception
-  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf #exception
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf 
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf 
 
 
   #
   # ACPI support
   #
-  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf #freezes
-  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf #freezes
-  INF Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuAcpiDxe/SbsaQemuAcpiDxe.inf #freezes
-  INF RuleOverride = ACPITABLE Silicon/Qemu/SbsaQemu/AcpiTables/AcpiTables.inf #freezes
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf 
+  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf 
+  INF Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuAcpiDxe/SbsaQemuAcpiDxe.inf 
+  INF RuleOverride = ACPITABLE Silicon/Qemu/SbsaQemu/AcpiTables/AcpiTables.inf 
 
   #
   # SMBIOS support
   #
-  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf #Changes test results - fewer passed tests on fwts
-  INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf #Changes test results - fewer passed tests on fwts
-  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf #Changes test results - fewer passed tests on fwts
+  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf 
+  INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf 
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf 
+
+  #
+  # PCI support
+  #
+  INF ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
@@ -234,14 +241,17 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf #freezes
-  INF MdeModulePkg/Core/Pei/PeiMain.inf #exception
-  INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf #freezes
-  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf #freezes
-  INF ArmPkg/Drivers/CpuPei/CpuPei.inf #Recursive exception occurred while dumping the CPU state
-  INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf #freezes
-  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf #freezes
+  INF ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf 
+  INF MdeModulePkg/Core/Pei/PeiMain.inf 
+  INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf 
+  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf 
+  INF ArmPkg/Drivers/CpuPei/CpuPei.inf 
+  INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf 
+  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
+  # NonDiscoverableDevices
+  INF Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuPlatformDxe/SbsaQemuPlatformDxe.inf
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
