@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -9,6 +9,7 @@
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/PeiServicesLib.h>
 #include <MorelloPlatform.h>
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
@@ -52,16 +53,32 @@ ArmPlatformGetVirtualMemoryMap (
   OUT ARM_MEMORY_REGION_DESCRIPTOR  **VirtualMemoryMap
   )
 {
-  UINTN                         Index;
   ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
+  CONST MORELLO_PLAT_INFO_FVP   *PlatInfo;
   EFI_RESOURCE_ATTRIBUTE_TYPE   ResourceAttributes;
-  MORELLO_PLAT_INFO             *PlatInfo;
+  EFI_STATUS                    Status;
   UINT64                        DramBlock2Size;
+  UINTN                         Index;
+
+  Status = PeiServicesLocatePpi (
+             &gArmMorelloFvpPlatformInfoDescriptorPpiGuid,
+             0,
+             NULL,
+             (VOID **)&PlatInfo
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: failed to locate gArmMorelloFvpPlatformInfoDescriptorPpiGuid - %r\n",
+      gEfiCallerBaseName,
+      Status
+      ));
+    return;
+  }
 
   Index          = 0;
   DramBlock2Size = 0;
 
-  PlatInfo = (MORELLO_PLAT_INFO *)MORELLO_PLAT_INFO_STRUCT_BASE;
   if (PlatInfo->LocalDdrSize > MORELLO_DRAM_BLOCK1_SIZE) {
     DramBlock2Size = PlatInfo->LocalDdrSize - MORELLO_DRAM_BLOCK1_SIZE;
   }
