@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -8,6 +8,11 @@
 #include <Library/ArmPlatformLib.h>
 #include <Library/BaseLib.h>
 #include <Ppi/ArmMpCoreInfo.h>
+#include <MorelloPlatform.h>
+
+UINT64  gArgNtFwConfigDtPtr;
+
+STATIC MORELLO_EL3_FW_HANDOFF_PARAM_PPI  mMorelloParameterPpi;
 
 STATIC ARM_CORE_INFO  mCoreInfoTable[] = {
   { 0x0, 0x0 }, // Cluster 0, Core 0
@@ -44,6 +49,7 @@ ArmPlatformInitialize (
   IN  UINTN  MpId
   )
 {
+  mMorelloParameterPpi.NtFwConfig = (VOID *)gArgNtFwConfigDtPtr;
   return RETURN_SUCCESS;
 }
 
@@ -76,6 +82,11 @@ STATIC EFI_PEI_PPI_DESCRIPTOR  gPlatformPpiTable[] = {
     EFI_PEI_PPI_DESCRIPTOR_PPI,
     &gArmMpCoreInfoPpiGuid,
     &mMpCoreInfoPpi
+  },
+  {
+    EFI_PEI_PPI_DESCRIPTOR_PPI,
+    &gArmMorelloParameterPpiGuid,
+    &mMorelloParameterPpi
   }
 };
 
