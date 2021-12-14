@@ -22,6 +22,7 @@
 
 [Sources]
   AslTables/DsdtSoc.asl
+  AslTables/SsdtPciSoc.asl
   ConfigurationManager.c
   ConfigurationManager.h
   ConfigurationManagerSoc.c
@@ -43,6 +44,40 @@
   gEdkiiConfigurationManagerProtocolGuid
 
 [FixedPcd]
+  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdPciBusMin
+  gArmTokenSpaceGuid.PcdPciBusCount
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gArmTokenSpaceGuid.PcdPciIoBase
+  gArmTokenSpaceGuid.PcdPciIoMaxBase
+  gArmTokenSpaceGuid.PcdPciIoSize
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+  gArmTokenSpaceGuid.PcdPciMmio32Base
+  gArmTokenSpaceGuid.PcdPciMmio32MaxBase
+  gArmTokenSpaceGuid.PcdPciMmio32Size
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
+  gArmTokenSpaceGuid.PcdPciMmio64Base
+  gArmTokenSpaceGuid.PcdPciMmio64MaxBase
+  gArmTokenSpaceGuid.PcdPciMmio64Size
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation
+
+  gArmMorelloTokenSpaceGuid.PcdCcixBusCount
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMax
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMin
+  gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress
+  gArmMorelloTokenSpaceGuid.PcdCcixIoBase
+  gArmMorelloTokenSpaceGuid.PcdCcixIoMaxBase
+  gArmMorelloTokenSpaceGuid.PcdCcixIoSize
+  gArmMorelloTokenSpaceGuid.PcdCcixIoTranslation
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Base
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32MaxBase
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Size
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Translation
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Base
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64MaxBase
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Translation
+
   ## PL011 Serial Debug UART
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate
