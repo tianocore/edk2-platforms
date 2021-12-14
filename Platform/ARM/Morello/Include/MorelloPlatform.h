@@ -88,7 +88,7 @@
 #pragma pack(1)
 
 typedef struct {
-  UINT64  LocalDdrSize;  ///< Local DDR memory size in Bytes
+  UINT64    LocalDdrSize;  ///< Local DDR memory size in Bytes
 } MORELLO_PLAT_INFO_FVP;
 
 typedef struct {
