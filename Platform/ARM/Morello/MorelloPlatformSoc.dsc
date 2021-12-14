@@ -42,6 +42,31 @@
   # Platform Library
   ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLibSoc.inf
 
+  #USB Requirement
+  UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
+
+  [LibraryClasses.common.DXE_DRIVER]
+  PciHostBridgeLib|Platform/ARM/Morello/Library/PciHostBridgeLib/PciHostBridgeLibSoc.inf
+  PciSegmentLib|Platform/ARM/Morello/Library/PciSegmentLib/PciSegmentLib.inf
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+  PciExpressLib|Platform/ARM/Morello/Library/PciExpressLib/PciExpressLib.inf
+
+[PcdsFixedAtBuild.common]
+  # PCIe
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+
 [Components.common]
   # Platform driver
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeSoc.inf
+
+  # Usb Support
+  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+
+  # NVMe boot devices
+  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf

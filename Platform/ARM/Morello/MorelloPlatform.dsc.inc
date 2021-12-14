@@ -219,6 +219,23 @@
   # RAM Disk
   MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
 
+  # Required by PCI
+  ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+
+  # PCI Support
+  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf {
+   <PcdsFixedAtBuild>
+     gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8010004F
+  }
+
+  # AHCI Support
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  # SATA Controller
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
   # Network tools
   ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
   ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf

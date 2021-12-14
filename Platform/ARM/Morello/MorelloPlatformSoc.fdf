@@ -140,6 +140,31 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
 
+  # Required by PCI
+  INF ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+
+  # PCI Support
+  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+
+  # AHCI Support
+  INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  # SATA Controller
+  INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  # Usb Support
+  INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+
+  # NVMe boot devices
+  INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
 BlockSize          = 0x1000

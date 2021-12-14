@@ -12,7 +12,7 @@
 #include <MorelloPlatform.h>
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
-#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  9
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  15
 
 STATIC CONST CHAR8  *gTblAttrDesc[] = {
   "UNCACHED_UNBUFFERED          ",
@@ -157,6 +157,54 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Length         = MORELLO_AXI_EXPANSION_PERIPHERAL_SZ;
   VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   LOG_MEM ("Expansion Peripherals           : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // PCIe ECAM Configuration Space
+  VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[Index].VirtualBase    = PcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[Index].Length = (FixedPcdGet32 (PcdPciBusMax) -
+                                      FixedPcdGet32 (PcdPciBusMin) + 1) *
+                                     SIZE_1MB;
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("PCIe ECAM Region                : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // PCIe MMIO32 Memory Space
+  VirtualMemoryTable[++Index].PhysicalBase = PcdGet32 (PcdPciMmio32Base);
+  VirtualMemoryTable[Index].VirtualBase    = PcdGet32 (PcdPciMmio32Base);
+  VirtualMemoryTable[Index].Length = (PcdGet32 (PcdPciMmio32Size) +
+                                      FixedPcdGet32 (PcdPciIoSize));
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("PCIe MMIO32 & IO Region         : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // PCIe MMIO64 Memory Space
+  VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdPciMmio64Base);
+  VirtualMemoryTable[Index].VirtualBase    = PcdGet64 (PcdPciMmio64Base);
+  VirtualMemoryTable[Index].Length     = PcdGet64 (PcdPciMmio64Size);
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("PCIe MMIO64 Region              : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // CCIX ECAM Configuration Space
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet64 (PcdCcixExpressBaseAddress);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet64 (PcdCcixExpressBaseAddress);
+  VirtualMemoryTable[Index].Length = (FixedPcdGet32 (PcdCcixBusMax) -
+                                      FixedPcdGet32 (PcdCcixBusMin) + 1) *
+                                     SIZE_1MB;
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("CCIX ECAM Region                : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // CCIX MMIO32 Memory Space
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet32 (PcdCcixMmio32Base);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet32 (PcdCcixMmio32Base);
+  VirtualMemoryTable[Index].Length = (FixedPcdGet32 (PcdCcixMmio32Size) +
+                                      FixedPcdGet32 (PcdCcixIoSize));
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("CCIX MMIO32 & IO Region         : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  // CCIX MMIO64 Memory Space
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet64 (PcdCcixMmio64Base);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet64 (PcdCcixMmio64Base);
+  VirtualMemoryTable[Index].Length     = FixedPcdGet64 (PcdCcixMmio64Size);
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("CCIX MMIO64 Region              : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
   // End of Table
   VirtualMemoryTable[++Index].PhysicalBase = 0;
