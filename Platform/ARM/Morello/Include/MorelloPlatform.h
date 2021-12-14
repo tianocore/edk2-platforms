@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -52,12 +52,12 @@
 #pragma pack(1)
 
 typedef struct {
-  UINT64    LocalDdrSize;  ///< Local DDR memory size in Bytes
-  UINT64    RemoteDdrSize; ///< Remote DDR memory size in Bytes
-  UINT8     SlaveCount;    ///< Slave count in C2C mode
-  UINT8     Mode;          ///< 0 - Single Chip, 1 - Chip to Chip (C2C)
-} MORELLO_PLAT_INFO;
+  UINT64    LocalDdrSize; ///< Local DDR memory size in Bytes
+} MORELLO_PLAT_INFO_FVP;
 
 #pragma pack()
 
+typedef struct {
+  CONST VOID    *NtFwConfig;
+} MORELLO_EL3_FW_HANDOFF_PARAM_PPI;
 #endif //MORELLO_PLATFORM_H_

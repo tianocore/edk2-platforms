@@ -14,6 +14,7 @@
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
 
   # Ramdisk Support
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
