@@ -1,7 +1,7 @@
 ## @file
 #  Describes the entire platform configuration.
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -22,6 +22,8 @@
   Include                        # Root include for the package
 
 [Guids.common]
+  # ARM Morello Platform Info descriptor
+  gArmMorelloPlatformInfoDescriptorGuid = { 0x891422EF, 0x5377, 0x459E, { 0xA5, 0x42, 0x7A, 0xA2, 0x1A, 0x55, 0x54, 0x7F } }
   gArmMorelloTokenSpaceGuid =  { 0x0A8C3A78, 0xA56F, 0x4788, { 0x83, 0xB4, 0xCD, 0x29, 0x62, 0x96, 0x77, 0x51 } }
 
 [PcdsFixedAtBuild]
@@ -69,3 +71,7 @@
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSupported|FALSE|BOOLEAN|0x0000002C
+
+[Ppis]
+  gArmMorelloFvpPlatformInfoDescriptorPpiGuid = { 0x58885983, 0xF46A, 0x437E, { 0xBD, 0xD3, 0x2E, 0x80, 0x3D, 0x58, 0x1E, 0x3E } }
+  gArmMorelloParameterPpiGuid = { 0x8E289A83, 0x44E1, 0x41CF, { 0xA7, 0x41, 0x83, 0x80, 0x89, 0x23, 0x43, 0xA3 } }
