@@ -45,11 +45,12 @@
   # Virtio Support
   VirtioLib|OvmfPkg/Library/VirtioLib/VirtioLib.inf
   VirtioMmioDeviceLib|OvmfPkg/Library/VirtioMmioDeviceLib/VirtioMmioDeviceLib.inf
-  FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
-  OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   PciHostBridgeLib|Platform/ARM/Morello/Library/PciHostBridgeLib/PciHostBridgeLibFvp.inf
+  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+  PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
 
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|TRUE
@@ -88,6 +89,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x6F000000
   gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x0
   gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
 
 [Components.common]
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
@@ -97,6 +101,23 @@
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeFvp.inf
   # PEI Phase modules
   Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Fvp.inf
+
+  # Required by PCI
+  ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+
+  # PCI Support
+  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf {
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8010004F
+  }
+
+  # AHCI Support
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  # SATA Controller
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
   #
   # Semi-hosting filesystem
