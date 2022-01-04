@@ -57,6 +57,7 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "MORELLO",
       Name (_SEG, Zero)              // PCI Segment Group number
       Name (_BBN, Zero)              // PCI Base Bus Number
       Name (_CCA, 1)                 // Cache Coherency Attribute
+      Name (_UID, 0)
 
       // Root Complex 0
       Device (RP0) {
@@ -142,6 +143,7 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "MORELLO",
       Name (_SEG, 1)                 // PCI Segment Group number
       Name (_BBN, 0)                 // PCI Base Bus Number
       Name (_CCA, 1)                 // Cache Coherency Attribute
+      Name (_UID, 1)
 
       // Root Complex 1
       Device (RP1) {
