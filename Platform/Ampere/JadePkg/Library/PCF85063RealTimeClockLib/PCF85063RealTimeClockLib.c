@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -22,6 +22,7 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiRuntimeLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
+#include <Library/SystemFirmwareInterfaceLib.h>
 #include <Protocol/RealTimeClock.h>
 
 #include "PCF85063.h"
@@ -74,6 +75,7 @@ LibGetTime (
     if (!EfiAtRuntime ()) {
       mLastSavedTimeEpoch = EpochSeconds;
       mLastSavedSystemCount = ArmGenericTimerGetSystemCount ();
+      MailboxMsgDateConfig (Time);
     }
   } else {
     CurrentSystemCount = ArmGenericTimerGetSystemCount ();
@@ -140,6 +142,8 @@ LibSetTime (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
+  MailboxMsgDateConfig (Time);
 
   if (!EfiAtRuntime ()) {
     mLastSavedTimeEpoch = EpochSeconds;
@@ -240,6 +244,8 @@ LibRtcInitialize (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
+  MailboxMsgDateConfigRuntimeSetup ();
 
   //
   // Register for the virtual address change event

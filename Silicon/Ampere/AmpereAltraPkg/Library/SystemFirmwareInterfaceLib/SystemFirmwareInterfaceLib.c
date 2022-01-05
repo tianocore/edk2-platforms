@@ -1,7 +1,7 @@
 /** @file
   Provides functions for communication with System Firmware (SMpro/PMpro and ATF).
 
-  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -15,6 +15,18 @@
 #include <Library/DebugLib.h>
 #include <Library/MailboxInterfaceLib.h>
 #include <Library/SystemFirmwareInterfaceLib.h>
+
+#define SMPRO_RTC_YEAR_SHIFT    16
+#define SMPRO_RTC_YEAR_MASK     0xFFFF0000
+#define SMPRO_RTC_MONTH_SHIFT   8
+#define SMPRO_RTC_MONTH_MASK    0x0000FF00
+#define SMPRO_RTC_DAY_SHIFT     0
+#define SMPRO_RTC_DAY_MASK      0x000000FF
+
+#define CONVERT_EFI_TIME_TO_SMPRO_DATE(x) \
+          (((x)->Year << SMPRO_RTC_YEAR_SHIFT) & SMPRO_RTC_YEAR_MASK) | \
+          (((x)->Month << SMPRO_RTC_MONTH_SHIFT) & SMPRO_RTC_MONTH_MASK) | \
+          (((x)->Day << SMPRO_RTC_DAY_SHIFT) & SMPRO_RTC_DAY_MASK)
 
 /**
   Read a register which is not accessible from the non-secure world
@@ -279,6 +291,47 @@ MailboxMsgSetBootProgress (
   Message.ExtendedData[1] = (Checkpoint >> 16) & 0xFFFF;
 
   Status = MailboxWrite (Socket, SMproDoorbellChannel1, &Message);
+  ASSERT_EFI_ERROR (Status);
+
+  return Status;
+}
+
+/**
+  Configure date in SMpro/PMpro.
+
+  @param[in]  Time              A pointer to the date time for configuration.
+
+  @retval EFI_SUCCESS           Configure the date successfully.
+  @retval EFI_INVALID_PARAMETER The time parameter is NULL.
+  @retval Otherwise             Errors returned from the MailboxWrite() functions.
+
+**/
+EFI_STATUS
+EFIAPI
+MailboxMsgDateConfig (
+  IN EFI_TIME   *Time
+  )
+{
+  EFI_STATUS           Status;
+  MAILBOX_MESSAGE_DATA Message;
+  UINT32                Date;
+
+  if (Time == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Message.Data = MAILBOX_USER_MESSAGE_ENCODE (
+                   MAILBOX_USER_MESSAGE_SUBTYPE_SET_CONFIGURATION,
+                   MAILBOX_SET_CONFIGURATION_DATE,
+                   0
+                   );
+
+  Date = CONVERT_EFI_TIME_TO_SMPRO_DATE (Time);
+
+  Message.ExtendedData[0] = Date;
+  Message.ExtendedData[1] = 0;
+
+  Status = MailboxWrite (0, PMproDoorbellChannel1, &Message);
   ASSERT_EFI_ERROR (Status);
 
   return Status;

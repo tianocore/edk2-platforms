@@ -1,0 +1,31 @@
+## @file
+#  Provides functions for communication with System Firmware (SMpro/PMpro)
+#  via interfaces like Mailbox.
+#
+#  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = RuntimeSystemFirmwareInterface
+  FILE_GUID                      = C9165C89-6F45-4AB6-8C12-105498A5C6BD
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SystemFirmwareInterfaceLib|DXE_RUNTIME_DRIVER
+
+[Sources]
+  SystemFirmwareInterfaceLib.c
+  RuntimeSystemFirmwareInterfaceLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  MailboxInterfaceLib

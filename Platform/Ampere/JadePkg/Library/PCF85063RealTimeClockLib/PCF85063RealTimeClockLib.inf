@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -8,10 +8,10 @@
 
 [Defines]
   INF_VERSION                      = 0x0001001B
-  MODULE_TYPE                      = BASE
+  MODULE_TYPE                      = DXE_RUNTIME_DRIVER
   BASE_NAME                        = PCF85063RealTimeClockLib
   FILE_GUID                        = 271569F6-5522-4006-9FF5-F07A59473AAC
-  LIBRARY_CLASS                    = RealTimeClockLib
+  LIBRARY_CLASS                    = RealTimeClockLib|DXE_RUNTIME_DRIVER
   VERSION_STRING                   = 1.0
 
 [Sources.common]
@@ -39,6 +39,8 @@
   TimerLib
   UefiLib
   UefiRuntimeLib
+  SystemFirmwareInterfaceLib
+  MailboxInterfaceLib
 
 [Guids]
   gEfiEventVirtualAddressChangeGuid

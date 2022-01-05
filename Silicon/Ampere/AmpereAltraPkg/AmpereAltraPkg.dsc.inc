@@ -267,6 +267,8 @@
   NVParamLib|Silicon/Ampere/AmpereAltraPkg/Library/NVParamLib/RuntimeNVParamLib.inf
   AmpereCpuLib|Silicon/Ampere/AmpereAltraPkg/Library/AmpereCpuLib/RuntimeAmpereCpuLib.inf
   FlashLib|Silicon/Ampere/AmpereAltraPkg/Library/FlashLib/RuntimeFlashLib.inf
+  MailboxInterfaceLib|Silicon/Ampere/AmpereAltraPkg/Library/MailboxInterfaceLib/RuntimeMailboxInterfaceLib.inf
+  SystemFirmwareInterfaceLib|Silicon/Ampere/AmpereAltraPkg/Library/SystemFirmwareInterfaceLib/RuntimeSystemFirmwareInterfaceLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   SmbusLib|MdePkg/Library/DxeSmbusLib/DxeSmbusLib.inf

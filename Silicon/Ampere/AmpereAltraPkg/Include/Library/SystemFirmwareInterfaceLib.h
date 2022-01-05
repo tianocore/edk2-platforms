@@ -2,7 +2,7 @@
   Provides functions for communication with System Firmware (SMpro/PMpro)
   via interfaces like Mailbox.
 
-  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -153,6 +153,14 @@
 #define MAILBOX_BOOT_PROGRESS_COMMAND_SET 1
 #define MAILBOX_BOOT_PROGRESS_STAGE_UEFI  8
 
+//
+// Parameters for Set Configuration
+//   Param0: Configuration type
+//     37: Date configuration
+//   Param1: Unused
+//
+#define MAILBOX_SET_CONFIGURATION_DATE  37
+
 /**
   Read a register which is not accessible from the non-secure world
   by sending a mailbox message to the SMpro processor.
@@ -252,6 +260,35 @@ MailboxMsgSetBootProgress (
   IN UINT8   Socket,
   IN UINT8   BootStatus,
   IN UINT32  Checkpoint
+  );
+
+/**
+  Configure date in SMpro/PMpro.
+
+  @param[in]  Time              A pointer to the date time for configuration.
+
+  @retval EFI_SUCCESS           Configure the date successfully.
+  @retval EFI_INVALID_PARAMETER The time parameter is NULL.
+  @retval Otherwise             Errors returned from the MailboxWrite() functions.
+
+**/
+EFI_STATUS
+EFIAPI
+MailboxMsgDateConfig (
+  IN EFI_TIME   *Time
+  );
+
+/**
+  Setup runtime date configuration.
+
+  @retval EFI_SUCCESS           The operation completed successfully.
+  @retval Otherwise             Errors returned from the MailboxRuntimeSetup() functions.
+
+**/
+EFI_STATUS
+EFIAPI
+MailboxMsgDateConfigRuntimeSetup (
+  VOID
   );
 
 #endif /* SYSTEM_FIRMWARE_INTERFACE_LIB_H_ */

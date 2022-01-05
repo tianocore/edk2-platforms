@@ -2,7 +2,7 @@
   The library implements the hardware Mailbox (Doorbell) interface for communication
   between the Application Processor (ARMv8) and the System Control Processors (SMpro/PMpro).
 
-  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -51,6 +51,8 @@
 #define DB_STATUS_AVAIL_BIT       BIT16
 #define DB_STATUS_ACK_BIT         BIT0
 
+UINTN gDoorbellBaseAddress[PLATFORM_CPU_MAX_SOCKET][NUMBER_OF_DOORBELLS_PER_SOCKET] = {{0}};
+
 /**
   Get the base address of a doorbell.
 
@@ -68,7 +70,8 @@ MailboxGetDoorbellAddress (
   IN DOORBELL_CHANNELS Doorbell
   )
 {
-  UINTN DoorbellAddress;
+  UINTN SocketId;
+  UINTN DoorbellId;
 
   if (Socket >= GetNumberOfActiveSockets ()
       || Doorbell >= NUMBER_OF_DOORBELLS_PER_SOCKET)
@@ -76,13 +79,22 @@ MailboxGetDoorbellAddress (
     return 0;
   }
 
-  if (Doorbell >= SMproDoorbellChannel0) {
-    DoorbellAddress = SMPRO_DBx_ADDRESS (Socket, (UINT8)(Doorbell - SMproDoorbellChannel0));
-  } else {
-    DoorbellAddress = PMPRO_DBx_ADDRESS (Socket, (UINT8)Doorbell);
+  //
+  // Setup Doorbell base address at the first attempt
+  //
+  if (gDoorbellBaseAddress[0][0] == 0) {
+    for (SocketId = 0; SocketId < PLATFORM_CPU_MAX_SOCKET; SocketId++) {
+      for (DoorbellId = 0; DoorbellId < NUMBER_OF_DOORBELLS_PER_SOCKET; DoorbellId++) {
+        if (DoorbellId >= SMproDoorbellChannel0) {
+          gDoorbellBaseAddress[SocketId][DoorbellId] = SMPRO_DBx_ADDRESS (SocketId, (UINT8)(DoorbellId - SMproDoorbellChannel0));
+        } else {
+          gDoorbellBaseAddress[SocketId][DoorbellId] = PMPRO_DBx_ADDRESS (SocketId, (UINT8)DoorbellId);
+        }
+      }
+    }
   }
 
-  return DoorbellAddress;
+  return gDoorbellBaseAddress[Socket][Doorbell];
 }
 
 /**

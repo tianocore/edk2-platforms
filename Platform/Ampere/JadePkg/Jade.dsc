@@ -73,11 +73,6 @@
 ################################################################################
 [LibraryClasses]
   #
-  # RTC Library: Common RTC
-  #
-  RealTimeClockLib|Platform/Ampere/JadePkg/Library/PCF85063RealTimeClockLib/PCF85063RealTimeClockLib.inf
-
-  #
   # ACPI Libraries
   #
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
@@ -90,6 +85,12 @@
   OemMiscLib|Platform/Ampere/JadePkg/Library/OemMiscLib/OemMiscLib.inf
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+
+[LibraryClasses.common.DXE_RUNTIME_DRIVER]
+  #
+  # RTC Library: Common RTC
+  #
+  RealTimeClockLib|Platform/Ampere/JadePkg/Library/PCF85063RealTimeClockLib/PCF85063RealTimeClockLib.inf
 
 ################################################################################
 #
