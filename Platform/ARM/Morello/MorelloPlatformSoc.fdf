@@ -115,6 +115,8 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
+  INF Platform/ARM/Morello/Drivers/CadenceQspiDxe/CadenceQspiDxe.inf
+
   INF Platform/ARM/Drivers/BootMonFs/BootMonFs.inf
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 
