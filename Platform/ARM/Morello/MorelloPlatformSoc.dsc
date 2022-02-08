@@ -57,6 +57,10 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
 
   # NOR flash support
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0x1AF40000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x00020000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0x1AF20000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x00020000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|0x1AF00000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x00020000
 
@@ -91,4 +95,4 @@
       NULL|EmbeddedPkg/Library/NvVarStoreFormattedLib/NvVarStoreFormattedLib.inf
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   }
-
+  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
