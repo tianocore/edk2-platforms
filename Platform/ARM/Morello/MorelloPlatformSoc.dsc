@@ -42,6 +42,9 @@
   #USB Requirement
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
 
+  # NOR flash support
+  NorFlashInfoLib|EmbeddedPkg/Library/NorFlashInfoLib/NorFlashInfoLib.inf
+
   [LibraryClasses.common.DXE_DRIVER]
   PciHostBridgeLib|Platform/ARM/Morello/Library/PciHostBridgeLib/PciHostBridgeLibSoc.inf
   PciSegmentLib|Platform/ARM/Morello/Library/PciSegmentLib/PciSegmentLib.inf
@@ -53,11 +56,9 @@
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
 
-  # Runtime Variable storage
-  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+  # NOR flash support
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|0x1AF00000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x00020000
 
 [Components.common]
   # Platform driver
@@ -65,6 +66,12 @@
   # PEI Phase modules
   Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Soc.inf
 
+
+  # NOR flash support
+  Platform/ARM/Morello/Drivers/CadenceQspiDxe/CadenceQspiDxe.inf {
+      <LibraryClasses>
+      NorFlashPlatformLib|Platform/ARM/Morello/Library/NorFlashLib/NorFlashLib.inf
+  }
 
   # Usb Support
   MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
@@ -81,6 +88,7 @@
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+      NULL|EmbeddedPkg/Library/NvVarStoreFormattedLib/NvVarStoreFormattedLib.inf
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   }
 
