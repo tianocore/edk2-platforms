@@ -66,6 +66,12 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x10000
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|134
 
+  # Runtime Variable storage
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+
   #FVP Specific PCD values for PCIe
   gArmTokenSpaceGuid.PcdPciBusMax|15
   gArmTokenSpaceGuid.PcdPciMmio64Size|0x2000000000
@@ -85,3 +91,9 @@
   # Semi-hosting filesystem
   #
   ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
+  # Runtime Variable support
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
