@@ -166,6 +166,11 @@ READ_LOCK_STATUS   = TRUE
   # NVMe boot devices
   INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 
+  # Network
+  !include NetworkPkg/Network.fdf.inc
+  INF ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
+  INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
 BlockSize          = 0x1000

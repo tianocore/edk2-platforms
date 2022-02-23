@@ -27,9 +27,6 @@
   FLASH_DEFINITION               = Platform/ARM/Morello/MorelloPlatformSoc.fdf
   BUILD_NUMBER                   = 1
 
-  # Network definition
-  DEFINE NETWORK_ISCSI_ENABLE    = FALSE
-
 !include Platform/ARM/Morello/MorelloPlatform.dsc.inc
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 !include DynamicTablesPkg/DynamicTables.dsc.inc
