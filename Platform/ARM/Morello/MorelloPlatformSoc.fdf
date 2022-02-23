@@ -170,6 +170,7 @@ READ_LOCK_STATUS   = TRUE
   !include NetworkPkg/Network.fdf.inc
   INF ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+  INF Drivers/Realtek/Bus/Pcie/PcieNetworking/RtkUndiDxe.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
