@@ -1,10 +1,16 @@
 ## @file
 #  Component description file for Morello Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021-2022, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
+
+[Defines]
+  NETWORK_TLS_ENABLE             = FALSE
+  NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
+
+  !include NetworkPkg/Network.dsc.inc
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -247,3 +253,7 @@
 
   # SATA Controller
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  # Network tools
+  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
