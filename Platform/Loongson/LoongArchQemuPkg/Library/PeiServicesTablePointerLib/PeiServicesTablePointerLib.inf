@@ -1,0 +1,32 @@
+## @file
+#  PEI Services Table Pointer Library.
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiServicesTablePointerLib
+  FILE_GUID                      = C3C9C4ED-EB8A-4548-BE1B-ABB0B6F35B1E
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PeiServicesTablePointerLib|PEIM PEI_CORE SEC
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  PeiServicesTablePointer.c
+  PeiServicesTablePointerLib.S
+
+[Packages]
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+
+[Pcd]
