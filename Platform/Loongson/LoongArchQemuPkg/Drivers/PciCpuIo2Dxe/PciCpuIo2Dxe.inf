@@ -1,0 +1,44 @@
+## @file
+#  Produces the CPU I/O 2 Protocol by using the services of the I/O Library.
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PciCpuIo2Dxe
+  FILE_GUID                      = 168D1A6E-F4A5-448A-9E95-795661BB3067
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PciCpuIo2Initialize
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  PciCpuIo2Dxe.c
+
+[Packages]
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseLib
+  DebugLib
+  IoLib
+  PcdLib
+  UefiBootServicesTableLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+
+[Protocols]
+  gEfiCpuIo2ProtocolGuid                         ## PRODUCES
+
+[Depex]
+  TRUE
