@@ -1,0 +1,47 @@
+## @file
+#
+#  Copyright (c) 2022, Loongson Limited. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = LsRealTimeClockLib
+  FILE_GUID                      = 9793a3da-1869-4fdf-88b1-c6484341f50b
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = RealTimeClockLib
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  LsRealTimeClockLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+
+[LibraryClasses]
+  IoLib
+  UefiLib
+  DebugLib
+  PcdLib
+  DxeServicesTableLib
+  UefiRuntimeLib
+
+[Pcd]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRtcBaseAddress
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  gEfiRealTimeClockArchProtocolGuid             # PROTOCOL ALWAYS_PRODUCED
+
+[Depex]
+  TRUE
