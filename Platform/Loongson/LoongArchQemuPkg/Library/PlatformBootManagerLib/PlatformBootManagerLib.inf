@@ -1,0 +1,75 @@
+## @file
+#  Implementation for PlatformBootManagerLib library class interfaces.
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformBootManagerLib
+  FILE_GUID                      = 469184E8-FADA-41E4-8823-012CA19B40D4
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformBootManagerLib|DXE_DRIVER
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  PlatformBm.c
+  QemuKernel.c
+
+[Packages]
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+  ShellPkg/ShellPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  BootLogoLib
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+  PrintLib
+  QemuBootOrderLib
+  QemuLoadImageLib
+  QemuFwCfgLib
+  UefiBootManagerLib
+  UefiBootServicesTableLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[FixedPcd]
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultParity
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultStopBits
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut
+
+[Guids]
+  gEfiFileInfoGuid
+  gEfiFileSystemInfoGuid
+  gEfiFileSystemVolumeLabelInfoIdGuid
+  gEfiEndOfDxeEventGroupGuid
+  gRootBridgesConnectedEventGroupGuid
+  gUefiShellFileGuid
+  gEfiLoongsonBootparamsTableGuid                               ## SOMETIMES_PRODUCES ## SystemTable
+  gEfiTtyTermGuid
+
+[Protocols]
+  gEfiDevicePathProtocolGuid
+  gEfiFirmwareVolume2ProtocolGuid
+  gEfiGraphicsOutputProtocolGuid
+  gEfiLoadedImageProtocolGuid
+  gEfiPciRootBridgeIoProtocolGuid
+  gEfiSimpleFileSystemProtocolGuid
