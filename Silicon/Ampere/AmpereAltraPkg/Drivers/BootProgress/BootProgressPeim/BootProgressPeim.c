@@ -168,7 +168,7 @@ BootProgressListenerPei (
     mBootstate = BootFailed;
   }
 
-  MailboxMsgSetBootProgress (0, mBootstate, Value);
+  MailboxMsgSetBootProgress (MASTER_SOCKET, MAILBOX_BOOT_PROGRESS_STAGE_UEFI, mBootstate, Value);
 
   return EFI_SUCCESS;
 }

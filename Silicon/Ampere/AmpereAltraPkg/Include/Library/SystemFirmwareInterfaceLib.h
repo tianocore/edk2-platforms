@@ -149,9 +149,11 @@
 //   Param0: 1 - Set boot state
 //   Param1: Boot stage value
 //     0x08: BL33/UEFI Stage
+//     0x09: OS Stage
 //
 #define MAILBOX_BOOT_PROGRESS_COMMAND_SET 1
 #define MAILBOX_BOOT_PROGRESS_STAGE_UEFI  8
+#define MAILBOX_BOOT_PROGRESS_STAGE_OS    9
 
 //
 // Parameters for Set Configuration
@@ -247,7 +249,8 @@ MailboxMsgGetRandomNumber64 (
   Report the UEFI boot progress to the SMpro.
 
   @param[in]  Socket           Active socket index.
-  @param[in]  BootStatus       The status of the UEFI boot.
+  @param[in]  BootStage        The stage of the system.
+  @param[in]  BootStatus       The status of the stage.
   @param[in]  Checkpoint       The UEFI Checkpoint value.
 
   @retval EFI_SUCCESS           Set the boot progress successfully.
@@ -258,6 +261,7 @@ EFI_STATUS
 EFIAPI
 MailboxMsgSetBootProgress (
   IN UINT8   Socket,
+  IN UINT8   BootStage,
   IN UINT8   BootStatus,
   IN UINT32  Checkpoint
   );

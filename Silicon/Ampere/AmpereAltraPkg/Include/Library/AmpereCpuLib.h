@@ -22,6 +22,8 @@
 #define SOCKET_ID(CpuId)               ((CpuId) / (PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM))
 #define CLUSTER_ID(CpuId)              (((CpuId) / PLATFORM_CPU_NUM_CORES_PER_CPM) % PLATFORM_CPU_MAX_CPM)
 
+#define MASTER_SOCKET                  0
+#define SLAVE_SOCKET                   1
 
 /**
   Get current CPU frequency.

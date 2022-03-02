@@ -85,6 +85,8 @@ EFI_RSC_HANDLER_PROTOCOL *mRscHandlerProtocol = NULL;
 
 STATIC UINT8 mBootstate = BootStart;
 
+STATIC BOOLEAN mEndOfDxe = FALSE;
+
 STATIC
 BOOLEAN
 StatusCodeFilter (
@@ -118,7 +120,7 @@ StatusCodeFilter (
   @param[in]  Data                This optional parameter may be used to pass additional data.
 
   @retval EFI_SUCCESS             Status code is what we expected.
-  @retval EFI_UNSUPPORTED         Status code not supported.
+  @retval Otherwise               Errors returned from the MailboxMsgSetBootProgress() functions.
 
 **/
 EFI_STATUS
@@ -131,8 +133,10 @@ BootProgressListenerDxe (
   IN EFI_STATUS_CODE_DATA  *Data
   )
 {
-  BOOLEAN IsProgress = FALSE;
-  BOOLEAN IsError = FALSE;
+  EFI_STATUS  Status;
+  UINT8       BootStage;
+  BOOLEAN     IsProgress = FALSE;
+  BOOLEAN     IsError = FALSE;
 
   if ((CodeType & EFI_STATUS_CODE_TYPE_MASK) == EFI_PROGRESS_CODE) {
     IsProgress = StatusCodeFilter (DxeProgressCode, Value);
@@ -158,12 +162,27 @@ BootProgressListenerDxe (
 
   if (IsError) {
     mBootstate = BootFailed;
-  } else if (Value == (EFI_SOFTWARE_DXE_BS_DRIVER | EFI_SW_DXE_BS_PC_READY_TO_BOOT_EVENT)) {
-    /* Set boot complete when reach to ReadyToBoot event */
+  } else if ((Value == (EFI_SOFTWARE_EFI_BOOT_SERVICE | EFI_SW_BS_PC_EXIT_BOOT_SERVICES))
+            || (Value == (EFI_SOFTWARE_DXE_CORE | EFI_SW_DXE_CORE_PC_HANDOFF_TO_NEXT)))
+  {
+    /* Set boot complete when reach to Exit Boot Service event or DXE Core Handoff To Next */
     mBootstate = BootComplete;
+  } else {
+    mBootstate = BootStart;
   }
 
-  MailboxMsgSetBootProgress (0, mBootstate, Value);
+  BootStage = mEndOfDxe ? MAILBOX_BOOT_PROGRESS_STAGE_OS : MAILBOX_BOOT_PROGRESS_STAGE_UEFI;
+
+  Status = MailboxMsgSetBootProgress (MASTER_SOCKET, BootStage, mBootstate, Value);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "MailboxMsgSetBootProgress failed - %r\n", Status));
+    return Status;
+  }
+
+  // Set mEndOfDxe flag to indicate that UEFI firmware booting ended
+  if (Value == (EFI_SOFTWARE_DXE_CORE | EFI_SW_DXE_CORE_PC_HANDOFF_TO_NEXT)) {
+    mEndOfDxe = TRUE;
+  }
 
   if (Value == (EFI_SOFTWARE_EFI_BOOT_SERVICE | EFI_SW_BS_PC_EXIT_BOOT_SERVICES) &&
       mRscHandlerProtocol != NULL)

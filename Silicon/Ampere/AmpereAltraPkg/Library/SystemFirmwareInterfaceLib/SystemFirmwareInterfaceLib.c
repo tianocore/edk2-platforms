@@ -248,7 +248,8 @@ MailboxMsgGetRandomNumber64 (
   Report the UEFI boot progress to the SMpro.
 
   @param[in]  Socket           Active socket index.
-  @param[in]  BootStatus       The status of the UEFI boot.
+  @param[in]  BootStage        The stage of the system.
+  @param[in]  BootStatus       The status of the stage.
   @param[in]  Checkpoint       The UEFI Checkpoint value.
 
   @retval EFI_SUCCESS           Set the boot progress successfully.
@@ -259,6 +260,7 @@ EFI_STATUS
 EFIAPI
 MailboxMsgSetBootProgress (
   IN UINT8   Socket,
+  IN UINT8   BootStage,
   IN UINT8   BootStatus,
   IN UINT32  Checkpoint
   )
@@ -273,7 +275,7 @@ MailboxMsgSetBootProgress (
   Message.Data = MAILBOX_USER_MESSAGE_ENCODE (
                    MAILBOX_USER_MESSAGE_SUBTYPE_BOOT_PROGRESS,
                    MAILBOX_BOOT_PROGRESS_COMMAND_SET,
-                   MAILBOX_BOOT_PROGRESS_STAGE_UEFI
+                   BootStage
                    );
 
   //
