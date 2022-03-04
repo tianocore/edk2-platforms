@@ -45,6 +45,10 @@
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
 
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize
+  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceLimit
+
   #
   # PL011 UART Settings for Serial Port Console Redirection
   #
