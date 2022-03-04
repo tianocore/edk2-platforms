@@ -34,8 +34,8 @@
 [PcdsFixedAtBuild.common]
   gArmJunoTokenSpaceGuid.PcdPcieControlBaseAddress|0x7FF20000|UINT64|0x0000000B
   gArmJunoTokenSpaceGuid.PcdPcieRootPortBaseAddress|0x7FF30000|UINT64|0x0000000C
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceBaseAddress|0x40000000|UINT64|0x00000011
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000|UINT64|0x00000012
+  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000|UINT64|0x00000011
+  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x4FFFFFFF|UINT64|0x00000012
 
   gArmJunoTokenSpaceGuid.PcdSynopsysUsbOhciBaseAddress|0x7FFB0000|UINT32|0x00000004
   gArmJunoTokenSpaceGuid.PcdSynopsysUsbEhciBaseAddress|0x7FFC0000|UINT32|0x00000005

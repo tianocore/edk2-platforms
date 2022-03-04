@@ -46,7 +46,7 @@
 
 [FixedPcd]
   # PCI Root complex specific PCDs
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize
 
   ## PL011 Serial Debug UART

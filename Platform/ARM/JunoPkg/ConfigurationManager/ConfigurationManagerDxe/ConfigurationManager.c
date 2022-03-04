@@ -230,7 +230,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
   // PCI Configuration Space Info
   {
     // The physical base address for the PCI segment
-    FixedPcdGet64 (PcdPciConfigurationSpaceBaseAddress),
+    FixedPcdGet64 (gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress),
     // The PCI segment group number
     0,
     // The start bus number

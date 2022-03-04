@@ -13,7 +13,7 @@
 #include <Protocol/CpuIo2.h>
 #include <Library/PcdLib.h>
 
-#define PCI_ECAM_BASE       FixedPcdGet64 (PcdPciConfigurationSpaceBaseAddress)
+#define PCI_ECAM_BASE       FixedPcdGet64 (PcdPciExpressBaseAddress)
 #define PCI_ECAM_SIZE       FixedPcdGet64 (PcdPciConfigurationSpaceSize)
 #define PCI_IO_BASE         FixedPcdGet64 (PcdPciIoTranslation)
 #define PCI_IO_SIZE         FixedPcdGet64 (PcdPciIoSize)

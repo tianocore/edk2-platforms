@@ -30,7 +30,7 @@ MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ACCESS_TABLE mAcpiMcfgTable = {
         ),
         0, // Reserved
     }, {
-        FixedPcdGet32 (PcdPciConfigurationSpaceBaseAddress),
+        FixedPcdGet32 (PcdPciExpressBaseAddress),
         0, // PciSegmentGroupNumber
         FixedPcdGet32 (PcdPciBusMin),
         FixedPcdGet32 (PcdPciBusMax),

@@ -62,7 +62,7 @@
 
   gArmJunoTokenSpaceGuid.PcdPcieControlBaseAddress
   gArmJunoTokenSpaceGuid.PcdPcieRootPortBaseAddress
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize
 
 [Protocols]

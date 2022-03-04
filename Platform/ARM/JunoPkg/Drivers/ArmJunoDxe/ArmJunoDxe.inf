@@ -67,7 +67,7 @@
   gArmJunoTokenSpaceGuid.PcdJunoFdtDevicePath
 
   # PCI Root complex specific PCDs
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gArmTokenSpaceGuid.PcdPciBusMin
   gArmTokenSpaceGuid.PcdPciBusMax
 

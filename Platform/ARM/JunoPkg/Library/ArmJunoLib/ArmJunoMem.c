@@ -118,8 +118,8 @@ ArmPlatformGetVirtualMemoryMap (
   //
   // PCI Configuration Space
   //
-  VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdPciConfigurationSpaceBaseAddress);
-  VirtualMemoryTable[Index].VirtualBase     = PcdGet64 (PcdPciConfigurationSpaceBaseAddress);
+  VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[Index].VirtualBase     = PcdGet64 (PcdPciExpressBaseAddress);
   VirtualMemoryTable[Index].Length          = PcdGet64 (PcdPciConfigurationSpaceSize);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
