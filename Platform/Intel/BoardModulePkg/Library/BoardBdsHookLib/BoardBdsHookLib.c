@@ -3,6 +3,7 @@
   implementation instance of the BDS hook library
 
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2022 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -131,7 +132,7 @@ IsTrustedConsole (
 
   switch (ConsoleType) {
     case ConIn:
-      TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleInputDevicePath);
+      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleInputDevicePath));
       break;
     case ConOut:
       //
@@ -147,7 +148,7 @@ IsTrustedConsole (
         TempDevicePath = NextDevicePathNode (TempDevicePath);
       }
 
-      TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleOutputDevicePath);
+      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
       break;
     default:
       ASSERT (FALSE);
@@ -171,7 +172,9 @@ IsTrustedConsole (
   } while (TempDevicePath != NULL);
 
   FreePool (ConsoleDevice);
-
+  if (TrustedConsoleDevicepath != NULL) {
+    FreePool (TrustedConsoleDevicepath);
+  }
   return FALSE;
 }
 
@@ -624,7 +627,7 @@ ConnectTrustedStorage (
   EFI_STATUS                Status;
   EFI_HANDLE                DeviceHandle;
 
-  TrustedStorageDevicepath = PcdGetPtr (PcdTrustedStorageDevicePath);
+  TrustedStorageDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedStorageDevicePath));
   DumpDevicePath (L"TrustedStorage", TrustedStorageDevicepath);
 
   TempDevicePath = TrustedStorageDevicepath;
@@ -649,6 +652,9 @@ ConnectTrustedStorage (
 
     FreePool (Instance);
   } while (TempDevicePath != NULL);
+  if (TrustedStorageDevicepath != NULL) {
+    FreePool (TrustedStorageDevicepath);
+  }
 }
 
 
@@ -1031,7 +1037,7 @@ AddConsoleVariable (
   EFI_HANDLE                GraphicsControllerHandle;
   EFI_DEVICE_PATH           *GopDevicePath;
 
-  TempDevicePath = ConsoleDevicePath;
+  TempDevicePath = DuplicateDevicePath (ConsoleDevicePath);
   do {
     Instance = GetNextDevicePathInstance (&TempDevicePath, &Size);
     if (Instance == NULL) {
@@ -1074,6 +1080,9 @@ AddConsoleVariable (
 
     FreePool (Instance);
   } while (TempDevicePath != NULL);
+  if (TempDevicePath != NULL) {
+    FreePool (TempDevicePath);
+  }
 }
 
 
