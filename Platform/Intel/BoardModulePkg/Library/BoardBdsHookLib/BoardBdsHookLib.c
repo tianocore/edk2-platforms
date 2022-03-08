@@ -3,6 +3,7 @@
   implementation instance of the BDS hook library
 
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -131,7 +132,7 @@ IsTrustedConsole (
 
   switch (ConsoleType) {
     case ConIn:
-      TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleInputDevicePath);
+      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleInputDevicePath));
       break;
     case ConOut:
       //
@@ -147,7 +148,7 @@ IsTrustedConsole (
         TempDevicePath = NextDevicePathNode (TempDevicePath);
       }
 
-      TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleOutputDevicePath);
+      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
       break;
     default:
       ASSERT (FALSE);
@@ -164,6 +165,9 @@ IsTrustedConsole (
     if (CompareMem (ConsoleDevice, Instance, Size - END_DEVICE_PATH_LENGTH) == 0) {
       FreePool (Instance);
       FreePool (ConsoleDevice);
+      if (TempDevicePath != NULL) {
+        FreePool (TempDevicePath);
+      }
       return TRUE;
     }
 
@@ -171,7 +175,9 @@ IsTrustedConsole (
   } while (TempDevicePath != NULL);
 
   FreePool (ConsoleDevice);
-
+  if (TempDevicePath != NULL) {
+    FreePool (TempDevicePath);
+  }
   return FALSE;
 }
 
@@ -624,7 +630,7 @@ ConnectTrustedStorage (
   EFI_STATUS                Status;
   EFI_HANDLE                DeviceHandle;
 
-  TrustedStorageDevicepath = PcdGetPtr (PcdTrustedStorageDevicePath);
+  TrustedStorageDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedStorageDevicePath));
   DumpDevicePath (L"TrustedStorage", TrustedStorageDevicepath);
 
   TempDevicePath = TrustedStorageDevicepath;
@@ -649,6 +655,10 @@ ConnectTrustedStorage (
 
     FreePool (Instance);
   } while (TempDevicePath != NULL);
+
+  if (TempDevicePath != NULL) {
+    FreePool (TempDevicePath);
+  }
 }
 
 
@@ -1031,7 +1041,7 @@ AddConsoleVariable (
   EFI_HANDLE                GraphicsControllerHandle;
   EFI_DEVICE_PATH           *GopDevicePath;
 
-  TempDevicePath = ConsoleDevicePath;
+  TempDevicePath = DuplicateDevicePath (ConsoleDevicePath);
   do {
     Instance = GetNextDevicePathInstance (&TempDevicePath, &Size);
     if (Instance == NULL) {
@@ -1074,6 +1084,10 @@ AddConsoleVariable (
 
     FreePool (Instance);
   } while (TempDevicePath != NULL);
+
+  if (TempDevicePath != NULL) {
+    FreePool (TempDevicePath);
+  }
 }
 
 
