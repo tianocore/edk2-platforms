@@ -45,10 +45,10 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
     LNK_DEVICE(4, LNKD, 204)
 
     // CCIX Root Complex
-    LNK_DEVICE(1, LNKE, 233)
-    LNK_DEVICE(2, LNKF, 234)
-    LNK_DEVICE(3, LNKG, 235)
-    LNK_DEVICE(4, LNKH, 236)
+    LNK_DEVICE(5, LNKE, 233)
+    LNK_DEVICE(6, LNKF, 234)
+    LNK_DEVICE(7, LNKG, 235)
+    LNK_DEVICE(8, LNKH, 236)
 
     // PCI Root Complex
     Device(PCI0) {
