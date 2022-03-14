@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -267,9 +267,9 @@ EDKII_SOC_PLATFORM_REPOSITORY_INFO  MorelloSocRepositoryInfo = {
       // Memory access properties : Allocation hints
       0,
       // Memory access properties : Memory access flags
-      0,
+      EFI_ACPI_IORT_MEM_ACCESS_FLAGS_CPM,
       // ATS attributes
-      3,
+      EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,
       // PCI segment number
       0,
       // Memory address size limit
@@ -288,9 +288,9 @@ EDKII_SOC_PLATFORM_REPOSITORY_INFO  MorelloSocRepositoryInfo = {
       // Memory access properties : Allocation hints
       0,
       // Memory access properties : Memory access flags
-      0,
+      EFI_ACPI_IORT_MEM_ACCESS_FLAGS_CPM,
       // ATS attributes
-      3,
+      EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,
       // PCI segment number
       1,
       // Memory address size limit
