@@ -1,7 +1,7 @@
 /** @file
   Secondary System Description Table (SSDT)
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -34,7 +34,7 @@
 
 #define ROOT_PRT_ENTRY(Pin, Link)   PRT_ENTRY(0x0000FFFF, Pin, Link)  // Device 0 for Bridge.
 
-DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "MORELLO",
+DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
                 CFG_MGR_OEM_REVISION)
 {
   Scope (_SB) {

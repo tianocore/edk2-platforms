@@ -1,7 +1,7 @@
 /** @file
   Differentiated System Description Table Fields (DSDT)
 
-  Copyright (c) 2021, ARM Ltd. All rights reserved.<BR>
+  Copyright (c) 2021 - 2022, ARM Ltd. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -12,7 +12,7 @@
 
 #include "ConfigurationManager.h"
 
-DefinitionBlock("Dsdt.aml", "DSDT", 1, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION) {
+DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION) {
   Scope(_SB) {
     Device(CP00) { // Cluster 0, Cpu 0
       Name(_HID, "ACPI0007")
