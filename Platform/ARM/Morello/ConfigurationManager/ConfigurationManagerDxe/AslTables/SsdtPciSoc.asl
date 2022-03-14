@@ -134,6 +134,30 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
         }) // Name(RBUF)
         Return (RBUF)
       } // Method (_CRS)
+      Device (RES0) {
+        Name (_HID, "PNP0C02")
+        Name (_CRS, ResourceTemplate ()
+        {
+           QWordMemory (                              // 64-bit PCIe ECAM window
+             ResourceProducer,
+             PosDecode,
+             MinFixed,
+             MaxFixed,
+             NonCacheable,
+             ReadWrite,
+             0x0000000000000000,                       // Granularity
+             FixedPcdGet64 (PcdPciExpressBaseAddress), // Range Minimum
+             FixedPcdGet64 (PcdPciConfigurationSpaceLimit), // Range Maximum
+             0x0000000000000000,                       // Translation Offset
+             FixedPcdGet64 (PcdPciConfigurationSpaceSize),     // Length
+             ,
+             ,
+             ,
+             AddressRangeMemory,
+             TypeStatic
+           )
+        })
+      } //Device (RES0)
     } // Device (PCI0)
 
     // CCIX Root Complex
@@ -220,6 +244,30 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
         }) // Name(RBUF)
         Return (RBUF)
       } // Method (_CRS)
+      Device (RES1) {
+        Name (_HID, "PNP0C02")
+        Name (_CRS, ResourceTemplate ()
+        {
+           QWordMemory (                              // 64-bit CCIX ECAM window
+             ResourceProducer,
+             PosDecode,
+             MinFixed,
+             MaxFixed,
+             NonCacheable,
+             ReadWrite,
+             0x0000000000000000,                        // Granularity
+             FixedPcdGet64 (PcdCcixExpressBaseAddress), // Range Minimum
+             FixedPcdGet64 (PcdCcixConfigurationSpaceLimit), // Range Maximum
+             0x0000000000000000,                        // Translation Offset
+             FixedPcdGet64 (PcdCcixConfigurationSpaceSize),     // Length
+             ,
+             ,
+             ,
+             AddressRangeMemory,
+             TypeStatic
+           )
+        })
+      } //Device (RES1)
     } // Device (PCI1)
   } // _SB
 } // DB

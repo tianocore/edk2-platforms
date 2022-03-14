@@ -135,6 +135,8 @@
   # RAM Disk
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize|0x18000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x28CFFFFFFF
 
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|0
