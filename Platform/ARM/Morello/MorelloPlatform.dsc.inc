@@ -156,6 +156,8 @@
   gArmTokenSpaceGuid.PcdPciMmio64Size|0x1FC0000000
   gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x28C0000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x28CFFFFFFF
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
 

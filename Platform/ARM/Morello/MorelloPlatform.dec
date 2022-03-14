@@ -44,6 +44,8 @@
   gArmTokenSpaceGuid.PcdPciIoMaxBase|0x003FFFFF|UINT32|0x0000000C
   gArmTokenSpaceGuid.PcdPciMmio32MaxBase|0x6EFFFFFF|UINT32|0x00000010
   gArmTokenSpaceGuid.PcdPciMmio64MaxBase|0x28BFFFFFFF|UINT64|0x00000014
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000|UINT64|0x00000017
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x28CFFFFFFF|UINT64|0x00000018
 
   # CCIX
   gArmMorelloTokenSpaceGuid.PcdCcixBusMin|0|UINT32|0x0000019
@@ -61,11 +63,14 @@
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size|0x1FC0000000|UINT64|0x00000025
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64MaxBase|0x4FBFFFFFFF|UINT64|0x00000026
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Translation|0x0|UINT64|0x00000027
+  gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress|0x4FC0000000|UINT64|0x0000028
+  gArmMorelloTokenSpaceGuid.PcdCcixConfigurationSpaceSize|0x10000000|UINT64|0x00000029
+  gArmMorelloTokenSpaceGuid.PcdCcixConfigurationSpaceLimit|0x4FCFFFFFFF|UINT64|0x0000002A
 
   # Virtio Net device
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetBaseAddress|0x00000000|UINT32|0x00000029
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x0000002A
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x0000002B
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetBaseAddress|0x00000000|UINT32|0x0000002B
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x0000002C
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x0000002D
 
   # EFI Framebuffer
   gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase|0x0|UINT64|0x00000032
@@ -79,12 +84,12 @@
   gArmMorelloTokenSpaceGuid.PcdOscLpiEnable|0|UINT32|0x00000059
 
   # Base address of Cadence QSPI controller configuration registers
-  gArmMorelloTokenSpaceGuid.PcdCadenceQspiDxeRegBaseAddress|0x1C050000|UINT32|0x0000002D
+  gArmMorelloTokenSpaceGuid.PcdCadenceQspiDxeRegBaseAddress|0x1C050000|UINT32|0x0000002E
 
 [PcdsFeatureFlag.common]
-  gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
-  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetSupported|FALSE|BOOLEAN|0x0000002C
+  gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x0000002F
+  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000030
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetSupported|FALSE|BOOLEAN|0x00000031
 
 [Ppis]
   gArmMorelloFvpPlatformInfoDescriptorPpiGuid = { 0x58885983, 0xF46A, 0x437E, { 0xBD, 0xD3, 0x2E, 0x80, 0x3D, 0x58, 0x1E, 0x3E } }
