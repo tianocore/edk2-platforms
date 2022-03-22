@@ -1,0 +1,26 @@
+## @file  U740.dec
+# This Package provides SiFive U740 modules and libraries.
+#
+# Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+# Copyright (c) 2022, Boyang Han <yqszxx@gmail.com>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001b
+  PACKAGE_NAME                   = U740
+  PACKAGE_UNI_FILE               = U740.uni
+  PACKAGE_GUID                   = 0E5F5459-20DF-4748-BCE8-F8CBDC5C41DB
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+
+[LibraryClasses]
+
+[Guids]
+  gUefiRiscVPlatformU740PkgTokenSpaceGuid  = {0xF73592FF, 0xD846, 0x445B, { 0xBD, 0x19, 0x2D, 0xD5, 0x72, 0x8B, 0xDE, 0x61 }}
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  U740PkgExtra.uni
