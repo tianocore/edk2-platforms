@@ -1,0 +1,50 @@
+## @file
+# Payload platform Package
+#
+# Provides platform specific drivers and definitions to create a platform FV
+# to work with universal UEF payload.
+#
+# Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEFINE FD_BASE       = 0x00800000
+  DEFINE FD_BLOCK_SIZE = 0x00001000
+
+  !if $(TARGET) == "NOOPT"
+    DEFINE FD_SIZE     = 0x00090000
+    DEFINE NUM_BLOCKS  = 0x90
+  !else
+    DEFINE FD_SIZE     = 0x00050000
+    DEFINE NUM_BLOCKS  = 0x50
+  !endif
+
+[FD.PlatformPayload]
+  BaseAddress   = $(FD_BASE) | gUefiPayloadPkgTokenSpaceGuid.PcdPayloadFdMemBase
+  Size          = $(FD_SIZE) | gUefiPayloadPkgTokenSpaceGuid.PcdPayloadFdMemSize
+  ErasePolarity = 1
+  BlockSize     = $(FD_BLOCK_SIZE)
+  NumBlocks     = $(NUM_BLOCKS)
+
+  0x00000000 | $(FD_SIZE)
+  FV = PlatformPayload
+
+[FV.PlatformPayload]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid         = 96E75986-6FDD-491E-9FD5-35E21AC45B45
+  FvForceRebase      = FALSE
+
+  !include Include/PostMemory.fdf
+
+################################################################################
+#
+# Rules are use with the [FV] section's module INF type to define
+# how an FFS file is created for a given INF file. The following Rule are the default
+# rules for the different module type. User can add the customized rules to define the
+# content of the FFS file.
+#
+################################################################################
+
+!include MinPlatformPkg/Include/Fdf/RuleInclude.fdf
