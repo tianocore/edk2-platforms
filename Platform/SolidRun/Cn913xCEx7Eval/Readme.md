@@ -76,7 +76,7 @@ Please follow instructions from "Obtaining source code" and "Manual building" fr
 1. Export SCP_BL2 variable:
 
    ```
-   $ export SCP_BL2=${WORKSKPACE}/binaries-marvell/mrvl_scp_bl2.img
+   $ export SCP_BL2=${WORKSPACE}/binaries-marvell/mrvl_scp_bl2.img
    ```
 1. Export compiler variables (for cross-compilation only):
 
