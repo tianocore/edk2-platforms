@@ -104,7 +104,7 @@
   # PL011 Serial Debug UART (DBG2)
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1C0A0000
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|50000000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
 
   # SBSA Watchdog
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|93
