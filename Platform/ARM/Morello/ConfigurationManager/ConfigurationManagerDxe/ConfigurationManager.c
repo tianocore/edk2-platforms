@@ -152,7 +152,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
   // Debug Serial Port
   {
     FixedPcdGet64 (PcdSerialDbgRegisterBase),               // BaseAddress
-    0,                                                      // Interrupt -unused
+    173,                                                    // Interrupt
     FixedPcdGet64 (PcdSerialDbgUartBaudRate),               // BaudRate
     FixedPcdGet32 (PcdSerialDbgUartClkInHz),                // Clock
     EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_PL011_UART,       // Port subtype
