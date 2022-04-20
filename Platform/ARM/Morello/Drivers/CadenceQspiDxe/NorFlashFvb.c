@@ -194,9 +194,6 @@ FvbGetAttributes (
   )
 {
   EFI_FVB_ATTRIBUTES_2  FlashFvbAttributes;
-  NOR_FLASH_INSTANCE    *Instance;
-
-  Instance = INSTANCE_FROM_FVB_THIS (This);
 
   FlashFvbAttributes = EFI_FVB2_READ_ENABLED_CAP | EFI_FVB2_READ_STATUS |
                        EFI_FVB2_WRITE_ENABLED_CAP | EFI_FVB2_WRITE_STATUS |
