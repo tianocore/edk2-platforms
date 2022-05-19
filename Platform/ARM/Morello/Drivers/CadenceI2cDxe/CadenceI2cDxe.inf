@@ -1,0 +1,43 @@
+## @file
+#  Cadence I2C controller UEFI Driver
+#
+#  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                 = 0x0001001B
+  BASE_NAME                   = CadenceI2cDxe
+  FILE_GUID                   = A36C582B-6027-41FC-8BD3-2D26043B7D00
+  MODULE_TYPE                 = UEFI_DRIVER
+  VERSION_STRING              = 1.0
+  ENTRY_POINT                 = Load
+  UNLOAD_IMAGE                = Unload
+
+[Sources.common]
+  Driver.c
+  Driver.h
+  DriverBinding.c
+  RegisterMap.h
+
+[LibraryClasses.common]
+  DebugLib
+  DevicePathLib
+  IoLib
+  MemoryAllocationLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols.common]
+  gEfiDriverBindingProtocolGuid  ## PRODUCES
+  gCadenceI2cGuid                ## TO_START
+  gEfiDevicePathProtocolGuid     ## BY_START
+  gEfiI2cMasterProtocolGuid      ## BY_START
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
