@@ -1,0 +1,41 @@
+## @file
+#  NXP TDA19988 HDMI transmitter UEFI Driver
+#
+#  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                 = 0x0001001B
+  BASE_NAME                   = Tda19988Dxe
+  FILE_GUID                   = 7E8D0A10-A800-4D25-8F7C-2BEA65C204B1
+  MODULE_TYPE                 = UEFI_DRIVER
+  VERSION_STRING              = 1.0
+  ENTRY_POINT                 = Load
+  UNLOAD_IMAGE                = Unload
+
+[Sources.common]
+  Driver.c
+  Driver.h
+  DriverBinding.c
+  RegisterMap.h
+
+[LibraryClasses.common]
+  DebugLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids.common]
+  gTda19988Guid
+
+[Protocols.common]
+  gEfiDriverBindingProtocolGuid ## PRODUCE
+  gEfiI2cIoProtocolGuid         ## TO_START
+  gTda19988ProtocolGuid         ## BY_START
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
