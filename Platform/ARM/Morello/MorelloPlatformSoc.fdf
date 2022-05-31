@@ -102,6 +102,10 @@ READ_LOCK_STATUS   = TRUE
   # Configuration Manager
   INF Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxeSoc.inf
 
+  # Platform GOP
+  INF Platform/ARM/Morello/Drivers/CadenceI2cDxe/CadenceI2cDxe.inf
+  INF Platform/ARM/Morello/Drivers/Tda19988Dxe/Tda19988Dxe.inf
+
   # Dynamic Table fdf
   !include DynamicTablesPkg/DynamicTables.fdf.inc
 
@@ -136,6 +140,9 @@ READ_LOCK_STATUS   = TRUE
 
   # Platform driver
   INF Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeSoc.inf
+
+  # I2C
+  INF MdeModulePkg/Bus/I2c/I2cDxe/I2cDxe.inf
 
   # Bds
   INF MdeModulePkg/Application/UiApp/UiApp.inf

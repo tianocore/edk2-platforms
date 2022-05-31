@@ -26,6 +26,15 @@
   gArmMorelloPlatformInfoDescriptorGuid = { 0x891422EF, 0x5377, 0x459E, { 0xA5, 0x42, 0x7A, 0xA2, 0x1A, 0x55, 0x54, 0x7F } }
   gArmMorelloTokenSpaceGuid =  { 0x0A8C3A78, 0xA56F, 0x4788, { 0x83, 0xB4, 0xCD, 0x29, 0x62, 0x96, 0x77, 0x51 } }
 
+  gTda19988Guid   = { 0x4D5D3DF1, 0x9BF5, 0x4F40, { 0x84, 0xDD, 0x7F, 0xE5, 0x11, 0x26, 0x9D, 0x6F } }
+
+[Protocols.common]
+  gCadenceI2cGuid = { 0xFD1D4369, 0x5B63, 0x42E8, { 0x9B, 0x6B, 0x44, 0xC5, 0x30, 0x17, 0x50, 0x77 } }
+  gTda19988ProtocolGuid = { 0x856879BA, 0xE085, 0x4A08, { 0xAE, 0x6C, 0xA9, 0x0E, 0x46, 0xAF, 0x84, 0xE4 } }
+
+  # The TDA 19988 to be used with the platform GOP
+  gArmMorelloPlatformGopTda19988Guid = { 0x2A1F2BF2, 0xAF6B, 0x4EAE, { 0x9E, 0xE6, 0xDC, 0xC5, 0x8A, 0x1A, 0x3A, 0xFA } }
+
 [PcdsFixedAtBuild]
   # Ramdisk
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase|0x88000000|UINT32|0x00000001
@@ -85,6 +94,14 @@
 
   # Base address of Cadence QSPI controller configuration registers
   gArmMorelloTokenSpaceGuid.PcdCadenceQspiDxeRegBaseAddress|0x1C050000|UINT32|0x0000002E
+
+  # Hdmi I2C bus
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerInputClk|0x00000000|UINT32|0x00000038
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoBase|0x00000000|UINT32|0x00000036
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoSize|0x00000000|UINT32|0x00000037
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Cec|0x00000000|UINT16|0x0000003A
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Hdmi|0x00000000|UINT16|0x0000003B
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusSpeed|0x00000000|UINT32|0x00000039
 
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x0000002F
