@@ -1,7 +1,7 @@
 ## @file
 #  Platform DXE driver for Morello SoC Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -16,6 +16,8 @@
   ENTRY_POINT                    = ArmMorelloEntryPoint
 
 [Sources.common]
+  I2cBusHdmi.c
+  I2cBusHdmi.h
   PlatformDxeSoc.c
 
 [Packages]
@@ -24,20 +26,37 @@
   Platform/ARM/Morello/MorelloPlatform.dec
 
 [LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
   UefiDriverEntryPoint
 
 [Protocols]
   gEfiRamDiskProtocolGuid
+  gEfiI2cIoProtocolGuid                              ## CONSUMES
+  gEfiI2cMasterProtocolGuid                          ## CONSUMES
+  gArmMorelloPlatformGopTda19988Guid                 ## PRODUCES
+  gCadenceI2cGuid                                    ## PRODUCES
+  gEfiI2cBusConfigurationManagementProtocolGuid      ## PRODUCES
+  gEfiI2cEnumerateProtocolGuid                       ## PRODUCES
+  gTda19988ProtocolGuid                              ## NOTIFY
 
 [FeaturePcd]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported
 
 [FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerInputClk
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoBase
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Cec
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Hdmi
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusSpeed
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize
 
 [Depex]
-  gEfiRamDiskProtocolGuid
+  gEfiDriverBindingProtocolGuid AND gEfiRamDiskProtocolGuid
 
 [Guids]
   gEfiVirtualCdGuid      ## SOMETIMES_CONSUMES   ## GUID
+  gTda19988Guid
