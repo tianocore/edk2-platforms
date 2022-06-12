@@ -95,6 +95,9 @@
   TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
 !endif
 
+  # For stack protector support
+  NULL                             | MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
+
   BaseLib                          | MdePkg/Library/BaseLib/BaseLib.inf
   SafeIntLib                       | MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   TimeBaseLib                      | EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
