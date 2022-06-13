@@ -13,7 +13,11 @@
 #include <MorelloPlatform.h>
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
-#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  17
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS \
+  ( \
+    18 \
+    + ((FixedPcdGet32 (PcdPlatformGopBufferSize) != 0) ? 1 : 0) \
+  )
 
 STATIC CONST CHAR8  *gTblAttrDesc[] = {
   "UNCACHED_UNBUFFERED          ",
@@ -190,12 +194,37 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   LOG_MEM ("UART0                           : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet32 (PcdArmMaliDxxBase);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet32 (PcdArmMaliDxxBase);
+  VirtualMemoryTable[Index].Length         = FixedPcdGet32 (PcdArmMaliDxxSize);
+  VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  LOG_MEM ("Mali D71                        : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
   // DDR Primary
   VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdSystemMemoryBase);
   VirtualMemoryTable[Index].VirtualBase    = PcdGet64 (PcdSystemMemoryBase);
   VirtualMemoryTable[Index].Length         = PcdGet64 (PcdSystemMemorySize);
   VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
   LOG_MEM ("DDR Primary                     : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+
+  if (FixedPcdGet32 (PcdPlatformGopBufferSize) != 0) {
+    ASSERT (
+      (PcdGet64 (PcdSystemMemoryBase) +
+       PcdGet64 (PcdSystemMemorySize) - 1) <
+      FixedPcdGet64 (PcdPlatformGopBufferBase)
+      );
+    VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet64 (PcdPlatformGopBufferBase);
+    VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet64 (PcdPlatformGopBufferBase);
+    VirtualMemoryTable[Index].Length         = FixedPcdGet32 (PcdPlatformGopBufferSize);
+    // Map as Normal Non-Cacheable memory, so that we can use the accelerated
+    // SetMem/CopyMem routines that may use unaligned accesses or
+    // DC ZVA instructions. If mapped as device memory, these routine may cause
+    // alignment faults.
+    // NOTE: The attribute value is misleading, it indicates memory map type as
+    // an un-cached, un-buffered but allows buffering and reordering.
+    VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+    LOG_MEM ("DDR GOP carve out               : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
+  }
 
   // DDR Secondary
   if (DramBlock2Size != 0) {

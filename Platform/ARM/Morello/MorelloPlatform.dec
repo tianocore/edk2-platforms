@@ -67,6 +67,14 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x0000002A
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x0000002B
 
+  # EFI Framebuffer
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase|0x0|UINT64|0x00000032
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize|0x0|UINT32|0x00000033
+
+  # Base address for the ARM Mali Dxx DPU
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase|0x2CC00000|UINT64|0x00000034
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxSize|0x00300000|UINT32|0x00000035
+
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
