@@ -113,5 +113,10 @@
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 
   # Platform GOP
+  ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
+    <LibraryClasses>
+      LcdHwLib|Platform/ARM/Morello/Library/LcdHwMaliDxxLib/LcdHwMaliDxxLib.inf
+      LcdPlatformLib|Platform/ARM/Morello/Library/LcdPlatformLibMorello/LcdPlatformLibMorelloSoc.inf
+  }
   Platform/ARM/Morello/Drivers/CadenceI2cDxe/CadenceI2cDxe.inf
   Platform/ARM/Morello/Drivers/Tda19988Dxe/Tda19988Dxe.inf

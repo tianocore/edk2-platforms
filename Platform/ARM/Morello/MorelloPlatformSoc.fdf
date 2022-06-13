@@ -103,6 +103,7 @@ READ_LOCK_STATUS   = TRUE
   INF Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxeSoc.inf
 
   # Platform GOP
+  INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
   INF Platform/ARM/Morello/Drivers/CadenceI2cDxe/CadenceI2cDxe.inf
   INF Platform/ARM/Morello/Drivers/Tda19988Dxe/Tda19988Dxe.inf
 
