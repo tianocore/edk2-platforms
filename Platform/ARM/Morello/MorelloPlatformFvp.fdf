@@ -101,6 +101,9 @@ READ_LOCK_STATUS   = TRUE
   # Configuration Manager
   INF Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxeFvp.inf
 
+  # GOP
+  INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+
   # Dynamic Table fdf
   !include DynamicTablesPkg/DynamicTables.fdf.inc
 

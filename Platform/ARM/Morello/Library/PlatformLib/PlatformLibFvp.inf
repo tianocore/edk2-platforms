@@ -30,6 +30,8 @@
   AArch64/Helper.S | GCC
 
 [FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxSize
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
   gArmMorelloTokenSpaceGuid.PcdPciBusMax
   gArmMorelloTokenSpaceGuid.PcdPciBusMin
@@ -39,6 +41,8 @@
   gArmMorelloTokenSpaceGuid.PcdPciMmio32Size
   gArmMorelloTokenSpaceGuid.PcdPciMmio64Base
   gArmMorelloTokenSpaceGuid.PcdPciMmio64Size
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize
 
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
