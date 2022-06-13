@@ -50,6 +50,15 @@
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Base
   gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size
 
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxSize
+
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoBase
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoSize
+
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize
+
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
   gArmTokenSpaceGuid.PcdSystemMemoryBase

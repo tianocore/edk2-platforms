@@ -35,6 +35,10 @@
 # include common/basic libraries from MdePkg.
 !include MdePkg/MdeLibs.dsc.inc
 
+[PcdsPatchableInModule]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1920
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|1080
+
 [LibraryClasses.common]
   # Platform Library
   ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLibSoc.inf
