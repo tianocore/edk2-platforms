@@ -30,7 +30,11 @@
   AArch64/Helper.S | GCC
 
 [FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxSize
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize
 
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
