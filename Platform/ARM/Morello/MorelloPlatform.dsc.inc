@@ -11,6 +11,7 @@
   NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
 
   !include NetworkPkg/Network.dsc.inc
+  !include Platform/ARM/Morello/MorelloCap.dsc.inc
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -79,12 +80,17 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
+  # Size == 0 means to disable the GOP
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize|0x1000000
+
+  # System Memory (2GB - 16MB - The GOP frame-buffer)
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000 - gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize
+
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase|gArmTokenSpaceGuid.PcdSystemMemoryBase + gArmTokenSpaceGuid.PcdSystemMemorySize
+
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-
-  # System Memory (2GB - 16MB)
-  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000
 
   # Secondary DDR memory
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base|0x8080000000
