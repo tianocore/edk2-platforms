@@ -29,7 +29,10 @@ EDKII_SOC_PLATFORM_REPOSITORY_INFO  MorelloSocRepositoryInfo = {
       EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
       EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_REVISION,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdFadt),
-      NULL
+      NULL, // Optional pointer to the ACPI table data
+      0,    // OemTableId
+      0,    // OemRevision
+      EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_MINOR_REVISION
     },
     // GTDT Table
     {
