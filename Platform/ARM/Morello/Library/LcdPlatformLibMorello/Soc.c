@@ -11,6 +11,8 @@
 #include <Library/DebugLib.h>
 #include <Library/LcdPlatformLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Protocol/EdidActive.h>
+#include <Protocol/EdidDiscovered.h>
 #include <Protocol/Tda19988.h>
 
 typedef struct {
@@ -25,6 +27,9 @@ STATIC DISPLAY_MODE  mDisplayMode = {
   { 1920,   44, 148, 88 },
   { 1080,   5,  36,  4  },
 };
+
+STATIC EFI_EDID_DISCOVERED_PROTOCOL  mEdidDiscovered;
+STATIC EFI_EDID_ACTIVE_PROTOCOL      mEdidActive;
 
 /**
   Retrieve the TDA 19988 protocol marked for the Morello GOP.
@@ -71,12 +76,52 @@ LocateGopTda19988 (
   @param[in] Handle              Handle to the GOP.
 
   @retval EFI_SUCCESS            Platform library initialized successfully.
+  @retval *                      Other errors are possible.
 **/
 EFI_STATUS
 LcdPlatformInitializeDisplay (
   IN  EFI_HANDLE  Handle
   )
 {
+  VOID        *EdidData;
+  UINTN       EdidSize;
+  BOOLEAN     IsSinkPresent;
+  EFI_STATUS  Status;
+
+  TDA19988_PROTOCOL *CONST  Tda19988 = LocateGopTda19988 ();
+
+  if (Tda19988 == NULL) {
+    return EFI_NOT_READY;
+  }
+
+  Status = Tda19988->GetSinkPresent (Tda19988, &IsSinkPresent);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  if (IsSinkPresent) {
+    Status = Tda19988->GetEdid (Tda19988, &EdidData, &EdidSize);
+    if (EFI_ERROR (Status)) {
+      return Status;
+    }
+
+    mEdidDiscovered.Edid       = EdidData;
+    mEdidDiscovered.SizeOfEdid = EdidSize;
+
+    mEdidActive.Edid       = EdidData;
+    mEdidActive.SizeOfEdid = EdidSize;
+
+    Status = gBS->InstallMultipleProtocolInterfaces (
+                    &Handle,
+                    &gEfiEdidDiscoveredProtocolGuid,
+                    &mEdidDiscovered,
+                    &gEfiEdidActiveProtocolGuid,
+                    &mEdidActive,
+                    NULL
+                    );
+    ASSERT_EFI_ERROR (Status);
+  }
+
   return EFI_SUCCESS;
 }
 

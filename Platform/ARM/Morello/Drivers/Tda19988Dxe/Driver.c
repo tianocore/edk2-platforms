@@ -45,6 +45,15 @@
 /// page
 #define HDMI_PAGE_UNKNOWN  0xff
 
+/// Length of standard EDID block
+#define EDID_BLOCK_LENGTH  128
+
+/// Maximum attempts to read the EDID Interrupt
+#define MAX_READ_ATTEMPTS  100
+
+/// Extension blocks array index in Block 0
+#define EDID_EXTENSION_BLOCKS  126
+
 /**
   Reads a TDA19988 CEC 8-bit register.
 
@@ -399,6 +408,60 @@ HdmiClear8 (
   }
 
   return HdmiWrite8 (Dev, Register, OldValue & ~ClearMask);
+}
+
+/**
+  Reads Length number of bytes from TDA19988 HDMI register.
+
+  @param[in,out] Dev       Device context.
+  @param[in]     Reg       The TDA19988 HDMI register to read.
+  @param[out]    Value     Pointer to where to store the value read.
+  @param[in]     Length    Length of bytes to read from the register Reg
+
+  @return EFI_SUCCESS The register was successfully read to the device.
+  @return *           Other errors are possible.
+
+**/
+STATIC
+EFI_STATUS
+HdmiBlockRead (
+  IN OUT TDA19988_CONTEXT  *Dev,
+  IN     HDMI_REGISTER     Reg,
+  OUT    UINT8             *Value,
+  IN     UINT32            Length
+  )
+{
+  EFI_STATUS  Status;
+
+  Status = HdmiSetPage (Dev, Reg.Page);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  struct {
+    UINTN                OperationCount;
+    EFI_I2C_OPERATION    Reg;
+    EFI_I2C_OPERATION    Value;
+  } RequestPacket = {
+    .OperationCount = 2,
+    .Reg            = {
+      .LengthInBytes = sizeof (Reg.Address),
+      .Buffer        = &Reg.Address
+    },
+    .Value           = {
+      .Flags         = I2C_FLAG_READ,
+      .LengthInBytes = Length,
+      .Buffer        = Value
+    }
+  };
+
+  return Dev->I2cIo->QueueRequest (
+                       Dev->I2cIo,
+                       TDA19988_HDMI_INDEX,
+                       NULL,
+                       (EFI_I2C_REQUEST_PACKET *)&RequestPacket,
+                       NULL
+                       );
 }
 
 /**
@@ -782,6 +845,94 @@ DriverSetMode (
 }
 
 /**
+  Get a block of EDID data.
+
+  @param[in,out] Dev    Device context.
+  @param[out]    Buf    Pointer to store the EDID data
+  @param[in]     Block  EDID block number to fetch the data from.
+
+  @retval EFI_SUCCESS   Able to fetch the data of the EDID block.
+  @retval *             Other errors are possible.
+
+**/
+STATIC
+EFI_STATUS
+ReadEdidBlock (
+  IN OUT TDA19988_CONTEXT  *Dev,
+  OUT UINT8                *Buf,
+  IN UINT32                Block
+  )
+{
+  EFI_STATUS  Status;
+  UINT8       Val;
+  UINT32      Attempt;
+
+  Status = HdmiOr8 (Dev, HDMI_INT_FLAGS_2, HDMI_INT_FLAGS_2_EDID_BLK_RD);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_DDC_ADDR, HDMI_EDID_DEV_ADDR);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_DDC_OFFS, (Block % 2) ? 128 : 0);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_DDC_SEGM_ADDR, HDMI_EDID_SEG_PTR_ADDR);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_DDC_SEGM, (Block / 2));
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_EDID_CTRL, HDMI_EDID_REQ_READ_MASK);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiWrite8 (Dev, HDMI_EDID_CTRL, 0x00);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  // Poll interrupt status flag
+  for (Attempt = 0; Attempt < MAX_READ_ATTEMPTS; Attempt++) {
+    Status = HdmiRead8 (Dev, HDMI_INT_FLAGS_2, &Val);
+    if (EFI_ERROR (Status)) {
+      return Status;
+    }
+
+    if (Val & HDMI_INT_FLAGS_2_EDID_BLK_RD) {
+      break;
+    }
+  }
+
+  if (Attempt == MAX_READ_ATTEMPTS) {
+    DEBUG ((DEBUG_ERROR, "EDID block read interrupt not set\n"));
+    return EFI_TIMEOUT;
+  }
+
+  Status = HdmiBlockRead (Dev, HDMI_EDID_DATA0, Buf, EDID_BLOCK_LENGTH);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = HdmiClear8 (Dev, HDMI_INT_FLAGS_2, HDMI_INT_FLAGS_2_EDID_BLK_RD);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
   Retrieve the EDID.
 
   Retrieve the EDID and copy it into an allocated buffer of type
@@ -805,7 +956,54 @@ DriverGetEdid (
   OUT    UINTN             *EdidSize
   )
 {
-  return EFI_UNSUPPORTED;
+  UINT8       *Buf;
+  UINT32      MaxBlocks;
+  UINT32      BlockNum;
+  UINT32      Length;
+  EFI_STATUS  Status;
+
+  Buf = AllocateZeroPool (EDID_BLOCK_LENGTH);
+  if (Buf == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  // Block 0 is always populated so we fetch Block 0 first
+  MaxBlocks = 0;
+
+  Status = ReadEdidBlock (Dev, Buf, MaxBlocks);
+  if (EFI_ERROR (Status)) {
+    FreePool (Buf);
+    return Status;
+  }
+
+  // Get the number of Extension Blocks present
+  MaxBlocks = Buf[EDID_EXTENSION_BLOCKS];
+
+  if (MaxBlocks > 0) {
+    Buf = ReallocatePool (
+            EDID_BLOCK_LENGTH,
+            (EDID_BLOCK_LENGTH * (MaxBlocks + 1)),
+            Buf
+            );
+    if (Buf == NULL) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
+    for (BlockNum = 1; BlockNum <= MaxBlocks; BlockNum++) {
+      Length = EDID_BLOCK_LENGTH * BlockNum;
+
+      Status = ReadEdidBlock (Dev, (Buf + Length), BlockNum);
+      if (EFI_ERROR (Status)) {
+        FreePool (Buf);
+        return Status;
+      }
+    }
+  }
+
+  *EdidData = (VOID *)Buf;
+  *EdidSize = EDID_BLOCK_LENGTH * (MaxBlocks + 1);
+
+  return EFI_SUCCESS;
 }
 
 /**

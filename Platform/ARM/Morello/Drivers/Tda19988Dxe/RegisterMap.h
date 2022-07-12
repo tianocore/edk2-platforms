@@ -69,6 +69,8 @@ typedef struct {
 #define HDMI_SOFTRESET_I2C               (1 << 1)
 #define HDMI_DDC_CTRL                    HDMI_REG(0x00, 0x0b)
 #define HDMI_DDC_ENABLE                  (0 << 0)
+#define HDMI_INT_FLAGS_2                 HDMI_REG(0x00, 0x11)
+#define HDMI_INT_FLAGS_2_EDID_BLK_RD     (1 << 1)
 #define HDMI_VIP_CNTRL_0                 HDMI_REG(0x00, 0x20)
 #define HDMI_VIP_CNTRL_1                 HDMI_REG(0x00, 0x21)
 #define HDMI_VIP_CNTRL_2                 HDMI_REG(0x00, 0x22)
@@ -177,5 +179,10 @@ typedef struct {
 #define HDMI_TX4_PD_RAM           (1 << 1)
 #define HDMI_HDCP_TX33            HDMI_REG(0x12, 0xb8)
 #define HDMI_HDCP_TX33_HDMI       (1 << 1)
+
+/// EDID related defines
+#define HDMI_EDID_DEV_ADDR       0xa0
+#define HDMI_EDID_SEG_PTR_ADDR   0x60
+#define HDMI_EDID_REQ_READ_MASK  0x01
 
 #endif // MORELLO_TDA19988DXE_REGISTERMAP_H_
