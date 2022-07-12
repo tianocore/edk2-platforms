@@ -34,6 +34,8 @@
 
 [Protocols]
   gArmMorelloPlatformGopTda19988Guid ## CONSUMES
+  gEfiEdidActiveProtocolGuid         ## PRODUCES
+  gEfiEdidDiscoveredProtocolGuid     ## PRODUCES
 
 [Depex]
   gArmMorelloPlatformGopTda19988Guid
