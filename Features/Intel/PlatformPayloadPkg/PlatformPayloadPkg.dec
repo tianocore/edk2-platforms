@@ -1,0 +1,49 @@
+## @file
+# Payload Platform Package
+#
+# Provides drivers and definitions to create payload platform FV.
+#
+# Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = PlatformPayloadPkg
+  PACKAGE_GUID                   = 17F3ACAC-079D-4518-9EBF-E33289733E8C
+  PACKAGE_VERSION                = 0.1
+
+[Includes]
+  Include
+
+[Guids]
+  #
+  ## Defines the token space for the Payload platform Package PCDs.
+  #
+  gPlatformPayloadPkgTokenSpaceGuid  = {0xa375ddc6, 0x74fb, 0x4de1, {0x82, 0x6d, 0xa3, 0x10, 0xa3, 0x3b, 0x89, 0x77}}
+
+  #
+  # SPI variable support
+  #
+  gNvVariableInfoGuid      = { 0x7a345dca, 0xc26, 0x4f2a,  { 0xa8, 0x9a, 0x57, 0xc0, 0x8d, 0xdd, 0x22, 0xee } }
+  gSpiFlashInfoGuid        = { 0x2d4aac1b, 0x91a5, 0x4cd5, { 0x9b, 0x5c, 0xb4, 0x0f, 0x5d, 0x28, 0x51, 0xa1 } }
+
+
+################################################################################
+#
+# PCD Declarations section - list of all PCDs Declared by this Package
+#                            Only this package should be providing the
+#                            declaration, other packages should not.
+#
+################################################################################
+
+[PcdsFeatureFlag]
+  ## Feature enabling control
+  # @Prompt Enable payload platform FV common for most Intel platforms
+  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable|FALSE|BOOLEAN|0x00000001
+
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+  ## FFS filename to find the default variable initial data file.
+  # @Prompt FFS Name of variable initial data file
+  gPlatformPayloadPkgTokenSpaceGuid.PcdNvsDataFile |{ 0x1a, 0xf1, 0xb1, 0xae, 0x42, 0xcc, 0xcf, 0x4e, 0xac, 0x60, 0xdb, 0xab, 0xf6, 0xca, 0x69, 0xe6 }|VOID*|0x00000025

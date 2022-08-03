@@ -75,3 +75,10 @@
 !if gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable == TRUE
   !include VirtualKeyboardFeaturePkg/Include/VirtualKeyboardFeature.dsc
 !endif
+
+#
+# Individual features
+#
+!if gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable == TRUE
+  !include PlatformPayloadPkg/Include/PlatformPayloadFeature.dsc
+!endif

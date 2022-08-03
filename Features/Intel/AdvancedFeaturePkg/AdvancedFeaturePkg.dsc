@@ -80,6 +80,11 @@
   gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |TRUE
   gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |TRUE
 
+  #
+  # Individual features
+  #
+  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable          |TRUE
+
 #
 # PCD that are required to be set by the build target should be configured here for test purposes
 # These settings are only for the purposes of buildings, boards should follow instructions in Readme files.

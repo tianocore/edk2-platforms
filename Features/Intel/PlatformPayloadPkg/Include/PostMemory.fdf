@@ -1,0 +1,20 @@
+## @file
+#  FDF file for post-memory ACPI Debug advanced feature modules.
+#
+# Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+#
+# SMM Support
+#
+!if $(SMM_VARIABLE) == TRUE
+  INF PlatformPayloadPkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf
+  INF PlatformPayloadPkg/Fvb/FvbSmm.inf
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+
+!endif

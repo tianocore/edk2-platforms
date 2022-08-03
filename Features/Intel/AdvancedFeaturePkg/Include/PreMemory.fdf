@@ -76,3 +76,10 @@
 !if gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable == TRUE
   !include VirtualKeyboardFeaturePkg/Include/PreMemory.fdf
 !endif
+
+#
+# Individual features
+#
+!if gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable == TRUE
+  !include PlatformPayloadPkg/Include/PreMemory.fdf
+!endif

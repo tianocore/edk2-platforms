@@ -53,6 +53,11 @@
   UserAuthFeaturePkg/UserAuthFeaturePkg.dec
   VirtualKeyboardFeaturePkg/VirtualKeyboardFeaturePkg.dec
 
+  #
+  # Individual features
+  #
+  PlatformPayloadPkg/PlatformPayloadPkg.dec
+
 #
 # The section below sets all PCDs to FALSE in this DSC file so the feature is not enabled by default.
 # Board can set PCDs to TRUE in its DSC file to enable a subset of advanced features
@@ -75,6 +80,8 @@
   gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                        |FALSE
   gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |FALSE
   gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |FALSE
+
+  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable          |FALSE
 
 #
 # There seems to be some build parsing odd behavior that requires this PCD to be specified even though
