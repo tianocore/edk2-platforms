@@ -39,6 +39,7 @@
   MemoryAllocationLib
   NorFlashInfoLib
   NorFlashPlatformLib
+  TimerLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiLib
