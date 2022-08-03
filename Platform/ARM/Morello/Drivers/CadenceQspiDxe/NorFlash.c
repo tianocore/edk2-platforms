@@ -10,6 +10,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/NorFlashInfoLib.h>
 #include <Library/PcdLib.h>
+#include <Library/TimerLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
 
@@ -193,6 +194,73 @@ FreeInstance:
 }
 
 /**
+  Converts milliseconds into number of ticks of the performance counter.
+
+  @param[in] Milliseconds  Milliseconds to convert into ticks.
+
+  @retval Milliseconds expressed as number of ticks.
+
+**/
+STATIC
+UINT64
+MilliSecondsToTicks (
+  IN UINTN  Milliseconds
+  )
+{
+  CONST UINT64  NanoSecondsPerTick = GetTimeInNanoSecond (1);
+
+  return (Milliseconds * 1000000) / NanoSecondsPerTick;
+}
+
+/**
+  Poll Status register for NOR flash erase/write completion.
+
+  @param[in]      Instance           NOR flash Instance.
+
+  @retval         EFI_SUCCESS        Request is executed successfully.
+  @retval         EFI_TIMEOUT        Operation timed out.
+  @retval         EFI_DEVICE_ERROR   Controller operartion failed.
+
+**/
+STATIC
+EFI_STATUS
+NorFlashPollStatusRegister (
+  IN NOR_FLASH_INSTANCE  *Instance
+  )
+{
+  BOOLEAN  SRegDone;
+  UINT32   val;
+
+  val = SPINOR_OP_RDSR << CDNS_QSPI_FLASH_CMD_CTRL_REG_OPCODE_BIT_POS |
+        CDNS_QSPI_FLASH_CMD_CTRL_REG_READ_ENABLE << CDNS_QSPI_FLASH_CMD_CTRL_REG_READEN_BIT_POS |
+        CDNS_QSPI_FLASH_CMD_CTRL_REG_NUM_DATA_BYTES (1) |
+        CDNS_QSPI_FLASH_CMD_CTRL_REG_DUMMY_8C << CDNS_QSPI_FLASH_CMD_CTRL_REG_DUMMY_BIT_POS;
+
+  CONST UINT64  TickOut =
+    GetPerformanceCounter () + MilliSecondsToTicks (SPINOR_SR_WIP_POLL_TIMEOUT_MS);
+
+  do {
+    if (GetPerformanceCounter () > TickOut) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "NorFlashPollStatusRegister: Timeout waiting for erase/write.\n"
+        ));
+      return EFI_TIMEOUT;
+    }
+
+    if (EFI_ERROR (CdnsQspiExecuteCommand (Instance, val))) {
+      return EFI_DEVICE_ERROR;
+    }
+
+    SRegDone =
+      (MmioRead8 (Instance->HostRegisterBaseAddress + CDNS_QSPI_FLASH_CMD_READ_DATA_REG_OFFSET)
+       & SPINOR_SR_WIP) == 0;
+  } while (!SRegDone);
+
+  return EFI_SUCCESS;
+}
+
+/**
   Check whether NOR flash opertions are Locked.
 
   @param[in]     Instance         NOR flash Instance.
@@ -316,9 +384,13 @@ NorFlashEraseSingleBlock (
 
   DevConfigVal = SPINOR_OP_BE_4K << CDNS_QSPI_FLASH_CMD_CTRL_REG_OPCODE_BIT_POS |
                  CDNS_QSPI_FLASH_CMD_CTRL_REG_ADDR_ENABLE << CDNS_QSPI_FLASH_CMD_CTRL_REG_ADDR_BIT_POS |
-                 CDNS_QSPI_FLASH_CMD_CTRL_REG_ADDR_BYTE_3B << CDNS_QSPI_FLASH_CMD_CTRL_REG_ADDR_BYTE_BIT_POS;
+                 CDNS_QSPI_FLASH_CMD_CTRL_REG_NUM_ADDR_BYTES (3);
 
   if (EFI_ERROR (CdnsQspiExecuteCommand (Instance, DevConfigVal))) {
+    return EFI_DEVICE_ERROR;
+  }
+
+  if (EFI_ERROR (NorFlashPollStatusRegister (Instance))) {
     return EFI_DEVICE_ERROR;
   }
 
@@ -404,6 +476,10 @@ NorFlashWriteSingleWord (
   }
 
   MmioWrite32 (WordAddress, WriteData);
+  if (EFI_ERROR (NorFlashPollStatusRegister (Instance))) {
+    return EFI_DEVICE_ERROR;
+  }
+
   return EFI_SUCCESS;
 }
 
@@ -997,7 +1073,7 @@ NorFlashReadID (
 
   val = SPINOR_OP_RDID << CDNS_QSPI_FLASH_CMD_CTRL_REG_OPCODE_BIT_POS |
         CDNS_QSPI_FLASH_CMD_CTRL_REG_READ_ENABLE << CDNS_QSPI_FLASH_CMD_CTRL_REG_READEN_BIT_POS |
-        CDNS_QSPI_FLASH_CMD_CTRL_REG_ADDR_BYTE_3B << CDNS_QSPI_FLASH_CMD_CTRL_REG_READBYTE_BIT_POS;
+        CDNS_QSPI_FLASH_CMD_CTRL_REG_NUM_DATA_BYTES (3);
 
   if (EFI_ERROR (CdnsQspiExecuteCommand (Instance, val))) {
     return EFI_DEVICE_ERROR;
