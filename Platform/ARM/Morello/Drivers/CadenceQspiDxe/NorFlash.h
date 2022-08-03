@@ -479,8 +479,13 @@ NorFlashReadID (
   OUT UINT8               JedecId[3]
   );
 
+#define SPINOR_SR_WIP  BIT0                 // Write in progress
+
 #define SPINOR_OP_WREN   0x06               // Write enable
 #define SPINOR_OP_BE_4K  0x20               // Erase 4KiB block
 #define SPINOR_OP_RDID   0x9f               // Read JEDEC ID
+#define SPINOR_OP_RDSR   0x05               // Read status register
+
+#define SPINOR_SR_WIP_POLL_TIMEOUT_MS  1000u // Status Register read timeout
 
 #endif /* NOR_FLASH_DXE_H_ */
