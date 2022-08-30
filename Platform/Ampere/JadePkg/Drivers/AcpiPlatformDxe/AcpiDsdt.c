@@ -602,7 +602,7 @@ AcpiPatchPcieMmio32 (
       continue;
     }
 
-    if (!IsSlaveSocketAvailable () && Idx <= SOCKET0_LAST_RC) {
+    if (!IsSlaveSocketAvailable () && Idx <= SOCKET0_LAST_RC && Idx >= SOCKET0_FIRST_RC) {
       //
       // Patch MMIO32 resource in 1P system
       //
