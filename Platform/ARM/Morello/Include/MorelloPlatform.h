@@ -77,5 +77,6 @@ typedef struct {
 
 typedef struct {
   CONST VOID    *NtFwConfig;
+  CONST VOID    *HwConfig;
 } MORELLO_EL3_FW_HANDOFF_PARAM_PPI;
 #endif //MORELLO_PLATFORM_H_
