@@ -1,7 +1,7 @@
 ## @file
 #  Component description file for Morello Platform
 #
-#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -160,6 +160,7 @@
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
+  Platform/ARM/Morello/Drivers/MorelloHwConfigPei/MorelloHwConfigPei.inf
 
   # DXE
   MdeModulePkg/Core/Dxe/DxeMain.inf {
