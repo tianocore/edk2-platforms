@@ -1,0 +1,41 @@
+## @file
+#  This PEI module parse the NtFwConfig for Morello SoC platform and produce
+#  the PPI and HOB.
+#
+#  Copyright (c) 2023, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = MorelloSocNtFwConfigPei
+  FILE_GUID                      = B9275A11-5E17-4010-BF2E-84690151AD2A
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Load
+
+[Sources]
+  Soc.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  DebugLib
+  FdtLib
+  HobLib
+  PeimEntryPoint
+
+[Ppis]
+  gArmMorelloParameterPpiGuid
+  gArmMorelloSocPlatformInfoDescriptorPpiGuid
+
+[Guids]
+  gArmMorelloPlatformInfoDescriptorGuid
+
+[Depex]
+  gArmMorelloParameterPpiGuid
