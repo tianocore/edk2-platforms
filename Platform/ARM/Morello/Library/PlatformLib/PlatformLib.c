@@ -10,6 +10,7 @@
 #include <Ppi/ArmMpCoreInfo.h>
 #include <MorelloPlatform.h>
 
+UINT64  gArgHwConfigDtPtr;
 UINT64  gArgNtFwConfigDtPtr;
 
 STATIC MORELLO_EL3_FW_HANDOFF_PARAM_PPI  mMorelloParameterPpi;
@@ -49,6 +50,7 @@ ArmPlatformInitialize (
   IN  UINTN  MpId
   )
 {
+  mMorelloParameterPpi.HwConfig   = (VOID *)gArgHwConfigDtPtr;
   mMorelloParameterPpi.NtFwConfig = (VOID *)gArgNtFwConfigDtPtr;
   return RETURN_SUCCESS;
 }
