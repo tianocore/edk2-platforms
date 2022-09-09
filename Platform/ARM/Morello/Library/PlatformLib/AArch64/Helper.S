@@ -21,4 +21,6 @@
 ASM_FUNC(ArmPlatformPeiBootAction)
   adr  x10, gArgNtFwConfigDtPtr
   str  x0, [x10]
+  adr  x10, gArgHwConfigDtPtr
+  str  x1, [x10]
   ret
