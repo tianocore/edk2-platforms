@@ -1,7 +1,7 @@
 ## @file
 #  Compoenent description file specific for Morello SoC Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -59,6 +59,9 @@
 [Components.common]
   # Platform driver
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeSoc.inf
+  # PEI Phase modules
+  Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Soc.inf
+
 
   # Usb Support
   MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
