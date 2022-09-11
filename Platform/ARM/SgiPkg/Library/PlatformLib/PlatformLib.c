@@ -20,7 +20,7 @@ STATIC SGI_NT_FW_CONFIG_INFO_PPI mNtFwConfigDtInfoPpi;
 STATIC ARM_CORE_INFO mCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
-    0x0, 0x0,
+    0x000,
   },
 };
 

@@ -10,10 +10,10 @@
 #include <Ppi/ArmMpCoreInfo.h>
 
 STATIC ARM_CORE_INFO mCoreInfoTable[] = {
-  { 0x0, 0x0 }, // Cluster 0, Core 0
-  { 0x0, 0x1 }, // Cluster 0, Core 1
-  { 0x1, 0x0 }, // Cluster 1, Core 0
-  { 0x1, 0x1 }  // Cluster 1, Core 1
+  { 0x000 }, // Cluster 0, Core 0
+  { 0x001 }, // Cluster 0, Core 1
+  { 0x100 }, // Cluster 1, Core 0
+  { 0x101 }  // Cluster 1, Core 1
 };
 
 /**
