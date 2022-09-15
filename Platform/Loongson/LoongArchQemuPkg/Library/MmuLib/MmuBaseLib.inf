@@ -1,0 +1,40 @@
+## @file
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MmuBaseLib
+  FILE_GUID                      = da8f0232-fb14-42f0-922c-63104d2c70be
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = MmuLib
+  CONSTRUCTOR                    = MmuInitialize
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  MmuLibCore.c
+  Mmu.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+
+[PCD]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSwapPageDir
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPgd
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPud
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPmd
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPte
+
+[LibraryClasses]
+  MemoryAllocationLib
+  PcdLib
+  DebugLib

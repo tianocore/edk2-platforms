@@ -1,0 +1,47 @@
+## @file
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MmuPeiLib
+  FILE_GUID                      = da8f0232-fb14-42f0-922c-63104d2c70bd
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = MmuLib | SEC PEIM
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  MmuLibCorePei.c
+  Mmu.S
+  MmuLibCore.h
+  MmuLibCore.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  OvmfPkg/OvmfPkg.dec
+
+[PCD]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSwapPageDir
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPgd
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPud
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPmd
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPte
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRamSize
+
+[LibraryClasses]
+  MemoryAllocationLib
+  CacheMaintenanceLib
+  PcdLib
+  DebugLib
+  QemuFwCfgLib
