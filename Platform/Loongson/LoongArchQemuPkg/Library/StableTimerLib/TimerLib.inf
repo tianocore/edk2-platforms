@@ -1,0 +1,32 @@
+## @file
+#  Generic LoongArch implementation of TimerLib.h
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                       = 0x00010005
+  BASE_NAME                         = TimerLib
+  FILE_GUID                         = 740389C7-CC44-4A2F-88DC-89D97D312E7C
+  MODULE_TYPE                       = BASE
+  VERSION_STRING                    = 1.0
+  LIBRARY_CLASS                     = TimerLib
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  TimerLib.c
+  Count.S
+
+[Packages]
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
