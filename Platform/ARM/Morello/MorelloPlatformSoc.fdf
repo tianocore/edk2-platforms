@@ -144,6 +144,7 @@ READ_LOCK_STATUS   = TRUE
 
   # Platform driver
   INF Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeSoc.inf
+  INF EmbeddedPkg/Drivers/FdtClientDxe/FdtClientDxe.inf
 
   # I2C
   INF MdeModulePkg/Bus/I2c/I2cDxe/I2cDxe.inf
