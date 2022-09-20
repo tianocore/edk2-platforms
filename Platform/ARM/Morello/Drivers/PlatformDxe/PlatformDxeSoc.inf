@@ -1,7 +1,7 @@
 ## @file
 #  Platform DXE driver for Morello SoC Platform
 #
-#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -21,12 +21,14 @@
   PlatformDxeSoc.c
 
 [Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   OvmfPkg/OvmfPkg.dec
   Platform/ARM/Morello/MorelloPlatform.dec
 
 [LibraryClasses]
   DebugLib
+  HobLib
   MemoryAllocationLib
   PcdLib
   UefiBootServicesTableLib
@@ -58,5 +60,7 @@
   gEfiDriverBindingProtocolGuid AND gEfiRamDiskProtocolGuid
 
 [Guids]
-  gEfiVirtualCdGuid      ## SOMETIMES_CONSUMES   ## GUID
+  gEdkiiPlatformHasDeviceTreeGuid                    ## PRODUCES ## PROTOCOL
+  gEfiVirtualCdGuid                                  ## SOMETIMES_CONSUMES   ## GUID
+  gFdtHobGuid
   gTda19988Guid
