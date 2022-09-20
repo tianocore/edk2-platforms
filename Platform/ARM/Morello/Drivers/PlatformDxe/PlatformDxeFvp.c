@@ -1,11 +1,12 @@
 /** @file
 
-  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <Library/DebugLib.h>
+#include <Library/HobLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Protocol/GraphicsOutput.h>
 #include <Protocol/RamDisk.h>
@@ -152,6 +153,16 @@ ArmMorelloEntryPoint (
   EFI_STATUS                Status;
   EFI_RAM_DISK_PROTOCOL     *RamDisk;
   EFI_DEVICE_PATH_PROTOCOL  *DevicePath;
+
+  // expose the Device Tree if it is available
+  if (GetFirstGuidHob (&gFdtHobGuid) != NULL) {
+    gBS->InstallProtocolInterface (
+           &gImageHandle,
+           &gEdkiiPlatformHasDeviceTreeGuid,
+           EFI_NATIVE_INTERFACE,
+           NULL
+           );
+  }
 
   Status = InitGopNotify ();
   if (EFI_ERROR (Status)) {
