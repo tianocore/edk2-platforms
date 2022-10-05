@@ -234,20 +234,24 @@ typedef struct {
 #define FLASH_TO_MEMORY(Address, FvBuffer, FvSize)  \
                  (VOID *)(UINTN)((UINTN)(FvBuffer) + (UINTN)(FvSize) - (TOP_FLASH_ADDRESS - (UINTN)(Address)))
 
-#define FIT_TABLE_TYPE_HEADER                 0
-#define FIT_TABLE_TYPE_MICROCODE              1
-#define FIT_TABLE_TYPE_STARTUP_ACM            2
-#define FIT_TABLE_TYPE_DIAGNST_ACM            3
-#define FIT_TABLE_TYPE_BIOS_MODULE            7
-#define FIT_TABLE_TYPE_TPM_POLICY             8
-#define FIT_TABLE_TYPE_BIOS_POLICY            9
-#define FIT_TABLE_TYPE_TXT_POLICY             10
-#define FIT_TABLE_TYPE_KEY_MANIFEST           11
-#define FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST   12
-#define FIT_TABLE_TYPE_BIOS_DATA_AREA         13
-#define FIT_TABLE_TYPE_CSE_SECURE_BOOT        16
-#define FIT_TABLE_SUBTYPE_FIT_PATCH_MANIFEST  12
-#define FIT_TABLE_SUBTYPE_ACM_MANIFEST        13
+#define FIT_TABLE_TYPE_HEADER                      0
+#define FIT_TABLE_TYPE_MICROCODE                   1
+#define FIT_TABLE_TYPE_STARTUP_ACM                 2
+#define FIT_TABLE_TYPE_DIAGNST_ACM                 3
+#define FIT_TABLE_TYPE_BIOS_MODULE                 7
+#define FIT_TABLE_TYPE_TPM_POLICY                  8
+#define FIT_TABLE_TYPE_BIOS_POLICY                 9
+#define FIT_TABLE_TYPE_TXT_POLICY                  10
+#define FIT_TABLE_TYPE_KEY_MANIFEST                11
+#define FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST        12
+#define FIT_TABLE_TYPE_BIOS_DATA_AREA              13
+#define FIT_TABLE_TYPE_CSE_SECURE_BOOT             16
+#define FIT_TABLE_SUBTYPE_FIT_PATCH_MANIFEST       12
+#define FIT_TABLE_SUBTYPE_ACM_MANIFEST             13
+#define FIT_TABLE_TYPE_VAB_PROVISION_TABLE         26
+#define FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST     27
+#define FIT_TABLE_TYPE_VAB_BOOT_KEY_MANIFEST       28
+
 
 //
 // With OptionalModule Address isn't known until free space has been
@@ -322,8 +326,10 @@ Returns:
 --*/
 {
   printf (
-    "%s - Tiano IA32/X64 FIT table generation Utility for FIT spec revision 1.2."" Version %i.%i\n\n",
+    "%s - Tiano IA32/X64 FIT table generation Utility for FIT spec revision %i.%i."" Version %i.%i\n\n",
     UTILITY_NAME,
+    FIT_SPEC_VERSION_MAJOR,
+    FIT_SPEC_VERSION_MINOR,
     UTILITY_MAJOR_VERSION,
     UTILITY_MINOR_VERSION
     );
@@ -1956,7 +1962,10 @@ Returns:
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
-        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT)) {
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_KEY_MANIFEST)) {
       // NOTE: It might be virtual address now. Just put a place holder.
       FitEntryNumber ++;
     }
@@ -2154,8 +2163,11 @@ Returns:
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
-          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT)) {
-        // Let it 64 byte align
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_KEY_MANIFEST)) {
+          // Let it 64 byte align
         AlignedSize += BIOS_MODULE_ALIGNMENT;
         AlignedSize &= ~BIOS_MODULE_ALIGNMENT;
       }
@@ -2166,8 +2178,11 @@ Returns:
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
-          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT)) {
-        // Let it 64 byte align
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_KEY_MANIFEST)) {
+          // Let it 64 byte align
         OptionalModuleAddress = (UINT8 *)((UINTN)OptionalModuleAddress & ~BIOS_MODULE_ALIGNMENT);
       }
 
@@ -2201,7 +2216,11 @@ Returns:
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
-        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT)) {
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_KEY_MANIFEST)) {
+
       CheckOverlap (gFitTableContext.OptionalModule[Index].Address, AlignedSize);
     }
   }
