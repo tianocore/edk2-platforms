@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -79,7 +79,7 @@ EDKII_SOC_PLATFORM_REPOSITORY_INFO  MorelloSocRepositoryInfo = {
     // IORT Table
     {
       EFI_ACPI_6_3_IO_REMAPPING_TABLE_SIGNATURE,
-      EFI_ACPI_IO_REMAPPING_TABLE_REVISION,
+      EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdIort),
       NULL
     },
