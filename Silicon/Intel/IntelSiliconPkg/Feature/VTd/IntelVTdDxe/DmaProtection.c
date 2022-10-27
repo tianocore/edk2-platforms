@@ -479,7 +479,9 @@ SetupVtd (
                   NULL,
                   &PciEnumerationComplete
                   );
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "PCI Enumeration not yet complete\n"));
+  }
 
   ReturnUefiMemoryMap (&Below4GMemoryLimit, &Above4GMemoryLimit);
   Below4GMemoryLimit = ALIGN_VALUE_UP(Below4GMemoryLimit, SIZE_256MB);
