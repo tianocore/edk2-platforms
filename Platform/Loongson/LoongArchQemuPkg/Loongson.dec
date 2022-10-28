@@ -27,12 +27,37 @@
 
 [Guids]
   gLoongArchQemuPkgTokenSpaceGuid  = { 0x0e0383ce, 0x0151, 0x4d01, { 0x80, 0x0e, 0x3f, 0xef, 0x8b, 0x27, 0x6d, 0x52 } }
+  gEarly16550UartBaseAddressGuid   = { 0xea67ca3e, 0x1f54, 0x436b, { 0x97, 0x88, 0xd4, 0xeb, 0x29, 0xc3, 0x42, 0x67 } }
 
 ## In the PcdsFixedAtBuild and PcdsDynamic areas, numbers start at 0x0.
 [PcdsFixedAtBuild, PcdsDynamic]
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashPeiFvBase|0x0|UINT64|0x00000000
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashPeiFvSize|0x0|UINT32|0x00000001
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvBase|0x0|UINT64|0x00000003
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvSize|0x0|UINT32|0x00000004
+  gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreeBase|0x0|UINT64|0x00000009
+  gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreePadding|256|UINT32|0x0000000a
+
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase|0|UINT64|0x0000000b
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize|0|UINT32|0x0000000c
+  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop|0x0|UINT64|0x0000000d
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRamRegionsBottom|0x0|UINT64|0x0000000e
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase|0x0|UINT64|0x0000000f
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize|0x0|UINT32|0x00000010
+
+## In the PcdsFixedAtBuild.LOONGARCH64 area, numbers start at 0x10000.
+[PcdsFixedAtBuild.LOONGARCH64]
+   gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize|32|UINT8|0x00010000
+   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|0|UINT8|0x00010001
+
+## In the PcdsDynamic area, numbers start at 0x20000.
+[PcdsDynamic]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRamSize|0x40000000|UINT64|0x00020000
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFwCfgSelectorAddress|0x0|UINT64|0x00020001
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFwCfgDataAddress|0x0|UINT64|0x00020002
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSwapPageDir|0x0|UINT64|0x00020003
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPgd|0x0|UINT64|0x00020004
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPud|0x0|UINT64|0x00020005
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPmd|0x0|UINT64|0x00020006
+  gLoongArchQemuPkgTokenSpaceGuid.PcdInvalidPte|0x0|UINT64|0x00020007
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRtcBaseAddress|0x00000000|UINT64|0x00020008

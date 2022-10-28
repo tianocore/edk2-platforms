@@ -56,17 +56,59 @@
 
 [LibraryClasses.common]
   PcdLib                           | MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  TimerLib                         | Platform/Loongson/LoongArchQemuPkg/Library/StableTimerLib/TimerLib.inf
   PrintLib                         | MdePkg/Library/BasePrintLib/BasePrintLib.inf
   BaseMemoryLib                    | MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   BaseLib                          | MdePkg/Library/BaseLib/BaseLib.inf
+  PerformanceLib                   | MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
   PeCoffLib                        | MdePkg/Library/BasePeCoffLib/BasePeCoffLib.inf
+  CacheMaintenanceLib              | MdePkg/Library/BaseCacheMaintenanceLib/BaseCacheMaintenanceLib.inf
+  UefiDecompressLib                | MdePkg/Library/BaseUefiDecompressLib/BaseUefiDecompressLib.inf
   PeCoffGetEntryPointLib           | MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
   IoLib                            | MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
   PlatformHookLib                  | Platform/Loongson/LoongArchQemuPkg/Library/Fdt16550SerialPortHookLib/Fdt16550SerialPortHookLib.inf
   SerialPortLib                    | MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
   DebugPrintErrorLevelLib          | MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
+  FdtLib                           | EmbeddedPkg/Library/FdtLib/FdtLib.inf
   PeCoffExtraActionLib             | MdePkg/Library/BasePeCoffExtraActionLibNull/BasePeCoffExtraActionLibNull.inf
   DebugAgentLib                    | MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
+  PeiServicesLib                   | MdePkg/Library/PeiServicesLib/PeiServicesLib.inf
+
+[LibraryClasses.common.SEC]
+  PcdLib                           | MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  ReportStatusCodeLib              | MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
+  HobLib                           | MdePkg/Library/PeiHobLib/PeiHobLib.inf
+  MemoryAllocationLib              | MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
+  SerialPortLib                    | Platform/Loongson/LoongArchQemuPkg/Library/SerialPortLib/EarlySerialPortLib16550.inf
+
+[LibraryClasses.common.PEI_CORE]
+  PcdLib                           | MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+  HobLib                           | MdePkg/Library/PeiHobLib/PeiHobLib.inf
+  PeiServicesTablePointerLib       | Platform/Loongson/LoongArchQemuPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
+  MemoryAllocationLib              | MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
+  PeiCoreEntryPoint                | MdePkg/Library/PeiCoreEntryPoint/PeiCoreEntryPoint.inf
+  ReportStatusCodeLib              | MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
+  OemHookStatusCodeLib             | MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
+  PeCoffGetEntryPointLib           | MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
+  QemuFwCfgLib                     | Platform/Loongson/LoongArchQemuPkg/Library/QemuFwCfgLib/QemuFwCfgPeiLib.inf
+  MmuLib                           | Platform/Loongson/LoongArchQemuPkg/Library/MmuLib/MmuBaseLibPei.inf
+  SerialPortLib                    | Platform/Loongson/LoongArchQemuPkg/Library/SerialPortLib/EarlySerialPortLib16550.inf
+
+[LibraryClasses.common.PEIM]
+  HobLib                           | MdePkg/Library/PeiHobLib/PeiHobLib.inf
+  PeiServicesTablePointerLib       | Platform/Loongson/LoongArchQemuPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
+  MemoryAllocationLib              | MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
+  PeimEntryPoint                   | MdePkg/Library/PeimEntryPoint/PeimEntryPoint.inf
+  ReportStatusCodeLib              | MdeModulePkg/Library/PeiReportStatusCodeLib/PeiReportStatusCodeLib.inf
+  OemHookStatusCodeLib             | MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
+  PeCoffGetEntryPointLib           | MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
+  PeiResourcePublicationLib        | MdePkg/Library/PeiResourcePublicationLib/PeiResourcePublicationLib.inf
+  ExtractGuidedSectionLib          | MdePkg/Library/PeiExtractGuidedSectionLib/PeiExtractGuidedSectionLib.inf
+  PcdLib                           | MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+  QemuFwCfgS3Lib                   | OvmfPkg/Library/QemuFwCfgS3Lib/PeiQemuFwCfgS3LibFwCfg.inf
+  QemuFwCfgLib                     | Platform/Loongson/LoongArchQemuPkg/Library/QemuFwCfgLib/QemuFwCfgPeiLib.inf
+  MmuLib                           | Platform/Loongson/LoongArchQemuPkg/Library/MmuLib/MmuBaseLibPei.inf
+  SerialPortLib                    | Platform/Loongson/LoongArchQemuPkg/Library/SerialPortLib/EarlySerialPortLib16550.inf
 
 ################################################################################
 #
@@ -118,8 +160,16 @@
   # ASSERT_BREAKPOINT_ENABLED  0x10
   # ASSERT_DEADLOOP_ENABLED    0x20
 
+#######################################################################################
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase                 | 0x10000
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize                 | 0x10000
+  gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreeBase                    | 0x100000
+  #
+  # minimal memory for uefi bios should be 512M
+  # 0x00000000 - 0x10000000
+  # 0x90000000 - 0xA0000000
+  #
+  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop                        | 0x10000000
 
 [PcdsPatchableInModule.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0
@@ -130,3 +180,22 @@
   # SEC Phase modules
   #
   Platform/Loongson/LoongArchQemuPkg/Sec/SecMain.inf
+
+  #
+  # PEI Phase modules
+  #
+  MdeModulePkg/Core/Pei/PeiMain.inf
+  MdeModulePkg/Universal/PCD/Pei/Pcd.inf  {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  }
+  MdePkg/Library/PeiExtractGuidedSectionLib/PeiExtractGuidedSectionLib.inf
+  MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
+  }
+
+  Platform/Loongson/LoongArchQemuPkg/PlatformPei/PlatformPei.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+  }

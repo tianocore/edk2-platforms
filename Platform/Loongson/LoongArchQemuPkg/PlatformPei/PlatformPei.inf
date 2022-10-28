@@ -1,0 +1,74 @@
+## @file
+#  Platform PEI driver
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformPei
+  FILE_GUID                      = 4c0e81e5-e8e3-4eef-b24b-19b686e9ab53
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializePlatform
+
+#
+#  VALID_ARCHITECTURES           = LOONGARCH64
+#
+
+[Sources]
+  Fv.c
+  MemDetect.c
+  Platform.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/Loongson/LoongArchQemuPkg/Loongson.dec
+  OvmfPkg/OvmfPkg.dec
+
+[Ppis]
+  gEfiPeiMasterBootModePpiGuid
+
+[Guids]
+  gEfiMemoryTypeInformationGuid
+  gEarly16550UartBaseAddressGuid
+  gFdtHobGuid
+
+[LibraryClasses]
+  DebugLib
+  BaseMemoryLib
+  HobLib
+  IoLib
+  PeiResourcePublicationLib
+  PeiServicesLib
+  PeiServicesTablePointerLib
+  PeimEntryPoint
+  QemuFwCfgLib
+  PcdLib
+  TimerLib
+  MmuLib
+  MemoryAllocationLib
+
+[Pcd]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRamSize
+  gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreeBase
+  gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreePadding
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRtcBaseAddress
+
+[FixedPcd]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvBase
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvSize
+  gLoongArchQemuPkgTokenSpaceGuid.PcdRamRegionsBottom
+  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
+
+[Depex]
+  TRUE
