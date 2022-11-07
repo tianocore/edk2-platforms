@@ -1,0 +1,53 @@
+## @file
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+#####################################################################################################
+[Defines]
+!include Loongson.fdf.inc
+
+#####################################################################################################
+[FD.QEMU_EFI]
+BaseAddress   = $(FD_BASE_ADDRESS)
+Size          = $(FD_SIZE)
+ErasePolarity = 1
+BlockSize     = $(BLOCK_SIZE)
+NumBlocks     = $(FD_BLOCKS)
+
+$(SECFV_OFFSET)|$(SECFV_SIZE)
+gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase|gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize
+FV = SECFV
+
+#####################################################################################################
+[FV.SECFV]
+FvNameGuid         = 587d4265-5e71-41da-9c35-4258551f1e22
+BlockSize          = $(BLOCK_SIZE)
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+INF  Platform/Loongson/LoongArchQemuPkg/Sec/SecMain.inf
+
+#####################################################################################################
+[Rule.Common.SEC]
+  FILE SEC = $(NAMED_GUID) {
+    TE       TE Align = Auto   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING ="$(MODULE_NAME)" Optional
+  }

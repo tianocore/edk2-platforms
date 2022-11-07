@@ -1,0 +1,38 @@
+## @file
+#
+#  Copyright (c) 2022 Loongson Technology Corporation Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = LoongArchQemuPkg
+  PACKAGE_GUID                   = b51d765a-41da-45fc-a537-de3ee785c0f6
+  PACKAGE_VERSION                = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+# Supported Module Types:
+#  BASE SEC PEI_CORE PEIM DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER
+#  DXE_SAL_DRIVER UEFI_DRIVER UEFI_APPLICATION
+#
+################################################################################
+[Includes.common]
+  Include                        # Root include for the package
+
+[Guids]
+  gLoongArchQemuPkgTokenSpaceGuid  = { 0x0e0383ce, 0x0151, 0x4d01, { 0x80, 0x0e, 0x3f, 0xef, 0x8b, 0x27, 0x6d, 0x52 } }
+
+## In the PcdsFixedAtBuild and PcdsDynamic areas, numbers start at 0x0.
+[PcdsFixedAtBuild, PcdsDynamic]
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashPeiFvBase|0x0|UINT64|0x00000000
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashPeiFvSize|0x0|UINT32|0x00000001
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase|0|UINT64|0x0000000b
+  gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize|0|UINT32|0x0000000c
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase|0x0|UINT64|0x0000000f
+  gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize|0x0|UINT32|0x00000010
