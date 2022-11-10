@@ -19,3 +19,11 @@ DEFINE FD_SIZE                    = 0x400000
 #Set Sec base address and size in flash
 DEFINE SECFV_OFFSET               = 0x00000000
 DEFINE SECFV_SIZE                 = 0x00010000
+
+#Set Pei base address and size in flash
+DEFINE PEIFV_OFFSET               = 0x00010000
+DEFINE PEIFV_SIZE                 = 0x00040000
+
+#Set Dxe base address and size in flash
+DEFINE DXEFV_OFFSET               = 0x00050000
+DEFINE DXEFV_SIZE                 = 0x00350000
