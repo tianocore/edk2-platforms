@@ -2,11 +2,22 @@
   Driver for Platform Boot Options support.
 
 Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include "BoardBdsHook.h"
+
+EFI_GUID gUefiShellFileGuid = {0};
+#define UEFI_HARD_DRIVE_NAME          L"UEFI Hard Drive"
+EFI_GUID mUiFile = {
+  0x462CAA21, 0x7614, 0x4503, { 0x83, 0x6E, 0x8A, 0xB6, 0xF4, 0x66, 0x23, 0x31 }
+};
+EFI_GUID mBootMenuFile = {
+  0xEEC25BDC, 0x67F2, 0x4D95, { 0xB1, 0xD5, 0xF8, 0x1B, 0x20, 0x39, 0xD1, 0x1D }
+};
 
 BOOLEAN    mContinueBoot  = FALSE;
 BOOLEAN    mBootMenuBoot  = FALSE;
@@ -186,14 +197,6 @@ CreateFvBootOption (
   return Status;
 }
 
-EFI_GUID mUiFile = {
-  0x462CAA21, 0x7614, 0x4503, { 0x83, 0x6E, 0x8A, 0xB6, 0xF4, 0x66, 0x23, 0x31 }
-};
-EFI_GUID mBootMenuFile = {
-  0xEEC25BDC, 0x67F2, 0x4D95, { 0xB1, 0xD5, 0xF8, 0x1B, 0x20, 0x39, 0xD1, 0x1D }
-};
-
-
 /**
   Return the index of the load option in the load option array.
 
@@ -333,11 +336,6 @@ PlatformBootManagerWaitCallback (
 }
 
 
-EFI_GUID gUefiShellFileGuid = { 0x7C04A583, 0x9E3E, 0x4f1c, { 0xAD, 0x65, 0xE0, 0x52, 0x68, 0xD0, 0xB4, 0xD1 } };
-
-#define INTERNAL_UEFI_SHELL_NAME      L"Internal UEFI Shell 2.0"
-#define UEFI_HARD_DRIVE_NAME          L"UEFI Hard Drive"
-
 /**
    Registers default boot option
 **/
@@ -352,7 +350,8 @@ RegisterDefaultBootOption (
 
     ShellData = NULL;
     ShellDataSize = 0;
-    RegisterFvBootOption (&gUefiShellFileGuid,      INTERNAL_UEFI_SHELL_NAME, (UINTN) -1, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
+    CopyMem (&gUefiShellFileGuid, PcdGetPtr (PcdShellFile), sizeof (GUID));
+    RegisterFvBootOption (&gUefiShellFileGuid, (CHAR16 *) PcdGetPtr (PcdShellFileDesc), (UINTN) -1, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
 
   //
   // Boot Menu
@@ -557,7 +556,7 @@ BootOptionPriority (
       return 6;
 
     }
-    if (StrCmp (BootOption->Description, INTERNAL_UEFI_SHELL_NAME) == 0) {
+    if (StrCmp (BootOption->Description, (CHAR16 *) PcdGetPtr (PcdShellFileDesc)) == 0) {
       if (PcdGetBool (PcdBootToShellOnly)) {
         return 0;
       }

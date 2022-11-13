@@ -7,6 +7,7 @@
 # for the build infrastructure.
 #
 # Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -265,6 +266,10 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUBase|0x00000000|UINT32|0x2000002A
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize|0x00000000|UINT32|0x2000002B
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset|0x00000000|UINT32|0x2000002C
+
+  # GUID of Shell file to be loaded, default value is gUefiShellFileGuid define in ShellPkg.dec
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFile|{GUID({0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}})}|VOID*|0x20000230
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc|L"Internal UEFI Shell 2.0"|VOID*|0x20000231
 
 [PcdsDynamic, PcdsDynamicEx]
   gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicEnable|0x0|UINT32|0x90000019
