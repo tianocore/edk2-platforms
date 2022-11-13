@@ -2,6 +2,8 @@
   Driver for Platform Boot Options support.
 
 Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2022 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -335,7 +337,6 @@ PlatformBootManagerWaitCallback (
 
 EFI_GUID gUefiShellFileGuid = { 0x7C04A583, 0x9E3E, 0x4f1c, { 0xAD, 0x65, 0xE0, 0x52, 0x68, 0xD0, 0xB4, 0xD1 } };
 
-#define INTERNAL_UEFI_SHELL_NAME      L"Internal UEFI Shell 2.0"
 #define UEFI_HARD_DRIVE_NAME          L"UEFI Hard Drive"
 
 /**
@@ -352,7 +353,8 @@ RegisterDefaultBootOption (
 
     ShellData = NULL;
     ShellDataSize = 0;
-    RegisterFvBootOption (&gUefiShellFileGuid,      INTERNAL_UEFI_SHELL_NAME, (UINTN) -1, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
+    CopyMem (&gUefiShellFileGuid, PcdGetPtr (PcdShellFile), sizeof (GUID));
+    RegisterFvBootOption (&gUefiShellFileGuid, (CHAR16 *) PcdGetPtr (PcdShellFileDesc), (UINTN) -1, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
 
   //
   // Boot Menu
@@ -557,7 +559,7 @@ BootOptionPriority (
       return 6;
 
     }
-    if (StrCmp (BootOption->Description, INTERNAL_UEFI_SHELL_NAME) == 0) {
+    if (StrCmp (BootOption->Description, (CHAR16 *) PcdGetPtr (PcdShellFileDesc)) == 0) {
       if (PcdGetBool (PcdBootToShellOnly)) {
         return 0;
       }
