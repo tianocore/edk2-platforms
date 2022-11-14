@@ -48,7 +48,7 @@ STATIC ARM_MORELLO_SMBIOS_TYPE3  mArmMorelloSmbiosType3 = {
     {
       // SMBIOS header
       EFI_SMBIOS_TYPE_SYSTEM_ENCLOSURE,   // Type 3
-      sizeof (SMBIOS_TABLE_TYPE1),        // Length
+      sizeof (SMBIOS_TABLE_TYPE3),        // Length
       SMBIOS_HANDLE_ENCLOSURE,            // Assign an unused handle number
     },
     ManufacturerName,               // Manufacturer
