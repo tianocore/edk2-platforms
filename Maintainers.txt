@@ -324,6 +324,12 @@ M: Bob Feng <bob.c.feng@intel.com>
 M: Liming Gao <gaoliming@byosoft.com.cn>
 R: Yuwei Chen <yuwei.chen@intel.com>
 
+Loongson platforms
+F: Platform/Loongson/
+M: Bibo Mao <maobibo@loongson.cn> 
+M: Xianglai li <lixianglai@loongson.cn>
+M: Chao Li <lichao@loongson.cn>
+ 
 Marvell platforms and silicon
 F: Platform/Marvell/
 F: Platform/SolidRun/Armada80x0McBin/
