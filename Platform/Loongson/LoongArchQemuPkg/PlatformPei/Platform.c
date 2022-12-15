@@ -53,6 +53,8 @@ CONST EFI_PEI_PPI_DESCRIPTOR  mPpiListBootMode = {
   NULL
 };
 
+STATIC EFI_BOOT_MODE  mBootMode = BOOT_WITH_FULL_CONFIGURATION;
+
 /**
   Create Reserved type memory range hand off block.
 
@@ -416,6 +418,9 @@ InitializePlatform (
   EFI_STATUS Status;
 
   DEBUG ((DEBUG_INFO, "Platform PEIM Loaded\n"));
+
+  Status = PeiServicesSetBootMode (mBootMode);
+  ASSERT_EFI_ERROR (Status);
 
   Status = PeiServicesInstallPpi (&mPpiListBootMode);
   ASSERT_EFI_ERROR (Status);
