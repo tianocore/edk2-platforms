@@ -181,6 +181,11 @@ INF  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
 INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 
 #
+# NVME
+#
+INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+#
 # Usb Support
 #
 INF  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
