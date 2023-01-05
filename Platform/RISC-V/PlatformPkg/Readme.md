@@ -35,18 +35,18 @@ are from OpenSBI project. edk2 libraries are introduced as the wrapper libraries
 [Indicated as #2 in the figure](#risc-v-edk2-port-design-diagrams)
 > ***OpenSbiPlatformLib*** provides the generic RISC-V platform initialization code. Platform vendor can just utilize this library if they don't have additional requirements on the platform initialization.
 
-##### RiscVSpecialPlatformLib Library
-[Indicated as #3 in the figure](#risc-v-edk2-port-design-diagrams)
-> The major use case of this library is to facilitate the interfaces for platform vendors to provide the special
-platform initialization based on the generic platform initialization library.
-
 ##### Edk2OpensbiPlatformWrapperLib Library
-[Indicated as #4 in the figure](#risc-v-edk2-port-design-diagrams)
+[Indicated as #3 in the figure](#risc-v-edk2-port-design-diagrams)
 > In order to providing the flexibility to edk2 RISC-V firmware solution, ***Edk2OpensbiPlatformWrapperLib*** is the wrapper library of [OpenSbiPlatformLib](#OpenSbiPlatformLib-library) to provide the interfaces for OEM. The ***platform_ops_address***in the generic platform structure is replaced with ***Edk2OpensbiplatformOps*** in SEC
 module. The platform function invoked by OpenSBI core is hooked to ***Edk2OpensbiPlatformWrapperLib***. This gives
 a change to OEM for implementing platform-specific initialization before and after the generic platform code. OEM
 can override this library under their platform folder on demand without touching ***RiscVOpensbiLib*** library
 source files and other common source files.
+
+##### RiscVSpecialPlatformLib Library
+[Indicated as #4 in the figure](#risc-v-edk2-port-design-diagrams)
+> The major use case of this library is to facilitate the interfaces for platform vendors to provide the special
+platform initialization based on the generic platform initialization library.
 
 ##### Next Phase Address and Privilege Mode
 [Indicated as #5 in the figure](#risc-v-edk2-port-design-diagrams)
