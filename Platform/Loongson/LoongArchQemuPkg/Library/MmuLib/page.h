@@ -42,6 +42,9 @@
 #define PFN_MASK                            (~(((UINTN)(1) << (EFI_PAGE_SHIFT)) - 1) & \
                                              (((UINTN)(1) << (PAGE_PFN_END_SHIFT)) - 1))
 
+#define HUGEP_PAGE_MASK                     (~(((UINTN)(1) << (PMD_SHIFT)) - 1) & \
+                                             (((UINTN)(1) << (PAGE_PFN_END_SHIFT)) - 1))
+
 typedef struct { UINTN PgdVal; } PGD;
 typedef struct { UINTN PudVal; } PUD;
 typedef struct { UINTN PmdVal; } PMD;

@@ -450,6 +450,29 @@ GetPteAddress (
 }
 
 /**
+  Gets the Attributes of Huge Page.
+
+  @param  Pmd  A pointer to the page middle directory.
+
+  @retval     Value of Attributes.
+**/
+UINTN
+GetHugePageAttributes (
+  IN  PMD *Pmd
+  )
+{
+  UINTN Attributes;
+  UINTN GlobalFlag;
+  UINTN HugeVal = PMD_VAL(*Pmd);
+
+  Attributes = HugeVal & (~HUGEP_PAGE_MASK);
+  GlobalFlag = ((Attributes & (1 << PAGE_HGLOBAL_SHIFT)) >> PAGE_HGLOBAL_SHIFT) << PAGE_GLOBAL_SHIFT;
+  Attributes &= ~(1 << PAGE_HGLOBAL_SHIFT);
+  Attributes |= GlobalFlag;
+  return Attributes;
+}
+
+/**
   Establishes a page table entry based on the specified memory region.
 
   @param  Pmd  A pointer to the page middle directory.
@@ -477,13 +500,13 @@ MemoryMapPteRange (
     return EFI_OUT_OF_RESOURCES;
   }
 
+  DEBUG ((DEBUG_VERBOSE,
+    "%a %d Address %p End %p  Attributes %llx\n",
+    __func__, __LINE__,  Address, End, Attributes));
+
   do {
     UpDate = FALSE;
     PteVal = MAKE_PTE (Address, Attributes);
-    DEBUG ((DEBUG_VERBOSE,
-      "%a %d Address %p  PGD_INDEX %p PUD_INDEX   %p PMD_INDEX  %p PTE_INDEX  %p MAKE_PTE  %p\n",
-      __func__, __LINE__,  Address, PGD_INDEX (Address), PUD_INDEX (Address), PMD_INDEX (Address),
-      PTE_INDEX (Address), PteVal));
 
     if ((!pte_none (*Pte)) &&
         (PTE_VAL(*Pte) != PTE_VAL(PteVal)))
@@ -498,6 +521,55 @@ MemoryMapPteRange (
   } while (Pte++, Address += EFI_PAGE_SIZE, Address != End);
 
   return EFI_SUCCESS;
+}
+
+/**
+  Convert Huge Page to Page.
+
+  @param  Pmd  A pointer to the page middle directory.
+  @param  Address  The memory space start address.
+  @param  End  The end address of the memory space.
+  @param  Attributes  Memory space Attributes.
+
+  @retval  EFI_SUCCESS   The page table entry was created successfully.
+  @retval  EFI_OUT_OF_RESOURCES  Page table entry establishment failed due to resource exhaustion.
+**/
+EFI_STATUS
+ConvertHugePageToPage (
+  IN  PMD *Pmd,
+  IN UINTN Address,
+  IN UINTN End,
+  IN UINTN Attributes
+  )
+{
+  UINTN OldAttributes;
+  UINTN HugePageEnd;
+  UINTN HugePageStart;
+  EFI_STATUS Status;
+
+  if ((pmd_none (*Pmd)) ||
+      (!IS_HUGE_PAGE (Pmd->PmdVal)))
+  {
+    Status |= MemoryMapPteRange (Pmd, Address, End, Attributes);
+  } else {
+    OldAttributes = GetHugePageAttributes(Pmd);
+    SetPmd (Pmd, (PTE *)PcdGet64 (PcdInvalidPte));
+    HugePageStart = Address & PMD_MASK;
+    HugePageEnd = HugePageStart + HUGE_PAGE_SIZE;
+    ASSERT (HugePageEnd >= End);
+
+    if (Address > HugePageStart) {
+      Status |= MemoryMapPteRange (Pmd, HugePageStart, Address, OldAttributes);
+    }
+
+    Status |= MemoryMapPteRange (Pmd, Address, End, Attributes);
+
+    if (End < HugePageEnd) {
+      Status |= MemoryMapPteRange (Pmd, End, HugePageEnd, OldAttributes);
+    }
+  }
+
+  return Status;
 }
 
 /**
@@ -520,10 +592,7 @@ MemoryMapPmdRange (
   )
 {
   PMD *Pmd;
-  PTE *Pte;
   UINTN Next;
-  UINTN AddressStart_HugePage;
-  UINTN AddressEnd_HugePage;
 
   Pmd = PmdAllocGet (Pud, Address);
   if (!Pmd) {
@@ -534,7 +603,7 @@ MemoryMapPmdRange (
     Next = PMD_ADDRESS_END (Address, End);
     if (((Address & (~PMD_MASK)) == 0) &&
         ((Next &  (~PMD_MASK)) == 0) &&
-        (pmd_none (*Pmd)))
+        (pmd_none (*Pmd) || IS_HUGE_PAGE (Pmd->PmdVal)))
     {
       DEBUG ((DEBUG_VERBOSE,
         "%a %d Address %p  PGD_INDEX %p PUD_INDEX   %p PMD_INDEX  %p MAKE_HUGE_PTE  %p\n",
@@ -543,28 +612,7 @@ MemoryMapPmdRange (
 
       SetPmd (Pmd, (PTE *)MAKE_HUGE_PTE (Address, Attributes));
     } else {
-       if ((pmd_none (*Pmd)) ||
-          ((!pmd_none (*Pmd)) &&
-           (!IS_HUGE_PAGE (Pmd->PmdVal))))
-       {
-         if (MemoryMapPteRange (Pmd, Address, Next, Attributes)) {
-           return EFI_OUT_OF_RESOURCES;
-         }
-       } else {
-         SetPmd (Pmd, (PTE *)PcdGet64 (PcdInvalidPte));
-         AddressStart_HugePage = Address & PMD_MASK;
-         AddressEnd_HugePage = AddressStart_HugePage + HUGE_PAGE_SIZE;
-         if (MemoryMapPteRange (Pmd, AddressStart_HugePage, AddressEnd_HugePage, Attributes)) {
-           return EFI_OUT_OF_RESOURCES;
-         }
-         Pte = GetPteAddress (AddressStart_HugePage);
-         if (Pte == NULL) {
-           continue ;
-         }
-         if (AddressEnd_HugePage > End) {
-           Next = End;
-         }
-       }
+      ConvertHugePageToPage (Pmd, Address, Next, Attributes);
     }
   } while (Pmd++, Address = Next, Address != End);
 
@@ -788,6 +836,7 @@ LoongArchSetMemoryAttributes (
   Attributes = EfiAttributeToLoongArchAttribute (Attributes);
   DEBUG ((DEBUG_VERBOSE, "%a %d %p %p %p.\n", __func__, __LINE__, BaseAddress , Length, Attributes));
   MemoryMapPageRange (BaseAddress, BaseAddress + Length, Attributes);
+  DEBUG ((DEBUG_VERBOSE, "%a %d end.\n", __func__, __LINE__));
 
   return EFI_SUCCESS;
 }
