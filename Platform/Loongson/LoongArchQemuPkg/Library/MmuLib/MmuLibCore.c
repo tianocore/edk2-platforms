@@ -671,7 +671,7 @@ EfiAttributeToLoongArchAttribute (
   IN UINTN  EfiAttributes
   )
 {
-  UINTN  LoongArchAttributes = PAGE_VALID | PAGE_DIRTY | CACHE_CC | PAGE_USER | PAGE_GLOBAL;
+  UINTN  LoongArchAttributes = PAGE_VALID | PAGE_DIRTY | PLV_KERNEL | PAGE_GLOBAL;
   switch (EfiAttributes & EFI_MEMORY_CACHETYPE_MASK) {
     case EFI_MEMORY_UC:
       LoongArchAttributes |= CACHE_SUC;
