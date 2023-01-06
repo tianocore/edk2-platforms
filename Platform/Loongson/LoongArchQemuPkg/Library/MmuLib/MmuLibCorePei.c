@@ -21,6 +21,7 @@
 #include <Library/QemuFwCfgLib.h>
 #include "MmuLibCore.h"
 #include <Library/CacheMaintenanceLib.h>
+#include <Library/MmuLib.h>
 
 /**
   Return the Virtual Memory Map of your platform
@@ -168,6 +169,10 @@ ConfigureMmu (VOID)
       goto FreeTranslationTable;
     }
     MemoryTable++;
+  }
+
+  if (PcdGet8 (PcdNullPointerDetectionPropertyMask) & BIT0) {
+    LoongArchSetMemoryAttributes (0, EFI_PAGE_SIZE, EFI_MEMORY_RP | EFI_MEMORY_XP | EFI_MEMORY_WP);
   }
 
   TlbReEntry = AllocatePages (1);

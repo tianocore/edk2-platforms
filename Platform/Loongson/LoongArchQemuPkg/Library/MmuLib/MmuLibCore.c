@@ -735,8 +735,14 @@ EfiAttributeToLoongArchAttribute (
   }
 
   // Write protection attributes
-  if ((EfiAttributes & EFI_MEMORY_RO) != 0) {
+  if (((EfiAttributes & EFI_MEMORY_RO) != 0) ||
+      ((EfiAttributes & EFI_MEMORY_WP) != 0))
+  {
     LoongArchAttributes &= ~PAGE_DIRTY;
+  }
+
+  if (EfiAttributes & EFI_MEMORY_RP) {
+    LoongArchAttributes |= PAGE_NO_READ;
   }
 
   //eXecute protection attribute

@@ -28,6 +28,7 @@
   MdePkg/MdePkg.dec
   Platform/Loongson/LoongArchQemuPkg/Loongson.dec
   OvmfPkg/OvmfPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
 
 [PCD]
   gLoongArchQemuPkgTokenSpaceGuid.PcdSwapPageDir
@@ -38,6 +39,7 @@
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase
   gLoongArchQemuPkgTokenSpaceGuid.PcdRamSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdNullPointerDetectionPropertyMask
 
 [LibraryClasses]
   MemoryAllocationLib
