@@ -275,6 +275,6 @@ pte_none (
   IN PTE pte
   )
 {
-  return (!(PTE_VAL(pte) & (~PAGE_GLOBAL)));
+  return (!(PTE_VAL(pte) & (~PAGE_VALID)));
 }
 #endif // PAGE_H_
