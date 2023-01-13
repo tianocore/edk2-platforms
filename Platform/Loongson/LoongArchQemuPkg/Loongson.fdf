@@ -30,6 +30,7 @@ $(DXEFV_OFFSET)|$(DXEFV_SIZE)
 gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvBase|gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvSize
 FV = FVMAIN_COMPACT
 
+!include VarStore.fdf.inc
 #####################################################################################################
 [FV.SECFV]
 FvNameGuid         = 587d4265-5e71-41da-9c35-4258551f1e22
@@ -135,7 +136,7 @@ INF  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
 #
 # Variable
 #
-INF  OvmfPkg/EmuVariableFvbRuntimeDxe/Fvb.inf
+INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
 INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 #
