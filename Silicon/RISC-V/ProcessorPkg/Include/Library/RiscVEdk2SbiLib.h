@@ -2,6 +2,7 @@
   Library to call the RISC-V SBI ecalls
 
   Copyright (c) 2021-2022, Hewlett Packard Development LP. All rights reserved.<BR>
+  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -91,8 +92,8 @@ SbiGetImplVersion (
 VOID
 EFIAPI
 SbiProbeExtension (
-  IN  INTN  ExtensionId,
-  OUT INTN  *ProbeResult
+  IN  UINTN  ExtensionId,
+  OUT UINTN  *ProbeResult
   );
 
 /**

@@ -16,6 +16,7 @@
   - SbiLegacyShutdown            -> Wait for new System Reset extension
 
   Copyright (c) 2021-2022, Hewlett Packard Development LP. All rights reserved.<BR>
+  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Revision Reference:
@@ -226,8 +227,8 @@ SbiGetImplVersion (
 VOID
 EFIAPI
 SbiProbeExtension (
-  IN  INTN  ExtensionId,
-  OUT INTN  *ProbeResult
+  IN  UINTN  ExtensionId,
+  OUT UINTN  *ProbeResult
   )
 {
   SBI_RET  Ret;
