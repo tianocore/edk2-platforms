@@ -186,3 +186,11 @@
   # @Prompt VTd abort DMA mode support.
   gIntelSiliconPkgTokenSpaceGuid.PcdVTdSupportAbortDmaMode|FALSE|BOOLEAN|0x0000000C
 
+  ## Define Flash Variable Store type.<BR><BR>
+  #  When Flash Variable Store corruption happened, the SpiFvbService will recreate Variable Store
+  #  with valid header information provided by this PCD value.<BR>
+  #  0: Variable Store is gEfiVariableGuid type.<BR>
+  #  1: Variable Store is gEfiAuthenticatedVariableGuid type.<BR>
+  #  Other value: reserved for future use.<BR>
+  # @Prompt Flash Variable Store type.
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashVariableStoreType|0x00|UINT8|0x0000000E
