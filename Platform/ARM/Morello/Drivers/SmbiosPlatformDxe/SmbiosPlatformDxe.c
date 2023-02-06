@@ -6,7 +6,7 @@
   handler registered, the driver invokes the handler to register
   the respective table.
 
-  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -14,7 +14,10 @@
     - SMBIOS Reference Specification 3.4.0
 **/
 
+#include <IndustryStandard/ArmStdSmc.h>
 #include <IndustryStandard/SmBios.h>
+#include <Library/ArmLib.h>
+#include <Library/ArmSmcLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/UefiBootServicesTableLib.h>
@@ -70,6 +73,112 @@ MorelloGetDramBlock2Size (
   }
 
   return EFI_SUCCESS;
+}
+
+/**
+  Checks if the ARM64 SoC ID SMC call is supported
+
+  @return Whether the ARM64 SoC ID call is supported.
+**/
+BOOLEAN
+HasSmcArm64SocId (
+  VOID
+  )
+{
+  ARM_SMC_ARGS  Args;
+  INT32         SmcCallStatus;
+  BOOLEAN       Arm64SocIdSupported;
+
+  Arm64SocIdSupported = FALSE;
+
+  Args.Arg0 = SMCCC_VERSION;
+  ArmCallSmc (&Args);
+  SmcCallStatus = (INT32)Args.Arg0;
+
+  if ((SmcCallStatus < 0) || ((SmcCallStatus >> 16) >= 1)) {
+    Args.Arg0 = SMCCC_ARCH_FEATURES;
+    Args.Arg1 = SMCCC_ARCH_SOC_ID;
+    ArmCallSmc (&Args);
+
+    if (Args.Arg0 >= 0) {
+      Arm64SocIdSupported = TRUE;
+    }
+  }
+
+  return Arm64SocIdSupported;
+}
+
+/**
+  Fetches the JEP106 code and SoC Revision.
+
+  @param[out] Jep106Code  JEP 106 code.
+  @param[out] SocRevision SoC revision.
+
+  @retval EFI_SUCCESS Succeeded.
+  @retval EFI_UNSUPPORTED Failed.
+**/
+EFI_STATUS
+SmbiosGetSmcArm64SocId (
+  OUT INT32  *Jep106Code,
+  OUT INT32  *SocRevision
+  )
+{
+  ARM_SMC_ARGS  Args;
+  INT32         SmcCallStatus;
+  EFI_STATUS    Status;
+
+  Status = EFI_SUCCESS;
+
+  Args.Arg0 = SMCCC_ARCH_SOC_ID;
+  Args.Arg1 = 0;   // 0 - SoC version
+  ArmCallSmc (&Args);
+  SmcCallStatus = (INT32)Args.Arg0;
+
+  if (SmcCallStatus >= 0) {
+    *Jep106Code = (INT32)Args.Arg0;
+  } else {
+    Status = EFI_UNSUPPORTED;
+    return Status;
+  }
+
+  Args.Arg0 = SMCCC_ARCH_SOC_ID;
+  Args.Arg1 = 1;   // 1 - SoC revision
+  ArmCallSmc (&Args);
+  SmcCallStatus = (INT32)Args.Arg0;
+
+  if (SmcCallStatus >= 0) {
+    *SocRevision = (INT32)Args.Arg0;
+  } else {
+    Status = EFI_UNSUPPORTED;
+  }
+
+  return Status;
+}
+
+/**
+  Returns a value for the Processor ID field that conforms to SMBIOS
+  requirements.
+
+  @return Processor ID.
+**/
+UINT64
+SmbiosGetProcessorId (
+  VOID
+  )
+{
+  INT32   Jep106Code;
+  INT32   SocRevision;
+  UINT64  ProcessorId;
+
+  if (HasSmcArm64SocId () &&
+      (SmbiosGetSmcArm64SocId (&Jep106Code, &SocRevision) == EFI_SUCCESS))
+  {
+    ProcessorId = ((UINT64)SocRevision << 32) | Jep106Code;
+  } else {
+    ProcessorId = ArmReadMidr ();
+  }
+
+  return ProcessorId;
 }
 
 /**
