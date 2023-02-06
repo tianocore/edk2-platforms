@@ -4,7 +4,7 @@
   Function declarations and data type declarations required for SMBIOS DXE
   driver of the Arm Morello System Development Platform.
 
-  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -189,6 +189,17 @@ InstallType32SystemBootInformation (
 EFI_STATUS
 MorelloGetDramBlock2Size (
   UINT64  *DramBlock2Size
+  );
+
+/**
+  Returns a value for the Processor ID field that conforms to SMBIOS
+  requirements.
+
+  @return Processor ID.
+**/
+UINT64
+SmbiosGetProcessorId (
+  VOID
   );
 
 typedef enum {
