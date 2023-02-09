@@ -44,6 +44,8 @@
 [Pcd]
   gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase         ## CONSUMES
   gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize         ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashVariableStoreType       ## SOMETIMES_CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashNvStorageAdditionalSize ## CONSUMES
 
 [Sources]
   FvbInfo.c
@@ -60,6 +62,8 @@
 [Guids]
   gEfiFirmwareFileSystem2Guid                   ## CONSUMES
   gEfiSystemNvDataFvGuid                        ## CONSUMES
+  gEfiVariableGuid                              ## SOMETIMES_CONSUMES
+  gEfiAuthenticatedVariableGuid                 ## SOMETIMES_CONSUMES
 
 [Depex]
   TRUE

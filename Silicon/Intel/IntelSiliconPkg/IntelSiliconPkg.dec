@@ -188,7 +188,8 @@
 
   ## Define Flash Variable Store type.<BR><BR>
   #  When Flash Variable Store corruption happened, the SpiFvbService will recreate Variable Store
-  #  with valid header information provided by this PCD value.<BR>
+  #  with valid header information provided by this PCD value.
+  #  Note: This PCD must be FixedAtBuild when using Standalone MM.
   #  0: Variable Store is gEfiVariableGuid type.<BR>
   #  1: Variable Store is gEfiAuthenticatedVariableGuid type.<BR>
   #  Other value: reserved for future use.<BR>
@@ -199,6 +200,7 @@
   #  Platform may implement a Regular variable region and an additional region, which will require this PCD
   #  to tell SpiFvbService to include both regions.
   #  Note: This PCD is for compatible with legacy usages that should be deprecated.
+  #  Note: This PCD must be FixedAtBuild when using Standalone MM.
   #  The new usage model should define separate regions without implicit connections to UEFI Variable or FTW regions.<BR>
   #  Example legacy usage is to set this PCD equal to platform PcdFlashFvNvStorageEventLogSize.
   #  0: No additional NVS region.<BR>
