@@ -67,11 +67,17 @@ gEfiPlatformTypeMyBoardProtocolGuid       = { 0xa68228c5, 0xc00f, 0x4d9a, { 0x8d
 ```
 MyBoard = WhitleyOpenBoardPkg/MyBoard/build_config.cfg
 ```
-11. At this point, you can build from edk2-platforms/Platform/Intel, e.g.
+11. Add Ifwi folder for MyBoard 
+```
+cd edk2-non-osi/Platform/Intel/WhitleyOpenBoardBinPkg/Ifwi/
+mkdir MyBoard
+cp WilsonCityRvp/* MyBoard/
+```
+12. At this point, you can build from edk2-platforms/Platform/Intel, e.g.
 ```
 build_bios.py -p MyBoard -t VS2015x86 -d
 ```
-12. At this point, customization is not scripted.  The following are common customization areas:
+13. At this point, customization is not scripted.  The following are common customization areas:
 MyBoard/Uba/TypeBoardPortTemplate/Pei
 * GPIO
 * VR, IMON
