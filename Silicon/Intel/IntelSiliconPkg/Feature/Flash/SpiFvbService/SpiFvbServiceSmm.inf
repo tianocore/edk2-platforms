@@ -43,9 +43,10 @@
   IntelSiliconPkg/IntelSiliconPkg.dec
 
 [Pcd]
-  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase         ## CONSUMES
-  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize         ## CONSUMES
-  gIntelSiliconPkgTokenSpaceGuid.PcdFlashVariableStoreType       ## SOMETIMES_CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase            ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize            ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashVariableStoreType          ## SOMETIMES_CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashNvStorageAdditionalSize    ## CONSUMES
 
 [Sources]
   FvbInfo.c

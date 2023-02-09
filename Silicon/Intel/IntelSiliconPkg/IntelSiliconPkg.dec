@@ -194,3 +194,14 @@
   #  Other value: reserved for future use.<BR>
   # @Prompt Flash Variable Store type.
   gIntelSiliconPkgTokenSpaceGuid.PcdFlashVariableStoreType|0x00|UINT8|0x0000000E
+
+  ## Declares Additional NVS Region Size.<BR><BR>
+  #  Platform may implement a Regular variable region and an additional region, which will require this PCD
+  #  to tell SpiFvbService to include both regions.
+  #  Note: This PCD is for compatible with legacy usages that should be deprecated.
+  #  The new usage model should define separate regions without implicit connections to UEFI Variable or FTW regions.<BR>
+  #  Example legacy usage is to set this PCD equal to platform PcdFlashFvNvStorageEventLogSize.
+  #  0: No additional NVS region.<BR>
+  #  non-zero: The size of an additional NVS region following the Regular variable region.<BR>
+  # @Prompt Additional NVS Region Size.
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashNvStorageAdditionalSize|0x00000000|UINT32|0x0000000F
