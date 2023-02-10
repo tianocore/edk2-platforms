@@ -35,7 +35,6 @@
 
 [LibraryClasses]
   ArmLib
-  ArmPlatformLib
   DebugLib
   HobLib
   PrintLib
