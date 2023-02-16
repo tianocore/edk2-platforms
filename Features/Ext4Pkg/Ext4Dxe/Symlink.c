@@ -243,7 +243,6 @@ Ext4ReadSymlink (
       Status
       ));
     FreePool (Symlink16Tmp);
-    FreePool (SymlinkTmp);
     return Status;
   }
 
