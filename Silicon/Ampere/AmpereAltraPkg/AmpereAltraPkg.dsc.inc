@@ -371,14 +371,14 @@
   # (the memory used, and the free memory that was prereserved
   # but not used).
   #
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|80
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|65
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|400
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|20000
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|20
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0x10
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0x60
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0x30
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|0x20
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|0x30
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|0
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|0
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData|0
 
   gArmTokenSpaceGuid.PcdVFPEnabled|1

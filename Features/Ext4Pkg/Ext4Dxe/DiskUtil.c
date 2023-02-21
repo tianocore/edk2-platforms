@@ -54,17 +54,20 @@ Ext4ReadBlocks (
   UINT64  Offset;
   UINTN   Length;
 
+  ASSERT (NumberBlocks != 0);
+  ASSERT (BlockNumber != EXT4_BLOCK_FILE_HOLE);
+
   Offset = MultU64x32 (BlockNumber, Partition->BlockSize);
   Length = NumberBlocks * Partition->BlockSize;
 
   // Check for overflow on the block -> byte conversions.
   // Partition->BlockSize is never 0, so we don't need to check for that.
 
-  if (Offset > DivU64x32 ((UINT64)-1, Partition->BlockSize)) {
+  if (DivU64x64Remainder (Offset, BlockNumber, NULL) != Partition->BlockSize) {
     return EFI_INVALID_PARAMETER;
   }
 
-  if (Length > (UINTN)-1/Partition->BlockSize) {
+  if (Length / NumberBlocks != Partition->BlockSize) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -92,14 +95,21 @@ Ext4AllocAndReadBlocks (
   VOID   *Buf;
   UINTN  Length;
 
+  // Check that number of blocks isn't empty, because
+  // this is incorrect condition for opened partition,
+  // so we just early-exit
+  if ((NumberBlocks == 0) || (BlockNumber == EXT4_BLOCK_FILE_HOLE)) {
+    return NULL;
+  }
+
   Length = NumberBlocks * Partition->BlockSize;
 
-  if (Length > (UINTN)-1/Partition->BlockSize) {
+  // Check for integer overflow
+  if (Length / NumberBlocks != Partition->BlockSize) {
     return NULL;
   }
 
   Buf = AllocatePool (Length);
-
   if (Buf == NULL) {
     return NULL;
   }

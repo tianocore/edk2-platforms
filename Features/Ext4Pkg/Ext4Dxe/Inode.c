@@ -76,7 +76,7 @@ Ext4CalculateInodeChecksum (
    @param[out]     Buffer        Pointer to the buffer.
    @param[in]      Offset        Offset of the read.
    @param[in out]  Length        Pointer to the length of the buffer, in bytes.
-                                 After a succesful read, it's updated to the number of read bytes.
+                                 After a successful read, it's updated to the number of read bytes.
 
    @return Status of the read operation.
 **/
@@ -152,7 +152,7 @@ Ext4Read (
       } else {
         // Uninitialized extents behave exactly the same as file holes, except they have
         // blocks already allocated to them.
-        HoleLen = (Ext4GetExtentLength (&Extent) * Partition->BlockSize) - HoleOff;
+        HoleLen = MultU64x32 (Ext4GetExtentLength (&Extent), Partition->BlockSize) - HoleOff;
       }
 
       WasRead = HoleLen > RemainingRead ? RemainingRead : (UINTN)HoleLen;
@@ -166,7 +166,7 @@ Ext4Read (
                            Partition->BlockSize
                            );
       ExtentLengthBytes  = Extent.ee_len * Partition->BlockSize;
-      ExtentLogicalBytes = (UINT64)Extent.ee_block * Partition->BlockSize;
+      ExtentLogicalBytes = MultU64x32 ((UINT64)Extent.ee_block, Partition->BlockSize);
       ExtentOffset       = CurrentSeek - ExtentLogicalBytes;
       ExtentMayRead      = (UINTN)(ExtentLengthBytes - ExtentOffset);
 
@@ -230,7 +230,7 @@ Ext4AllocateInode (
 
   Inode = AllocateZeroPool (InodeSize);
 
-  if (!Inode) {
+  if (Inode == NULL) {
     return NULL;
   }
 

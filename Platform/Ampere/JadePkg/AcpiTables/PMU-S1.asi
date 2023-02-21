@@ -1,1303 +1,905 @@
 /** @file
 
-  Copyright (c) 2020, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2022, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-Device(CMN1) {
-  Name(_HID, "ARMHC600") // Device Identification Objects
-  Name(_CID, "ARMHC600")
-  Name(_UID, 1)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("CMN1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-  QWordMemory (
-    ResourceConsumer,     // ResourceUsage
-    PosDecode,            // Decode
-    MinFixed,             // IsMinFixed
-    MaxFixed,             // IsMaxFixed
-    NonCacheable,         // Cacheable
-    ReadWrite,            // ReadAndWrite
-    0x0000000000000000,   // AddressGranularity - GRA
-    0x0000500010000000,   // AddressMinimum - MIN
-    0x000050001fffffff,   // AddressMaximum - MAX
-    0x0000000000000000,   // AddressTranslation - TRA
-    0x0000000010000000    // RangeLength - LEN
-  )
-  QWordMemory (
-    ResourceConsumer,     // ResourceUsage
-    PosDecode,            // Decode
-    MinFixed,             // IsMinFixed
-    MaxFixed,             // IsMaxFixed
-    NonCacheable,         // Cacheable
-    ReadWrite,            // ReadAndWrite
-    0x0000000000000000,   // AddressGranularity - GRA
-    0x0000500012500000,   // AddressMinimum - MIN
-    0x00005000164fffff,   // AddressMaximum - MAX
-    0x0000000000000000,   // AddressTranslation - TRA
-    0x0000000004000000    // RangeLength - LEN
-  )
-  Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 634 }
-  })
-}
-
-Device(MC10) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 8)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU0"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
+Scope(\_SB) {
+  Device(CMN1) {
+    Name(_HID, "ARMHC600") // Device Identification Objects
+    Name(_CID, "ARMHC600")
+    Name(_UID, 1)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("CMN1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
     QWordMemory (
-      ResourceProducer,     // ResourceUsage
+      ResourceConsumer,     // ResourceUsage
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
       NonCacheable,         // Cacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008C000A00,   // AddressMinimum - MIN
-      0x000050008C000BFF,   // AddressMaximum - MAX
+      0x0000500010000000,   // AddressMinimum - MIN
+      0x0000500013ffffff,   // AddressMaximum - MAX
       0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
+      0x0000000004000000    // RangeLength - LEN
     )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC11) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 9)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
     QWordMemory (
-      ResourceProducer,     // ResourceUsage
+      ResourceConsumer,     // ResourceUsage
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
       NonCacheable,         // Cacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008C400A00,   // AddressMinimum - MIN
-      0x000050008C400BFF,   // AddressMaximum - MAX
+      0x0000500012500000,   // AddressMinimum - MIN
+      0x0000500013ffffff,   // AddressMaximum - MAX
       0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
+      0x0000000001B00000    // RangeLength - LEN
     )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC12) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xa)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU2"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
+    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 634 }
+    })
   }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008C800A00,   // AddressMinimum - MIN
-      0x000050008C800BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
 
-Device(MC13) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xb)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU3"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008CC00A00,   // AddressMinimum - MIN
-      0x000050008CC00BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC14) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xc)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU4"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008D000A00,   // AddressMinimum - MIN
-      0x000050008D000BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC15) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xd)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU5"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008D400A00,   // AddressMinimum - MIN
-      0x000050008D400BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC16) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xe)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU6"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008D800A00,   // AddressMinimum - MIN
-      0x000050008D800BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(MC17) {
-  Name(_HID, "ARMHD620")
-  Name(_CID, "ARMHD620")
-  Name(_UID, 0xf)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("Socket 1: MCU7"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    QWordMemory (
-      ResourceProducer,     // ResourceUsage
-      PosDecode,            // Decode
-      MinFixed,             // IsMinFixed
-      MaxFixed,             // IsMaxFixed
-      NonCacheable,         // Cacheable
-      ReadWrite,            // ReadAndWrite
-      0x0000000000000000,   // AddressGranularity - GRA
-      0x000050008DC00A00,   // AddressMinimum - MIN
-      0x000050008DC00BFF,   // AddressMaximum - MAX
-      0x0000000000000000,   // AddressTranslation - TRA
-      0x0000000000000200    // RangeLength - LEN
-    )
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
-  })
-}
-
-Device(DU40) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x40)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x40 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 384 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100000000,
-          0x100000100
-        }
-      }
+  Device(MC10) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 8)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU0"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008C000A00,   // AddressMinimum - MIN
+        0x000050008C000BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC11) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 9)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008C400A00,   // AddressMinimum - MIN
+        0x000050008C400BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC12) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xa)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU2"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008C800A00,   // AddressMinimum - MIN
+        0x000050008C800BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC13) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xb)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU3"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008CC00A00,   // AddressMinimum - MIN
+        0x000050008CC00BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC14) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xc)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU4"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008D000A00,   // AddressMinimum - MIN
+        0x000050008D000BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC15) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xd)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU5"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008D400A00,   // AddressMinimum - MIN
+        0x000050008D400BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC16) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xe)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU6"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008D800A00,   // AddressMinimum - MIN
+        0x000050008D800BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
+
+  Device(MC17) {
+    Name(_HID, "ARMHD620")
+    Name(_CID, "ARMHD620")
+    Name(_UID, 0xf)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("Socket 1: MCU7"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000050008DC00A00,   // AddressMinimum - MIN
+        0x000050008DC00BFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000000000200    // RangeLength - LEN
+      )
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 632 }
+    })
+  }
 }
 
-Device(DU41) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x41)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x41 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 385 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100010000,
-          0x100010100
-        }
-      }
+Scope (\_SB.SYST.CL40) {
+  Device(DU40) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x40)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x40 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 384 }
+    })
+  }
 }
 
-Device(DU42) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x42)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x42 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 386 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100020000,
-          0x100020100
-        }
-      }
+Scope (\_SB.SYST.CL41) {
+  Device(DU41) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x41)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x41 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 385 }
+    })
+  }
 }
 
-Device(DU43) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x43)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x43 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 387 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100030000,
-          0x100030100
-        }
-      }
+Scope (\_SB.SYST.CL42) {
+  Device(DU42) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x42)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x42 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 386 }
+    })
+  }
 }
 
-Device(DU44) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x44)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x44 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 388 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100040000,
-          0x100040100
-        }
-      }
+Scope (\_SB.SYST.CL43) {
+  Device(DU43) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x43)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x43 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 387 }
+    })
+  }
 }
 
-Device(DU45) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x45)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x45 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 389 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100050000,
-          0x100050100
-        }
-      }
+Scope (\_SB.SYST.CL44) {
+  Device(DU44) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x44)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x44 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 388 }
+    })
+  }
 }
 
-Device(DU46) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x46)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x46 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 391 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100060000,
-          0x100060100
-        }
-      }
+Scope (\_SB.SYST.CL45) {
+  Device(DU45) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x45)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x45 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 389 }
+    })
+  }
 }
 
-Device(DU47) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x47)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x47 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 400 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100070000,
-          0x100070100
-        }
-      }
+Scope (\_SB.SYST.CL46) {
+  Device(DU46) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x46)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x46 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 391 }
+    })
+  }
 }
 
-Device(DU48) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x48)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x48 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 401 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100080000,
-          0x100080100
-        }
-      }
+Scope (\_SB.SYST.CL47) {
+  Device(DU47) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x47)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x47 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 400 }
+    })
+  }
 }
 
-Device(DU49) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x49)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x49 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 402 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100090000,
-          0x100090100
-        }
-      }
+Scope (\_SB.SYST.CL48) {
+  Device(DU48) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x48)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x48 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 401 }
+    })
+  }
 }
 
-Device(DU4A) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4A)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4A Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 403 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000A0000,
-          0x1000A0100
-        }
-      }
+Scope (\_SB.SYST.CL49) {
+  Device(DU49) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x49)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x49 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 402 }
+    })
+  }
 }
 
-Device(DU4B) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4B)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4B Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 435 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000B0000,
-          0x1000B0100
-        }
-      }
+Scope (\_SB.SYST.CL4A) {
+  Device(DU4A) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4A)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4A Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 403 }
+    })
+  }
 }
 
-Device(DU4C) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4C)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4C Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 436 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000C0000,
-          0x1000C0100
-        }
-      }
+Scope (\_SB.SYST.CL4B) {
+  Device(DU4B) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4B)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4B Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 435 }
+    })
+  }
 }
 
-Device(DU4D) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4D)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4D Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 541 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000D0000,
-          0x1000D0100
-        }
-      }
+Scope (\_SB.SYST.CL4C) {
+  Device(DU4C) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4C)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4C Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 436 }
+    })
+  }
 }
 
-Device(DU4E) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4E)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4E Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 542 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000E0000,
-          0x1000E0100
-        }
-      }
+Scope (\_SB.SYST.CL4D) {
+  Device(DU4D) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4D)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4D Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 440 }
+    })
+  }
 }
 
-Device(DU4F) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x4F)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x4F Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 543 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1000F0000,
-          0x1000F0100
-        }
-      }
+Scope (\_SB.SYST.CL4E) {
+  Device(DU4E) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4E)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4E Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 441 }
+    })
+  }
 }
 
-Device(DU50) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x50)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x50 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 568 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100100000,
-          0x100100100
-        }
-      }
+Scope (\_SB.SYST.CL4F) {
+  Device(DU4F) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x4F)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x4F Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 442 }
+    })
+  }
 }
 
-Device(DU51) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x51)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x51 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 569 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100110000,
-          0x100110100
-        }
-      }
+Scope (\_SB.SYST.CL50) {
+  Device(DU50) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x50)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x50 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 443 }
+    })
+  }
 }
 
-Device(DU52) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x52)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x52 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 570 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100120000,
-          0x100120100
-        }
-      }
+Scope (\_SB.SYST.CL51) {
+  Device(DU51) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x51)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x51 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 444 }
+    })
+  }
 }
 
-Device(DU53) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x53)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x53 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 571 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100130000,
-          0x100130100
-        }
-      }
+Scope (\_SB.SYST.CL52) {
+  Device(DU52) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x52)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x52 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 445 }
+    })
+  }
 }
 
-Device(DU54) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x54)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x54 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 572 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100140000,
-          0x100140100
-        }
-      }
+Scope (\_SB.SYST.CL53) {
+  Device(DU53) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x53)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x53 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 446 }
+    })
+  }
 }
 
-Device(DU55) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x55)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x55 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 573 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100150000,
-          0x100150100
-        }
-      }
+Scope (\_SB.SYST.CL54) {
+  Device(DU54) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x54)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x54 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 447 }
+    })
+  }
 }
 
-Device(DU56) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x56)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x56 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 574 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100160000,
-          0x100160100
-        }
-      }
+Scope (\_SB.SYST.CL55) {
+  Device(DU55) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x55)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x55 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 541 }
+    })
+  }
 }
 
-Device(DU57) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x57)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x57 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 575 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100170000,
-          0x100170100
-        }
-      }
+Scope (\_SB.SYST.CL56) {
+  Device(DU56) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x56)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x56 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 542 }
+    })
+  }
 }
 
-Device(DU58) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x58)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x58 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 617 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100180000,
-          0x100180100
-        }
-      }
+Scope (\_SB.SYST.CL57) {
+  Device(DU57) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x57)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x57 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 543 }
+    })
+  }
 }
 
-Device(DU59) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x59)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x59 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 618 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100190000,
-          0x100190100
-        }
-      }
+Scope (\_SB.SYST.CL58) {
+  Device(DU58) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x58)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x58 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 568 }
+    })
+  }
 }
 
-Device(DU5A) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5A)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5A Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 619 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001A0000,
-          0x1001A0100
-        }
-      }
+Scope (\_SB.SYST.CL59) {
+  Device(DU59) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x59)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x59 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 569 }
+    })
+  }
 }
 
-Device(DU5B) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5B)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5B Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 620 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001B0000,
-          0x1001B0100
-        }
-      }
+Scope (\_SB.SYST.CL5A) {
+  Device(DU5A) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5A)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5A Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 570 }
+    })
+  }
 }
 
-Device(DU5C) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5C)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5C Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 621 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001C0000,
-          0x1001C0100
-        }
-      }
+Scope (\_SB.SYST.CL5B) {
+  Device(DU5B) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5B)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5B Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 571 }
+    })
+  }
 }
 
-Device(DU5D) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5D)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5D Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 633 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001D0000,
-          0x1001D0100
-        }
-      }
+Scope (\_SB.SYST.CL5C) {
+  Device(DU5C) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5C)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5C Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 572 }
+    })
+  }
 }
 
-Device(DU5E) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5E)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5E Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 636 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001E0000,
-          0x1001E0100
-        }
-      }
+Scope (\_SB.SYST.CL5D) {
+  Device(DU5D) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5D)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5D Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 573 }
+    })
+  }
 }
 
-Device(DU5F) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x5F)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x5F Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 637 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x1001F0000,
-          0x1001F0100
-        }
-      }
+Scope (\_SB.SYST.CL5E) {
+  Device(DU5E) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5E)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5E Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 574 }
+    })
+  }
 }
 
-Device(DU60) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x60)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x60 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 638 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100200000,
-          0x100200100
-        }
-      }
+Scope (\_SB.SYST.CL5F) {
+  Device(DU5F) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x5F)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x5F Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 575 }
+    })
+  }
 }
 
-Device(DU61) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x61)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x61 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 639 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100210000,
-          0x100210100
-        }
-      }
+Scope (\_SB.SYST.CL60) {
+  Device(DU60) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x60)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x60 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 617 }
+    })
+  }
 }
 
-Device(DU62) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x62)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x62 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 664 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100220000,
-          0x100220100
-        }
-      }
+Scope (\_SB.SYST.CL61) {
+  Device(DU61) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x61)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x61 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 618 }
+    })
+  }
 }
 
-Device(DU63) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x63)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x63 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 665 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100230000,
-          0x100230100
-        }
-      }
+Scope (\_SB.SYST.CL62) {
+  Device(DU62) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x62)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x62 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 619 }
+    })
+  }
 }
 
-Device(DU64) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x64)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x64 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 666 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100240000,
-          0x100240100
-        }
-      }
+Scope (\_SB.SYST.CL63) {
+  Device(DU63) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x63)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x63 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 620 }
+    })
+  }
 }
 
-Device(DU65) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x65)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x65 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 667 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100250000,
-          0x100250100
-        }
-      }
+Scope (\_SB.SYST.CL64) {
+  Device(DU64) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x64)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x64 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 621 }
+    })
+  }
 }
 
-Device(DU66) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x66)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x66 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 668 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100260000,
-          0x100260100
-        }
-      }
+Scope (\_SB.SYST.CL65) {
+  Device(DU65) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x65)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x65 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 633 }
+    })
+  }
 }
 
-Device(DU67) {
-  Name(_HID, "ARMHD500")
-  Name(_CID, "ARMHD500")
-  Name(_UID, 0x67)
-  Name(_CCA, ONE)
-  Name(_STR, Unicode("DSU CPM 0x67 Socket 1"))
-  Method(_STA, 0, NotSerialized) {
-    Return (0x0f)
-  }
-  Name(_CRS, ResourceTemplate() {
-    Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 669 }
-  })
-  Name (_DSD, Package () {
-    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-    Package () {
-      Package (2) {
-        "cpus",
-        Package (2) {
-          0x100270000,
-          0x100270100
-        }
-      }
+Scope (\_SB.SYST.CL66) {
+  Device(DU66) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x66)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x66 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
     }
-  })
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 636 }
+    })
+  }
+}
+
+Scope (\_SB.SYST.CL67) {
+  Device(DU67) {
+    Name(_HID, "ARMHD500")
+    Name(_CID, "ARMHD500")
+    Name(_UID, 0x67)
+    Name(_CCA, ONE)
+    Name(_STR, Unicode("DSU CPM 0x67 Socket 1"))
+    Method(_STA, 0, NotSerialized) {
+      Return (0x0f)
+    }
+    Name(_CRS, ResourceTemplate() {
+      Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 637 }
+    })
+  }
 }

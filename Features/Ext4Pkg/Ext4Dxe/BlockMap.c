@@ -131,7 +131,7 @@ Ext4GetBlockPath (
 
 /**
    @brief Get an extent from a block map
-   Note: Also parses file holes and creates uninitialised extents from them.
+   Note: Also parses file holes and creates uninitialized extents from them.
 
    @param[in]  Buffer          Buffer of block pointers
    @param[in]  IndEntries      Number of entries in this block pointer table
@@ -173,7 +173,7 @@ Ext4GetExtentInBlockMap (
       }
     }
 
-    // We mark the extent as uninitialised, although there's a difference between uninit
+    // We mark the extent as uninitialized, although there's a difference between uninit
     // extents and file holes.
     Extent->ee_len = EXT4_EXTENT_MAX_INITIALIZED + Count;
     return;
@@ -206,7 +206,7 @@ Ext4GetExtentInBlockMap (
    @param[in]      LogicalBlock  Block number which the returned extent must cover.
    @param[out]     Extent        Pointer to the output buffer, where the extent will be copied to.
 
-   @retval EFI_SUCCESS        Retrieval was succesful.
+   @retval EFI_SUCCESS        Retrieval was successful.
    @retval EFI_NO_MAPPING     Block has no mapping.
 **/
 EFI_STATUS

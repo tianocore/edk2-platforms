@@ -15,6 +15,11 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 
+VOID
+BuildMemoryTypeInformationHob (
+  VOID
+  );
+
 STATIC
 VOID
 InitMmu (
@@ -88,6 +93,11 @@ MemoryPeim (
     );
 
   InitMmu (MemoryTable);
+
+  if (FeaturePcdGet (PcdPrePiProduceMemoryTypeInformationHob)) {
+    // Optional feature that helps prevent EFI memory map fragmentation.
+    BuildMemoryTypeInformationHob ();
+  }
 
   return EFI_SUCCESS;
 }

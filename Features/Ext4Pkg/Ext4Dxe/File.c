@@ -105,7 +105,7 @@ Ext4IsLastPathSegment (
    @param[in out] File         Pointer to the file we're opening.
    @param[in]     OpenMode     Mode in which to open the file.
 
-   @return           True if the open was succesful, false if we don't have
+   @return           True if the open was successful, false if we don't have
                      enough permissions.
 **/
 STATIC
@@ -207,6 +207,11 @@ Ext4OpenInternal (
   Level     = 0;
 
   DEBUG ((DEBUG_FS, "[ext4] Ext4OpenInternal %s\n", FileName));
+
+  if (!Ext4FileIsDir (Current)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   // If the path starts with a backslash, we treat the root directory as the base directory
   if (FileName[0] == L'\\') {
     FileName++;
@@ -217,6 +222,10 @@ Ext4OpenInternal (
     if (Partition->Root->SymLoops > SYMLOOP_MAX) {
       DEBUG ((DEBUG_FS, "[ext4] Symloop limit is hit !\n"));
       return EFI_ACCESS_DENIED;
+    }
+
+    if (!Ext4FileIsDir (Current)) {
+      return EFI_INVALID_PARAMETER;
     }
 
     // Discard leading path separators
@@ -241,10 +250,6 @@ Ext4OpenInternal (
     }
 
     DEBUG ((DEBUG_FS, "[ext4] Opening %s\n", PathSegment));
-
-    if (!Ext4FileIsDir (Current)) {
-      return EFI_INVALID_PARAMETER;
-    }
 
     if (!Ext4IsLastPathSegment (FileName)) {
       if (!Ext4DirCanLookup (Current)) {
@@ -714,7 +719,11 @@ Ext4GetVolumeName (
 
     VolNameLength = StrLen (VolumeName);
   } else {
-    VolumeName    = AllocateZeroPool (sizeof (CHAR16));
+    VolumeName = AllocateZeroPool (sizeof (CHAR16));
+    if (VolumeName == NULL) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
     VolNameLength = 0;
   }
 
@@ -781,7 +790,9 @@ Ext4GetFilesystemInfo (
   Info->VolumeSize = MultU64x32 (TotalBlocks, Part->BlockSize);
   Info->FreeSpace  = MultU64x32 (FreeBlocks, Part->BlockSize);
 
-  StrCpyS (Info->VolumeLabel, VolNameLength + 1, VolumeName);
+  Status = StrCpyS (Info->VolumeLabel, VolNameLength + 1, VolumeName);
+
+  ASSERT_EFI_ERROR (Status);
 
   FreePool (VolumeName);
 

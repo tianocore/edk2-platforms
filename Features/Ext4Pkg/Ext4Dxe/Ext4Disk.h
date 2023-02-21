@@ -1,7 +1,7 @@
 /** @file
   Raw filesystem data structures
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2023 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   Layout of an EXT2/3/4 filesystem:
@@ -397,12 +397,29 @@ typedef struct _Ext4Inode {
   UINT32       i_projid;
 } EXT4_INODE;
 
+#define EXT4_NAME_MAX  255
+
 typedef struct {
+  // offset 0x0: inode number (if 0, unused entry, should skip.)
   UINT32    inode;
+  // offset 0x4: Directory entry's length.
+  //             Note: rec_len >= name_len + EXT4_MIN_DIR_ENTRY_LEN and rec_len % 4 == 0.
   UINT16    rec_len;
+  // offset 0x6: Directory entry's name's length
   UINT8     name_len;
+  // offset 0x7: Directory entry's file type indicator
   UINT8     file_type;
-  CHAR8     name[255];
+  // offset 0x8: name[name_len]: Variable length character array; not null-terminated.
+  CHAR8     name[EXT4_NAME_MAX];
+  // Further notes on names:
+  // 1) We use EXT4_NAME_MAX here instead of flexible arrays for ease of use around the driver.
+  //
+  // 2) ext4 directories are defined, as the documentation puts it, as:
+  // "a directory is more or less a flat file that maps an arbitrary byte string
+  // (usually ASCII) to an inode number on the filesystem". So, they are not
+  // necessarily encoded with ASCII, UTF-8, or any of the sort. We must treat it
+  // as a bag of bytes. When interacting with EFI interfaces themselves (which expect UCS-2)
+  // we skip any directory entry that is not valid UTF-8.
 } EXT4_DIR_ENTRY;
 
 #define EXT4_MIN_DIR_ENTRY_LEN  8
@@ -467,8 +484,17 @@ typedef UINT64  EXT4_BLOCK_NR;
 typedef UINT32  EXT2_BLOCK_NR;
 typedef UINT32  EXT4_INO_NR;
 
-// 2 is always the root inode number in ext4
-#define EXT4_ROOT_INODE_NR  2
+/* Special inode numbers */
+#define EXT4_ROOT_INODE_NR         2
+#define EXT4_USR_QUOTA_INODE_NR    3
+#define EXT4_GRP_QUOTA_INODE_NR    4
+#define EXT4_BOOT_LOADER_INODE_NR  5
+#define EXT4_UNDEL_DIR_INODE_NR    6
+#define EXT4_RESIZE_INODE_NR       7
+#define EXT4_JOURNAL_INODE_NR      8
+
+/* First non-reserved inode for old ext4 filesystems */
+#define EXT4_GOOD_OLD_FIRST_INODE_NR  11
 
 #define EXT4_BLOCK_FILE_HOLE  0
 

@@ -795,3 +795,6 @@
       gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
   }
 !endif
+
+  ArmPkg/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+  MdeModulePkg/Application/MpServicesTest/MpServicesTest.inf

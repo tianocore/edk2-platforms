@@ -1,7 +1,7 @@
 /** @file
   Symbolic links routines
 
-  Copyright (c) 2022 Savva Mitrofanov All rights reserved.
+  Copyright (c) 2022-2023 Savva Mitrofanov All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -155,18 +155,19 @@ Ext4ReadSlowSymlink (
     return Status;
   }
 
-  //
-  // Add null-terminator
-  //
-  SymlinkTmp[SymlinkSizeTmp] = '\0';
-
   if (SymlinkSizeTmp != ReadSize) {
     DEBUG ((
       DEBUG_FS,
       "[ext4] Error! The size of the read block doesn't match the value from the inode!\n"
       ));
+    FreePool (SymlinkTmp);
     return EFI_VOLUME_CORRUPTED;
   }
+
+  //
+  // Add null-terminator
+  //
+  SymlinkTmp[ReadSize] = '\0';
 
   *AsciiSymlinkSize = SymlinkAllocateSize;
   *AsciiSymlink     = SymlinkTmp;
@@ -201,7 +202,7 @@ Ext4ReadSymlink (
   CHAR16      *Needle;
 
   //
-  // Assume that we alread read Inode via Ext4ReadInode
+  // Assume that we already read Inode via Ext4ReadInode
   // Skip reading, just check encryption flag
   //
   if ((File->Inode->i_flags & EXT4_ENCRYPT_FL) != 0) {
@@ -242,7 +243,6 @@ Ext4ReadSymlink (
       Status
       ));
     FreePool (Symlink16Tmp);
-    FreePool (SymlinkTmp);
     return Status;
   }
 

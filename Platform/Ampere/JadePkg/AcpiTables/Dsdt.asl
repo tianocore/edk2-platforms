@@ -13,9 +13,6 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
   Name(AERF, 0)  // PCIe AER Firmware-First
   Scope(\_SB) {
 
-    Include ("CPU.asi")
-    Include ("PMU.asi")
-
     //
     // Hardware Monitor
     Device(HM00) {
@@ -102,8 +99,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
           Cacheable,            // Cacheable
           ReadWrite,            // ReadAndWrite
           0x0000000000000000,   // AddressGranularity - GRA
-          0x0000000088920000,   // AddressMinimum - MIN
-          0x000000008893FFFF,   // AddressMaximum - MAX
+          0x00000000C0000000,   // AddressMinimum - MIN
+          0x00000000C001FFFF,   // AddressMaximum - MAX
           0x0000000000000000,   // AddressTranslation - TRA
           0x0000000000020000    // RangeLength - LEN
         )
@@ -147,6 +144,9 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
         }
         Method(_IFT) {
           Return(0x04) // IPMI SSIF
+        }
+        Method(_ADR) {
+          Return(0x10) // SSIF slave address
         }
         Method(_SRV) {
           Return(0x0200) // IPMI Specification Revision
@@ -528,4 +528,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
     Include ("PCI-S1.asi")
     Include ("PCI-PDRC.asi")
   }
+
+  Include ("CPU.asi")
+  Include ("PMU.asi")
+
 } // DSDT

@@ -25,7 +25,6 @@
   ArmSmcLib
   HobLib
   IoLib
-  MemoryAllocationLib
   PL011UartLib
   PcdLib
   SerialPortLib

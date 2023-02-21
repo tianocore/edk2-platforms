@@ -568,6 +568,28 @@ GetVariableFvInfo (
     return;
   }
 
+  //
+  // GetVariableFlashNvStorageInfo () only reports regular variable region information,
+  // if platform implemented an additional NVS region following the regular variable region,
+  // then both region size should be included as overall NVS region size.
+  //
+  // The below PcdFlashNvStorageAdditionalSize is for compatible with legacy usages that should be deprecated.
+  // The new usage model should define separate regions without implicit connections to UEFI Variable or FTW regions.
+  //
+  // Example NVS flash map for such legacy usage:
+  // Note: PcdFlashNvStorageAdditionalSize is equal to platform PcdFlashFvNvStorageEventLogSize.
+  //  ---------------
+  //  |UEFI Variable|
+  //  ---------------
+  //  |EventLog     | <= this is Additional NVS region
+  //  ---------------
+  //  |FTW Working  |
+  //  ---------------
+  //  |FTW Spare    |
+  //  ---------------
+  //
+  NvStoreLength += PcdGet32 (PcdFlashNvStorageAdditionalSize);
+
   Status = GetVariableFlashFtwSpareInfo (&NvBaseAddress, &Length64);
   if (!EFI_ERROR (Status)) {
     // Stay within the current UINT32 size assumptions in the variable stack.

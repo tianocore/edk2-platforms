@@ -41,7 +41,7 @@
   gArmJunoTokenSpaceGuid.PcdSynopsysUsbEhciBaseAddress|0x7FFC0000|UINT32|0x00000005
 
   # Juno Device Trees are loaded from NOR Flash
-  gArmJunoTokenSpaceGuid.PcdJunoFdtDevicePath|L"VenHw(93E34C7E-B50E-11DF-9223-2443DFD72085,00)/board.dtb"|VOID*|0x00000008
+  gArmJunoTokenSpaceGuid.PcdJunoFdtDevicePath|L"VenHw(DE6AE758-D662-4E17-A97C-4C5964DA4C41,00)/board.dtb"|VOID*|0x00000008
 
   # MHU Register base used by SCMI Mailbox transport
   gArmJunoTokenSpaceGuid.PcdArmMtlDoorBell|0x2B1F0000|UINT64|0x00000024

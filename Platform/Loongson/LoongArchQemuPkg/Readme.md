@@ -25,9 +25,13 @@
     $ mkdir -p $WORKSPACE
     $ cd $WORKSPACE
     $ git clone https://github.com/tianocore/edk2.git
+    $ cd edk2
     $ git submodule update --init
+    $ cd ..
     $ git clone https://github.com/tianocore/edk2-platforms.git
+    $ cd edk2-platforms
     $ git submodule update --init
+    $ cd ..
     $ git clone https://github.com/tianocore/edk2-non-osi.git
     $ export PACKAGES_PATH=$PWD/edk2:$PWD/edk2-platforms:$PWD/edk2-non-osi
 

@@ -51,10 +51,10 @@ ArmPlatformInitializeSystemMemory (
 }
 
 STATIC ARM_CORE_INFO mRpi3InfoTable[] = {
-  { 0x0, 0x0, },             // Cluster 0, Core 0
-  { 0x0, 0x1, },             // Cluster 0, Core 1
-  { 0x0, 0x2, },             // Cluster 0, Core 2
-  { 0x0, 0x3, },             // Cluster 0, Core 3
+  { 0x0, }, // Cluster 0, Core 0
+  { 0x1, }, // Cluster 0, Core 1
+  { 0x2, }, // Cluster 0, Core 2
+  { 0x3, }, // Cluster 0, Core 3
 };
 
 STATIC
