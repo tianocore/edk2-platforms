@@ -3,6 +3,7 @@
 // RISC-V CPU functions.
 //
 // Copyright (c) 2016 - 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+// Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 //
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 //
@@ -132,12 +133,3 @@ ASM_FUNC (RiscVSetSupervisorStvec)
 ASM_FUNC (RiscVGetSupervisorStvec)
     csrr a0, RISCV_CSR_SUPERVISOR_STVEC
     ret
-
-//
-// Set Supervisor Address Translation and
-// Protection Register.
-//
-ASM_FUNC (RiscVSetSupervisorAddressTranslationRegister)
-    csrw  RISCV_CSR_SUPERVISOR_SATP, a0
-    ret
-
