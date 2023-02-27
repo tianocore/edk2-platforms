@@ -110,6 +110,9 @@ READ_LOCK_STATUS   = TRUE
   INF Platform/ARM/Morello/Drivers/CadenceI2cDxe/CadenceI2cDxe.inf
   INF Platform/ARM/Morello/Drivers/Tda19988Dxe/Tda19988Dxe.inf
 
+  # Logo Support
+  INF Platform/ARM/Morello/Drivers/LogoDxe/LogoDxe.inf
+
   # Dynamic Table fdf
   !include DynamicTablesPkg/DynamicTables.fdf.inc
 

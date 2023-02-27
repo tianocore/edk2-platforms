@@ -132,3 +132,6 @@
   # SMBIOS/DMI
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   Platform/ARM/Morello/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+
+  # Logo Support
+  Platform/ARM/Morello/Drivers/LogoDxe/LogoDxe.inf
