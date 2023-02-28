@@ -2,6 +2,7 @@
   Library to call the RISC-V SBI ecalls
 
   Copyright (c) 2021-2022, Hewlett Packard Development LP. All rights reserved.<BR>
+  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -9,8 +10,8 @@
     - Hart - Hardware Thread, similar to a CPU core
 **/
 
-#ifndef RISCV_SBI_LIB_H_
-#define RISCV_SBI_LIB_H_
+#ifndef RISCV_SBI_LIB2_H_
+#define RISCV_SBI_LIB2_H_
 
 #include <Uefi.h>
 #include <IndustryStandard/RiscVOpensbi.h>
