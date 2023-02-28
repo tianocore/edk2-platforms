@@ -1,7 +1,7 @@
 /** @file
   Driver entry point
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2023 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -513,26 +513,18 @@ Ext4EntryPoint (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS  Status;
-
-  Status = EfiLibInstallAllDriverProtocols2 (
-             ImageHandle,
-             SystemTable,
-             &gExt4BindingProtocol,
-             ImageHandle,
-             &gExt4ComponentName,
-             &gExt4ComponentName2,
-             NULL,
-             NULL,
-             NULL,
-             NULL
-             );
-
-  if (EFI_ERROR (Status)) {
-    return Status;
-  }
-
-  return Ext4InitialiseUnicodeCollation (ImageHandle);
+  return EfiLibInstallAllDriverProtocols2 (
+           ImageHandle,
+           SystemTable,
+           &gExt4BindingProtocol,
+           ImageHandle,
+           &gExt4ComponentName,
+           &gExt4ComponentName2,
+           NULL,
+           NULL,
+           NULL,
+           NULL
+           );
 }
 
 /**
@@ -761,6 +753,17 @@ Ext4Bind (
   BlockIo = NULL;
   DiskIo  = NULL;
 
+  // Note: We initialize collation here since this is called in BDS, when we are likely
+  // to have the Unicode Collation protocols available.
+  Status = Ext4InitialiseUnicodeCollation (BindingProtocol->ImageHandle);
+  if (EFI_ERROR (Status)) {
+    // Lets throw a loud error into the log
+    // It is very unlikely something like this may fire out of the blue. Chances are either
+    // the platform configuration is wrong, or we are.
+    DEBUG ((DEBUG_ERROR, "[ext4] Error: Unicode Collation not available - failure to Start() - error %r\n", Status));
+    goto Error;
+  }
+
   Status = gBS->OpenProtocol (
                   ControllerHandle,
                   &gEfiDiskIoProtocolGuid,
@@ -774,7 +777,7 @@ Ext4Bind (
     goto Error;
   }
 
-  DEBUG ((DEBUG_INFO, "[Ext4] Controller supports DISK_IO\n"));
+  DEBUG ((DEBUG_INFO, "[ext4] Controller supports DISK_IO\n"));
 
   Status = gBS->OpenProtocol (
                   ControllerHandle,
@@ -787,7 +790,7 @@ Ext4Bind (
   // It's okay to not support DISK_IO2
 
   if (DiskIo2 != NULL) {
-    DEBUG ((DEBUG_INFO, "[Ext4] Controller supports DISK_IO2\n"));
+    DEBUG ((DEBUG_INFO, "[ext4] Controller supports DISK_IO2\n"));
   }
 
   Status = gBS->OpenProtocol (
