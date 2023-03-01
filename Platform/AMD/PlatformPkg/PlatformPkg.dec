@@ -13,3 +13,19 @@
   PACKAGE_NAME                   = PlatformPkg
   PACKAGE_GUID                   = 38FBA311-E2AA-4620-9A90-9A23753D1878
   PACKAGE_VERSION                = 0.1
+
+[Guids]
+  gPlatformPkgTokenSpaceGuid     = { 0x95ECA58D, 0x09B6, 0x4420, { 0xB4, 0xE7, 0x01, 0x7F, 0x6A, 0x5B, 0x26, 0x0F }}
+
+[PcdsDynamic, PcdsDynamicEx]
+  #
+  # PCI HotPlug Resource Padding
+  #
+  # IO Resource padding in bytes, default 4KB
+  gPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadIO|0x00001000|UINT64|0x10000000
+  # PreFetch Memory padding in bytes, default 2MB
+  gPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadPMem|0x00200000|UINT64|0x10000001
+  # Non-PreFetch Memory padding in bytes, default 1MB
+  gPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadMem|0x00100000|UINT64|0x10000002
+  # PCI bus padding, number of bus to reserve, default 2 bus
+  gPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadBus|2|UINT8|0x10000003
