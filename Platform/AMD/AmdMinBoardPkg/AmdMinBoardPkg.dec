@@ -1,0 +1,19 @@
+## @file AmdMinBoardPkg.dec
+#  Declaration file for AMD's AmdMinBoardPkg.
+#
+#  This package supports AMD processor family based board as per the MinPlatform
+#  Arch specification.
+#
+#  Copyright (c) 2023, Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  @par Specification Reference:
+#   -https://tianocore-docs.github.io/edk2-MinimumPlatformSpecification/draft/ 0.7
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = AmdMinBoardPkg
+  PACKAGE_GUID                   = 44F9D761-9ECB-43DD-A5AC-177E5048701B
+  PACKAGE_VERSION                = 0.1
+
