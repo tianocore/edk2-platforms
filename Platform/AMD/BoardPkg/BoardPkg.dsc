@@ -18,3 +18,13 @@
 
 [Packages]
   BoardPkg/BoardPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses.common.PEIM]
+  SetCacheMtrrLib|BoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+
+[Components.IA32]
+  BoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+
