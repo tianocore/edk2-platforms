@@ -17,5 +17,14 @@
   SUPPORTED_ARCHITECTURES     = IA32 | X64
 
 [Packages]
+  MdePkg/MdePkg.dec
   MinBoardPkg/MinBoardPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses.common.PEIM]
+  SetCacheMtrrLib|MinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+
+[Components.IA32]
+  MinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
