@@ -1,0 +1,35 @@
+## @file
+# Component information file for Platform SetCacheMtrr Library.
+# This library implementation is for AMD processor based platforms.
+#
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = PeiSetCacheMtrrLib
+  FILE_GUID                      = 1E8468E0-5EB4-4088-9B52-BFDC6E4DAE87
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SetCacheMtrrLib
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  MtrrLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[Sources]
+  SetCacheMtrrLib.c
+
+[Pcd]
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
+

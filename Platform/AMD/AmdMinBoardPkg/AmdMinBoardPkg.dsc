@@ -18,4 +18,13 @@
 
 [Packages]
   AmdMinBoardPkg/AmdMinBoardPkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses.common.PEIM]
+  SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+
+[Components.IA32]
+  AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
