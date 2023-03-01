@@ -1,0 +1,15 @@
+## @file PlatformPkg.dec
+#  Declaration file for AMD's PlatformPkg.
+#
+#  This package supports AMD processory family based platform.
+#
+#  Copyright (c) 2023, Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = PlatformPkg
+  PACKAGE_GUID                   = 38FBA311-E2AA-4620-9A90-9A23753D1878
+  PACKAGE_VERSION                = 0.1
