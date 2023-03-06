@@ -10,8 +10,8 @@
     - Hart - Hardware Thread, similar to a CPU core
 **/
 
-#ifndef RISCV_SBI_LIB_H_
-#define RISCV_SBI_LIB_H_
+#ifndef RISCV_SBI_LIB2_H_
+#define RISCV_SBI_LIB2_H_
 
 #include <Uefi.h>
 #include <IndustryStandard/RiscVOpensbi.h>
