@@ -2,6 +2,7 @@
   RISC-V package definitions.
 
   Copyright (c) 2021-2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -62,7 +63,6 @@
 #define RISCV_CSR_MACHINE_MIE      0x304
 #define RISCV_CSR_MACHINE_MTVEC    0x305
 
-#define RISCV_TIMER_COMPARE_BITS  32
 //
 // Machine Timer and Counter.
 //
