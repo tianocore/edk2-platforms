@@ -91,6 +91,12 @@ F: Silicon/AMD/Styx/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 
+AMD Platform
+F: Platform/AMD/BoardPkg
+F: Platform/AMD/PlatformPkg
+M: Abner Chang <abner.chang@amd.com>
+M: Abdul Lateef Attar <abdattar@amd.com>
+
 Ampere Computing
 F: Platform/Ampere
 F: Silicon/Ampere
