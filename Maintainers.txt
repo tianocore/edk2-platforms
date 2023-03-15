@@ -91,6 +91,11 @@ F: Silicon/AMD/Styx/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 
+AMD MinBoard package for MinPlatformPkg
+F: Platform/AMD/AmdMinBoardPkg
+M: Abner Chang <abner.chang@amd.com>
+M: Abdul Lateef Attar <abdattar@amd.com>
+
 Ampere Computing
 F: Platform/Ampere
 F: Silicon/Ampere
