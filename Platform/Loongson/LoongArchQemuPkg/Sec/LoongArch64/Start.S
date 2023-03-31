@@ -56,6 +56,8 @@ slave_main:
     li.d      T1, LOONGSON_IOCSR_IPI_EN
     iocsrwr.w T0, T1
 
+    li.d      T1, LOONGSON_CSR_MAIL_BUF0
+
 1:
     # wait for wakeup
     idle 0
