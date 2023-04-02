@@ -465,7 +465,7 @@
   #
   # RISC-V Core module
   #
-  Silicon/RISC-V/ProcessorPkg/Universal/CpuDxe/CpuDxe.inf
+  UefiCpuPkg/CpuDxeRiscV64/CpuDxeRiscV64.inf
   Silicon/RISC-V/ProcessorPkg/Universal/SmbiosDxe/RiscVSmbiosDxe.inf
   MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
 
