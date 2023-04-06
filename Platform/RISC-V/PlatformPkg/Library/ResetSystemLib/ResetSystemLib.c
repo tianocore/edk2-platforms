@@ -2,13 +2,15 @@
   Reset System Library functions for RISC-V
 
   Copyright (c) 2021, Hewlett Packard Development LP. All rights reserved.<BR>
+  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <Library/DebugLib.h>
 #include <Library/ResetSystemLib.h>
-#include <Library/RiscVEdk2SbiLib.h>
+#include <Library/BaseRiscVSbiLib.h>
 
 /**
   This function causes a system-wide reset (cold reset), in which
