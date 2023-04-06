@@ -2,6 +2,7 @@
 #  Flash definition file on SiFive VC707 (U500) RISC-V platform
 #
 #  Copyright (c) 2019-2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
