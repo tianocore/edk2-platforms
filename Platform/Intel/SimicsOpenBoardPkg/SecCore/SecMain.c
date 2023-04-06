@@ -1,7 +1,7 @@
 /** @file
   Main SEC phase code.  Transitions to PEI.
 
-  Copyright (c) 2008 - 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2008 - 2023, Intel Corporation. All rights reserved.<BR>
   (C) Copyright 2016 Hewlett Packard Enterprise Development LP<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -15,7 +15,7 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Library/PcdLib.h>
-#include <Library/UefiCpuLib.h>
+#include <Library/CpuLib.h>
 #include <Library/DebugAgentLib.h>
 #include <Library/IoLib.h>
 #include <Library/PeCoffLib.h>
