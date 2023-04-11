@@ -2,11 +2,13 @@
 # Common libraries for Manageabilty Package
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 [LibraryClasses]
   ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
+  IpmiLib|MdeModulePkg/Library/DxeIpmiLibIpmiProtocol/DxeIpmiLibIpmiProtocol.inf
 
 [LibraryClasses.ARM, LibraryClasses.AARCH64]
   #
@@ -22,4 +24,4 @@
 [Components.X64]
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
   ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
-
+  ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf

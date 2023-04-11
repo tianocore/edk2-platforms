@@ -4,6 +4,7 @@
 # those are related to the platform management.
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -48,3 +49,8 @@
   gManageabilityProtocolMctpGuid    = { 0x76FED8F1, 0x0BE5, 0x4269, { 0xA3, 0x1A, 0x38, 0x0F, 0x54, 0xF1, 0xA1, 0x8A } }
   # Manageability Protocol PLDM
   gManageabilityProtocolPldmGuid    = { 0x3958090D, 0x69DD, 0x4868, { 0x9C, 0x41, 0xC9, 0xAC, 0x31, 0xB5, 0x25, 0xC5 } }
+
+[Protocols]
+
+  ## Include/Protocol/IpmiBlobTransfer.h
+  gEdkiiIpmiBlobTransferProtocolGuid = { 0x05837c75, 0x1d65, 0x468b, { 0xb1, 0xc2, 0x81, 0xaf, 0x9a, 0x31, 0x5b, 0x2c } }
