@@ -2,6 +2,7 @@
 # Common libraries for Manageabilty Package
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -37,6 +38,7 @@
 [Components.X64, Components.AARCH64]
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+  ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 !endif
 
 [Components.X64]
