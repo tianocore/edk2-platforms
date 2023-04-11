@@ -5,6 +5,7 @@
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -63,6 +64,8 @@
   gEdkiiPldmProtocolGuid                = { 0x60997616, 0xDB70, 0x4B5F, { 0x86, 0xA4, 0x09, 0x58, 0xA3, 0x71, 0x47, 0xB4 } }
   gEdkiiPldmSmbiosTransferProtocolGuid  = { 0xFA431C3C, 0x816B, 0x4B32, { 0xA3, 0xE0, 0xAD, 0x9B, 0x7F, 0x64, 0x27, 0x2E } }
   gEdkiiMctpProtocolGuid                = { 0xE93465C1, 0x9A31, 0x4C96, { 0x92, 0x56, 0x22, 0x0A, 0xE1, 0x80, 0xB4, 0x1B } }
+  ## Include/Protocol/IpmiBlobTransfer.h
+  gEdkiiIpmiBlobTransferProtocolGuid    = { 0x05837c75, 0x1d65, 0x468b, { 0xb1, 0xc2, 0x81, 0xaf, 0x9a, 0x31, 0x5b, 0x2c } }
 
 [PcdsFixedAtBuild]
   ## This value is the MCTP Interface source and destination endpoint ID for transmiting MCTP message.
