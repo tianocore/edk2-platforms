@@ -103,6 +103,58 @@
   gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Hdmi|0x00000000|UINT16|0x0000003B
   gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusSpeed|0x00000000|UINT32|0x00000039
 
+  #
+  # CoreSight Debug and Trace Components
+  #
+
+  # CoreSight ETMs
+  gArmMorelloTokenSpaceGuid.PcdCsEtm0Base|0x402040000|UINT64|0x0000003C
+  gArmMorelloTokenSpaceGuid.PcdCsEtm0MaxBase|0x402040FFF|UINT64|0x0000003D
+  gArmMorelloTokenSpaceGuid.PcdCsEtm1Base|0x402140000|UINT64|0x0000003E
+  gArmMorelloTokenSpaceGuid.PcdCsEtm1MaxBase|0x402140FFF|UINT64|0x0000003F
+  gArmMorelloTokenSpaceGuid.PcdCsEtm2Base|0x403040000|UINT64|0x00000040
+  gArmMorelloTokenSpaceGuid.PcdCsEtm2MaxBase|0x403040FFF|UINT64|0x00000041
+  gArmMorelloTokenSpaceGuid.PcdCsEtm3Base|0x403140000|UINT64|0x00000042
+  gArmMorelloTokenSpaceGuid.PcdCsEtm3MaxBase|0x403140FFF|UINT64|0x00000043
+
+  # CoreSight TMC (ETRs/ETFs)
+  gArmMorelloTokenSpaceGuid.PcdCsEtf0Base|0x400410000|UINT64|0x00000044
+  gArmMorelloTokenSpaceGuid.PcdCsEtf0MaxBase|0x400410FFF|UINT64|0x00000045
+  gArmMorelloTokenSpaceGuid.PcdCsEtf1Base|0x400420000|UINT64|0x00000046
+  gArmMorelloTokenSpaceGuid.PcdCsEtf1MaxBase|0x400420FFF|UINT64|0x00000047
+  gArmMorelloTokenSpaceGuid.PcdCsEtf2Base|0x400010000|UINT64|0x00000048
+  gArmMorelloTokenSpaceGuid.PcdCsEtf2MaxBase|0x400010FFF|UINT64|0x00000049
+  gArmMorelloTokenSpaceGuid.PcdCsEtrBase|0x400120000|UINT64|0x0000004A
+  gArmMorelloTokenSpaceGuid.PcdCsEtrMaxBase|0x400120FFF|UINT64|0x0000004B
+
+  # CoreSight Dynamic Funnels
+  gArmMorelloTokenSpaceGuid.PcdCsFunnel0Base|0x4000B0000|UINT64|0x0000004C
+  gArmMorelloTokenSpaceGuid.PcdCsFunnel0MaxBase|0x4000B0FFF|UINT64|0x0000004D
+  gArmMorelloTokenSpaceGuid.PcdCsFunnel1Base|0x4000A0000|UINT64|0x0000004E
+  gArmMorelloTokenSpaceGuid.PcdCsFunnel1MaxBase|0x4000A0FFF|UINT64|0x0000004F
+
+  # CoreSight Dynamic Replicator
+  gArmMorelloTokenSpaceGuid.PcdCsReplicatorBase|0x400110000|UINT64|0x00000050
+  gArmMorelloTokenSpaceGuid.PcdCsReplicatorMaxBase|0x400110FFF|UINT64|0x00000051
+
+  # CoreSight TPIU
+  gArmMorelloTokenSpaceGuid.PcdCsTpiuBase|0x400130000|UINT64|0x00000052
+  gArmMorelloTokenSpaceGuid.PcdCsTpiuMaxBase|0x400130FFF|UINT64|0x00000053
+
+  # CoreSight STM and STM Stimulus
+  gArmMorelloTokenSpaceGuid.PcdCsStmBase|0x400800000|UINT64|0x00000054
+  gArmMorelloTokenSpaceGuid.PcdCsStmMaxBase|0x400800FFF|UINT64|0x00000055
+  gArmMorelloTokenSpaceGuid.PcdCsStmStimulusBase|0x4D000000|UINT32|0x00000056
+  gArmMorelloTokenSpaceGuid.PcdCsStmStimulusSize|0x1000000|UINT32|0x00000057
+
+  # CoreSight Components' Size
+  #
+  # Morello TRMs specify the size for these coresight components as 64K.
+  # The actual size is just 4K though 64K is reserved. Access to the
+  # unmapped reserved region results in a DECERR response.
+  #
+  gArmMorelloTokenSpaceGuid.PcdCsComponentSize|0x1000|UINT32|0x00000058
+
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x0000002F
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000030
