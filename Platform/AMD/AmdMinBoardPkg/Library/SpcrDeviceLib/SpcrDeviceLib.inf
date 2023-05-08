@@ -1,0 +1,23 @@
+## @file
+# Implementation for SpcrDeviceLib Library.
+# SpcrDeviceLib is usd for Serial Port Console Redirection Table (SPCR) device.
+#
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = SpcrDeviceLib
+  FILE_GUID                      = 9232A55A-45E3-424A-94C6-615AF63C9A6B
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = BASE
+  LIBRARY_CLASS                  = SpcrDeviceLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[Sources]
+  SpcrDeviceLib.c

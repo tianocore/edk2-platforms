@@ -22,8 +22,14 @@
   MinPlatformPkg/MinPlatformPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
 
+[LibraryClasses]
+  SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
+
 [LibraryClasses.common.PEIM]
   SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+
+[Components]
+  AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
 
 [Components.IA32]
   AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
