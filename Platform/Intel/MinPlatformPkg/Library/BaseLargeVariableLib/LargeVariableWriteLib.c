@@ -22,7 +22,7 @@
 #include <Library/PrintLib.h>
 #include <Library/VariableReadLib.h>
 #include <Library/VariableWriteLib.h>
-
+#include <Library/LargeVariableReadLib.h>
 #include "LargeVariableCommon.h"
 
 /**
@@ -270,6 +270,7 @@ SetLargeVariable (
   UINT8         *OffsetPtr;
   UINTN         BytesRemaining;
   UINTN         SizeToSave;
+  UINTN         BufferSize = 0;
 
   //
   // Check input parameters.
@@ -365,6 +366,13 @@ SetLargeVariable (
     // Non-Volatile storage to store the data.
     //
     RemainingVariableStorage = GetRemainingVariableStorageSpace ();
+    //
+    // Check if current variable already existed in NV storage variable space
+    //
+    Status = GetLargeVariable (VariableName, VendorGuid, &BufferSize, NULL);
+    if ((Status == EFI_BUFFER_TOO_SMALL) && (BufferSize != 0)) {
+      RemainingVariableStorage = RemainingVariableStorage + BufferSize;
+    }
     if (DataSize > RemainingVariableStorage) {
       DEBUG ((DEBUG_ERROR, "SetLargeVariable: Not enough NV storage space to store the data\n"));
       Status = EFI_OUT_OF_RESOURCES;
