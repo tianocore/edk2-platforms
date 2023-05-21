@@ -17,3 +17,19 @@
   PACKAGE_GUID                   = 44F9D761-9ECB-43DD-A5AC-177E5048701B
   PACKAGE_VERSION                = 0.1
 
+[Guids]
+  gAmdMinBoardPkgTokenSpaceGuid  = {0xd4d23d79, 0x73bf, 0x460a, {0xa1, 0xc7, 0x85, 0xa3, 0xca, 0x71, 0xb9, 0x4c}}
+
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+  #
+  # PCI HotPlug Resource Padding
+  #
+  # PCI bus padding, number of bus to reserve, default 2 bus
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadBus|2|UINT8|0x10000003
+  # IO Resource padding in bytes, default 4KB
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadIo|0x00001000|UINT32|0x10000000
+  # Non-PreFetch Memory padding in bytes, default 1MB
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadMem|0x00100000|UINT32|0x10000002
+  # PreFetch Memory padding in bytes, default 2MB
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadPMem|0x00200000|UINT32|0x10000001
+

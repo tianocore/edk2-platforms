@@ -9,7 +9,7 @@
 
 [Defines]
   DSC_SPECIFICATION           = 1.30
-  PLATFORM_GUID               = 88F8A9AE-2FA0-4D58-A6F9-05F635C05F4E
+  PLATFORM_GUID               = 939B559B-269B-4B8F-9637-44DF6575C1E2
   PLATFORM_NAME               = AmdMinBoardPkg
   PLATFORM_VERSION            = 0.1
   OUTPUT_DIRECTORY            = Build/$(PLATFORM_NAME)
@@ -25,6 +25,16 @@
 [LibraryClasses]
   SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
 
+[LibraryClasses.common]
+  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
+  BaseMemoryLib|MdePkg/Library/BaseMemoryLibRepStr/BaseMemoryLibRepStr.inf
+  DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
+  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+
 [LibraryClasses.common.PEIM]
   SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
@@ -34,3 +44,5 @@
 [Components.IA32]
   AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
+[Components.X64]
+  AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
