@@ -24,6 +24,7 @@
 
 [LibraryClasses]
   SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
+  ReportFvLib|AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
 
 [LibraryClasses.common]
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -43,6 +44,7 @@
 
 [Components.IA32]
   AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+  AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
 
 [Components.X64]
   AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf

@@ -1,0 +1,57 @@
+### @file
+# Component information file for the Report Firmware Volume (FV) library.
+#
+# Copyright (c) 2018 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = PeiReportFvLib
+  FILE_GUID                      = 3C207C28-DC43-4A3A-B572-6794C77AB519
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = PEIM
+  LIBRARY_CLASS                  = ReportFvLib
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  PeiServicesLib
+
+[Packages]
+  AmdMinBoardPkg/AmdMinBoardPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[Sources]
+  PeiReportFvLib.c
+
+[Pcd]
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase         ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase           ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase         ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdBootStage                      ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress           ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize                  ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedBase            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryBase   ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize   ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTBase                ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize                ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootBase              ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryBase          ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize          ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityBase            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootBase            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode             ## CONSUMES

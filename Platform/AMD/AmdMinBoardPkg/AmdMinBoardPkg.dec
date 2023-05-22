@@ -33,3 +33,11 @@
   # PreFetch Memory padding in bytes, default 2MB
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadPMem|0x00200000|UINT32|0x10000001
 
+  # PCDs to support loading of FV above 4GB address space
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase            |0x0000000000000000|UINT64|0x10000004
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase              |0x0000000000000000|UINT64|0x10000005
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase            |0x0000000000000000|UINT64|0x10000006
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase    |0x0000000000000000|UINT64|0x10000007
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize    |0x00000000|UINT32|0x10000008
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset  |0x00000000|UINT32|0x10000009
+
