@@ -62,120 +62,130 @@
 
 DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION) {
   Scope(_SB) {
-    Device(CP00) { // Cluster 0, Cpu 0
-      Name(_HID, "ACPI0007")
-      Name(_UID, 0)
-      Name(_STA, 0xF)
-      Device(ETM0) { // ETM on Cluster0 CPU0
-        Name (_HID, "ARMHC500")
-        Name (_CID, "ARMHC500")
+    Device (CLU0) {   // Cluster 0
+      Name (_HID, "ACPI0010")
+      Name (_UID, 0)
+
+      Device (CP00) { // Cluster 0, Cpu 0
+        Name (_HID, "ACPI0007")
         Name (_UID, 0)
-        Name (_CRS, ResourceTemplate() {
-          QWordMemory (
-            ResourceProducer,
-            PosDecode,
-            MinFixed,
-            MaxFixed,
-            Cacheable,
-            ReadWrite,
-            0x00000000,                                   // Granularity
-            FixedPcdGet64 (PcdCsEtm0Base),                // Min Base Address
-            FixedPcdGet64 (PcdCsEtm0MaxBase),             // Max Base Address
-            0,                                            // Translate
-            FixedPcdGet32 (PcdCsComponentSize)            // Length
-          )
-        })
-        DSD_PORTS_BEGIN(1)
-        CS_OUTPUT_PORT(0, 0, \_SB_.SFN0)
-        DSD_PORTS_END
-      } // ETM0
-    }
+        Name (_STA, 0xF)
+        Device(ETM0) { // ETM on Cluster0 CPU0
+          Name (_HID, "ARMHC500")
+          Name (_CID, "ARMHC500")
+          Name (_UID, 0)
+          Name (_CRS, ResourceTemplate() {
+            QWordMemory (
+              ResourceProducer,
+              PosDecode,
+              MinFixed,
+              MaxFixed,
+              Cacheable,
+              ReadWrite,
+              0x00000000,                                   // Granularity
+              FixedPcdGet64 (PcdCsEtm0Base),                // Min Base Address
+              FixedPcdGet64 (PcdCsEtm0MaxBase),             // Max Base Address
+              0,                                            // Translate
+              FixedPcdGet32 (PcdCsComponentSize)            // Length
+            )
+          })
+          DSD_PORTS_BEGIN(1)
+          CS_OUTPUT_PORT(0, 0, \_SB_.SFN0)
+          DSD_PORTS_END
+        } // ETM0
+      }
 
-    Device(CP01) { // Cluster 0, Cpu 1
-      Name(_HID, "ACPI0007")
-      Name(_UID, 1)
-      Name(_STA, 0xF)
-      Device(ETM1) { // ETM on Cluster0 CPU1
-        Name (_HID, "ARMHC500")
-        Name (_CID, "ARMHC500")
+      Device (CP01) { // Cluster 0, Cpu 1
+        Name (_HID, "ACPI0007")
         Name (_UID, 1)
-        Name (_CRS, ResourceTemplate() {
-          QWordMemory (
-            ResourceProducer,
-            PosDecode,
-            MinFixed,
-            MaxFixed,
-            Cacheable,
-            ReadWrite,
-            0x00000000,                               // Granularity
-            FixedPcdGet64 (PcdCsEtm1Base),            // Min Base Address
-            FixedPcdGet64 (PcdCsEtm1MaxBase),         // Max Base Address
-            0,                                        // Translate
-            FixedPcdGet32 (PcdCsComponentSize)        // Length
-          )
-        })
-        DSD_PORTS_BEGIN(1)
-        CS_OUTPUT_PORT(0, 1, \_SB_.SFN0)
-        DSD_PORTS_END
-      } // ETM1
+        Name (_STA, 0xF)
+        Device(ETM1) { // ETM on Cluster0 CPU1
+          Name (_HID, "ARMHC500")
+          Name (_CID, "ARMHC500")
+          Name (_UID, 1)
+          Name (_CRS, ResourceTemplate() {
+            QWordMemory (
+              ResourceProducer,
+              PosDecode,
+              MinFixed,
+              MaxFixed,
+              Cacheable,
+              ReadWrite,
+              0x00000000,                               // Granularity
+              FixedPcdGet64 (PcdCsEtm1Base),            // Min Base Address
+              FixedPcdGet64 (PcdCsEtm1MaxBase),         // Max Base Address
+              0,                                        // Translate
+              FixedPcdGet32 (PcdCsComponentSize)        // Length
+            )
+          })
+          DSD_PORTS_BEGIN(1)
+          CS_OUTPUT_PORT(0, 1, \_SB_.SFN0)
+          DSD_PORTS_END
+        } // ETM1
+      }
     }
 
-    Device(CP02) { // Cluster 1, Cpu 0
-      Name(_HID, "ACPI0007")
-      Name(_UID, 2)
-      Name(_STA, 0xF)
-      Device(ETM2) { // ETM on Cluster1 CPU0
-        Name (_HID, "ARMHC500")
-        Name (_CID, "ARMHC500")
+    Device (CLU1) {   // Cluster 1
+      Name (_HID, "ACPI0010")
+      Name (_UID, 1)
+
+      Device (CP02) { // Cluster 1, Cpu 0
+        Name (_HID, "ACPI0007")
         Name (_UID, 2)
-        Name (_CRS, ResourceTemplate() {
-          QWordMemory (
-            ResourceProducer,
-            PosDecode,
-            MinFixed,
-            MaxFixed,
-            Cacheable,
-            ReadWrite,
-            0x00000000,                               // Granularity
-            FixedPcdGet64 (PcdCsEtm2Base),            // Min Base Address
-            FixedPcdGet64 (PcdCsEtm2MaxBase),         // Max Base Address
-            0,                                        // Translate
-            FixedPcdGet32 (PcdCsComponentSize)        // Length
-          )
-        })
-        DSD_PORTS_BEGIN(1)
-        CS_OUTPUT_PORT(0, 0, \_SB_.SFN1)
-        DSD_PORTS_END
-      } // ETM2
-    }
+        Name (_STA, 0xF)
+        Device(ETM2) { // ETM on Cluster1 CPU0
+          Name (_HID, "ARMHC500")
+          Name (_CID, "ARMHC500")
+          Name (_UID, 2)
+          Name (_CRS, ResourceTemplate() {
+            QWordMemory (
+              ResourceProducer,
+              PosDecode,
+              MinFixed,
+              MaxFixed,
+              Cacheable,
+              ReadWrite,
+              0x00000000,                               // Granularity
+              FixedPcdGet64 (PcdCsEtm2Base),            // Min Base Address
+              FixedPcdGet64 (PcdCsEtm2MaxBase),         // Max Base Address
+              0,                                        // Translate
+              FixedPcdGet32 (PcdCsComponentSize)        // Length
+            )
+          })
+          DSD_PORTS_BEGIN(1)
+          CS_OUTPUT_PORT(0, 0, \_SB_.SFN1)
+          DSD_PORTS_END
+        } // ETM2
+      }
 
-    Device(CP03) { // Cluster 1, Cpu 1
-      Name(_HID, "ACPI0007")
-      Name(_UID, 3)
-      Name(_STA, 0xF)
-      Device(ETM3) { // ETM on Cluster0 CPU0
-        Name (_HID, "ARMHC500")
-        Name (_CID, "ARMHC500")
+      Device (CP03) { // Cluster 1, Cpu 1
+        Name (_HID, "ACPI0007")
         Name (_UID, 3)
-        Name (_CRS, ResourceTemplate() {
-          QWordMemory (
-            ResourceProducer,
-            PosDecode,
-            MinFixed,
-            MaxFixed,
-            Cacheable,
-            ReadWrite,
-            0x00000000,                               // Granularity
-            FixedPcdGet64 (PcdCsEtm3Base),            // Min Base Address
-            FixedPcdGet64 (PcdCsEtm3MaxBase),         // Max Base Address
-            0,                                        // Translate
-            FixedPcdGet32 (PcdCsComponentSize)        // Length
-          )
-        })
-        DSD_PORTS_BEGIN(1)
-        CS_OUTPUT_PORT(0, 1, \_SB_.SFN1)
-        DSD_PORTS_END
-      } // ETM3
+        Name (_STA, 0xF)
+        Device(ETM3) { // ETM on Cluster1 CPU1
+          Name (_HID, "ARMHC500")
+          Name (_CID, "ARMHC500")
+          Name (_UID, 3)
+          Name (_CRS, ResourceTemplate() {
+            QWordMemory (
+              ResourceProducer,
+              PosDecode,
+              MinFixed,
+              MaxFixed,
+              Cacheable,
+              ReadWrite,
+              0x00000000,                               // Granularity
+              FixedPcdGet64 (PcdCsEtm3Base),            // Min Base Address
+              FixedPcdGet64 (PcdCsEtm3MaxBase),         // Max Base Address
+              0,                                        // Translate
+              FixedPcdGet32 (PcdCsComponentSize)        // Length
+            )
+          })
+          DSD_PORTS_BEGIN(1)
+          CS_OUTPUT_PORT(0, 1, \_SB_.SFN1)
+          DSD_PORTS_END
+        } // ETM3
+      }
     }
 
     Device(ETF0) {
@@ -420,8 +430,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Name(_UID, 0)
       DSD_PORTS_BEGIN(3)
       CS_OUTPUT_PORT(0, 0, \_SB_.ETF0),
-      CS_INPUT_PORT(0, 0, \_SB_.CP00.ETM0),
-      CS_INPUT_PORT(1, 0, \_SB_.CP01.ETM1)
+      CS_INPUT_PORT(0, 0, \_SB_.CLU0.CP00.ETM0),
+      CS_INPUT_PORT(1, 0, \_SB_.CLU0.CP01.ETM1)
       DSD_PORTS_END
     } // SFN0
 
@@ -431,8 +441,8 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Name(_UID, 1)
       DSD_PORTS_BEGIN(3)
       CS_OUTPUT_PORT(0, 0, \_SB_.ETF1),
-      CS_INPUT_PORT(0, 0, \_SB_.CP02.ETM2),
-      CS_INPUT_PORT(1, 0, \_SB_.CP03.ETM3)
+      CS_INPUT_PORT(0, 0, \_SB_.CLU1.CP02.ETM2),
+      CS_INPUT_PORT(1, 0, \_SB_.CLU1.CP03.ETM3)
       DSD_PORTS_END
     } // SFN1
   } // Scope(_SB)
