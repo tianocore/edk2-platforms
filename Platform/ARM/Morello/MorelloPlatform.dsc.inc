@@ -9,6 +9,7 @@
 [Defines]
   NETWORK_TLS_ENABLE             = FALSE
   NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
+  DEFINE LPI_EN                  = TRUE
 
   !include NetworkPkg/Network.dsc.inc
   !include Platform/ARM/Morello/MorelloCap.dsc.inc
@@ -80,6 +81,12 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
+
+  !if $(LPI_EN) == TRUE
+    # Allow use of LPI in the response to _OSC method call
+    gArmMorelloTokenSpaceGuid.PcdOscLpiEnable|1
+  !endif
+
   # Size == 0 means to disable the GOP
   gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize|0x1000000
 
