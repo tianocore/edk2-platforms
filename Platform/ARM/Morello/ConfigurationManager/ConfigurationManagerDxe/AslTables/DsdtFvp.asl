@@ -1,7 +1,7 @@
 /** @file
   Differentiated System Description Table Fields (DSDT)
 
-  Copyright (c) 2021, ARM Ltd. All rights reserved.<BR>
+  Copyright (c) 2021-2023, ARM Ltd. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -10,28 +10,38 @@
 
 DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION) {
   Scope(_SB) {
-    Device(CP00) { // Cluster 0, Cpu 0
-      Name(_HID, "ACPI0007")
-      Name(_UID, 0)
-      Name(_STA, 0xF)
+    Device (CLU0) {   // Cluster 0
+      Name (_HID, "ACPI0010")
+      Name (_UID, 0)
+
+      Device (CP00) { // Cluster 0, Cpu 0
+        Name (_HID, "ACPI0007")
+        Name (_UID, 0)
+        Name (_STA, 0xF)
+      }
+
+      Device (CP01) { // Cluster 0, Cpu 1
+        Name (_HID, "ACPI0007")
+        Name (_UID, 1)
+        Name (_STA, 0xF)
+      }
     }
 
-    Device(CP01) { // Cluster 0, Cpu 1
-      Name(_HID, "ACPI0007")
-      Name(_UID, 1)
-      Name(_STA, 0xF)
-    }
+    Device (CLU1) {   // Cluster 1
+      Name (_HID, "ACPI0010")
+      Name (_UID, 1)
 
-    Device(CP02) { // Cluster 1, Cpu 0
-      Name(_HID, "ACPI0007")
-      Name(_UID, 2)
-      Name(_STA, 0xF)
-    }
+      Device (CP02) { // Cluster 1, Cpu 0
+        Name (_HID, "ACPI0007")
+        Name (_UID, 2)
+        Name (_STA, 0xF)
+      }
 
-    Device(CP03) { // Cluster 1, Cpu 1
-      Name(_HID, "ACPI0007")
-      Name(_UID, 3)
-      Name(_STA, 0xF)
+      Device (CP03) { // Cluster 1, Cpu 1
+        Name (_HID, "ACPI0007")
+        Name (_UID, 3)
+        Name (_STA, 0xF)
+      }
     }
 
     // VIRTIO DISK
