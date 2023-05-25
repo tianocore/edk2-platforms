@@ -76,6 +76,9 @@
   gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase|0x2CC00000|UINT64|0x00000034
   gArmMorelloTokenSpaceGuid.PcdArmMaliDxxSize|0x00300000|UINT32|0x00000035
 
+  # ACPI platform wide _OSC
+  gArmMorelloTokenSpaceGuid.PcdOscLpiEnable|0|UINT32|0x00000059
+
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
