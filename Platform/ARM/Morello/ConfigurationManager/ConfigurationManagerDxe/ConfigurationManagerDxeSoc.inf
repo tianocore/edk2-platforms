@@ -119,6 +119,7 @@
 
   gArmMorelloTokenSpaceGuid.PcdCsComponentSize
 
+  gArmMorelloTokenSpaceGuid.PcdOscLpiEnable
 
   ## PL011 Serial Debug UART
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
