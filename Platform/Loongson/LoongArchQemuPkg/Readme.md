@@ -57,7 +57,7 @@
 
     #!/bin/bash
     export WORKSPACE=/work/git/tianocore
-    export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/edk2-platforms
+    export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/edk2-platforms:$WORKSPACE/edk2-non-osi
     export GCC5_LOONGARCH64_PREFIX=loongarch64-unknown-linux-gnu-
     . edk2/edksetup.sh
     make -C edk2/BaseTools
