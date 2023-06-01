@@ -59,6 +59,7 @@
   gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreeBase
   gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreePadding
   gLoongArchQemuPkgTokenSpaceGuid.PcdRtcBaseAddress
+  gEfiMdeModulePkgTokenSpaceGuid.PcdNullPointerDetectionPropertyMask
 
 [FixedPcd]
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvBase

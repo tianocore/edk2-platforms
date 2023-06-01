@@ -101,4 +101,17 @@ InitializeRamRegions (
 
     AddMemoryRangeHob ( pEntry->BaseAddr, pEntry->BaseAddr + pEntry->Length);
   }
+
+  //
+  //When 0 address protection is enabled,
+  //0-4k memory needs to be preallocated to prevent UEFI applications from allocating use,
+  //such as grub
+  //
+  if (PcdGet8 (PcdNullPointerDetectionPropertyMask) & BIT0) {
+    BuildMemoryAllocationHob (
+          0,
+          EFI_PAGE_SIZE,
+          EfiBootServicesData
+          );
+  }
 }
