@@ -1,0 +1,230 @@
+## @file
+# Component information file for PEI Alderlake P Board Init Pre-Mem Library
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiAdlPMultiBoardInitPreMemLib
+  FILE_GUID                      = EA05BD43-136F-45EE-BBBA-27D75817574F
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL
+  CONSTRUCTOR                    = PeiAdlPMultiBoardInitPreMemLibConstructor
+
+[LibraryClasses]
+  BaseLib
+  BiosIdLib
+  DebugLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PcdLib
+  MultiBoardInitSupportLib
+  PeiLib
+  BoardConfigLib
+  PeiBootModeLib
+  PchInfoLib
+
+[Packages]
+  MinPlatformPkg/MinPlatformPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFsp2Pkg/IntelFsp2Pkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+  BoardModulePkg/BoardModulePkg.dec
+
+[Sources]
+  PeiInitPreMemLib.c
+  PeiMultiBoardInitPreMemLib.c
+  PeiDetect.c
+  BoardSaInitPreMemLib.c
+  BoardPchInitPreMemLib.c
+
+[Pcd]
+  gBoardModuleTokenSpaceGuid.PcdLpcSioConfigDefaultPort
+
+  # SA Misc Config
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData00
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData01
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData10
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData11
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdDataSize
+
+  # SPD Address Table
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable0
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable1
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable2
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable3
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable4
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable5
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable6
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable7
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable8
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable9
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable10
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable11
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable12
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable13
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable14
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable15
+
+  #MRC Config
+  gBoardModuleTokenSpaceGuid.PcdMrcDqByteMap
+  gBoardModuleTokenSpaceGuid.PcdMrcDqByteMapSize
+  gBoardModuleTokenSpaceGuid.PcdMrcRcompResistor
+  gBoardModuleTokenSpaceGuid.PcdMrcRcompTarget
+  gBoardModuleTokenSpaceGuid.PcdMrcDqPinsInterleavedControl
+  gBoardModuleTokenSpaceGuid.PcdMrcDqPinsInterleaved
+  gBoardModuleTokenSpaceGuid.PcdMrcDqsMapCpu2DramSize
+  gBoardModuleTokenSpaceGuid.PcdMrcDqMapCpu2DramSize
+  gBoardModuleTokenSpaceGuid.PcdMrcDqsMapCpu2Dram
+  gBoardModuleTokenSpaceGuid.PcdMrcDqMapCpu2Dram
+  gBoardModuleTokenSpaceGuid.PcdMrcCaVrefConfig
+  gBoardModuleTokenSpaceGuid.PcdMrcLp5CccConfig
+  gBoardModuleTokenSpaceGuid.PcdSaMiscUserBd
+  gBoardModuleTokenSpaceGuid.PcdSaDdrFreqLimit
+
+  #MISC
+  gBoardModuleTokenSpaceGuid.PcdOddPowerInitEnable
+  gBoardModuleTokenSpaceGuid.PcdPc8374SioKbcPresent
+  gBoardModuleTokenSpaceGuid.PcdSmbusAlertEnable
+  gBoardModuleTokenSpaceGuid.PcdWakeupType
+  gBoardModuleTokenSpaceGuid.PcdSetupEnable
+
+  # USB 2.0 Port Over Current Pin
+  gBoardModuleTokenSpaceGuid.PcdUsb2OverCurrentPinTable
+
+  # USB 3.0 Port Over Current Pin
+  gBoardModuleTokenSpaceGuid.PcdUsb3OverCurrentPinTable
+
+  #Board Information
+  gBoardModuleTokenSpaceGuid.PcdPlatformGeneration
+  gBoardModuleTokenSpaceGuid.PcdSpdPresent
+  gBoardModuleTokenSpaceGuid.PcdPlatformType
+  gBoardModuleTokenSpaceGuid.PcdPlatformFlavor
+  gBoardModuleTokenSpaceGuid.PcdBoardRev
+  gBoardModuleTokenSpaceGuid.PcdBoardId
+  gBoardModuleTokenSpaceGuid.PcdSkuType
+  gBoardModuleTokenSpaceGuid.PcdBoardBomId
+  gBoardModuleTokenSpaceGuid.PcdBoardType
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+  gBoardModuleTokenSpaceGuid.VpdPcdBoardGpioTablePreMem
+  gBoardModuleTokenSpaceGuid.VpdPcdPcieClkUsageMap
+  gBoardModuleTokenSpaceGuid.VpdPcdUSB2OCMap
+  gBoardModuleTokenSpaceGuid.VpdPcdUSB3OCMap
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcSpdData
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcDqsMapCpu2Dram
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcDqMapCpu2Dram
+  gBoardModuleTokenSpaceGuid.PcdDisplayId                      ## CONSUMES
+
+  gBoardModuleTokenSpaceGuid.PcdCpuRatio
+
+  gIntelFsp2PkgTokenSpaceGuid.PcdTemporaryRamBase              ## CONSUMES
+  gIntelFsp2PkgTokenSpaceGuid.PcdTemporaryRamSize              ## CONSUMES
+  gIntelFsp2PkgTokenSpaceGuid.PcdFspTemporaryRamSize           ## CONSUMES
+  gIntelFsp2PkgTokenSpaceGuid.PcdFspReservedBufferSize         ## CONSUMES
+
+  gBoardModuleTokenSpaceGuid.PcdStackBase
+  gBoardModuleTokenSpaceGuid.PcdStackSize
+  gBoardModuleTokenSpaceGuid.PcdNvsBufferPtr
+  gBoardModuleTokenSpaceGuid.PcdCleanMemory
+
+  #SA GPIO Config
+  gBoardModuleTokenSpaceGuid.PcdRootPortIndex
+
+  # PCIE Slot1 (x4 Connector) GPIO PCDs
+  gBoardModuleTokenSpaceGuid.PcdPcieSlot1GpioSupport
+  gBoardModuleTokenSpaceGuid.PcdPcieSlot1PwrEnableExpanderNo
+  gBoardModuleTokenSpaceGuid.PcdPcieSlot1PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPcieSlot1PwrEnableGpioPolarity
+
+
+  # PCIe x4 M.2 SSD1 RTD3
+  gBoardModuleTokenSpaceGuid.PcdPcieSsd2PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPcieSsd2PwrEnableGpioPolarity
+
+ # PCIe x4 M.2 SSD2 RTD3
+  gBoardModuleTokenSpaceGuid.PcdPcieSsd3PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPcieSsd3PwrEnableGpioPolarity
+
+  # CPU PCIe x8 DG RTD3
+  gBoardModuleTokenSpaceGuid.PcdPcieDG2PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPcieDG2PwrEnableGpioPolarity
+  gBoardModuleTokenSpaceGuid.PcdPcieDG2WakeGpioPin
+
+  # CPU PEG Slot1 RTD3
+  gBoardModuleTokenSpaceGuid.PcdPegSlot1PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPegSlot1PwrEnableGpioPolarity
+  gBoardModuleTokenSpaceGuid.PcdPegSlot1WakeGpioPin
+  gBoardModuleTokenSpaceGuid.PcdPegSlot1RootPort
+
+  # CPU PEG Slot2 RTD3
+  gBoardModuleTokenSpaceGuid.PcdPegSlot2PwrEnableGpioNo
+  gBoardModuleTokenSpaceGuid.PcdPegSlot2PwrEnableGpioPolarity
+  gBoardModuleTokenSpaceGuid.PcdPegSlot2WakeGpioPin
+  gBoardModuleTokenSpaceGuid.PcdPegSlot2RootPort
+
+  #SA USB Config
+  gBoardModuleTokenSpaceGuid.PcdCpuXhciPortSupportMap
+
+
+  # PCIe Clock Info
+  gBoardModuleTokenSpaceGuid.PcdPcieClock0
+  gBoardModuleTokenSpaceGuid.PcdPcieClock1
+  gBoardModuleTokenSpaceGuid.PcdPcieClock2
+  gBoardModuleTokenSpaceGuid.PcdPcieClock3
+  gBoardModuleTokenSpaceGuid.PcdPcieClock4
+  gBoardModuleTokenSpaceGuid.PcdPcieClock5
+  gBoardModuleTokenSpaceGuid.PcdPcieClock6
+  gBoardModuleTokenSpaceGuid.PcdPcieClock7
+  gBoardModuleTokenSpaceGuid.PcdPcieClock8
+  gBoardModuleTokenSpaceGuid.PcdPcieClock9
+  gBoardModuleTokenSpaceGuid.PcdPcieClock10
+  gBoardModuleTokenSpaceGuid.PcdPcieClock11
+  gBoardModuleTokenSpaceGuid.PcdPcieClock12
+  gBoardModuleTokenSpaceGuid.PcdPcieClock13
+  gBoardModuleTokenSpaceGuid.PcdPcieClock14
+  gBoardModuleTokenSpaceGuid.PcdPcieClock15
+
+
+  # GPIO Group Tier
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw0
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw1
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw2
+
+
+
+  # WWAN Full Card Power Off and reset pins
+  gBoardModuleTokenSpaceGuid.PcdDisableVpdGpioTable
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTablePreMem                   ## PRODUCES
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTableEarlyPreMem              ## PRODUCES
+
+
+  # Display DDI
+  gBoardModuleTokenSpaceGuid.PcdSaDisplayConfigTable           ## PRODUCES
+  gBoardModuleTokenSpaceGuid.PcdSaDisplayConfigTableSize       ## PRODUCES
+
+  gPlatformModuleTokenSpaceGuid.PcdDesktopLpcSioDataDefaultPort   ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdDesktopLpcSioIndexDefaultPort  ## CONSUMES
+
+  gSiPkgTokenSpaceGuid.PcdAdlSSupport                 ## CONSUMES
+
+[Guids]
+  gFspNonVolatileStorageHobGuid
+  gEfiMemoryOverwriteControlDataGuid
+  gSetupVariableGuid
+  gSaSetupVariableGuid
+  gCpuSetupVariableGuid
+  gPchSetupVariableGuid
+  gMeSetupVariableGuid
+  gSiSetupVariableGuid
+
+[Ppis]
+  gPatchConfigurationDataPreMemPpiGuid    ## NOTIFY
+  gEfiPeiReadOnlyVariable2PpiGuid         ## CONSUMES
+  gSetupVariablesReadyPpiGuid             ## PRODUCES

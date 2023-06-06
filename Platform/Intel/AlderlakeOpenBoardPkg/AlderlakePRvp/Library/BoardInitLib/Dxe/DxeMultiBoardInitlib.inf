@@ -1,0 +1,97 @@
+## @file
+# Component information file for Alderlake Multi-Board Initialization in DXE phase.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DxeAdlPMultiBoardInitLib
+  FILE_GUID                      = E7D21F79-1126-4B45-987C-41FF30AC0EC2
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL
+  CONSTRUCTOR                    = DxeAdlPMultiBoardInitLibConstructor
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  PcdLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  HobLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  PchPcieRpLib
+  PciSegmentLib
+
+[Packages]
+  MinPlatformPkg/MinPlatformPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+
+[Sources]
+  DxeInitLib.c
+  DxeMultiBoardInitLib.c
+
+[Protocols]
+
+[Guids]
+  gSiMemoryInfoDataGuid                         ## CONSUMES
+  gSetupVariableGuid                            ## CONSUMES
+  gSaSetupVariableGuid                          ## CONSUMES
+  gCpuSetupVariableGuid                         ## CONSUMES
+  gPchSetupVariableGuid                         ## CONSUMES
+  gMeSetupVariableGuid                          ## CONSUMES
+  gSiSetupVariableGuid                          ## CONSUMES
+
+[Pcd]
+  # Board Init Table List
+  gBoardModuleTokenSpaceGuid.PcdXhciAcpiTableSignature
+  gBoardModuleTokenSpaceGuid.PcdPreferredPmProfile
+
+  gBoardModuleTokenSpaceGuid.PcdBoardRtd3TableSignature
+
+  gBoardModuleTokenSpaceGuid.PcdSpdAddressOverride
+
+  gBoardModuleTokenSpaceGuid.PcdBatteryPresent
+  gBoardModuleTokenSpaceGuid.PcdRealBattery1Control
+  gBoardModuleTokenSpaceGuid.PcdRealBattery2Control
+
+  gBoardModuleTokenSpaceGuid.PcdH8S2113SIO
+  gBoardModuleTokenSpaceGuid.PcdNCT6776FCOM
+  gBoardModuleTokenSpaceGuid.PcdNCT6776FSIO
+  gBoardModuleTokenSpaceGuid.PcdNCT6776FHWMON
+
+  gBoardModuleTokenSpaceGuid.PcdSmcRuntimeSciPin
+
+  gBoardModuleTokenSpaceGuid.PcdVirtualButtonVolumeUpSupport
+  gBoardModuleTokenSpaceGuid.PcdVirtualButtonVolumeDownSupport
+  gBoardModuleTokenSpaceGuid.PcdVirtualButtonHomeButtonSupport
+  gBoardModuleTokenSpaceGuid.PcdVirtualButtonRotationLockSupport
+
+  gBoardModuleTokenSpaceGuid.PcdSlateModeSwitchSupport
+  gBoardModuleTokenSpaceGuid.PcdVirtualGpioButtonSupport
+  gBoardModuleTokenSpaceGuid.PcdPmPowerButtonGpioPin
+  gBoardModuleTokenSpaceGuid.PcdAcpiEnableAllButtonSupport
+  gBoardModuleTokenSpaceGuid.PcdAcpiHidDriverButtonSupport
+
+  gBoardModuleTokenSpaceGuid.PcdPlatformFlavor            ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdBoardId                   ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdBoardBomId
+  gBoardModuleTokenSpaceGuid.PcdSkuType
+
+  gBoardModuleTokenSpaceGuid.PcdGpioTier2WakeEnable                 ## PRODUCES
+
+  gBoardModuleTokenSpaceGuid.PcdPssReadSN
+  gBoardModuleTokenSpaceGuid.PcdPssI2cBusNumber
+  gBoardModuleTokenSpaceGuid.PcdPssI2cSlaveAddress
+
+  gBoardModuleTokenSpaceGuid.PcdGpioTier2WakeEnable
+  gBoardModuleTokenSpaceGuid.PcdDimmPopulationError
+
+  gSiPkgTokenSpaceGuid.PcdAdlSSupport                 ## CONSUMES
