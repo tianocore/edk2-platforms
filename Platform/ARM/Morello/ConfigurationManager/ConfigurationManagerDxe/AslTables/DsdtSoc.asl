@@ -69,6 +69,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Device(ETM0) { // ETM on Cluster0 CPU0
         Name (_HID, "ARMHC500")
         Name (_CID, "ARMHC500")
+        Name (_UID, 0)
         Name (_CRS, ResourceTemplate() {
           QWordMemory (
             ResourceProducer,
@@ -97,6 +98,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Device(ETM1) { // ETM on Cluster0 CPU1
         Name (_HID, "ARMHC500")
         Name (_CID, "ARMHC500")
+        Name (_UID, 1)
         Name (_CRS, ResourceTemplate() {
           QWordMemory (
             ResourceProducer,
@@ -125,6 +127,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Device(ETM2) { // ETM on Cluster1 CPU0
         Name (_HID, "ARMHC500")
         Name (_CID, "ARMHC500")
+        Name (_UID, 2)
         Name (_CRS, ResourceTemplate() {
           QWordMemory (
             ResourceProducer,
@@ -153,6 +156,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Device(ETM3) { // ETM on Cluster0 CPU0
         Name (_HID, "ARMHC500")
         Name (_CID, "ARMHC500")
+        Name (_UID, 3)
         Name (_CRS, ResourceTemplate() {
           QWordMemory (
             ResourceProducer,
@@ -177,6 +181,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(ETF0) {
       Name(_HID, "ARMHC97C")          // TMC
       Name(_CID, "ARMHC97C")          // TMC
+      Name(_UID, 0)
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
           ResourceProducer,
@@ -201,6 +206,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(ETF1) {
       Name(_HID, "ARMHC97C")          // TMC
       Name(_CID, "ARMHC97C")          // TMC
+      Name(_UID, 1)
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
           ResourceProducer,
@@ -225,6 +231,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(ETF2) {
       Name(_HID, "ARMHC97C")          // TMC
       Name(_CID, "ARMHC97C")          // TMC
+      Name(_UID, 2)
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
           ResourceProducer,
@@ -249,6 +256,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(FUN) {
       Name(_HID, "ARMHC9FF")
       Name(_CID, "ARMHC9FF")
+      Name(_UID, 0)
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
           ResourceProducer,
@@ -300,6 +308,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(MFUN) {              // Main Funnel
       Name(_HID, "ARMHC9FF")    // Funnel
       Name(_CID, "ARMHC9FF")
+      Name(_UID, 1)
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
           ResourceProducer,
@@ -374,6 +383,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(ETR) {
       Name(_HID, "ARMHC97C")        // TMC
       Name(_CID, "ARMHC97C")
+      Name(_UID, 3)
       Name(_CCA, 0)                 // The ETR on this platform is not coherent
       Name(_CRS, ResourceTemplate() {
         QWordMemory (
@@ -407,6 +417,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(SFN0) {              // Static Funnel 0
       Name(_HID, "ARMHC9FE")    // Funnel
       Name(_CID, "ARMHC9FE")
+      Name(_UID, 0)
       DSD_PORTS_BEGIN(3)
       CS_OUTPUT_PORT(0, 0, \_SB_.ETF0),
       CS_INPUT_PORT(0, 0, \_SB_.CP00.ETM0),
@@ -417,6 +428,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
     Device(SFN1) {              // Static Funnel 1
       Name(_HID, "ARMHC9FE")    // Funnel
       Name(_CID, "ARMHC9FE")
+      Name(_UID, 1)
       DSD_PORTS_BEGIN(3)
       CS_OUTPUT_PORT(0, 0, \_SB_.ETF1),
       CS_INPUT_PORT(0, 0, \_SB_.CP02.ETM2),
