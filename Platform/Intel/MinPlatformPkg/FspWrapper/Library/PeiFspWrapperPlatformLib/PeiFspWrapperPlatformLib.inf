@@ -51,7 +51,7 @@
   IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
 
-[LibraryClasses.IA32]
+[LibraryClasses]
   SiliconPolicyInitLib
   SiliconPolicyUpdateLib
   PeiServicesTablePointerLib
