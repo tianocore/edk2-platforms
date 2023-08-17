@@ -36,9 +36,11 @@ Load (
   CONST MORELLO_EL3_FW_HANDOFF_PARAM_PPI  *ParamPpi;
   CONST UINT32                            *Property;
   CONST UINT64                            *DdrProperty;
+  CONST CHAR8                             *StringProperty;
   EFI_STATUS                              Status;
   INT32                                   OffsetPlat;
   INT32                                   OffsetFw;
+  INT32                                   Length = 0;
   MORELLO_PLAT_INFO_SOC                   *PlatInfo;
   MORELLO_FW_VERSION_SOC                  *FwVersion;
 
@@ -238,6 +240,22 @@ Load (
   }
 
   FwVersion->ScpFwCommit = Fdt32ToCpu (*Property);
+
+  StringProperty = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "tfa-fw-version", &Length);
+  if (StringProperty == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: tfa-fw-version property not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (Length > MORELLO_TFA_VERSION_STR_LEN) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  CopyMem (FwVersion->TfFwRevision, StringProperty, Length);
 
   gPpi.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI
                | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
