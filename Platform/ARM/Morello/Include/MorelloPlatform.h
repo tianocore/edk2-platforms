@@ -98,6 +98,11 @@
 #define MORELLO_FW_REVISION_MAINLINE_MASK  0x40
 #define MORELLO_FW_REVISION_DIRTY_MASK     0x80
 
+#define MORELLO_MCC_PCC_UPPER_OFFSET  16
+#define MORELLO_MCC_PCC_MID_OFFSET    8
+#define MORELLO_MCC_PCC_LOWER_OFFSET  0
+#define MORELLO_MCC_PCC_DIGIT_MASK    0xFF
+
 /*
  * Platform information structure stored in Non-secure SRAM. Platform
  * information are passed from the trusted firmware with the below structure
@@ -121,6 +126,8 @@ typedef struct {
 typedef struct {
   UINT32    ScpFwRevision; ///< Contains SCP Firwmare Revision
   UINT32    ScpFwCommit;   ///< Contains SCP Firmware commit ID
+  UINT32    MccFwRevision; ///< Contains MCC firmware revision
+  UINT32    PccFwRevision; ///< Contains PCC firmware revision
 } MORELLO_FW_VERSION_SOC;
 
 typedef struct {

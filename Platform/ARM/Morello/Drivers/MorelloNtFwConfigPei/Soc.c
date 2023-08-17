@@ -191,6 +191,30 @@ Load (
 
   PlatInfo->SccConfig = Fdt32ToCpu (*Property);
 
+  Property = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "mcc-fw-version", NULL);
+  if (Property == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: mcc-fw-version property not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  FwVersion->MccFwRevision = Fdt32ToCpu (*Property);
+
+  Property = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "pcc-fw-version", NULL);
+  if (Property == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: pcc-fw-version property not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  FwVersion->PccFwRevision = Fdt32ToCpu (*Property);
+
   Property = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "scp-fw-version", NULL);
   if (Property == NULL) {
     DEBUG ((
