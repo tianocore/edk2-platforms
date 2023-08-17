@@ -64,6 +64,12 @@
   "N/A\0"                    /* Lowest supported fw version */  \
   "N/A\0"                    /* Release Date */
 
+#define TYPE45_STRINGS_TFA                                      \
+  "Trusted Firmware-A\0"     /* Firmware Name */                \
+  "ARM LTD\0"                /* Manufacturer Name */            \
+  "N/A\0"                    /* Lowest supported fw version */  \
+  "N/A\0"                    /* Release Date */
+
 typedef enum {
   FirmwareComponentName = 1,
   ManufacturerName,
@@ -500,6 +506,26 @@ InstallType45FirmwareInventoryInformation (
   if (Status != EFI_SUCCESS) {
     return Status;
   }
+
+  /* Handle TF-A */
+  AllocateSmbiosTable (
+    &SmbiosType45,
+    &SmbiosHandle,
+    &AdditionalStrStart,
+    TYPE45_STRINGS_TFA,
+    sizeof (TYPE45_STRINGS_TFA)
+    );
+
+  Status = SetVersionFromString (AdditionalStrStart, (CHAR8 *)FwVersion->TfFwRevision);
+  if (Status != EFI_SUCCESS) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "SMBIOS: Failed to load TF-A version data for Type45 SMBIOS table.\n"
+      ));
+    return Status;
+  }
+
+  Status = InstallSmbiosTable (Smbios, SmbiosType45, &SmbiosHandle);
 
   return Status;
 }
