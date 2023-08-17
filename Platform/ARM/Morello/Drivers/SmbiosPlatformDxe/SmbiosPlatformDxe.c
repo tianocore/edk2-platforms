@@ -42,6 +42,7 @@ ARM_MORELLO_SMBIOS_TABLE_INSTALL_FPTR  mSmbiosTableList[] = {
   &InstallType17MemoryDevice,
   &InstallType19MemoryArrayMappedAddress,
   &InstallType32SystemBootInformation,
+  &InstallType45FirmwareInventoryInformation,
 };
 
 /**
