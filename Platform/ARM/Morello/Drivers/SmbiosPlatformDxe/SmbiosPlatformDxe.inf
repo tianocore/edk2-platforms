@@ -25,6 +25,7 @@
   Type17MemoryDevice.c
   Type19MemoryArrayMappedAddress.c
   Type32SystemBootInformation.c
+  Type45FirmwareInventoryInformation.c
 
 [Packages]
   ArmPkg/ArmPkg.dec
@@ -52,6 +53,7 @@
   gArmTokenSpaceGuid.PcdSystemMemorySize
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
 
 [Protocols]
   gEfiSmbiosProtocolGuid                      # PROTOCOL ALWAYS_CONSUMED

@@ -178,6 +178,26 @@ InstallType32SystemBootInformation (
   );
 
 /**
+  Install SMBIOS Firmware inventory information
+
+  Install the SMBIOS firmware inventory information (type 45) table for
+  Arm Morello System Development platform.
+
+  @param[in] Smbios   SMBIOS protocol.
+
+  @retval EFI_SUCCESS           Records were added.
+  @retval EFI_BUFFER_TOO_SMALL  Dynamic strings exceeded allocated space.
+  @retval EFI_NOT_FOUND         Unknown product id.
+  @retval EFI_OUT_OF_RESOURCES  Records were not added.
+  @retval EFI_ALREADY_STARTED   The SmbiosHandle passed is already in use.
+**/
+EFI_STATUS
+EFIAPI
+InstallType45FirmwareInventoryInformation (
+  IN     EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
   Determine the Dram Block2 Size
 
   Determine the Dram Block2 Size by using the data in the Platform
