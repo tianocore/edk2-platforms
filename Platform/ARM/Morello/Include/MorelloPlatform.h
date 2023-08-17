@@ -89,6 +89,15 @@
 #define MORELLO_SILICON_REVISION_R_POS   16
 #define MORELLO_SILICON_REVISION_P_POS   0
 
+// Morello firmware version masks
+#define MORELLO_FW_REVISION_MAJOR_OFFSET   24
+#define MORELLO_FW_REVISION_MINOR_OFFSET   16
+#define MORELLO_FW_REVISION_PATCH_OFFSET   8
+#define MORELLO_FW_REVISION_FLAGS_OFFSET   0
+#define MORELLO_FW_REVISION_MASK           0xFF
+#define MORELLO_FW_REVISION_MAINLINE_MASK  0x40
+#define MORELLO_FW_REVISION_DIRTY_MASK     0x80
+
 /*
  * Platform information structure stored in Non-secure SRAM. Platform
  * information are passed from the trusted firmware with the below structure
@@ -108,6 +117,16 @@ typedef struct {
 typedef struct {
   UINT64    LocalDdrSize; ///< Local DDR memory size in Bytes
 } MORELLO_PLAT_INFO_FVP;
+
+typedef struct {
+  UINT32    ScpFwRevision; ///< Contains SCP Firwmare Revision
+  UINT32    ScpFwCommit;   ///< Contains SCP Firmware commit ID
+} MORELLO_FW_VERSION_SOC;
+
+typedef struct {
+  UINT32    ScpFwRevision; ///< Contains SCP Firwmare Revision
+  UINT32    ScpFwCommit;   ///< Contains SCP Firmware commit ID
+} MORELLO_FW_VERSION_FVP;
 
 #pragma pack()
 

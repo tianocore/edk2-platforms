@@ -34,10 +34,13 @@ Load (
 {
   STATIC EFI_PEI_PPI_DESCRIPTOR           gPpi;
   CONST MORELLO_EL3_FW_HANDOFF_PARAM_PPI  *ParamPpi;
+  CONST UINT32                            *Property;
   CONST UINT64                            *DdrProperty;
   EFI_STATUS                              Status;
-  INT32                                   Offset;
+  INT32                                   OffsetPlat;
+  INT32                                   OffsetFw;
   MORELLO_PLAT_INFO_FVP                   *PlatInfo;
+  MORELLO_FW_VERSION_FVP                  *FwVersion;
 
   PlatInfo = BuildGuidHob (
                &gArmMorelloPlatformInfoDescriptorGuid,
@@ -48,6 +51,20 @@ Load (
     DEBUG ((
       DEBUG_ERROR,
       "[%a]: failed to allocate platform info HOB\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  FwVersion = BuildGuidHob (
+                &gArmMorelloFirmwareVersionGuid,
+                sizeof (*FwVersion)
+                );
+
+  if (FwVersion == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: failed to allocate firmware version HOB\n",
       gEfiCallerBaseName
       ));
     return EFI_INVALID_PARAMETER;
@@ -79,8 +96,8 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
-  Offset = FdtSubnodeOffset (ParamPpi->NtFwConfig, 0, "platform-info");
-  if (Offset == -FDT_ERR_NOTFOUND) {
+  OffsetPlat = FdtSubnodeOffset (ParamPpi->NtFwConfig, 0, "platform-info");
+  if (OffsetPlat == -FDT_ERR_NOTFOUND) {
     DEBUG ((
       DEBUG_ERROR,
       "[%a]: invalid NT_FW_CONFIG DTB: platform-info node not found\n",
@@ -89,9 +106,19 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
+  OffsetFw = FdtSubnodeOffset (ParamPpi->NtFwConfig, 0, "firmware-version");
+  if (OffsetFw == -FDT_ERR_NOTFOUND) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: firmware-version node not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
   DdrProperty = FdtGetProp (
                   ParamPpi->NtFwConfig,
-                  Offset,
+                  OffsetPlat,
                   "local-ddr-size",
                   NULL
                   );
@@ -105,6 +132,30 @@ Load (
   }
 
   PlatInfo->LocalDdrSize = Fdt64ToCpu (ReadUnaligned64 (DdrProperty));
+
+  Property = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "scp-fw-version", NULL);
+  if (Property == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: scp-fw-version property not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  FwVersion->ScpFwRevision = Fdt32ToCpu (*Property);
+
+  Property = FdtGetProp (ParamPpi->NtFwConfig, OffsetFw, "scp-fw-commit", NULL);
+  if (Property == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: invalid NT_FW_CONFIG DTB: scp-fw-commit property not found\n",
+      gEfiCallerBaseName
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  FwVersion->ScpFwCommit = Fdt32ToCpu (*Property);
 
   gPpi.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI
                | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;

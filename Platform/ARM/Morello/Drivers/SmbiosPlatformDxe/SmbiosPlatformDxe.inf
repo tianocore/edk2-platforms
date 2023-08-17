@@ -43,6 +43,7 @@
   UefiDriverEntryPoint
 
 [Guids]
+  gArmMorelloFirmwareVersionGuid
   gArmMorelloPlatformInfoDescriptorGuid
   gEfiGlobalVariableGuid
 
