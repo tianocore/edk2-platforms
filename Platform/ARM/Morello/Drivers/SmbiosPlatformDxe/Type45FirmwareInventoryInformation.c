@@ -46,6 +46,12 @@
   "N/A\0"                    /* Lowest supported fw version */  \
   "N/A\0"                    /* Release Date */
 
+#define TYPE45_STRINGS_SCP                                      \
+  "SCP Firmware\0"           /* Firmware Name */                \
+  "ARM LTD\0"                /* Manufacturer Name */            \
+  "N/A\0"                    /* Lowest supported fw version */  \
+  "N/A\0"                    /* Release Date */
+
 typedef enum {
   FirmwareComponentName = 1,
   ManufacturerName,
@@ -201,6 +207,71 @@ SetVersionFromString (
 }
 
 /**
+  Set version strings in the buffer from compressed format.
+
+  @param[in, out] Buffer   Output buffer to write into.
+  @param[in]      Version  Version information.
+  @param[in]      CommitID Commit ID for the component.
+
+  @retval EFI_SUCCESS          Successfully wrote version strings into buffer.
+  @retval EFI_BUFFER_TOO_SMALL Version components exceeded the buffer size.
+ **/
+EFI_STATUS
+SetVersionFromCompressed (
+  IN OUT CHAR8   *Buffer,
+  IN     UINT32  Version,
+  IN     UINT32  CommitID
+  )
+{
+  UINT32  Length;
+  UINT32  BufferSize = FW_INFO_SIZE;
+
+  // Set Version, if 0 then declare unknown base version.
+  if ((Version >> MORELLO_FW_REVISION_PATCH_OFFSET) == 0) {
+    Length = AsciiSPrint (Buffer, BufferSize, "unknown");
+  } else if ((Version >> MORELLO_FW_REVISION_FLAGS_OFFSET) &
+             MORELLO_FW_REVISION_MAINLINE_MASK)
+  {
+    Length = AsciiSPrint (Buffer, BufferSize, "master");
+  } else {
+    Length = AsciiSPrint (
+               Buffer,
+               BufferSize,
+               "%d.%d.%d",
+               ((Version >> MORELLO_FW_REVISION_MAJOR_OFFSET) & MORELLO_FW_REVISION_MASK),
+               ((Version >> MORELLO_FW_REVISION_MINOR_OFFSET) & MORELLO_FW_REVISION_MASK),
+               ((Version >> MORELLO_FW_REVISION_PATCH_OFFSET) & MORELLO_FW_REVISION_MASK)
+               );
+  }
+
+  // Add if tree is dirty
+  if ((Version >> MORELLO_FW_REVISION_FLAGS_OFFSET) & MORELLO_FW_REVISION_DIRTY_MASK) {
+    Length += AsciiSPrint (Buffer+Length, BufferSize-Length, "-dirty");
+  }
+
+  if (Length > FW_VERSION_SIZE) {
+    return EFI_BUFFER_TOO_SMALL;
+  }
+
+  Length++;
+  BufferSize -= Length;
+  Buffer     += Length;
+
+  // Add commit ID entry
+  Length = AsciiSPrint (
+             Buffer,
+             BufferSize,
+             "%x",
+             CommitID
+             ) + 1;
+  if (Length > FW_ID_SIZE) {
+    return EFI_BUFFER_TOO_SMALL;
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
   Install SMBIOS firmware inventory information
 
   Install the SMBIOS firmware inventory information (type 45) table for ARM Morello
@@ -217,14 +288,16 @@ InstallType45FirmwareInventoryInformation (
   IN     EFI_SMBIOS_PROTOCOL  *Smbios
   )
 {
-  EFI_STATUS                 Status;
-  SMBIOS_HANDLE              SmbiosHandle;
-  ARM_MORELLO_SMBIOS_TYPE45  *SmbiosType45       = NULL;
-  CHAR8                      *AdditionalStrStart = NULL;
-  CHAR16                     *EdkVersionString;
-  CHAR8                      *EdkFwVersion     = NULL;
-  CHAR8                      *EdkPlatFwVersion = NULL;
-  UINT8                      Pos;
+  EFI_STATUS                    Status;
+  SMBIOS_HANDLE                 SmbiosHandle;
+  VOID                          *SystemIdFirmware;
+  CONST MORELLO_FW_VERSION_SOC  *FwVersion;
+  ARM_MORELLO_SMBIOS_TYPE45     *SmbiosType45       = NULL;
+  CHAR8                         *AdditionalStrStart = NULL;
+  CHAR16                        *EdkVersionString;
+  CHAR8                         *EdkFwVersion     = NULL;
+  CHAR8                         *EdkPlatFwVersion = NULL;
+  UINT8                         Pos;
 
   // Get EDK Version strings and create ASCII strings for EDK II and EDK II platforms
   EdkVersionString = (CHAR16 *)PcdGetPtr (PcdFirmwareVersionString);
@@ -295,6 +368,41 @@ InstallType45FirmwareInventoryInformation (
     DEBUG ((
       DEBUG_ERROR,
       "SMBIOS: Failed to load EDK II platforms data for Type45 SMBIOS table.\n"
+      ));
+    return Status;
+  }
+
+  Status = InstallSmbiosTable (Smbios, SmbiosType45, &SmbiosHandle);
+  if (Status != EFI_SUCCESS) {
+    return Status;
+  }
+
+  // Fetch information for other components (PCC, MCC, SCP, TF-A)
+  SystemIdFirmware = GetFirstGuidHob (&gArmMorelloFirmwareVersionGuid);
+  if (SystemIdFirmware == NULL) {
+    return EFI_NOT_FOUND;
+  }
+
+  FwVersion = (MORELLO_FW_VERSION_SOC *)GET_GUID_HOB_DATA (SystemIdFirmware);
+
+  /* Handle SCP Firmware */
+  AllocateSmbiosTable (
+    &SmbiosType45,
+    &SmbiosHandle,
+    &AdditionalStrStart,
+    TYPE45_STRINGS_SCP,
+    sizeof (TYPE45_STRINGS_SCP)
+    );
+
+  Status = SetVersionFromCompressed (
+             AdditionalStrStart,
+             FwVersion->ScpFwRevision,
+             FwVersion->ScpFwCommit
+             );
+  if (Status != EFI_SUCCESS) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "SMBIOS: Failed to load SCP Firmware version data for Type45 SMBIOS table.\n"
       ));
     return Status;
   }

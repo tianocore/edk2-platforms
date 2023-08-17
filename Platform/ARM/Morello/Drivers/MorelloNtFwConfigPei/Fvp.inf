@@ -35,6 +35,7 @@
   gArmMorelloParameterPpiGuid
 
 [Guids]
+  gArmMorelloFirmwareVersionGuid
   gArmMorelloPlatformInfoDescriptorGuid
 
 [Depex]
