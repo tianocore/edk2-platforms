@@ -102,6 +102,7 @@
 #define MORELLO_MCC_PCC_MID_OFFSET    8
 #define MORELLO_MCC_PCC_LOWER_OFFSET  0
 #define MORELLO_MCC_PCC_DIGIT_MASK    0xFF
+#define MORELLO_TFA_VERSION_STR_LEN   24
 
 /*
  * Platform information structure stored in Non-secure SRAM. Platform
@@ -124,15 +125,17 @@ typedef struct {
 } MORELLO_PLAT_INFO_FVP;
 
 typedef struct {
-  UINT32    ScpFwRevision; ///< Contains SCP Firwmare Revision
-  UINT32    ScpFwCommit;   ///< Contains SCP Firmware commit ID
-  UINT32    MccFwRevision; ///< Contains MCC firmware revision
-  UINT32    PccFwRevision; ///< Contains PCC firmware revision
+  UINT32    ScpFwRevision;                             ///< Contains SCP Firwmare Revision
+  UINT32    ScpFwCommit;                               ///< Contains SCP Firmware commit ID
+  UINT32    MccFwRevision;                             ///< Contains MCC firmware revision
+  UINT32    PccFwRevision;                             ///< Contains PCC firmware revision
+  CHAR8     TfFwRevision[MORELLO_TFA_VERSION_STR_LEN]; ///< Contains TF-A version string
 } MORELLO_FW_VERSION_SOC;
 
 typedef struct {
-  UINT32    ScpFwRevision; ///< Contains SCP Firwmare Revision
-  UINT32    ScpFwCommit;   ///< Contains SCP Firmware commit ID
+  UINT32    ScpFwRevision;                             ///< Contains SCP Firwmare Revision
+  UINT32    ScpFwCommit;                               ///< Contains SCP Firmware commit ID
+  CHAR8     TfFwRevision[MORELLO_TFA_VERSION_STR_LEN]; ///< Contains TF-A version string
 } MORELLO_FW_VERSION_FVP;
 
 #pragma pack()
