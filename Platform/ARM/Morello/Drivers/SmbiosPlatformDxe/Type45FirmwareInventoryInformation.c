@@ -46,6 +46,18 @@
   "N/A\0"                    /* Lowest supported fw version */  \
   "N/A\0"                    /* Release Date */
 
+#define TYPE45_STRINGS_MCC                                      \
+  "MCC Firmware\0"           /* Firmware Name */                \
+  "ARM LTD\0"                /* Manufacturer Name */            \
+  "N/A\0"                    /* Lowest supported fw version */  \
+  "N/A\0"                    /* Release Date */
+
+#define TYPE45_STRINGS_PCC                                      \
+  "PCC Firmware\0"           /* Firmware Name */                \
+  "ARM LTD\0"                /* Manufacturer Name */            \
+  "N/A\0"                    /* Lowest supported fw version */  \
+  "N/A\0"                    /* Release Date */
+
 #define TYPE45_STRINGS_SCP                                      \
   "SCP Firmware\0"           /* Firmware Name */                \
   "ARM LTD\0"                /* Manufacturer Name */            \
@@ -272,6 +284,39 @@ SetVersionFromCompressed (
 }
 
 /**
+  Generate version strings for MCC/PCC.
+
+  @param[in, out] Buffer     Output buffer to write into.
+  @param[in]      Version    Version number, in BCD (byte per digit).
+
+  @retval EFI_SUCCESS          Successfully wrote version strings into buffer.
+  @retval EFI_BUFFER_TOO_SMALL Version components exceeded the buffer size.
+ */
+STATIC
+EFI_STATUS
+SetVersionStringMCCPCC (
+  IN OUT CHAR8  *Buffer,
+  IN    UINT32  Version
+  )
+{
+  UINT32  Length;
+
+  Length = AsciiSPrint (
+             Buffer,
+             FW_VERSION_SIZE,
+             "v%d",
+             (
+              (((Version >> MORELLO_MCC_PCC_UPPER_OFFSET) & MORELLO_MCC_PCC_DIGIT_MASK) * 100) +
+              (((Version >> MORELLO_MCC_PCC_MID_OFFSET) & MORELLO_MCC_PCC_DIGIT_MASK) * 10) +
+              ((Version >> MORELLO_MCC_PCC_LOWER_OFFSET) & MORELLO_MCC_PCC_DIGIT_MASK)
+             )
+             );
+  Buffer += (Length + 1);
+  AsciiSPrint (Buffer, FW_ID_SIZE, "N/A");
+  return EFI_SUCCESS;
+}
+
+/**
   Install SMBIOS firmware inventory information
 
   Install the SMBIOS firmware inventory information (type 45) table for ARM Morello
@@ -384,6 +429,50 @@ InstallType45FirmwareInventoryInformation (
   }
 
   FwVersion = (MORELLO_FW_VERSION_SOC *)GET_GUID_HOB_DATA (SystemIdFirmware);
+
+  /* Handle MCC */
+  AllocateSmbiosTable (
+    &SmbiosType45,
+    &SmbiosHandle,
+    &AdditionalStrStart,
+    TYPE45_STRINGS_MCC,
+    sizeof (TYPE45_STRINGS_MCC)
+    );
+
+  Status = SetVersionStringMCCPCC (AdditionalStrStart, FwVersion->MccFwRevision);
+  if (Status != EFI_SUCCESS) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "SMBIOS: Failed to load MCC version data for Type45 SMBIOS table.\n"
+      ));
+  }
+
+  Status = InstallSmbiosTable (Smbios, SmbiosType45, &SmbiosHandle);
+  if (Status != EFI_SUCCESS) {
+    return Status;
+  }
+
+  /* Handle PCC */
+  AllocateSmbiosTable (
+    &SmbiosType45,
+    &SmbiosHandle,
+    &AdditionalStrStart,
+    TYPE45_STRINGS_PCC,
+    sizeof (TYPE45_STRINGS_PCC)
+    );
+
+  Status = SetVersionStringMCCPCC (AdditionalStrStart, FwVersion->PccFwRevision);
+  if (Status != EFI_SUCCESS) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "SMBIOS: Failed to load PCC version data for Type45 SMBIOS table.\n"
+      ));
+  }
+
+  Status = InstallSmbiosTable (Smbios, SmbiosType45, &SmbiosHandle);
+  if (Status != EFI_SUCCESS) {
+    return Status;
+  }
 
   /* Handle SCP Firmware */
   AllocateSmbiosTable (
