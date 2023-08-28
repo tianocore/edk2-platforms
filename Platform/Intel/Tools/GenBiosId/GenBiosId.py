@@ -142,7 +142,13 @@ def ParserInputFile(InputDict, NoTimestamp):
             EdkLogger("GenBiosId", FORMAT_INVALID, ExtraData=_ConfigItemInvalid % Item)
         _ConfigItem[Item]['Value'] = InputDict[Item]
         if len(_ConfigItem[Item]['Value']) != _ConfigItem[Item]['Length']:
-            EdkLogger("GenBiosId", FORMAT_INVALID, ExtraData=_ConfigLenInvalid % Item)
+            # The length of the Board ID is being updated based on the BOARD_ID string
+            #If the PCH_TYPE is empty space/single quotes(''), removing the empty space/single quotes('') and concatenating the TARGET_PLATFORM_SHORT and BUILD flag strings
+            if(_ConfigItem["BOARD_ID"]['Value'][3:5] == "\'\'"):
+                _ConfigItem["BOARD_ID"]['Value']=_ConfigItem["BOARD_ID"]['Value'][0:3]+_ConfigItem["BOARD_ID"]['Value'][5:len(_ConfigItem["BOARD_ID"]['Value'])]
+                _ConfigItem["BOARD_ID"]['Length']=len(_ConfigItem["BOARD_ID"]['Value'])
+            else:
+                EdkLogger("GenBiosId", FORMAT_INVALID, ExtraData=_ConfigLenInvalid % Item)
     for Item in _ConfigItem:
         if not _ConfigItem[Item]['Value']:
             EdkLogger("GenBiosId", FORMAT_UNKNOWN_ERROR, ExtraData="Item %s is missing" % Item)
