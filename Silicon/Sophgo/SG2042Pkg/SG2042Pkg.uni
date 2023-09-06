@@ -1,0 +1,13 @@
+// /** @file
+// Sophgo SG2042 Package Localized Strings and Content.
+//
+// Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+
+#string STR_PACKAGE_ABSTRACT            #language en-US "Provides Sophgo RISC-V SG2042 platform modules and libraries"
+
+#string STR_PACKAGE_DESCRIPTION         #language en-US "This Package Sophgo RISC-V SG2042 platform modules and libraries."

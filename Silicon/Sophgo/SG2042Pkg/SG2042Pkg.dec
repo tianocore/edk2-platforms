@@ -1,0 +1,34 @@
+## @file  SG2042Pkg.dec
+# This Package provides modules and libraries.for Sophgo SG2042 platform.
+#
+# Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001b
+  PACKAGE_NAME                   = SG2042Pkg
+  PACKAGE_UNI_FILE               = SG2042Pkg.uni
+  PACKAGE_GUID                   = A10E7DF0-B8AB-4DD0-B383-46358139D313
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Protocols]
+  gSophgoMmcHostProtocolGuid = { 0x3E591C00, 0x9E4A, 0x11DF, {0x92, 0x44, 0x00, 0x02, 0xA5, 0xF5, 0xF5, 0x1B } }
+
+[Guids]
+  gSophgoSG2042PlatformPkgTokenSpaceGuid  = {0x779E9346, 0x3C24, 0x478C, { 0xB1, 0x60, 0xB6, 0x09, 0xFC, 0xED, 0xA0, 0x72 }}
+
+[PcdsFixedAtBuild]
+  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSG2042SDIOBase|0x0|UINT64|0x00001001
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00001004
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|0x0|UINT64|0x00001005
+  gHisiTokenSpaceGuid.PcdSerialPortSendDelay|0x0|UINT32|0x00001006
+  gHisiTokenSpaceGuid.PcdUartClkInHz|0x0|UINT32|0x00001007
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SG2042PkgExtra.uni
