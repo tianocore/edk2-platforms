@@ -1,0 +1,19 @@
+## @file  SG2042.dec
+# This Package provides Sophgo SG2042 modules and libraries.
+#
+# Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001b
+  PACKAGE_NAME                   = SG2042
+  PACKAGE_GUID                   = BBF86176-C58B-4EC5-8D76-B8D458A2548E
+  PACKAGE_VERSION                = 1.0
+
+[LibraryClasses]
+
+[Guids]
+  gUefiRiscVPlatformSG2042PkgTokenSpaceGuid = {0xD0D80952, 0x8371, 0x4D8D, { 0x8E, 0x65, 0x27, 0x52, 0x63, 0xF3, 0xD9, 0x27 }}
