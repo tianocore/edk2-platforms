@@ -1,0 +1,46 @@
+## @file
+#  Component description file for the MMC DXE driver module.
+#
+#  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = MmcDxe
+  FILE_GUID                      = B5A53998-42AD-4C66-8D2D-1C5FBD175F25
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = MmcDxeInitialize
+
+[Sources.common]
+  ComponentName.c
+  Mmc.h
+  Mmc.c
+  MmcBlockIo.c
+  MmcIdentification.c
+  MmcDebug.c
+  Diagnostics.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Sophgo/SG2042Pkg/SG2042Pkg.dec
+
+[LibraryClasses]
+  BaseLib
+  UefiLib
+  UefiDriverEntryPoint
+  BaseMemoryLib
+
+[Protocols]
+  gEfiDiskIoProtocolGuid                        ## CONSUMES
+  gEfiBlockIoProtocolGuid                       ## PRODUCES
+  gEfiDevicePathProtocolGuid                    ## PRODUCES
+  gEfiDriverDiagnostics2ProtocolGuid            ## SOMETIMES_PRODUCES
+  gSophgoMmcHostProtocolGuid                    ## CONSUMES
+
+[Depex]
+  TRUE
