@@ -215,6 +215,7 @@ DwEmmcNotifyState (
     do {
       Data = MmioRead32 (DWEMMC_BMOD);
     } while (Data & DWEMMC_IDMAC_SWRESET);
+    MmioWrite32 (DWEMMC_IDINTEN, 0x3);
     break;
   case MmcIdleState:
     break;
@@ -463,6 +464,14 @@ PrepareDmaData (
   )
 {
   UINTN  Cnt, Blks, Idx, LastIdx;
+  UINT32 Data; /* flag, cnt */
+
+  MmioWrite32 (DWEMMC_CTRL, DWEMMC_CTRL_FIFO_RESET);
+  do {
+    /* Wait until reset operation finished */
+    Data = MmioRead32 (DWEMMC_CTRL);
+  } while (Data & DWEMMC_CTRL_RESET_ALL);
+  MmioWrite32 (DWEMMC_IDSTS, 0xffffffff);
 
   Cnt = (Length + DWEMMC_DMA_BUF_SIZE - 1) / DWEMMC_DMA_BUF_SIZE;
   Blks = (Length + DWEMMC_BLOCK_SIZE - 1) / DWEMMC_BLOCK_SIZE;
@@ -487,9 +496,7 @@ PrepareDmaData (
   (IdmacDesc + LastIdx)->Des1 = DWEMMC_IDMAC_DES1_BS1(Length -
                                                       (LastIdx * DWEMMC_DMA_BUF_SIZE));
   /* Set the Next field of Last Descriptor */
-  (IdmacDesc + LastIdx)->Des3 = 0;
   MmioWrite32 (DWEMMC_DBADDR, (UINT32)((UINTN)IdmacDesc));
-
   return EFI_SUCCESS;
 }
 
@@ -501,7 +508,7 @@ StartDma (
   UINT32 Data;
 
   Data = MmioRead32 (DWEMMC_CTRL);
-  Data |= DWEMMC_CTRL_INT_EN | DWEMMC_CTRL_DMA_EN | DWEMMC_CTRL_IDMAC_EN;
+  Data |= DWEMMC_CTRL_DMA_EN | DWEMMC_CTRL_IDMAC_EN;
   MmioWrite32 (DWEMMC_CTRL, Data);
   Data = MmioRead32 (DWEMMC_BMOD);
   Data |= DWEMMC_IDMAC_ENABLE | DWEMMC_IDMAC_FB;
@@ -509,6 +516,41 @@ StartDma (
 
   MmioWrite32 (DWEMMC_BLKSIZ, DWEMMC_BLOCK_SIZE);
   MmioWrite32 (DWEMMC_BYTCNT, Length);
+}
+
+STATIC
+EFI_STATUS
+DwEmmcWaitDmaComplete (
+  IN EFI_MMC_HOST_PROTOCOL     *This,
+  IN UINT32 Read
+  )
+{
+  UINT32 Mask, Ctrl, Timeout = 1000000;
+  EFI_STATUS Status = EFI_SUCCESS;
+
+  Mask = (Read) ? DWMCI_IDINTEN_RI : DWMCI_IDINTEN_TI;
+
+  do {
+    Ctrl = MmioRead32 (DWEMMC_IDSTS);
+    if (Ctrl & Mask) {
+      break;
+    }
+    Timeout--;
+    gBS->Stall(1);
+  } while (Timeout);
+
+  if (!Timeout) {
+    DEBUG ((DEBUG_INFO, "%a, DMA waiting timeout...\n", __func__));
+    Status = EFI_DEVICE_ERROR;
+  }
+  MmioWrite32 (DWEMMC_IDSTS, DWMCI_IDINTEN_MASK);
+  Ctrl = MmioRead32(DWEMMC_CTRL);
+  Ctrl &= ~(DWEMMC_CTRL_DMA_EN);
+  Ctrl = MmioWrite32(DWEMMC_CTRL, Ctrl);
+
+  gBS->Stall(100);
+
+  return Status;
 }
 
 EFI_STATUS
@@ -544,6 +586,8 @@ DwEmmcReadBlockData (
     DEBUG ((DEBUG_ERROR, "Failed to read data, mDwEmmcCommand:%x, mDwEmmcArgument:%x, Status:%r\n", mDwEmmcCommand, mDwEmmcArgument, Status));
     goto out;
   }
+  Status = DwEmmcWaitDmaComplete(This, 1);
+
 out:
   // Restore Tpl
   gBS->RestoreTPL (Tpl);
@@ -583,6 +627,8 @@ DwEmmcWriteBlockData (
     DEBUG ((DEBUG_ERROR, "Failed to write data, mDwEmmcCommand:%x, mDwEmmcArgument:%x, Status:%r\n", mDwEmmcCommand, mDwEmmcArgument, Status));
     goto out;
   }
+  Status = DwEmmcWaitDmaComplete(This, 0);
+
 out:
   // Restore Tpl
   gBS->RestoreTPL (Tpl);
