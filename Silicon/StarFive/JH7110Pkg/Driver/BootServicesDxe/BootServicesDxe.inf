@@ -1,0 +1,34 @@
+## @file
+# DXE Boot Service driver for StarFive JH7110 SoC
+#
+# Copyright (c) 2023, StarFive Technology Co., Ltd. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010019
+  BASE_NAME                      = BootServicesDxe
+  FILE_GUID                      = E7B2A7CF-4A9B-4F63-9B9E-12B34C5D6E78
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+
+  ENTRY_POINT                    = BootServicesInitialize
+
+[Sources]
+  BootServicesDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  MemoryAllocationLib
+
+[Guids]
+  gEfiEventReadyToBootGuid
+
+[Depex]
+  TRUE
