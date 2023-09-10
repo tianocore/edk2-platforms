@@ -588,6 +588,11 @@ DwEmmcReadBlockData (
   }
   Status = DwEmmcWaitDmaComplete(This, 1);
 
+  if (DWMCI_SD_READ_MASK(mDwEmmcArgument) && (FixedPcdGetBool (PcdDwEmmcDxeCPULittleEndian))) {
+    Buffer[3] = SwapBytes32(Buffer[3]);
+    Buffer[4] = SwapBytes32(Buffer[4]);
+  }
+
 out:
   // Restore Tpl
   gBS->RestoreTPL (Tpl);
