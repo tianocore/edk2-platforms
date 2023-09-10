@@ -129,4 +129,10 @@
 
 #define DWEMMC_GET_HDATA_WIDTH(x)               (((x) >> 7) & 0x7)
 
+/* Internal IDMAC interrupt defines */
+#define DWMCI_IDINTEN_RI                        (1 << 1)
+#define DWMCI_IDINTEN_TI                        (1 << 0)
+
+#define DWMCI_IDINTEN_MASK                      (DWMCI_IDINTEN_RI | DWMCI_IDINTEN_TI)
+
 #endif  // __DWEMMC_H__
