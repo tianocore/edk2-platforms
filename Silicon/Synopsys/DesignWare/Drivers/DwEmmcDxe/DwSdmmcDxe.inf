@@ -1,5 +1,5 @@
 #/** @file
-#  INF file for the eMMC Host Protocol implementation for the DesignWare MMC.
+#  INF file for the SdMMC Host Protocol implementation for the DesignWare MMC.
 #
 #  WARNING:
 #  This driver fails to follow the UEFI driver model without a good
@@ -14,8 +14,8 @@
 
 [Defines]
   INF_VERSION                    = 0x00010019
-  BASE_NAME                      = DwEmmcDxe
-  FILE_GUID                      = b549f005-4bd4-4020-a0cb-06f42bda68c3
+  BASE_NAME                      = DwSdmmcDxe
+  FILE_GUID                      = b549f005-4bd4-4020-a0cb-06f5478a68c3
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
 
@@ -45,13 +45,13 @@
   gEmbeddedMmcHostProtocolGuid
 
 [Pcd]
-  gDesignWareTokenSpaceGuid.PcdDwEmmcDxeBaseAddress
+  gDesignWareTokenSpaceGuid.PcdDwSdDxeBaseAddress
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeClockFrequencyInHz
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeMaxClockFreqInHz
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeFifoDepth
   gDesignWareTokenSpaceGuid.PcdDwPermitObsoleteDrivers
-  gDesignWareTokenSpaceGuid.PcdDwEmmcDxeCPULittleEndian
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeUHSEn
+  gDesignWareTokenSpaceGuid.PcdDwEmmcDxeCPULittleEndian
 
 [Depex]
   TRUE
