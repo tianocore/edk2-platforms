@@ -1,0 +1,26 @@
+/** @file
+  Device tree defination all JH7110 pwmdac audio for StarFive VisionFive 2 platform
+
+  Copyright (c) 2023, StarFive Technology Co., Ltd. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+&sound3 {
+    simple-audio-card,dai-link@0 {
+        reg = <0>;
+        format = "left_j";
+        bitclock-master = <&sndcpu0>;
+        frame-master = <&sndcpu0>;
+        status = "okay";
+
+        sndcpu0: cpu {
+            sound-dai = <&pwmdac>;
+        };
+
+        codec {
+            sound-dai = <&pwmdac_codec>;
+        };
+    };
+};
