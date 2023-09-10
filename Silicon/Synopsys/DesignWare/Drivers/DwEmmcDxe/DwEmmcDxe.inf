@@ -51,6 +51,7 @@
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeMaxClockFreqInHz
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeFifoDepth
   gDesignWareTokenSpaceGuid.PcdDwPermitObsoleteDrivers
+  gDesignWareTokenSpaceGuid.PcdDwEmmcDxeCPULittleEndian
 
 [Depex]
   TRUE

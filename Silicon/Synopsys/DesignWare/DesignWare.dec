@@ -31,3 +31,4 @@
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeClockFrequencyInHz|0x0|UINT32|0x00000003
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeMaxClockFreqInHz|0x0|UINT32|0x00000004
   gDesignWareTokenSpaceGuid.PcdDwEmmcDxeFifoDepth|0x0|UINT32|0x00000005
+  gDesignWareTokenSpaceGuid.PcdDwEmmcDxeCPULittleEndian|FALSE|BOOLEAN|0x00000008
