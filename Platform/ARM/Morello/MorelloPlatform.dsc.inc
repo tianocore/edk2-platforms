@@ -137,6 +137,10 @@
   # Firmware revision
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000000
 
+  # SMBIOS entry point version
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0305
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
+
   # RAM Disk
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize|0x18000000
