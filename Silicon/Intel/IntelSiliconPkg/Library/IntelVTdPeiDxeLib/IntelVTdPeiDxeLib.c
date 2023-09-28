@@ -1300,6 +1300,7 @@ VtdLibDumpSetAttribute (
                  SetAttributeInfo->SourceId.Uint16,
                  SetAttributeInfo->DeviceAddress,
                  SetAttributeInfo->Length,
+                 SetAttributeInfo->IoMmuAccess,
                  SetAttributeInfo->Status));
 }
 
