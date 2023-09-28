@@ -245,12 +245,12 @@ SetVersionFromCompressed (
   UINT32  BufferSize = FW_INFO_SIZE;
 
   // Set Version, if 0 then declare unknown base version.
-  if ((Version >> MORELLO_FW_REVISION_PATCH_OFFSET) == 0) {
-    Length = AsciiSPrint (Buffer, BufferSize, "unknown");
-  } else if ((Version >> MORELLO_FW_REVISION_FLAGS_OFFSET) &
-             MORELLO_FW_REVISION_MAINLINE_MASK)
+  if ((Version >> MORELLO_FW_REVISION_FLAGS_OFFSET) &
+      MORELLO_FW_REVISION_MAINLINE_MASK)
   {
     Length = AsciiSPrint (Buffer, BufferSize, "master");
+  } else if ((Version >> MORELLO_FW_REVISION_PATCH_OFFSET) == 0) {
+    Length = AsciiSPrint (Buffer, BufferSize, "unknown");
   } else {
     Length = AsciiSPrint (
                Buffer,
