@@ -1,0 +1,48 @@
+## @file
+#  Component description file for the SD Host Controller DXE driver module.
+#
+#  Copyright (c) 2019, ARM Limited. All rights reserved.
+#  Copyright (c) 2017, Andrei Warkentin <andrey.warkentin@gmail.com>
+#  Copyright (c) Microsoft Corporation. All rights reserved.
+#  Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = SdHostDxe
+  FILE_GUID                      = 11322596-DD4F-47FA-9E6C-CE787E11E4B1
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SdHostInitialize
+
+[Sources]
+  SdHci.c
+  SdHci.h
+  SdHostDxe.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  Silicon/Sophgo/SG2042Pkg/SG2042Pkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[Protocols]
+  gSophgoMmcHostProtocolGuid        ## PRODUCES
+
+[FixedPcd]
+  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSG2042SDIOBase        ## CONSUMES
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuRiscVMmuMaxSatpMode             ## CONSUMES
