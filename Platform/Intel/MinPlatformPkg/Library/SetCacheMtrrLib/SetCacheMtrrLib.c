@@ -245,7 +245,7 @@ SetCacheMtrrAfterEndOfPei (
                          &MtrrSetting,
                          0xC0000,
                          0x40000,
-                         CacheWriteProtected
+                         CacheWriteBack
                          );
   ASSERT_EFI_ERROR ( Status);
 
