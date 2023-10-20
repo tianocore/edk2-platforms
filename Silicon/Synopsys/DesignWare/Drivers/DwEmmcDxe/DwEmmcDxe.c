@@ -601,27 +601,57 @@ DwEmmcWaitDmaComplete (
   return Status;
 }
 
+STATIC
+UINT32 *
+AllocateMemoryBelow4G (
+  IN UINTN  Size
+  )
+{
+  UINTN                 Pages;
+  EFI_PHYSICAL_ADDRESS  Address;
+  EFI_STATUS            Status;
+  UINT32                  *Buffer;
+
+  Pages   = EFI_SIZE_TO_PAGES (Size);
+  Address = 0xFFFFFFFF;
+
+  Status = gBS->AllocatePages (
+                  AllocateMaxAddress,
+                  EfiBootServicesData,
+                  Pages,
+                  &Address
+                  );
+  ASSERT_EFI_ERROR (Status);
+
+  Buffer = (UINT32 *)(UINTN)Address;
+  ZeroMem (Buffer, Size);
+
+  return Buffer;
+}
+
 EFI_STATUS
 DwEmmcReadBlockData (
-  IN EFI_MMC_HOST_PROTOCOL     *This,
-  IN EFI_LBA                    Lba,
-  IN UINTN                      Length,
-  IN UINT32*                   Buffer
+  IN EFI_MMC_HOST_PROTOCOL  *This,
+  IN EFI_LBA                Lba,
+  IN UINTN                  Length,
+  IN UINT32*                Buffer
   )
 {
   EFI_STATUS  Status;
   UINT32      DescPages, CountPerPage, Count;
   EFI_TPL     Tpl;
+  UINT32      *DmaBuf;
 
   Tpl = gBS->RaiseTPL (TPL_NOTIFY);
+  DmaBuf = AllocateMemoryBelow4G(Length);
 
   CountPerPage = EFI_PAGE_SIZE / 16;
   Count = (Length + DWEMMC_DMA_BUF_SIZE - 1) / DWEMMC_DMA_BUF_SIZE;
   DescPages = (Count + CountPerPage - 1) / CountPerPage;
 
-  InvalidateDataCacheRange (Buffer, Length);
+  InvalidateDataCacheRange (DmaBuf, Length);
 
-  Status = PrepareDmaData (gpIdmacDesc, Length, Buffer);
+  Status = PrepareDmaData (gpIdmacDesc, Length, DmaBuf);
   if (EFI_ERROR (Status)) {
     goto out;
   }
@@ -637,11 +667,14 @@ DwEmmcReadBlockData (
   Status = DwEmmcWaitDmaComplete(This, 1);
 
   if (DWMCI_SD_READ_MASK(mDwEmmcArgument) && (FixedPcdGetBool (PcdDwEmmcDxeCPULittleEndian))) {
-    Buffer[3] = SwapBytes32(Buffer[3]);
-    Buffer[4] = SwapBytes32(Buffer[4]);
+    DmaBuf[3] = SwapBytes32(DmaBuf[3]);
+    DmaBuf[4] = SwapBytes32(DmaBuf[4]);
   }
 
+  CopyMem(Buffer, DmaBuf, Length);
+
 out:
+  FreePages (DmaBuf, EFI_SIZE_TO_PAGES(Length));
   // Restore Tpl
   gBS->RestoreTPL (Tpl);
   return Status;
@@ -649,25 +682,29 @@ out:
 
 EFI_STATUS
 DwEmmcWriteBlockData (
-  IN EFI_MMC_HOST_PROTOCOL     *This,
-  IN EFI_LBA                    Lba,
-  IN UINTN                      Length,
-  IN UINT32*                    Buffer
+  IN EFI_MMC_HOST_PROTOCOL  *This,
+  IN EFI_LBA                Lba,
+  IN UINTN                  Length,
+  IN UINT32*                Buffer
   )
 {
   EFI_STATUS  Status;
   UINT32      DescPages, CountPerPage, Count;
   EFI_TPL     Tpl;
+  UINT32      *DmaBuf;
 
   Tpl = gBS->RaiseTPL (TPL_NOTIFY);
+
+  DmaBuf = AllocateMemoryBelow4G(Length);
+  CopyMem(DmaBuf, Buffer, Length);
 
   CountPerPage = EFI_PAGE_SIZE / 16;
   Count = (Length + DWEMMC_DMA_BUF_SIZE - 1) / DWEMMC_DMA_BUF_SIZE;
   DescPages = (Count + CountPerPage - 1) / CountPerPage;
 
-  WriteBackDataCacheRange (Buffer, Length);
+  WriteBackDataCacheRange (DmaBuf, Length);
 
-  Status = PrepareDmaData (gpIdmacDesc, Length, Buffer);
+  Status = PrepareDmaData (gpIdmacDesc, Length, DmaBuf);
   if (EFI_ERROR (Status)) {
     goto out;
   }
@@ -683,6 +720,7 @@ DwEmmcWriteBlockData (
   Status = DwEmmcWaitDmaComplete(This, 0);
 
 out:
+  FreePages (DmaBuf, EFI_SIZE_TO_PAGES(Length));
   // Restore Tpl
   gBS->RestoreTPL (Tpl);
   return Status;
@@ -772,6 +810,7 @@ DwEmmcDxeInitialize (
 {
   EFI_STATUS    Status;
   EFI_HANDLE    Handle;
+  EFI_PHYSICAL_ADDRESS  Address;
 
   if (!FixedPcdGetBool (PcdDwPermitObsoleteDrivers)) {
     ASSERT (FALSE);
@@ -781,7 +820,17 @@ DwEmmcDxeInitialize (
   Handle = NULL;
 
   DwEmmcAdjustFifoThreshold ();
-  gpIdmacDesc = (DWEMMC_IDMAC_DESCRIPTOR *)AllocatePages (DWEMMC_MAX_DESC_PAGES);
+
+  Address = 0xffffffff;
+  Status = gBS->AllocatePages (
+                  AllocateMaxAddress,
+                  EfiBootServicesData,
+                  DWEMMC_MAX_DESC_PAGES,
+                  &Address
+                  );
+  gpIdmacDesc = (DWEMMC_IDMAC_DESCRIPTOR *)(UINTN)Address;
+  ZeroMem (gpIdmacDesc, DWEMMC_MAX_DESC_PAGES);
+
   if (gpIdmacDesc == NULL) {
     return EFI_BUFFER_TOO_SMALL;
   }
