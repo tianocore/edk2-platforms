@@ -129,4 +129,6 @@
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress|0xCA2|UINT16|0xD0000003
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress|0x600|UINT32|0xD0000004
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer|120|UINT8|0xD0000005
+
+[PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSmmIoBaseAddress|0xCA2|UINT16|0xD0000006
