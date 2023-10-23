@@ -423,3 +423,12 @@ M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Peng Xie <xiepeng@phytium.com.cn>
 R: Ling Jia <jialing@phytium.com.cn>
 R: Yiqi Shu <shuyiqi@phytium.com.cn>
+
+Sophgo platforms and silicon
+F: Platform/Sophgo/
+F: Silicon/Sophgo/SG2042Pkg/
+M: Sunil V L <sunilvl@ventanamicro.com>
+R: dahogn <dahogn@hotmail.com>
+R: meng-cz <mengcz1126@gmail.com>
+R: caiyuqing379 <caiyuqing_hz@outlook.com>
+R: USER0FISH <libing1202@outlook.com>
