@@ -1,0 +1,52 @@
+## @file
+# StandaloneMm Generic IPMI SMM Driver.
+#
+# @copyright
+# Copyright 2023 Intel Corporation. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                         = 0x00010017
+  BASE_NAME                           = StandaloneMmGenericIpmi
+  FILE_GUID                           = 6899c3ea-0920-414f-9555-ad2f00f81060
+  MODULE_TYPE                         = MM_STANDALONE
+  VERSION_STRING                      = 1.0
+  PI_SPECIFICATION_VERSION            = 0x00010032
+  ENTRY_POINT                         = InitializeGenericIpmiStandaloneMm
+  UNLOAD_IMAGE                        = GenericIpmiStandaloneMmUnload
+
+[Sources]
+  ../Common/IpmiHooks.h
+  ../Common/IpmiHooks.c
+  ../Common/IpmiBmcCommon.h
+  ../Common/KcsBmc.c
+  ../Common/KcsBmc.h
+  ../Common/IpmiBmc.c
+  ../Common/IpmiBmc.h
+  StandaloneMmGenericIpmi.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseLib
+  MmServicesTableLib
+  DebugLib
+  StandaloneMmDriverEntryPoint
+  IoLib
+  ReportStatusCodeLib
+  TimerLib
+
+[Protocols]
+  gSmmIpmiTransportProtocolGuid                     # PROTOCOL ALWAYS_PRODUCED
+
+[Guids]
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSmmIoBaseAddress
+
+[Depex]
+  gIpmiTransportProtocolGuid
