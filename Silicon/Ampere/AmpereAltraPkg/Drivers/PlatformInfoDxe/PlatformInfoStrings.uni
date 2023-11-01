@@ -32,13 +32,13 @@
 #string STR_PLATFORM_INFO_PCPCLK                    #language en-US "PCP Clock"
 #string STR_PLATFORM_INFO_PCPCLK_VALUE              #language en-US "0MHz"
 
-#string STR_PLATFORM_INFO_L1ICACHE                  #language en-US "L1I CACHE"
+#string STR_PLATFORM_INFO_L1ICACHE                  #language en-US "L1I Cache"
 #string STR_PLATFORM_INFO_L1ICACHE_VALUE            #language en-US "0KB"
 
-#string STR_PLATFORM_INFO_L1DCACHE                  #language en-US "L1D CACHE"
+#string STR_PLATFORM_INFO_L1DCACHE                  #language en-US "L1D Cache"
 #string STR_PLATFORM_INFO_L1DCACHE_VALUE            #language en-US "0KB"
 
-#string STR_PLATFORM_INFO_L2CACHE                   #language en-US "L2 CACHE"
+#string STR_PLATFORM_INFO_L2CACHE                   #language en-US "L2 Cache"
 #string STR_PLATFORM_INFO_L2CACHE_VALUE             #language en-US "0KB"
 
 #string STR_PLATFORM_INFO_SOCCLK                    #language en-US "SOC Clock"
