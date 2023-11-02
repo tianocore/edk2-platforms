@@ -75,3 +75,5 @@
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationStandaloneMm.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationVariableLockDxe.inf
