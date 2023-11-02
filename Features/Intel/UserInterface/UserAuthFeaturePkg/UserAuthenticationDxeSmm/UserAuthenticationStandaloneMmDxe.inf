@@ -1,0 +1,42 @@
+## @file
+#  User Authentication Standalone MM Dxe Driver.
+#
+#  This Driver mainly locks the password variable.
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = UserAuthenticationStandaloneMmDxe
+  FILE_GUID                      = 08fc98fb-1cec-45c6-ad02-542096191054
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UserAuthenticationStandaloneMmDxeEntry
+
+[Sources]
+  UserAuthenticationStandaloneMmDxe.c
+  UserAuthenticationVariableLock.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UserAuthFeaturePkg/UserAuthFeaturePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  DebugLib
+  PrintLib
+  VariablePolicyHelperLib
+
+[Guids]
+  gUserAuthenticationGuid                       ## CONSUMES  ## GUID
+
+[Protocols]
+  gEdkiiVariablePolicyProtocolGuid              ## CONSUMES
+
+[Depex]
+  gEdkiiVariableLockProtocolGuid

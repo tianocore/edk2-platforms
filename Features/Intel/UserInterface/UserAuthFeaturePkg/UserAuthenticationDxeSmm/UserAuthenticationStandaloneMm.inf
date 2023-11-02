@@ -1,0 +1,58 @@
+## @file
+#  User Authentication Standalone Mm Driver.
+#
+#  This driver provides SMM services for DXE user authentication module.
+#  This Standalone Mm driver lacks of the ability to lock the password
+#  variables. Need to rely on UserAuthenticationStandaloneMmDxe to lock
+#  the variables.
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = UserAuthenticationStandaloneMm
+  FILE_GUID                      = 80130611-a67a-4631-becb-87ce22d6f165
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  ENTRY_POINT                    = UserAuthenticationMmEntry
+
+[Sources]
+  UserAuthenticationSmm.c
+  UserAuthenticationStandaloneMm.c
+  UserAuthenticationSmm.h
+  KeyService.c
+  KeyService.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  CryptoPkg/CryptoPkg.dec
+  UserAuthFeaturePkg/UserAuthFeaturePkg.dec
+
+[LibraryClasses]
+  StandaloneMmDriverEntryPoint
+  DebugLib
+  BaseLib
+  BaseMemoryLib
+  PrintLib
+  MmServicesTableLib
+  MemoryAllocationLib
+  BaseCryptLib
+  PlatformPasswordLib
+
+[Guids]
+  gUserAuthenticationGuid                       ## CONSUMES  ## GUID
+  gEfiEventExitBootServicesGuid                 ## CONSUMES  ## Event
+
+[Protocols]
+  gEdkiiVariableLockProtocolGuid                ## CONSUMES
+  gEfiSmmVariableProtocolGuid                   ## CONSUMES
+  gEdkiiSmmExitBootServicesProtocolGuid         ## CONSUMES
+  gEdkiiSmmLegacyBootProtocolGuid               ## CONSUMES
+
+[Depex]
+  gEfiSmmVariableProtocolGuid

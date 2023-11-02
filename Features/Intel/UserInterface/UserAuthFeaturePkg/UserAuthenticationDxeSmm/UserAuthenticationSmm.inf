@@ -3,7 +3,7 @@
 #
 #  This driver provides SMM services for DXE user authentication module.
 #
-# Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -15,13 +15,15 @@
   MODULE_TYPE                    = DXE_SMM_DRIVER
   VERSION_STRING                 = 1.0
   PI_SPECIFICATION_VERSION       = 0x0001000A
-  ENTRY_POINT                    = PasswordSmmInit
+  ENTRY_POINT                    = UserAuthenticationMmEntry
 
 [Sources]
   UserAuthenticationSmm.c
+  UserAuthenticationTraditionalMm.c
   UserAuthenticationSmm.h
   KeyService.c
   KeyService.h
+  UserAuthenticationVariableLock.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -36,17 +38,18 @@
   BaseLib
   BaseMemoryLib
   PrintLib
-  SmmServicesTableLib
+  MmServicesTableLib
   MemoryAllocationLib
-  UefiLib
   BaseCryptLib
   PlatformPasswordLib
+  VariablePolicyHelperLib
 
 [Guids]
   gUserAuthenticationGuid                       ## CONSUMES  ## GUID
+  gEfiEventExitBootServicesGuid                 ## CONSUMES  ## Event
 
 [Protocols]
-  gEdkiiVariableLockProtocolGuid                ## CONSUMES
+  gEdkiiVariablePolicyProtocolGuid              ## CONSUMES
   gEfiSmmVariableProtocolGuid                   ## CONSUMES
   gEdkiiSmmExitBootServicesProtocolGuid         ## CONSUMES
   gEdkiiSmmLegacyBootProtocolGuid               ## CONSUMES
