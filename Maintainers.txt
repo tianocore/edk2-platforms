@@ -421,3 +421,10 @@ R: dahogn <dahogn@hotmail.com>
 R: meng-cz <mengcz1126@gmail.com>
 R: caiyuqing379 <caiyuqing_hz@outlook.com>
 R: USER0FISH <libing1202@outlook.com>
+
+StarFive platforms and silicon
+F: Platform/StarFive/
+F: Silicon/StarFive/
+M: Sunil V L <sunilvl@ventanamicro.com>
+M: Minda Chen <minda.chen@starfivetech.com>
+M: John Chew <yuinyee.chew@starfivetech.com>
