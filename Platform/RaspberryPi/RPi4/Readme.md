@@ -55,8 +55,8 @@ Build instructions from the top level edk2-platforms Readme.md apply.
     enable_gic=1
     armstub=RPI_EFI.fd
     disable_commandline_tags=2
-    device_tree_address=0x1f0000
-    device_tree_end=0x200000
+    device_tree_address=0x3e0000
+    device_tree_end=0x400000
     ```
     Additionally, if you want to use PL011 instead of the miniUART, you can add the lines:
     ```
@@ -91,12 +91,12 @@ the SD or USB, and then edit your `config.txt` so that it looks like:
 ```
 (...)
 disable_commandline_tags=2
-device_tree_address=0x1f0000
-device_tree_end=0x200000
+device_tree_address=0x3e0000
+device_tree_end=0x400000
 device_tree=your_fdt_file.dtb
 ```
 
-Note: the address range **must** be `[0x1f0000:0x200000]`. `dtoverlay` and `dtparam` parameters are also supported.
+Note: the address range **must** be `[0x3e0000:0x400000]`. `dtoverlay` and `dtparam` parameters are also supported.
 
 ## Custom `bootargs`
 

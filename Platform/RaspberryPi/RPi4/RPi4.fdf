@@ -25,11 +25,11 @@
 
 [FD.RPI_EFI]
 BaseAddress   = 0x00000000|gArmTokenSpaceGuid.PcdFdBaseAddress
-Size          = 0x001f0000|gArmTokenSpaceGuid.PcdFdSize
+Size          = 0x003e0000|gArmTokenSpaceGuid.PcdFdSize
 ErasePolarity = 1
 
 BlockSize     = 0x00001000|gRaspberryPiTokenSpaceGuid.PcdFirmwareBlockSize
-NumBlocks     = 0x1f0
+NumBlocks     = 0x3e0
 
 ################################################################################
 #
@@ -56,7 +56,7 @@ FILE = $(TFA_BUILD_BL31)
 #
 # UEFI image
 #
-0x00020000|0x001b0000
+0x00020000|0x00390000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
@@ -70,7 +70,7 @@ FV = FVMAIN_COMPACT
 #
 
 # NV_VARIABLE_STORE
-0x001d0000|0x0000e000
+0x003b0000|0x0000e000
 gRaspberryPiTokenSpaceGuid.PcdNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 
 DATA = {
@@ -113,11 +113,11 @@ DATA = {
 }
 
 # NV_EVENT_LOG
-0x001de000|0x00001000
+0x003be000|0x00001000
 gRaspberryPiTokenSpaceGuid.PcdNvStorageEventLogBase|gRaspberryPiTokenSpaceGuid.PcdNvStorageEventLogSize
 
 # NV_FTW_WORKING header
-0x001df000|0x00001000
+0x003bf000|0x00001000
 gRaspberryPiTokenSpaceGuid.PcdNvStorageFtwWorkingBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 
 DATA = {
@@ -132,14 +132,18 @@ DATA = {
 }
 
 # NV_FTW_WORKING data
-0x001e0000|0x00010000
+0x003c0000|0x00010000
 gRaspberryPiTokenSpaceGuid.PcdNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+
+# reserve some future RAM for the ACPI PCC channel structures, immediately before the DTB
+# 0x003d0000|0x00010000
+# gRaspberryPiTokenSpaceGuid.PcdPccBaseAddress|gRaspberryPiTokenSpaceGuid.PcdPccSize
 
 #
 # This is just for documentation purposes! The DTB reserved space is not part of the FD,
 # but this is exactly where it is expected to be.
 #
-# 0x001f0000|0x10000
+# 0x003e0000|0x20000
 # gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress|gRaspberryPiTokenSpaceGuid.PcdFdtSize
 #
 
