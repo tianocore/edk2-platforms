@@ -360,25 +360,41 @@ InstallType45FirmwareInventoryInformation (
     }
 
     if (EdkVersionString[Pos] != '\0') {
-      EdkVersionString[Pos] = '\0';
-      EdkFwVersion          = AllocateZeroPool (Pos+1);
+      EdkFwVersion = AllocateZeroPool (Pos+1);
+      if (EdkFwVersion == NULL) {
+        return EFI_OUT_OF_RESOURCES;
+      }
+
       AsciiSPrint (EdkFwVersion, Pos+1, "%s", EdkVersionString);
+      EdkFwVersion[Pos] = '\0';
 
       for ( EdkVersionString += Pos + 1, Pos = 0; EdkVersionString[Pos] != '\0'; Pos++ ) {
       }
 
       EdkPlatFwVersion = AllocateZeroPool (Pos+1);
+      if (EdkPlatFwVersion == NULL) {
+        return EFI_OUT_OF_RESOURCES;
+      }
+
       AsciiSPrint (EdkPlatFwVersion, Pos+1, "%s", EdkVersionString);
     }
   }
 
   if (EdkFwVersion == NULL) {
     EdkFwVersion = AllocateZeroPool (sizeof (FW_DEFAULT_INFO_STRING) + 1);
+    if (EdkFwVersion == NULL) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
     AsciiSPrint (EdkFwVersion, sizeof (FW_DEFAULT_INFO_STRING) + 1, FW_DEFAULT_INFO_STRING);
   }
 
   if (EdkPlatFwVersion == NULL) {
     EdkPlatFwVersion = AllocateZeroPool (sizeof (FW_DEFAULT_INFO_STRING) + 1);
+    if (EdkPlatFwVersion == NULL) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
     AsciiSPrint (EdkPlatFwVersion, sizeof (FW_DEFAULT_INFO_STRING) + 1, FW_DEFAULT_INFO_STRING);
   }
 
