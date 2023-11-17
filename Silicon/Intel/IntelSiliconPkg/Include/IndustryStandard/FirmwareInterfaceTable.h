@@ -24,6 +24,7 @@
 #define FIT_TYPE_0A_TXT_POLICY              0x0A
 #define FIT_TYPE_0B_KEY_MANIFEST            0x0B
 #define FIT_TYPE_0C_BOOT_POLICY_MANIFEST    0x0C
+#define FIT_TYPE_0D_FSP_BOOT_MANIFEST       0x0D
 #define FIT_TYPE_10_CSE_SECURE_BOOT         0x10
 #define FIT_TYPE_2D_TXTSX_POLICY            0x2D
 #define FIT_TYPE_2F_JMP_DEBUG_POLICY        0x2F

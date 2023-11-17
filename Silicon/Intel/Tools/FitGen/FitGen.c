@@ -285,7 +285,7 @@ typedef struct {
 #define FIT_TABLE_TYPE_TXT_POLICY                  10
 #define FIT_TABLE_TYPE_KEY_MANIFEST                11
 #define FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST        12
-#define FIT_TABLE_TYPE_BIOS_DATA_AREA              13
+#define FIT_TABLE_TYPE_FSP_BOOT_MANIFEST           13
 #define FIT_TABLE_TYPE_CSE_SECURE_BOOT             16
 #define FIT_TABLE_SUBTYPE_FIT_PATCH_MANIFEST       12
 #define FIT_TABLE_SUBTYPE_ACM_MANIFEST             13
@@ -1444,7 +1444,7 @@ GetFitEntryNumber (
         case FIT_TABLE_TYPE_TXT_POLICY:
         case FIT_TABLE_TYPE_KEY_MANIFEST:
         case FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST:
-        case FIT_TABLE_TYPE_BIOS_DATA_AREA:
+        case FIT_TABLE_TYPE_FSP_BOOT_MANIFEST:
         case FIT_TABLE_TYPE_CSE_SECURE_BOOT:
         default :
           if (BiosInfoStruct[BiosInfoIndex].Version != 0) {
@@ -2126,7 +2126,7 @@ GetFitEntryNumber (
     if ((gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_POLICY) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
-        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_FSP_BOOT_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
@@ -2311,7 +2311,7 @@ GetFreeSpaceForFit (
       if ((gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_POLICY) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
-          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_FSP_BOOT_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
@@ -2326,7 +2326,7 @@ GetFreeSpaceForFit (
       if ((gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_POLICY) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
-          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
+          (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_FSP_BOOT_MANIFEST) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
           (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
@@ -2364,7 +2364,7 @@ GetFreeSpaceForFit (
     if ((gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_POLICY) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_KEY_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST) ||
-        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_DATA_AREA) ||
+        (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_FSP_BOOT_MANIFEST) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_PROVISION_TABLE) ||
         (gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_VAB_BOOT_IMAGE_MANIFEST) ||
@@ -2458,7 +2458,7 @@ CHAR8 *mFitTypeStr[] = {
   "TXT_POLICY ",
   "KEYMANIFEST",
   "BP_MANIFEST",
-  "BIOS_DATA_A",
+  "FSP_BOOT_MF",
   " ",
   " ",
   "CSE_SECUREB"
@@ -3256,7 +3256,7 @@ ClearFitTable (
     case FIT_TABLE_TYPE_BIOS_POLICY:
     case FIT_TABLE_TYPE_KEY_MANIFEST:
     case FIT_TABLE_TYPE_BOOT_POLICY_MANIFEST:
-    case FIT_TABLE_TYPE_BIOS_DATA_AREA:
+    case FIT_TABLE_TYPE_FSP_BOOT_MANIFEST:
     case FIT_TABLE_TYPE_CSE_SECURE_BOOT:
       //
       // Clear FIT table data buffer
