@@ -28,6 +28,7 @@
   UefiDriverEntryPoint
   DebugLib
   SmmServicesTableLib
+  MemoryAllocationLib
 
 [Protocols]
   gSmmGenericElogProtocolGuid     # PROTOCOL ALWAYS_PRODUCED
