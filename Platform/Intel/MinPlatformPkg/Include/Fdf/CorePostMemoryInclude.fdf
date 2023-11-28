@@ -1,12 +1,14 @@
 ## @file
 #  FDF file of Platform.
 #
-# Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-  INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
+    INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
+  !endif
 !endif
