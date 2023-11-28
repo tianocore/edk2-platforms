@@ -6,11 +6,10 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include <PiDxe.h>
+#include <PiMm.h>
 #include <Protocol/IpmiTransportProtocol.h>
 #include <Library/IpmiBaseLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Library/DebugLib.h>
 
 STATIC IPMI_TRANSPORT     *mIpmiTransport = NULL;
@@ -37,7 +36,7 @@ NotifyIpmiTransportCallback (
   EFI_STATUS  Status;
   Status = EFI_SUCCESS;
   if (mIpmiTransport == NULL) {
-    Status = gSmst->SmmLocateProtocol (
+    Status = gMmst->MmLocateProtocol (
                       &gSmmIpmiTransportProtocolGuid,
                       NULL,
                       (VOID **) &mIpmiTransport
@@ -60,15 +59,15 @@ InitializeIpmiBase (
 {
   EFI_STATUS  Status;
   if (mIpmiTransport == NULL) {
-    Status = gSmst->SmmLocateProtocol (
+    Status = gMmst->MmLocateProtocol (
                       &gSmmIpmiTransportProtocolGuid,
                       NULL,
                       (VOID **) &mIpmiTransport
                       );
     if (EFI_ERROR (Status)) {
-      Status = gSmst->SmmRegisterProtocolNotify (
+      Status = gMmst->MmRegisterProtocolNotify (
                         &gSmmIpmiTransportProtocolGuid,
-                        (EFI_SMM_NOTIFY_FN) NotifyIpmiTransportCallback,
+                        (EFI_MM_NOTIFY_FN) NotifyIpmiTransportCallback,
                         &mEfiIpmiProtocolNotifyReg
                         );
     }
@@ -127,7 +126,7 @@ Returns:
 {
   EFI_STATUS  Status;
 
-  Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
+  Status = gMmst->MmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -164,7 +163,7 @@ GetBmcStatus (
 {
   EFI_STATUS  Status;
 
-  Status = gSmst->SmmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
+  Status = gMmst->MmLocateProtocol (&gSmmIpmiTransportProtocolGuid, NULL, (VOID **) &mIpmiTransport);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
