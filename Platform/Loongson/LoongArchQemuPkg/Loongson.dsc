@@ -155,6 +155,7 @@
   PciHostBridgeUtilityLib          | OvmfPkg/Library/PciHostBridgeUtilityLib/PciHostBridgeUtilityLib.inf
   MmuLib                           | Platform/Loongson/LoongArchQemuPkg/Library/MmuLib/MmuBaseLib.inf
   FileExplorerLib                  | MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
+  ImagePropertiesRecordLib         | MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
 
 !if $(HTTP_BOOT_ENABLE) == TRUE
   HttpLib                          | MdeModulePkg/Library/DxeHttpLib/DxeHttpLib.inf
