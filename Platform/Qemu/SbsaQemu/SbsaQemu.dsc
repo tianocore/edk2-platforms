@@ -78,6 +78,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
   ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
   FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
+  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
 
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
   UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
