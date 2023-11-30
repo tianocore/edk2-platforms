@@ -13,6 +13,7 @@
   BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
 
   # Ramdisk Support
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
