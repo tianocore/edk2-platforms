@@ -6,7 +6,7 @@
 # INF files to generate AutoGen.c and AutoGen.h files
 # for the build infrastructure.
 #
-# Copyright (c) 2020 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2020 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -75,3 +75,5 @@
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
   UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationStandaloneMm.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationStandaloneMmDxe.inf

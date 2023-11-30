@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -642,7 +642,7 @@ UaExitBootServices (
 {
   DEBUG ((DEBUG_INFO, "Unregister User Authentication Smi\n"));
 
-  gSmst->SmiHandlerUnRegister(mSmmHandle);
+  gMmst->MmiHandlerUnRegister(mSmmHandle);
 
   return EFI_SUCCESS;
 }
@@ -657,54 +657,44 @@ UaExitBootServices (
 
 **/
 EFI_STATUS
-EFIAPI
 PasswordSmmInit (
-  IN EFI_HANDLE                         ImageHandle,
-  IN EFI_SYSTEM_TABLE                   *SystemTable
+  VOID
   )
 {
   EFI_STATUS                            Status;
-  EDKII_VARIABLE_LOCK_PROTOCOL          *VariableLock;
-  CHAR16                                PasswordHistoryName[sizeof(USER_AUTHENTICATION_VAR_NAME)/sizeof(CHAR16) + 5];
-  UINTN                                 Index;
   EFI_EVENT                             ExitBootServicesEvent;
   EFI_EVENT                             LegacyBootEvent;
+  EFI_EVENT                             SmmExitBootServicesEvent;
 
   ASSERT (PASSWORD_HASH_SIZE == SHA256_DIGEST_SIZE);
   ASSERT (PASSWORD_HISTORY_CHECK_COUNT < 0xFFFF);
 
-  Status = gSmst->SmmLocateProtocol (&gEfiSmmVariableProtocolGuid, NULL, (VOID**)&mSmmVariable);
+  Status = gMmst->MmLocateProtocol (&gEfiSmmVariableProtocolGuid, NULL, (VOID**)&mSmmVariable);
   ASSERT_EFI_ERROR (Status);
 
   //
   // Make password variables read-only for DXE driver for security concern.
   //
-  Status = gBS->LocateProtocol (&gEdkiiVariableLockProtocolGuid, NULL, (VOID **) &VariableLock);
-  if (!EFI_ERROR (Status)) {
-    Status = VariableLock->RequestToLock (VariableLock, USER_AUTHENTICATION_VAR_NAME, &gUserAuthenticationGuid);
-    ASSERT_EFI_ERROR (Status);
-
-    for (Index = 1; Index <= PASSWORD_HISTORY_CHECK_COUNT; Index++) {
-      UnicodeSPrint (PasswordHistoryName, sizeof (PasswordHistoryName), L"%s%04x", USER_AUTHENTICATION_VAR_NAME, Index);
-      Status = VariableLock->RequestToLock (VariableLock, PasswordHistoryName, &gUserAuthenticationGuid);
-      ASSERT_EFI_ERROR (Status);
-    }
-    Status = VariableLock->RequestToLock (VariableLock, USER_AUTHENTICATION_HISTORY_LAST_VAR_NAME, &gUserAuthenticationGuid);
-    ASSERT_EFI_ERROR (Status);
+  Status = LockPasswordVariable ();
+  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    return Status;
   }
 
-  Status = gSmst->SmiHandlerRegister (SmmPasswordHandler, &gUserAuthenticationGuid, &mSmmHandle);
+  Status = gMmst->MmiHandlerRegister (SmmPasswordHandler, &gUserAuthenticationGuid, &mSmmHandle);
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {
     return Status;
   }
 
   //
-  // Register for SmmExitBootServices and SmmLegacyBoot notification.
+  // Register for SmmExitBootServices, SmmLegacyBoot and EventExitBootServices notification.
   //
-  Status = gSmst->SmmRegisterProtocolNotify (&gEdkiiSmmExitBootServicesProtocolGuid, UaExitBootServices, &ExitBootServicesEvent);
+  Status = gMmst->MmRegisterProtocolNotify (&gEdkiiSmmExitBootServicesProtocolGuid, UaExitBootServices, &SmmExitBootServicesEvent);
   ASSERT_EFI_ERROR (Status);
-  Status = gSmst->SmmRegisterProtocolNotify (&gEdkiiSmmLegacyBootProtocolGuid, UaExitBootServices, &LegacyBootEvent);
+  Status = gMmst->MmRegisterProtocolNotify (&gEdkiiSmmLegacyBootProtocolGuid, UaExitBootServices, &LegacyBootEvent);
+  ASSERT_EFI_ERROR (Status);
+  Status = gMmst->MmRegisterProtocolNotify (&gEfiEventExitBootServicesGuid, UaExitBootServices, &ExitBootServicesEvent);
   ASSERT_EFI_ERROR (Status);
 
   if (IsPasswordCleared()) {
