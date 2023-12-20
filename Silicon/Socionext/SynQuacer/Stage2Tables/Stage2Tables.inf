@@ -23,5 +23,4 @@
   *_*_AARCH64_OBJCOPY_FLAGS = -I elf64-little
   *_*_ARM_OBJCOPY_FLAGS = -I elf32-little
   *_*_*_ASM_FLAGS == -nostdlib -Wl,-e,0x81f8000,--section-start=.rodata=0x81f8000
-  *_CLANG35_*_ASM_FLAGS = -no-integrated-as
-  *_CLANG38_*_ASM_FLAGS = -no-integrated-as
+  *_CLANGDWARF_*_ASM_FLAGS = -target aarch64-linux-gnu -fuse-ld=lld -Wl,-no-pie
