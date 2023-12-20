@@ -130,6 +130,7 @@
   IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
   IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
   IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf

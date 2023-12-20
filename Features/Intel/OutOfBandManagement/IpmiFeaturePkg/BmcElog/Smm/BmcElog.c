@@ -228,7 +228,7 @@ SetElogRedirInstall (
   // Now install the Protocol
   //
   NewHandle = NULL;
-  Status    = gSmst->SmmInstallProtocolInterface (
+  Status    = gMmst->MmInstallProtocolInterface (
                        &NewHandle,
                        &gSmmRedirElogProtocolGuid,
                        EFI_NATIVE_INTERFACE,
@@ -249,27 +249,19 @@ SetElogRedirInstall (
 }
 
 /**
-  InitializeBmcElogLayer.
-
-  @param ImageHandle - ImageHandle of the loaded driver
-  @param SystemTable - Pointer to the System Table
+  InitializeSmBmcElogLayer.
 
   @retval EFI_STATUS
 
 **/
 EFI_STATUS
-EFIAPI
 InitializeSmBmcElogLayer (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   )
 {
   EFI_STATUS  Status;
 
   Status = EFI_SUCCESS;
-
-  gST = SystemTable;
-  gBS = gST->BootServices;
 
   mRedirProtoPrivate = AllocatePool (sizeof (EFI_BMC_ELOG_INSTANCE_DATA));
   ASSERT (mRedirProtoPrivate != NULL);
