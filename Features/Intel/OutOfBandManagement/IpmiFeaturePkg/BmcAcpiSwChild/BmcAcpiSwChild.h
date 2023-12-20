@@ -12,12 +12,11 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 //
 // Statements that include other files
 //
-#include <Uefi.h>
+#include <PiMm.h>
 #include <Library/BaseLib.h>
-#include <Library/SmmLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Library/MemoryAllocationLib.h>
 
 #include "ServerManagement.h"
@@ -33,21 +32,15 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 //
 
 /**
-  This is the standard EFI driver entrypoint. This function initializes
-  the BMC ACPI SW Child protocol.
-
-  @param ImageHandle - ImageHandle of the loaded driver
-  @param SystemTable - Pointer to the System Table
+  This function initializes the BMC ACPI SW Child protocol.
 
   @retval EFI_SUCCESS - If all services discovered.
   @retval Other       - Failure in constructor.
 
 **/
 EFI_STATUS
-EFIAPI
 InitializeBmcAcpiSwChild (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   );
 
 /**
