@@ -15,7 +15,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 
 #include <Library/BaseMemoryLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Library/MemoryAllocationLib.h>
 
 #include "ServerManagement.h"
@@ -82,21 +82,6 @@ EFI_STATUS
 EfiSetFunctionEntry (
   IN  FUNCTION_PTR  *FunctionPointer,
   IN  VOID          *Function
-  );
-
-/**
-  Entry point of SM Elog service Driver
-
-  @param ImageHandle         - The Image handle of this driver.
-  @param SystemTable         - The pointer of EFI_SYSTEM_TABLE.
-
-  @retval EFI_SUCCESS - The driver successfully initialized
-
-**/
-EFI_STATUS
-SmElogServiceInitialize (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
   );
 
 /**
@@ -211,6 +196,17 @@ EfiLibActivateElog (
   OUT BOOLEAN           *ElogStatus,
   ELOG_MODULE_GLOBAL    *Global,
   BOOLEAN               Virtual
+  );
+
+/**
+  Initialize the generic ELog driver of server management.
+
+  @retval EFI_SUCCESS - The driver initialized successfully
+
+**/
+EFI_STATUS
+InitializeSmElogLayer (
+  VOID
   );
 
 #endif //_SMM_GENELOG_H_
