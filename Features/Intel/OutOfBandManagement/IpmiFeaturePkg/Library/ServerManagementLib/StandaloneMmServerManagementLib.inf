@@ -1,0 +1,29 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION                = 0x00010005
+  BASE_NAME                  = StandaloneMmServerManagementLib
+  FILE_GUID                  = b2740ad0-c15e-43a5-a13a-c8e078cc83ee
+  MODULE_TYPE                = MM_STANDALONE
+  VERSION_STRING             = 1.0
+  PI_SPECIFICATION_VERSION   = 0x00010032
+  LIBRARY_CLASS              = ServerManagementLib
+
+[Sources]
+  ServerManagementTime.c
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  IoLib
+  DebugLib
+  TimerLib

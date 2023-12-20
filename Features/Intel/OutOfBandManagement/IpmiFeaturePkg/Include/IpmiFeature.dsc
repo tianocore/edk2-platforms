@@ -62,6 +62,9 @@
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/SmmSsifInterfaceLib.inf
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/SmmIpmbInterfaceLib.inf
 
+[LibraryClasses.common.MM_STANDALONE]
+  ServerManagementLib|IpmiFeaturePkg/Library/ServerManagementLib/StandaloneMmServerManagementLib.inf
+
 ################################################################################
 #
 # Component section - list of all components that need built for this feature.
