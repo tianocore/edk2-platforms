@@ -13,9 +13,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 // Statements that include other files
 //
 
-#include <Library/SmmServicesTableLib.h>
-#include <Library/SmmLib.h>
-#include <Library/UefiBootServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Protocol/IpmiTransportProtocol.h>
 #include <Protocol/GenericElog.h>
 #include "BmcElogCommon.h"
@@ -39,5 +37,16 @@ typedef struct {
 #define SM_ELOG_REDIR_SIGNATURE  SIGNATURE_32 ('e', 'l', 'o', 'f')
 
 #define INSTANCE_FROM_EFI_SM_ELOG_REDIR_THIS(a)  CR (a, EFI_BMC_ELOG_INSTANCE_DATA, BmcElog, SM_ELOG_REDIR_SIGNATURE)
+
+/**
+  InitializeSmBmcElogLayer.
+
+  @retval EFI_STATUS
+
+**/
+EFI_STATUS
+InitializeSmBmcElogLayer (
+  VOID
+  );
 
 #endif //_SMM_BMCELOG_H_

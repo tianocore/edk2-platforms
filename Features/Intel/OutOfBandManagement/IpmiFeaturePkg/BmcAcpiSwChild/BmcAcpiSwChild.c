@@ -15,21 +15,15 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 EFI_BMC_ACPI_SW_CHILD_POLICY_PROTOCOL  mBmcAcpiSwChild;
 
 /**
-  This is the standard EFI driver entrypoint. This function initializes
-  the BMC ACPI SW Child protocol.
-
-  @param ImageHandle - ImageHandle of the loaded driver
-  @param SystemTable - Pointer to the System Table
+  This function initializes the BMC ACPI SW Child protocol.
 
   @retval EFI_SUCCESS - If all services discovered.
   @retval Other       - Failure in constructor.
 
 **/
 EFI_STATUS
-EFIAPI
 InitializeBmcAcpiSwChild (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   )
 {
   EFI_STATUS  Status;
@@ -43,7 +37,7 @@ InitializeBmcAcpiSwChild (
   // Install protocol
   //
   Handle = NULL;
-  Status = gSmst->SmmInstallProtocolInterface (
+  Status = gMmst->MmInstallProtocolInterface (
                     &Handle,
                     &gEfiBmcAcpiSwChildPolicyProtocolGuid,
                     EFI_NATIVE_INTERFACE,

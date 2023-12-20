@@ -14,11 +14,12 @@
   MODULE_TYPE              = DXE_SMM_DRIVER
   PI_SPECIFICATION_VERSION = 0x0001000A
   VERSION_STRING           = 1.0
-  ENTRY_POINT              = InitializeBmcAcpiSwChild
+  ENTRY_POINT              = BmcAcpiSwChildSmmEntry
 
 [Sources]
   BmcAcpiSwChild.c
   BmcAcpiSwChild.h
+  BmcAcpiSwChildTraditionalMm.c
 
 [Packages]
   IpmiFeaturePkg/IpmiFeaturePkg.dec
@@ -28,7 +29,7 @@
 [LibraryClasses]
   UefiDriverEntryPoint
   DebugLib
-  SmmServicesTableLib
+  MmServicesTableLib
   ServerManagementLib
   IpmiBaseLib
 

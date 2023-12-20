@@ -374,7 +374,7 @@ SetElogRedirInstances (
   //
   // Check for all IPMI Controllers
   //
-  Status = gSmst->SmmLocateHandle (
+  Status = gMmst->MmLocateHandle (
                     ByProtocol,
                     &gSmmRedirElogProtocolGuid,
                     NULL,
@@ -389,7 +389,7 @@ SetElogRedirInstances (
   for (Index = 0; ((Index < NumHandles) && (Index < mElogModuleGlobal->MaxDescriptors)); Index++) {
     EmptyIndex = mElogModuleGlobal->MaxDescriptors;
 
-    Status = gSmst->SmmHandleProtocol (
+    Status = gMmst->MmHandleProtocol (
                       Buffer[Index],
                       &gSmmRedirElogProtocolGuid,
                       (VOID *)&Redir
@@ -452,17 +452,12 @@ NotifyElogRedirEventCallback (
 /**
   Initialize the generic Elog driver of server management.
 
-  @param ImageHandle  - The image handle of this driver
-  @param SystemTable  - The pointer of EFI_SYSTEM_TABLE
-
   @retval EFI_SUCCESS - The driver initialized successfully
 
 **/
 EFI_STATUS
-EFIAPI
 InitializeSmElogLayer (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   )
 {
   EFI_HANDLE            NewHandle;
@@ -474,8 +469,6 @@ InitializeSmElogLayer (
   if (mElogModuleGlobal == NULL) {
     return EFI_OUT_OF_RESOURCES;
   }
-
-  SmElogServiceInitialize (ImageHandle, SystemTable);
 
   mElogModuleGlobal->MaxDescriptors = MAX_REDIR_DESCRIPTOR;
 
@@ -496,7 +489,7 @@ InitializeSmElogLayer (
   ElogProtocol->SetEventLogData   = (EFI_SET_ELOG_DATA)EfiSetElogData;
 
   NewHandle = NULL;
-  Status    = gSmst->SmmInstallProtocolInterface (
+  Status    = gMmst->MmInstallProtocolInterface (
                        &NewHandle,
                        &gSmmGenericElogProtocolGuid,
                        EFI_NATIVE_INTERFACE,
@@ -512,7 +505,7 @@ InitializeSmElogLayer (
   // Register to be notified when the ELOG REDIR protocol has been
   // produced.
   //
-  Status = gSmst->SmmRegisterProtocolNotify (
+  Status = gMmst->MmRegisterProtocolNotify (
                     &gSmmRedirElogProtocolGuid,
                     NULL,
                     &mEfiElogRedirProtocolEvent
@@ -536,23 +529,5 @@ EfiSetFunctionEntry (
   )
 {
   FunctionPointer->Function = (EFI_PLABEL *)Function;
-  return EFI_SUCCESS;
-}
-
-/**
-  Entry point of SM Elog service Driver
-
-  @param ImageHandle         - The Image handle of this driver.
-  @param SystemTable         - The pointer of EFI_SYSTEM_TABLE.
-
-  @retval EFI_SUCCESS - The driver successfully initialized
-
-**/
-EFI_STATUS
-SmElogServiceInitialize (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
-  )
-{
   return EFI_SUCCESS;
 }

@@ -14,11 +14,12 @@
   MODULE_TYPE              = DXE_SMM_DRIVER
   PI_SPECIFICATION_VERSION = 0x0001000A
   VERSION_STRING           = 1.0
-  ENTRY_POINT              = InitializeSmBmcElogLayer
+  ENTRY_POINT              = InitializeSmBmcElogLayerSmm
 
 [Sources]
   Smm/BmcElog.c
   Smm/BmcElog.h
+  Smm/BmcElogTraditionalMm.c
   Common/BmcElogCommon.h
   Common/BmcElogCommon.c
 
@@ -30,9 +31,8 @@
 [LibraryClasses]
   UefiDriverEntryPoint
   DebugLib
-  UefiBootServicesTableLib
   ReportStatusCodeLib
-  SmmServicesTableLib
+  MmServicesTableLib
   IpmiBaseLib
 
 [Protocols]

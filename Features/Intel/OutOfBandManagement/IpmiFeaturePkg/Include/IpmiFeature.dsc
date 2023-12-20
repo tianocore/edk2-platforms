@@ -62,6 +62,9 @@
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/SmmSsifInterfaceLib.inf
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/SmmIpmbInterfaceLib.inf
 
+[LibraryClasses.common.MM_STANDALONE]
+  ServerManagementLib|IpmiFeaturePkg/Library/ServerManagementLib/StandaloneMmServerManagementLib.inf
+
 ################################################################################
 #
 # Component section - list of all components that need built for this feature.
@@ -124,10 +127,13 @@
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
   IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
   IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
   IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
+  IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
   IpmiFeaturePkg/GenericFru/GenericFru.inf

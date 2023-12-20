@@ -17,7 +17,8 @@
   LIBRARY_CLASS              = ServerManagementLib
 
 [Sources]
-  ServerManagementLib.c
+  ServerManagementELog.c
+  ServerManagementTime.c
 
 [Packages]
   IpmiFeaturePkg/IpmiFeaturePkg.dec
@@ -27,6 +28,7 @@
   IoLib
   DebugLib
   UefiBootServicesTableLib
+  TimerLib
 
 [Protocols]
   gEfiGenericElogProtocolGuid
