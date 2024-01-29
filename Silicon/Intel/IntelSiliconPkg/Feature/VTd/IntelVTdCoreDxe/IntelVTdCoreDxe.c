@@ -253,7 +253,6 @@ VTdSetAttribute (
       //
       // Force no IOMMU access attribute request recording before DMAR table is installed.
       //
-      ASSERT_EFI_ERROR (EFI_NOT_READY);
       return EFI_NOT_READY;
     }
     Status = RequestAccessAttribute (Segment, SourceId, DeviceAddress, Length, IoMmuAccess);
