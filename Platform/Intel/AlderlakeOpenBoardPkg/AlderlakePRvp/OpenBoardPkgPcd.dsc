@@ -174,6 +174,13 @@
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
 !endif
 
+  #
+  # INIT is now triggered before BIOS by ucode/hardware. In the OVMF
+  # environment, QEMU lacks a simulation for the INIT process.
+  # To address this, PcdFirstTimeWakeUpAPsBySipi set to FALSE to
+  # broadcast INIT-SIPI-SIPI for the first time.
+  #
+  gUefiCpuPkgTokenSpaceGuid.PcdFirstTimeWakeUpAPsBySipi|FALSE
 
 !if $(TARGET) == DEBUG
   !if gSiPkgTokenSpaceGuid.PcdSerialIoUartEnable == TRUE
@@ -287,6 +294,7 @@
 
 
 [PcdsDynamicDefault]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId|0x20202020204C4349
