@@ -485,7 +485,7 @@ APRIORI DXE {
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
 INF UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
-INF  RuleOverride = DRIVER_ACPITABLE $(PLATFORM_BOARD_PACKAGE)/Acpi/MinDsdt/MinDsdt.inf
+INF  RuleOverride = DRIVER_ACPITABLE $(PLATFORM_PACKAGE)/Acpi/MinDsdt/MinDsdt.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/CoreOsBootInclude.fdf

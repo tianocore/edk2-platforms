@@ -42,12 +42,14 @@
   gBoardModuleTokenSpaceGuid.PcdIntelGopEnable
   gIntelSiliconPkgTokenSpaceGuid.PcdIntelGraphicsVbtFileGuid
   gPlatformModuleTokenSpaceGuid.PcdSmbiosOemTypeFirmwareVersionInfo     ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdS3BootScriptTablePrivateDataPtr
 
 [Protocols]
   gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
   gSaPolicyProtocolGuid                         ## CONSUMES
   gDxeSiPolicyProtocolGuid                      ## PRODUCES
   gGopPolicyProtocolGuid                        ## PRODUCES
+  gEfiPciEnumerationCompleteProtocolGuid        ## PRODUCES
 
 [Depex]
   gEfiVariableArchProtocolGuid

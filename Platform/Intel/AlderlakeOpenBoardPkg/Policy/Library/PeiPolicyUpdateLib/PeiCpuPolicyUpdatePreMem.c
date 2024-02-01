@@ -15,8 +15,6 @@
 #include <Library/PeiSiPolicyUpdateLib.h>
 #include <Library/PmcLib.h>
 #include <Library/SiPolicyLib.h>
-#include <Library/SpiLib.h>
-#include <Ppi/Spi.h>
 #include <Register/CommonMsr.h>
 #include <Register/PchRegs.h>
 #include <PlatformBoardConfig.h>
@@ -73,7 +71,6 @@ UpdatePeiCpuPolicyPreMem (
 
   UPDATE_POLICY (((FSPM_UPD *) FspmUpd)->FspmConfig.SkipStopPbet, CpuSecurityPreMemConfig->SkipStopPbet, FALSE);
 
-  SpiServiceInit ();
   DEBUG ((DEBUG_INFO, "BIOS Guard PCD and Policy are disabled\n"));
   UPDATE_POLICY (((FSPM_UPD *) FspmUpd)->FspmConfig.BiosGuard, CpuSecurityPreMemConfig->BiosGuard, CPU_FEATURE_DISABLE);
 

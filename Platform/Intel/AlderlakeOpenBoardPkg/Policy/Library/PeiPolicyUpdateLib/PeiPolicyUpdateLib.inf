@@ -32,7 +32,6 @@
   SiPolicyLib
   PeiServicesLib
   FirmwareBootMediaLib
-  SpiLib
   BmpSupportLib
   PeiGetFvInfoLib
   TimerLib
