@@ -113,9 +113,15 @@ DATA = {
   #Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
+!if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
+  #  Signature: gEfiAuthenticatedVariableGuid = { 0xaaf32c78, 0x947b, 0x439a, { 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92 }}
+  0x78, 0x2c, 0xf3, 0xaa, 0x7b, 0x94, 0x9a, 0x43,
+  0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92,
+!else
   #  Signature: gEfiVariableGuid = { 0xddcf3616, 0x3275, 0x4164, { 0x98, 0xb6, 0xfe, 0x85, 0x70, 0x7f, 0xfe, 0x7d }}
   0x16, 0x36, 0xcf, 0xdd, 0x75, 0x32, 0x64, 0x41,
   0x98, 0xb6, 0xfe, 0x85, 0x70, 0x7f, 0xfe, 0x7d,
+!endif
   #Size: 0x2E000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) - 0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0x2DFB8
   # This can speed up the Variable Dispatch a bit.
   0xB8, 0xDF, 0x02, 0x00,
@@ -188,6 +194,10 @@ gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTOffset|gMinPlatformPkgTokenSpaceGuid
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize
 # FSP_T Section
 FILE = $(PLATFORM_FSP_BIN_PACKAGE)/Fsp_Rebased_T.fd
+
+gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize
+gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize
+FV = FvAdvancedPreMemory
 
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
@@ -646,6 +656,29 @@ INF  $(PLATFORM_PACKAGE)/Tcg/Tcg2PlatformDxe/Tcg2PlatformDxe.inf
 
 INF  IntelSiliconPkg/Feature/SmmAccess/SmmAccessDxe/SmmAccess.inf
 
+#
+# Pre-memory Advanced Features
+#
+[FV.FvAdvancedPreMemory]
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+FvNameGuid         = 6053D78A-457E-4490-A237-31D0FBE2F305
+
+!include AdvancedFeaturePkg/Include/PreMemory.fdf
 
 [FV.FvAdvanced]
 BlockSize          = $(FLASH_BLOCK_SIZE)
@@ -687,10 +720,6 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = 8B98AB22-E354-42f0-88B9-049810F0FDAA
-
-
-
-
 
 [FV.FvOptional]
 BlockSize          = $(FLASH_BLOCK_SIZE)

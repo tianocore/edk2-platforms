@@ -49,6 +49,7 @@
   # Include PCD configuration for this board
   #
   !include OpenBoardPkgPcd.dsc
+  !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
 
 ################################################################################
 #
