@@ -24,19 +24,20 @@ UefiBootServicesTableLib
 BaseLib
 SmmServicesTableLib
 SpiCommonLib
+SmmPchPrivateLib
 PchPciBdfLib
 
 [Packages]
 MdePkg/MdePkg.dec
 AlderlakeSiliconPkg/SiPkg.dec
-
+IntelSiliconPkg/IntelSiliconPkg.dec
 
 [Sources]
 Spi.c
 
 
 [Protocols]
-gPchSmmSpiProtocolGuid                ## PRODUCES
+gPchSmmSpi2ProtocolGuid                ## PRODUCES
 gEfiSmmCpuProtocolGuid                ## CONSUMES
 gEdkiiSmmExitBootServicesProtocolGuid ## CONSUMES
 

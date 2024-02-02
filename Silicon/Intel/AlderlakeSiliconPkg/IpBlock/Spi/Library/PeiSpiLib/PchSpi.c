@@ -9,7 +9,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Library/PciSegmentLib.h>
-#include <Ppi/Spi.h>
+#include <Ppi/Spi2.h>
 #include <Library/SpiCommonLib.h>
 #include <PchReservedResources.h>
 #include <IndustryStandard/Pci30.h>

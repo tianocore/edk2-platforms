@@ -62,6 +62,7 @@
 
 #define R_TCO_IO_TCO1_CNT                            0x08
 #define S_TCO_IO_TCO1_CNT                            2
+#define B_TCO_IO_TCO1_CNT_TMR_HLT                    BIT11
 #define N_TCO_IO_TCO1_CNT_NMI2SMI_EN                 9
 
 #define R_TCO_IO_TCO2_CNT                            0x0A

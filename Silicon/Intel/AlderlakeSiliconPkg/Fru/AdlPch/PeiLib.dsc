@@ -5,8 +5,6 @@
 #   SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
-  SpiLib|$(PLATFORM_SI_PACKAGE)/IpBlock/Spi/Library/PeiSpiLib/PeiSpiLib.inf
-
   GpioHelpersLib|$(PLATFORM_SI_PACKAGE)/IpBlock/Gpio/LibraryPrivate/PeiGpioHelpersLib/PeiGpioHelpersLib.inf
 
 

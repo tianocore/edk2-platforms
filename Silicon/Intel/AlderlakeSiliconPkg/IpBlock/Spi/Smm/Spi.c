@@ -13,10 +13,11 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/PciSegmentLib.h>
-#include <Protocol/Spi.h>
+#include <Protocol/Spi2.h>
 #include <Protocol/SmmCpu.h>
 #include <Library/SpiCommonLib.h>
 #include <PchReservedResources.h>
+#include <Library/SmmPchPrivateLib.h>
 #include <Library/PchPciBdfLib.h>
 #include <IndustryStandard/Pci30.h>
 #include <Register/PchRegs.h>
@@ -82,8 +83,8 @@ SpiExitBootServicesCallback (
       - Documented in System Management Mode Core Interface Specification .
 
   - @result
-    The SPI SMM driver produces @link _PCH_SPI_PROTOCOL PCH_SPI_PROTOCOL @endlink with GUID
-    gPchSmmSpiProtocolGuid which is different from SPI RUNTIME driver.
+    The SPI SMM driver produces @link _PCH_SPI2_PROTOCOL PCH_SPI2_PROTOCOL @endlink with GUID
+    gPchSmmSpi2ProtocolGuid which is different from SPI RUNTIME driver.
 
   - <b>Integration Check List</b>\n
     - This driver supports Descriptor Mode only.
@@ -163,11 +164,11 @@ InstallPchSpi (
   }
 
   //
-  // Install the SMM PCH_SPI_PROTOCOL interface
+  // Install the SMM PCH_SPI2_PROTOCOL interface
   //
   Status = gSmst->SmmInstallProtocolInterface (
                     &(mSpiInstance->Handle),
-                    &gPchSmmSpiProtocolGuid,
+                    &gPchSmmSpi2ProtocolGuid,
                     EFI_NATIVE_INTERFACE,
                     &(mSpiInstance->SpiProtocol)
                     );
@@ -303,6 +304,19 @@ DisableBiosWriteProtect (
     B_SPI_CFG_BC_WPD
     );
 
+  ///
+  /// the BIOS Region can only be updated by following the steps bellow:
+  ///  - Once all threads enter SMM
+  ///  - Read memory location FED30880h OR with 00000001h, place the result in EAX,
+  ///    and write data to lower 32 bits of MSR 1FEh (sample code available)
+  ///  - Set BIOSWE bit (SPI PCI Offset DCh [0]) = 1b
+  ///  - Modify BIOS Region
+  ///  - Clear BIOSWE bit (SPI PCI Offset DCh [0]) = 0b
+  ///
+  if ((PciSegmentRead8 (SpiBaseAddress + R_SPI_CFG_BC) & B_SPI_CFG_BC_EISS) != 0) {
+    PchSetInSmmSts ();
+  }
+
   return EFI_SUCCESS;
 }
 
@@ -327,6 +341,12 @@ EnableBiosWriteProtect (
     (UINT8) (~B_SPI_CFG_BC_WPD)
     );
 
+  ///
+  /// Check if EISS bit is set
+  ///
+  if (((PciSegmentRead8 (SpiBaseAddress + R_SPI_CFG_BC)) & B_SPI_CFG_BC_EISS) == B_SPI_CFG_BC_EISS) {
+    PchClearInSmmSts ();
+  }
 }
 
 /**

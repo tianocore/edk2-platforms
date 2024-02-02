@@ -62,6 +62,7 @@
 //
 // BIOS Flash Program Registers (based on SPI_BAR0)
 //
+#define R_SPI_MEM_BFPR                      0x00                          ///< BIOS Flash Primary Region Register(32bits), which is RO and contains the same value from FREG1
 #define R_SPI_MEM_HSFSC                     0x04                          ///< Hardware Sequencing Flash Status and Control Register(32bits)
 #define B_SPI_MEM_HSFSC_FDBC_MASK           0x3F000000                    ///< Flash Data Byte Count ( <= 64), Count = (Value in this field) + 1.
 #define N_SPI_MEM_HSFSC_FDBC                24
@@ -78,12 +79,8 @@
 #define B_SPI_MEM_HSFSC_CYCLE_FGO           BIT16                         ///< Flash Cycle Go.
 #define B_SPI_MEM_HSFSC_FDV                 BIT14                         ///< Flash Descriptor Valid, once valid software can use hareware sequencing regs
 #define B_SPI_MEM_HSFSC_WRSDIS              BIT11                         ///< Write Status Disable
-#define B_SPI_MEM_HSFSC_SAF_CE              BIT8                          ///< SAF ctype error
-#define B_SPI_MEM_HSFSC_SAF_LE              BIT6                          ///< SAF link error
+#define B_SPI_MEM_HSFSC_SAF_MODE_ACTIVE     BIT7                          ///< Indicates flash is attached either directly to the PCH via the SPI bus or EC/BMC
 #define B_SPI_MEM_HSFSC_SCIP                BIT5                          ///< SPI cycle in progress
-#define B_SPI_MEM_HSFSC_SAF_DLE             BIT4                          ///< SAF Data length error
-#define B_SPI_MEM_HSFSC_SAF_ERROR           BIT3                          ///< SAF Error
-#define B_SPI_MEM_HSFSC_AEL                 BIT2                          ///< Access Error Log
 #define B_SPI_MEM_HSFSC_FCERR               BIT1                          ///< Flash Cycle Error
 #define B_SPI_MEM_HSFSC_FDONE               BIT0                          ///< Flash Cycle Done
 #define R_SPI_MEM_FADDR                     0x08                          ///< SPI Flash Address
@@ -112,5 +109,6 @@
 
 #define B_SPI_MEM_SFDPX_VSCCX_EO_64K        BIT29                         ///< 64k Erase valid (EO_64k_valid)
 #define R_SPI_MEM_SFDP1_VSCC1               0xC8                          ///< Vendor Specific Component Capabilities Register(32 bits)
+
 
 #endif
