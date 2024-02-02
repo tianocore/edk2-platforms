@@ -19,11 +19,28 @@
 [Packages]
   MdePkg/MdePkg.dec
   AlderlakeSiliconPkg/SiPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
 
 [LibraryClasses]
   IoLib
   DebugLib
   PmcLib
   PchPciBdfLib
+  SpiAccessLib
 
-[Pcd]
+[Guids]
+  gFlashRegionDescriptorGuid
+  gFlashRegionBiosGuid
+  gFlashRegionMeGuid
+  gFlashRegionGbeGuid
+  gFlashRegionPlatformDataGuid
+  gFlashRegionDerGuid
+  gFlashRegionSecondaryBiosGuid
+  gFlashRegionMicrocodePatchGuid
+  gFlashRegionEcGuid
+  gFlashRegionDeviceExpansionGuid
+  gFlashRegionIeGuid
+  gFlashRegion10GbeAGuid
+  gFlashRegion10GbeBGuid
+  gFlashRegionAllGuid
+  gFlashRegionMaxGuid
