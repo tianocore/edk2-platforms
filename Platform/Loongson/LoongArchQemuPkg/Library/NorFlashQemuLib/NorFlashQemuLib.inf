@@ -35,6 +35,8 @@
   gFdtClientProtocolGuid
 
 [Pcd]
+gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFdBaseAddress
+gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFirmwareFdSize
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize

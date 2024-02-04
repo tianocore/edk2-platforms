@@ -84,34 +84,53 @@ VirtNorFlashPlatformGetDevices (
     return EFI_NOT_FOUND;
   }
 
-  Base = SwapBytes64 (ReadUnaligned64 ((VOID *)&Reg[0]));
-  Size = SwapBytes64 (ReadUnaligned64 ((VOID *)&Reg[2]));
+  while (PropSize >= (4 * sizeof (UINT32))) {
+    Base = SwapBytes64 (ReadUnaligned64 ((VOID *)&Reg[0]));
+    Size = SwapBytes64 (ReadUnaligned64 ((VOID *)&Reg[2]));
+    Reg += 4;
 
-  mNorFlashDevices.DeviceBaseAddress = (UINTN)Base;
-  mNorFlashDevices.RegionBaseAddress = (UINTN)Base;
-  mNorFlashDevices.Size              = (UINTN)Size;
-  mNorFlashDevices.BlockSize         = QEMU_NOR_BLOCK_SIZE;
+    PropSize -= 4 * sizeof (UINT32);
 
-  Status = PcdSet32S (PcdFlashNvStorageVariableBase, Base);
-  ASSERT_EFI_ERROR (Status);
+    //
+    // Disregard any flash devices that overlap with the primary FV.
+    // The firmware is not updatable from inside the guest anyway.
+    //
+    if ((PcdGet32 (PcdOvmfFdBaseAddress) + PcdGet32 (PcdOvmfFirmwareFdSize) > Base) &&
+        ((Base + Size) > PcdGet32 (PcdOvmfFdBaseAddress)))
+    {
+      continue;
+    }
 
-  /*
-   * Base is the value of PcdFlashNvStorageVariableBase,
-   * PcdFlashNvStorageFtwWorkingBase can be got by
-   *   PcdFlashNvStorageVariableBase + PcdFlashNvStorageVariableSize
-   */
-  Base += PcdGet32 (PcdFlashNvStorageVariableSize);
-  Status = PcdSet32S (PcdFlashNvStorageFtwWorkingBase, Base);
-  ASSERT_EFI_ERROR (Status);
+    //
+    //By default, the second available flash is stored as a non-volatile variable.
+    //
+    mNorFlashDevices.DeviceBaseAddress = (UINTN)Base;
+    mNorFlashDevices.RegionBaseAddress = (UINTN)Base;
+    mNorFlashDevices.Size              = (UINTN)Size;
+    mNorFlashDevices.BlockSize         = QEMU_NOR_BLOCK_SIZE;
 
-  /*
-   * Now,Base is the value of PcdFlashNvStorageFtwWorkingBase,
-   * PcdFlashNvStorageFtwSpareBase can be got by
-   *   PcdFlashNvStorageFtwWorkingBase + PcdFlashNvStorageFtwWorkingSize.
-   */
-  Base += PcdGet32 (PcdFlashNvStorageFtwWorkingSize);
-  Status = PcdSet32S (PcdFlashNvStorageFtwSpareBase, Base);
-  ASSERT_EFI_ERROR (Status);
+    Status = PcdSet32S (PcdFlashNvStorageVariableBase, Base);
+    ASSERT_EFI_ERROR (Status);
+
+    /*
+     * Base is the value of PcdFlashNvStorageVariableBase,
+     * PcdFlashNvStorageFtwWorkingBase can be got by
+     *   PcdFlashNvStorageVariableBase + PcdFlashNvStorageVariableSize
+     */
+    Base += PcdGet32 (PcdFlashNvStorageVariableSize);
+    Status = PcdSet32S (PcdFlashNvStorageFtwWorkingBase, Base);
+    ASSERT_EFI_ERROR (Status);
+
+    /*
+     * Now,Base is the value of PcdFlashNvStorageFtwWorkingBase,
+     * PcdFlashNvStorageFtwSpareBase can be got by
+     *   PcdFlashNvStorageFtwWorkingBase + PcdFlashNvStorageFtwWorkingSize.
+     */
+    Base += PcdGet32 (PcdFlashNvStorageFtwWorkingSize);
+    Status = PcdSet32S (PcdFlashNvStorageFtwSpareBase, Base);
+    ASSERT_EFI_ERROR (Status);
+    break;
+  }
 
   //
   // UEFI takes ownership of the NOR flash, and exposes its functionality

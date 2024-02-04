@@ -12,8 +12,8 @@
 
 #####################################################################################################
 [FD.QEMU_EFI]
-BaseAddress   = $(FD_BASE_ADDRESS)
-Size          = $(FD_SIZE)
+BaseAddress   = $(FD_BASE_ADDRESS)|gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFdBaseAddress
+Size          = $(FD_SIZE)|gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFirmwareFdSize
 ErasePolarity = 1
 BlockSize     = $(BLOCK_SIZE)
 NumBlocks     = $(FD_BLOCKS)
