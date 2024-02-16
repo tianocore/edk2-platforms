@@ -350,23 +350,24 @@ VOID PxeUpdate (NIC_DATA_INSTANCE *NicPtr, PXE_SW_UNDI *PxePtr);
 
   This function returns information of type InformationType from the adapter.
   If an adapter does not support the requested informational type, then
-  EFI_UNSUPPORTED is returned. 
+  EFI_UNSUPPORTED is returned.
 
   @param[in]  This                   A pointer to the EFI_ADAPTER_INFORMATION_PROTOCOL instance.
   @param[in]  InformationType        A pointer to an EFI_GUID that defines the contents of InformationBlock.
-  @param[out] InforamtionBlock       The service returns a pointer to the buffer with the InformationBlock
+  @param[out] InformationBlock       The service returns a pointer to the buffer with the InformationBlock
                                      structure which contains details about the data specific to InformationType.
-  @param[out] InforamtionBlockSize   The driver returns the size of the InformationBlock in bytes.
+  @param[out] InformationBlockSize   The driver returns the size of the InformationBlock in bytes.
 
   @retval EFI_SUCCESS                The InformationType information was retrieved.
   @retval EFI_UNSUPPORTED            The InformationType is not known.
+  @retval EFI_NOT_FOUND              Information is not available for the requested information type.
   @retval EFI_DEVICE_ERROR           The device reported an error.
   @retval EFI_OUT_OF_RESOURCES       The request could not be completed due to a lack of resources.
-  @retval EFI_INVALID_PARAMETER      This is NULL. 
-  @retval EFI_INVALID_PARAMETER      InformationBlock is NULL. 
+  @retval EFI_INVALID_PARAMETER      This is NULL.
+  @retval EFI_INVALID_PARAMETER      InformationBlock is NULL.
   @retval EFI_INVALID_PARAMETER      InformationBlockSize is NULL.
 
-**/  
+**/
 EFI_STATUS
 EFIAPI
 UndiAipGetInfo (
@@ -396,7 +397,7 @@ UndiAipGetInfo (
   @retval EFI_INVALID_PARAMETER      InformationBlock is NULL.
   @retval EFI_WRITE_PROTECTED        The InformationType cannot be modified using EFI_ADAPTER_INFO_SET_INFO().
 
-**/                        
+**/
 EFI_STATUS
 EFIAPI
 UndiAipSetInfo (
@@ -427,7 +428,7 @@ UndiAipSetInfo (
   @retval EFI_INVALID_PARAMETER     InfoTypesBufferCount is NULL.
   @retval EFI_OUT_OF_RESOURCES      There is not enough pool memory to store the results.
 
-**/                        
+**/
 EFI_STATUS
 EFIAPI
 UndiAipGetSupportedTypes (
