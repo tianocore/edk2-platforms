@@ -20,6 +20,18 @@
 #include <Ppi/IoMmu.h>
 #include "IntelVTdDmarPei.h"
 
+VOID
+SetGlobalCommandRegisterBits (
+  IN UINTN     VtdUnitBaseAddress,
+  IN UINT32    BitMask
+  );
+
+VOID
+ClearGlobalCommandRegisterBits (
+  IN UINTN     VtdUnitBaseAddress,
+  IN UINT32    BitMask
+  );
+
 /**
   Flush VTD page table and context table memory.
 
@@ -58,6 +70,7 @@ FlushWriteBuffer (
 
   if (CapReg.Bits.RWBF != 0) {
     Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
+    Reg32 = (Reg32 & 0x96FFFFFF);       // Reset the one-shot bits
     MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32 | B_GMCD_REG_WBF);
     do {
       Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
@@ -104,11 +117,7 @@ PerpareCacheInvalidationInterface (
   Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
   if ((Reg32 & B_GSTS_REG_QIES) != 0) {
     DEBUG ((DEBUG_INFO,"Queued Invalidation Interface was enabled.\n"));
-    Reg32 &= (~B_GSTS_REG_QIES);
-    MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-    do {
-      Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-    } while ((Reg32 & B_GSTS_REG_QIES) != 0);
+    ClearGlobalCommandRegisterBits (VtdUnitBaseAddress, B_GMCD_REG_QIE);
     MmioWrite64 (VtdUnitBaseAddress + R_IQA_REG, 0);
   }
 
@@ -144,13 +153,8 @@ PerpareCacheInvalidationInterface (
   // Enable the queued invalidation interface through the Global Command Register.
   // When enabled, hardware sets the QIES field in the Global Status Register.
   //
-  Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  Reg32 |= B_GMCD_REG_QIE;
-  MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface. GCMD_REG = 0x%x\n", Reg32));
-  do {
-    Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  } while ((Reg32 & B_GSTS_REG_QIES) == 0);
+  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface.\n"));
+  SetGlobalCommandRegisterBits (VtdUnitBaseAddress, B_GMCD_REG_QIE);
 
   return EFI_SUCCESS;
 }
@@ -165,16 +169,9 @@ DisableQueuedInvalidationInterface (
   IN VTD_UNIT_INFO *VTdUnitInfo
   )
 {
-  UINT32         Reg32;
-
   if (VTdUnitInfo->EnableQueuedInvalidation != 0) {
-    Reg32 = MmioRead32 (VTdUnitInfo->VtdUnitBaseAddress + R_GSTS_REG);
-    Reg32 &= (~B_GMCD_REG_QIE);
-    MmioWrite32 (VTdUnitInfo->VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-    DEBUG ((DEBUG_INFO, "Disable Queued Invalidation Interface. GCMD_REG = 0x%x\n", Reg32));
-    do {
-      Reg32 = MmioRead32 (VTdUnitInfo->VtdUnitBaseAddress + R_GSTS_REG);
-    } while ((Reg32 & B_GSTS_REG_QIES) != 0);
+    DEBUG ((DEBUG_INFO, "Disable Queued Invalidation Interface.\n"));
+    ClearGlobalCommandRegisterBits (VTdUnitInfo->VtdUnitBaseAddress, B_GMCD_REG_QIE);
 
     if (VTdUnitInfo->QiDescBuffer != NULL) {
       FreePages(VTdUnitInfo->QiDescBuffer, EFI_SIZE_TO_PAGES (VTdUnitInfo->QiDescBufferSize));
@@ -206,7 +203,7 @@ QueuedInvalidationCheckFault (
   if (FaultReg & (B_FSTS_REG_IQE | B_FSTS_REG_ITE | B_FSTS_REG_ICE)) {
     IqercdReg.Uint64 = MmioRead64 (VTdUnitInfo->VtdUnitBaseAddress + R_IQERCD_REG);
 
-    DEBUG((DEBUG_ERROR, "Detect Queue Invalidation Error [0x%08x] - IQERCD [0x%016lx]\n", FaultReg, IqercdReg.Uint64));
+    DEBUG((DEBUG_ERROR, "VTD 0x%x Detect Queue Invalidation Error [0x%08x] - IQERCD [0x%016lx]\n", VTdUnitInfo->VtdUnitBaseAddress, FaultReg, IqercdReg.Uint64));
 
     MmioWrite32 (VTdUnitInfo->VtdUnitBaseAddress + R_FSTS_REG, FaultReg);
     return RETURN_DEVICE_ERROR;

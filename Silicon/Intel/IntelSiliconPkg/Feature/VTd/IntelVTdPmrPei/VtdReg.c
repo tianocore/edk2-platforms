@@ -54,6 +54,7 @@ FlushWriteBuffer (
 
   if (CapReg.Bits.RWBF != 0) {
     Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
+    Reg32 = (Reg32 & 0x96FFFFFF);       // Reset the one-shot bits
     MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32 | B_GMCD_REG_WBF);
     do {
       Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);

@@ -120,13 +120,8 @@ PerpareCacheInvalidationInterface (
   // Enable the queued invalidation interface through the Global Command Register.
   // When enabled, hardware sets the QIES field in the Global Status Register.
   //
-  Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  Reg32 |= B_GMCD_REG_QIE;
-  MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface. GCMD_REG = 0x%x\n", Reg32));
-  do {
-    Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  } while ((Reg32 & B_GSTS_REG_QIES) == 0);
+  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface.\n"));
+  VtdLibSetGlobalCommandRegisterBits (VtdUnitBaseAddress, B_GMCD_REG_QIE);
 
   VTdLogAddEvent (VTDLOG_PEI_QUEUED_INVALIDATION, VTD_LOG_QI_ENABLE, VtdUnitBaseAddress);
 

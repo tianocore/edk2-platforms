@@ -12,6 +12,18 @@ VTD_UNIT_INFORMATION             *mVtdUnitInformation;
 
 BOOLEAN  mVtdEnabled;
 
+VOID
+SetGlobalCommandRegisterBits (
+  IN UINTN     VtdUnitBaseAddress,
+  IN UINT32    BitMask
+  );
+
+VOID
+ClearGlobalCommandRegisterBits (
+  IN UINTN     VtdUnitBaseAddress,
+  IN UINT32    BitMask
+  );
+
 /**
   Flush VTD page table and context table memory.
 
@@ -47,6 +59,7 @@ FlushWriteBuffer (
 
   if (mVtdUnitInformation[VtdIndex].CapReg.Bits.RWBF != 0) {
     Reg32 = MmioRead32 (mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress + R_GSTS_REG);
+    Reg32 = (Reg32 & 0x96FFFFFF);       // Reset the one-shot bits
     MmioWrite32 (mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress + R_GCMD_REG, Reg32 | B_GMCD_REG_WBF);
     do {
       Reg32 = MmioRead32 (mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress + R_GSTS_REG);
@@ -93,11 +106,7 @@ PerpareCacheInvalidationInterface (
   Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
   if ((Reg32 & B_GSTS_REG_QIES) != 0) {
     DEBUG ((DEBUG_ERROR,"Queued Invalidation Interface was enabled.\n"));
-    Reg32 &= (~B_GSTS_REG_QIES);
-    MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-    do {
-      Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-    } while ((Reg32 & B_GSTS_REG_QIES) != 0);
+    ClearGlobalCommandRegisterBits (VtdUnitBaseAddress, B_GMCD_REG_QIE);
   }
 
   //
@@ -132,13 +141,8 @@ PerpareCacheInvalidationInterface (
   // Enable the queued invalidation interface through the Global Command Register.
   // When enabled, hardware sets the QIES field in the Global Status Register.
   //
-  Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  Reg32 |= B_GMCD_REG_QIE;
-  MmioWrite32 (VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface. GCMD_REG = 0x%x\n", Reg32));
-  do {
-    Reg32 = MmioRead32 (VtdUnitBaseAddress + R_GSTS_REG);
-  } while ((Reg32 & B_GSTS_REG_QIES) == 0);
+  DEBUG ((DEBUG_INFO, "Enable Queued Invalidation Interface.\n"));
+  SetGlobalCommandRegisterBits (VtdUnitBaseAddress, B_GMCD_REG_QIE);
 
   return EFI_SUCCESS;
 }
@@ -153,19 +157,13 @@ DisableQueuedInvalidationInterface (
   IN UINTN  VtdIndex
   )
 {
-  UINT32                Reg32;
   VTD_UNIT_INFORMATION  *VTdUnitInfo;
 
   VTdUnitInfo = &mVtdUnitInformation[VtdIndex];
 
   if (VTdUnitInfo->EnableQueuedInvalidation != 0) {
-    Reg32 = MmioRead32 (VTdUnitInfo->VtdUnitBaseAddress + R_GSTS_REG);
-    Reg32 &= (~B_GMCD_REG_QIE);
-    MmioWrite32 (VTdUnitInfo->VtdUnitBaseAddress + R_GCMD_REG, Reg32);
-    DEBUG ((DEBUG_INFO, "Disable Queued Invalidation Interface. GCMD_REG = 0x%x\n", Reg32));
-    do {
-      Reg32 = MmioRead32 (VTdUnitInfo->VtdUnitBaseAddress + R_GSTS_REG);
-    } while ((Reg32 & B_GSTS_REG_QIES) != 0);
+    DEBUG ((DEBUG_INFO, "Disable Queued Invalidation Interface.\n"));
+    ClearGlobalCommandRegisterBits (VTdUnitInfo->VtdUnitBaseAddress, B_GMCD_REG_QIE);
 
     if (VTdUnitInfo->QiDescBuffer != NULL) {
       FreePages(VTdUnitInfo->QiDescBuffer, EFI_SIZE_TO_PAGES (VTdUnitInfo->QiDescBufferSize));
@@ -198,7 +196,7 @@ QueuedInvalidationCheckFault (
   if (FaultReg & (B_FSTS_REG_IQE | B_FSTS_REG_ITE | B_FSTS_REG_ICE)) {
     IqercdReg.Uint64 = MmioRead64 (mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress + R_IQERCD_REG);
 
-    DEBUG((DEBUG_ERROR, "Detect Queue Invalidation Error [0x%08x] - IQERCD [0x%016lx]\n", FaultReg, IqercdReg.Uint64));
+    DEBUG((DEBUG_ERROR, "VTD 0x%x Detect Queue Invalidation Error [0x%08x] - IQERCD [0x%016lx]\n", mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress, FaultReg, IqercdReg.Uint64));
 
     MmioWrite32 (mVtdUnitInformation[VtdIndex].VtdUnitBaseAddress + R_FSTS_REG, FaultReg);
     return RETURN_DEVICE_ERROR;
@@ -802,7 +800,7 @@ DumpVtdCapRegs (
   IN VTD_CAP_REG *CapReg
   )
 {
-  DEBUG((DEBUG_INFO, "  CapReg   - 0x%x\n", CapReg->Uint64));
+  DEBUG((DEBUG_INFO, "  CapReg   - 0x%016lx\n", CapReg->Uint64));
   DEBUG((DEBUG_INFO, "    ND     - 0x%x\n", CapReg->Bits.ND));
   DEBUG((DEBUG_INFO, "    AFL    - 0x%x\n", CapReg->Bits.AFL));
   DEBUG((DEBUG_INFO, "    RWBF   - 0x%x\n", CapReg->Bits.RWBF));
@@ -833,7 +831,7 @@ DumpVtdECapRegs (
   IN VTD_ECAP_REG *ECapReg
   )
 {
-  DEBUG((DEBUG_INFO, "  ECapReg  - 0x%x\n", ECapReg->Uint64));
+  DEBUG((DEBUG_INFO, "  ECapReg  - 0x%016lx\n", ECapReg->Uint64));
   DEBUG((DEBUG_INFO, "    C      - 0x%x\n", ECapReg->Bits.C));
   DEBUG((DEBUG_INFO, "    QI     - 0x%x\n", ECapReg->Bits.QI));
   DEBUG((DEBUG_INFO, "    DT     - 0x%x\n", ECapReg->Bits.DT));
