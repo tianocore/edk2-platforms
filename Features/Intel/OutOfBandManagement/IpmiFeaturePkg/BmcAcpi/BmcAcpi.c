@@ -250,6 +250,7 @@ BmcAcpiEntryPoint (
       // Increment the instance
       //
       Instance++;
+      FreePool (CurrentTable);
     }
   }
 
