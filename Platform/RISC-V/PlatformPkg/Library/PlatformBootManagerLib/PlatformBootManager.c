@@ -2,7 +2,7 @@
   This file include all platform actions
 
 Copyright (c) 2021-2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
-Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2015 - 2024, Intel Corporation. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -168,6 +168,11 @@ PlatformBootManagerBeforeConsole (
   // Signal EndOfDxe PI Event
   //
   EfiEventGroupSignal (&gEfiEndOfDxeEventGroupGuid);
+
+  //
+  // Add the hardcoded serial console device path to ConIn, ConOut, ErrOut.
+  //
+  PlatformUefiEnvHotkeyRegister ();
 
   //
   // Update the console variables.

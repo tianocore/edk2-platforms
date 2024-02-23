@@ -3,7 +3,7 @@
   ConIn/ConOut variables.
 
 Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
-Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2015 - 2024, Intel Corporation. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -51,3 +51,16 @@ PLATFORM_CONSOLE_CONNECT_ENTRY  gPlatformConsole[] = {
     0
   }
 };
+
+/**
+  It provides a standard interface for interacting with terminal devices in
+  the UEFI environment.
+**/
+VOID
+EFIAPI
+PlatformUefiEnvHotkeyRegister (
+  VOID
+  )
+{
+  CopyGuid (&gSerialConsoleDevicePath0.TerminalType.Guid, &gEfiTtyTermGuid);
+}

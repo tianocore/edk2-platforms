@@ -2,7 +2,7 @@
    Head file for BDS Platform specific code
 
 Copyright (c) 2016, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
-Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2015 - 2024, Intel Corporation. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -104,6 +104,16 @@ PlatformBootManagerShowProgress (
   IN EFI_GRAPHICS_OUTPUT_BLT_PIXEL  ProgressColor,
   IN UINTN                          Progress,
   IN UINTN                          PreviousValue
+  );
+
+/**
+  It provides a standard interface for interacting with terminal devices in
+  the UEFI environment.
+**/
+VOID
+EFIAPI
+PlatformUefiEnvHotkeyRegister (
+  VOID
   );
 
 #endif // _PLATFORM_BOOT_MANAGER_H
