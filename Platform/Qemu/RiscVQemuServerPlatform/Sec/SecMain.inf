@@ -1,0 +1,67 @@
+## @file
+#  SEC Driver for RISC-V
+#
+#  Copyright (c) 2022, Ventana Micro Systems Inc. All rights reserved.<BR
+#  Copyright (c) 2024, Intel Corporation. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = SecMainRiscV64
+  FILE_GUID                      = 80D22D3C-81EC-44B2-A55C-242C21BF9539
+  MODULE_TYPE                    = SEC
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SecMain
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = RISCV64
+#
+
+[Sources]
+  SecEntry.S
+  SecMain.c
+  SecMain.h
+  Cpu.c
+  Memory.c
+  Platform.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  PcdLib
+  IoLib
+  PeCoffLib
+  LzmaDecompressLib
+  RiscVSbiLib
+  PrePiLib
+  FdtLib
+  MemoryAllocationLib
+  HobLib
+  SerialPortLib
+
+[Ppis]
+  gEfiTemporaryRamSupportPpiGuid                # PPI ALWAYS_PRODUCED
+  gEfiTemporaryRamDonePpiGuid                   ## PRODUCES
+
+[Pcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVSecFvBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVSecFvSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBaseAddress
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdSize
+
+[Guids]
+  gFdtHobGuid

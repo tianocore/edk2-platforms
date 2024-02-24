@@ -1,0 +1,49 @@
+## @file
+#
+#  PCI Host Bridge Library instance for pci-host-ecam-generic
+#  compatible RC implementations.
+#
+#  Copyright (c) 2024, Intel Corporation. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010019
+  BASE_NAME                      = PciHostBridgeLibEcam
+  FILE_GUID                      = E88D8506-4701-45BE-A116-B3260679CDB3
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+#
+# The following information is for reference only and not required by the build
+# tools.
+#
+#  VALID_ARCHITECTURES           = ARM AARCH64 RISCV64
+#
+
+[Sources]
+  PciHostBridgeLibEcam.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+
+[Pcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMin
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMax
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Base
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Size
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Base
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Size
