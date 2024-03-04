@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2011-2021, Arm Limited. All rights reserved.
+#  Copyright (c) 2011-2024, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -25,10 +25,13 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.fdf
 
-  # To allow the use of ueif secure variable feature, set this to TRUE.
+  # To allow the use of uefi secure variable feature, set this to TRUE.
   DEFINE ENABLE_UEFI_SECURE_VARIABLE = FALSE
 
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  # To allow firmware update using capsule update framwork.
+  DEFINE ENABLE_FIRMWARE_UPDATE                  = FALSE
+
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE
   DEFINE ENABLE_STMM             = TRUE
 !else
   DEFINE ENABLE_STMM             = FALSE
@@ -42,9 +45,17 @@
 
   DT_SUPPORT                     = FALSE
 
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE && $(ENABLE_UEFI_SECURE_VARIABLE) == FALSE
+  !error "ENABLE_UEFI_SECURE_VARIABLE should be on when ENABLE_FIRMWARE_UPDATE is on."
+!endif
+
 !include MdePkg/MdeLibs.dsc.inc
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 !include DynamicTablesPkg/DynamicTables.dsc.inc
+
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+!include Platform/ARM/Features/Fwu/FmpSystemFipImage.dsc.inc
+!endif
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -279,6 +290,7 @@
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf
+  MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf {
     <LibraryClasses>
@@ -356,7 +368,15 @@
   }
 
   ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+
+ #
+ # If ENABLE_UEFI_SECURE_VARIABLE == TRUE && ENABLE_FIRMWARE_UPDATE == TRUE,
+ # UEFI doesn't use NorFlash device. so it doesn't need to include NorFlashDxe.
+ #
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == FALSE || $(ENABLE_FIRMWARE_UPDATE) == FALSE
   Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
+!endif
+
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
 !ifdef EDK2_ENABLE_PL111
@@ -403,7 +423,14 @@
   MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
   MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
-  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf {
+    <LibraryClasses>
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+!else
+      FmpAuthenticationLib|MdeModulePkg/Library/FmpAuthenticationLibNull/FmpAuthenticationLibNull.inf
+!endif
+  }
   MdeModulePkg/Application/UiApp/UiApp.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/BootDiscoveryPolicyUiLib/BootDiscoveryPolicyUiLib.inf
