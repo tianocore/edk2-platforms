@@ -31,6 +31,12 @@
 [PcdsFixedAtBuild.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress|0x0|UINT32|0x00000002
 
+  # For Firmware Update Storage
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase|0x00|UINT32|0x00000007
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize|0x00|UINT32|0x00000008
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase64|0x00|UINT32|0x00000009
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize64|0x00|UINT32|0x0000000a
+
   # Firmware Update Banks and Images
   gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks|0|UINT32|0x0000000b
   gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank|0|UINT32|0x0000000c
