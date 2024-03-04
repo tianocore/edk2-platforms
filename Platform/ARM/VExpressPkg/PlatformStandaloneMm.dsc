@@ -1,7 +1,7 @@
 ## @file
 # Standalone MM Platform.
 #
-# Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+# Copyright (c) 2024-2025, Arm Limited. All rights reserved.<BR>
 #
 #    SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -30,6 +30,13 @@
 
 !include Platform/ARM/VExpressPkg/PlatformStandaloneMm.dsc.inc
 
+  # To allow firmware update using capsule update framwork.
+  DEFINE ENABLE_FIRMWARE_UPDATE                  = FALSE
+
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE && $(ENABLE_UEFI_SECURE_VARIABLE) == FALSE
+  !error "ENABLE_UEFI_SECURE_VARIABLE should be on when ENABLE_FIRMWARE_UPDATE is on."
+!endif
+
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this Platform.
@@ -38,9 +45,13 @@
 
 [LibraryClasses]
   # STMM for Variable runtime service.
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/VExpressPkg/Library/NorFlashArmVExpressLib/NorFlashStMmLib.inf
+!endif
+
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  FwsPlatformLib|Platform/ARM/Library/FwsGptSystemFipLib/FwsGptSystemFipLib.inf
 !endif
 
 ################################################################################
@@ -90,6 +101,29 @@
   #
   gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
 
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  # Firmware storage configuration
+  # Firmware storage layout is based on the underlying TF-A implementation.
+  # For the Base FVP:
+  #
+  #  +----------------------+
+  #  |      GPT-HEADER      |
+  #  +----------------------+
+  #  |    FIP_A (bank0)     |  -> bank 0 ---
+  #  +----------------------+              | --> 2 banks. and each bank only
+  #  |    FIP_B (bank1)     |  -> bank 1 ---     has one image (fip).
+  #  +----------------------+
+  #  |    FWU-Metadata      |
+  #  +----------------------+
+  #  |  Bkup-FWU-Metadata   |
+  #  +----------------------+
+  gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks|2
+  gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank|1
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase|0x08000000
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize|0x04000000
+
+!endif
+
 ###################################################################################################
 #
 # Components Section - list of the modules and components that will be processed by compilation
@@ -109,6 +143,15 @@
 #
 ###################################################################################################
 [Components.common]
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  Platform/ARM/Drivers/FwuSmm/FwuSmm.inf {
+    <PcdsFixedAtBuild>
+      # Should be same to FmpSystemFipImage.
+      gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpLowestSupportedVersion|0x00000000
+      gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpVersion|0x00000000
+      gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpVersionString|"000.000.000.000"
+  }
+!endif
 
 ###################################################################################################
 #
@@ -123,3 +166,9 @@
   GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000 -march=armv8-a+nofp -mstrict-align
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/RTSM
   GCC:*_*_*_CC_FLAGS = -mstrict-align
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  GCC:*_*_*_CC_FLAGS = -DENABLE_UEFI_SECURE_VARIABLE
+!endif
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  GCC:*_*_*_CC_FLAGS = -DENABLE_FIRMWARE_UPDATE
+!endif
