@@ -19,6 +19,7 @@
   BdsLib|Include/Library/BdsLib.h
   NorFlashDeviceLib|Include/Library/NorFlashDeviceLib.h
   NorFlashPlatformLib|Include/Library/NorFlashPlatformLib.h
+  FwsPlatformLib|Include/Library/FwsPlatformLib.h
 
 [Guids]
   gPlatformArmTokenSpaceGuid  = { 0x7a5e0def, 0xd3c3, 0x44f3, { 0x8d, 0x69, 0x70, 0xfc, 0x8f, 0xd6, 0x4f, 0xdf } }
