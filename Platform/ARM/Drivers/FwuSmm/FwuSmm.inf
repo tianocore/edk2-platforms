@@ -1,0 +1,58 @@
+## @file
+#
+# Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = FwuSmm
+  MODULE_UNI_FILE                = FwuSmm.uni
+  FILE_GUID                      = 83042222-FB7B-11ED-8A64-6C0B8467DFAD
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  ENTRY_POINT                    = FwuSmmMain
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  FwuSmm.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+  Platform/ARM/ARM.dec
+  Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  StandaloneMmDriverEntryPoint
+  HobLib
+  FwsPlatformLib
+
+[Protocols]
+  gEfiBlockIoProtocolGuid
+
+[FixedPcd]
+  gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks
+  gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank
+
+[Guids]
+  gPsaFwuUpdateAgentGuid
+  gPsaFwuImageDirectoryGuid
+  gEfiStandaloneMmNonSecureBufferGuid
+
+[Depex]
+  gEfiBlockIoProtocolGuid

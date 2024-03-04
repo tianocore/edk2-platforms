@@ -1,0 +1,13 @@
+// /** @file
+//
+// Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+
+#string STR_MODULE_ABSTRACT             #language en-US "Firmware Update Standalone MM Driver"
+
+#string STR_MODULE_DESCRIPTION          #language en-US "Firmware Update Standalone MM Driver."
+
