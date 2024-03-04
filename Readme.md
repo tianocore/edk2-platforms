@@ -1,329 +1,237 @@
-This branch holds all platforms actively maintained against the
-[edk2](https://github.com/tianocore/edk2) master branch.
-
-For generic information about the edk2-platforms repository, and the process
-under which _stable_ and _devel_ branches can be added for individual platforms,
-please see
-[the introduction on the about branch](https://github.com/tianocore/edk2-platforms/blob/about/Readme.md).
-
-The majority of the content in the EDK II open source project uses a
-[BSD-2-Clause Plus Patent License](License.txt).  Additional details on EDK II
-open source project code contributions can be found in the edk2 repository
-[Readme.md](https://github.com/tianocore/edk2/blob/master/ReadMe.rst).
-The EDK II Platforms open source project contains the following components that
-are covered by additional licenses:
-
-- [`Silicon/RISC-V/ProcessorPkg/Library/RiscVOpensbiLib/opensbi`](https://github.com/riscv/opensbi/blob/master/COPYING.BSD)
-
-# INDEX
-* [Overview](#overview)
-* [How To Build (Linux Environment)](#how-to-build-linux-environment)
-   * [Manual building](#manual-building)
-   * [Using uefi-tools helper scripts](#using-uefi-tools-helper-scripts)
-* [How To Build (Windows Environment)](#how-to-build-windows-environment)
-* [Supported Platforms](#supported-platforms)
-* [Maintainers](#maintainers)
-
-# Overview
-
-Platform description files can be found under `Platform/{Vendor}/{Platform}`.
-
-Many platforms require additional image processing beyond the EDK2 build.
-Any such steps should be documented (as a Readme.md), and any necessary helper
-scripts be contained, under said platform directory.
-
-Any contributions to this branch should be submitted via email to the
-edk2-devel mailing list with a subject prefix of `[platforms]`. See
-[Laszlo's excellent guide](https://github.com/tianocore/tianocore.github.io/wiki/Laszlo's-unkempt-git-guide-for-edk2-contributors-and-maintainers) for details
-on how to do this successfully.
-
-# How to build (Linux Environment)
-
-## Prerequisites
-The build tools themselves depend on Python (2) and libuuid. Most Linux systems
-will come with a Python environment installed by default, but you usually need
-to install uuid-dev (or uuid-devel, depending on distribution) manually.
-
-## If cross compiling
-If building EDK2 for a different archtecture than the build machine, you need to
-obtain an appropriate cross-compiler. X64 (x86_64) compilers also support IA32,
-but the reverse may not always be true.
-
-Target architecture | Cross compilation prefix
---------------------|-------------------------
-AARCH64             | aarch64-linux-gnu-
-ARM                 | arm-linux-gnueabihf-
-IA32                | i?86-linux-gnu-* _or_ x86_64-linux-gnu-
-IPF                 | ia64-linux-gnu
-X64                 | x86_64-linux-gnu-
-RISCV64             | riscv64-unknown-elf-
-LOONGARCH64         | loongarch64-unknown-linux-
-
-\* i386, i486, i586 or i686
-
-### GCC
-Arm provides GCC toolchains for aarch64-linux-gnu and arm-linux-gnueabihf at
-[GNU Toolchain for the A-profile Architecture](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads)
-compiled to run on x86_64/i686 Linux and i686 Windows. Some Linux distributions
-provide their own packaged cross-toolchains.
-
-### GCC for RISC-V
-RISC-V open source community provides GCC toolchains for
-[riscv64-unknown-elf](https://github.com/riscv/riscv-gnu-toolchain)
-compiled to run on x86 Linux.
-
-### GCC for LoongArch
-Loonson open source community provides GCC toolchains for
-[loongarch64-unknown-elf](https://github.com/loongson/build-tools)
-compiled to run on x86 Linux
-
-### clang
-Clang does not require separate cross compilers, but it does need a
-target-specific binutils. These are included with any prepackaged GCC toolchain
-(see above), or can be installed or built separately.
-
-## Obtaining source code
-1. Create a new folder (directory) on your local development machine
-   for use as your workspace. This example uses `/work/git/tianocore`, modify as
-   appropriate for your needs.
-   ```
-   $ export WORKSPACE=/work/git/tianocore
-   $ mkdir -p $WORKSPACE
-   $ cd $WORKSPACE
-   ```
-
-1. Into that folder, clone:
-   1. [edk2](https://github.com/tianocore/edk2)
-   1. [edk2-platforms](https://github.com/tianocore/edk2-platforms)
-   1. [edk2-non-osi](https://github.com/tianocore/edk2-non-osi) (if building
-      platforms that need it)
-   ```
-   $ git clone https://github.com/tianocore/edk2.git
-   $ git submodule update --init
-   ...
-   $ git clone https://github.com/tianocore/edk2-platforms.git
-   $ git submodule update --init
-   ...
-   $ git clone https://github.com/tianocore/edk2-non-osi.git
-   ```
-
-1. Set up a **PACKAGES_PATH** to point to the locations of these three
-   repositories:
-
-   `$ export PACKAGES_PATH=$PWD/edk2:$PWD/edk2-platforms:$PWD/edk2-non-osi`
-
-## Manual building
-
-1. Set up the build environment (this will modify your environment variables)
-
-   `$ . edk2/edksetup.sh`
-
-   (This step _depends_ on **WORKSPACE** being set as per above.)
-1. Build BaseTools
-
-   `make -C edk2/BaseTools`
-
-   (BaseTools can currently not be built in parallel, so do not specify any `-j`
-   option, either on the command line or in a **MAKEFLAGS** environment
-   variable.)
-
-### Build options
-There are a number of options that can (or must) be specified at the point of
-building. Their default values are set in `edk2/Conf/target.txt`. If we are
-working only on a single platform, it makes sense to just update this file.
-
-target.txt option | command line | Description
-------------------|--------------|------------
-ACTIVE_PLATFORM   | `-p`         | Description file (.dsc) of platform.
-TARGET            | `-b`         | One of DEBUG, RELEASE or NOOPT.
-TARGET_ARCH       | `-a`         | Architecture to build for.
-TOOL_CHAIN_TAG    | `-t`         | Toolchain profile to use for building.
-
-There is also MAX_CONCURRENT_THREAD_NUMBER (`-n`), roughly equivalent to
-`make -j`.
-
-When specified on command line, `-b` can be repeated multiple times in order to
-build multiple targets sequentially.
-
-After a successful build, the resulting images can be found in
-`Build/{Platform Name}/{TARGET}_{TOOL_CHAIN_TAG}/FV`.
-
-### Build a platform
-The main build process _can_ run in parallel - so figure out how many threads we
-have available.
-
-```
-$ getconf _NPROCESSORS_ONLN
-8
-```
-OK, so we have 8 CPUs - let's tell the build to use a little more than that:
-```
-$ NUM_CPUS=$((`getconf _NPROCESSORS_ONLN` + 2))
-```
-For the toolchain tag, use GCC5 for gcc version 5 or later, GCC4x for
-earlier versions, or CLANG35/CLANG38 as appropriate when building with clang.
-```
-$ build -n $NUM_CPUS -a AARCH64 -t GCC5 -p Platform/ARM/JunoPkg/ArmJuno.dsc
-```
-(Note that the description file gets resolved by the build command through
-searching in all locations specified in **PACKAGES_PATH**.)
-
-#### If cross-compiling
-When cross-compiling, or building with a different version of the compiler than
-the default `gcc` or `clang`(/binutils), we additionally need to inform the
-build command which toolchain to use. We do this by setting the environment
-variable `{TOOL_CHAIN_TAG}_{TARGET_ARCH}_PREFIX` - in the case above,
-**GCC5_AARCH64_PREFIX**.
-
-So, referring to the cross compiler toolchain table above, we should prepend the `build` command line with `GCC5_AARCH64_PREFIX=aarch64-linux-gnu-`.
-
-## Using uefi-tools helper scripts
-uefi-tools is a completely unofficial set of helper-scripts developed by Linaro.
-They automate figuring out all of the manual options above, and store the paths
-to platform description files in a separate configuration file. Additionally,
-they simplify bulk-building large numbers of platforms.
-
-The (best effort) intent is to keep this configuration up to date with all
-platforms that exist in the edk2-platforms master branch.
-
-The equivalent of the manual example above would be
-```
-$ git clone https://git.linaro.org/uefi/uefi-tools.git
-...
-$ ./uefi-tools/edk2-build.sh juno
-...
-------------------------------------------------------------
-                         aarch64 Juno (AARCH64) RELEASE pass
-------------------------------------------------------------
-pass   1
-fail   0
-```
-The build finishes with a summary of which platforms/targets were built, which
-succeeded and which failed (and the total number of either).
-
-Like the `build` command itself, `edk2-build.sh` it supports specifying multiple
-targets on a single command line, but it also lets you specify multiple
-platforms (or `all` for building all known platforms). So in order to build all
-platforms described by the configuration file, for both DEBUG and RELEASE
-targets:
-```
-$ ./uefi-tools/edk2-build.sh -b DEBUG -b RELEASE
-```
-
-# How To Build (Windows Environment)
-
-(I genuinely have no idea. Please help!)
-
-
-# Supported Platforms
-
-These are the platforms currently supported by this tree - grouped by
-Processor/SoC vendor, rather than platform vendor.
-
-If there are any additional build steps beyond the generic ones listed above,
-they will be documented with the platform.
-
-## AMD
-* [Cello](Platform/LeMaker/CelloBoard)
-* [Overdrive](Platform/AMD/OverdriveBoard)
-* [Overdrive 1000](Platform/SoftIron/Overdrive1000Board)
-
-## [Ampere](Platform/Ampere/Readme.md)
-* [Mt. Jade](Platform/Ampere/JadePkg)
-
-## [ARM](Platform/ARM/Readme.md)
-* [Juno](Platform/ARM/JunoPkg)
-* [SGI family](Platform/ARM/SgiPkg)
-
-## BeagleBoard
-* [BeagleBoard](Platform/BeagleBoard/BeagleBoardPkg)
-
-## Hisilicon
-* [D03](Platform/Hisilicon/D03)
-* [D05](Platform/Hisilicon/D05)
-* [D06](Platform/Hisilicon/D06)
-* [HiKey](Platform/Hisilicon/HiKey)
-* [HiKey960](Platform/Hisilicon/HiKey960)
-
-## Intel
-### [Minimum Platforms](Platform/Intel/Readme.md)
-* [Kaby Lake](Platform/Intel/KabylakeOpenBoardPkg)
-* [Purley](Platform/Intel/PurleyOpenBoardPkg)
-* [Simics](Platform/Intel/SimicsOpenBoardPkg)
-* [Whiskey Lake](Platform/Intel/WhiskeylakeOpenBoardPkg)
-* [Comet Lake](Platform/Intel/CometlakeOpenBoardPkg)
-* [Tiger Lake](Platform/Intel/TigerlakeOpenBoardPkg)
-* [Whitley/Cedar Island](Platform/Intel/WhitleyOpenBoardPkg)
-* [Alder Lake](Platform/Intel/AlderlakeOpenBoardPkg)
-
-For more information, see the
-[EDK II Minimum Platform Specification](https://edk2-docs.gitbooks.io/edk-ii-minimum-platform-specification).
-### Other Platforms
-##### Intel&reg; Quark SoC X1000 based platforms
-* [Galileo](Platform/Intel/QuarkPlatformPkg)
-##### Minnowboard Max/Turbot based on Intel Valleyview2 SoC
-* [Minnowboard Max](Platform/Intel/Vlv2TbltDevicePkg)
-
-## Loongson
-* [LoongArchQemu](Platform/Loongson/LoongArchQemuPkg)
-
-## Marvell
-* [Armada 70x0](Platform/Marvell/Armada70x0Db)
-* [Armada 80x0](Platform/Marvell/Armada80x0Db)
-* [CN913x](Platform/Marvell/Cn913xDb)
-* [SolidRun Armada MacchiatoBin](Platform/SolidRun/Armada80x0McBin)
-
-## Raspberry Pi
-* [Pi 3](Platform/RaspberryPi/RPi3)
-* [Pi 4](Platform/RaspberryPi/RPi4)
-
-## RISC-V
-### SiFive
-* [Sifive U5 Series](Platform/SiFive/U5SeriesPkg) Refer to Platform/SiFive/U5Series/Readme.md on edk2-platform repository.
-* [Freedom U500 VC707 FPGA](Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board)
-* [Freedom U540 HiFive Unleashed](Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard)
-
-## Socionext
-* [SynQuacer](Platform/Socionext/DeveloperBox)
-
-## NXP
-* [LS1043aRdb](Platform/NXP/LS1043aRdbPkg)
-
-## Qemu
-* [SBSA](Platform/Qemu/SbsaQemu)
-
-# Maintainers
-
-See [Maintainers.txt](Maintainers.txt).
-
-# Submodules
-
-Submodule in EDK II Platforms is allowed but submodule chain should be avoided
-as possible as we can. Currently EDK II Platforms contains the following
-submodules
-
-- Silicon/RISC-V/ProcessorPkg/Library/RiscVOpensbiLib/opensbi
-
-To get a full, buildable EDK II repository, use following steps of git command
-
-```bash
-  git clone https://github.com/tianocore/edk2-platforms.git
-  cd edk2-platforms
-  git submodule update --init
-  cd ..
-```
-
-If there's update for submodules, use following git commands to get the latest
-submodules code.
-
-```bash
-  cd edk2-platforms
-  git pull
-  git submodule update
-```
-
-Note: When cloning submodule repos, '--recursive' option is not recommended.
-EDK II Platforms itself will not use any code/feature from submodules in above
-submodules. So using '--recursive' adds a dependency on being able to reach
-servers we do not actually want any code from, as well as needlessly
-downloading code we will not use.
+# Introduction
+
+**DynamicTablesPkg** currently supports Arm architecture, and we welcome the
+adoption by other architectures.
+
+This branch will be used to:
+ - Reorganise the code to streamline adoption by other architectures.
+ - Introduce Dynamic Tables support for RISC-V architecture
+ - Integrate Dynamic SMBIOS support
+   (<https://edk2.groups.io/g/devel/message/107254>)
+
+## Goals
+ - Streamline adoption by other architectures.
+ - Minimise the impact of migration for existing platforms
+ - Reuse common code
+ - Maintain flexibility across architectural components
+
+# Dynamic Tables Framework
+
+The dynamic tables framework is designed to generate standardised
+firmware tables that describe the hardware information at
+run-time. A goal of standardised firmware is to have a common
+firmware for a platform capable of booting both Windows and Linux
+operating systems.
+
+Traditionally the firmware tables are handcrafted using ACPI
+Source Language (ASL), Table Definition Language (TDL) and
+C-code. This approach can be error prone and involves time
+consuming debugging. In addition, it may be desirable to configure
+platform hardware at runtime such as: configuring the number of
+cores available for use by the OS, or turning SoC features ON or
+OFF.
+
+The dynamic tables framework simplifies this by providing a set
+of standard table generators, that are implemented as libraries.
+These generators query a platform specific component, the
+'Configuration Manager', to collate the information required
+for generating the tables at run-time.
+
+The framework also provides the ability to implement custom/OEM
+generators; thereby facilitating support for custom tables. The
+custom generators can also utilize the existing standard generators
+and override any functionality if needed.
+
+The framework currently implements a set of standard ACPI table
+generators for Arm architecture, these include both data tables
+and ASL tables. The ASL generation includes support for both
+fixup, where a template AML code is patched, and additionally
+provides an API to parse, search, generate and serialise the
+AML bytecode.
+
+Although, the set of standard generators implement the functionality
+required for Arm architecture; the framework is extensible, and
+support for other architectures can be added.
+
+## Branch Owners
+
+   - Sami Mujawar <sami.mujawar@arm.com>
+   - Pierre Gondois <pierre.gondois@arm.com>
+
+## Feature Summary
+
+### Dynamic Tables framework supports
+ - ACPI data tables
+ - AML tables
+   * AML Template Fixup
+   * AML Code Generation
+
+The framework currently supports the following table generators for Arm:
+   * DBG2 - Debug Port Table 2
+   * DSDT - Differentiated system description table. This is essentially
+            a RAW table generator.
+   * FADT - Fixed ACPI Description Table
+   * GTDT - Generic Timer Description Table
+   * IORT - IO Remapping Table
+   * MADT - Multiple APIC Description Table
+   * MCFG - PCI Express memory mapped configuration space base address
+            Description Table
+   * SPCR - Serial Port Console Redirection Table
+   * SSDT - Secondary System Description Table. This is essentially
+            a RAW table generator.
+   * PCCT - Platform Communications Channel Table.
+   * PPTT - Processor Properties Topology Table.
+   * SRAT - System Resource Affinity Table.
+   * SSDT-CMN600 - SSDT Table for Arm CoreLink CMN-600 Coherent Mesh Network.
+   * SSDT-Cpu-Topology - SSDT Table for describing the CPU hierarchy.
+   * SSDT-PCIe - SSDT Table describing the PCIe.
+   * SSDT-Serial-Port - SSDT Table describing the Serial ports.
+
+## SMBIOS Support
+ - A SMBIOS String table helper library has been provided.
+ - Initial patches to add SMBIOS support are available at:
+   * SMBIOS Dispatcher (<https://edk2.groups.io/g/devel/message/100834>)
+   * SMBIOS Table generation (<https://edk2.groups.io/g/devel/message/107254>).
+
+# Roadmap
+
+1.  See [Related Modules](#related-modules) section below for details of
+    staging repositories and branches to be used for prototyping.
+2.  The design aspects and changes shall be discussed on the mailing list
+    with patches to support the details.
+3.  A new section in DynamicTablesPkg\Readme.md shall be added to reflect
+    the design updates, e.g. changes to CM Objects, Namespace definitions, etc.
+4.  The design changes should typically be supported by patches for the
+    DynamicTables core framework and demonstrate the impact on the platform
+    code by typically providing patches for at least one existing
+    platform (possibly edk2-platforms/Platform/ARM/[Juno | FVP]).
+5.  The design changes should be small and typically be reflected in separate
+    patch series.
+6.  The first phase would be to partition the codebase into common code vs
+    architectural specific code. This would involve moving files and
+    reflecting the associated changes such that the build does not break.
+7.  Define a new namespace *ArchCommon* for the common architectural components.
+8.  Identify the CM_ARM_OBJECTs that can be moved to the *ArchCommon* namespace.
+    As part of this identify if any object needs to be dropped,
+    e.g. EArmObjReserved29
+9.  Identify overlap of SMBIOS objects with existing CM Objects.
+10. Submit patches to move CM objects from Arm Namespace to *ArchCommon*
+    Namespace. Ideally one object (and any dependencies) should be moved
+    at a time.
+11. Submit patches to migrate upstream platforms that use DynamicTablesPkg
+12. Define a new namespace for RISC-V specific objects
+13. Submit patches for enabling RISC-V
+14. In the next phase support for Dynamic SMBIOS can be enabled.
+
+## Note:
+- Periodically rebase with edk2 & edk2-platforms master branch to sync
+   with latest changes.
+- Merge *reorg* updates after point 11 above to edk2 & edk2-platforms master
+  branch.
+- Similarly, the RISC-V support can be merged after point 13.
+
+# Related Modules
+
+## edk2-staging
+The *dynamictables-reorg* branch in the **edk2-staging** repository
+contains the updates to streamline the adoption of Dynamic Tables
+Framework by other architectures.
+
+## edk2-platforms
+The *devel-dynamictables-reorg* branch in the **edk2-platforms** repository
+contains the platform specific changes.
+
+# Related Links
+
+Source Code Repositories for staging:<BR>
+
+### 1. edk2 codebase <BR>
+   Repo: <https://github.com/tianocore/edk2-staging.git> <BR>
+   Branch: *dynamictables-reorg*
+
+### 2. edk2-platforms codebase <BR>
+  Repo: <https://github.com/tianocore/edk2-platforms.git> <BR>
+  Branch: *devel-dynamictables-reorg*
+
+# Impacted Platforms
+
+| Platform            | Location                                      | Description                                    | Migration Status | Known Issues |
+| :----               | :-----                                        | :----                                          | :---             | :---         |
+| Arm Virt Kvmtool    | edk2/ArmVirtPkg/KvmtoolCfgMgrDxe              | Arm Kvmtool Guest firmware                     |                  |              |
+| FVP                 | edk2-platforms/Platform/ARM/VExpressPkg       | Arm Fixed Virtual Platform                     |                  |              |
+| Juno                | edk2-platforms/Platform/ARM/JunoPkg           | Arm Juno Software Development Platform         |                  |              |
+| N1SDP               | edk2-platforms/Platform/ARM/N1Sdp             | Arm Neoverse N1 Software Development Platform  |                  |              |
+| Morello FVP         | edk2-platforms/Platform/ARM/Morello           | Arm Morello Fixed Virtual Platform             |                  |              |
+| Morello             | edk2-platforms/Platform/ARM/Morello           | Arm Morello Software Development Platform      |                  |              |
+| LX2160A             | edk2-platforms/Silicon/NXP/LX2160A            | NXP LX2160A                                    |                  |              |
+
+
+# Prerequisites
+
+Ensure that the latest ACPICA iASL compiler is used for building *Dynamic Tables Framework*. <BR>
+*Dynamic Tables Framework* has been tested using the following iASL compiler version: <BR>
+ACPICA iASL compiler [Version 20230628](https://www.acpica.org/node/183), dated 28 June, 2023.
+
+# Build Instructions
+
+1. Set path for the iASL compiler.
+
+2. Set PACKAGES_PATH to point to the locations of the following repositories:
+
+Example:
+
+> set PACKAGES_PATH=%CD%\edk2;%CD%\edk2-platforms;%CD%\edk2-non-osi
+
+  or
+
+> export PACKAGES_PATH=$PWD/edk2:$PWD/edk2-platforms:$PWD/edk2-non-osi
+
+3. To enable Dynamic tables framework the *'DYNAMIC_TABLES_FRAMEWORK'*
+option must be defined for some platforms that support both traditional
+ACPI tables as well as Dynamic Table generation. This can be passed as
+a command line parameter to the edk2 build system.
+
+Example:
+
+Juno supports both traditional and dynamic ACPI tables.
+>build -a AARCH64 -p Platform\ARM\JunoPkg\ArmJuno.dsc
+   -t GCC5 **-D DYNAMIC_TABLES_FRAMEWORK**
+
+or
+FVP only supports dynamic ACPI table generation, so the preprocessor
+flag is not required for the build.
+>build -a AARCH64 -p Platform\ARM\VExpressPkg\ArmVExpress-FVP-AArch64.dsc
+   -t GCC5
+
+# Documentation
+
+The documentation for the Dynamic Tables Framework is available at
+DynamicTablesPkg\Readme.md. Additionally, Doxygen style documentation
+is used in the code.
+
+# Guidelines for submitting patches
+
+1. Follow the standard edk2 coding guidelines for preparing patches. <BR>
+   The edk2-staging guidelines can be found at
+   <https://github.com/tianocore/edk2-staging>
+
+2. To submit a patch for edk2-staging repo include the branch name in
+   the subject line of the commit message. <BR>
+   e.g. **[staging/dynamictables-reorg PATCH v<*n*> <x/y>]: Package/Module: Subject**
+
+3. To submit a patch for edk2-platforms staging repo include the branch
+   name in the subject line of the commit message. <BR>
+   e.g. **[platforms/devel-dynamictables-reorg PATCH v<*n*> <x/y>]: Package/Module: Subject**
+
+
+# Stakeholders/Distribution List
+
+  Please send a patch if you wished to be added/removed from the distribution
+  list below.
+
+ - Sami Mujawar <sami.mujawar@arm.com>
+ - Pierre Gondois <pierre.gondois@arm.com>
+ - Yeo Reum Yun <YeoReum.Yun@arm.com>
+
+# Miscellaneous
+
