@@ -9,7 +9,6 @@
 
 #include <PiPei.h>
 
-#include <Library/PeimEntryPoint.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -378,7 +377,7 @@ SecCoreStartupWithStack (
 
   DEBUG ((DEBUG_INFO, "Entering C environment\n"));
 
-  ProcessLibraryConstructorList (NULL, NULL);
+  ProcessLibraryConstructorList ();
 
   DEBUG ((DEBUG_INFO,
     "SecCoreStartupWithStack (0x%lx, 0x%lx)\n",
