@@ -9,7 +9,7 @@
 ##
 
 [Defines]
-  INF_VERSION                    = 0x0001001B
+  INF_VERSION                    = 1.30
   BASE_NAME                      = SecMainRiscV64
   FILE_GUID                      = 125E1236-9D4F-457B-BF7E-6311C88A1621
   MODULE_TYPE                    = SEC
