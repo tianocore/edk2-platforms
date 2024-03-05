@@ -9,7 +9,7 @@
 #**/
 
 [Defines]
-  INF_VERSION                    = 0x0001001A
+  INF_VERSION                    = 1.30
   BASE_NAME                      = BeagleBoardPrePiUniCore
   FILE_GUID                      = 8a5dc3de-fe31-4ad9-9c93-dd73626932e7
   MODULE_TYPE                    = SEC
