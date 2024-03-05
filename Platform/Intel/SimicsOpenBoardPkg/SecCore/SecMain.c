@@ -9,7 +9,6 @@
 
 #include <PiPei.h>
 
-#include <Library/PeimEntryPoint.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -738,7 +737,7 @@ SecCoreStartupWithStack (
     Table[Index] = 0;
   }
 
-  ProcessLibraryConstructorList (NULL, NULL);
+  ProcessLibraryConstructorList ();
 
   DEBUG ((EFI_D_INFO,
     "SecCoreStartupWithStack(0x%x, 0x%x)\n",
