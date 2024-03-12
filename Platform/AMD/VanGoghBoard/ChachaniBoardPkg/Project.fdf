@@ -416,8 +416,7 @@ NumBlocks     = 0x100
   # Platform
   #
   INF  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
-  INF  OvmfPkg/8259InterruptControllerDxe/8259.inf
-  INF  OvmfPkg/8254TimerDxe/8254Timer.inf
+  INF  PcAtChipsetPkg/HpetTimerDxe/HpetTimerDxe.inf
 
   #
   # ACPI

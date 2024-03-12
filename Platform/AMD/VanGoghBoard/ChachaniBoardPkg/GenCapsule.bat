@@ -36,7 +36,7 @@ if not exist %WORKSPACE%\%BIOS_FILE_NAME% (
   goto ERROR
 )
 
- Setup OpenSSL Command Line Environment
+echo Setup OpenSSL Command Line Environment
 if not "%OPENSSL_PATH%" == "" (
   set OPENSSL_PATH_TEMP=%OPENSSL_PATH%
 )

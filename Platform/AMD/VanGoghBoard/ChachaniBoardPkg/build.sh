@@ -1,3 +1,4 @@
+#!/bin/bash
 ## @file
 # Linux build script file to launch Chachani Board BIOS build
 #
@@ -22,6 +23,7 @@ export OemBoard=Chachani
 export PLATFORM_PATH=edk2-platforms/Platform/AMD/VanGoghBoard
 export BUILD_TYPE=RELEASE
 export TOOLCHAIN_TAG=CLANGPDB
+export OTA_CAPSULE_NAME=OTACAPSULE # You need to keep this name sync with PlatformCapsule.fdf
 #TRUE / FALSE
 export COMPRESS_FSP_REGION=TRUE
 export KEY_MODE=TK
@@ -35,16 +37,25 @@ export NASM_PREFIX=
 export GCC5_BIN=
 #CLANG_BIN shall end with a slash.
 export CLANG_BIN=
+#OPENSSL_PATH shall end with a slash.
+export OPENSSL_PATH=
 
 echo "Building for ${OemBoard} board, ${BUILD_TYPE} mode with ${TOOLCHAIN_TAG}."
-echo "IASL: ${IASL_PREFIX}iasl, NASM: ${NASM_PREFIX}nasm, GCC: ${GCC5_BIN}gcc, CLANG:${CLANG_BIN}clang."
+echo "IASL: ${IASL_PREFIX}iasl, NASM: ${NASM_PREFIX}nasm, GCC: ${GCC5_BIN}gcc, CLANG:${CLANG_BIN}clang, OPENSSL:${OPENSSL_PATH}openssl."
 [[ ${COMPRESS_FSP_REGION} == "TRUE" ]] && echo "FSP will be built with compress support."
 # Env check
 echo_section "Checking compilation environment"
 [[ "${IASL_PREFIX}" == "" ]] && export IASL_PREFIX=$(dirname $(which iasl))/
 [[ "${NASM_PREFIX}" == "" ]] && export NASM_PREFIX=$(dirname $(which nasm))/
+[[ "${OPENSSL_PATH}" == "" ]] && export OPENSSL_PATH=$(dirname $(which openssl))/
 [[ -f ${IASL_PREFIX}iasl ]] || (echo "IASL not found! Please specify IASL_PREFIX!";exit -1)
-[[ -f ${IASL_PREFIX}nasm ]] || (echo "NASM not found! Please specify NASM_PREFIX!";exit -1)
+[[ -f ${NASM_PREFIX}nasm ]] || (echo "NASM not found! Please specify NASM_PREFIX!";exit -1)
+[[ -f ${OPENSSL_PATH}openssl ]] || (echo "OpenSSL not found! Please specify OPENSSL_PATH!";exit -1)
+
+echo "IASL version $(LC_ALL=C ${IASL_PREFIX}iasl -v | sed -n '3,3p' | cut -d' ' -f5) detected."
+echo "NASM version $(LC_ALL=C ${NASM_PREFIX}nasm --version | head -n1 | cut -d' ' -f3) detected."
+echo "OpenSSL version $(LC_ALL=C ${OPENSSL_PATH}openssl version | head -n1 | cut -d' ' -f2) detected."
+
 if [ ${TOOLCHAIN_TAG} != "CLANGPDB" ]
 then
     [[ "${GCC5_BIN}" == "" ]]   && export GCC5_BIN=$(dirname $(which gcc))/
@@ -173,5 +184,12 @@ python3 -X dev py-UpdatePspL1DirCksm.py ${F4_PSP_L1_DIRECTORY}
 python3 FlashABImage32M.py ${F1_ECSIG} ${F2_EC} ${F3_EFS} ${F4_PSP_L1_DIRECTORY} ${F5_PD} \
     ${F6_SLOT_HEADER_1} ${F7_SLOT_HEADER_2} ${F8_SLOT_A} ${F9_SLOT_B} ${F10_OUT_IMAGE}
 popd
+
+echo_section "Generating Capsule image"
+rm -r ${WORKSPACE}/Build/ChachaniBoardPkg/${BUILD_TYPE}_${TOOLCHAIN_TAG}/FV/SYSTEMFIRMWAREUPDATECARGO*
+touch ${WORKSPACE}/Build/ChachaniBoardPkg/${BUILD_TYPE}_${TOOLCHAIN_TAG}/FV/SYSTEMFIRMWAREUPDATECARGO.Fv
+build -p ${PROJECT_PKG}/PlatformCapsule.dsc -t ${TOOLCHAIN_TAG} -b ${BUILD_TYPE} -D BIOS_FILE=${BIOSNAME}UDK.FD
+[[ $? -ne 0 ]] && exit -1
+cp ${WORKSPACE}/Build/ChachaniBoardPkg/${BUILD_TYPE}_${TOOLCHAIN_TAG}/FV/${OTA_CAPSULE_NAME}.Cap .
 
 echo_section "Build success @ $(date)"

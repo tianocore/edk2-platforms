@@ -745,8 +745,6 @@
   MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
   FatPkg/EnhancedFatDxe/Fat.inf
   PcAtChipsetPkg/HpetTimerDxe/HpetTimerDxe.inf
-  OvmfPkg/8259InterruptControllerDxe/8259.inf
-  OvmfPkg/8254TimerDxe/8254Timer.inf
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
 

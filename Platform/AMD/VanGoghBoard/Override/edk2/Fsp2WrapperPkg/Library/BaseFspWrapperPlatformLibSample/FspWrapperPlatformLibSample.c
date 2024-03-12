@@ -61,35 +61,6 @@ GetIdsNvData (
   FSPM_UPD *volatile  FspmUpd
   )
 {
-  VOID             *IdsNvTableData;
-  UINT32           IdsNvDataSize = 0;
-  IDS_HOOK_STATUS  Status        = GetIdsNvTable (NULL, &IdsNvDataSize);
-
-  if ((Status == IDS_HOOK_BUFFER_TOO_SMALL) || (Status == IDS_HOOK_SUCCESS)) {
-    // The CBS code doesn't follow its header!
-    IdsNvTableData = AllocatePool (IdsNvDataSize+100);
-    if (IdsNvTableData != NULL) {
-      Status = GetIdsNvTable (IdsNvTableData, &IdsNvDataSize);
-      if (Status == IDS_HOOK_SUCCESS) {
-        FspmUpd->FspmConfig.ids_nv_table_address = (UINT32)(UINTN)IdsNvTableData;
-        FspmUpd->FspmConfig.ids_nv_table_size    = IdsNvDataSize;
-        DEBUG ((
-          DEBUG_INFO,
-          "IDS NV Table address:%x, size:%x\n", \
-          FspmUpd->FspmConfig.ids_nv_table_address,
-          FspmUpd->FspmConfig.ids_nv_table_size
-          ));
-        return EFI_SUCCESS;
-      } else {
-        DEBUG ((DEBUG_ERROR, "Get NV Table #3:%d\n", Status));
-      }
-    } else {
-      DEBUG ((DEBUG_ERROR, "Get NV Table #2:%d\n", Status));
-    }
-  } else {
-    DEBUG ((DEBUG_ERROR, "Get NV Table #1:%d\n", Status));
-  }
-
   return EFI_UNSUPPORTED;
 }
 

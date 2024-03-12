@@ -57,7 +57,7 @@
     <IMAGE_ENTRY Type="0x65" Instance="0x01" SubProgram="0x0" File="TypeId0x65D0.csbin" />
     <IMAGE_ENTRY Type="0x64" Instance="0x02" SubProgram="0x0" File="TypeId0x64L1.csbin" />
     <IMAGE_ENTRY Type="0x65" Instance="0x02" SubProgram="0x0" File="TypeId0x65D1.csbin" />
-    <IMAGE_ENTRY Type="0x66" Instance="0x03" File="TypeId0x66.bin" />
+    <IMAGE_ENTRY Type="0x66" Instance="0x00" File="TypeId0x66.bin" />
     <IMAGE_ENTRY Type="0x6A" File="TypeId0x6A.sbin" />
   </BIOS_DIR>
 </DIRS>
