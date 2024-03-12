@@ -56,5 +56,9 @@ typedef union {
 
 } MSR_CORE_THREAD_COUNT_REGISTER;
 
+/**
+  Special Chipset Usage MSR
+**/
+#define MSR_SPCL_CHIPSET_USAGE 0x000001FE
 
 #endif /* _COMMONMSR_h */

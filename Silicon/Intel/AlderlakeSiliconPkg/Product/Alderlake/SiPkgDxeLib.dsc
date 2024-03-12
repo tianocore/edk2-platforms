@@ -12,6 +12,11 @@
 !include $(PLATFORM_SI_PACKAGE)/Fru/AdlPch/DxeLib.dsc
 
 #
+# Pch
+#
+ SmmPchPrivateLib|$(PLATFORM_SI_PACKAGE)/Pch/LibraryPrivate/SmmPchPrivateLib/SmmPchPrivateLib.inf
+
+#
 # Common
 #
  AslUpdateLib|IntelSiliconPkg/Library/DxeAslUpdateLib/DxeAslUpdateLib.inf
