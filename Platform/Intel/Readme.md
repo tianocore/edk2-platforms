@@ -410,7 +410,9 @@ For PurleyOpenBoardPkg (TiogaPass)
 
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
-2. AlderlakeOpenBoardPkg/Acpi/MinDsdt has been modified from MinPlatformPkg/Acpi/MinDsdt to avoid hang on boot to Microsoft Windows 11 x64.
+2. Since the FSP binary is incompatible with the latest Edk2 version, a working edk2 version needs to be kept
+   EDK2 SHA-1: e10f1f5a043a402fb2daf2091b8f725fd2951743
+   EDK2-Platforms SHA-1: fc6e3523d868650ad4f8aaac0ccdd8f138370341
 
 **WhitleyOpenBoardPkg**
 1. This firmware project has been tested booting to UEFI shell with headless serial console
