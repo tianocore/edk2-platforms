@@ -101,7 +101,7 @@
 
   PostCodeMapLib|PostCodeDebugFeaturePkg/Library/PostCodeMapLib/PostCodeMapLib.inf
 
-  PlatformSecLib|$(PLATFORM_PACKAGE)/FspWrapper/Library/SecFspWrapperPlatformSecLib/SecFspWrapperPlatformSecLib.inf
+  PlatformSecLib|$(PLATFORM_BOARD_PACKAGE)/FspWrapper/Library/SecFspWrapperPlatformSecLib/SecFspWrapperPlatformSecLib.inf
   FspWrapperPlatformLib|$(PLATFORM_PACKAGE)/FspWrapper/Library/PeiFspWrapperPlatformLib/PeiFspWrapperPlatformLib.inf
   FspWrapperHobProcessLib|$(PLATFORM_PACKAGE)/FspWrapper/Library/PeiFspWrapperHobProcessLib/PeiFspWrapperHobProcessLib.inf
 
@@ -234,7 +234,7 @@
 [LibraryClasses.X64.DXE_SMM_DRIVER]
 
 !if $(TARGET) == DEBUG
-  SpiFlashCommonLib|$(PLATFORM_BOARD_PACKAGE)/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
+  SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLibNull/TestPointCheckLibNull.inf
 !endif
@@ -453,7 +453,7 @@ $(PLATFORM_SI_BIN_PACKAGE)/Microcode/MicrocodeUpdates.inf
 #
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
   $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
-  $(PLATFORM_BOARD_PACKAGE)/Acpi/MinDsdt/MinDsdt.inf
+  $(PLATFORM_PACKAGE)/Acpi/MinDsdt/MinDsdt.inf
   $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf {
     <LibraryClasses>
       NULL|$(PROJECT)/Library/BoardAcpiLib/SmmMultiBoardAcpiSupportLib.inf
