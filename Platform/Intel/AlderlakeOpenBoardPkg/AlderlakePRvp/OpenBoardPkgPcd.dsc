@@ -25,7 +25,7 @@
   # Stage 5 - boot to OS with security boot enabled
   # Stage 6 - boot with advanced features enabled
   #
-  gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
+  gMinPlatformPkgTokenSpaceGuid.PcdBootStage|5
 
   #
   # 0: FSP Wrapper is running in Dispatch mode.
@@ -312,6 +312,14 @@ gIntelFsp2WrapperTokenSpaceGuid.PcdFspsUpdDataAddress|0x00000000
   # @Prompt Configure max supported number of Logical Processorss
   gUefiCpuPkgTokenSpaceGuid.PcdCpuMaxLogicalProcessorNumber|16
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
+
+!if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInitializationPolicy|1
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x5a, 0xf2, 0x6b, 0x28, 0xc3, 0xc2, 0x8c, 0x40, 0xb3, 0xb4, 0x25, 0xe6, 0x75, 0x8b, 0x73, 0x17}
+!endif
+
+[PcdsDynamicHii.common.DEFAULT]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|4|NV,BS
 
 [PcdsDynamicHii.X64.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|5 # Variable: L"Timeout"
