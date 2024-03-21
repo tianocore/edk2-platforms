@@ -301,7 +301,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_OBJ_REF                CoresLpiRef[CORES_LPI_STATE_COUNT];
 
   // Power domains
-  CM_ARM_PSD_INFO                       PsdInfo[PSD_DOMAIN_COUNT];
+  CM_ARCH_COMMON_PSD_INFO               PsdInfo[PSD_DOMAIN_COUNT];
 
   //
   // Dynamically populated fields from here.
