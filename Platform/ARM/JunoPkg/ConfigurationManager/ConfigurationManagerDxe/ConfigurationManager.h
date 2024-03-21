@@ -292,7 +292,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_OBJ_REF                LittleCoreResources[LITTLE_CORE_RESOURCE_COUNT];
 
   // Low Power Idle state information (LPI) for all cores/clusters
-  CM_ARM_LPI_INFO                       LpiInfo[LPI_STATE_COUNT];
+  CM_ARCH_COMMON_LPI_INFO               LpiInfo[LPI_STATE_COUNT];
 
   // Clusters Low Power Idle state references (LPI)
   CM_ARCH_COMMON_OBJ_REF                ClustersLpiRef[CLUSTERS_LPI_STATE_COUNT];
