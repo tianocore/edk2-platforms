@@ -361,7 +361,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       CM_NULL_TOKEN,
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       0,
@@ -384,7 +384,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       BIG_CLUSTER_RESOURCE_COUNT,
@@ -407,7 +407,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       LITTLE_CLUSTER_RESOURCE_COUNT,
@@ -430,7 +430,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'big' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[0]),
       // UINT32  NoOfPrivateResources
       BIG_CORE_RESOURCE_COUNT,
@@ -452,7 +452,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'big' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[1]),
       // UINT32  NoOfPrivateResources
       BIG_CORE_RESOURCE_COUNT,
@@ -475,7 +475,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'LITTLE' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[2]),
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
@@ -497,7 +497,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'LITTLE' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[3]),
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
@@ -519,7 +519,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'LITTLE' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[4]),
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
@@ -541,7 +541,7 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'LITTLE' cluster
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[5]),
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
