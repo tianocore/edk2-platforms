@@ -259,13 +259,13 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo;
 
   // PCI address-range mapping references
-  CM_ARM_OBJ_REF                        PciAddressMapRef[PCI_ADDRESS_MAP_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                PciAddressMapRef[PCI_ADDRESS_MAP_COUNT];
 
   // PCI address-range mapping information
   CM_ARM_PCI_ADDRESS_MAP_INFO           PciAddressMapInfo[PCI_ADDRESS_MAP_COUNT];
 
   // PCI device legacy interrupts mapping references
-  CM_ARM_OBJ_REF                        PciInterruptMapRef[PCI_INTERRUPT_MAP_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                PciInterruptMapRef[PCI_INTERRUPT_MAP_COUNT];
 
   // PCI device legacy interrupts mapping information
   CM_ARM_PCI_INTERRUPT_MAP_INFO         PciInterruptMapInfo[PCI_INTERRUPT_MAP_COUNT];
@@ -280,25 +280,25 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_CACHE_INFO                     CacheInfo[PLAT_CACHE_COUNT];
 
   // 'big' cluster private resources
-  CM_ARM_OBJ_REF                        BigClusterResources[BIG_CLUSTER_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                BigClusterResources[BIG_CLUSTER_RESOURCE_COUNT];
 
   // 'big' core private resources
-  CM_ARM_OBJ_REF                        BigCoreResources[BIG_CORE_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                BigCoreResources[BIG_CORE_RESOURCE_COUNT];
 
   // 'LITTLE' cluster private resources
-  CM_ARM_OBJ_REF                        LittleClusterResources[LITTLE_CLUSTER_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                LittleClusterResources[LITTLE_CLUSTER_RESOURCE_COUNT];
 
   // 'LITTLE' core private resources
-  CM_ARM_OBJ_REF                        LittleCoreResources[LITTLE_CORE_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                LittleCoreResources[LITTLE_CORE_RESOURCE_COUNT];
 
   // Low Power Idle state information (LPI) for all cores/clusters
   CM_ARM_LPI_INFO                       LpiInfo[LPI_STATE_COUNT];
 
   // Clusters Low Power Idle state references (LPI)
-  CM_ARM_OBJ_REF                        ClustersLpiRef[CLUSTERS_LPI_STATE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                ClustersLpiRef[CLUSTERS_LPI_STATE_COUNT];
 
   // Cores Low Power Idle state references (LPI)
-  CM_ARM_OBJ_REF                        CoresLpiRef[CORES_LPI_STATE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                CoresLpiRef[CORES_LPI_STATE_COUNT];
 
   // Power domains
   CM_ARM_PSD_INFO                       PsdInfo[PSD_DOMAIN_COUNT];
