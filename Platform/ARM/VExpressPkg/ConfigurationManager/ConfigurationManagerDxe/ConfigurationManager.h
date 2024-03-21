@@ -169,7 +169,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_ID_MAPPING                     DeviceIdMapping[2];
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo;
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo;
 
   CM_ARM_ET_INFO                        EtInfo;
 
