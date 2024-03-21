@@ -1207,7 +1207,7 @@ GetGicCInfo (
   @param [in]      This           Pointer to the Configuration Manager Protocol.
   @param [in]      CmObjectId     The Object ID of the CM object requested
   @param [in]      SearchToken    A unique token for identifying the requested
-                                  CM_ARM_LPI_INFO object.
+                                  CM_ARCH_COMMON_LPI_INFO object.
   @param [in, out] CmObject       Pointer to the Configuration Manager Object
                                   descriptor describing the requested Object.
 
@@ -1729,6 +1729,19 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjLpiInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 NULL,
+                 0,
+                 0,
+                 Token,
+                 GetLpiInfo,
+                 CmObject
+                 );
+      break;
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1893,19 +1906,6 @@ GetArmNameSpaceObject (
                  PlatformRepo->CacheInfo,
                  sizeof (PlatformRepo->CacheInfo),
                  ARRAY_SIZE (PlatformRepo->CacheInfo),
-                 CmObject
-                 );
-      break;
-
-    case EArmObjLpiInfo:
-      Status = HandleCmObjectRefByToken (
-                 This,
-                 CmObjectId,
-                 NULL,
-                 0,
-                 0,
-                 Token,
-                 GetLpiInfo,
                  CmObject
                  );
       break;
