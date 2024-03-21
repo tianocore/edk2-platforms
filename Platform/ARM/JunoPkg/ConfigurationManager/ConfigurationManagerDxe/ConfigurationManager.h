@@ -308,7 +308,7 @@ typedef struct PlatformRepositoryInfo {
   //
 
   // Cpc info (1 for each PSD domain)
-  CM_ARM_CPC_INFO                       CpcInfo[PSD_DOMAIN_COUNT];
+  CM_ARCH_COMMON_CPC_INFO               CpcInfo[PSD_DOMAIN_COUNT];
 
   /// Juno Board Revision
   UINT32                                JunoRevision;
