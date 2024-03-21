@@ -795,6 +795,18 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+#ifdef HEADLESS_PLATFORM
+    case EArchCommonObjFixedFeatureFlags:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->FixedFeatureFlags,
+                 sizeof (PlatformRepo->FixedFeatureFlags),
+                 1,
+                 CmObject
+                 );
+      break;
+#endif
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -877,18 +889,6 @@ GetArmNameSpaceObject (
                  CmObject
                  );
       break;
-
-#ifdef HEADLESS_PLATFORM
-    case EArmObjFixedFeatureFlags:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->FixedFeatureFlags,
-                 sizeof (PlatformRepo->FixedFeatureFlags),
-                 1,
-                 CmObject
-                 );
-      break;
-#endif
 
     case EArmObjGenericTimerInfo:
       Status = HandleCmObject (
