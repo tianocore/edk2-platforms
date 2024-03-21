@@ -1688,6 +1688,21 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjPciConfigSpaceInfo:
+      if (PlatformRepo->JunoRevision != JUNO_REVISION_R0) {
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &PlatformRepo->PciConfigInfo,
+                   sizeof (PlatformRepo->PciConfigInfo),
+                   1,
+                   CmObject
+                   );
+      } else {
+        // No PCIe on Juno R0.
+        Status = EFI_NOT_FOUND;
+      }
+      break;
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1854,21 +1869,6 @@ GetArmNameSpaceObject (
                  ARRAY_SIZE (PlatformRepo->CacheInfo),
                  CmObject
                  );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      if (PlatformRepo->JunoRevision != JUNO_REVISION_R0) {
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &PlatformRepo->PciConfigInfo,
-                   sizeof (PlatformRepo->PciConfigInfo),
-                   1,
-                   CmObject
-                   );
-      } else {
-        // No PCIe on Juno R0.
-        Status = EFI_NOT_FOUND;
-      }
       break;
 
     case EArmObjLpiInfo:

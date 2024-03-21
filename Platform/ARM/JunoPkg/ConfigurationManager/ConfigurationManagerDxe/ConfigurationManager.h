@@ -256,7 +256,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_SERIAL_PORT_INFO       DbgSerialPort;
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo;
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo;
 
   // PCI address-range mapping references
   CM_ARCH_COMMON_OBJ_REF                PciAddressMapRef[PCI_ADDRESS_MAP_COUNT];

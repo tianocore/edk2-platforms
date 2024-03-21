@@ -754,6 +754,7 @@ GetArchCommonNameSpaceObject (
 {
   EFI_STATUS                        Status;
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINTN                             PciConfigSpaceCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -763,6 +764,13 @@ GetArchCommonNameSpaceObject (
 
   Status = EFI_NOT_FOUND;
   PlatformRepo = This->PlatRepoInfo;
+
+  if ((PlatformRepo->SysId & ARM_FVP_SYS_ID_REV_MASK) ==
+       ARM_FVP_BASE_REVC_REV) {
+    PciConfigSpaceCount = 1;
+  } else {
+    PciConfigSpaceCount = 0;
+  }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
     case EArchCommonObjPowerManagementProfileInfo:
@@ -806,6 +814,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 #endif
+
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 PciConfigSpaceCount,
+                 CmObject
+                 );
+      break;
 
     default: {
       Status = EFI_NOT_FOUND;
@@ -851,7 +869,6 @@ GetArmNameSpaceObject (
   UINTN                             ItsIdentifierArrayCount;
   UINTN                             RootComplexCount;
   UINTN                             DeviceIdMappingArrayCount;
-  UINTN                             PciConfigSpaceCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -869,14 +886,12 @@ GetArmNameSpaceObject (
     ItsIdentifierArrayCount = ARRAY_SIZE (PlatformRepo->ItsIdentifierArray);
     RootComplexCount = 1;
     DeviceIdMappingArrayCount = ARRAY_SIZE (PlatformRepo->DeviceIdMapping);
-    PciConfigSpaceCount = 1;
   } else {
     Smmuv3Count = 0;
     ItsGroupCount = 0;
     ItsIdentifierArrayCount = 0;
     RootComplexCount = 0;
     DeviceIdMappingArrayCount = 0;
-    PciConfigSpaceCount = 0;
   }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -1025,16 +1040,6 @@ GetArmNameSpaceObject (
                  DeviceIdMappingArrayCount,
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 PciConfigSpaceCount,
                  CmObject
                  );
       break;
