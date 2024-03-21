@@ -262,7 +262,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_OBJ_REF                PciAddressMapRef[PCI_ADDRESS_MAP_COUNT];
 
   // PCI address-range mapping information
-  CM_ARM_PCI_ADDRESS_MAP_INFO           PciAddressMapInfo[PCI_ADDRESS_MAP_COUNT];
+  CM_ARCH_COMMON_PCI_ADDRESS_MAP_INFO   PciAddressMapInfo[PCI_ADDRESS_MAP_COUNT];
 
   // PCI device legacy interrupts mapping references
   CM_ARCH_COMMON_OBJ_REF                PciInterruptMapRef[PCI_INTERRUPT_MAP_COUNT];
