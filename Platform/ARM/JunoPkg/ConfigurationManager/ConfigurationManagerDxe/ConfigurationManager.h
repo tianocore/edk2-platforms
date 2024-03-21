@@ -268,7 +268,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_OBJ_REF                PciInterruptMapRef[PCI_INTERRUPT_MAP_COUNT];
 
   // PCI device legacy interrupts mapping information
-  CM_ARM_PCI_INTERRUPT_MAP_INFO         PciInterruptMapInfo[PCI_INTERRUPT_MAP_COUNT];
+  CM_ARCH_COMMON_PCI_INTERRUPT_MAP_INFO PciInterruptMapInfo[PCI_INTERRUPT_MAP_COUNT];
 
   /// GIC MSI Frame information
   CM_ARM_GIC_MSI_FRAME_INFO             GicMsiFrameInfo;

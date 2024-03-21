@@ -1306,7 +1306,7 @@ GetPciAddressMapInfo (
   @param [in]      This           Pointer to the Configuration Manager Protocol.
   @param [in]      CmObjectId     The Object ID of the CM object requested
   @param [in]      SearchToken    A unique token for identifying the requested
-                                  CM_ARM_PCI_INTERRUPT_MAP_INFO object.
+                                  CM_ARCH_COMMON_PCI_INTERRUPT_MAP_INFO object.
   @param [in, out] CmObject       Pointer to the Configuration Manager Object
                                   descriptor describing the requested Object.
 
@@ -1716,6 +1716,19 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjPciInterruptMapInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PciInterruptMapInfo,
+                 sizeof (PlatformRepo->PciInterruptMapInfo),
+                 ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo),
+                 Token,
+                 GetPciInterruptMapInfo,
+                 CmObject
+                 );
+      break;
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1893,19 +1906,6 @@ GetArmNameSpaceObject (
                  0,
                  Token,
                  GetLpiInfo,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciInterruptMapInfo:
-      Status = HandleCmObjectRefByToken (
-                 This,
-                 CmObjectId,
-                 PlatformRepo->PciInterruptMapInfo,
-                 sizeof (PlatformRepo->PciInterruptMapInfo),
-                 ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo),
-                 Token,
-                 GetPciInterruptMapInfo,
                  CmObject
                  );
       break;
