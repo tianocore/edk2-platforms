@@ -118,7 +118,7 @@ typedef struct PlatformRepositoryInfo {
 #endif
 
   /// Power management profile information
-  CM_ARM_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
+  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
 
   /// GIC CPU interface information
   CM_ARM_GICC_INFO                      GicCInfo[PLAT_CPU_COUNT];
