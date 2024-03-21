@@ -250,10 +250,10 @@ typedef struct PlatformRepositoryInfo {
   /** Serial port information for the
       serial port console redirection port
   */
-  CM_ARM_SERIAL_PORT_INFO               SpcrSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO       SpcrSerialPort;
 
   /// Serial port information for the DBG2 UART port
-  CM_ARM_SERIAL_PORT_INFO               DbgSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO       DbgSerialPort;
 
   /// PCI configuration space information
   CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo;
