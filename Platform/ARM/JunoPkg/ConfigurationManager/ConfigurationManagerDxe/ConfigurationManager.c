@@ -1742,6 +1742,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjProcHierarchyInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->ProcHierarchyInfo,
+                 sizeof (PlatformRepo->ProcHierarchyInfo),
+                 ARRAY_SIZE (PlatformRepo->ProcHierarchyInfo),
+                 CmObject
+                 );
+      break;
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1886,16 +1896,6 @@ GetArmNameSpaceObject (
                  &PlatformRepo->GicMsiFrameInfo,
                  sizeof (PlatformRepo->GicMsiFrameInfo),
                  1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjProcHierarchyInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->ProcHierarchyInfo,
-                 sizeof (PlatformRepo->ProcHierarchyInfo),
-                 ARRAY_SIZE (PlatformRepo->ProcHierarchyInfo),
                  CmObject
                  );
       break;
