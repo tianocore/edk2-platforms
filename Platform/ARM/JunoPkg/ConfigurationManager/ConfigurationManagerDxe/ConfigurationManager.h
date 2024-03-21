@@ -274,7 +274,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_GIC_MSI_FRAME_INFO             GicMsiFrameInfo;
 
   // Processor topology information
-  CM_ARM_PROC_HIERARCHY_INFO            ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT];
+  CM_ARCH_COMMON_PROC_HIERARCHY_INFO    ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT];
 
   // Cache information
   CM_ARM_CACHE_INFO                     CacheInfo[PLAT_CACHE_COUNT];
