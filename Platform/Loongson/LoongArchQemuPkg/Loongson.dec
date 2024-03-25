@@ -48,8 +48,6 @@
 
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase|0|UINT64|0x0000000b
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize|0|UINT32|0x0000000c
-  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop|0x0|UINT64|0x0000000d
-  gLoongArchQemuPkgTokenSpaceGuid.PcdRamRegionsBottom|0x0|UINT64|0x0000000e
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvBase|0x0|UINT64|0x0000000f
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashSecFvSize|0x0|UINT32|0x00000010
 
