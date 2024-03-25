@@ -301,8 +301,8 @@ MemoryPeimInitialization (
   }
 
   if (UefiMemoryBase > LowestMemBase) {
+    LowestMemSize -= (UefiMemoryBase - LowestMemBase);
     LowestMemBase = UefiMemoryBase;
-    LowestMemSize -= UefiMemoryBase;
   }
 
   DEBUG ((
