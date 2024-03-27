@@ -190,7 +190,7 @@ CreateCpuLocalApicInTable (
   //
   for (Socket = 0; Socket < FixedPcdGet32 (PcdMaxCpuSocketCount); Socket++) {
     for (CurrProcessor = 0, Index = 0; CurrProcessor < mNumberOfCpus; CurrProcessor++) {
-      if (CpuApicIdOrderTable[CurrProcessor].Flags && (CpuApicIdOrderTable[CurrProcessor].SocketNum == Socket)) {
+      if (CpuApicIdOrderTable[CurrProcessor].SocketNum == Socket) {
         CpuApicIdOrderTable[CurrProcessor].AcpiProcessorUid = (CpuApicIdOrderTable[CurrProcessor].SocketNum << mNumOfBitShift) + Index;
         Index++;
       }
