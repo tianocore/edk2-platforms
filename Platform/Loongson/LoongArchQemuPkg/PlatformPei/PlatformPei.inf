@@ -64,8 +64,6 @@
 [FixedPcd]
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvBase
   gLoongArchQemuPkgTokenSpaceGuid.PcdFlashDxeFvSize
-  gLoongArchQemuPkgTokenSpaceGuid.PcdRamRegionsBottom
-  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize
