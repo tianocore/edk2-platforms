@@ -1002,7 +1002,7 @@ InstallMcfgFromScratch (
                          McfgTable->Header.Length,
                          &TableHandle
                          );
-
+  FreePool (McfgTable);
   return Status;
 }
 
