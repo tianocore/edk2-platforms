@@ -195,6 +195,7 @@ PublishAcpiTablesFromFv (
       // Increment the instance
       //
       Instance++;
+      FreePool (CurrentTable);
       CurrentTable = NULL;
     }
   }
