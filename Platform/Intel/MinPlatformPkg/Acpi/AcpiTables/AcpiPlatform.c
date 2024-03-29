@@ -133,6 +133,62 @@ AppendCpuMapTableEntry (
 }
 
 /**
+  Sort CpuApicIdOrderTable based on the following rules:
+  1.Make sure BSP is the first entry.
+  2.Big core first, then small core.
+
+  @param[in] CpuApicIdOrderTable      Pointer to EFI_CPU_ID_ORDER_MAP
+  @param[in] Count                    Number to EFI_CPU_ID_ORDER_MAP
+  @param[in] BspIndex                 BSP index
+**/
+VOID
+SortApicIdOrderTable (
+  IN  EFI_CPU_ID_ORDER_MAP  *CpuApicIdOrderTable,
+  IN  UINTN                 Count,
+  IN  UINTN                 BspIndex
+  )
+{
+  UINTN                 Index;
+  UINTN                 SubIndex;
+  EFI_CPU_ID_ORDER_MAP  SortBuffer;
+
+  //
+  // Put BSP at the first entry.
+  //
+  if (BspIndex != 0) {
+    CopyMem (&SortBuffer, &CpuApicIdOrderTable[BspIndex], sizeof (EFI_CPU_ID_ORDER_MAP));
+    CopyMem (&CpuApicIdOrderTable[1], CpuApicIdOrderTable, (BspIndex) * sizeof (EFI_CPU_ID_ORDER_MAP));
+    CopyMem (CpuApicIdOrderTable, &SortBuffer, sizeof (EFI_CPU_ID_ORDER_MAP));
+  }
+
+  //
+  // If there are more than 2 cores, perform insertion sort for rest cores except the bsp in first entry
+  // to move big cores in front of small cores.
+  // Also the original order based on the MpService index inside big cores and small cores are retained.
+  //
+  for (Index = 2; Index < Count; Index++) {
+    if (CpuApicIdOrderTable[Index].CoreType == CPUID_CORE_TYPE_INTEL_ATOM) {
+      continue;
+    }
+
+    CopyMem (&SortBuffer, &CpuApicIdOrderTable[Index], sizeof (EFI_CPU_ID_ORDER_MAP));
+
+    for (SubIndex = Index - 1; SubIndex >= 1; SubIndex--) {
+      if (CpuApicIdOrderTable[SubIndex].CoreType == CPUID_CORE_TYPE_INTEL_ATOM) {
+        CopyMem (&CpuApicIdOrderTable[SubIndex + 1], &CpuApicIdOrderTable[SubIndex], sizeof (EFI_CPU_ID_ORDER_MAP));
+      } else {
+        //
+        // Except the BSP, all cores in front of SubIndex must be big cores.
+        //
+        break;
+      }
+    }
+
+    CopyMem (&CpuApicIdOrderTable[SubIndex + 1], &SortBuffer, sizeof (EFI_CPU_ID_ORDER_MAP));
+  }
+}
+
+/**
   Get CPU core type.
 
   @param[in] CpuApicIdOrderTable         Point to a buffer which will be filled in Core type information.
@@ -174,6 +230,7 @@ CreateCpuLocalApicInTable (
   EFI_CPU_ID_ORDER_MAP                      *CpuIdMapPtr;
   UINT32                                    Socket;
   UINT32                                    CpuidMaxInput;
+  UINTN                                     BspIndex;
 
   Status = EFI_SUCCESS;
 
@@ -197,6 +254,10 @@ CreateCpuLocalApicInTable (
                            CurrProcessor,
                            &ProcessorInfoBuffer
                            );
+
+    if ((ProcessorInfoBuffer.StatusFlag & PROCESSOR_AS_BSP_BIT) != 0) {
+      BspIndex = Index;
+    }
 
     CpuIdMapPtr = (EFI_CPU_ID_ORDER_MAP *) &CpuApicIdOrderTable[Index];
     if ((ProcessorInfoBuffer.StatusFlag & PROCESSOR_ENABLED_BIT) != 0) {
@@ -229,6 +290,8 @@ CreateCpuLocalApicInTable (
       }
     }
   }
+
+  SortApicIdOrderTable (CpuApicIdOrderTable, mNumberOfCpus, BspIndex);
 
   DEBUG ((DEBUG_INFO, "::ACPI::  APIC ID Order Table Init.   mNumOfBitShift = %x\n", mNumOfBitShift));
   DebugDisplayReOrderTable (CpuApicIdOrderTable);
