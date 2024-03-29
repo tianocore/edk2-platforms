@@ -53,7 +53,6 @@ VOID  *mLocalTable[] = {
 EFI_ACPI_TABLE_PROTOCOL     *mAcpiTable;
 
 UINT32                      mNumOfBitShift = 6;
-BOOLEAN                     mForceX2ApicId;
 BOOLEAN                     mX2ApicEnabled;
 
 EFI_MP_SERVICES_PROTOCOL    *mMpService;
@@ -163,14 +162,6 @@ CreateCpuLocalApicInTable (
       CpuIdMapPtr->Thread  = ProcessorInfoBuffer.Location.Thread;
       CpuIdMapPtr->Flags   = ((ProcessorInfoBuffer.StatusFlag & PROCESSOR_ENABLED_BIT) != 0);
       CpuIdMapPtr->SocketNum = ProcessorInfoBuffer.Location.Package;
-
-      //update processorbitMask
-      if (CpuIdMapPtr->Flags == 1) {
-        if (mForceX2ApicId) {
-          CpuIdMapPtr->SocketNum        &= 0x7;
-          CpuIdMapPtr->AcpiProcessorUid &= 0xFF; //keep lower 8bit due to use Proc obj in dsdt
-        }
-      }
     } else {  //not enabled
       CpuIdMapPtr->ApicId     = (UINT32)-1;
       CpuIdMapPtr->Thread     = (UINT32)-1;
@@ -1538,7 +1529,6 @@ InstallAcpiPlatform (
   }
 
   DEBUG ((DEBUG_INFO, "mX2ApicEnabled - 0x%x\n", mX2ApicEnabled));
-  DEBUG ((DEBUG_INFO, "mForceX2ApicId - 0x%x\n", mForceX2ApicId));
 
   // support up to 64 threads/socket
   AsmCpuidEx (CPUID_EXTENDED_TOPOLOGY, 1, &mNumOfBitShift, NULL, NULL, NULL);
