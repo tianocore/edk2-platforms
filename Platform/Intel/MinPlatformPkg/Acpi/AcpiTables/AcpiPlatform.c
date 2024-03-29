@@ -18,6 +18,7 @@ typedef struct {
   UINT32   Flags;
   UINT32   SocketNum;
   UINT32   Thread;
+  UINT8    CoreType;
 } EFI_CPU_ID_ORDER_MAP;
 
 //
@@ -71,15 +72,16 @@ DebugDisplayReOrderTable (
 {
   UINT32 Index;
 
-  DEBUG ((DEBUG_INFO, "Index  AcpiProcId  ApicId   Thread  Flags   Skt\n"));
+  DEBUG ((DEBUG_INFO, "Index  AcpiProcId  ApicId   Thread  Flags   Skt  CoreType\n"));
   for (Index = 0; Index < mNumberOfCpus; Index++) {
-    DEBUG ((DEBUG_INFO, " %02d       0x%02X      0x%02X       %d      %d      %d\n",
+    DEBUG ((DEBUG_INFO, " %02d       0x%02X      0x%02X       %d      %d      %d      0x%x\n",
                            Index,
                            CpuApicIdOrderTable[Index].AcpiProcessorUid,
                            CpuApicIdOrderTable[Index].ApicId,
                            CpuApicIdOrderTable[Index].Thread,
                            CpuApicIdOrderTable[Index].Flags,
-                           CpuApicIdOrderTable[Index].SocketNum));
+                           CpuApicIdOrderTable[Index].SocketNum,
+                           CpuApicIdOrderTable[Index].CoreType));
   }
 }
 
@@ -131,6 +133,31 @@ AppendCpuMapTableEntry (
 }
 
 /**
+  Get CPU core type.
+
+  @param[in] CpuApicIdOrderTable         Point to a buffer which will be filled in Core type information.
+**/
+VOID
+EFIAPI
+CollectCpuCoreType (
+  IN EFI_CPU_ID_ORDER_MAP  *CpuApicIdOrderTable
+  )
+{
+  UINTN                                    ApNumber;
+  EFI_STATUS                               Status;
+  CPUID_NATIVE_MODEL_ID_AND_CORE_TYPE_EAX  NativeModelIdAndCoreTypeEax;
+
+  Status = mMpService->WhoAmI (
+                         mMpService,
+                         &ApNumber
+                         );
+  ASSERT_EFI_ERROR (Status);
+
+  AsmCpuidEx (CPUID_HYBRID_INFORMATION, CPUID_HYBRID_INFORMATION_MAIN_LEAF, &NativeModelIdAndCoreTypeEax.Uint32, NULL, NULL, NULL);
+  CpuApicIdOrderTable[ApNumber].CoreType = (UINT8)NativeModelIdAndCoreTypeEax.Bits.CoreType;
+}
+
+/**
   Collect all processors information and create a Cpu Apic Id table.
 
   @param[in]  CpuApicIdOrderTable       Buffer to store information of Cpu.
@@ -146,8 +173,23 @@ CreateCpuLocalApicInTable (
   UINT32                                    CurrProcessor;
   EFI_CPU_ID_ORDER_MAP                      *CpuIdMapPtr;
   UINT32                                    Socket;
+  UINT32                                    CpuidMaxInput;
 
-  Status     = EFI_SUCCESS;
+  Status = EFI_SUCCESS;
+
+  AsmCpuid (CPUID_SIGNATURE, &CpuidMaxInput, NULL, NULL, NULL);
+  if (CpuidMaxInput >= CPUID_HYBRID_INFORMATION) {
+    CollectCpuCoreType (CpuApicIdOrderTable);
+    mMpService->StartupAllAPs (
+                  mMpService,                               // This
+                  (EFI_AP_PROCEDURE) CollectCpuCoreType,    // Procedure
+                  TRUE,                                     // SingleThread
+                  NULL,                                     // WaitEvent
+                  0,                                        // TimeoutInMicrosecsond
+                  CpuApicIdOrderTable,                      // ProcedureArgument
+                  NULL                                      // FailedCpuList
+                  );
+  }
 
   for (CurrProcessor = 0, Index = 0; CurrProcessor < mNumberOfCpus; CurrProcessor++, Index++) {
     Status = mMpService->GetProcessorInfo (
