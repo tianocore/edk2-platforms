@@ -1,0 +1,13 @@
+// /** @file
+// Bosc NanHuDev Package Localized Strings and Content.
+//
+// Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+// Copyright (c) 2024, Bosc. All rights reserved.<BR>
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+
+#string STR_PACKAGE_ABSTRACT            #language en-US "Provides Bosc RISC-V NanHuDev platform modules and libraries"
+
+#string STR_PACKAGE_DESCRIPTION         #language en-US "This Package Bosc RISC-V NanHuDev platform modules and libraries."
