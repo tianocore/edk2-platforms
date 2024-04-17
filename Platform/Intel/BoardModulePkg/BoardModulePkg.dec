@@ -22,6 +22,7 @@
 
 [Includes]
   Include
+  Test/Mock/Include
 
 [LibraryClasses]
   ##  @libraryclass    Provide services to access CMOS area.
