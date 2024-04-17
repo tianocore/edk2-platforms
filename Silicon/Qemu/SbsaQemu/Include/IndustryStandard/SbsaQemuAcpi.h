@@ -166,36 +166,4 @@ typedef struct {
     64            /* LineSize */                                               \
   }
 
-#define SBSAQEMU_ACPI_PPTT_CLUSTER_STRUCT  {                                   \
-    EFI_ACPI_6_3_PPTT_TYPE_PROCESSOR,                                          \
-    sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR),                            \
-    { EFI_ACPI_RESERVED_BYTE, EFI_ACPI_RESERVED_BYTE },                        \
-    {                                                                          \
-      EFI_ACPI_6_3_PPTT_PACKAGE_PHYSICAL,         /* PhysicalPackage */        \
-      EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,     /* AcpiProcessorIdValid */   \
-      EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,  /* Is not a Thread */        \
-      EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,         /* Not Leaf */               \
-      EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL, /* Identical Cores */        \
-    },                                                                         \
-    0,                                        /* Parent */                     \
-    0,                                        /* AcpiProcessorId */            \
-    0,                                        /* NumberOfPrivateResources */   \
-  }
-
-#define SBSAQEMU_ACPI_PPTT_CORE_STRUCT  {                                      \
-    EFI_ACPI_6_3_PPTT_TYPE_PROCESSOR,                                          \
-    (sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR) + (2 * sizeof (UINT32))),  \
-    { EFI_ACPI_RESERVED_BYTE, EFI_ACPI_RESERVED_BYTE },                        \
-    {                                                                          \
-      EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,     /* PhysicalPackage */        \
-      EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,       /* AcpiProcessorValid */     \
-      EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,  /* Is not a Thread */        \
-      EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,             /* Leaf */                   \
-      EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL, /* Identical Cores */        \
-    },                                                                         \
-    0,                                        /* Parent */                     \
-    0,                                        /* AcpiProcessorId */            \
-    2,                                        /* NumberOfPrivateResources */   \
-  }
-
 #endif

@@ -88,4 +88,15 @@ typedef struct {
     ClockDomain                                         /* Clock Domain */        \
   }
 
+#define SBSAQEMU_ACPI_PROCESSOR_HIERARCHY_NODE_STRUCTURE_INIT(Flags, Parent, ACPIProcessorID, NumberOfPrivateResources)             \
+  {                                                                                                                                 \
+    EFI_ACPI_6_3_PPTT_TYPE_PROCESSOR,                                                            /* Type */                         \
+    sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR) + NumberOfPrivateResources * sizeof (UINT32), /* Length */                       \
+    { EFI_ACPI_RESERVED_BYTE, EFI_ACPI_RESERVED_BYTE },                                          /* Reserved */                     \
+    Flags,                                                                                       /* Flags */                        \
+    Parent,                                                                                      /* Parent */                       \
+    ACPIProcessorID,                                                                             /* ACPI Processor ID */            \
+    NumberOfPrivateResources                                                                     /* Number of private resources */  \
+  }
+
 #endif
