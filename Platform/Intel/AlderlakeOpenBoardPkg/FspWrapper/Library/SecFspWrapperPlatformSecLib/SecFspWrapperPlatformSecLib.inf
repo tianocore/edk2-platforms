@@ -89,6 +89,7 @@
   gIntelFsp2WrapperTokenSpaceGuid.PcdFsptBaseAddress                  ## CONSUMES
   gIntelFsp2PkgTokenSpaceGuid.PcdFspTemporaryRamSize                  ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdSecSerialPortDebugEnable           ## CONSUMES
+  gSiPkgTokenSpaceGuid.PcdTcoBaseAddress                              ## CONSUMES
 
 [FixedPcd]
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeBase               ## CONSUMES

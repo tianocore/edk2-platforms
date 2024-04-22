@@ -12,6 +12,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/SerialPortLib.h>
 #include <Library/SecBoardInitLib.h>
 #include <Library/TestPointCheckLib.h>
+#include <Register/TcoRegs.h>
+#include <Library/IoLib.h>
 
 /**
   Platform initialization.
@@ -28,6 +30,12 @@ PlatformInit (
   IN VOID                 *EndOfRange
   )
 {
+
+  ///
+  /// Halt the TCO timer as early as possible
+  ///
+  IoWrite16 (PcdGet16 (PcdTcoBaseAddress) + R_TCO_IO_TCO1_CNT, B_TCO_IO_TCO1_CNT_TMR_HLT);
+
   //
   // Platform initialization
   // Enable Serial port here

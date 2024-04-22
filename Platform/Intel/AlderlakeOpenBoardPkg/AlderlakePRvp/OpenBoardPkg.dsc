@@ -233,8 +233,9 @@
 
 [LibraryClasses.X64.DXE_SMM_DRIVER]
 
-!if $(TARGET) == DEBUG
   SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
+
+!if $(TARGET) == DEBUG
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLibNull/TestPointCheckLibNull.inf
 !endif
