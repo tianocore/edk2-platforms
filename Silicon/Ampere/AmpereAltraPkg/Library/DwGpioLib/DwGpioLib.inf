@@ -28,6 +28,7 @@
   BaseLib
   BaseMemoryLib
   IoLib
+  TimerLib
 
 [Guids]
   gEfiEventVirtualAddressChangeGuid
