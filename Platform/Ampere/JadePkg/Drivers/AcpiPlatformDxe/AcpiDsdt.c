@@ -671,7 +671,6 @@ AcpiPatchDsdtTable (
   Status = AcpiSdtProtocol->OpenSdt (TableKey, &TableHandle);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
-    AcpiSdtProtocol->Close (TableHandle);
     return Status;
   }
 
