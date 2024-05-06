@@ -14,7 +14,7 @@
   DEFINE      PLATFORM_PACKAGE                = MinPlatformPkg
   DEFINE      PLATFORM_SI_PACKAGE             = AlderlakeSiliconPkg
   DEFINE      PLATFORM_SI_BIN_PACKAGE         = AlderlakeSiliconBinPkg
-  DEFINE      PLATFORM_FSP_BIN_PACKAGE        = AlderLakeFspBinPkg/Client/AlderLakeP
+  DEFINE      PLATFORM_FSP_BIN_PACKAGE        = RaptorLakeFspBinPkg/Client/RaptorLakeP
   DEFINE      PLATFORM_BOARD_PACKAGE          = AlderlakeOpenBoardPkg
   DEFINE      BOARD                           = AlderlakePRvp
   DEFINE      PROJECT                         = $(PLATFORM_BOARD_PACKAGE)/$(BOARD)

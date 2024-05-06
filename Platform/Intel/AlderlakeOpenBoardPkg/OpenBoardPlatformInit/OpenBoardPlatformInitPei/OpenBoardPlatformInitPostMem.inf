@@ -31,7 +31,7 @@
   UefiCpuPkg/UefiCpuPkg.dec
   IntelFsp2Pkg/IntelFsp2Pkg.dec
   IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
-  AlderLakeFspBinPkg/Client/AlderLakeP/AlderLakeFspBinPkg.dec
+  RaptorLakeFspBinPkg/Client/RaptorLakeP/RaptorLakeFspBinPkg.dec
   AlderlakeOpenBoardPkg/OpenBoardPkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
   IntelSiliconPkg/IntelSiliconPkg.dec

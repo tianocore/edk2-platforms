@@ -64,7 +64,7 @@
   IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
   AlderlakeSiliconPkg/SiPkg.dec
-  AlderLakeFspBinPkg/Client/AlderLakeP/AlderLakeFspBinPkg.dec
+  RaptorLakeFspBinPkg/Client/RaptorLakeP/RaptorLakeFspBinPkg.dec
   AlderlakeOpenBoardPkg/OpenBoardPkg.dec
 
 [LibraryClasses]
