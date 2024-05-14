@@ -1,0 +1,45 @@
+## @file
+#  AMD HII Config routing driver INF file.
+#  This module provides better performance of BlockToConfig and ConfigToBlock
+#  functions.
+#
+#  Copyright (C) 2021 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AmdConfigRouting
+  FILE_GUID                      = 64302048-7006-49C4-AF0A-5ACE61257437
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = AmdConfigRoutingEntry
+
+[Sources]
+  AmdConfigRoutingEntry.c
+  AmdHiiConfigRouting.c
+  AmdHiiConfigRouting.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gEfiHiiConfigRoutingProtocolGuid
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength
+
+[Depex]
+  gEfiHiiConfigRoutingProtocolGuid
