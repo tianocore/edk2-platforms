@@ -1,0 +1,31 @@
+## @file
+#  Simlator port80 instance of serial port library functions.
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SimulatorSerialPortLibPort80
+  FILE_GUID                      = 35217E20-489E-64F9-4E42-1EAFABE0A86F
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SerialPortLib
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  SimulatorSerialPortLibPort80.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  IoLib
