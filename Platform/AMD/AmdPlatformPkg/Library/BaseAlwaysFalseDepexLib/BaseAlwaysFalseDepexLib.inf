@@ -1,0 +1,35 @@
+## @file
+#  This is the module used to consume the always false dependency.
+#  Used to not dispatching the specific module included by using
+#  external DSC/FDF include file.
+#  For example: MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
+#
+#  The module linked with the NULL class BaseAlwaysFalseDepexLib is still
+#  put in the FV however it won't be executed.
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BaseAlwaysFalseDepexLib
+  MODULE_UNI_FILE                = BaseAlwaysFalseDepexLib.uni
+  FILE_GUID                      = 74DC464F-BC11-4E7D-8829-DD2F911988A8
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = AlwaysFalseDepexLib
+
+#
+#  VALID_ARCHITECTURES           = X64
+#
+
+[Sources]
+  BaseAlwaysFalseDepexLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[Depex]
+  FALSE
