@@ -3,7 +3,7 @@
 # This is the package provides the AMD edk2 common platform drivers
 # and libraries for AMD Server, Clinet and Gaming console platforms.
 #
-# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -16,3 +16,11 @@
 
 [Guids]
   gAmdPlatformPkgTokenSpaceGuid   = { 0x663DE733, 0x70E0, 0x4D37, { 0xBB, 0x30, 0x7D, 0x9E, 0xAF, 0x9B, 0xDA, 0xE9 }}
+
+[PcdsDynamic]
+  ## Event GUID to trigger logo displaying
+  #  Default set to gMinPlatformPkgTokenSpaceGuid.gBdsEventAfterConsoleReadyBeforeBootOptionGuid
+  #  {0x8eb3d5dc, 0xf4e7, 0x4b57, { 0xa9, 0xe7, 0x27, 0x39, 0x10, 0xf2, 0x18, 0x9f}}
+  #  Platform DSC can set this value to another event GUID.
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdDisplayLogoEventGuid|{0xdc, 0xd5, 0xb3, 0x8e, 0xe7, 0xf4, 0x57, 0x4b, 0xa9, 0xe7, 0x27, 0x39, 0x10, 0xf2, 0x18, 0x9f}|VOID*|0x00010001
