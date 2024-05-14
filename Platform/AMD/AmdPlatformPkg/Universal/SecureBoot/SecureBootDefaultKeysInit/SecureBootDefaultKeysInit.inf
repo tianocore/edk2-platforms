@@ -1,0 +1,49 @@
+## @file
+#  Initializes Secure Boot default keys
+#
+#  Copyright (c) 2021, ARM Ltd. All rights reserved.<BR>
+#  Copyright (c) 2021, Semihalf All rights reserved.<BR>
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = SecureBootDefaultKeysInit
+  FILE_GUID                      = ADB0EEA2-8945-4ADF-94A0-3B0B935B4268
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SecureBootDefaultKeysInitEntry
+
+[Sources]
+  SecureBootDefaultKeysInit.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DxeServicesLib
+  SecureBootVariableLib
+  SecureBootVariableProvisionLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gDefaultdbFileGuid
+  gDefaultdbxFileGuid
+  gDefaultKEKFileGuid
+  gDefaultPKFileGuid
+  gEfiCertPkcs7Guid
+  gEfiCertX509Guid
+  gEfiCustomModeEnableGuid
+  gEfiImageSecurityDatabaseGuid
+  gEfiSecureBootEnableDisableGuid
+
+[Depex]
+  gEfiVariableArchProtocolGuid      AND
+  gEfiVariableWriteArchProtocolGuid
