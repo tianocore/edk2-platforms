@@ -14,6 +14,13 @@
   PACKAGE_GUID      = 2CB1238B-18E2-4837-B714-9DAB2B30A3C2
   PACKAGE_VERSION   = 1.0
 
+[Includes]
+  Include
+
+[LibraryClasses]
+  ##  @libraryclass  Defines a get/set interface for platform specific data.
+  PlatformSocLib|Include/Library/AmdPlatformSocLib.h
+
 [Guids]
   gAmdPlatformPkgTokenSpaceGuid   = { 0x663DE733, 0x70E0, 0x4D37, { 0xBB, 0x30, 0x7D, 0x9E, 0xAF, 0x9B, 0xDA, 0xE9 }}
 

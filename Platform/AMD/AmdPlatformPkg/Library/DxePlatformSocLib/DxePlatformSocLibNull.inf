@@ -1,0 +1,26 @@
+## @file
+#  INF file of AMD Platform SoC library
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = DxePlatformSocLibNull
+  MODULE_UNI_FILE                = DxePlatformSocLibNull.uni
+  FILE_GUID                      = AFF6B33C-B084-4B35-BC1F-D077CDB3B464
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformSocLib
+
+[Sources]
+  DxePlatformSocLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+

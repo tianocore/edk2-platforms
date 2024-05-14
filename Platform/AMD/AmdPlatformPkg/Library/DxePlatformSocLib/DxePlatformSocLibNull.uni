@@ -1,0 +1,13 @@
+## @file
+#  UNI file of AMD Platform SoC library
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+#string STR_MODULE_ABSTRACT             #language en-US "AMD DXE Platform SoC null library instance."
+
+#string STR_MODULE_DESCRIPTION          #language en-US "AMD DXE Platform SoC null library instance."
+
