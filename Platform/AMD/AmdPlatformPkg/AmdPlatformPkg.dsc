@@ -1,7 +1,7 @@
 ## @file
 # AMD Platform common Package DSC file
 # This is the package provides the AMD edk2 common platform drivers
-# and libraries for AMD Server, Clinet and Gaming console platforms.
+# and libraries for AMD Server, Client and Gaming console platforms.
 #
 # Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -24,6 +24,8 @@
 !include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses.Common]
+  AmlLib|DynamicTablesPkg/Library/Common/AmlLib/AmlLib.inf
+  AcpiHelperLib|DynamicTablesPkg/Library/Common/AcpiHelperLib/AcpiHelperLib.inf
   AlwaysFalseDepexLib|AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -33,6 +35,7 @@
   DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+  IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
   OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
@@ -41,6 +44,7 @@
   SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
   SecureBootVariableProvisionLib|SecurityPkg/Library/SecureBootVariableProvisionLib/SecureBootVariableProvisionLib.inf
   SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
+  SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
   TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
@@ -62,6 +66,7 @@
   AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
   AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
   AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
+  AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
   AmdPlatformPkg/Universal/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
   AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
   AmdPlatformPkg/Universal/LogoDxe/JpegLogoDxe.inf                                           # Server platform JPEG logo driver

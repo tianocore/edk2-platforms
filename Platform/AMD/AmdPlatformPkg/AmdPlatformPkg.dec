@@ -1,7 +1,7 @@
 ## @file
 # AMD Platform common Package DEC file
 # This is the package provides the AMD edk2 common platform drivers
-# and libraries for AMD Server, Clinet and Gaming console platforms.
+# and libraries for AMD Server, Client and Gaming console platforms.
 #
 # Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -31,3 +31,14 @@
   #  Platform DSC can set this value to another event GUID.
   #
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdDisplayLogoEventGuid|{0xdc, 0xd5, 0xb3, 0x8e, 0xe7, 0xf4, 0x57, 0x4b, 0xa9, 0xe7, 0x27, 0x39, 0x10, 0xf2, 0x18, 0x9f}|VOID*|0x00010001
+
+[PcdsFixedAtBuild]
+  #
+  # IPMI Interface Type
+  #
+  # 0 - Unknown
+  # 1 - KCS
+  # 2 - SMIC
+  # 3 - BT
+  # 4 - SSIF
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType|0|UINT8|0x00020001
