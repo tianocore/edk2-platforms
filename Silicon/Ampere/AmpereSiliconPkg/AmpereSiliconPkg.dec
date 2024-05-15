@@ -66,8 +66,8 @@
   #
   # SMBIOS Type 0 Pcd
   #
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0|UINT8|0x00000005
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0|UINT8|0x00000006
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0xFF|UINT8|0x00000005
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0xFF|UINT8|0x00000006
 
 [PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   #
