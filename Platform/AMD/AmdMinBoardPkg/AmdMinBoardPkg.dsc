@@ -38,6 +38,7 @@
 
 [LibraryClasses.common.PEIM]
   SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+  BoardInitLib|AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [Components]
   AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
@@ -45,6 +46,7 @@
 [Components.IA32]
   AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
   AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [Components.X64]
   AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
