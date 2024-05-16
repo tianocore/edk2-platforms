@@ -19,6 +19,10 @@
 
 [Guids]
   gAmdMinBoardPkgTokenSpaceGuid  = {0xd4d23d79, 0x73bf, 0x460a, {0xa1, 0xc7, 0x85, 0xa3, 0xca, 0x71, 0xb9, 0x4c}}
+  gAmdMemoryInfoHobGuid          = { 0x1bce3d14, 0xa5fe, 0x4a0b, { 0x9a, 0x8d, 0x69, 0xca, 0x5d, 0x98, 0x38, 0xd3}}
+
+[Ppis]
+  gAmdMemoryInfoHobPpiGuid       = { 0xba16e587, 0x1d66, 0x41b7, { 0x9b, 0x52, 0xca, 0x4f, 0x2c, 0xad, 0x0d, 0xc8}}
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   #
@@ -41,3 +45,7 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize    |0x00000000|UINT32|0x10000008
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset  |0x00000000|UINT32|0x10000009
 
+  # SMRAM size
+  # Holds the SMRAM area size, which is reserved for SMRAM operation
+  # default value 128MB
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize                  |0x08000000|UINT64|0x20000100

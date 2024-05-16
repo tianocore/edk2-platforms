@@ -1,0 +1,45 @@
+## @file
+# Board Init Library for AMD Platforms.
+#
+# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = PeiBoardInitPreMemLib
+  FILE_GUID                      = A394D6BE-4433-4564-8FEB-2C90DD9ECE5B
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardInitLib
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  HobLib
+  PcdLib
+
+[Packages]
+  AmdMinBoardPkg/AmdMinBoardPkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[Sources]
+  AmdMemoryInfoHob.h
+  PeiMemoryInit.h
+  PeiBoardInitPreMemLib.c
+  PeiMemoryInit.c
+
+[Guids]
+  gAmdMemoryInfoHobGuid
+  gEfiSmmSmramMemoryGuid
+
+[Ppis]
+  gAmdMemoryInfoHobPpiGuid                                          ## CONSUMES
+  gPeiPlatformMemorySizePpiGuid                                     ## CONSUMES
+
+[Pcd]
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize                    ## CONSUMES
