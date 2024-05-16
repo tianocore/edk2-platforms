@@ -1,0 +1,51 @@
+## @file
+#  Implements BoardInitLib Library Class in DXE phase.
+#
+# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = DxeBoardInitLib
+  FILE_GUID                      = B3C8F348-B528-4CA0-928E-3193ADEA65E6
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardInitLib
+  CONSTRUCTOR                    = DxeBoardInitLibConstructor
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  LocalApicLib
+  PcdLib
+  PcieConfigLib
+  PlatformSocLib
+  SortLib
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[Sources]
+  DxeBoardInitLib.c
+  DxeBoardInitLibInternal.c
+  DxeBoardInitLibInternal.h
+  MadtAcpiTablePatch.c
+
+[Protocols]
+  gEfiAcpiSdtProtocolGuid
+  gEfiAcpiTableProtocolGuid
+  gEfiMpServiceProtocolGuid
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+  gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuSocketCount
+
+[DEPEX]
+  gEfiMpServiceProtocolGuid
