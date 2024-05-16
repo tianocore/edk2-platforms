@@ -3,7 +3,7 @@
 SetCacheMtrr library functions.
 This library implementation is for AMD processor based platforms.
 
-Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -130,4 +130,3 @@ SetCacheMtrrAfterEndOfPei (
   MtrrDebugPrintAllMtrrs ();
   return EFI_SUCCESS;
 }
-
