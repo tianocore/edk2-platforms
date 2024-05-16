@@ -1,0 +1,105 @@
+### @file
+# Module Information file for the Bds Hook Library.
+#
+# Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2023- 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010017
+  BASE_NAME                      = BoardBdsHookLib
+  FILE_GUID                      = A500CFFB-26DA-4CB1-B214-EC16524C9733
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = DXE_DRIVER
+  LIBRARY_CLASS                  = BoardBdsHookLib|DXE_DRIVER
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  DxeServicesLib
+  DxeServicesTableLib
+  HiiLib
+  HobLib
+  IpmiCommandLib
+  IpmiLib
+  MemoryAllocationLib
+  PcdLib
+  PerformanceLib
+  PrintLib
+  SortLib
+  Tcg2PhysicalPresenceLib
+  TimerLib
+  UefiBootManagerLib
+  UefiBootServicesTableLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[Packages]
+  AmdMinBoardPkg/AmdMinBoardPkg.dec
+  BoardModulePkg/BoardModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  ManageabilityPkg/ManageabilityPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConInConnectOnDemand            ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn                    ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow                       ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn               ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow                  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution       ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution         ## PRODUCES
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut                   ## PRODUCES
+  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                  ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPlatformMemoryCheckLevel         ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFile                        ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc                    ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable                       ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleInputDevicePath    ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleOutputDevicePath   ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdTrustedStorageDevicePath         ## CONSUMES
+
+[Sources]
+  BoardBdsHook.h
+  BoardBdsHookLib.c
+  BoardBootOption.c
+  BoardMemoryTest.c
+
+[Protocols]
+  gAmdBoardBdsBootOptionPriorityProtocolGuid    ## CONSUMES
+  gEfiCpuIo2ProtocolGuid                        ## CONSUMES
+  gEfiDevicePathToTextProtocolGuid              ## CONSUMES
+  gEfiDiskInfoProtocolGuid                      ## CONSUMES
+  gEfiDxeSmmReadyToLockProtocolGuid
+  gEfiDxeSmmReadyToLockProtocolGuid             ## PRODUCES
+  gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
+  gEfiFormBrowser2ProtocolGuid                  ## CONSUMES
+  gEfiGenericMemTestProtocolGuid                ## CONSUMES
+  gEfiGenericMemTestProtocolGuid                ## CONSUMES
+  gEfiPciIoProtocolGuid                         ## CONSUMES
+  gEfiPciRootBridgeIoProtocolGuid               ## CONSUMES
+  gEfiSimpleTextInputExProtocolGuid             ## CONSUMES
+
+[Guids]
+  gBdsEventAfterConsoleReadyBeforeBootOptionGuid
+  gBdsEventBeforeConsoleAfterTrustedConsoleGuid
+  gBdsEventBeforeConsoleBeforeEndOfDxeGuid
+  gEfiEndOfDxeEventGroupGuid                    ## CONSUMES
+  gEfiGlobalVariableGuid                        ## PRODUCES
+  gEfiMemoryOverwriteControlDataGuid            ## PRODUCES
+
+[Depex.common.DXE_DRIVER]
+  gEfiVariableArchProtocolGuid
+
+[Depex]
+  TRUE
