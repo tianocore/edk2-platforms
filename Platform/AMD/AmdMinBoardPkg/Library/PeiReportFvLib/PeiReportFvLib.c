@@ -5,7 +5,7 @@
     This source has the reference of MinPlatformPkgs's PeriReportFvLib.c module.
 
   Copyright (c) 2018 - 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved
+  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -19,6 +19,11 @@
 #include <Guid/FirmwareFileSystem2.h>
 #include <Ppi/FirmwareVolumeInfo.h>
 
+/**
+  Report Pre-Memory Firmware Volumes.
+
+  This function reports the Pre-Memory Firmware Volumes to the Firmware Volume Hob.
+**/
 VOID
 ReportPreMemFv (
   VOID
@@ -66,6 +71,11 @@ ReportPreMemFv (
   }
 }
 
+/**
+  Report Post-Memory Firmware Volumes.
+
+  This function reports the Post-Memory Firmware Volumes to the Firmware Volume Hob.
+**/
 VOID
 ReportPostMemFv (
   VOID
