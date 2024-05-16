@@ -44,6 +44,8 @@
 
   Copyright (c) 2007 - 2018, Intel Corporation. All rights reserved.<BR>
   Copyright (C) 2016, Red Hat, Inc.<BR>
+  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Revision Reference:
@@ -169,7 +171,7 @@ InitializeRootHpc (
   @param[in]  This            Pointer to the EFI_PCI_HOT_PLUG_INIT_PROTOCOL instance.
   @param[in]  HpcDevicePath   The device path to the HPC.
   @param[in]  HpcPciAddress   The address of the HPC function on the PCI bus.
-  @param[in]  HpcState        The state of the HPC hardware.
+  @param[out] HpcState        The state of the HPC hardware.
   @param[out] Padding         The amount of resource padding that is required by the
                               PCI bus under the control of the specified HPC.
   @param[out] Attributes      Describes how padding is accounted for. The padding
