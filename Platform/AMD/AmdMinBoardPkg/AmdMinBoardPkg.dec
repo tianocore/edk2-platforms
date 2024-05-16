@@ -17,12 +17,22 @@
   PACKAGE_GUID                   = 44F9D761-9ECB-43DD-A5AC-177E5048701B
   PACKAGE_VERSION                = 0.1
 
+[Includes]
+  Include
+
 [Guids]
   gAmdMinBoardPkgTokenSpaceGuid  = {0xd4d23d79, 0x73bf, 0x460a, {0xa1, 0xc7, 0x85, 0xa3, 0xca, 0x71, 0xb9, 0x4c}}
   gAmdMemoryInfoHobGuid          = { 0x1bce3d14, 0xa5fe, 0x4a0b, { 0x9a, 0x8d, 0x69, 0xca, 0x5d, 0x98, 0x38, 0xd3}}
 
 [Ppis]
   gAmdMemoryInfoHobPpiGuid       = { 0xba16e587, 0x1d66, 0x41b7, { 0x9b, 0x52, 0xca, 0x4f, 0x2c, 0xad, 0x0d, 0xc8}}
+
+[LibraryClasses]
+  ##  @libraryclass    Provide services to platform BDS hook.
+  BoardBdsHookLib|Include/Library/AmdBoardBdsHookLib.h
+
+[Protocols]
+  gAmdBoardBdsBootOptionPriorityProtocolGuid = { 0x5806db97, 0x5303, 0x409f, { 0x8f, 0x09, 0xab, 0x29, 0xd8, 0x07, 0xa3, 0xf1}}
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   #

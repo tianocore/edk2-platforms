@@ -44,6 +44,7 @@
   BoardInitLib|AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
+  BoardBdsHookLib|AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
   BoardInitLib|AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
 
 [Components]
@@ -56,4 +57,5 @@
 
 [Components.X64]
   AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
+  AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
   AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
