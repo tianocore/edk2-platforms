@@ -72,3 +72,4 @@
   AmdPlatformPkg/Universal/LogoDxe/JpegLogoDxe.inf                                           # Server platform JPEG logo driver
   AmdPlatformPkg/Universal/LogoDxe/LogoDxe.inf                                               # Server platfrom Bitmap logo driver
   AmdPlatformPkg/Universal/LogoDxe/S3LogoDxe.inf
+  AmdPlatformPkg/Universal/SmbiosCommonDxe/SmbiosCommonDxe.inf
