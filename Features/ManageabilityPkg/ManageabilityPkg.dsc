@@ -4,6 +4,7 @@
 # those are related to the platform management.
 #
 # Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -101,5 +102,6 @@
 [LibraryClasses]
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
   IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
+  PlatformBmcReadyLib|ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
 
 !include Include/Manageability.dsc
