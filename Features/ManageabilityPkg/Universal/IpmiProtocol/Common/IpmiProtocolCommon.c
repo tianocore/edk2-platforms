@@ -112,7 +112,7 @@ SetupIpmiRequestTransportPacket (
     *PacketHeaderSize   = 0;
     *PacketTrailerSize  = 0;
     IpmiHeader->Command = Command;
-    IpmiHeader->Lun     = 0;
+    IpmiHeader->Lun     = MANAGEABILITY_IPMI_BMC_LUN;
     IpmiHeader->NetFn   = NetFunction;
     if (PacketHeader != NULL) {
       *PacketHeader     = (MANAGEABILITY_TRANSPORT_HEADER *)IpmiHeader;

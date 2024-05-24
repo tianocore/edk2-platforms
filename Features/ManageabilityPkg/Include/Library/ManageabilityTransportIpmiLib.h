@@ -22,6 +22,14 @@ typedef struct {
 } MANAGEABILITY_IPMI_TRANSPORT_HEADER;
 
 ///
+/// Unless otherwise specified, commands that are listed as mandatory must be accessed
+/// via LUN 00b.
+///
+#define MANAGEABILITY_IPMI_BMC_LUN  0
+
+#define MANAGEABILITY_IPMI_NET_FUNC_MAX  0x3F
+
+///
 /// The IPMI Completion Code mapping.
 ///
 typedef struct {
