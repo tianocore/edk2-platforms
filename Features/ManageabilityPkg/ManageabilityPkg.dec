@@ -4,6 +4,7 @@
 # those are related to the platform management.
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -29,6 +30,10 @@
   ##  @libraryclass Manageability Transport Helper Library
   #   Provide the help functions to use ManageabilityTransportLib
   ManageabilityTransportHelperLib|Include/Library/ManageabilityTransportHelperLib.h
+
+  ##  @libraryclass Platform BMC Ready Library
+  #   Provide the help functions to check the BMC state
+  PlatformBmcReadyLib|Include/Library/PlatformBmcReadyLib.h
 
 [Guids]
   gManageabilityPkgTokenSpaceGuid   = { 0xBDEFFF48, 0x1C31, 0x49CD, { 0xA7, 0x6D, 0x92, 0x9E, 0x60, 0xDB, 0xB9, 0xF8 } }
