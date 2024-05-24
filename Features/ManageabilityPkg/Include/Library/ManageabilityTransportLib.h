@@ -3,6 +3,7 @@
   This file defines the manageability transport interface library and functions.
 
   Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -52,9 +53,17 @@ typedef struct {
 #define MANAGEABILITY_TRANSPORT_KCS_IO_MAP_IO      FALSE
 #define MANAGEABILITY_TRANSPORT_KCS_MEMORY_MAP_IO  TRUE
 
+///
+/// Manageability SSIF protocol interface hardware information
+///
+typedef struct {
+  UINT32    BmcSlaveAddress;
+} MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO;
+
 typedef union {
-  VOID                                         *Pointer;
-  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO    *Kcs;
+  VOID                                          *Pointer;
+  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO     *Kcs;
+  MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO    *Ssif;
 } MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION;
 
 ///
