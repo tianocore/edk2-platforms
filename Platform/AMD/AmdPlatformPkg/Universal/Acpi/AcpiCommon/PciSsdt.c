@@ -261,7 +261,7 @@ InternalInsertRootBridgeResources (
           if ((LocalBuffer->ResType == ACPI_ADDRESS_SPACE_TYPE_BUS) &&
               (LocalBuffer->AddrRangeMin == RootBridge->Object->BaseBusNumber))
           {
-            BaseBusNumber = LocalBuffer->AddrRangeMin;
+            BaseBusNumber = (UINTN)LocalBuffer->AddrRangeMin;
             break;
           }
         }
@@ -290,7 +290,7 @@ InternalInsertRootBridgeResources (
       break;
     } else if (LocalBuffer->Header.Header.Byte == ACPI_QWORD_ADDRESS_SPACE_DESCRIPTOR) {
       if (LocalBuffer->ResType == ACPI_ADDRESS_SPACE_TYPE_BUS) {
-        BaseBusNumber = LocalBuffer->AddrRangeMin;
+        BaseBusNumber = (UINTN)LocalBuffer->AddrRangeMin;
         Status        = AmlCodeGenRdWordBusNumber (
                           FALSE,
                           TRUE,
