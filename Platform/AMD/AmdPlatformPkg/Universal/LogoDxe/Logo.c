@@ -1,26 +1,22 @@
-/**
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
-**/
-
 /** @file
   Logo DXE Driver, install Edk2 Platform Logo protocol.
 
   Copyright (c) 2016 - 2020, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
-#include <Uefi.h>
+#include <Library/BootLogoLib.h>
+#include <Library/DebugLib.h>
+#include <Library/PcdLib.h>
+#include <Library/UefiBootServicesTableLib.h>
 #include <Protocol/GraphicsOutput.h>
 #include <Protocol/HiiDatabase.h>
 #include <Protocol/HiiImageEx.h>
 #include <Protocol/HiiPackageList.h>
 #include <Protocol/PlatformLogo.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/BootLogoLib.h>
-#include <Library/DebugLib.h>
-#include <Library/PcdLib.h>
-
+#include <Uefi.h>
 #include "Logo.h"
 
 EFI_HII_IMAGE_EX_PROTOCOL  *mHiiImageEx;

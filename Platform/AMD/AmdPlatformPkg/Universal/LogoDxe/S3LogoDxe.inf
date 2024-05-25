@@ -3,6 +3,8 @@
 #
 #  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
 #
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
 ##
 
 [Defines]
@@ -25,14 +27,14 @@
 #
 
 [Sources]
-  S3Logo.bmp
   Logo.c
+  S3Logo.bmp
   S3Logo.idf
 
 [Packages]
   AmdPlatformPkg/AmdPlatformPkg.dec
-  MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
 
 [LibraryClasses]
   BootLogoLib
@@ -42,10 +44,10 @@
   UefiDriverEntryPoint
 
 [Protocols]
+  gEdkiiPlatformLogoProtocolGuid     ## PRODUCES
   gEfiHiiDatabaseProtocolGuid        ## CONSUMES
   gEfiHiiImageExProtocolGuid         ## CONSUMES
   gEfiHiiPackageListProtocolGuid     ## PRODUCES CONSUMES
-  gEdkiiPlatformLogoProtocolGuid     ## PRODUCES
 
 [Pcd]
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdDisplayLogoEventGuid
