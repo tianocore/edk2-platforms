@@ -186,18 +186,6 @@ OnboardDevExtInfoFunction (
   IN EFI_SMBIOS_PROTOCOL  *Smbios
   );
 
-/**
-  Find the Lan-On-Motherboard device path. Installs BOARD_BDS_BOOT_FROM_DEVICE_PATH_PROTOCOL
-  with the LOM device path protocol
-
-  @retval EFI NOT_FOUND         LOM device path is not found
-  @retval EFI_SUCCESS           LOM device path found
-**/
-EFI_STATUS
-EFIAPI
-InstallLomDevicePath (
-  );
-
 typedef
 EFI_STATUS
 (EFIAPI EFI_COMMON_SMBIOS_DATA_FUNCTION)(

@@ -80,8 +80,6 @@ OnPciEnumerationComplete (
       EfiStatus
       ));
   }
-
-  EfiStatus = InstallLomDevicePath ();
 }
 
 /**
