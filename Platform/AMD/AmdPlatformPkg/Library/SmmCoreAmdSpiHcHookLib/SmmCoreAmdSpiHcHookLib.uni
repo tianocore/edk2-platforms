@@ -1,0 +1,11 @@
+## @file
+#  UNI file of SMM Core AMD SPI Host Controller State hook library module
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+#string STR_MODULE_ABSTRACT             #language en-US "SMM Core AMD SPI HC State Hook Library instance"
+
+#string STR_MODULE_DESCRIPTION          #language en-US "SMM Core AMD SPI Host Controller Hook Library instance"

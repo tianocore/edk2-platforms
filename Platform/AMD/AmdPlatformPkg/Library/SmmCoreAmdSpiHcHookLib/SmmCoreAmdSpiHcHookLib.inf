@@ -1,0 +1,41 @@
+## @file
+#  INF of SMM Core AMD SPI Host Contoller State hook library.
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmCoreAmdSpiHcHookLib
+  MODULE_UNI_FILE                = SmmCoreAmdSpiHcHookLib.uni
+  FILE_GUID                      = 65D0E2A5-C8C6-4DEE-8FD0-5A006A49E9B7
+  MODULE_TYPE                    = SMM_CORE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  LIBRARY_CLASS                  = SmmCoreAmdSpiHcHookLib|SMM_CORE
+  CONSTRUCTOR                    = SmmCoreAmdSpiHcHookConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  SmmCoreAmdSpiHcHookLib.c
+  SmmCoreAmdSpiHcHookLib.h
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  SmmServicesTableLib
+  BaseLib
+  DebugLib
+  BaseMemoryLib
+
+[Protocols]
+  gAmdSpiHcStateProtocolGuid
