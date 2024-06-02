@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -104,7 +104,7 @@ RtcI2cRead (
     return EFI_DEVICE_ERROR;
   }
 
-  Status = I2cProbe (I2C_RTC_BUS_ADDRESS, I2C_RTC_BUS_SPEED);
+  Status = I2cProbe (I2C_RTC_BUS_ADDRESS, I2C_RTC_BUS_SPEED, FALSE, FALSE);
   if (EFI_ERROR (Status)) {
     return EFI_DEVICE_ERROR;
   }
@@ -148,7 +148,7 @@ RtcI2cWrite (
     return EFI_INVALID_PARAMETER;
   }
 
-  Status = I2cProbe (I2C_RTC_BUS_ADDRESS, I2C_RTC_BUS_SPEED);
+  Status = I2cProbe (I2C_RTC_BUS_ADDRESS, I2C_RTC_BUS_SPEED, FALSE, FALSE);
   if (EFI_ERROR (Status)) {
     return EFI_DEVICE_ERROR;
   }
