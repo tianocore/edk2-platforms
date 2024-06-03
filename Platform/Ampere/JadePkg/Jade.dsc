@@ -89,6 +89,8 @@
 
   OemMiscLib|Platform/Ampere/JadePkg/Library/OemMiscLib/OemMiscLib.inf
 
+  PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+
 ################################################################################
 #
 # Specific Platform Pcds
