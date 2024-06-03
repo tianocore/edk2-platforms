@@ -146,6 +146,11 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
+  INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
+  INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 }
 
   INF ArmPlatformPkg/Sec/Sec.inf
@@ -163,6 +168,12 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
+
+  #
+  # IPMI SSIF
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
+  INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
 
   #
   # Print platform information before passing control into the Driver Execution Environment (DXE) phase
@@ -310,6 +321,12 @@ APRIORI DXE {
   # Random Number Generator Support
   #
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/RngDxe/RngDxe.inf
+
+  #
+  # IPMI SSIF
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcDxe.inf
+  INF ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
 
   #
   # UEFI application (Shell Embedded Boot Loader)
