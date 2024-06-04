@@ -3,7 +3,7 @@
 #
 #  Description file for AMD AmdMinBoardPkg
 #
-#  Copyright (c) 2023, Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (c) 2023 - 2024, Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -26,8 +26,8 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0x10000000
 
 [LibraryClasses]
-  SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
   ReportFvLib|AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
 
 [LibraryClasses.common]
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -39,9 +39,12 @@
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
 
+[LibraryClasses.common.SEC]
+  PlatformSecLib|AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
+
 [LibraryClasses.common.PEIM]
-  SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
   BoardInitLib|AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
+  SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   BoardBdsHookLib|AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
@@ -51,11 +54,12 @@
   AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
 
 [Components.IA32]
-  AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
-  AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
   AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
+  AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
+  AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
 [Components.X64]
-  AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
   AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
+  AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
   AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
