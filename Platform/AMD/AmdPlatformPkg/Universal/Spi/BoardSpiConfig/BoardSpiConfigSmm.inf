@@ -1,0 +1,45 @@
+## @file
+#  AMD Board SPI config SMM Description File
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = BoardSpiConfigProtocolSmm
+  FILE_GUID                 = 28DDEB87-4133-4CBE-AADA-A1A18AB7B0EF
+  MODULE_TYPE               = DXE_SMM_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = BoardSpiConfigProtocolEntry
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  SmmServicesTableLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  IoLib
+
+[Sources]
+  BoardSpiConfigSmm.c
+
+[Protocols]
+  gEfiSpiSmmConfigurationProtocolGuid
+  gEdk2EspiSmmDriverProtocolGuid
+
+[Guids]
+  gEdk2JedecSfdpSpiSmmDriverGuid
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  BoardSpiConfigExtra.uni

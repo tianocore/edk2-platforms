@@ -1,0 +1,43 @@
+## @file
+#  AMD Board SPI config Description File
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = BoardSpiConfigProtocolDxe
+  FILE_GUID                 = E84AB44F-9F53-420C-B91B-E2488DF4AA4E
+  MODULE_TYPE               = DXE_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = BoardSpiConfigProtocolEntry
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+
+[Sources]
+  BoardSpiConfigDxe.c
+
+[Protocols]
+  gEfiSpiConfigurationProtocolGuid
+  gFakeDeviceIoProtocolGuid
+
+[Guids]
+  gEdk2JedecSfdpSpiDxeDriverGuid
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  BoardSpiConfigExtra.uni
