@@ -1,0 +1,54 @@
+## @file
+#  AMD SPI FVB DXE driver description File
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                = 0x00010017
+  BASE_NAME                  = SpiFvbDxe
+  FILE_GUID                  = 0895B765-D2ED-4FDF-AB44-BE48A761CE34
+  MODULE_TYPE                = DXE_DRIVER
+  VERSION_STRING             = 1.0
+  PI_SPECIFICATION_VERSION   = 0x0001000A
+  ENTRY_POINT                = SpiFvbDxeEntryPoint
+
+[Sources]
+  SpiFvbDxe.c
+  SpiFvbCommon.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  DebugLib
+  IoLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase      ## CONSUMES
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize          ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize      ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress             ## CONSUMES
+
+[Protocols]
+  gEfiFirmwareVolumeBlockProtocolGuid
+  gEfiSpiNorFlashProtocolGuid
+
+[Depex]
+  gEfiSpiNorFlashProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiFvbExtra.uni

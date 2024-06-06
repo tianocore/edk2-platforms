@@ -1,0 +1,59 @@
+## @file
+#  AMD SPI FVB SMM driver description File
+#
+#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SpiFvbSmm
+  FILE_GUID                      = 7EF9447C-C5D4-4DFC-A86E-64B4A19C9892
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = SpiFvbSmmEntryPoint
+
+[Sources]
+  SpiFvbSmm.c
+  SpiFvbCommon.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  SmmServicesTableLib
+  DebugLib
+  MemoryAllocationLib
+  IoLib
+  PciLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase      ## CONSUMES
+
+[FixedPcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize      ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize          ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress             ## CONSUMES
+
+[Protocols]
+  gEfiSmmFirmwareVolumeBlockProtocolGuid                            ## PRODUCES
+  gEfiSpiSmmNorFlashProtocolGuid                                    ## CONSUMES
+  gAmdEspiSmmNorFlashProtocolGuid                                   ## Possibly CONSUMES
+
+[Depex]
+  gEfiSpiSmmNorFlashProtocolGuid OR
+  gAmdEspiSmmNorFlashProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiFvbExtra.uni
