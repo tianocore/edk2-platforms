@@ -153,7 +153,6 @@ ArmPlatformGetPlatformPpiList (
 {
   ASSERT (PpiListSize != NULL);
   ASSERT (PpiList != NULL);
-  ASSERT (*PpiList != NULL);
 
   if (ArmIsMpCore ()) {
     *PpiListSize = sizeof (gPlatformPpiTable);
