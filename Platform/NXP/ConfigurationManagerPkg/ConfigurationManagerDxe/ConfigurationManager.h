@@ -111,7 +111,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_PCI_CONFIG_SPACE_INFO              PciConfigInfo[PLAT_PCI_CONFG_COUNT];
 
   /// Serial port information for serial port console redirection port
-  CM_ARM_SERIAL_PORT_INFO                   SpcrSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO           SpcrSerialPort;
 
   /// Fsl Board Revision
   UINT32                                    FslBoardRevision;

@@ -518,6 +518,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjConsolePortInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->SpcrSerialPort,
+                 sizeof (PlatformRepo->SpcrSerialPort),
+                 1,
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -659,16 +669,6 @@ GetArmNameSpaceObject (
                  &PlatformRepo->GicItsInfo,
                  sizeof (PlatformRepo->GicItsInfo),
                  PLAT_GIC_ITS_COUNT,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjSerialConsolePortInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->SpcrSerialPort,
-                 sizeof (PlatformRepo->SpcrSerialPort),
-                 1,
                  CmObject
                  );
       break;
