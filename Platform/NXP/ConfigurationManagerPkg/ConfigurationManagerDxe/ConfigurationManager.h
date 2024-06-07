@@ -108,7 +108,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_GIC_ITS_INFO                       GicItsInfo;
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO              PciConfigInfo[PLAT_PCI_CONFG_COUNT];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO      PciConfigInfo[PLAT_PCI_CONFG_COUNT];
 
   /// Serial port information for serial port console redirection port
   CM_ARCH_COMMON_SERIAL_PORT_INFO           SpcrSerialPort;

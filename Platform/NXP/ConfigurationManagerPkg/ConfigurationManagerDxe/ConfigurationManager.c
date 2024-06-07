@@ -528,6 +528,19 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 ARRAY_SIZE (PlatformRepo->PciConfigInfo),
+                 Token,
+                 GetPciConfigInfo,
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -669,19 +682,6 @@ GetArmNameSpaceObject (
                  &PlatformRepo->GicItsInfo,
                  sizeof (PlatformRepo->GicItsInfo),
                  PLAT_GIC_ITS_COUNT,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObjectRefByToken (
-                 This,
-                 CmObjectId,
-                 PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 ARRAY_SIZE (PlatformRepo->PciConfigInfo),
-                 Token,
-                 GetPciConfigInfo,
                  CmObject
                  );
       break;
