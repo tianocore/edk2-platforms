@@ -1,0 +1,55 @@
+## @file
+#  SpiHcPlatformLibrary DXE_DRIVER inf
+#
+#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = SpiHcPlatformLibDxe
+  FILE_GUID                 = 1B53F26A-971D-4DFC-A13D-2626CFDF863D
+  MODULE_TYPE               = DXE_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  LIBRARY_CLASS             = SpiHcPlatformLib
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  PcdLib
+  PciSegmentLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[Sources]
+  SpiHcPlatformLibDxe.c
+  SpiHcPlatformLib.c
+  SpiHcInternal.h
+  SpiHcInternal.c
+
+[Protocols]
+  gEfiSpiHcProtocolGuid
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiHcPlatformLib.uni
