@@ -3,6 +3,7 @@
 
   Copyright 2020 NXP
   Copyright 2020 Puresoftware Ltd
+  Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -80,7 +81,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_BOOT_ARCH_INFO                     BootArchInfo;
 
   /// Power management profile information
-  CM_ARM_POWER_MANAGEMENT_PROFILE_INFO      PmProfileInfo;
+  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
 
   /// Generic timer information
   CM_ARM_GENERIC_TIMER_INFO                 GenericTimerInfo;
