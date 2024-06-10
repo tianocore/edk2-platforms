@@ -1743,6 +1743,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjFixedFeatureFlags:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->FixedFeatureFlags,
+                 sizeof (PlatformRepo->FixedFeatureFlags),
+                 1,
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1833,16 +1843,6 @@ GetArmNameSpaceObject (
                  CmObjectId,
                  &PlatformRepo->BootArchInfo,
                  sizeof (PlatformRepo->BootArchInfo),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjFixedFeatureFlags:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->FixedFeatureFlags,
-                 sizeof (PlatformRepo->FixedFeatureFlags),
                  1,
                  CmObject
                  );
