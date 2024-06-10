@@ -853,6 +853,16 @@ GetArchCommonNameSpaceObject (
                    );
       break;
 
+      case EArchCommonObjProcHierarchyInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   CommonPlatRepo->ProcHierarchyInfo,
+                   sizeof (CommonPlatRepo->ProcHierarchyInfo),
+                   PLAT_PROC_HIERARCHY_NODE_COUNT,
+                   CmObject
+                   );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -988,16 +998,6 @@ GetArmNameSpaceObject (
                    &CommonPlatRepo->GicRedistInfo,
                    sizeof (CommonPlatRepo->GicRedistInfo),
                    1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjProcHierarchyInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   CommonPlatRepo->ProcHierarchyInfo,
-                   sizeof (CommonPlatRepo->ProcHierarchyInfo),
-                   PLAT_PROC_HIERARCHY_NODE_COUNT,
                    CmObject
                    );
       break;

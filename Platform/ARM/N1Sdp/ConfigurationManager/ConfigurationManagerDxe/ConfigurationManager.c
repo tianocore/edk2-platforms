@@ -1703,6 +1703,7 @@ GetArchCommonNameSpaceObject (
   EFI_STATUS                        Status;
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
   UINT32                            PciConfigInfoCount;
+  UINT32                            ProcHierarchyInfoCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -1715,8 +1716,10 @@ GetArchCommonNameSpaceObject (
 
   if (PlatformRepo->PlatInfo->MultichipMode == 1) {
     PciConfigInfoCount = Root_pcie_max;
+    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT * 2;
   } else {
     PciConfigInfoCount = Root_pcie_master_chip_max;
+    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT;
   }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -1780,6 +1783,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjProcHierarchyInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->ProcHierarchyInfo,
+                 sizeof (PlatformRepo->ProcHierarchyInfo),
+                 ProcHierarchyInfoCount,
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1821,7 +1834,6 @@ GetArmNameSpaceObject (
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
   UINT32                            GicRedistCount;
   UINT32                            GicCpuCount;
-  UINT32                            ProcHierarchyInfoCount;
   UINT32                            GicItsInfoCount;
   UINT32                            ItsGroupInfoCount;
   UINT32                            ItsIdentifierArrayCount;
@@ -1842,7 +1854,6 @@ GetArmNameSpaceObject (
   if (PlatformRepo->PlatInfo->MultichipMode == 1) {
     GicRedistCount = 2;
     GicCpuCount = PLAT_CPU_COUNT * 2;
-    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT * 2;
     GicItsInfoCount = Its_max;
     ItsGroupInfoCount = Its_max;
     ItsIdentifierArrayCount = Its_max;
@@ -1852,7 +1863,6 @@ GetArmNameSpaceObject (
   } else {
     GicRedistCount = 1;
     GicCpuCount = PLAT_CPU_COUNT;
-    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT;
     GicItsInfoCount = Its_master_chip_max;
     ItsGroupInfoCount = Its_master_chip_max;
     ItsIdentifierArrayCount = Its_master_chip_max;
@@ -2013,16 +2023,6 @@ GetArmNameSpaceObject (
                  DeviceIdMappingCount,
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjProcHierarchyInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->ProcHierarchyInfo,
-                 sizeof (PlatformRepo->ProcHierarchyInfo),
-                 ProcHierarchyInfoCount,
                  CmObject
                  );
       break;
