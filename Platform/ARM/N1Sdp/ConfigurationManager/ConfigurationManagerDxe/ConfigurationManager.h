@@ -300,7 +300,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[Root_pcie_max];
 
   /// Memory Affinity Info
-  CM_ARM_MEMORY_AFFINITY_INFO           MemAffInfo[DDR_REGION_COUNT];
+  CM_ARCH_COMMON_MEMORY_AFFINITY_INFO   MemAffInfo[DDR_REGION_COUNT];
 
   /// N1Sdp Platform Info
   NEOVERSEN1SOC_PLAT_INFO               *PlatInfo;
