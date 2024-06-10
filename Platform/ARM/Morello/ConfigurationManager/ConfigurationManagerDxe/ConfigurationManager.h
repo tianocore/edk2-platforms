@@ -225,7 +225,7 @@ typedef struct CommonPlatformRepositoryInfo {
 
 #ifdef HEADLESS_PLATFORM
   /// Fixed feature flag information
-  CM_ARM_FIXED_FEATURE_FLAGS            FixedFeatureFlags;
+  CM_ARCH_COMMON_FIXED_FEATURE_FLAGS    FixedFeatureFlags;
 #endif
 
   /// Power management profile information

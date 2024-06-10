@@ -229,7 +229,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_BOOT_ARCH_INFO                 BootArchInfo;
 
   /// Fixed feature flag information
-  CM_ARM_FIXED_FEATURE_FLAGS            FixedFeatureFlags;
+  CM_ARCH_COMMON_FIXED_FEATURE_FLAGS    FixedFeatureFlags;
 
   /// Power management profile information
   CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
