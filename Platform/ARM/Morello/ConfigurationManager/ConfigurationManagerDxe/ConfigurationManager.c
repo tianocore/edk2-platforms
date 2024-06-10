@@ -172,7 +172,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       CM_NULL_TOKEN,
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       SOC_RESOURCE_COUNT,
@@ -194,7 +194,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -215,7 +215,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -236,7 +236,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[0]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -257,7 +257,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[1]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -278,7 +278,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[2]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -300,7 +300,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[3]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
