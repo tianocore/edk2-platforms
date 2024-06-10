@@ -462,6 +462,16 @@ GetArchCommonNameSpaceObjectPlat (
   PlatformRepo = This->PlatRepoInfo->FvpPlatRepoInfo;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+
       default:
         break;
   }
@@ -568,16 +578,6 @@ GetArmNameSpaceObjectPlat (
                  ARRAY_SIZE (PlatformRepo->DeviceIdMapping),
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 1,
                  CmObject
                  );
       break;
