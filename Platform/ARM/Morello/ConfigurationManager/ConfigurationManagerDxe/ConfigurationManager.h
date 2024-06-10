@@ -267,13 +267,13 @@ typedef struct CommonPlatformRepositoryInfo {
   CM_ARM_CACHE_INFO                     CacheInfo[PLAT_CACHE_COUNT];
 
   // Cluster private resources
-  CM_ARM_OBJ_REF                        ClusterResources[CLUSTER_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                ClusterResources[CLUSTER_RESOURCE_COUNT];
 
   // Core private resources
-  CM_ARM_OBJ_REF                        CoreResources[CORE_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                CoreResources[CORE_RESOURCE_COUNT];
 
   // SoC Resources
-  CM_ARM_OBJ_REF                        SocResources[SOC_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                SocResources[SOC_RESOURCE_COUNT];
 
 } EDKII_COMMON_PLATFORM_REPOSITORY_INFO;
 

@@ -1557,7 +1557,7 @@ GetGicCInfo (
   @param [in]        This        Pointer to the Configuration Manager Protocol.
   @param [in]        CmObjectId  The Object ID of the CM object requested
   @param [in]        SearchToken A unique token for identifying the requested
-                                 CM_ARM_OBJ_REF list.
+                                 CM_ARCH_COMMON_OBJ_REF list.
   @param [in, out]   CmObject    Pointer to the Configuration Manager Object
                                  descriptor describing the requested Object.
 
@@ -1749,6 +1749,16 @@ GetArchCommonNameSpaceObject (
                  &PlatformRepo->FixedFeatureFlags,
                  sizeof (PlatformRepo->FixedFeatureFlags),
                  1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjCmRef:
+      Status = HandleCmObjectSearchPlatformRepo (
+                 This,
+                 CmObjectId,
+                 Token,
+                 GetCmObjRefs,
                  CmObject
                  );
       break;
@@ -2009,16 +2019,6 @@ GetArmNameSpaceObject (
                  PlatformRepo->CacheInfo,
                  sizeof (PlatformRepo->CacheInfo),
                  ARRAY_SIZE (PlatformRepo->CacheInfo),
-                 CmObject
-                 );
-      break;
-
-    case EArmObjCmRef:
-      Status = HandleCmObjectSearchPlatformRepo (
-                 This,
-                 CmObjectId,
-                 Token,
-                 GetCmObjRefs,
                  CmObject
                  );
       break;
