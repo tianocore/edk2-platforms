@@ -56,7 +56,7 @@ typedef struct FvpPlatformRepositoryInfo {
   CM_ARM_ID_MAPPING                     DeviceIdMapping[2][2];
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo[1];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[1];
 
 } EDKII_FVP_PLATFORM_REPOSITORY_INFO;
 

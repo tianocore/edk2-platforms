@@ -297,7 +297,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_ID_MAPPING                     DeviceIdMapping[Devicemapping_max][2];
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo[Root_pcie_max];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[Root_pcie_max];
 
   /// Memory Affinity Info
   CM_ARM_MEMORY_AFFINITY_INFO           MemAffInfo[DDR_REGION_COUNT];

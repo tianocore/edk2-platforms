@@ -1702,6 +1702,7 @@ GetArchCommonNameSpaceObject (
 {
   EFI_STATUS                        Status;
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            PciConfigInfoCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -1711,6 +1712,12 @@ GetArchCommonNameSpaceObject (
 
   Status = EFI_NOT_FOUND;
   PlatformRepo = This->PlatRepoInfo;
+
+  if (PlatformRepo->PlatInfo->MultichipMode == 1) {
+    PciConfigInfoCount = Root_pcie_max;
+  } else {
+    PciConfigInfoCount = Root_pcie_master_chip_max;
+  }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
     case EArchCommonObjPowerManagementProfileInfo:
@@ -1763,6 +1770,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 PciConfigInfoCount,
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1811,7 +1828,6 @@ GetArmNameSpaceObject (
   UINT32                            SmmuV3InfoCount;
   UINT32                            DeviceIdMappingCount;
   UINT32                            RootComplexInfoCount;
-  UINT32                            PciConfigInfoCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -1833,7 +1849,6 @@ GetArmNameSpaceObject (
     SmmuV3InfoCount = Smmuv3info_max;
     DeviceIdMappingCount = Devicemapping_max;
     RootComplexInfoCount = Root_pcie_max;
-    PciConfigInfoCount = Root_pcie_max;
   } else {
     GicRedistCount = 1;
     GicCpuCount = PLAT_CPU_COUNT;
@@ -1844,7 +1859,6 @@ GetArmNameSpaceObject (
     SmmuV3InfoCount = Smmuv3info_master_chip_max;
     DeviceIdMappingCount = Devicemapping_master_chip_max;
     RootComplexInfoCount = Root_pcie_master_chip_max;
-    PciConfigInfoCount = Root_pcie_master_chip_max;
   }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -2019,16 +2033,6 @@ GetArmNameSpaceObject (
                  PlatformRepo->CacheInfo,
                  sizeof (PlatformRepo->CacheInfo),
                  ARRAY_SIZE (PlatformRepo->CacheInfo),
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 PciConfigInfoCount,
                  CmObject
                  );
       break;
