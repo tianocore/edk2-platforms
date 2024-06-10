@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021-2024, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -232,7 +232,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_FIXED_FEATURE_FLAGS            FixedFeatureFlags;
 
   /// Power management profile information
-  CM_ARM_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
+  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
 
   /// GIC CPU interface information
   CM_ARM_GICC_INFO                      GicCInfo[PLAT_CPU_COUNT * 2];

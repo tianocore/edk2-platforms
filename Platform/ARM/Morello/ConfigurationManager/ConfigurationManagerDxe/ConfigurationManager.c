@@ -801,7 +801,17 @@ GetArchCommonNameSpaceObject (
   CommonPlatRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
-    default: {
+      case EArchCommonObjPowerManagementProfileInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->PmProfileInfo,
+                   sizeof (CommonPlatRepo->PmProfileInfo),
+                   1,
+                   CmObject
+                   );
+      break;
+
+      default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
         DEBUG_INFO,
@@ -875,15 +885,6 @@ GetArmNameSpaceObject (
                    );
       break;
 #endif
-      case EArmObjPowerManagementProfileInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->PmProfileInfo,
-                   sizeof (CommonPlatRepo->PmProfileInfo),
-                   1,
-                   CmObject
-                   );
-      break;
 
       case EArmObjGenericTimerInfo:
         Status = HandleCmObject (
