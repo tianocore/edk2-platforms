@@ -811,6 +811,26 @@ GetArchCommonNameSpaceObject (
                    );
       break;
 
+      case EArchCommonObjConsolePortInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->SpcrSerialPort,
+                   sizeof (CommonPlatRepo->SpcrSerialPort),
+                   1,
+                   CmObject
+                   );
+      break;
+
+      case EArchCommonObjSerialDebugPortInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->DbgSerialPort,
+                   sizeof (CommonPlatRepo->DbgSerialPort),
+                   1,
+                   CmObject
+                   );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -957,26 +977,6 @@ GetArmNameSpaceObject (
                    CmObjectId,
                    &CommonPlatRepo->GicRedistInfo,
                    sizeof (CommonPlatRepo->GicRedistInfo),
-                   1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjSerialConsolePortInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->SpcrSerialPort,
-                   sizeof (CommonPlatRepo->SpcrSerialPort),
-                   1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjSerialDebugPortInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->DbgSerialPort,
-                   sizeof (CommonPlatRepo->DbgSerialPort),
                    1,
                    CmObject
                    );
