@@ -270,7 +270,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_PROC_HIERARCHY_INFO    ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT * 2];
 
   // Cache information
-  CM_ARM_CACHE_INFO                     CacheInfo[PLAT_CACHE_COUNT];
+  CM_ARCH_COMMON_CACHE_INFO             CacheInfo[PLAT_CACHE_COUNT];
 
   // Cluster private resources
   CM_ARCH_COMMON_OBJ_REF                ClusterResources[CLUSTER_RESOURCE_COUNT];

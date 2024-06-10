@@ -863,6 +863,16 @@ GetArchCommonNameSpaceObject (
                    );
       break;
 
+      case EArchCommonObjCacheInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   CommonPlatRepo->CacheInfo,
+                   sizeof (CommonPlatRepo->CacheInfo),
+                   ARRAY_SIZE (CommonPlatRepo->CacheInfo),
+                   CmObject
+                   );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -998,16 +1008,6 @@ GetArmNameSpaceObject (
                    &CommonPlatRepo->GicRedistInfo,
                    sizeof (CommonPlatRepo->GicRedistInfo),
                    1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjCacheInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   CommonPlatRepo->CacheInfo,
-                   sizeof (CommonPlatRepo->CacheInfo),
-                   ARRAY_SIZE (CommonPlatRepo->CacheInfo),
                    CmObject
                    );
       break;

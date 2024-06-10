@@ -1793,6 +1793,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjCacheInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->CacheInfo,
+                 sizeof (PlatformRepo->CacheInfo),
+                 ARRAY_SIZE (PlatformRepo->CacheInfo),
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -2023,16 +2033,6 @@ GetArmNameSpaceObject (
                  DeviceIdMappingCount,
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjCacheInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->CacheInfo,
-                 sizeof (PlatformRepo->CacheInfo),
-                 ARRAY_SIZE (PlatformRepo->CacheInfo),
                  CmObject
                  );
       break;
