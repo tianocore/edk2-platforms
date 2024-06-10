@@ -1803,6 +1803,16 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjMemoryAffinityInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->MemAffInfo,
+                 sizeof (PlatformRepo->MemAffInfo),
+                 ARRAY_SIZE (PlatformRepo->MemAffInfo),
+                 CmObject
+                 );
+      break;
+
       default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -2033,16 +2043,6 @@ GetArmNameSpaceObject (
                  DeviceIdMappingCount,
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjMemoryAffinityInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->MemAffInfo,
-                 sizeof (PlatformRepo->MemAffInfo),
-                 ARRAY_SIZE (PlatformRepo->MemAffInfo),
                  CmObject
                  );
       break;
