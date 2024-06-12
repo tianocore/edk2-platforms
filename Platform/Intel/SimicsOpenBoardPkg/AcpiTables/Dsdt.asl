@@ -46,7 +46,20 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 1, "INTEL ", "SIMICS  ", 4) {
           0x0000,                // Translation
           0x0100                 // Range Length = Max-Min+1
           )
-
+        QWordMemory (        // 64-bit BAR Windows
+          ResourceProducer,
+          PosDecode,
+          MinFixed,
+          MaxFixed,
+          Cacheable,
+          ReadWrite,
+          0x00000000,        // Granularity
+          0x800000000,       // Min Base Address
+          0xaFFFFFFFF,       // Max Base Address
+          0x00000000,        // Translate
+          0x300000000        // Length
+          )
+	  
         IO (Decode16, 0xCF8, 0xCF8, 0x01, 0x08)       //Consumed resource (0xCF8-0xCFF)
 
         WORDIO (                 // Consumed-and-produced resource (all I/O below CF8)
