@@ -309,6 +309,9 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
+  # Enable WriteCombine for FrameBuffer
+  gUefiOvmfPkgTokenSpaceGuid.PcdRemapFrameBufferWriteCombine|TRUE
+
 [PcdsFixedAtBuild.common]
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength|1000000
