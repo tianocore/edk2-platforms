@@ -1,0 +1,61 @@
+## @file
+#
+#  PCI Host Bridge Library instance for StarFive JH7110 SOC
+#  Liberally borrowed from the SynQuacer
+#
+#  Copyright (c) 2023, StarFive Technology Co., Ltd. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010019
+  BASE_NAME                      = PciHostBridgeLib
+  FILE_GUID                      = 606d906f-eba7-d5c6-fcf0-6aeedea00193
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+  CONSTRUCTOR                    = JH7110PciHostBridgeLibConstructor
+
+#
+# The following information is for reference only and not required by the build
+# tools.
+#
+#  VALID_ARCHITECTURES           = ARM AARCH64 RISCV64
+#
+
+[Sources]
+  PciHostBridgeLib.c
+  PciHostBridgeLibConstructor.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/StarFive/JH7110Pkg/JH7110Pkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+
+[FixedPcd]
+  gJH7110TokenSpaceGuid.PcdPciRegBase
+  gJH7110TokenSpaceGuid.PcdPciBusMmioAdr
+  gJH7110TokenSpaceGuid.PcdPciBusMmioLen
+  gJH7110TokenSpaceGuid.PcdPciCpuMmioAdr
+  gJH7110TokenSpaceGuid.PcdPciBusMin
+  gJH7110TokenSpaceGuid.PcdPciBusMax
+  gJH7110TokenSpaceGuid.PcdPciIoBase
+  gJH7110TokenSpaceGuid.PcdPciIoSize
+  gJH7110TokenSpaceGuid.PcdPciIoOffset
+  gJH7110TokenSpaceGuid.PcdPci0Mmio32Base
+  gJH7110TokenSpaceGuid.PcdPci0Mmio32Size
+  gJH7110TokenSpaceGuid.PcdPci0Mmio64Base
+  gJH7110TokenSpaceGuid.PcdPci0Mmio64Size
+  gJH7110TokenSpaceGuid.PcdPci1Mmio32Base
+  gJH7110TokenSpaceGuid.PcdPci1Mmio32Size
+  gJH7110TokenSpaceGuid.PcdPci1Mmio64Base
+  gJH7110TokenSpaceGuid.PcdPci1Mmio64Size
