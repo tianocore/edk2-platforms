@@ -191,12 +191,6 @@
   # List of Device Paths that support BootMonFs
   gArmBootMonFsTokenSpaceGuid.PcdBootMonFsSupportedDevicePaths|L"VenHw(DE6AE758-D662-4E17-A97C-4C5964DA4C41,00)"
 
-  #
-  # ARM Architectural Timer Frequency
-  #
-  # Set to 0 so ArmArchTimerLib will read its value from CNTFRQ_EL0
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|0
-
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 
   #

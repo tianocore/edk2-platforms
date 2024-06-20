@@ -47,7 +47,6 @@
 
 [Pcd]
   gHisiTokenSpaceGuid.PcdCPUInfo
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
 
 [Guids]
 

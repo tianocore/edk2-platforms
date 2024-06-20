@@ -458,11 +458,6 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x100100000000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x100100140000
 
-  #
-  # ARM Architectural Timer Frequency
-  #
-  # Set it to 0 so that the code will read frequence from register
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|0
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
 
   #

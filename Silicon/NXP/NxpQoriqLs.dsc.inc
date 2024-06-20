@@ -290,9 +290,6 @@
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
 
-  # Timer
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|0
-
   # We want to use the Shell Libraries but don't want it to initialise
   # automatically. We initialise the libraries when the command is called by the
   # Shell.
