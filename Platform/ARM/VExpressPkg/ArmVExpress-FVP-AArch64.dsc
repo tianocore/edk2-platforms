@@ -214,12 +214,6 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0x10000000
 
   #
-  # ARM Architectural Timer Frequency
-  #
-  # Set tick frequency value to 100Mhz
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|100000000
-
-  #
   # ACPI Table Version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20

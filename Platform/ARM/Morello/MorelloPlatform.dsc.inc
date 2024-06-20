@@ -110,8 +110,6 @@
   # PL031 RealTimeClock
   gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x1C100000
 
-  # ARM Architectural Timer Frequency
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|50000000
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|1000
 
