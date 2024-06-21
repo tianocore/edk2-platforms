@@ -13,7 +13,7 @@
  *
  */
 
-#define PLATFORM_VERSION_LESS_THAN(Major, Minor) (     \
+#define PLATFORM_VERSION_LESS_THAN(Major, Minor)  (    \
   (                                                    \
     ( PcdGet32 (PcdPlatformVersionMajor) < Major)   || \
     (                                                  \

@@ -20,39 +20,51 @@
 EFI_STATUS
 EFIAPI
 InitializeSbsaQemuPlatformDxe (
-  IN EFI_HANDLE           ImageHandle,
-  IN EFI_SYSTEM_TABLE     *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                     Status;
-  UINTN                          Size;
-  VOID*                          Base;
-  UINTN                          Arg0;
-  UINTN                          Arg1;
-  UINTN                          SmcResult;
-  RETURN_STATUS                  Result;
+  EFI_STATUS     Status;
+  UINTN          Size;
+  VOID           *Base;
+  UINTN          Arg0;
+  UINTN          Arg1;
+  UINTN          SmcResult;
+  RETURN_STATUS  Result;
 
   DEBUG ((DEBUG_INFO, "%a: InitializeSbsaQemuPlatformDxe called\n", __FUNCTION__));
 
-  Base = (VOID*)(UINTN)PcdGet64 (PcdPlatformAhciBase);
+  Base = (VOID *)(UINTN)PcdGet64 (PcdPlatformAhciBase);
   ASSERT (Base != NULL);
   Size = (UINTN)PcdGet32 (PcdPlatformAhciSize);
   ASSERT (Size != 0);
 
-  DEBUG ((DEBUG_INFO, "%a: Got platform AHCI %llx %u\n",
-          __FUNCTION__, Base, Size));
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: Got platform AHCI %llx %u\n",
+    __FUNCTION__,
+    Base,
+    Size
+    ));
 
   Status = RegisterNonDiscoverableMmioDevice (
-                   NonDiscoverableDeviceTypeAhci,
-                   NonDiscoverableDeviceDmaTypeCoherent,
-                   NULL,
-                   NULL,
-                   1,
-                   Base, Size);
+             NonDiscoverableDeviceTypeAhci,
+             NonDiscoverableDeviceDmaTypeCoherent,
+             NULL,
+             NULL,
+             1,
+             Base,
+             Size
+             );
 
-  if (EFI_ERROR(Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: NonDiscoverable: Cannot install AHCI device @%p (Staus == %r)\n",
-            __FUNCTION__, Base, Status));
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: NonDiscoverable: Cannot install AHCI device @%p (Staus == %r)\n",
+      __FUNCTION__,
+      Base,
+      Status
+      ));
     return Status;
   }
 
@@ -101,22 +113,32 @@ InitializeSbsaQemuPlatformDxe (
     Size = (UINTN)PcdGet32 (PcdPlatformXhciSize);
     ASSERT (Size != 0);
 
-    DEBUG ((DEBUG_INFO, "%a: Got platform XHCI %llx %u\n",
-            __FUNCTION__, Base, Size));
+    DEBUG ((
+      DEBUG_INFO,
+      "%a: Got platform XHCI %llx %u\n",
+      __FUNCTION__,
+      Base,
+      Size
+      ));
 
     Status = RegisterNonDiscoverableMmioDevice (
-                                                NonDiscoverableDeviceTypeXhci,
-                                                NonDiscoverableDeviceDmaTypeCoherent,
-                                                NULL,
-                                                NULL,
-                                                1,
-                                                Base,
-                                                Size
-                                                );
+               NonDiscoverableDeviceTypeXhci,
+               NonDiscoverableDeviceDmaTypeCoherent,
+               NULL,
+               NULL,
+               1,
+               Base,
+               Size
+               );
 
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: NonDiscoverable: Cannot install XHCI device @%p (Status == %r)\n",
-              __FUNCTION__, Base, Status));
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: NonDiscoverable: Cannot install XHCI device @%p (Status == %r)\n",
+        __FUNCTION__,
+        Base,
+        Status
+        ));
       return Status;
     }
   }

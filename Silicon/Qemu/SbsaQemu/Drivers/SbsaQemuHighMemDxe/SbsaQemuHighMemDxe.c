@@ -44,9 +44,9 @@ InitializeHighMemDxe (
   //
   // Check for memory node and add the memory spaces except the lowest one
   //
-  NumMemNodes = GetMemNodeCount();
-  for (Index = 0; Index < NumMemNodes; Index++){
-    GetMemInfo(Index, &MemInfo);
+  NumMemNodes = GetMemNodeCount ();
+  for (Index = 0; Index < NumMemNodes; Index++) {
+    GetMemInfo (Index, &MemInfo);
     CurBase = MemInfo.AddressBase;
     CurSize = MemInfo.AddressSize;
 
@@ -101,7 +101,7 @@ InitializeHighMemDxe (
 
         Attributes = EFI_MEMORY_WB;
         if ((PcdGet64 (PcdDxeNxMemoryProtectionPolicy) &
-              (1U << (UINT32)EfiConventionalMemory)) != 0)
+             (1U << (UINT32)EfiConventionalMemory)) != 0)
         {
           Attributes |= EFI_MEMORY_XP;
         }

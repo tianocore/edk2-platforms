@@ -23,8 +23,8 @@ GetCpuCount (
   VOID
   )
 {
-  UINTN          Arg0;
-  UINTN          SmcResult;
+  UINTN  Arg0;
+  UINTN  SmcResult;
 
   SmcResult = ArmCallSmc0 (SIP_SVC_GET_CPU_COUNT, &Arg0, NULL, NULL);
   if (SmcResult != SMC_SIP_CALL_SUCCESS) {
@@ -100,8 +100,8 @@ GetMemNodeCount (
   VOID
   )
 {
-  UINTN            SmcResult;
-  UINTN            Arg0;
+  UINTN  SmcResult;
+  UINTN  Arg0;
 
   SmcResult = ArmCallSmc0 (SIP_SVC_GET_MEMORY_NODE_COUNT, &Arg0, NULL, NULL);
   if (SmcResult != SMC_SIP_CALL_SUCCESS) {
@@ -109,7 +109,7 @@ GetMemNodeCount (
     ResetShutdown ();
   }
 
-  DEBUG (( DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __FUNCTION__, Arg0));
+  DEBUG ((DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __FUNCTION__, Arg0));
   return (UINT32)Arg0;
 }
 
@@ -119,10 +119,10 @@ GetMemInfo (
   OUT MemoryInfo  *MemInfo
   )
 {
-  UINTN           SmcResult;
-  UINTN           Arg0;
-  UINTN           Arg1;
-  UINTN           Arg2;
+  UINTN  SmcResult;
+  UINTN  Arg0;
+  UINTN  Arg1;
+  UINTN  Arg2;
 
   Arg0 = MemoryId;
 
@@ -131,47 +131,49 @@ GetMemInfo (
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE call failed. We have no memory information.\n", __FUNCTION__));
     ResetShutdown ();
   } else {
-    MemInfo->NodeId = Arg0;
+    MemInfo->NodeId      = Arg0;
     MemInfo->AddressBase = Arg1;
     MemInfo->AddressSize = Arg2;
   }
 
-  DEBUG(( DEBUG_INFO, "%a: NUMA node for System RAM:%d = 0x%lx - 0x%lx\n",
-      __FUNCTION__,
-      MemInfo->NodeId,
-      MemInfo->AddressBase,
-      MemInfo->AddressBase + MemInfo->AddressSize -1 ));
-
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: NUMA node for System RAM:%d = 0x%lx - 0x%lx\n",
+    __FUNCTION__,
+    MemInfo->NodeId,
+    MemInfo->AddressBase,
+    MemInfo->AddressBase + MemInfo->AddressSize -1
+    ));
 }
 
 UINT64
 GetNumaNodeCount (
   VOID
-)
+  )
 {
-  UINT64                Arg;
-  UINT32                Index;
-  UINT32                NumberNumaNodes;
-  UINT32                NumberMemNodes;
-  UINT32                NumCores = GetCpuCount();
-  MemoryInfo            MemInfo;
+  UINT64      Arg;
+  UINT32      Index;
+  UINT32      NumberNumaNodes;
+  UINT32      NumberMemNodes;
+  UINT32      NumCores = GetCpuCount ();
+  MemoryInfo  MemInfo;
 
   NumberNumaNodes = 0;
-  NumberMemNodes = GetMemNodeCount();
+  NumberMemNodes  = GetMemNodeCount ();
 
-  if (NumCores > 0){
-    for (Index = 0; Index < NumCores; Index ++){
-      Arg = GetCpuNumaNode(Index);
-      if (NumberNumaNodes == 0 || NumberNumaNodes < (Arg + 1)){
+  if (NumCores > 0) {
+    for (Index = 0; Index < NumCores; Index++) {
+      Arg = GetCpuNumaNode (Index);
+      if ((NumberNumaNodes == 0) || (NumberNumaNodes < (Arg + 1))) {
         NumberNumaNodes = Arg + 1;
       }
     }
   }
 
-  if (NumberMemNodes > 0){
-    for (Index = 0; Index < NumberMemNodes; Index ++){
-      GetMemInfo(Index, &MemInfo);
-      if (NumberNumaNodes == 0 || NumberNumaNodes < (MemInfo.NodeId + 1)){
+  if (NumberMemNodes > 0) {
+    for (Index = 0; Index < NumberMemNodes; Index++) {
+      GetMemInfo (Index, &MemInfo);
+      if ((NumberNumaNodes == 0) || (NumberNumaNodes < (MemInfo.NodeId + 1))) {
         NumberNumaNodes = MemInfo.NodeId + 1;
       }
     }

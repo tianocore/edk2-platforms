@@ -9,10 +9,10 @@
 #ifndef HARDWARE_INFO_LIB
 #define HARDWARE_INFO_LIB
 
-typedef struct{
-  UINT32  NodeId;
-  UINT64  AddressBase;
-  UINT64  AddressSize;
+typedef struct {
+  UINT32    NodeId;
+  UINT64    AddressBase;
+  UINT64    AddressSize;
 } MemoryInfo;
 
 /**

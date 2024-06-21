@@ -15,7 +15,7 @@
 #include <Library/HardwareInfoLib.h>
 
 // Number of Virtual Memory Map Descriptors
-#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS          4
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  4
 
 RETURN_STATUS
 EFIAPI
@@ -23,23 +23,23 @@ SbsaQemuLibConstructor (
   VOID
   )
 {
-  UINT64        NewBase, CurBase;
-  UINT64        NewSize, CurSize;
-  UINT32        NumMemNodes;
-  UINT32        Index;
-  MemoryInfo    MemInfo;
-  RETURN_STATUS PcdStatus;
+  UINT64         NewBase, CurBase;
+  UINT64         NewSize, CurSize;
+  UINT32         NumMemNodes;
+  UINT32         Index;
+  MemoryInfo     MemInfo;
+  RETURN_STATUS  PcdStatus;
 
   NewBase = 0;
   NewSize = 0;
 
-  NumMemNodes = GetMemNodeCount();
-  for(Index = 0; Index < NumMemNodes; Index++){
-    GetMemInfo(Index, &MemInfo);
+  NumMemNodes = GetMemNodeCount ();
+  for (Index = 0; Index < NumMemNodes; Index++) {
+    GetMemInfo (Index, &MemInfo);
     CurBase = MemInfo.AddressBase;
     CurSize = MemInfo.AddressSize;
 
-    if (NewBase > CurBase || NewBase == 0) {
+    if ((NewBase > CurBase) || (NewBase == 0)) {
       NewBase = CurBase;
       NewSize = CurSize;
     }
@@ -68,15 +68,17 @@ SbsaQemuLibConstructor (
 **/
 VOID
 ArmPlatformGetVirtualMemoryMap (
-  OUT ARM_MEMORY_REGION_DESCRIPTOR   **VirtualMemoryMap
+  OUT ARM_MEMORY_REGION_DESCRIPTOR  **VirtualMemoryMap
   )
 {
   ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
 
   ASSERT (VirtualMemoryMap != NULL);
 
-  VirtualMemoryTable = AllocatePool (sizeof (ARM_MEMORY_REGION_DESCRIPTOR) *
-                                     MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS);
+  VirtualMemoryTable = AllocatePool (
+                         sizeof (ARM_MEMORY_REGION_DESCRIPTOR) *
+                         MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS
+                         );
 
   if (VirtualMemoryTable == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Error: Failed AllocatePool()\n", __FUNCTION__));
@@ -89,14 +91,17 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[0].Length       = PcdGet64 (PcdSystemMemorySize);
   VirtualMemoryTable[0].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
-  DEBUG ((DEBUG_INFO, "%a: Dumping System DRAM Memory Map:\n"
-          "\tPhysicalBase: 0x%lX\n"
-          "\tVirtualBase: 0x%lX\n"
-          "\tLength: 0x%lX\n",
-          __FUNCTION__,
-          VirtualMemoryTable[0].PhysicalBase,
-          VirtualMemoryTable[0].VirtualBase,
-          VirtualMemoryTable[0].Length));
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: Dumping System DRAM Memory Map:\n"
+    "\tPhysicalBase: 0x%lX\n"
+    "\tVirtualBase: 0x%lX\n"
+    "\tLength: 0x%lX\n",
+    __FUNCTION__,
+    VirtualMemoryTable[0].PhysicalBase,
+    VirtualMemoryTable[0].VirtualBase,
+    VirtualMemoryTable[0].Length
+    ));
 
   // Peripheral space before DRAM
   VirtualMemoryTable[1].PhysicalBase = 0x0;
