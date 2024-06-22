@@ -1,7 +1,7 @@
 ## @file
 # Component description file for the SPI SMM driver.
 #
-# Copyright (c) 2019 - 2024 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2024 Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -10,18 +10,17 @@
 [Defines]
   INF_VERSION                 = 0x00010017
   BASE_NAME                   = PchSpiSmm
-  FILE_GUID                   = 27F4917B-A707-4aad-9676-26DF168CBF0D
+  FILE_GUID                   = 28b8e210-b14d-4b3d-af3c-c73af224457e
   VERSION_STRING              = 1.0
-  MODULE_TYPE                 = DXE_SMM_DRIVER
-  PI_SPECIFICATION_VERSION    = 1.10
-  ENTRY_POINT                 = InstallPchSpiSmm
+  MODULE_TYPE                 = MM_STANDALONE
+  PI_SPECIFICATION_VERSION    = 0x00010032
+  ENTRY_POINT                 = InstallPchSpiMm
 
 
   [LibraryClasses]
   DebugLib
   IoLib
-  UefiDriverEntryPoint
-  UefiBootServicesTableLib
+  StandaloneMmDriverEntryPoint
   BaseLib
   MmServicesTableLib
   PchSpiCommonLib
@@ -41,5 +40,4 @@
 
 
 [Depex]
-  gEfiSmmBase2ProtocolGuid    #This is for SmmServicesTableLib
-  AND gEfiSmmCpuProtocolGuid  # This is for CpuSmmDisableBiosWriteProtect()
+  gEfiSmmCpuProtocolGuid  # This is for CpuSmmDisableBiosWriteProtect()
