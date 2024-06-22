@@ -40,14 +40,25 @@
   #
   # Real variables for stages 5+
   #
-  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+        NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLibStandaloneMm.inf
+    }
+
+  !else
+    MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+        NULL|MdeModulePkg/Library/VarCheckHiiLib/VarCheckHiiLib.inf
+        NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLib.inf
+    }
+  !endif
+
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
-    <LibraryClasses>
-      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
-      NULL|MdeModulePkg/Library/VarCheckHiiLib/VarCheckHiiLib.inf
-      NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLib.inf
-  }
 
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
 
@@ -126,21 +137,33 @@
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   }
 
-  MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
-  MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    StandaloneMmPkg/Drivers/StandaloneMmIplPei/StandaloneMmIplPei.inf
+    StandaloneMmPkg/Core/StandaloneMmCore.inf {
+      <LibraryClasses>
+        DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+        HobPrintLib|MdeModulePkg/Library/HobPrintLib/HobPrintLib.inf
+    }
 
-  MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
-  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
+    MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterStandaloneMm.inf
+    MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerStandaloneMm.inf
+    UefiCpuPkg/CpuIo2Smm/CpuIo2StandaloneMm.inf
+    MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceStandaloneMm.inf
+  !else
+    MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
+    MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
 
-  #UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
+    MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
+    MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
+    UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
+    MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
+    MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
+  !endif
 
-  UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
   MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
-  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
 
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
-  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
@@ -155,7 +178,12 @@
       NULL|SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2InstanceLibDTpm.inf
       NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
   }
-  SecurityPkg/Tcg/Tcg2Smm/Tcg2Smm.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    SecurityPkg/Tcg/Tcg2Smm/Tcg2StandaloneMm.inf
+  !else
+    SecurityPkg/Tcg/Tcg2Smm/Tcg2Smm.inf
+  !endif
+
   SecurityPkg/Tcg/Tcg2Acpi/Tcg2Acpi.inf
   SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
 !endif

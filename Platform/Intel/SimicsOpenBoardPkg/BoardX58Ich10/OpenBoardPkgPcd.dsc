@@ -46,7 +46,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
 
   ######################################
   # Platform Configuration
@@ -78,7 +78,9 @@
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
 
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
   gStandaloneMmPkgTokenSpaceGuid.PcdRestartMmDispatcherOnceMmEntryRegistered|TRUE
+!endif
 
 [PcdsFeatureFlag.X64]
   ######################################
