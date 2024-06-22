@@ -10,6 +10,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 #include <Library/SiliconPolicyInitLib.h>
 #include <Library/SiliconPolicyUpdateLib.h>
+#include <Library/SmmControlLib.h>
 
 
 /**
@@ -28,10 +29,13 @@ SiliconPolicyPeiPostMemEntryPoint (
   )
 {
   VOID  *Policy;
+  EFI_STATUS Status;
 
   Policy = SiliconPolicyInitPostMem (NULL);
   SiliconPolicyUpdatePostMem (Policy);
   SiliconPolicyDonePostMem (Policy);
+  Status = PeiInstallSmmControlPpi ();
+  ASSERT_EFI_ERROR (Status);
 
   return EFI_SUCCESS;
 }
