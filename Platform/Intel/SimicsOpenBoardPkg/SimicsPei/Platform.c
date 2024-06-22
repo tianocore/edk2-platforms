@@ -483,7 +483,6 @@ ReserveEmuVariableNvStore (
           VariableStore,
           (2 * PcdGet32 (PcdFlashNvStorageFtwSpareSize)) / 1024
         ));
-  PcdSet64S (PcdEmuVariableNvStoreReserved, VariableStore);
 }
 
 
