@@ -1,7 +1,7 @@
 /** @file
   PCH SPI SMM Driver implements the SPI Host Controller Compatibility Interface.
 
-  Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2019 - 2024 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -19,6 +19,10 @@ GLOBAL_REMOVE_IF_UNREFERENCED SPI_INSTANCE          *mSpiInstance;
 //
 GLOBAL_REMOVE_IF_UNREFERENCED UINT32                mSpiResvMmioAddr;
 
+EFI_STATUS
+InstallPchSpiCommon (
+  VOID
+  );
 /**
   <b>SPI Runtime SMM Module Entry Point</b>\n
   - <b>Introduction</b>\n
@@ -55,9 +59,28 @@ GLOBAL_REMOVE_IF_UNREFERENCED UINT32                mSpiResvMmioAddr;
 **/
 EFI_STATUS
 EFIAPI
-InstallPchSpi (
+InstallPchSpiSmm (
   IN EFI_HANDLE            ImageHandle,
   IN EFI_SYSTEM_TABLE      *SystemTable
+  )
+{
+  return InstallPchSpiCommon ();
+}
+
+
+EFI_STATUS
+EFIAPI
+InstallPchSpiMm (
+  IN EFI_HANDLE            ImageHandle,
+  IN EFI_MM_SYSTEM_TABLE     *SystemTable
+  )
+{
+  return InstallPchSpiCommon ();
+}
+
+EFI_STATUS
+InstallPchSpiCommon (
+  VOID
   )
 {
   EFI_STATUS  Status;
@@ -70,7 +93,7 @@ InstallPchSpi (
   ///
   /// Allocate pool for SPI protocol instance
   ///
-  Status = gSmst->SmmAllocatePool (
+  Status = gMmst->MmAllocatePool (
                     EfiRuntimeServicesData, /// MemoryType don't care
                     sizeof (SPI_INSTANCE),
                     (VOID **) &mSpiInstance
@@ -94,14 +117,14 @@ InstallPchSpi (
   //
   // Install the SMM PCH_SPI2_PROTOCOL interface
   //
-  Status = gSmst->SmmInstallProtocolInterface (
+  Status = gMmst->MmInstallProtocolInterface (
                     &(mSpiInstance->Handle),
                     &gPchSmmSpi2ProtocolGuid,
                     EFI_NATIVE_INTERFACE,
                     &(mSpiInstance->SpiProtocol)
                     );
   if (EFI_ERROR (Status)) {
-    gSmst->SmmFreePool (mSpiInstance);
+    gMmst->MmFreePool (mSpiInstance);
     return EFI_DEVICE_ERROR;
   }
 
