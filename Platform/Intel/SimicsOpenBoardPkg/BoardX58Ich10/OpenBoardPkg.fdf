@@ -204,7 +204,6 @@ INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 
 INF  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
 INF  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
-INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 INF  BoardModulePkg/LegacySioDxe/LegacySioDxe.inf
 INF  BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf
@@ -219,8 +218,17 @@ INF  RuleOverride=ACPITABLE $(BOARD_PKG)/AcpiTables/AcpiTables.inf
 
 INF $(BOARD_PKG)/SimicsVideoDxe/SimicsVideoDxe.inf
 INF  MinPlatformPkg/PlatformInit/PlatformInitDxe/PlatformInitDxe.inf
-INF  MinPlatformPkg/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
 INF  $(BOARD_PKG)/SimicsDxe/SimicsDxe.inf
+
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+  #INF  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuStandaloneMm.inf
+  INF  StandaloneMmPkg/Drivers/MmCommunicationDxe/MmCommunicationDxe.inf
+  INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceStandaloneMm.inf
+!else
+  #INF  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
+  INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+  INF  MinPlatformPkg/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
+!endif
 
 FILE FREEFORM = 7BB28B99-61BB-11D5-9A5D-0090273FC14D {
   SECTION RAW = $(BOARD_PKG)/Logo/Logo.bmp
