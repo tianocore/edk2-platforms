@@ -12,9 +12,13 @@ INF  SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.i
 !endif
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
-INF  SecurityPkg/Tcg/MemoryOverwriteControl/TcgMor.inf
-INF  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
-INF  SecurityPkg/Tcg/Tcg2Smm/Tcg2Smm.inf
-INF  RuleOverride = DRIVER_ACPITABLE SecurityPkg/Tcg/Tcg2Acpi/Tcg2Acpi.inf
-INF  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
+  INF  SecurityPkg/Tcg/MemoryOverwriteControl/TcgMor.inf
+  INF  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+  INF  RuleOverride = DRIVER_ACPITABLE SecurityPkg/Tcg/Tcg2Acpi/Tcg2Acpi.inf
+  INF  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  SecurityPkg/Tcg/Tcg2Smm/Tcg2StandaloneMm.inf
+  !else
+    INF  SecurityPkg/Tcg/Tcg2Smm/Tcg2Smm.inf
+  !endif
 !endif
