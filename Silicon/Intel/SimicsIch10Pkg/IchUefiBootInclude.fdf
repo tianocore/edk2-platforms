@@ -9,5 +9,9 @@
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
   INF  $(PCH_PKG)/SmmControl/RuntimeDxe/SmmControl2Dxe.inf
-  INF  $(PCH_PKG)/Spi/Smm/PchSpiSmm.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  $(PCH_PKG)/Spi/Smm/PchSpiStandaloneMm.inf
+  !else
+    INF  $(PCH_PKG)/Spi/Smm/PchSpiSmm.inf
+  !endif
 !endif
