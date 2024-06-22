@@ -26,6 +26,8 @@
   #
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
 
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x400
+
 [PcdsFeatureFlag.common]
   ######################################
   # Edk2 Configuration
