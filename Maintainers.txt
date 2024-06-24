@@ -285,8 +285,8 @@ F: Platform/RISC-V/PlatformPkg/
 M: Sunil V L <sunilvl@ventanamicro.com>
 R: Daniel Schaefer <git@danielschaefer.me>
 
-Platform/SiFive/U5Series
-F:Platform/SiFive/U5Series/
+Platform/SiFive/U5SeriesPkg
+F: Platform/SiFive/U5SeriesPkg/
 M: Daniel Schaefer <git@danielschaefer.me>
 
 Silicon/Intel
