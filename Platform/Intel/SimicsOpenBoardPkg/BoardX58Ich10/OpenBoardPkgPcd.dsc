@@ -77,6 +77,8 @@
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
 
+  gStandaloneMmPkgTokenSpaceGuid.PcdRestartMmDispatcherOnceMmEntryRegistered|TRUE
+
 [PcdsFeatureFlag.X64]
   ######################################
   # Edk2 Configuration
