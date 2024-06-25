@@ -10,7 +10,7 @@
 #
 ################################################################################
 [Defines]
-  PLATFORM_NAME                  = RdFremont
+  PLATFORM_NAME                  = RdV3
   PLATFORM_GUID                  = fd140b0f-4467-4314-aa69-cd0bd712e08e
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x0001001B
@@ -19,7 +19,7 @@
   BUILD_TARGETS                  = NOOPT|DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/ARM/SgiPkg/SgiPlatform.fdf
-  BOARD_DXE_FV_COMPONENTS        = Platform/ARM/SgiPkg/RdFremont/RdFremont.fdf.inc
+  BOARD_DXE_FV_COMPONENTS        = Platform/ARM/SgiPkg/RdV3/RdV3.fdf.inc
   BUILD_NUMBER                   = 1
 
 # include common definitions from SgiPlatform.dsc
@@ -52,4 +52,4 @@
 ################################################################################
 
 [Components.common]
-  Platform/ARM/SgiPkg/AcpiTables/RdFremontAcpiTables.inf
+  Platform/ARM/SgiPkg/AcpiTables/RdV3AcpiTables.inf

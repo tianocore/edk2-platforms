@@ -183,7 +183,7 @@ InstallType4ProcessorInformation (
   case RdN2:
   case RdN2Cfg1:
   case RdV2:
-  case RdFremont:
+  case RdV3:
     mArmRdSmbiosType4.Base.CoreCount = CoreCount;
     mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount;
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount;

@@ -9,7 +9,7 @@
 
 [Defines]
   INF_VERSION                    = 0x0001001A
-  BASE_NAME                      = RdFremontAcpiTables
+  BASE_NAME                      = RdV3AcpiTables
   FILE_GUID                      = c712719a-0aaf-438c-9cdd-35ab4d60207d  # gArmSgiAcpiTablesGuid
   MODULE_TYPE                    = USER_DEFINED
   VERSION_STRING                 = 1.0
@@ -18,9 +18,9 @@
   Dbg2.aslc
   Fadt.aslc
   Gtdt.aslc
-  RdFremont/Dsdt.asl
-  RdFremont/Madt.aslc
-  RdFremont/Pptt.aslc
+  RdV3/Dsdt.asl
+  RdV3/Madt.aslc
+  RdV3/Pptt.aslc
   Spcr.aslc
   SsdtEvents.asl
   SsdtRos.asl

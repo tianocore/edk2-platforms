@@ -1,14 +1,14 @@
 /** @file
-* Processor Properties Topology Table (PPTT) for RD-Fremont platform
+* Processor Properties Topology Table (PPTT) for RD-V3 platform
 *
 * Copyright (c) 2024, Arm Limited. All rights reserved.
 *
 * SPDX-License-Identifier: BSD-2-Clause-Patent
 *
 * This file describes the topological structure of the processor block on the
-* RD-Fremont platform in the form as defined by ACPI PPTT table. The RD-Fremont
-* platform includes sixteen single-thread CPUs. Each of the CPUs include 64KB
-* L1 Data cache, 64KB L1 Instruction cache and 2MB L2 cache.
+* RD-V3 platform in the form as defined by ACPI PPTT table. The RD-V3 platform
+* includes sixteen single-thread CPUs. Each of the CPUs include 64KB L1 Data
+* cache, 64KB L1 Instruction cache and 2MB L2 cache.
 *
 * @par Specification Reference:
 *   - ACPI 6.4, Chapter 5, Section 5.2.29, Processor Properties Topology Table
