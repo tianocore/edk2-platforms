@@ -660,6 +660,12 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuHighMemDxe/SbsaQemuHighMemDxe.inf
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf {
+    <LibraryClasses>
+      RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+      ArmTrngLib|ArmPkg/Library/ArmTrngLib/ArmTrngLib.inf
+      ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
+  }
 
   #
   # FAT filesystem + GPT/MBR partitioning
