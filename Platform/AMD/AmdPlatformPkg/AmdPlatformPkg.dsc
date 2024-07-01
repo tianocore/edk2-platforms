@@ -75,6 +75,10 @@
   SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
 
 [Components]
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFacsLib/AcpiFacsLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiHpetLib/AcpiHpetLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSpmiLib/AcpiSpmiLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiWsmtLib/AcpiWsmtLib.inf
   AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
   AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
   AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
