@@ -497,10 +497,6 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 [PcdsDynamicDefault.common]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|3
 
-  # Core and Cluster Count
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdCoreCount|1
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdClusterCount|1
-
   # System Memory Size -- 128 MB initially, actual size will be fetched from DT
   # TODO as no DT will be used we should pass this by some other method
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x08000000
