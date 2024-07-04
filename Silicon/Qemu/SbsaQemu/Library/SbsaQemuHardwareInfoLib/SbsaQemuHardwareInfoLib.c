@@ -8,6 +8,7 @@
 **/
 
 #include <Library/ArmSmcLib.h>
+#include <Library/ArmMonitorLib.h>
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 #include <Library/ResetSystemLib.h>
@@ -180,4 +181,38 @@ GetNumaNodeCount (
   }
 
   return NumberNumaNodes;
+}
+
+/**
+  Get CPU topology.
+**/
+VOID
+GetCpuTopology (
+  OUT CpuTopology  *CpuTopo
+  )
+{
+  ARM_MONITOR_ARGS  SmcArgs;
+
+  SmcArgs.Arg0 = SIP_SVC_GET_CPU_TOPOLOGY;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_TOPOLOGY call failed. We have no cpu topology information.\n", __FUNCTION__));
+    ResetShutdown ();
+  } else {
+    CpuTopo->Sockets  = SmcArgs.Arg1;
+    CpuTopo->Clusters = SmcArgs.Arg2;
+    CpuTopo->Cores    = SmcArgs.Arg3;
+    CpuTopo->Threads  = SmcArgs.Arg4;
+  }
+
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: CPU Topology: sockets: %d, clusters: %d, cores: %d, threads: %d\n",
+    __FUNCTION__,
+    CpuTopo->Sockets,
+    CpuTopo->Clusters,
+    CpuTopo->Cores,
+    CpuTopo->Threads
+    ));
 }

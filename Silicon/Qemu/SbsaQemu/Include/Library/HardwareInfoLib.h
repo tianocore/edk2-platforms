@@ -16,6 +16,19 @@ typedef struct {
 } MemoryInfo;
 
 /**
+  Sockets: the number of sockets on sbsa-ref platform.
+  Clusters: the number of clusters in one socket.
+  Cores: the number of cores in one cluster.
+  Threads: the number of threads in one core.
+**/
+typedef struct {
+  UINT32    Sockets;
+  UINT32    Clusters;
+  UINT32    Cores;
+  UINT32    Threads;
+} CpuTopology;
+
+/**
   Get CPU count from information passed by Qemu.
 
 **/
@@ -81,6 +94,19 @@ GetMemInfo (
 UINT64
 GetNumaNodeCount (
   VOID
+  );
+
+/**
+  Get cpu topology (sockets, clusters, cores, threads) from TF-A.
+
+  @param [out]  CpuTopo     A pointer to the cpu topology.
+
+
+  @retval                   the information of cpu topology.
+**/
+VOID
+GetCpuTopology (
+  OUT CpuTopology  *CpuTopo
   );
 
 #endif /* HARDWARE_INFO_LIB */
