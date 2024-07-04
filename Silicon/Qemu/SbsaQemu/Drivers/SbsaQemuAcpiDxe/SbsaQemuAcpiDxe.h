@@ -90,8 +90,8 @@ typedef struct {
 
 #define SBSAQEMU_ACPI_PROCESSOR_HIERARCHY_NODE_STRUCTURE_INIT(Flags, Parent, ACPIProcessorID, NumberOfPrivateResources)             \
   {                                                                                                                                 \
-    EFI_ACPI_6_3_PPTT_TYPE_PROCESSOR,                                                            /* Type */                         \
-    sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR) + NumberOfPrivateResources * sizeof (UINT32), /* Length */                       \
+    EFI_ACPI_6_5_PPTT_TYPE_PROCESSOR,                                                            /* Type */                         \
+    sizeof (EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR) + NumberOfPrivateResources * sizeof (UINT32), /* Length */                       \
     { EFI_ACPI_RESERVED_BYTE, EFI_ACPI_RESERVED_BYTE },                                          /* Reserved */                     \
     Flags,                                                                                       /* Flags */                        \
     Parent,                                                                                      /* Parent */                       \
