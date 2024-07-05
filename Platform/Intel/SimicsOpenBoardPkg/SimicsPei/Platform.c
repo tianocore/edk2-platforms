@@ -626,5 +626,9 @@ InitializePlatform (
   MiscInitialization ();
   InstallFeatureControlCallback ();
 
+  if (FeaturePcdGet (PcdSmmSmramRequire)) {
+    RelocateSmBase ();
+  }
+
   return EFI_SUCCESS;
 }
