@@ -57,6 +57,7 @@
   MtrrLib
   PcdLib
   CmosAccessLib
+  SmmControlLib
   SmmAccessLib
   SmmRelocationLib
 
