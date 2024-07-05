@@ -1,7 +1,7 @@
 /** @file
   Platform PEI module include file.
 
-  Copyright (c) 2006 - 2019 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2006 - 2024 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -73,6 +73,11 @@ InitializeRamRegions (
 
 VOID
 InstallFeatureControlCallback (
+  VOID
+  );
+
+VOID
+RelocateSmBase (
   VOID
   );
 
