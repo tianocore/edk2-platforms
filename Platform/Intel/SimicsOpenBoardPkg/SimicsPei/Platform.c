@@ -23,6 +23,7 @@
 #include <Library/PeiServicesLib.h>
 #include <Library/ResourcePublicationLib.h>
 #include <Library/CmosAccessLib.h>
+#include <Library/SmmControlLib.h>
 #include <Guid/MemoryTypeInformation.h>
 #include <Ppi/MasterBootMode.h>
 #include <IndustryStandard/Pci22.h>
@@ -622,6 +623,9 @@ InitializePlatform (
     }
     MemMapInitialization ();
   }
+
+  Status = PeiInstallSmmControlPpi ();
+  ASSERT_EFI_ERROR (Status);
 
   MiscInitialization ();
   InstallFeatureControlCallback ();
