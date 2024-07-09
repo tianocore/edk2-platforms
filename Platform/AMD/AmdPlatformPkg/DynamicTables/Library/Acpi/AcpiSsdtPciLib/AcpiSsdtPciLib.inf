@@ -1,0 +1,57 @@
+## @file
+#  Creates ACPI SSDT PCI tables for AMD platforms.
+#
+#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiSsdtPciLib
+  FILE_GUID         = CF551DAA-C1BD-46FE-A68E-17CA216CF7B9
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiSsdtPciLibConstructor
+  DESTRUCTOR        = AcpiSsdtPciLibDestructor
+
+[Sources]
+  AcpiSsdtPciLib.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+
+[LibraryClasses]
+  AmlLib
+  BaseLib
+  DebugLib
+  PlatformSocLib
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiAcpiSdtProtocolGuid
+  gEfiPciRootBridgeIoProtocolGuid
+
+[Guids]
+  gEfiAcpiTableGuid
+  gEfiEventReadyToBootGuid
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress             ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize                ## CONSUMES
+  gPcAtChipsetPkgTokenSpaceGuid.PcdIoApicBaseAddress            ## CONSUMES
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiPciRootBridgeIoProtocolGuid AND
+  gEfiPciEnumerationCompleteProtocolGuid
