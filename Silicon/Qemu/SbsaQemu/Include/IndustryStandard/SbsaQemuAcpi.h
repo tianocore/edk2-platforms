@@ -74,18 +74,6 @@ typedef struct {
   UINT8    uid[8];
 } SBSAQEMU_ACPI_CPU_DEVICE;
 
-#define SBSAQEMU_L1_D_CACHE_SIZE  SIZE_32KB
-#define SBSAQEMU_L1_D_CACHE_SETS  256
-#define SBSAQEMU_L1_D_CACHE_ASSC  2
-
-#define SBSAQEMU_L1_I_CACHE_SIZE  SIZE_32KB
-#define SBSAQEMU_L1_I_CACHE_SETS  256
-#define SBSAQEMU_L1_I_CACHE_ASSC  2
-
-#define SBSAQEMU_L2_CACHE_SIZE  SIZE_512KB
-#define SBSAQEMU_L2_CACHE_SETS  1024
-#define SBSAQEMU_L2_CACHE_ASSC  8
-
 #define CLUSTER_INDEX     (sizeof (EFI_ACPI_DESCRIPTION_HEADER))
 #define L1_D_CACHE_INDEX  (CLUSTER_INDEX + sizeof (EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR))
 #define L1_I_CACHE_INDEX  (L1_D_CACHE_INDEX + sizeof (EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE))
@@ -106,9 +94,9 @@ typedef struct {
       1,                       /* CacheIdValid */                              \
     },                                                                         \
     0,                         /* NextLevelOfCache */                          \
-    SBSAQEMU_L1_D_CACHE_SIZE,  /* Size */                                      \
-    SBSAQEMU_L1_D_CACHE_SETS,  /* NumberOfSets */                              \
-    SBSAQEMU_L1_D_CACHE_ASSC,  /* Associativity */                             \
+    0,                         /* Size */                                      \
+    0,                         /* NumberOfSets */                              \
+    0,                         /* Associativity */                             \
     {                                                                          \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                     \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,                           \
@@ -133,9 +121,9 @@ typedef struct {
       1,                       /* CacheIdValid */                              \
     },                                                                         \
     0,                         /* NextLevelOfCache */                          \
-    SBSAQEMU_L1_I_CACHE_SIZE,  /* Size */                                      \
-    SBSAQEMU_L1_I_CACHE_SETS,  /* NumberOfSets */                              \
-    SBSAQEMU_L1_I_CACHE_ASSC,  /* Associativity */                             \
+    0,                         /* Size */                                      \
+    0,                         /* NumberOfSets */                              \
+    0,                         /* Associativity */                             \
     {                                                                          \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_ALLOCATION_READ,                           \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,                    \
@@ -159,10 +147,10 @@ typedef struct {
       1,                     /* LineSizeValid */                               \
       1,                     /* CacheIdValid */                                \
     },                                                                         \
-    0,                       /* NextLevelOfCache */                            \
-    SBSAQEMU_L2_CACHE_SIZE,  /* Size */                                        \
-    SBSAQEMU_L2_CACHE_SETS,  /* NumberOfSets */                                \
-    SBSAQEMU_L2_CACHE_ASSC,  /* Associativity */                               \
+    0,                         /* NextLevelOfCache */                          \
+    0,                         /* Size */                                      \
+    0,                         /* NumberOfSets */                              \
+    0,                         /* Associativity */                             \
     {                                                                          \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                     \
       EFI_ACPI_6_5_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,                        \

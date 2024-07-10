@@ -2,15 +2,18 @@
 *  This file is an ACPI driver for the Qemu SBSA platform.
 *
 *  Copyright (c) 2020-2024, Linaro Ltd. All rights reserved.
+*  Copyright (c) 2020-2021, Ampere Computing LLC. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
 **/
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/AcpiAml.h>
+#include <IndustryStandard/ArmCache.h>
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
 #include <IndustryStandard/SbsaQemuPlatformVersion.h>
+#include <Library/ArmLib/AArch64/AArch64Lib.h>
 #include <Library/AcpiLib.h>
 #include <Library/ArmLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -494,6 +497,44 @@ AddSsdtTable (
   return Status;
 }
 
+STATIC VOID
+AcpiPpttFillCacheSizeInfo (
+  EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE  *Node,
+  UINT32                             Level,
+  BOOLEAN                            DataCache,
+  BOOLEAN                            UnifiedCache
+  )
+{
+  CSSELR_DATA  CsselrData;
+  CCSIDR_DATA  CcsidrData;
+
+  CsselrData.Data       = 0;
+  CsselrData.Bits.Level = Level - 1;
+  CsselrData.Bits.InD   = (!DataCache && !UnifiedCache);
+
+  CcsidrData.Data = ReadCCSIDR (CsselrData.Data);
+
+  Node->Flags.LineSizeValid      = 1;
+  Node->Flags.NumberOfSetsValid  = 1;
+  Node->Flags.AssociativityValid = 1;
+  Node->Flags.SizePropertyValid  = 1;
+  Node->Flags.CacheTypeValid     = 1;
+
+  if (ArmHasCcidx ()) {
+    Node->NumberOfSets  = CcsidrData.BitsCcidxAA64.NumSets + 1;
+    Node->Associativity = CcsidrData.BitsCcidxAA64.Associativity + 1;
+    Node->LineSize      = (1 << (CcsidrData.BitsCcidxAA64.LineSize + 4));
+  } else {
+    Node->NumberOfSets  = (UINT16)CcsidrData.BitsNonCcidx.NumSets + 1;
+    Node->Associativity = (UINT16)CcsidrData.BitsNonCcidx.Associativity + 1;
+    Node->LineSize      = (UINT16)(1 << (CcsidrData.BitsNonCcidx.LineSize + 4));
+  }
+
+  Node->Size = Node->NumberOfSets *
+               Node->Associativity *
+               Node->LineSize;
+}
+
 STATIC
 UINT32
 AddCoresToPpttTable (
@@ -537,6 +578,10 @@ AddCoresToPpttTable (
   EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE  L1DCache = SBSAQEMU_ACPI_PPTT_L1_D_CACHE_STRUCT;
   EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE  L1ICache = SBSAQEMU_ACPI_PPTT_L1_I_CACHE_STRUCT;
   EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE  L2Cache  = SBSAQEMU_ACPI_PPTT_L2_CACHE_STRUCT;
+
+  AcpiPpttFillCacheSizeInfo (&L1DCache, 1, TRUE, FALSE);
+  AcpiPpttFillCacheSizeInfo (&L1ICache, 1, FALSE, FALSE);
+  AcpiPpttFillCacheSizeInfo (&L2Cache, 2, FALSE, TRUE);
 
   CoreOffset = ClusterOffset + sizeof (EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR);
   Offset     = CoreOffset;
