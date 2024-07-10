@@ -1,0 +1,44 @@
+## @file
+#
+#  Copyright (c) 2023, StarFive Technology Co., Ltd. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SpiFlashDxe
+  FILE_GUID                      = D3DF07BE-3810-4521-89EF-C4E22E0B2484
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SpiFlashEntryPoint
+
+[Sources]
+  SpiFlashDxe.c
+  SpiFlashDxe.h
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/StarFive/JH7110Pkg/JH7110Pkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  NorFlashInfoLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  gJH7110SpiFlashProtocolGuid
+  gJH7110SpiMasterProtocolGuid
+
+[Depex]
+  gJH7110SpiMasterProtocolGuid

@@ -1,0 +1,57 @@
+## @file
+#
+#  Copyright (c) 2023, StarFive Technology Co., Ltd. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = JH7110Pkg
+  PACKAGE_GUID                   = D4B585C5-EBCA-4779-B974-05A3CF2F10C4
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gJH7110TokenSpaceGuid = {0x44045e56, 0x7056, 0x4be6, {0x88, 0xc0, 0x49, 0x0c, 0x67, 0x90, 0x2f, 0xba}}
+
+[PcdsFixedAtBuild.common]
+# Memory map
+  gJH7110TokenSpaceGuid.PcdJH7110FlashVarOffset|0x0|UINT32|0x00000001
+
+# PCIe
+  gJH7110TokenSpaceGuid.PcdPciRegBase|0x2b000000|UINT64|0x00000002
+  gJH7110TokenSpaceGuid.PcdPciBusMmioAdr|0x0|UINT64|0x00000003
+  gJH7110TokenSpaceGuid.PcdPciBusMmioLen|0x0|UINT32|0x00000004
+  gJH7110TokenSpaceGuid.PcdPciCpuMmioAdr|0x0|UINT64|0x00000005
+  gJH7110TokenSpaceGuid.PcdPciConfigRegBase|0x940000000|UINT64|0x00000006
+  gJH7110TokenSpaceGuid.PcdPciBusMin|0x0|UINT32|0x10000007
+  gJH7110TokenSpaceGuid.PcdPciBusMax|0x0|UINT32|0x10000008
+  gJH7110TokenSpaceGuid.PcdPciIoBase|0x0|UINT64|0x10000009
+  gJH7110TokenSpaceGuid.PcdPciIoSize|0x0|UINT64|0x1000000A
+  gJH7110TokenSpaceGuid.PcdPciIoOffset|0x0|UINT64|0x1000000B
+  gJH7110TokenSpaceGuid.PcdPci0Mmio32Base|0x0|UINT32|0x1000000C
+  gJH7110TokenSpaceGuid.PcdPci0Mmio32Size|0x0|UINT32|0x1000000D
+  gJH7110TokenSpaceGuid.PcdPci0Mmio64Base|0x0|UINT64|0x1000000E
+  gJH7110TokenSpaceGuid.PcdPci0Mmio64Size|0x0|UINT64|0x1000000F
+  gJH7110TokenSpaceGuid.PcdPci1Mmio32Base|0x0|UINT32|0x10000010
+  gJH7110TokenSpaceGuid.PcdPci1Mmio32Size|0x0|UINT32|0x1000011
+  gJH7110TokenSpaceGuid.PcdPci1Mmio64Base|0x0|UINT64|0x1000012
+  gJH7110TokenSpaceGuid.PcdPci1Mmio64Size|0x0|UINT64|0x1000013
+
+# SPI
+  gJH7110TokenSpaceGuid.PcdSpiFlashRegBase|0|UINT32|0x1000014
+  gJH7110TokenSpaceGuid.PcdSpiFlashAhbBase|0|UINT64|0x1000015
+  gJH7110TokenSpaceGuid.PcdSpiFlashFifoWidth|0|UINT8|0x10000016
+  gJH7110TokenSpaceGuid.PcdSpiFlashRefClkHz|0|UINT32|0x10000017
+  gJH7110TokenSpaceGuid.PcdSpiFlashTshslNs|0|UINT32|0x10000018
+  gJH7110TokenSpaceGuid.PcdSpiFlashTsd2dNs|0|UINT32|0x1000019
+  gJH7110TokenSpaceGuid.PcdSpiFlashTchshNs|0|UINT32|0x100001A
+  gJH7110TokenSpaceGuid.PcdSpiFlashTslchNs|0|UINT32|0x100001B
+
+[Protocols]
+  gJH7110SpiMasterProtocolGuid = { 0xA33C46E0, 0x4FB6, 0x4AA3, { 0x8E, 0x66, 0x00, 0x06, 0x9F, 0x3A, 0x11, 0x81 }}
+  gJH7110SpiFlashProtocolGuid  = { 0x5ECECDF6, 0x81DA, 0x4E10, { 0x9D, 0x4B, 0x26, 0x65, 0x8C, 0x03, 0xAB, 0xBC }}
