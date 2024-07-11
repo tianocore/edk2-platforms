@@ -15,7 +15,7 @@
 #include <IndustryStandard/SbsaQemuSmc.h>
 
 /**
-  Get CPU count from information passed by Qemu.
+  Get CPU count from information passed by TF-A.
 
 **/
 UINT32
@@ -38,7 +38,7 @@ GetCpuCount (
 }
 
 /**
-  Get MPIDR for a given cpu from device tree passed by Qemu.
+  Get MPIDR for a given cpu from TF-A.
 
   @param [in]   CpuId    Index of cpu to retrieve MPIDR value for.
 
@@ -67,7 +67,7 @@ GetMpidr (
 }
 
 /**
-  Get NUMA node id for a given cpu from device tree passed by Qemu.
+  Get NUMA node id for a given cpu from TF-A.
 
   @param [in]   CpuId    Index of cpu to retrieve NUMA node id for.
 
