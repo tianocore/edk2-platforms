@@ -82,17 +82,37 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
             SmramBaseAddress,
             FixedPcdGet32 (PcdAmdSmramAreaSize)
             );
-          DEBUG ((
-            DEBUG_INFO,
-            "SMRAM RESERVED_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
-            SmramBaseAddress,
-            FixedPcdGet32 (PcdAmdSmramAreaSize)
-            ));
+          DEBUG (
+            (
+             DEBUG_INFO,
+             "SMRAM RESERVED_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+             SmramBaseAddress,
+             FixedPcdGet32 (PcdAmdSmramAreaSize)
+            )
+            );
 
-          AmdMemoryInfoRange->Size -= FixedPcdGet32 (PcdAmdSmramAreaSize);
+          if (AmdMemoryInfoRange->Size > 0) {
+            BuildResourceDescriptorHob (
+              EFI_RESOURCE_SYSTEM_MEMORY,
+              SYSTEM_MEMORY_ATTRIBUTES,
+              AmdMemoryInfoRange->Base,
+              AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+              );
+
+            DEBUG (
+              (
+               DEBUG_INFO,
+               "SYSTEM_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+               AmdMemoryInfoRange->Base,
+               AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+              )
+              );
+          }
+
+          break;
         }
 
-        if (AmdMemoryInfoRange->Size) {
+        if (AmdMemoryInfoRange->Size > 0) {
           BuildResourceDescriptorHob (
             EFI_RESOURCE_SYSTEM_MEMORY,
             SYSTEM_MEMORY_ATTRIBUTES,
@@ -100,12 +120,14 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
             AmdMemoryInfoRange->Size
             );
 
-          DEBUG ((
-            DEBUG_INFO,
-            "SYSTEM_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
-            AmdMemoryInfoRange->Base,
-            AmdMemoryInfoRange->Size
-            ));
+          DEBUG (
+            (
+             DEBUG_INFO,
+             "SYSTEM_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+             AmdMemoryInfoRange->Base,
+             AmdMemoryInfoRange->Size
+            )
+            );
         }
 
         break;
@@ -118,12 +140,14 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
           AmdMemoryInfoRange->Size
           );
 
-        DEBUG ((
-          DEBUG_INFO,
-          "MMIO: Base = 0x%lX, Size = 0x%lX\n",
-          AmdMemoryInfoRange->Base,
-          AmdMemoryInfoRange->Size
-          ));
+        DEBUG (
+          (
+           DEBUG_INFO,
+           "MMIO: Base = 0x%lX, Size = 0x%lX\n",
+           AmdMemoryInfoRange->Base,
+           AmdMemoryInfoRange->Size
+          )
+          );
         break;
 
       case AMD_MEMORY_ATTRIBUTE_RESERVED:
@@ -136,12 +160,14 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
           AmdMemoryInfoRange->Size
           );
 
-        DEBUG ((
-          DEBUG_INFO,
-          "RESERVED_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
-          AmdMemoryInfoRange->Base,
-          AmdMemoryInfoRange->Size
-          ));
+        DEBUG (
+          (
+           DEBUG_INFO,
+           "RESERVED_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+           AmdMemoryInfoRange->Base,
+           AmdMemoryInfoRange->Size
+          )
+          );
         break;
     }
   }
@@ -177,21 +203,25 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
                                     &MemorySize
                                     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "%a: Error(%r) in getting Platform Memory size.\n",
-      __func__,
-      Status
-      ));
+    DEBUG (
+      (
+       DEBUG_ERROR,
+       "%a: Error(%r) in getting Platform Memory size.\n",
+       __func__,
+       Status
+      )
+      );
     return Status;
   }
 
-  DEBUG ((
-    DEBUG_INFO,
-    "Installing PeiMemory, BaseAddress = 0x%x, Size = 0x%x\n",
-    0,
-    MemorySize
-    ));
+  DEBUG (
+    (
+     DEBUG_INFO,
+     "Installing PeiMemory, BaseAddress = 0x%x, Size = 0x%x\n",
+     0,
+     MemorySize
+    )
+    );
   Status = PeiServicesInstallPeiMemory (0, MemorySize);
   ASSERT_EFI_ERROR (Status);
   return Status;
