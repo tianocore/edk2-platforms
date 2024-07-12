@@ -1,0 +1,55 @@
+## @file
+#  Creates ACPI MADT/APIC tables for AMD platforms.
+#
+#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiMadtLib
+  FILE_GUID         = 2B53BFA1-DC75-4132-BD86-26DA42400AFF
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiMadtLibConstructor
+  DESTRUCTOR        = AcpiMadtLibDestructor
+
+[Sources]
+  AcpiMadtLib.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  LocalApicLib
+  MemoryAllocationLib
+  PlatformSocLib
+  SortLib
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid
+  gEfiMpServiceProtocolGuid
+
+[Guids]
+  gEfiAcpiTableGuid
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## CONSUMES
+  gPcAtChipsetPkgTokenSpaceGuid.PcdIoApicBaseAddress            ## CONSUMES
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuLocalApicBaseAddress          ## CONSUMES
