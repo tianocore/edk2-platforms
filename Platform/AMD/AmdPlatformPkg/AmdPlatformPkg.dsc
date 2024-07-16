@@ -76,6 +76,7 @@
 
 [Components]
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFacsLib/AcpiFacsLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFadtLib/AcpiFadtLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiHpetLib/AcpiHpetLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiMadtLib/AcpiMadtLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiMcfgLib/AcpiMcfgLib.inf
