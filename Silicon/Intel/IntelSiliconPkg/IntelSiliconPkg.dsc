@@ -105,6 +105,8 @@
   IntelSiliconPkg/Feature/PcieSecurity/SamplePlatformDevicePolicyDxe/SamplePlatformDevicePolicyDxe.inf
   IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
   IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceStandaloneMm.inf
+  IntelSiliconPkg/Feature/VTd/IntelVTdCoreDxe/IntelVTdCoreDxe.inf
+  IntelSiliconPkg/Feature/VTd/IntelVTdCorePei/IntelVTdCorePei.inf
   IntelSiliconPkg/Feature/VTd/IntelVTdDxe/IntelVTdDxe.inf
   IntelSiliconPkg/Feature/VTd/IntelVTdDmarPei/IntelVTdDmarPei.inf
   IntelSiliconPkg/Feature/VTd/IntelVTdPmrPei/IntelVTdPmrPei.inf
@@ -113,8 +115,15 @@
   IntelSiliconPkg/Feature/Capsule/MicrocodeUpdateDxe/MicrocodeUpdateDxe.inf
   IntelSiliconPkg/Feature/Capsule/Library/MicrocodeFlashAccessLibNull/MicrocodeFlashAccessLibNull.inf
   IntelSiliconPkg/Feature/ShadowMicrocode/ShadowMicrocodePei.inf
+  IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLib/PeiSmmAccessLib.inf
+  IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLibSmramc/PeiSmmAccessLib.inf
+  IntelSiliconPkg/Feature/SmmAccess/SmmAccessDxe/SmmAccess.inf
+  IntelSiliconPkg/Feature/SmmControl/Library/PeiSmmControlLib/PeiSmmControlLib.inf
+  IntelSiliconPkg/Library/IntelVTdPeiDxeLib/IntelVTdPeiDxeLib.inf
+  IntelSiliconPkg/Library/IntelVTdPeiDxeLib/IntelVTdPeiDxeLibExt.inf
   IntelSiliconPkg/Library/PeiDxeSmmBootMediaLib/PeiFirmwareBootMediaLib.inf
   IntelSiliconPkg/Library/PeiDxeSmmBootMediaLib/DxeSmmFirmwareBootMediaLib.inf
+  IntelSiliconPkg/Library/PeiGetVtdPmrAlignmentLib/PeiGetVtdPmrAlignmentLib.inf
   IntelSiliconPkg/Library/DxeAslUpdateLib/DxeAslUpdateLib.inf
   IntelSiliconPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
   IntelSiliconPkg/Library/SpiFlashCommonLibNull/SpiFlashCommonLibNull.inf
