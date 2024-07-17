@@ -800,7 +800,12 @@ GetArchCommonNameSpaceObject (
   PlatformRepo = This->PlatRepoInfo;
   CommonPlatRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
 
-  switch (GET_CM_OBJECT_ID (CmObjectId)) {
+  // Search for the FVP platform specific Arch Common namespace objects
+  Status = GetArchCommonNameSpaceObjectPlat (This, CmObjectId, Token, CmObject);
+
+  // Get the object if not found in the platform specific search
+  if (Status == EFI_NOT_FOUND) {
+    switch (GET_CM_OBJECT_ID (CmObjectId)) {
       case EArchCommonObjPowerManagementProfileInfo:
         Status = HandleCmObject (
                    CmObjectId,
@@ -809,7 +814,7 @@ GetArchCommonNameSpaceObject (
                    1,
                    CmObject
                    );
-      break;
+        break;
 
       case EArchCommonObjConsolePortInfo:
         Status = HandleCmObject (
@@ -819,7 +824,7 @@ GetArchCommonNameSpaceObject (
                    1,
                    CmObject
                    );
-      break;
+        break;
 
       case EArchCommonObjSerialDebugPortInfo:
         Status = HandleCmObject (
@@ -829,9 +834,9 @@ GetArchCommonNameSpaceObject (
                    1,
                    CmObject
                    );
-      break;
+        break;
 
-#ifdef HEADLESS_PLATFORM
+ #ifdef HEADLESS_PLATFORM
       case EArchCommonObjFixedFeatureFlags:
         Status = HandleCmObject (
                    CmObjectId,
@@ -840,8 +845,8 @@ GetArchCommonNameSpaceObject (
                    1,
                    CmObject
                    );
-      break;
-#endif
+        break;
+ #endif
 
       case EArchCommonObjCmRef:
         Status = HandleCmObjectSearchPlatformRepo (
@@ -851,7 +856,7 @@ GetArchCommonNameSpaceObject (
                    GetCmObjRefs,
                    CmObject
                    );
-      break;
+        break;
 
       case EArchCommonObjProcHierarchyInfo:
         Status = HandleCmObject (
@@ -861,7 +866,7 @@ GetArchCommonNameSpaceObject (
                    PLAT_PROC_HIERARCHY_NODE_COUNT,
                    CmObject
                    );
-      break;
+        break;
 
       case EArchCommonObjCacheInfo:
         Status = HandleCmObject (
@@ -871,19 +876,21 @@ GetArchCommonNameSpaceObject (
                    ARRAY_SIZE (CommonPlatRepo->CacheInfo),
                    CmObject
                    );
-      break;
+        break;
 
-      default: {
-      Status = EFI_NOT_FOUND;
-      DEBUG ((
-        DEBUG_INFO,
-        "INFO: Object 0x%x. Status = %r\n",
-        CmObjectId,
-        Status
-        ));
-      break;
-    }
-  } //switch
+      default:
+      {
+        Status = EFI_NOT_FOUND;
+        DEBUG ((
+          DEBUG_INFO,
+          "INFO: Object 0x%x. Status = %r\n",
+          CmObjectId,
+          Status
+          ));
+        break;
+      }
+    } // switch
+  } // if
 
   return Status;
 }
