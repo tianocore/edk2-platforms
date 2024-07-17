@@ -111,7 +111,7 @@ VTdLogAddEvent (
     Item->Data1 = Data1;
     Item->Data2 = Data2;
     Item->Header.DataSize  = sizeof (VTDLOG_EVENT_2PARAM);
-    Item->Header.LogType   = (UINT64) (1 << EventType);
+    Item->Header.LogType   = LShiftU64 (1, EventType);
     Item->Header.Timestamp = AsmReadTsc ();
   }
 }
@@ -151,8 +151,8 @@ VTdLogAddDataEvent (
     CopyMem (Item->Data, Data, DataSize);
 
     Item->Header.DataSize  = EventSize;
-    Item->Header.LogType   = (UINT64) (1 << EventType);
-    Item->Header.Timestamp = AsmReadTsc ();    
+    Item->Header.LogType   = LShiftU64 (1, EventType);
+    Item->Header.Timestamp = AsmReadTsc ();
   }
 }
 /**
@@ -372,7 +372,7 @@ PeiIoMmuMap (
       );
   }
 
-  VTdLogAddEvent (VTDLOG_PEI_PPI_MAP, (UINT64) HostAddress, Length);
+  VTdLogAddEvent (VTDLOG_PEI_PPI_MAP, (UINT64) (UINTN) HostAddress, Length);
   return EFI_SUCCESS;
 }
 
@@ -498,7 +498,7 @@ PeiIoMmuAllocateBuffer (
 
   DEBUG ((DEBUG_INFO, "PeiIoMmuAllocateBuffer - allocate - %x\n", *HostAddress));
 
-  VTdLogAddEvent (VTDLOG_PEI_PPI_ALLOC_BUFFER, (UINT64) (*HostAddress), Length);
+  VTdLogAddEvent (VTDLOG_PEI_PPI_ALLOC_BUFFER, (UINT64) (UINTN) (*HostAddress), Length);
 
   return EFI_SUCCESS;
 }
