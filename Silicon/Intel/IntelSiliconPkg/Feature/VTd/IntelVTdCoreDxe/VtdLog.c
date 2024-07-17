@@ -77,7 +77,7 @@ VTdLogAddEvent (
     Item->Data2 = Data2;
 
     Item->Header.DataSize  = sizeof (VTDLOG_EVENT_2PARAM);
-    Item->Header.LogType   = (UINT64) 1 << EventType;
+    Item->Header.LogType   = LShiftU64 (1, EventType);
     Item->Header.Timestamp = AsmReadTsc ();
   }
 }
@@ -117,11 +117,11 @@ VTdLogAddDataEvent (
     CopyMem (Item->Data, Data, DataSize);
 
     Item->Header.DataSize  = EventSize;
-    Item->Header.LogType   = (UINT64) 1 << EventType;
+    Item->Header.LogType   = LShiftU64 (1, EventType);
     Item->Header.Timestamp = AsmReadTsc ();
   }
 }
-  
+
 /**
   Get Event Items From Pei Pre-Mem Buffer
 
@@ -154,10 +154,10 @@ VTdGetEventItemsFromPeiPreMemBuffer (
       Event.Header.DataSize = sizeof (VTDLOG_EVENT_2PARAM);
       Event.Header.Timestamp = 0;
 
-      Event.Header.LogType = ((UINT64) 1) << VTDLOG_PEI_PRE_MEM_DMA_PROTECT;
+      Event.Header.LogType = LShiftU64 (1, VTDLOG_PEI_PRE_MEM_DMA_PROTECT);
       Event.Data1 = InfoBuffer[Index].BarAddress;
       Event.Data2 = InfoBuffer[Index].Mode;
-      Event.Data2 |= InfoBuffer[Index].Status<<8;
+      Event.Data2 |= LShiftU64 (InfoBuffer[Index].Status, 8);
       CallbackHandle (Context, &Event.Header);
     }
     EventCount++;
@@ -231,7 +231,7 @@ VTdGenerateStateEvent (
   Item.Data2 = Data2;
 
   Item.Header.DataSize  = sizeof (VTDLOG_EVENT_2PARAM);
-  Item.Header.LogType   = (UINT64) 1 << EventType;
+  Item.Header.LogType   = LShiftU64 (1, EventType);
   Item.Header.Timestamp = 0;
 
   if (CallbackHandle) {
