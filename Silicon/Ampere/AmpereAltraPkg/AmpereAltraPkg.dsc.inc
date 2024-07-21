@@ -259,7 +259,6 @@
 !endif
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
   NVParamLib|Silicon/Ampere/AmpereAltraPkg/Library/NVParamLib/RuntimeNVParamLib.inf
   AmpereCpuLib|Silicon/Ampere/AmpereAltraPkg/Library/AmpereCpuLib/RuntimeAmpereCpuLib.inf
@@ -588,7 +587,7 @@
 !endif
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
-  EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
+  MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
   EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   ArmPkg/Drivers/MmCommunicationDxe/MmCommunication.inf
