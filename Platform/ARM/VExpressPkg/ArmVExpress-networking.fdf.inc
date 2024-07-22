@@ -9,6 +9,11 @@
   #
 !include NetworkPkg/Network.fdf.inc
 
+  #
+  # NetLibDxe requires RngDxe driver.
+  #
+  INF SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
+
 !if $(INCLUDE_TFTP_COMMAND) == TRUE
   #
   # TFTP Shell command
