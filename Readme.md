@@ -32,10 +32,30 @@ Many platforms require additional image processing beyond the EDK2 build.
 Any such steps should be documented (as a Readme.md), and any necessary helper
 scripts be contained, under said platform directory.
 
-Any contributions to this branch should be submitted via email to the
-edk2-devel mailing list with a subject prefix of `[platforms]`. See
-[Laszlo's excellent guide](https://github.com/tianocore/tianocore.github.io/wiki/Laszlo's-unkempt-git-guide-for-edk2-contributors-and-maintainers) for details
-on how to do this successfully.
+Any contributions to this repo should be submitted via GitHub Pull Request.
+
+For details of who owns code in certain parts of the repo, see the CODEOWNERS and
+REVIEWERS files. Look in CONTRIBUTORS.md to find out people's names and their
+email addresses.
+
+In general, you should not privately email the maintainer. You should
+email the edk2-devel list, and Cc the area maintainers and
+reviewers.
+
+If the maintainer wants to hand over the role to other people,
+they should create a PR on GitHub to update CODEOWNERS,
+REVIEWERS and CONTRIBUTORS.md with new maintainer, and the new maintainer
+should review the PR and approve it.
+
+EDK II Platforms
+----------------
+W: https://github.com/tianocore/tianocore.github.io/wiki/EDK-II  
+L: https://edk2.groups.io/g/devel/  
+T: git - https://github.com/tianocore/edk2-platforms.git  
+
+Responsible Disclosure, Reporting Security Issues
+-------------------------------------------------
+W: https://github.com/tianocore/tianocore.github.io/wiki/Security
 
 # How to build (Linux Environment)
 
@@ -294,7 +314,7 @@ For more information, see the
 
 # Maintainers
 
-See [Maintainers.txt](Maintainers.txt).
+See [CONTRIBUTORS.md](CONTRIBUTORS.md), [CODEOWNERS](CODEOWNERS) and [REVIEWERS](REVIEWERS).
 
 # Submodules
 
