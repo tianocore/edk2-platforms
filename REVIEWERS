@@ -1,0 +1,95 @@
+# This file contains the list of reviewers (i.e. people who can
+# review changes, but don't own the areas and can't commit changes)
+# for various parts of edk2-platforms.
+
+# EDK II Platforms reviewers
+# ==========================
+
+# AMD VanGoghBoard
+/Platform/AMD/VanGoghBoard/** @fhh200000 @mingxzha @YSHRong
+
+# Ampere
+/Platform/Ampere/** @bcran @chuongtranle @leiflindholm
+/Silicon/Ampere/** @bcran @chuongtranle @leiflindholm
+
+# ARM
+# Add Thomas Abraham
+# /Platform/ARM/**
+
+# BeagleBoard
+/Platform/BeagleBoard/** @ardbiesheuvel
+/Silicon/TexasInstruments/** @ardbiesheuvel
+
+/Features/Ext4Pkg/** @mhaeuser
+
+# Hisilicon
+# Add Wenyi Xie
+/Platform/Hisilicon/** @ardbiesheuvel
+/Silicon/Hisilicon/** @ardbiesheuvel
+
+/Features/Intel/** @lgao4
+/Features/Intel/Debugging/** @lgao4
+/Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @lgao4
+/Features/Intel/UserInterface/** @lgao4
+
+/Platform/Intel/QuarkPlatformPkg/** @nate-desimone
+/Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone
+/Platform/Intel/BoardModulePkg/** @lgao4
+/Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot5
+/Platform/Intel/MinPlatformPkg/** @lgao4 @ydong10
+/Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu
+/Platform/Intel/CometlakeOpenBoardPkg/** @dkethire @kesakkit
+# Add Heng Luo
+# /Platform/Intel/TigerlakeOpenBoardPkg/**
+/Platform/Intel/AlderlakeOpenBoardPkg/** @rbitw @SaloniKasbekar
+/Platform/Intel/Tools/** @YuweiChen1110
+
+/Silicon/Intel/IntelSiliconPkg/** @AshrafAliS
+/Silicon/Intel/QuarkSocPkg/** @nate-desimone
+/Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone
+
+# Add Heng Luo
+# /Silicon/Intel/TigerlakeSiliconPkg/**
+
+/Silicon/Intel/AlderlakeSiliconPkg/** @rbitw @SaloniKasbekar
+
+/Silicon/Intel/Tools/** @YuweiChen1110
+
+/Features/ManageabilityPkg/** @abdattar @nicklela
+
+/Platform/Marvell/** @leiflindholm
+/Silicon/Marvell/** @leiflindholm
+
+# Miscellaneous Drivers
+/Silicon/Atmel/** @ardbiesheuvel
+/Silicon/Openmoko/** @ardbiesheuvel
+/Silicon/Synopsys/DesignWare/** @ardbiesheuvel
+
+/Platform/NXP/** @Meenakshi88
+/Silicon/NXP/** @Meenakshi88
+
+# QEMU EDK II Minimum Platform Specification implementation
+/Platform/Qemu/QemuOpenBoardPkg/** @theomacx86
+
+# Add Graeme Gregory
+# /Platform/Qemu/SbsaQemu/**
+# /Silicon/Qemu/SbsaQemu/**
+
+# Raspberry Pi platforms and silicon
+/Platform/RaspberryPi/** @jlinton
+/Silicon/Broadcom/** @jlinton
+
+/Platform/RISC-V/PlatformPkg/** @JohnAZoidberg
+/Silicon/RISC-V/ProcessorPkg/** @JohnAZoidberg
+
+# Phytium platforms and silicon
+# Add Peng Xie, Ling Jia and Yiqi Shu
+# /Platform/Phytium/**
+# /Silicon/Phytium/**
+
+/Platform/SolidRun/** @leiflindholm
+
+# Sophgo platforms and silicon
+/Platform/Sophgo/** @caiyiqing379 @dahogn @meng-cz @USER0FISH
+/Silicon/Sophgo/SG2042Pkg/** @caiyiqing379 @dahogn @meng-cz @USER0FISH
+

@@ -1,0 +1,143 @@
+# This file contains the list of maintainers (i.e. people who own the
+# areas and can commit changes) for various parts of edk2-platforms.
+
+# EDK II Platforms maintainers
+# ============================
+
+* @leiflindholm @mdkinney
+
+/Platform/96Boards/** @ardbiesheuvel @leiflindholm
+
+/Platform/AMD/** @abdattar @changab @pbgrimes
+
+/Platform/AMD/AgesaModulePkg/** @abdattar @changab @pbgrimes
+/Platform/AMD/AgesaPkg/**       @abdattar @changab @pbgrimes
+/Platform/AMD/AmdCbsPkg/**      @abdattar @changab @pbgrimes
+/Platform/AMD/AmdCpmPkg/**      @abdattar @changab @pbgrimes
+
+# AMD Seattle platforms
+/Platform/AMD/OverdriveBoard/** @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
+/Silicon/AMD/Styx/**            @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
+/Platform/LeMaker/CelloBoard/** @ardbiesheuvel @leiflindholm
+/Platform/SoftIron/             @ardbiesheuvel @leiflindholm
+
+# AMD VanGoghBoard
+/Platform/AMD/VanGoghBoard/** @abdattar @changab @exinghr @pbgrimes
+
+# Ampere Computing
+/Platform/Ampere/** @nhivp
+/Silicon/Ampere/** @nhivp
+
+# ARM
+/Platform/ARM/** @samimujawar
+/Silicon/ARM/** @samimujawar
+
+# BeagleBoard:
+/Platform/BeagleBoard/** @ardbiesheuvel @leiflindholm
+/Silicon/TexasInstruments/** @ardbiesheuvel @leiflindholm
+
+# DisplayLink
+/Drivers/DisplayLink/** @ardbiesheuvel @leiflindholm
+
+/Features/Ext4Pkg/** @heatd
+
+# HiSilicon
+/Platform/Hisilicon/** @leiflindholm
+/Silicon/Hisilicon/** @leiflindholm
+
+/Features/Intel/** @nate-desimone @SaiChaganty
+/Features/Intel/Debugging/** @nate-desimone @SaiChaganty @ydong10
+/Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty
+/Features/Intel/UserInterface/** @dandanbi @nate-desimone @SaiChaganty
+
+/Features/ManageabilityPkg/** @changab
+
+/Platform/Intel/** @nate-desimone @SaiChaganty
+/Platform/Intel/QuarkPlatformPkg/** @mdkinney @nate-desimone @SaiChaganty
+/Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone @SaiChaganty @yqian4 @zailiangsun
+/Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
+/Platform/Intel/KabylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/KabylakeOpenBoardPkg/AspireVn7Dash572G/** @benjamindoron @nate-desimone @SaiChaganty
+/Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot51
+/Platform/Intel/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/PurleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/CometlakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/TigerlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
+/Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
+/Platform/Intel/WhitleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
+/Platform/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
+
+/Silicon/Intel/** @nate-desimone @SaiChaganty
+/Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
+/Silicon/Intel/QuarkSocPkg/** @mdkinney @nate-desimone @SaiChaganty
+/Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone @SaiChaganty @yqian4 @zailiangsun
+/Silicon/Intel/CoffeelakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Silicon/Intel/KabylakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Silicon/Intel/PurleyRefreshSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Silicon/Intel/TigerlakeSiliconPkg/** @nate-desimone @SaiChaganty
+/Silicon/Intel/AlderlakeSiliconPkg/** @nate-desimone @SaiChaganty
+/Silicon/Intel/WhitleySiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Silicon/Intel/SimicsX58SktPkg/** @nate-desimone @SaiChaganty
+/Silicon/Intel/SimicsIch10Pkg/** @nate-desimone @SaiChaganty
+/Silicon/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
+
+# Loongson platforms
+/Platform/Loongson/** @bibo-mao @kilaterlee @lixianglai
+ 
+# Marvell platforms and silicon
+/Platform/Marvell/** @ndhillonm @wojtas-marcin
+/Platform/SolidRun/** @ndhillonm @wojtas-marcin
+/Silicon/Marvell/** @ndhillonm @wojtas-marcin
+
+# Miscellaneous drivers
+/Silicon/Atmel/** @leiflindholm
+/Silicon/Openmoko/** @leiflindholm
+/Silicon/Synopsys/DesignWare/** @leiflindholm
+
+# NXP platforms and silicon
+/Platform/NXP/** @leiflindholm
+/Silicon/NXP/** @leiflindholm
+
+# OptionRomPkg
+# https://github.com/tianocore/tianocore.github.io/wiki/OptionRomPkg
+/Drivers/OptionRomPkg/** @niruiyu
+
+# Phytium platforms and silicon
+/Platform/Phytium/** @leiflindholm
+/Silicon/Phytium/** @leiflindholm
+
+# QEMU EDK II Minimum Platform Specification implementation
+/Platform/Qemu/QemuOpenBoardPkg/** @heatd
+
+# QEMU sbsa-ref platform
+/Platform/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
+/Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
+
+# Raspberry Pi platforms and silicon
+/Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm
+/Silicon/Broadcom/** @ardbiesheuvel @leiflindholm
+
+# RPMB driver for OP-TEE
+/Drivers/OpTee/OpteeRpmbPkg/** @apalos @samimujawar
+
+/Platform/RISC-V/PlatformPkg/** @vlsunil
+
+/Platform/SiFive/U5SeriesPkg/** @JohnAZoidberg
+
+# Socionext platforms and silicon
+/Platform/Socionext/** @ardbiesheuvel @leiflindholm
+/Silicon/NXP/Library/Pcf8563RealTimeClockLib/** @ardbiesheuvel @leiflindholm
+/Silicon/Socionext/** @ardbiesheuvel @leiflindholm
+
+/Silicon/RISC-V/ProcessorPkg/** @vlsunil
+
+/Silicon/SiFive/** @JohnAZoidberg
+
+# Sophgo platforms and silicon
+/Platform/Sophgo/** @vlsunil
+/Silicon/Sophgo/SG2042Pkg/** @vlsunil
+
+# StandAloneMMPkg for OP-TEE
+/Platform/StandaloneMm/PlatformStandaloneMmPkg/** @apalos @samimujawar
