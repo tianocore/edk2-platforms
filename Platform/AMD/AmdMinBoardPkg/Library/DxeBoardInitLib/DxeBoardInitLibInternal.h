@@ -86,64 +86,6 @@ EFI_STATUS
   );
 
 /**
-  A helper function to update and re-install ACPI table.
-  It search for ACPI table for provided table signature,
-  if found then creates a copy of the table and invokes
-  the call back function.
-
-  @param[in] Signature           ACPI table signature
-  @param[in] CallbackFunction    The function to call to patch the searching ACPI table.
-
-  @return EFI_SUCCESS            Successfully Re-install the ACPI Table
-  @return EFI_NOT_FOUND          Table not found
-  @return EFI_STATUS             returns non-EFI_SUCCESS value in case of failure
-
-**/
-EFI_STATUS
-EFIAPI
-UpdateReinstallAcpiTable (
-  IN UINT32           Signature,
-  IN PATCH_ACPITABLE  CallbackFunction
-  );
-
-/**
-  A Callback function to patch the ACPI FADT table.
-  Updates FADT table with AMD specific values, which
-  are different than MinPlatformPkg.
-
-  @param[in, out] NewTable       Pointer to ACPI FADT table
-
-  @return         EFI_SUCCESS    Always return EFI_SUCCESSe
-
-**/
-EFI_STATUS
-EFIAPI
-FadtAcpiTablePatch (
-  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
-  );
-
-EFI_STATUS
-EFIAPI
-MadtAcpiTablePatch (
-  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
-  );
-
-/**
-  A Callback function to patch the ACPI DSDT/SSDT table.
-  Which has ASL code that needs to be updated.
-
-  @param[in, out] NewTable       Pointer to ACPI FADT table
-
-  @return         EFI_SUCCESS    Always return EFI_SUCCESSe
-
-**/
-EFI_STATUS
-EFIAPI
-AcpiTableAmlUpdate (
-  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
-  );
-
-/**
   Reserve Legacy VGA IO space.
 
   @retval  EFI_SUCCESS  MMIO at Legacy VGA region has been allocated.
