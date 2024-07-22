@@ -187,30 +187,6 @@ BoardInitReadyToBoot (
   VOID
   )
 {
-  EFI_STATUS  Status;
-
-  Status = UpdateReinstallAcpiTable (
-             EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
-             (PATCH_ACPITABLE)FadtAcpiTablePatch
-             );
-  DEBUG ((DEBUG_INFO, "Patching FADT ACPI Table ... Status = %r.\n", Status));
-
-  Status = UpdateReinstallAcpiTable (
-             EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
-             (PATCH_ACPITABLE)MadtAcpiTablePatch
-             );
-  DEBUG ((DEBUG_INFO, "Patching MADT ACPI Table ... Status = %r.\n", Status));
-
-  UpdateReinstallAcpiTable (
-    EFI_ACPI_6_5_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-    (PATCH_ACPITABLE)AcpiTableAmlUpdate
-    );
-
-  UpdateReinstallAcpiTable (
-    EFI_ACPI_6_5_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-    (PATCH_ACPITABLE)AcpiTableAmlUpdate
-    );
-
   return EFI_SUCCESS;
 }
 
