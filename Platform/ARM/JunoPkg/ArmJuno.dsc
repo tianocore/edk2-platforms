@@ -39,6 +39,11 @@
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/ARM/JunoPkg/Library/ArmJunoLib/ArmJunoLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmHvcLib|ArmPkg/Library/ArmHvcLib/ArmHvcLib.inf
+
+  # Trng Supports.
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
+  ArmTrngLib|ArmPkg/Library/ArmTrngLib/ArmTrngLib.inf
 
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/JunoPkg/Library/NorFlashJunoLib/NorFlashJunoLib.inf
@@ -210,6 +215,11 @@
   #
   gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdDevelopmentPlatformRelaxations|0x1
 !endif
+
+  #
+  # Juno Support Trng. Override PcdEnforceSecureRngAlgorithms.
+  #
+  gEfiNetworkPkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)
