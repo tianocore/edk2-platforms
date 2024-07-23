@@ -161,10 +161,8 @@ DoDump (
 
 STATIC
 VOID
-EFIAPI
 DumpVars (
-  IN EFI_EVENT Event,
-  IN VOID *Context
+  VOID
   )
 {
   EFI_STATUS Status;
@@ -202,6 +200,16 @@ DumpVars (
   mFvInstance->Dirty = FALSE;
 }
 
+STATIC
+VOID
+EFIAPI
+DumpVarsOnEvent (
+  IN EFI_EVENT Event,
+  IN VOID *Context
+  )
+{
+  DumpVars ();
+}
 
 VOID
 ReadyToBootHandler (
@@ -216,7 +224,7 @@ ReadyToBootHandler (
   Status = gBS->CreateEvent (
                   EVT_NOTIFY_SIGNAL,
                   TPL_CALLBACK,
-                  DumpVars,
+                  DumpVarsOnEvent,
                   NULL,
                   &ImageInstallEvent
                 );
@@ -229,7 +237,7 @@ ReadyToBootHandler (
                 );
   ASSERT_EFI_ERROR (Status);
 
-  DumpVars (NULL, NULL);
+  DumpVars ();
   Status = gBS->CloseEvent (Event);
   ASSERT_EFI_ERROR (Status);
 }
@@ -247,7 +255,7 @@ InstallDumpVarEventHandlers (
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
                   TPL_CALLBACK,
-                  DumpVars,
+                  DumpVarsOnEvent,
                   NULL,
                   &gRaspberryPiEventResetGuid,
                   &ResetEvent
