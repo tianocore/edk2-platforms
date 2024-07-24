@@ -110,7 +110,8 @@ DEFINE X64EMU_ENABLE  = FALSE
   # Styx specific libraries
   #
   AmdSataInit|Silicon/AMD/Styx/AmdModulePkg/Library/AmdSataInitLib/AmdSataInitLib.inf
-  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
   RealTimeClockLib|Silicon/AMD/Styx/Library/RealTimeClockLib/RealTimeClockLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
 
