@@ -10,6 +10,8 @@
 
 #include "VarBlockService.h"
 
+#include <Protocol/ResetNotification.h>
+
 //
 // Minimum delay to enact before reset, when variables are dirty (in μs).
 // Needed to ensure that SSD-based USB 3.0 devices have time to flush their
@@ -211,6 +213,19 @@ DumpVarsOnEvent (
   DumpVars ();
 }
 
+STATIC
+VOID
+EFIAPI
+DumpVarsOnReset (
+  IN EFI_RESET_TYPE  ResetType,
+  IN EFI_STATUS      ResetStatus,
+  IN UINTN           DataSize,
+  IN VOID            *ResetData OPTIONAL
+  )
+{
+  DumpVars ();
+}
+
 VOID
 ReadyToBootHandler (
   IN EFI_EVENT Event,
@@ -248,9 +263,10 @@ InstallDumpVarEventHandlers (
   VOID
   )
 {
-  EFI_STATUS Status;
-  EFI_EVENT ResetEvent;
-  EFI_EVENT ReadyToBootEvent;
+  EFI_STATUS                       Status;
+  EFI_EVENT                        ResetEvent;
+  EFI_EVENT                        ReadyToBootEvent;
+  EFI_RESET_NOTIFICATION_PROTOCOL  *ResetNotify;
 
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
@@ -271,6 +287,19 @@ InstallDumpVarEventHandlers (
                   &ReadyToBootEvent
                 );
   ASSERT_EFI_ERROR (Status);
+
+  Status = gBS->LocateProtocol (
+                  &gEfiResetNotificationProtocolGuid,
+                  NULL,
+                  (VOID **)&ResetNotify
+                  );
+  if (!EFI_ERROR (Status)) {
+    Status = ResetNotify->RegisterResetNotify (
+                            ResetNotify,
+                            DumpVarsOnReset
+                            );
+    ASSERT_EFI_ERROR (Status);
+  }
 }
 
 

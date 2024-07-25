@@ -63,6 +63,7 @@
   gEfiBlockIoProtocolGuid
   gEfiFirmwareVolumeBlockProtocolGuid           # PROTOCOL SOMETIMES_PRODUCED
   gEfiDevicePathProtocolGuid                    # PROTOCOL SOMETIMES_PRODUCED
+  gEfiResetNotificationProtocolGuid
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
