@@ -264,19 +264,8 @@ InstallDumpVarEventHandlers (
   )
 {
   EFI_STATUS                       Status;
-  EFI_EVENT                        ResetEvent;
   EFI_EVENT                        ReadyToBootEvent;
   EFI_RESET_NOTIFICATION_PROTOCOL  *ResetNotify;
-
-  Status = gBS->CreateEventEx (
-                  EVT_NOTIFY_SIGNAL,
-                  TPL_CALLBACK,
-                  DumpVarsOnEvent,
-                  NULL,
-                  &gRaspberryPiEventResetGuid,
-                  &ResetEvent
-                );
-  ASSERT_EFI_ERROR (Status);
 
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,

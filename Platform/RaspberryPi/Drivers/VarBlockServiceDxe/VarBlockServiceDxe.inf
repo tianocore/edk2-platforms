@@ -54,7 +54,6 @@
 [Guids]
   gEdkiiNvVarStoreFormattedGuid			## PRODUCES ## PROTOCOL
   gEfiEventVirtualAddressChangeGuid
-  gRaspberryPiEventResetGuid
   gEfiEventReadyToBootGuid
 
 [Protocols]
