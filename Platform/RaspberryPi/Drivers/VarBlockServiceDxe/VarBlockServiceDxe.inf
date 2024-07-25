@@ -88,4 +88,4 @@
 [FeaturePcd]
 
 [Depex]
-  TRUE
+  gEfiResetNotificationProtocolGuid

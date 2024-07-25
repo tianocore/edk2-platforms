@@ -650,6 +650,7 @@ PlatformBootManagerBeforeConsole (
                   NULL,
                   (VOID **)&ResetNotify
                   );
+  ASSERT_EFI_ERROR (Status);
   if (!EFI_ERROR (Status)) {
     Status = ResetNotify->RegisterResetNotify (
                             ResetNotify,
