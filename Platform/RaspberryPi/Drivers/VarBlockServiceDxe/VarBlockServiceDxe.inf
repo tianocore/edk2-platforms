@@ -34,6 +34,7 @@
 
 [Packages]
   ArmPkg/ArmPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   Platform/RaspberryPi/RaspberryPi.dec
@@ -51,6 +52,7 @@
   UefiRuntimeLib
 
 [Guids]
+  gEdkiiNvVarStoreFormattedGuid			## PRODUCES ## PROTOCOL
   gEfiEventVirtualAddressChangeGuid
   gRaspberryPiEventResetGuid
   gEfiEventReadyToBootGuid
