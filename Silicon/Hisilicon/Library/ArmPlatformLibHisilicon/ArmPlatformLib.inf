@@ -39,6 +39,9 @@
 [Sources.AARCH64]
   AArch64/Helper.S
 
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize

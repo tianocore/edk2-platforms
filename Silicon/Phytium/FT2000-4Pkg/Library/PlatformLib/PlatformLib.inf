@@ -35,6 +35,9 @@
 
 [Guids]
 
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
 [FixedPcd]
   gPhytiumPlatformTokenSpaceGuid.PcdSystemIoBase
   gPhytiumPlatformTokenSpaceGuid.PcdSystemIoSize
