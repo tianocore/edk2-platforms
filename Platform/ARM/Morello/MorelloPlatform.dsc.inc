@@ -75,10 +75,8 @@
 [PcdsFixedAtBuild.common]
   gArmTokenSpaceGuid.PcdVFPEnabled|1
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # System Memory (2GB - 16MB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000

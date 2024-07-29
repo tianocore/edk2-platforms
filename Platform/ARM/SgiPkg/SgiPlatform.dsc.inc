@@ -134,10 +134,8 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x01400000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x01400000
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # ACPI Table Version
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20

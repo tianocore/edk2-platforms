@@ -132,11 +132,9 @@
 
   gArmTokenSpaceGuid.PcdVFPEnabled|1
 
-  # Stacks for MPCores in Normal World
   # Non-Trusted SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top

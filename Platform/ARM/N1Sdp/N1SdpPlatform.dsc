@@ -104,10 +104,8 @@
   gArmN1SdpTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmN1SdpTokenSpaceGuid.PcdRamDiskSize|0x18000000
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # System Memory (2GB) - Reserved Secure Memory (16MB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000

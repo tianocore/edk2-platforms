@@ -341,10 +341,8 @@ DEFINE NUM_CORES    = 4
   # Number of configured cores
   gArmPlatformTokenSpaceGuid.PcdCoreCount|$(NUM_CORES)
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x8001680000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x10000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x800
 
   # Declare system memory base
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x8000000000
