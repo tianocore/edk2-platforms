@@ -282,7 +282,6 @@
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xF022F000
 
   # ARM Architectural Timer Support
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|25000000
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
 
   # ARM SBSA Watchdog
