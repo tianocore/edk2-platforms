@@ -389,12 +389,8 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
 
-  #
-  # Stacks for MPCores in Normal World
-  #
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x91100000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x20000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x1000
 
   #
   # Maximum memory region that fits into the 32bit address space
@@ -524,7 +520,7 @@
   #
   # PEI Phase modules
   #
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreMPCore.inf
+  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf {
     <LibraryClasses>
