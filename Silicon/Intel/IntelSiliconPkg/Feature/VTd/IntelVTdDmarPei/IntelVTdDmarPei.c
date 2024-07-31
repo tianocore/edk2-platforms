@@ -498,6 +498,7 @@ ProcessDrhdPostMemory (
   Initializes the Intel VTd Info in post memory phase.
 
   @retval EFI_SUCCESS           Usb bot driver is successfully initialized.
+  @retval EFI_NOT_FOUND         Can't find the ACPI DMAR Table.
   @retval EFI_OUT_OF_RESOURCES  Can't initialize the driver.
 **/
 EFI_STATUS
@@ -514,7 +515,10 @@ InitVTdInfo (
   ASSERT (VTdInfo != NULL);
 
   AcpiDmarTable = GetAcpiDmarTable ();
-  ASSERT (AcpiDmarTable != NULL);
+  if (AcpiDmarTable == NULL) {
+    ASSERT (AcpiDmarTable != NULL);
+    return EFI_NOT_FOUND;
+  }
 
   if (VTdInfo->VtdUnitInfo == NULL) {
     //
@@ -562,6 +566,7 @@ InitVTdInfo (
   Initializes the Intel VTd DMAR for block all DMA.
 
   @retval EFI_SUCCESS           Driver is successfully initialized.
+  @retval EFI_NOT_FOUND         Can't find the ACPI DMAR Table.
   @retval RETURN_NOT_READY      Fail to get VTdInfo Hob .
 **/
 EFI_STATUS
@@ -575,7 +580,10 @@ InitVTdDmarBlockAll (
   // Get the DMAR table
   //
   AcpiDmarTable = GetAcpiDmarTable ();
-  ASSERT (AcpiDmarTable != NULL);
+  if (AcpiDmarTable == NULL) {
+    ASSERT (AcpiDmarTable != NULL);
+    return EFI_NOT_FOUND;
+  }
 
   //
   // Parse the DMAR table and block all DMA
