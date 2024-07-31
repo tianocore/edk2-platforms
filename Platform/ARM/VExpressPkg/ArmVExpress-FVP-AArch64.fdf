@@ -234,7 +234,7 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 !if $(EDK2_SKIP_PEICORE) == 1
-  INF ArmPlatformPkg/PrePi/PeiUniCore.inf
+  INF ArmPlatformPkg/PeilessSec/PeilessSec.inf
 !else
   INF ArmPlatformPkg/Sec/Sec.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf

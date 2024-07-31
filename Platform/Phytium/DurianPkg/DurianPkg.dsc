@@ -148,8 +148,9 @@
       OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   }
 
-  ArmPlatformPkg/PrePi/PeiUniCore.inf {
+  ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
+      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   }
 

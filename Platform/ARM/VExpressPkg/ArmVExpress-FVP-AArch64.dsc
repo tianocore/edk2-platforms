@@ -228,7 +228,7 @@
   #
 !ifdef EDK2_SKIP_PEICORE
   # UEFI is placed in RAM by bootloader
-  ArmPlatformPkg/PrePi/PeiUniCore.inf {
+  ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
       ArmPlatformLib|Platform/ARM/VExpressPkg/Library/ArmVExpressLibRTSM/ArmVExpressLib.inf
   }
