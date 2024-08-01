@@ -139,10 +139,6 @@ ArmPlatformInitialize (
   IN  UINTN                     MpId
   )
 {
-  if (!ArmPlatformIsPrimaryCore (MpId)) {
-    return RETURN_SUCCESS;
-  }
-
   // Disable memory remapping and return to normal mapping
   MmioOr32 (SP810_CTRL_BASE, BIT8);
 
