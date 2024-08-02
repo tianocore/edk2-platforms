@@ -148,7 +148,7 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
 }
 
-  INF ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  INF ArmPlatformPkg/Sec/Sec.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF UefiCpuPkg/CpuIoPei/CpuIoPei.inf
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf

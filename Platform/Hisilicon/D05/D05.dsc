@@ -415,7 +415,7 @@
   #
   # PEI Phase modules
   #
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   Platform/Hisilicon/D05/Drivers/Ipmi/IpmiInterfacePei/IpmiInterfacePei.inf
