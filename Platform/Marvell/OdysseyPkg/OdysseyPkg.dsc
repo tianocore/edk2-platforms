@@ -135,7 +135,7 @@
   #
 
   # UEFI is placed in RAM by bootloader
-  ArmPlatformPkg/PrePi/PeiMPCore.inf {
+  ArmPlatformPkg/PrePi/PeiUniCore.inf {
     <LibraryClasses>
       # SoC specific implementation of ArmPlatformLib
       ArmPlatformLib|Silicon/Marvell/OdysseyPkg/Library/OdysseyLib/OdysseyLib.inf

@@ -183,7 +183,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # SEC Phase modules
   #
-  INF ArmPlatformPkg/PrePi/PeiMPCore.inf
+  INF ArmPlatformPkg/PrePi/PeiUniCore.inf
 
   #
   # PEI Phase modules
