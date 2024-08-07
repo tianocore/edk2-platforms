@@ -28,6 +28,7 @@
   gShellEepromHiiGuid = { 0xb2f4c714, 0x147f, 0x4ff7, { 0x82, 0x1b, 0xce, 0x7b, 0x91, 0x7f, 0x5f, 0x2f } }
   gShellFUpdateHiiGuid = { 0x9b5d2176, 0x590a, 0x49db, { 0x89, 0x5d, 0x4a, 0x70, 0xfe, 0xad, 0xbe, 0x24 } }
   gShellSfHiiGuid = { 0x03a67756, 0x8cde, 0x4638, { 0x82, 0x34, 0x4a, 0x0f, 0x6d, 0x58, 0x81, 0x39 } }
+  gShellDumpFdtHiiGuid = { 0x8afa7610, 0x62b1, 0x46aa, { 0xb5, 0x34, 0xc3, 0xde, 0xff, 0x39, 0x77, 0x8c } }
 
 [LibraryClasses]
   ArmadaBoardDescLib|Include/Library/ArmadaBoardDescLib.h
@@ -36,11 +37,14 @@
   MvGpioLib|Include/Library/MvGpioLib.h
   NonDiscoverableInitLib|Include/Library/NonDiscoverableInitLib.h
   SampleAtResetLib|Include/Library/SampleAtResetLib.h
+  SmcLib|Include/IndustryStandard/smcLib.h
 
 [Protocols]
   # installed as a protocol by PlatInitDxe to force ordering between DXE drivers
   # that depend on the lowlevel platform initialization having been completed
   gMarvellPlatformInitCompleteProtocolGuid = { 0x465b8cf7, 0x016f, 0x4ba6, { 0xbe, 0x6b, 0x28, 0x0e, 0x3a, 0x7d, 0x38, 0x6f } }
+
+  gMrvlFdtClientProtocolGuid = { 0xE11FACA0, 0x4710, 0x4C8E, { 0xA7, 0xA2, 0x01, 0xBA, 0xA2, 0x59, 0x1B, 0x4C } }
 
 [PcdsFixedAtBuild.common]
 #Board description
@@ -197,6 +201,23 @@
   gMarvellSiliconTokenSpaceGuid.PcdAuxiliaryReservedRegionSize|0x0|UINT32|0x50000003
   gMarvellSiliconTokenSpaceGuid.PcdOpTeeRegionBase|0x0|UINT64|0x50000004
   gMarvellSiliconTokenSpaceGuid.PcdOpTeeRegionSize|0x0|UINT32|0x50000005
+
+# FDT
+  # FDT configuration node to be stripped before passing to OS
+  gMarvellSiliconTokenSpaceGuid.PcdFdtConfigRootNode|"/marvell,ebf"|VOID*|0x50000090
+
+  gMarvellSiliconTokenSpaceGuid.PcdNodeDramBase|0x10000000000|UINT64|0x00000004
+  gMarvellSiliconTokenSpaceGuid.PcdIoBaseAddress|0x800000000000|UINT64|0x00000005
+  gMarvellSiliconTokenSpaceGuid.PcdNodeIoBaseAddress|0x100000000000|UINT64|0x00000006
+  gMarvellSiliconTokenSpaceGuid.PcdIoSize|0xF0000000000|UINT64|0x00000007
+
+  gMarvellSiliconTokenSpaceGuid.PcdGtiWatchdogBase64|0x802000000000|UINT64|0x00000008
+
+[PcdsFeatureFlag.common]
+  # Publish FDT to the OS as Configuration Table with gFdtTableGuid
+  gMarvellSiliconTokenSpaceGuid.PcdPublishFdt|FALSE|BOOLEAN|0x50000091
+  # Fixup the FDT or not (taken into consideration only when PcdPublishFdt = TRUE)
+  gMarvellSiliconTokenSpaceGuid.PcdFixupFdt|TRUE|BOOLEAN|0x50000092
 
 [Protocols]
   gMarvellBoardDescProtocolGuid            = { 0xebed8738, 0xd4a6, 0x4001, { 0xa9, 0xc9, 0x52, 0xb0, 0xcb, 0x7d, 0xdb, 0xf9 }}
