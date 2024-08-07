@@ -1,0 +1,52 @@
+#/** @file
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  https://spdx.org/licenses
+#
+#  Copyright (C) 2023 Marvell
+#
+#  Copyright (c) 2015, ARM Ltd. All rights reserved.<BR>
+#
+#**/
+
+[Defines]
+  INF_VERSION     = 0x00010006
+  BASE_NAME       = UefiShellDumpFdtLib
+  FILE_GUID       = 6e9a4c69-57c6-4fcd-b083-4f2c3bdb6051
+  MODULE_TYPE     = UEFI_DRIVER
+  VERSION_STRING  = 0.1
+  LIBRARY_CLASS   = NULL|UEFI_APPLICATION UEFI_DRIVER
+  CONSTRUCTOR     = ShellDumpFdtCommandConstructor
+  DESTRUCTOR      = ShellDumpFdtCommandDestructor
+
+[Sources.common]
+  DumpFdt.c
+  DumpFdt.uni
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Platform/ARM/ARM.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+  ShellPkg/ShellPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  UefiLib
+  FdtLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  HiiLib
+  ShellCommandLib
+  ShellLib
+  HobLib
+
+[Guids]
+  gFdtHobGuid
+  gFdtTableGuid
+  gShellDumpFdtHiiGuid
+
+[FixedPcd]
+  gMarvellSiliconTokenSpaceGuid.PcdFdtConfigRootNode
