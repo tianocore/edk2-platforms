@@ -102,7 +102,7 @@ FvNameGuid         = d248e9b7-9ce3-43a7-868e-70c17c4b3819
 
   INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
   INF Silicon/Marvell/Drivers/Wdt/GtiWatchdogDxe/GtiWatchdogDxe.inf
-  INF EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
   INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
