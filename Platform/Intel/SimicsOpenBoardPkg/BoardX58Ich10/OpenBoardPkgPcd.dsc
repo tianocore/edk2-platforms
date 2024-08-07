@@ -32,6 +32,10 @@
   ######################################
   # Edk2 Configuration
   ######################################
+  #
+  # For X64, PcdCpuSmmRestrictedMemoryAccess must be FALSE if PcdCpuSmmProfileEnable is TRUE.
+  #
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmProfileEnable|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowerGrayOutReadOnlyMenu|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSupportUefiDecompress|FALSE
 !if $(PEI_ARCH) == "IA32" && $(DXE_ARCH) == "X64"
@@ -203,6 +207,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable |TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmRestrictedMemoryAccess|TRUE
 
  [PcdsPatchableInModule.common]
   ######################################
