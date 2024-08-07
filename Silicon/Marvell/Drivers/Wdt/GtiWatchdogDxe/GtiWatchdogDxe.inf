@@ -1,0 +1,45 @@
+#/** @file
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  https://spdx.org/licenses
+#
+#  Copyright (C) 2022 Marvell
+#
+#  Module definition file for Marvell Watchdog driver.
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = GtiWatchdogDxe
+  FILE_GUID                      = 789F5711-6FD3-4170-BE11-EE4000037EA8
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+
+  ENTRY_POINT                    = GtiWdtInitialize
+
+[Sources.common]
+  GtiWatchdog.c
+
+[Packages]
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IoLib
+  PcdLib
+  UefiLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[FixedPcd]
+  gMarvellSiliconTokenSpaceGuid.PcdGtiWatchdogBase64
+
+[Protocols]
+  gEfiWatchdogTimerArchProtocolGuid       #PRODUCES
+  gMrvlFdtClientProtocolGuid              #CONSUMED
+
+[Depex]
+  gMrvlFdtClientProtocolGuid
