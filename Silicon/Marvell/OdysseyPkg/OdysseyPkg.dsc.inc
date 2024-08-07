@@ -229,7 +229,8 @@
   # cannot be runtime remapped), it is our best bet to get ResetSystem functionality
   # on these platforms.
   #
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
 
 [LibraryClasses.ARM, LibraryClasses.AARCH64]
   #
