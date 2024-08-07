@@ -1,0 +1,60 @@
+#/** @file
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+# https://spdx.org/licenses
+#
+# Copyright (C) 2022 Marvell
+#
+# Marvell ARM Platform library
+# Based on ArmPlatformPkg/Library/ArmPlatformLibNull
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = OdysseyLib
+  FILE_GUID                      = 7ea0f45b-0e06-4e45-8353-9c28b091a11c
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = OdysseyLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec # Include ArmPlatformLib.h
+  EmbeddedPkg/EmbeddedPkg.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  ArmLib
+  HobLib
+  DebugLib
+  MemoryAllocationLib
+  SmcLib
+  FdtLib
+
+[Sources]
+  OdysseyLib.c
+  OdysseyLibMem.c
+
+[Sources.AARCH64]
+  AArch64/ArmPlatformHelper.S
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdFdBaseAddress
+  gArmTokenSpaceGuid.PcdFdSize
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+
+  gMarvellSiliconTokenSpaceGuid.PcdNodeDramBase
+  gMarvellSiliconTokenSpaceGuid.PcdIoBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdNodeIoBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdIoSize
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
+[Guids]
+  gFdtHobGuid
