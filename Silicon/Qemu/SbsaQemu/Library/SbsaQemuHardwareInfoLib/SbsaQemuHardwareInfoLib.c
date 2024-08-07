@@ -7,7 +7,6 @@
 *
 **/
 
-#include <Library/ArmSmcLib.h>
 #include <Library/ArmMonitorLib.h>
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
@@ -24,18 +23,19 @@ GetCpuCount (
   VOID
   )
 {
-  UINTN  Arg0;
-  UINTN  SmcResult;
+  ARM_MONITOR_ARGS  SmcArgs;
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_CPU_COUNT, &Arg0, NULL, NULL);
-  if (SmcResult != SMC_SIP_CALL_SUCCESS) {
+  SmcArgs.Arg0 = SIP_SVC_GET_CPU_COUNT;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_COUNT call failed. We have no cpu information.\n", __FUNCTION__));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: We have %d cpus.\n", __FUNCTION__, Arg0));
+  DEBUG ((DEBUG_INFO, "%a: We have %d cpus.\n", __FUNCTION__, SmcArgs.Arg1));
 
-  return Arg0;
+  return SmcArgs.Arg1;
 }
 
 /**
@@ -50,21 +50,20 @@ GetMpidr (
   IN UINTN  CpuId
   )
 {
-  UINTN  SmcResult;
-  UINTN  Arg0;
-  UINTN  Arg1;
+  ARM_MONITOR_ARGS  SmcArgs;
 
-  Arg0 = CpuId;
+  SmcArgs.Arg0 = SIP_SVC_GET_CPU_NODE;
+  SmcArgs.Arg1 = CpuId;
+  ArmMonitorCall (&SmcArgs);
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_CPU_NODE, &Arg0, &Arg1, NULL);
-  if (SmcResult != SMC_SIP_CALL_SUCCESS) {
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. We have no MPIDR for CPU%d.\n", __FUNCTION__, CpuId));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: MPIDR for CPU%d: = %d\n", __FUNCTION__, CpuId, Arg1));
+  DEBUG ((DEBUG_INFO, "%a: MPIDR for CPU%d: = %d\n", __FUNCTION__, CpuId, SmcArgs.Arg2));
 
-  return Arg1;
+  return SmcArgs.Arg2;
 }
 
 /**
@@ -79,21 +78,20 @@ GetCpuNumaNode (
   IN UINTN  CpuId
   )
 {
-  UINTN  SmcResult;
-  UINTN  Arg0;
-  UINTN  Arg1;
+  ARM_MONITOR_ARGS  SmcArgs;
 
-  Arg0 = CpuId;
+  SmcArgs.Arg0 = SIP_SVC_GET_CPU_NODE;
+  SmcArgs.Arg1 = CpuId;
+  ArmMonitorCall (&SmcArgs);
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_CPU_NODE, &Arg0, &Arg1, NULL);
-  if (SmcResult != SMC_SIP_CALL_SUCCESS) {
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. Could not find information for CPU%d.\n", __FUNCTION__, CpuId));
     return 0;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: NUMA node for CPU%d: = %d\n", __FUNCTION__, CpuId, Arg0));
+  DEBUG ((DEBUG_INFO, "%a: NUMA node for CPU%d: = %d\n", __FUNCTION__, CpuId, SmcArgs.Arg1));
 
-  return Arg0;
+  return SmcArgs.Arg1;
 }
 
 UINT32
@@ -101,17 +99,18 @@ GetMemNodeCount (
   VOID
   )
 {
-  UINTN  SmcResult;
-  UINTN  Arg0;
+  ARM_MONITOR_ARGS  SmcArgs;
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_MEMORY_NODE_COUNT, &Arg0, NULL, NULL);
-  if (SmcResult != SMC_SIP_CALL_SUCCESS) {
+  SmcArgs.Arg0 = SIP_SVC_GET_MEMORY_NODE_COUNT;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE_COUNT call failed. We have no memory information.\n", __FUNCTION__));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __FUNCTION__, Arg0));
-  return (UINT32)Arg0;
+  DEBUG ((DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __FUNCTION__, SmcArgs.Arg1));
+  return (UINT32)SmcArgs.Arg1;
 }
 
 VOID
@@ -120,21 +119,19 @@ GetMemInfo (
   OUT MemoryInfo  *MemInfo
   )
 {
-  UINTN  SmcResult;
-  UINTN  Arg0;
-  UINTN  Arg1;
-  UINTN  Arg2;
+  ARM_MONITOR_ARGS  SmcArgs;
 
-  Arg0 = MemoryId;
+  SmcArgs.Arg0 = SIP_SVC_GET_MEMORY_NODE;
+  SmcArgs.Arg1 = MemoryId;
+  ArmMonitorCall (&SmcArgs);
 
-  SmcResult = ArmCallSmc1 (SIP_SVC_GET_MEMORY_NODE, &Arg0, &Arg1, &Arg2);
-  if (SmcResult != SMC_SIP_CALL_SUCCESS) {
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE call failed. We have no memory information.\n", __FUNCTION__));
     ResetShutdown ();
   } else {
-    MemInfo->NodeId      = Arg0;
-    MemInfo->AddressBase = Arg1;
-    MemInfo->AddressSize = Arg2;
+    MemInfo->NodeId      = SmcArgs.Arg1;
+    MemInfo->AddressBase = SmcArgs.Arg2;
+    MemInfo->AddressSize = SmcArgs.Arg3;
   }
 
   DEBUG ((
