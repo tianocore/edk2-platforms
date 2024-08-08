@@ -112,7 +112,7 @@
   #
   # Platform
   #
-  TimerLib|PcAtChipsetPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
+  TimerLib|UefiCpuPkg/Library/CpuTimerLib/BaseCpuTimerLib.inf
 
   #
   # Misc
