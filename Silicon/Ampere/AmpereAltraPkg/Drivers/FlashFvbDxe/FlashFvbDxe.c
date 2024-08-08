@@ -6,6 +6,7 @@
 
 **/
 
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/FlashLib.h>
 #include <Library/PcdLib.h>
@@ -360,6 +361,8 @@ FlashFvbDxeWrite (
     DEBUG ((DEBUG_ERROR, "Failed to do flash write\n"));
     return EFI_DEVICE_ERROR;
   }
+
+  CopyMem ((UINT8 *)(UINTN)mNvStorageBase + Lba * mFlashBlockSize + Offset, Buffer, *NumBytes);
 
   return Status;
 }
