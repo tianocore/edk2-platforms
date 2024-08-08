@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -31,12 +31,14 @@
 // Private I2C bus data
 //
 typedef struct {
-  UINTN  Base;
-  UINT32 BusSpeed;
-  UINT32 RxFifo;
-  UINT32 TxFifo;
-  UINT32 PollingTime;
-  UINT32 Enabled;
+  UINTN      Base;
+  UINT32     BusSpeed;
+  UINT32     RxFifo;
+  UINT32     TxFifo;
+  UINT32     PollingTime;
+  UINT32     Enabled;
+  BOOLEAN    IsSmbus;
+  BOOLEAN    PecCheck;
 } DW_I2C_CONTEXT_T;
 
 //
@@ -337,6 +339,11 @@ I2cWaitTxData (
       DEBUG ((DEBUG_ERROR, "%a: Timeout waiting for TX buffer available\n", __FUNCTION__));
       return EFI_TIMEOUT;
     }
+
+    if ((I2cCheckErrors (Bus) & DW_IC_INTR_TX_ABRT) != 0) {
+      return EFI_ABORTED;
+    }
+
     MicroSecondDelay (mI2cBusList[Bus].PollingTime);
   }
 
@@ -542,6 +549,72 @@ Exit:
   return Status;
 }
 
+/**
+  This extracts the data length from the initial byte of the SMBUS transaction. This allows
+  the driver to accurately read the SMBUS response with the exact length, rather than
+  consistently reading 32-byte block of data.
+
+  @param[in]  Bus      I2C bus Id.
+  @param[out] BusSpeed Pointer to the buffer to store the read length.
+
+  @retval EFI_SUCCESS  The operation is successful.
+  @retval Others       An error occurred.
+
+**/
+EFI_STATUS
+InternalSmbusReadDataLength (
+  UINT32  Bus,
+  UINT32  *Length
+  )
+{
+  EFI_STATUS Status;
+  UINTN      Base;
+  UINT32     CmdSend;
+
+  Base = mI2cBusList[Bus].Base;
+
+  CmdSend = DW_IC_DATA_CMD_CMD;
+  MmioWrite32 (Base + DW_IC_DATA_CMD, CmdSend);
+  I2cSync ();
+
+  if (I2cCheckErrors (Bus) != 0) {
+    DEBUG ((DEBUG_ERROR, "%a: Sending reading command error\n", __func__));
+    return EFI_CRC_ERROR;
+  }
+
+  Status = I2cWaitRxData (Bus);
+  if (EFI_ERROR (Status)) {
+    //
+    // If the SMBUS target is not ready to handle the request
+    // or is busy with preparing the response data, it will response
+    // NACK, and the error status TX_ABRT is triggered to indicate that
+    // the RX FIFO is not ready for reading. Thus, the following message
+    // serves more as verbose alert rather than an error.
+    //
+    DEBUG ((DEBUG_VERBOSE,
+      "%a: Reading Smbus data length failed to wait data\n",
+      __func__
+      ));
+
+    if (Status != EFI_ABORTED) {
+      MmioWrite32 (Base + DW_IC_DATA_CMD, DW_IC_DATA_CMD_STOP);
+      I2cSync ();
+    }
+
+    return Status;
+  }
+
+  *Length = MmioRead32 (Base + DW_IC_DATA_CMD) & DW_IC_DATA_CMD_DAT_MASK;
+  I2cSync ();
+
+  if (I2cCheckErrors (Bus) != 0) {
+    DEBUG ((DEBUG_ERROR, "%a: Sending reading command error\n", __func__));
+    return EFI_CRC_ERROR;
+  }
+
+  return EFI_SUCCESS;
+}
+
 EFI_STATUS
 InternalI2cRead (
   UINT32  Bus,
@@ -559,6 +632,7 @@ InternalI2cRead (
   UINTN      Count;
   UINTN      ReadCount;
   UINTN      WriteCount;
+  UINT32     ResponseLen;
 
   Status = EFI_SUCCESS;
   Base = mI2cBusList[Bus].Base;
@@ -601,6 +675,35 @@ InternalI2cRead (
   }
 
   WriteCount = 0;
+  if (mI2cBusList[Bus].IsSmbus) {
+    //
+    // Read Smbus Data Length, first byte of the Smbus response data.
+    //
+    Status = InternalSmbusReadDataLength (Bus, &ResponseLen);
+    if (EFI_ERROR (Status)) {
+      goto Exit;
+    }
+
+    WriteCount++;
+    Buf[ReadCount++] = ResponseLen;
+
+    //
+    // Abort the transaction when the requested length is shorter than the actual response data
+    // or if there is no response data when PEC disabled.
+    //
+    if ((*Length < (ResponseLen + 2)) || (!mI2cBusList[Bus].PecCheck && ResponseLen == 0)) {
+      MmioWrite32 (Base + DW_IC_DATA_CMD, DW_IC_DATA_CMD_CMD | DW_IC_DATA_CMD_STOP);
+      I2cSync ();
+      Status = EFI_INVALID_PARAMETER;
+      goto Exit;
+    }
+
+    *Length = ResponseLen + 1; // Response Data Length + 8-bit Byte Count field
+    if (mI2cBusList[Bus].PecCheck) {
+      *Length += 1; // ++ 8-bit PEC field
+    }
+  }
+
   while ((*Length - ReadCount) != 0) {
     TxLimit = mI2cBusList[Bus].TxFifo - MmioRead32 (Base + DW_IC_TXFLR);
     RxLimit = mI2cBusList[Bus].RxFifo - MmioRead32 (Base + DW_IC_RXFLR);
@@ -750,6 +853,9 @@ I2cRead (
 
   @param[in] Bus      I2C bus Id.
   @param[in] BusSpeed I2C bus speed in Hz.
+  @param[in] IsSmbus  Flag to indicate if the bus is used to execute an SMBus operation.
+  @param[in] PecCheck If Packet Error Code (PEC) checking is required for the SMBUS operation
+                      and is ignored when present in other operations.
 
   @retval EFI_SUCCESS           Success.
   @retval EFI_INVALID_PARAMETER A parameter is invalid.
@@ -758,8 +864,10 @@ I2cRead (
 EFI_STATUS
 EFIAPI
 I2cProbe (
-  IN UINT32 Bus,
-  IN UINTN  BusSpeed
+  IN UINT32   Bus,
+  IN UINTN    BusSpeed,
+  IN BOOLEAN  IsSmbus,
+  IN BOOLEAN  PecCheck
   )
 {
   if (Bus >= AC01_I2C_MAX_BUS_NUM
@@ -767,6 +875,9 @@ I2cProbe (
   {
     return EFI_INVALID_PARAMETER;
   }
+
+  mI2cBusList[Bus].IsSmbus  = IsSmbus;
+  mI2cBusList[Bus].PecCheck = PecCheck;
 
   return I2cInit (Bus, BusSpeed);
 }

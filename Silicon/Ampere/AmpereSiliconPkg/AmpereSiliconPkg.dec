@@ -69,6 +69,17 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0xFF|UINT8|0x00000005
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0xFF|UINT8|0x00000006
 
+  #
+  # I2C PCDs for SMBUS
+  #
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x00|UINT8|0x00000007
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|100000|UINT32|0x00000008 # Hz
+
+  #
+  # GPIO pin to support BMC ready check
+  #
+  gAmpereTokenSpaceGuid.PcdBmcReadyGpio|0x18|UINT8|0x00000009
+
 [PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   #
   # Firmware Volume Pcds
