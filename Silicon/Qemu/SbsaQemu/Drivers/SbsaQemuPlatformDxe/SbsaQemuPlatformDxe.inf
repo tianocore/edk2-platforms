@@ -28,9 +28,9 @@
   Silicon/Qemu/SbsaQemu/SbsaQemu.dec
 
 [LibraryClasses]
-  ArmSmcLib
   PcdLib
   DebugLib
+  HardwareInfoLib
   NonDiscoverableDeviceRegistrationLib
   UefiDriverEntryPoint
 

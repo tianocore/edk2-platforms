@@ -216,3 +216,60 @@ GetCpuTopology (
     CpuTopo->Threads
     ));
 }
+
+/**
+  Get GIC information from TF-A.
+
+  If run on old platform then use values from EDK2 configuration.
+**/
+VOID
+GetGicInformation (
+  OUT GicInfo  *GicInfo
+  )
+{
+  ARM_MONITOR_ARGS  SmcArgs;
+
+  SmcArgs.Arg0 = SIP_SVC_GET_GIC;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
+    GicInfo->DistributorBase   = PcdGet64 (PcdGicDistributorBase);
+    GicInfo->RedistributorBase = PcdGet64 (PcdGicRedistributorsBase);
+  } else {
+    GicInfo->DistributorBase   = SmcArgs.Arg1;
+    GicInfo->RedistributorBase = SmcArgs.Arg2;
+  }
+
+  SmcArgs.Arg0 = SIP_SVC_GET_GIC_ITS;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
+    GicInfo->ItsBase = PcdGet64 (PcdGicItsBase);
+  } else {
+    GicInfo->ItsBase = SmcArgs.Arg1;
+  }
+}
+
+/**
+  Get Platform version from TF-A.
+
+  If run on old platform then 0.0 value is used.
+**/
+VOID
+GetPlatformVersion (
+  OUT PlatformVersion  *PlatVer
+  )
+{
+  ARM_MONITOR_ARGS  SmcArgs;
+
+  SmcArgs.Arg0 = SIP_SVC_VERSION;
+  ArmMonitorCall (&SmcArgs);
+
+  if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
+    PlatVer->Major = 0;
+    PlatVer->Minor = 0;
+  } else {
+    PlatVer->Major = SmcArgs.Arg1;
+    PlatVer->Minor = SmcArgs.Arg2;
+  }
+}

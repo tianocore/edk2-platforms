@@ -27,3 +27,8 @@
 [LibraryClasses]
   ArmSmcLib
   ResetSystemLib
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase

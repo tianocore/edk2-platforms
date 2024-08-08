@@ -7,14 +7,13 @@
 *
 **/
 
-#include <Library/ArmSmcLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
+#include <Library/HardwareInfoLib.h>
 #include <Library/NonDiscoverableDeviceRegistrationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiDriverEntryPoint.h>
-#include <IndustryStandard/SbsaQemuSmc.h>
 #include <IndustryStandard/SbsaQemuPlatformVersion.h>
 
 EFI_STATUS
@@ -24,13 +23,11 @@ InitializeSbsaQemuPlatformDxe (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS     Status;
-  UINTN          Size;
-  VOID           *Base;
-  UINTN          Arg0;
-  UINTN          Arg1;
-  UINTN          SmcResult;
-  RETURN_STATUS  Result;
+  EFI_STATUS       Status;
+  UINTN            Size;
+  VOID             *Base;
+  GicInfo          GicInfo;
+  PlatformVersion  PlatVer;
 
   DEBUG ((DEBUG_INFO, "%a: InitializeSbsaQemuPlatformDxe called\n", __FUNCTION__));
 
@@ -68,44 +65,18 @@ InitializeSbsaQemuPlatformDxe (
     return Status;
   }
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_VERSION, &Arg0, &Arg1, NULL);
-  if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
-    Result = PcdSet32S (PcdPlatformVersionMajor, Arg0);
-    ASSERT_RETURN_ERROR (Result);
-    Result = PcdSet32S (PcdPlatformVersionMinor, Arg1);
-    ASSERT_RETURN_ERROR (Result);
-  }
+  GetPlatformVersion (&PlatVer);
 
-  Arg0 = PcdGet32 (PcdPlatformVersionMajor);
-  Arg1 = PcdGet32 (PcdPlatformVersionMinor);
+  PcdSet32S (PcdPlatformVersionMajor, PlatVer.Major);
+  PcdSet32S (PcdPlatformVersionMinor, PlatVer.Minor);
 
-  DEBUG ((DEBUG_INFO, "Platform version: %d.%d\n", Arg0, Arg1));
+  DEBUG ((DEBUG_INFO, "Platform version: %d.%d\n", PlatVer.Major, PlatVer.Minor));
 
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_GIC, &Arg0, &Arg1, NULL);
-  if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
-    Result = PcdSet64S (PcdGicDistributorBase, Arg0);
-    ASSERT_RETURN_ERROR (Result);
-    Result = PcdSet64S (PcdGicRedistributorsBase, Arg1);
-    ASSERT_RETURN_ERROR (Result);
-  }
+  GetGicInformation (&GicInfo);
 
-  Arg0 = PcdGet64 (PcdGicDistributorBase);
-
-  DEBUG ((DEBUG_INFO, "GICD base: 0x%x\n", Arg0));
-
-  Arg0 = PcdGet64 (PcdGicRedistributorsBase);
-
-  DEBUG ((DEBUG_INFO, "GICR base: 0x%x\n", Arg0));
-
-  SmcResult = ArmCallSmc0 (SIP_SVC_GET_GIC_ITS, &Arg0, NULL, NULL);
-  if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
-    Result = PcdSet64S (PcdGicItsBase, Arg0);
-    ASSERT_RETURN_ERROR (Result);
-  }
-
-  Arg0 = PcdGet64 (PcdGicItsBase);
-
-  DEBUG ((DEBUG_INFO, "GICI base: 0x%x\n", Arg0));
+  PcdSet64S (PcdGicDistributorBase, GicInfo.DistributorBase);
+  PcdSet64S (PcdGicRedistributorsBase, GicInfo.RedistributorBase);
+  PcdSet64S (PcdGicItsBase, GicInfo.ItsBase);
 
   if (!PLATFORM_VERSION_LESS_THAN (0, 3)) {
     Base = (VOID *)(UINTN)PcdGet64 (PcdPlatformXhciBase);

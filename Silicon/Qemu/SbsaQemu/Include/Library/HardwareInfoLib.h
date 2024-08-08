@@ -28,6 +28,17 @@ typedef struct {
   UINT32    Threads;
 } CpuTopology;
 
+typedef struct {
+  UINTN    DistributorBase;
+  UINTN    RedistributorBase;
+  UINTN    ItsBase;
+} GicInfo;
+
+typedef struct {
+  UINT32    Major;
+  UINT32    Minor;
+} PlatformVersion;
+
 /**
   Get CPU count from information passed by Qemu.
 
@@ -107,6 +118,26 @@ GetNumaNodeCount (
 VOID
 GetCpuTopology (
   OUT CpuTopology  *CpuTopo
+  );
+
+/**
+  Get GIC information (base of GICD, GICR, GICI) from TF-A.
+
+  @param [out]  GicInfo     A pointer to the GIC information.
+**/
+VOID
+GetGicInformation (
+  OUT GicInfo  *GicInfo
+  );
+
+/**
+  Get Platform version from TF-A.
+
+  @param [out]  PlatVer     A pointer to the Platform version.
+**/
+VOID
+GetPlatformVersion (
+  OUT PlatformVersion  *PlatVer
   );
 
 #endif /* HARDWARE_INFO_LIB */
