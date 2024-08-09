@@ -32,6 +32,10 @@
   ######################################
   # Edk2 Configuration
   ######################################
+  #
+  # For X64, PcdCpuSmmRestrictedMemoryAccess must be FALSE if PcdCpuSmmProfileEnable is TRUE.
+  #
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmProfileEnable|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowerGrayOutReadOnlyMenu|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSupportUefiDecompress|FALSE
 !if $(PEI_ARCH) == "IA32" && $(DXE_ARCH) == "X64"
@@ -46,6 +50,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
+  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
 
   ######################################
   # Platform Configuration
@@ -76,6 +81,10 @@
   gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable|TRUE
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
+
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+  gStandaloneMmPkgTokenSpaceGuid.PcdRestartMmDispatcherOnceMmEntryRegistered|TRUE
+!endif
 
 [PcdsFeatureFlag.X64]
   ######################################
@@ -200,6 +209,9 @@
   gPcAtChipsetPkgTokenSpaceGuid.PcdMinimalValidYear|2015
   gPcAtChipsetPkgTokenSpaceGuid.PcdMaximalValidYear|2099
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable |TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmRestrictedMemoryAccess|TRUE
 
  [PcdsPatchableInModule.common]
   ######################################
@@ -219,8 +231,6 @@
   # Edk2 Configuration
   ######################################
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiS3Enable|FALSE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1024
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|600
 

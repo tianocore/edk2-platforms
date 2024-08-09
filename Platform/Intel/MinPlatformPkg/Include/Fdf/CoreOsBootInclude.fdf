@@ -8,26 +8,44 @@
 ##
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
-INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
-INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf
+  INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
+    INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
+  !else
+    INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+    INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf
+  !endif
 !endif
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-INF  MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
-INF  MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
-INF  MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
-INF  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
-#INF  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
-INF  UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
-INF  MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
-INF  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
+  INF  MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  StandaloneMmPkg/Core/StandaloneMmCore.inf
+    INF  StandaloneMmPkg/Drivers/StandaloneMmIplPei/StandaloneMmIplPei.inf
+
+    INF  MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterStandaloneMm.inf
+    INF  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerStandaloneMm.inf
+    INF  UefiCpuPkg/CpuIo2Smm/CpuIo2StandaloneMm.inf
+  !else
+    INF  MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
+    INF  MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
+
+    INF  MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
+    INF  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
+    INF  UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
+    INF  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
+  !endif
 !endif
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
-INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
-INF  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+  INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
+  INF  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceStandaloneMm.inf
+  !else
+    INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
+  !endif
 !endif
 
