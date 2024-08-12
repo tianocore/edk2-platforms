@@ -35,7 +35,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #define UTILITY_DATE          __DATE__
 
 #define FIT_SPEC_VERSION_MAJOR 1
-#define FIT_SPEC_VERSION_MINOR 4
+#define FIT_SPEC_VERSION_MINOR 5
 //
 // The minimum number of arguments accepted from the command line.
 //
