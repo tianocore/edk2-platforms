@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -46,6 +46,12 @@
   #
   ## Include/Guid/PlatformManagerHii.h
   gPlatformManagerExitEventGuid  = { 0xE8887242, 0x4EFF, 0x4323, { 0x81, 0xF4, 0xC9, 0x5F, 0xD5, 0x8D, 0x80, 0xD5 } }
+
+  #
+  # BMC Configuration formset UUID
+  #
+  ## Include/Guid/BmcConfigHii.h
+  gBmcConfigFormSetGuid = { 0xC4D6ED50, 0x769D, 0x4319, { 0xEB, 0xB7, 0xCC, 0xDD, 0xC8, 0x9D, 0x3D, 0x2D } }
 
 [Ppis]
 

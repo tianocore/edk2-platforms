@@ -1,0 +1,44 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = BmcConfigDxe
+  FILE_GUID                      = 5D1B9008-9CF5-4A12-AF0F-FB9C06005643
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = BmcConfigEntry
+
+[Sources.common]
+  BmcConfigDxe.c
+  BmcConfigDxe.uni
+  BmcConfigVfr.vfr
+
+[Packages]
+  Features/ManageabilityPkg/ManageabilityPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  IpmiCommandLib
+  MemoryAllocationLib
+  PrintLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gBmcConfigFormSetGuid
+  gEfiIfrTianoGuid
+  gPlatformManagerFormsetGuid
+
+[Depex]
+  TRUE

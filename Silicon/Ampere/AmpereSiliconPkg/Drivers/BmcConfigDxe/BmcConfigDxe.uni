@@ -1,0 +1,18 @@
+//
+// Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+
+#langdef   en-US "English"    // English
+
+#string STR_BMC_CONFIG_FORM                #language en-US "BMC Configuration"
+#string STR_BMC_CONFIG_HELP                #language en-US "BMC Configuration"
+
+#string STR_BMC_FIRMWARE_REV_LABEL          #language en-US "BMC Firmware Revision"
+#string STR_BMC_FIRMWARE_REV_VALUE          #language en-US "Unknown"
+
+#string STR_BMC_IPMI_VER_LABEL              #language en-US "IPMI Version"
+#string STR_BMC_IPMI_VER_VALUE              #language en-US "Unknown"
+
+#string STR_BMC_IP_ADDRESS_LABEL            #language en-US "LAN IP Address"
