@@ -221,8 +221,8 @@ SsifTransportTransmitReceive (
              &AdditionalStatus
              );
 
-  TransferToken->TransferStatus             = Status;
-  TransferToken->TransportAdditionalStatus  = AdditionalStatus;
+  TransferToken->TransferStatus            = Status;
+  TransferToken->TransportAdditionalStatus = AdditionalStatus;
 }
 
 /**
