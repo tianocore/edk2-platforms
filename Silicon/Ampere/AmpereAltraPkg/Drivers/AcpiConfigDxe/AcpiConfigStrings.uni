@@ -22,6 +22,3 @@
 
 #string STR_ACPI_LPI_PROMPT                          #language en-US "LPI Support"
 #string STR_ACPI_LPI_HELP                            #language en-US "Enables or Disables System ability to LPI (Lower Power Idle)"
-
-#string STR_ACPI_TURBO_PROMPT                        #language en-US "Max Performance"
-#string STR_ACPI_TURBO_HELP                          #language en-US "Enables or Disables System ability to Max Performance"

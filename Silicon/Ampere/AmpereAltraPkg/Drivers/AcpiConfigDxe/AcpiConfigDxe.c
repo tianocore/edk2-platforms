@@ -340,79 +340,6 @@ DriverCallback (
 
 STATIC
 EFI_STATUS
-AcpiNVDataUpdate (
-  IN ACPI_CONFIG_PRIVATE_DATA *PrivateData
-  )
-{
-  EFI_STATUS         Status;
-  PLATFORM_INFO_HOB  *PlatformHob;
-  UINT32             TurboSupport;
-
-  ASSERT (PrivateData != NULL);
-
-  PlatformHob = PrivateData->PlatformHob;
-  TurboSupport = PlatformHob->TurboCapability[0] + PlatformHob->TurboCapability[1];
-
-  if (TurboSupport == 0) {
-    PrivateData->Configuration.AcpiTurboMode = 2; // Unsupported mode
-    PrivateData->Configuration.AcpiTurboSupport = 0;
-  } else {
-    PrivateData->Configuration.AcpiTurboSupport = 1;
-  }
-
-  Status = gRT->SetVariable (
-                  AcpiVarstoreDataName,
-                  &gAcpiConfigFormSetGuid,
-                  ACPI_VARSTORE_ATTRIBUTES,
-                  sizeof (ACPI_CONFIG_VARSTORE_DATA),
-                  &PrivateData->Configuration
-                  );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a %d gRT->SetVariable() failed \n", __FUNCTION__, __LINE__));
-    return Status;
-  }
-
-  return EFI_SUCCESS;
-}
-
-STATIC
-EFI_STATUS
-UpdateTurboModeConfig (
-  IN ACPI_CONFIG_PRIVATE_DATA *PrivateData
-  )
-{
-  EFI_STATUS         Status;
-  PLATFORM_INFO_HOB  *PlatformHob;
-  BOOLEAN            EnableTurbo;
-
-  ASSERT (PrivateData != NULL);
-
-  if (PrivateData->Configuration.AcpiTurboSupport != 0) {
-    PlatformHob = PrivateData->PlatformHob;
-    EnableTurbo = (PrivateData->Configuration.AcpiTurboMode != 0) ? TRUE : FALSE;
-
-    if (PlatformHob->TurboCapability[0] != 0) {
-      Status = MailboxMsgTurboConfig (0, EnableTurbo);
-      if (EFI_ERROR (Status)) {
-        return Status;
-      }
-    }
-
-    if (PlatformHob->TurboCapability[1] != 0) {
-      Status = MailboxMsgTurboConfig (1, EnableTurbo);
-      if (EFI_ERROR (Status)) {
-        return Status;
-      }
-    }
-  } else {
-    DEBUG ((DEBUG_INFO, "%a: Turbo mode is unsupported! \n", __FUNCTION__));
-  }
-
-  return EFI_SUCCESS;
-}
-
-STATIC
-EFI_STATUS
 UpdateCPPCConfig (
   IN ACPI_CONFIG_PRIVATE_DATA *PrivateData
   )
@@ -515,11 +442,6 @@ UpdateAcpiOnReadyToBoot (
   }
 
   Status = UpdateLPIConfig (mPrivateData);
-  if (EFI_ERROR (Status)) {
-    return;
-  }
-
-  Status = UpdateTurboModeConfig (mPrivateData);
   if (EFI_ERROR (Status)) {
     return;
   }
@@ -716,11 +638,6 @@ AcpiConfigEntryPoint (
                   );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Fail to create ready to boot event %r!\n", Status));
-    return Status;
-  }
-
-  Status = AcpiNVDataUpdate (mPrivateData);
-  if (EFI_ERROR (Status)) {
     return Status;
   }
 

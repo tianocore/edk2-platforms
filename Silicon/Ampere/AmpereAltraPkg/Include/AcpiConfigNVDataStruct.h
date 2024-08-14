@@ -18,9 +18,7 @@ typedef struct {
   UINT32 EnableApeiSupport;
   UINT32 AcpiCppcEnable;
   UINT32 AcpiLpiEnable;
-  UINT32 AcpiTurboSupport;
-  UINT32 AcpiTurboMode;
-  UINT32 Reserved[4];
+  UINT32 Reserved[6];
 } ACPI_CONFIG_VARSTORE_DATA;
 
 #pragma pack()
