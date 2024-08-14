@@ -153,14 +153,6 @@
 #define MAILBOX_BOOT_PROGRESS_COMMAND_SET 1
 #define MAILBOX_BOOT_PROGRESS_STAGE_UEFI  8
 
-//
-// Parameters for Set Configuration
-//   Param0: Configuration type
-//     20: Turbo configuration
-//   Param1: Unused
-//
-#define MAILBOX_SET_CONFIGURATION_TURBO 20
-
 /**
   Read a register which is not accessible from the non-secure world
   by sending a mailbox message to the SMpro processor.
@@ -260,23 +252,6 @@ MailboxMsgSetBootProgress (
   IN UINT8   Socket,
   IN UINT8   BootStatus,
   IN UINT32  Checkpoint
-  );
-
-/**
-  Configure the Turbo (Max Performance) mode.
-
-  @param[in]  Socket           Active socket index.
-  @param[in]  Enable           Enable/Disable the Turbo (Max performance) mode.
-
-  @retval EFI_SUCCESS           Configure the Turbo successfully.
-  @retval EFI_INVALID_PARAMETER A parameter is invalid.
-  @retval Otherwise             Errors returned from the MailboxWrite() functions.
-**/
-EFI_STATUS
-EFIAPI
-MailboxMsgTurboConfig (
-  IN UINT8   Socket,
-  IN BOOLEAN Enable
   );
 
 #endif /* SYSTEM_FIRMWARE_INTERFACE_LIB_H_ */
