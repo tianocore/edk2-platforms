@@ -156,7 +156,7 @@ UpdatePlatformInfoScreen (
     );
 
   /* CPU clock */
-  UnicodeSPrint (Str, sizeof (Str), L"%dMHz", PlatformHob->CpuClk / MHZ_SCALE_FACTOR);
+  UnicodeSPrint (Str, sizeof (Str), L"%dMHz", CpuGetMaxFreq (0) / MHZ_SCALE_FACTOR);
   HiiSetString (
     HiiHandle,
     STRING_TOKEN (STR_PLATFORM_INFO_CPUCLK_VALUE),
