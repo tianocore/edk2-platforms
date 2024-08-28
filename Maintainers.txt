@@ -200,12 +200,10 @@ M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 Platform/Intel/QuarkPlatformPkg
 F: Platform/Intel/QuarkPlatformPkg/
 M: Michael D Kinney <michael.d.kinney@intel.com>
-M: Kelly Steele <kelly.steele@intel.com>
 R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
 Platform/Intel/Vlv2TbltDevicePkg
 F: Platform/Intel/Vlv2TbltDevicePkg/
-M: Zailiang Sun <zailiang.sun@intel.com>
 M: Yi Qian <yi.qian@intel.com>
 R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
@@ -303,12 +301,10 @@ R: Ashraf Ali S <ashraf.ali.s@intel.com>
 Silicon/Intel/QuarkSocPkg
 F: Silicon/Intel/QuarkSocPkg/
 M: Michael D Kinney <michael.d.kinney@intel.com>
-M: Kelly Steele <kelly.steele@intel.com>
 R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
 Silicon/Intel/Vlv2DeviceRefCodePkg
 F: Silicon/Intel/Vlv2DeviceRefCodePkg/
-M: Zailiang Sun <zailiang.sun@intel.com>
 M: Yi Qian <yi.qian@intel.com>
 R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
@@ -361,10 +357,10 @@ R: Yuwei Chen <yuwei.chen@intel.com>
 
 Loongson platforms
 F: Platform/Loongson/
-M: Bibo Mao <maobibo@loongson.cn> 
+M: Bibo Mao <maobibo@loongson.cn>
 M: Xianglai li <lixianglai@loongson.cn>
 M: Chao Li <lichao@loongson.cn>
- 
+
 Marvell platforms and silicon
 F: Platform/Marvell/
 F: Platform/SolidRun/
