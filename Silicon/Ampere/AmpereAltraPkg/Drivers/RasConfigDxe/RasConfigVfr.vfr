@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -31,8 +31,8 @@ formset
       prompt      = STRING_TOKEN(STR_RAS_HARDWARE_EINJ_PROMPT),
       help        = STRING_TOKEN(STR_RAS_HARDWARE_EINJ_HELP),
       flags       = NUMERIC_SIZE_4 | RESET_REQUIRED,
-      option text = STRING_TOKEN(STR_RAS_COMMON_ENABLE), value = 1, flags = DEFAULT;
-      option text = STRING_TOKEN(STR_RAS_COMMON_DISABLE), value = 0, flags = 0;
+      option text = STRING_TOKEN(STR_RAS_COMMON_ENABLE), value = 1, flags = 0;
+      option text = STRING_TOKEN(STR_RAS_COMMON_DISABLE), value = 0, flags = DEFAULT;
 
     endoneof;
 
