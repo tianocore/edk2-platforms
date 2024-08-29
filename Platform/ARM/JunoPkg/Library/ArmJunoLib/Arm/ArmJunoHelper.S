@@ -6,7 +6,7 @@
 *
 **/
 
-#include <AsmMacroIoLib.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 //

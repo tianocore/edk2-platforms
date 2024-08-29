@@ -11,7 +11,7 @@
 #   ArmPlatformPkg/ArmVExpressPkg/Library/ArmVExpressLibRTSM/RTSMHelper.S
 #
 #**/
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 //VOID

@@ -10,7 +10,7 @@
  * Derived from edk2/ArmPlatformPkg/Library/ArmPlatformLibNull/AArch64/ArmPlatformHelper.S
  **/
 
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 ASM_FUNC(ArmPlatformPeiBootAction)

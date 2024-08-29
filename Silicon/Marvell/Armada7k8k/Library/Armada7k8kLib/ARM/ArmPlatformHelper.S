@@ -10,7 +10,7 @@
 //  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED
 //
 
-#include <AsmMacroIoLib.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 #define CCU_MC_BASE                     0xF0001700

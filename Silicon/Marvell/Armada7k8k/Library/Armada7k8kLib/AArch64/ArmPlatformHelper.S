@@ -9,7 +9,7 @@
 //  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED
 //
 
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <Library/ArmLib.h>
 
 ASM_FUNC(ArmPlatformPeiBootAction)

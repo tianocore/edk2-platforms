@@ -9,7 +9,7 @@
 * Based on ArmPlatformPkg/Library/ArmPlatformLibNull
 **/
 
-#include <AsmMacroIoLibV8.h>
+#include <AsmMacroLib.h>
 #include <Base.h>
 #include <Library/ArmLib.h>
 #include <Library/PcdLib.h>
