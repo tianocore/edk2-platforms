@@ -108,25 +108,25 @@ InitializeM41T83 (
   Status = RtcRead (M41T83_REGADDR_SECONDS, 1, &Second.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
   }
   Second.Bits.ST= 1;
   Status = RtcWrite (M41T83_REGADDR_SECONDS, 1, &Second.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
     goto Exit;
   }
   Status = RtcRead (M41T83_REGADDR_SECONDS, 1, &Second.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
   }
   Second.Bits.ST= 0;
   Status = RtcWrite (M41T83_REGADDR_SECONDS, 1, &Second.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
     goto Exit;
   }
 
@@ -134,13 +134,13 @@ InitializeM41T83 (
   Status = RtcRead (M41T83_REGADDR_ALARM1HOUR, 1, &Alarm1Hour.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
   }
   Alarm1Hour.Bits.HT = 0;
   Status = RtcWrite (M41T83_REGADDR_ALARM1HOUR, 1, &Alarm1Hour.Uint8);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
     goto Exit;
   }
 
@@ -181,7 +181,7 @@ LibSetTime (
   if (!IsTimeValid (Time)) {
     if (!EfiAtRuntime ()) {
       DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-        __FUNCTION__, __LINE__, Status));
+        __func__, __LINE__, Status));
       DEBUG ((DEBUG_ERROR, "Now RTC Time is : %04d-%02d-%02d %02d:%02d:%02d\n",
         Time->Year, Time->Month, Time->Day, Time->Hour, Time->Minute, Time->Second
       ));
@@ -252,7 +252,7 @@ Exit:
   if (!EfiAtRuntime ()) {
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-        __FUNCTION__, LineNum, Status));
+        __func__, LineNum, Status));
     }
     EfiReleaseLock (&mRtcLock);
   }
@@ -342,10 +342,10 @@ Exit:
   if (!EfiAtRuntime ()) {
     if (EFI_ERROR (Status)) {
       if (IsTimeInvalid == TRUE) {
-        DEBUG((DEBUG_ERROR, "%a(%d) Time invalid.\r\n",__FUNCTION__, LineNum));
+        DEBUG((DEBUG_ERROR, "%a(%d) Time invalid.\r\n",__func__, LineNum));
       } else {
         DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n",
-          __FUNCTION__, LineNum, Status));
+          __func__, LineNum, Status));
       }
     }
     EfiReleaseLock (&mRtcLock);
@@ -429,7 +429,7 @@ LibRtcInitialize (
   Status = InitializeM41T83 ();
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\nRTC M41T83 Init Failed !!!\n",
-            __FUNCTION__, __LINE__, Status));
+            __func__, __LINE__, Status));
     /*
      * Returning ERROR on failure of RTC initilization will cause the system to hang up.
      * So we add some debug message to indecate the RTC initilization failed,
@@ -450,7 +450,7 @@ LibRtcInitialize (
     Status = LibSetTime (&EfiTime);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "[%a]:[%dL] RTC settime Status : %r\n",
-        __FUNCTION__, __LINE__, Status));
+        __func__, __LINE__, Status));
     }
   }
 

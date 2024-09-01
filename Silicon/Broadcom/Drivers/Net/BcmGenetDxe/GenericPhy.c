@@ -115,7 +115,7 @@ GenericPhyDetect (
       Phy->PhyAddr = PhyAddr;
       DEBUG ((DEBUG_INFO,
         "%a: PHY detected at address 0x%02X (PHYIDR1=0x%04X, PHYIDR2=0x%04X)\n",
-        __FUNCTION__, PhyAddr, Id1, Id2));
+        __func__, PhyAddr, Id1, Id2));
       return EFI_SUCCESS;
     }
   }
@@ -354,7 +354,7 @@ GenericPhyGetConfig (
   }
 
   DEBUG ((DEBUG_INFO, "%a: Link speed %d Mbps, %a-duplex\n",
-    __FUNCTION__, *Speed, *Duplex == PHY_DUPLEX_FULL ? "full" : "half"));
+    __func__, *Speed, *Duplex == PHY_DUPLEX_FULL ? "full" : "half"));
 
   return EFI_SUCCESS;
 }
@@ -387,7 +387,7 @@ GenericPhyUpdateConfig (
 
   if (Phy->LinkUp != LinkUp) {
     if (LinkUp) {
-      DEBUG ((DEBUG_VERBOSE, "%a: Link is up\n", __FUNCTION__));
+      DEBUG ((DEBUG_VERBOSE, "%a: Link is up\n", __func__));
 
       Status = GenericPhyGetConfig (Phy, &Speed, &Duplex);
       if (EFI_ERROR (Status)) {
@@ -396,7 +396,7 @@ GenericPhyUpdateConfig (
 
       GenericPhyConfigure (Phy, Speed, Duplex);
     } else {
-      DEBUG ((DEBUG_VERBOSE, "%a: Link is down\n", __FUNCTION__));
+      DEBUG ((DEBUG_VERBOSE, "%a: Link is down\n", __func__));
     }
   }
 

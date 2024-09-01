@@ -52,7 +52,7 @@ UpdateSmbiosType9Info (
                     (VOID **)&PciIo
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n", __FUNCTION__, __LINE__, Status));
+      DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n", __func__, __LINE__, Status));
       continue;
     }
     (VOID)PciIo->GetLocation (PciIo, &SegmentNumber, &BusNumber, &DeviceNumber, &FunctionNumber);
@@ -94,7 +94,7 @@ EmptySmbiosType9 (
       Status = Smbios->Remove (Smbios, SmbiosHandle);
       if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Remove System Slot Failed. Status : %r\n",
-          __FUNCTION__, __LINE__, Status));
+          __func__, __LINE__, Status));
         break;
       }
     }
@@ -204,7 +204,7 @@ AddSmbiosType9Entry (
                   );
   if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol Failed. Status : %r\n",
-        __FUNCTION__, __LINE__, Status));
+        __func__, __LINE__, Status));
       return Status;
   }
 

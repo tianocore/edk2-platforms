@@ -71,11 +71,11 @@ FixPcdMemory (
     );
 
   DEBUG ((DEBUG_INFO, "%a: Fixup PcdFlashNvStorageVariableBase64: 0x%lx\n",
-    __FUNCTION__, PcdGet64 (PcdFlashNvStorageVariableBase64)));
+    __func__, PcdGet64 (PcdFlashNvStorageVariableBase64)));
   DEBUG ((DEBUG_INFO, "%a: Fixup PcdFlashNvStorageFtwWorkingBase64: 0x%lx\n",
-    __FUNCTION__, PcdGet64 (PcdFlashNvStorageFtwWorkingBase64)));
+    __func__, PcdGet64 (PcdFlashNvStorageFtwWorkingBase64)));
   DEBUG ((DEBUG_INFO, "%a: Fixup PcdFlashNvStorageFtwSpareBase64: 0x%lx\n",
-    __FUNCTION__, PcdGet64 (PcdFlashNvStorageFtwSpareBase64)));
+    __func__, PcdGet64 (PcdFlashNvStorageFtwSpareBase64)));
 
   return Status;
 }

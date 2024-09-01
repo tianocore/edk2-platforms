@@ -55,7 +55,7 @@ GetAppetureByRootBridgeIo (
       );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a:%d] RootBridgeIo->Configuration failed %r\n",
-          __FUNCTION__, __LINE__, Status));
+          __func__, __LINE__, Status));
     return NULL;
   };
 
@@ -67,7 +67,7 @@ GetAppetureByRootBridgeIo (
   }
 
   if (Configuration->Desc != ACPI_ADDRESS_SPACE_DESCRIPTOR) {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] Can't find bus descriptor\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a:%d] Can't find bus descriptor\n", __func__, __LINE__));
     return NULL;
   }
 
@@ -81,7 +81,7 @@ GetAppetureByRootBridgeIo (
     }
   }
 
-  DEBUG ((DEBUG_ERROR, "[%a:%d] Can't find PCI appeture\n", __FUNCTION__, __LINE__));
+  DEBUG ((DEBUG_ERROR, "[%a:%d] Can't find PCI appeture\n", __func__, __LINE__));
   return NULL;
 }
 
@@ -109,7 +109,7 @@ SetAtuConfig0RW (
   {
     UINTN i;
     for (i=0; i<0x20; i+=4) {
-      DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __FUNCTION__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __func__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
     }
   }
 }
@@ -138,7 +138,7 @@ SetAtuConfig1RW (
   {
     UINTN i;
     for (i=0; i<0x20; i+=4) {
-      DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __FUNCTION__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __func__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
     }
   }
 }
@@ -162,7 +162,7 @@ SetAtuIoRW (UINT64 RbPciBase,UINT64 IoBase,UINT64 CpuIoRegionLimit, UINT64 CpuIo
     {
       UINTN i;
       for (i=0; i<0x20; i+=4) {
-        DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __FUNCTION__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
+        DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __func__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
       }
     }
 }
@@ -186,7 +186,7 @@ SetAtuMemRW(UINT64 RbPciBase,UINT64 MemBase,UINT64 CpuMemRegionLimit, UINT64 Cpu
     {
       UINTN i;
       for (i=0; i<0x20; i+=4) {
-        DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __FUNCTION__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
+        DEBUG ((DEBUG_ERROR, "[%a:%d] - Base=%p value=%x\n", __func__, __LINE__, RbPciBase + 0x900 + i, MmioRead32(RbPciBase + 0x900 + i)));
       }
     }
 }
@@ -296,7 +296,7 @@ EnlargeAtuConfig0 (
       (VOID **)&ResAlloc
       );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] - HandleProtocol failed %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "[%a:%d] - HandleProtocol failed %r\n", __func__,
           __LINE__, Status));
     return;
   }
@@ -315,7 +315,7 @@ EnlargeAtuConfig0 (
         (VOID **)&RootBridgeIo
         );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "[%a:%d] - HandleProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] - HandleProtocol failed %r\n", __func__, __LINE__, Status));
       // This should never happen so that it is a fatal error and we don't try
       // to continue
       break;
@@ -323,7 +323,7 @@ EnlargeAtuConfig0 (
 
     Appeture = GetAppetureByRootBridgeIo (RootBridgeIo);
     if (Appeture == NULL) {
-      DEBUG ((DEBUG_ERROR, "[%a:%d] Get appeture failed\n", __FUNCTION__,
+      DEBUG ((DEBUG_ERROR, "[%a:%d] Get appeture failed\n", __func__,
             __LINE__));
       continue;
     }

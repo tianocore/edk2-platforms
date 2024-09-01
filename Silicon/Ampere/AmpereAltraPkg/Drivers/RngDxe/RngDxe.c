@@ -111,7 +111,7 @@ RngGetRNG (
     DEBUG ((
       DEBUG_ERROR,
       "%a:%d Failed to generate a random number. \n",
-      __FUNCTION__,
+      __func__,
       __LINE__
       ));
     return Status;

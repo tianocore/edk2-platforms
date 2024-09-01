@@ -375,7 +375,7 @@ MMCSendCommand (
   if (PollRegisterWithMask (MMCHS_PRES_STATE,
     CmdSendOKMask, 0) == EFI_TIMEOUT) {
     DEBUG ((DEBUG_ERROR, "%a(%u): not ready for MMC_CMD%u PresState 0x%x MmcStatus 0x%x\n",
-      __FUNCTION__, __LINE__, MMC_CMD_NUM (MmcCmd),
+      __func__, __LINE__, MMC_CMD_NUM (MmcCmd),
       MmioRead32 (MMCHS_PRES_STATE), MmioRead32 (MMCHS_INT_STAT)));
     Status = EFI_TIMEOUT;
     goto Exit;
@@ -418,7 +418,7 @@ MMCSendCommand (
       //
       if (MmcCmd != CMD_IO_SEND_OP_COND) {
         DEBUG ((DEBUG_ERROR, "%a(%u): MMC_CMD%u ERRI MmcStatus 0x%x\n",
-          __FUNCTION__, __LINE__, MMC_CMD_NUM (MmcCmd), MmcStatus));
+          __func__, __LINE__, MMC_CMD_NUM (MmcCmd), MmcStatus));
       }
 
       SoftReset (SRC);
@@ -441,7 +441,7 @@ MMCSendCommand (
 
   if (RetryCount == MAX_RETRY_COUNT) {
     DEBUG ((DEBUG_ERROR, "%a(%u): MMC_CMD%u completion TIMEOUT PresState 0x%x MmcStatus 0x%x\n",
-      __FUNCTION__, __LINE__, MMC_CMD_NUM (MmcCmd),
+      __func__, __LINE__, MMC_CMD_NUM (MmcCmd),
       MmioRead32 (MMCHS_PRES_STATE), MmcStatus));
     Status = EFI_TIMEOUT;
     goto Exit;
@@ -691,15 +691,15 @@ MMCReadBlockData (
   UINTN Count;
 
   DEBUG ((DEBUG_VERBOSE, "%a(%u): LBA: 0x%x, Length: 0x%x, Buffer: 0x%x)\n",
-    __FUNCTION__, __LINE__, Lba, Length, Buffer));
+    __func__, __LINE__, Lba, Length, Buffer));
 
   if (Buffer == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): NULL Buffer\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a(%u): NULL Buffer\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
   if (Length % sizeof (UINT32) != 0) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): bad Length %u\n", __FUNCTION__, __LINE__, Length));
+    DEBUG ((DEBUG_ERROR, "%a(%u): bad Length %u\n", __func__, __LINE__, Length));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -730,7 +730,7 @@ MMCReadBlockData (
 
     if (RetryCount == MAX_RETRY_COUNT) {
       DEBUG ((DEBUG_ERROR, "%a(%u): %lu/%lu MMCHS_INT_STAT: %08x\n",
-        __FUNCTION__, __LINE__, Length - RemLength, Length, MmcStatus));
+        __func__, __LINE__, Length - RemLength, Length, MmcStatus));
       return EFI_TIMEOUT;
     }
 
@@ -755,15 +755,15 @@ MMCWriteBlockData (
   UINTN Count;
 
   DEBUG ((DEBUG_VERBOSE, "%a(%u): LBA: 0x%x, Length: 0x%x, Buffer: 0x%x)\n",
-    __FUNCTION__, __LINE__, Lba, Length, Buffer));
+    __func__, __LINE__, Lba, Length, Buffer));
 
   if (Buffer == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): NULL Buffer\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a(%u): NULL Buffer\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
   if (Length % sizeof (UINT32) != 0) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): bad Length %u\n", __FUNCTION__, __LINE__, Length));
+    DEBUG ((DEBUG_ERROR, "%a(%u): bad Length %u\n", __func__, __LINE__, Length));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -794,7 +794,7 @@ MMCWriteBlockData (
 
     if (RetryCount == MAX_RETRY_COUNT) {
       DEBUG ((DEBUG_ERROR, "%a(%u): %lu/%lu MMCHS_INT_STAT: %08x\n",
-        __FUNCTION__, __LINE__, Length - RemLength, Length, MmcStatus));
+        __func__, __LINE__, Length - RemLength, Length, MmcStatus));
       return EFI_TIMEOUT;
     }
 

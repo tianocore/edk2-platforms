@@ -121,7 +121,7 @@ FvbInitialize (
   Status = GetVariableFlashNvStorageInfo (&BaseAddress, &NvStorageFvSize);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
-    DEBUG ((DEBUG_ERROR, "[%a] - An error ocurred getting variable info - %r.\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "[%a] - An error ocurred getting variable info - %r.\n", __func__, Status));
     return;
   }
 
@@ -129,7 +129,7 @@ FvbInitialize (
   Status = SafeUint64ToUint32 (BaseAddress, &mPlatformFvBaseAddress[0].FvBase);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
-    DEBUG ((DEBUG_ERROR, "[%a] - 64-bit variable storage base address not supported.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "[%a] - 64-bit variable storage base address not supported.\n", __func__));
     return;
   }
   NvStorageBaseAddress = mPlatformFvBaseAddress[0].FvBase;
@@ -137,7 +137,7 @@ FvbInitialize (
   Status = SafeUint64ToUint32 (NvStorageFvSize, &mPlatformFvBaseAddress[0].FvSize);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
-    DEBUG ((DEBUG_ERROR, "[%a] - 64-bit variable storage size not supported.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "[%a] - 64-bit variable storage size not supported.\n", __func__));
     return;
   }
   NvStorageFvSize = mPlatformFvBaseAddress[0].FvSize;

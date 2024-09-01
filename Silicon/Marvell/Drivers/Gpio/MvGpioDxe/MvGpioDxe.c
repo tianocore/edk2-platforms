@@ -63,7 +63,7 @@ MvGpioValidate (
   if (ControllerIndex >= mGpioInstance->GpioDeviceCount) {
     DEBUG ((DEBUG_ERROR,
       "%a: Invalid GPIO ControllerIndex: %d\n",
-      __FUNCTION__,
+      __func__,
       ControllerIndex));
     return EFI_INVALID_PARAMETER;
   }
@@ -71,7 +71,7 @@ MvGpioValidate (
   if (GpioPin >= mGpioInstance->SoCGpio[ControllerIndex].InternalGpioCount) {
     DEBUG ((DEBUG_ERROR,
       "%a: GPIO pin #%d not available in Controller#%d\n",
-      __FUNCTION__,
+      __func__,
       GpioPin,
       ControllerIndex));
     return EFI_INVALID_PARAMETER;
@@ -306,7 +306,7 @@ MvGpioEntryPoint (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     goto ErrLocateBoardDesc;
   }
 
@@ -315,7 +315,7 @@ MvGpioEntryPoint (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot get GPIO board desc from BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     goto ErrLocateBoardDesc;
   }
 

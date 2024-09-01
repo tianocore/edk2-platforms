@@ -161,7 +161,7 @@ StyxSataPlatformDxeEntryPoint (
              FixedPcdGet8(PcdSata0PortCount), 0);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: failed to initialize primary SATA controller!\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -186,7 +186,7 @@ StyxSataPlatformDxeEntryPoint (
                FixedPcdGet8(PcdSata0PortCount));
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to initialize secondary SATA controller!\n",
-        __FUNCTION__));
+        __func__));
     } else {
       for (PortNum = 0; PortNum < FixedPcdGet8(PcdSata1PortCount); PortNum++) {
           SetPrdSingleSata1 (PortNum);

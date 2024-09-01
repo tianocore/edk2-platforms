@@ -45,7 +45,7 @@ SetMemoryAttributesRunTime (
 
   Status = gDS->GetMemorySpaceDescriptor (Address, &Descriptor);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a: GetMemorySpaceDescriptor failed\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: GetMemorySpaceDescriptor failed\n", __func__));
     return Status;
   }
 
@@ -57,7 +57,7 @@ SetMemoryAttributesRunTime (
                   EFI_MEMORY_UC | EFI_MEMORY_RUNTIME
                   );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_INFO, "%a: AddMemorySpace failed\n", __FUNCTION__));
+      DEBUG ((DEBUG_INFO, "%a: AddMemorySpace failed\n", __func__));
       return Status;
     }
 
@@ -67,7 +67,7 @@ SetMemoryAttributesRunTime (
                   EFI_MEMORY_RUNTIME
                   );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_INFO, "%a:%d SetMemorySpaceAttributes failed\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_INFO, "%a:%d SetMemorySpaceAttributes failed\n", __func__, __LINE__));
       return Status;
     }
   } else if (!(Descriptor.Attributes & EFI_MEMORY_RUNTIME)) {
@@ -78,7 +78,7 @@ SetMemoryAttributesRunTime (
                   );
 
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_INFO, "%a:%d SetMemorySpaceAttributes failed\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_INFO, "%a:%d SetMemorySpaceAttributes failed\n", __func__, __LINE__));
       return Status;
     }
   }
@@ -192,27 +192,27 @@ AcpiNotificationEvent (
     return ;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: sleepControl %llx\n", __FUNCTION__, mPowerManager.SleepControlRegAddr));
+  DEBUG ((DEBUG_INFO, "%a: sleepControl %llx\n", __func__, mPowerManager.SleepControlRegAddr));
   ASSERT (mPowerManager.SleepControlRegAddr);
   Status =  SetMemoryAttributesRunTime (mPowerManager.SleepControlRegAddr);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a:%d\n",  __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_INFO, "%a:%d\n",  __func__, __LINE__));
     return ;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: sleepStatus %llx\n", __FUNCTION__, mPowerManager.SleepStatusRegAddr));
+  DEBUG ((DEBUG_INFO, "%a: sleepStatus %llx\n", __func__, mPowerManager.SleepStatusRegAddr));
   ASSERT (mPowerManager.SleepStatusRegAddr);
   Status =  SetMemoryAttributesRunTime (mPowerManager.SleepStatusRegAddr);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a:%d\n",  __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_INFO, "%a:%d\n",  __func__, __LINE__));
     return ;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: ResetReg %llx\n", __FUNCTION__, mPowerManager.ResetRegAddr));
+  DEBUG ((DEBUG_INFO, "%a: ResetReg %llx\n", __func__, mPowerManager.ResetRegAddr));
   ASSERT (mPowerManager.ResetRegAddr);
   Status =  SetMemoryAttributesRunTime (mPowerManager.ResetRegAddr);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a:%d\n",  __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_INFO, "%a:%d\n",  __func__, __LINE__));
   }
   return ;
 }

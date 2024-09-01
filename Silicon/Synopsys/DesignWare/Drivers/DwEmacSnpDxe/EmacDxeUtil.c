@@ -28,7 +28,7 @@ EmacSetMacAddress (
   IN  UINTN             MacBaseAddress
   )
 {
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // Note: This MAC_ADDR0 registers programming sequence cannot be swap:
   // Must program HIGH Offset first before LOW Offset
@@ -62,7 +62,7 @@ EmacReadMacAddress (
   UINT32          MacAddrHighValue;
   UINT32          MacAddrLowValue;
 
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // Read the Mac Addr high register
   MacAddrHighValue = (MmioRead32 (MacBaseAddress + DW_EMAC_GMACGRP_MAC_ADDRESS0_HIGH_OFST) & 0xFFFF);
@@ -90,7 +90,7 @@ EmacDxeInitialization (
   IN  UINTN         MacBaseAddress
   )
 {
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // Init EMAC DMA
   EmacDmaInit (EmacDriver, MacBaseAddress);
@@ -110,7 +110,7 @@ EmacDmaInit (
   UINT32 DmaOpmode;
   UINT32 InterruptEnable;
 
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // This section provides the instructions for initializing the DMA registers in the proper sequence. This
   // initialization sequence can be done after the EMAC interface initialization has been completed. Perform
@@ -298,7 +298,7 @@ EmacStartTransmission (
   IN  UINTN   MacBaseAddress
   )
 {
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
   MmioOr32 (MacBaseAddress +
             DW_EMAC_GMACGRP_MAC_CONFIGURATION_OFST,
             DW_EMAC_GMACGRP_MAC_CONFIGURATION_RE_SET_MSK |
@@ -449,7 +449,7 @@ EmacStopTxRx (
    IN  UINTN   MacBaseAddress
   )
 {
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // Stop DMA TX
   MmioAnd32 (MacBaseAddress +
@@ -620,7 +620,7 @@ EmacGetStatistic (
 {
   EFI_NETWORK_STATISTICS   *Stats;
 
-  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:MAC: %a ()\r\n", __func__));
 
   // Allocate Resources
   Stats = AllocateZeroPool (sizeof (EFI_NETWORK_STATISTICS));

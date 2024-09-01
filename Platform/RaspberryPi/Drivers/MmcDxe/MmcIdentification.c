@@ -356,7 +356,7 @@ SdSelect (
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD7,
                       MmcHostInstance->CardInfo.RCA << 16);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: error: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: error: %r\n", __func__, Status));
   }
 
   return Status;
@@ -376,7 +376,7 @@ SdDeselect (
 
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD7, 0);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: error: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: error: %r\n", __func__, Status));
   }
 
   return Status;
@@ -396,13 +396,13 @@ SdGetCsd (
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD9,
                       MmcHostInstance->CardInfo.RCA << 16);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
   Status = MmcHost->ReceiveResponse (MmcHost, MMC_RESPONSE_TYPE_CSD, Response);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a(%u): error %r\n", __func__,
       __LINE__, Status));
     return Status;
   }
@@ -437,20 +437,20 @@ SdSet4Bit (
   CmdArg = MmcHostInstance->CardInfo.RCA << 16;
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD55, CmdArg);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
   /* Width: 4 */
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD6, 2);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "%a(%u): error %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
   Status = MmcHost->SetIos (MmcHost, 0, BUSWIDTH_4, EMMCBACKWARD);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
@@ -488,7 +488,7 @@ SdSetSpeed (
    */
   Status = MmcHost->SetIos (MmcHost, Speed, 0, EMMCBACKWARD);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: error setting speed %u: %r\n", __FUNCTION__, Speed, Status));
+    DEBUG ((DEBUG_ERROR, "%a: error setting speed %u: %r\n", __func__, Speed, Status));
     return Status;
   }
 
@@ -506,14 +506,14 @@ SdSetSpeed (
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD6, CmdArg);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
     return Status;
   } else {
     Status = MmcHost->ReadBlockData (MmcHost, 0, SWITCH_CMD_DATA_LENGTH,
       Buffer);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n",
-        __FUNCTION__, __LINE__, Status));
+        __func__, __LINE__, Status));
       return Status;
     }
   }
@@ -527,13 +527,13 @@ SdSetSpeed (
   CmdArg = SdSwitchCmdArgument (1, 0xf, 0xf, 0xf, TRUE);
   Status = MmcHost->SendCommand (MmcHost, MMC_CMD6, CmdArg);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __func__, __LINE__, Status));
     return Status;
   } else {
     Status = MmcHost->ReadBlockData (MmcHost, 0,
       SWITCH_CMD_DATA_LENGTH, Buffer);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __FUNCTION__, __LINE__, Status));
+      DEBUG ((DEBUG_ERROR, "%a(%u): error: %r\n", __func__, __LINE__, Status));
       return Status;
     }
 
@@ -561,7 +561,7 @@ SdSetSpeed (
 
   Status = MmcHost->SetIos (MmcHost, Speed, 0, EMMCBACKWARD);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: error setting speed %u: %r\n", __FUNCTION__, Speed, Status));
+    DEBUG ((DEBUG_ERROR, "%a: error setting speed %u: %r\n", __func__, Speed, Status));
     return Status;
   }
 
@@ -585,13 +585,13 @@ SdExecuteScr (
                       MmcHostInstance->CardInfo.RCA << 16);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a (MMC_CMD55): Error and Status = %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
   Status = MmcHost->ReceiveResponse (MmcHost, MMC_RESPONSE_TYPE_R1, Response);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a (MMC_CMD55): Error and Status = %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
   if ((Response[0] & MMC_STATUS_APP_CMD) == 0) {
@@ -602,7 +602,7 @@ SdExecuteScr (
   Status = MmcHost->SendCommand (MmcHost, MMC_ACMD51, 0);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a (MMC_ACMD51): Error and Status = %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 
@@ -610,7 +610,7 @@ SdExecuteScr (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a (MMC_ACMD51): ReadBlockData Error and Status = %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 

@@ -151,7 +151,7 @@ AtSha240aGetRNG (
     Status = AtSha204a->I2cIo->QueueRequest (AtSha204a->I2cIo, 1, NULL,
                                  (VOID *)&Request, NULL);
     DEBUG ((DEBUG_INFO, "%a: wake AtSha204a: I2cIo->QueueRequest() - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
 
     gBS->Stall (2500); // wait 2.5 ms for wake to complete
 
@@ -164,7 +164,7 @@ AtSha240aGetRNG (
         continue;
       }
       DEBUG ((DEBUG_ERROR, "%a: I2C request transfer failed, Status == %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       return EFI_DEVICE_ERROR;
     }
 
@@ -177,7 +177,7 @@ AtSha240aGetRNG (
         continue;
       }
       DEBUG ((DEBUG_ERROR, "%a: I2C response transfer failed, Status == %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       return EFI_DEVICE_ERROR;
     }
 
@@ -188,7 +188,7 @@ AtSha240aGetRNG (
       if (++Retries <= MAX_RETRIES) {
         continue;
       }
-      DEBUG ((DEBUG_WARN, "%a: incomplete packet received\n", __FUNCTION__));
+      DEBUG ((DEBUG_WARN, "%a: incomplete packet received\n", __func__));
       return EFI_DEVICE_ERROR;
     }
 

@@ -308,7 +308,7 @@ CpuArchEventProtocolNotify (
   //
   Status = gBS->LocateProtocol (&gEfiCpuArchProtocolGuid, NULL, (VOID **)&Cpu);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: gBS->LocateProtocol() - %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a: gBS->LocateProtocol() - %r\n", __func__,
       Status));
     ASSERT (FALSE);
     return;
@@ -320,7 +320,7 @@ CpuArchEventProtocolNotify (
   Status = Cpu->RegisterInterruptHandler (Cpu, EXCEPT_ARM_IRQ, NULL);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Cpu->RegisterInterruptHandler() - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ASSERT (FALSE);
     return;
   }
@@ -332,7 +332,7 @@ CpuArchEventProtocolNotify (
                   IrqInterruptHandler);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Cpu->RegisterInterruptHandler() - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ASSERT (FALSE);
     return;
   }

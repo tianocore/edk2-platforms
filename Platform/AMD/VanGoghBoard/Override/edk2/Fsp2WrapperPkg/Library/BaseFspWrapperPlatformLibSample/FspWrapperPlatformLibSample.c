@@ -112,7 +112,7 @@ UpdateFspmUpdDataForFabric (
   IN OUT VOID  *FspUpdRgnPtr
   )
 {
-  DEBUG ((DEBUG_INFO, "%a Enter\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a Enter\n", __func__));
   FSPM_UPD                         *Upd           = (FSPM_UPD *)FspUpdRgnPtr;
   EFI_PEI_READ_ONLY_VARIABLE2_PPI  *ReadVariable2 = NULL;
   EFI_STATUS                       Status         = PeiServicesLocatePpi (&gEfiPeiReadOnlyVariable2PpiGuid, 0, NULL, (VOID **)&ReadVariable2);

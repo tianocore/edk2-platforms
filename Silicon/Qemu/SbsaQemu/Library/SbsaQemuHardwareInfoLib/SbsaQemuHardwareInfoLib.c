@@ -29,11 +29,11 @@ GetCpuCount (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_COUNT call failed. We have no cpu information.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_COUNT call failed. We have no cpu information.\n", __func__));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: We have %d cpus.\n", __FUNCTION__, SmcArgs.Arg1));
+  DEBUG ((DEBUG_INFO, "%a: We have %d cpus.\n", __func__, SmcArgs.Arg1));
 
   return SmcArgs.Arg1;
 }
@@ -57,11 +57,11 @@ GetMpidr (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. We have no MPIDR for CPU%d.\n", __FUNCTION__, CpuId));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. We have no MPIDR for CPU%d.\n", __func__, CpuId));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: MPIDR for CPU%d: = %d\n", __FUNCTION__, CpuId, SmcArgs.Arg2));
+  DEBUG ((DEBUG_INFO, "%a: MPIDR for CPU%d: = %d\n", __func__, CpuId, SmcArgs.Arg2));
 
   return SmcArgs.Arg2;
 }
@@ -85,11 +85,11 @@ GetCpuNumaNode (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. Could not find information for CPU%d.\n", __FUNCTION__, CpuId));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_NODE call failed. Could not find information for CPU%d.\n", __func__, CpuId));
     return 0;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: NUMA node for CPU%d: = %d\n", __FUNCTION__, CpuId, SmcArgs.Arg1));
+  DEBUG ((DEBUG_INFO, "%a: NUMA node for CPU%d: = %d\n", __func__, CpuId, SmcArgs.Arg1));
 
   return SmcArgs.Arg1;
 }
@@ -105,11 +105,11 @@ GetMemNodeCount (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE_COUNT call failed. We have no memory information.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE_COUNT call failed. We have no memory information.\n", __func__));
     ResetShutdown ();
   }
 
-  DEBUG ((DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __FUNCTION__, SmcArgs.Arg1));
+  DEBUG ((DEBUG_INFO, "%a: The number of the memory nodes is %ld\n", __func__, SmcArgs.Arg1));
   return (UINT32)SmcArgs.Arg1;
 }
 
@@ -126,7 +126,7 @@ GetMemInfo (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE call failed. We have no memory information.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_MEMORY_NODE call failed. We have no memory information.\n", __func__));
     ResetShutdown ();
   } else {
     MemInfo->NodeId      = SmcArgs.Arg1;
@@ -137,7 +137,7 @@ GetMemInfo (
   DEBUG ((
     DEBUG_INFO,
     "%a: NUMA node for System RAM:%d = 0x%lx - 0x%lx\n",
-    __FUNCTION__,
+    __func__,
     MemInfo->NodeId,
     MemInfo->AddressBase,
     MemInfo->AddressBase + MemInfo->AddressSize -1
@@ -194,7 +194,7 @@ GetCpuTopology (
   ArmMonitorCall (&SmcArgs);
 
   if (SmcArgs.Arg0 != SMC_SIP_CALL_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_TOPOLOGY call failed. We have no cpu topology information.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: SIP_SVC_GET_CPU_TOPOLOGY call failed. We have no cpu topology information.\n", __func__));
     ResetShutdown ();
   } else {
     CpuTopo->Sockets  = SmcArgs.Arg1;
@@ -206,7 +206,7 @@ GetCpuTopology (
   DEBUG ((
     DEBUG_INFO,
     "%a: CPU Topology: sockets: %d, clusters: %d, cores: %d, threads: %d\n",
-    __FUNCTION__,
+    __func__,
     CpuTopo->Sockets,
     CpuTopo->Clusters,
     CpuTopo->Cores,

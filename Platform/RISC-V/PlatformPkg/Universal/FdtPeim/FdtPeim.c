@@ -44,17 +44,17 @@ PeimPassFdt (
   GetFirmwareContextPointer (&FirmwareContext);
 
   if (FirmwareContext == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: OpenSBI Firmware Context is NULL\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: OpenSBI Firmware Context is NULL\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
   FdtPointer = (VOID *)FirmwareContext->FlattenedDeviceTree;
   if (FdtPointer == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Invalid FDT pointer\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Invalid FDT pointer\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
-  DEBUG ((DEBUG_ERROR, "%a: Build FDT HOB - FDT at address: 0x%x \n", __FUNCTION__, FdtPointer));
+  DEBUG ((DEBUG_ERROR, "%a: Build FDT HOB - FDT at address: 0x%x \n", __func__, FdtPointer));
   Base = FdtPointer;
   ASSERT (Base != NULL);
   ASSERT (fdt_check_header (Base) == 0);

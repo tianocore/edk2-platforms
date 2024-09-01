@@ -454,7 +454,7 @@ QemuFwCfgInitialize (
         break;
       } else {
         DEBUG ((DEBUG_ERROR, "%a: Failed to parse FDT QemuCfg node\n",
-          __FUNCTION__));
+          __func__));
         break;
       }
     }

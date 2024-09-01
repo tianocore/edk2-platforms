@@ -483,7 +483,7 @@ FlashFvbDxeInitialize (
   DEBUG ((
     DEBUG_INFO,
     "%a: Using NV store FV in-memory copy at 0x%lx with size 0x%x\n",
-    __FUNCTION__,
+    __func__,
     mNvStorageBase,
     mNvStorageSize
     ));
@@ -491,14 +491,14 @@ FlashFvbDxeInitialize (
   // Get NV Flash information
   Status = FlashGetNvRamInfo (&mNvFlashBase, &mNvFlashSize);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to get Flash info\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get Flash info\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
   if (mNvFlashSize >= (mNvStorageSize * 2)) {
-    DEBUG ((DEBUG_INFO, "%a: NV store on Flash is valid\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: NV store on Flash is valid\n", __func__));
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: NV store on Flash is invalid\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: NV store on Flash is invalid\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 

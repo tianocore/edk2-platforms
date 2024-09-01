@@ -109,7 +109,7 @@ EnableI2cBusConfiguration (
                   &gEfiI2cMasterProtocolGuid, (VOID **)&I2cMaster);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: gBS->HandleProtocol() failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 
@@ -117,7 +117,7 @@ EnableI2cBusConfiguration (
   Status = I2cMaster->SetBusFrequency (I2cMaster, &BusClockHertz);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: I2cMaster->SetBusFrequency() failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 
@@ -162,7 +162,7 @@ RegisterI2cBus (
   Status = gBS->LocateHandle (ByProtocol, Guid, NULL, &BufferSize,
                   &I2cBus->I2cMasterHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a: gBS->LocateHandle() failed - %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_INFO, "%a: gBS->LocateHandle() failed - %r\n", __func__,
       Status));
     return;
   }

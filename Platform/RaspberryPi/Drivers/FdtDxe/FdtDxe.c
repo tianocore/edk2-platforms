@@ -43,14 +43,14 @@ FixEthernetAliases (
   //
   Aliases = fdt_path_offset (mFdtImage, "/aliases");
   if (Aliases < 0) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate '/aliases'\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate '/aliases'\n", __func__));
     return EFI_NOT_FOUND;
   }
   Ethernet = fdt_getprop (mFdtImage, Aliases, "ethernet", NULL);
   Ethernet0 = fdt_getprop (mFdtImage, Aliases, "ethernet0", NULL);
   Alias = Ethernet ? Ethernet : Ethernet0;
   if (!Alias) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet[0]' alias\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet[0]' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -60,7 +60,7 @@ FixEthernetAliases (
   CopySize = AsciiStrSize (Alias);
   Copy = AllocateCopyPool (CopySize, Alias);
   if (!Copy) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to copy '%a'\n", __FUNCTION__, Alias));
+    DEBUG ((DEBUG_ERROR, "%a: failed to copy '%a'\n", __func__, Alias));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -73,18 +73,18 @@ FixEthernetAliases (
     if (Retval != 0) {
       Status = EFI_NOT_FOUND;
       DEBUG ((DEBUG_ERROR, "%a: failed to create 'ethernet' alias (%d)\n",
-        __FUNCTION__, Retval));
+        __func__, Retval));
     }
-    DEBUG ((DEBUG_INFO, "%a: created 'ethernet' alias '%a'\n", __FUNCTION__, Copy));
+    DEBUG ((DEBUG_INFO, "%a: created 'ethernet' alias '%a'\n", __func__, Copy));
   }
   if (!Ethernet0) {
     Retval = fdt_setprop (mFdtImage, Aliases, "ethernet0", Copy, CopySize);
     if (Retval != 0) {
       Status = EFI_NOT_FOUND;
       DEBUG ((DEBUG_ERROR, "%a: failed to create 'ethernet0' alias (%d)\n",
-        __FUNCTION__, Retval));
+        __func__, Retval));
     }
-    DEBUG ((DEBUG_INFO, "%a: created 'ethernet0' alias '%a'\n", __FUNCTION__, Copy));
+    DEBUG ((DEBUG_INFO, "%a: created 'ethernet0' alias '%a'\n", __func__, Copy));
   }
 
   FreePool (Copy);
@@ -107,7 +107,7 @@ UpdateMacAddress (
   //
   Node = fdt_path_offset (mFdtImage, "ethernet");
   if (Node < 0) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet' alias\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -116,7 +116,7 @@ UpdateMacAddress (
   //
   Status = mFwProtocol->GetMacAddress (MacAddress);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to retrieve MAC address\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to retrieve MAC address\n", __func__));
     return Status;
   }
 
@@ -124,12 +124,12 @@ UpdateMacAddress (
     sizeof MacAddress);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to create 'mac-address' property (%d)\n",
-      __FUNCTION__, Retval));
+      __func__, Retval));
     return EFI_NOT_FOUND;
   }
 
   DEBUG ((DEBUG_INFO, "%a: setting MAC address to %02x:%02x:%02x:%02x:%02x:%02x\n",
-    __FUNCTION__, MacAddress[0], MacAddress[1], MacAddress[2], MacAddress[3],
+    __func__, MacAddress[0], MacAddress[1], MacAddress[2], MacAddress[3],
     MacAddress[4], MacAddress[5]));
   return EFI_SUCCESS;
 }
@@ -155,38 +155,38 @@ AddUsbCompatibleProperty (
   // Locate the node that the 'usb' alias refers to
   Node = fdt_path_offset (mFdtImage, "usb");
   if (Node < 0) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'usb' alias\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'usb' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
   // Get the property list. This is a list of NUL terminated strings.
   List = fdt_getprop (mFdtImage, Node, "compatible", &ListSize);
   if (List == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate properties\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate properties\n", __func__));
     return EFI_NOT_FOUND;
   }
 
   // Check if the compatible value we plan to add is already present
   if (fdt_stringlist_contains (List, ListSize, NewProp)) {
     DEBUG ((DEBUG_INFO, "%a: property '%a' is already set.\n",
-      __FUNCTION__, NewProp));
+      __func__, NewProp));
     return EFI_SUCCESS;
   }
 
   // Make sure the compatible device is what we expect
   if (!fdt_stringlist_contains (List, ListSize, Prop)) {
     DEBUG ((DEBUG_ERROR, "%a: property '%a' is missing!\n",
-      __FUNCTION__, Prop));
+      __func__, Prop));
     return EFI_NOT_FOUND;
   }
 
   // Add the new NUL terminated entry to our list
   DEBUG ((DEBUG_INFO, "%a: adding '%a' to the properties\n",
-    __FUNCTION__, NewProp));
+    __func__, NewProp));
 
   NewList = AllocatePool (ListSize + sizeof (NewProp));
   if (NewList == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;;
   }
   CopyMem (NewList, List, ListSize);
@@ -197,7 +197,7 @@ AddUsbCompatibleProperty (
   FreePool (NewList);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to update properties (%d)\n",
-      __FUNCTION__, Retval));
+      __func__, Retval));
     return EFI_NOT_FOUND;
   }
 
@@ -347,7 +347,7 @@ SyncPcie (
 
   Node = fdt_path_offset (mFdtImage, "pcie0");
   if (Node < 0) {
-    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'pcie0' alias\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate 'pcie0' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -360,7 +360,7 @@ SyncPcie (
   DmaRanges[5] = cpu_to_fdt32 (0x00000000);
   DmaRanges[6] = cpu_to_fdt32 (0xc0000000);
 
-  DEBUG ((DEBUG_INFO, "%a: Updating PCIe dma-ranges\n",  __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Updating PCIe dma-ranges\n",  __func__));
 
   /*
    * Match dma-ranges with the EDK2+ACPI setup we are using.  This works
@@ -371,7 +371,7 @@ SyncPcie (
                         DmaRanges,  sizeof DmaRanges);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate PCIe 'dma-ranges' property (%d)\n",
-      __FUNCTION__, Retval));
+      __func__, Retval));
     return EFI_NOT_FOUND;
   }
 
@@ -417,7 +417,7 @@ SyncPcie (
   Node = fdt_path_offset (mFdtImage, "/scb/pcie@7d500000/pci");
   if (Node < 0) {
     // This can happen on CM4/etc which doesn't have an onboard XHCI
-    DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci\n", __func__));
   } else {
     Retval = fdt_del_node (mFdtImage, Node);
     if (Retval != 0) {

@@ -129,7 +129,7 @@ S3DxeEntryPoint (
   ACPI_S3_MEMORY  S3MemoryInfo;
   EFI_STATUS      Status;
 
-  DEBUG ((DEBUG_INFO, "%a() Start\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() Start\n", __func__));
 
   S3PeiMemSize = (UINTN) GetPeiMemSize ();
   S3PeiMemBase = (UINTN) AllocateAcpiNvsMemoryBelow4G (S3PeiMemSize);
@@ -150,6 +150,6 @@ S3DxeEntryPoint (
                   );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((DEBUG_INFO, "%a() End\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() End\n", __func__));
   return EFI_SUCCESS;
 }

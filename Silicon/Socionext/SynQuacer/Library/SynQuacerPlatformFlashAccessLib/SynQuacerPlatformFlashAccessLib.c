@@ -97,7 +97,7 @@ GetFvbByAddress (
     if (EFI_ERROR (Status) || !(Attributes & EFI_FVB2_WRITE_STATUS)) {
       DEBUG ((DEBUG_INFO,
         "%a: ignoring read-only FVB protocol implementation\n",
-        __FUNCTION__));
+        __func__));
       Status = EFI_NOT_FOUND;
       continue;
     }
@@ -105,14 +105,14 @@ GetFvbByAddress (
     Status = Fvb->GetBlockSize (Fvb, 0, BlockSize, &NumberOfBlocks);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_INFO, "%a: failed to get FVB blocksize - %r, ignoring\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       continue;
     }
 
     if ((Length % *BlockSize) != 0) {
       DEBUG ((DEBUG_INFO,
         "%a: Length 0x%lx is not a multiple of the blocksize 0x%lx, ignoring\n",
-        __FUNCTION__, Length, *BlockSize));
+        __func__, Length, *BlockSize));
       Status = EFI_INVALID_PARAMETER;
       continue;
     }
@@ -224,7 +224,7 @@ PerformFlashWriteWithProgress (
 
   if (FlashAddressType != FlashAddressTypeAbsoluteAddress) {
     DEBUG ((DEBUG_ERROR, "%a: only FlashAddressTypeAbsoluteAddress supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -232,7 +232,7 @@ PerformFlashWriteWithProgress (
   if (FirmwareType != PlatformFirmwareTypeSystemFirmware) {
     DEBUG ((DEBUG_ERROR,
       "%a: only PlatformFirmwareTypeSystemFirmware supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -246,7 +246,7 @@ PerformFlashWriteWithProgress (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: failed to locate FVB handle for address 0x%llx - %r\n",
-      __FUNCTION__, FlashAddress, Status));
+      __func__, FlashAddress, Status));
     return Status;
   }
 
@@ -257,13 +257,13 @@ PerformFlashWriteWithProgress (
                   FlashAddress, Length, EFI_MEMORY_UC);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: gDS->AddMemorySpace () failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
   }
 
   Status = gDS->SetMemorySpaceAttributes (FlashAddress, Length, EFI_MEMORY_UC);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: gDS->SetMemorySpaceAttributes () failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 
@@ -281,13 +281,13 @@ PerformFlashWriteWithProgress (
   // Erase the region
   //
   DEBUG ((DEBUG_INFO, "%a: erasing 0x%llx bytes at address %llx (LBA 0x%lx)\n",
-    __FUNCTION__, Length, FlashAddress, Lba));
+    __func__, Length, FlashAddress, Lba));
 
   Status = Fvb->EraseBlocks (Fvb, Lba, Length / BlockSize,
                   EFI_LBA_LIST_TERMINATOR);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Fvb->EraseBlocks () failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 
@@ -296,7 +296,7 @@ PerformFlashWriteWithProgress (
     // Write the new data
     //
     DEBUG ((DEBUG_INFO, "%a: writing 0x%llx bytes at LBA 0x%lx\n",
-      __FUNCTION__, BlockSize, Lba));
+      __func__, BlockSize, Lba));
 
     NumBytes = BlockSize;
     if (BufferHasData (Buffer, NumBytes)) {
@@ -304,7 +304,7 @@ PerformFlashWriteWithProgress (
       if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_ERROR,
           "%a: write of LBA 0x%lx failed - %r (NumBytes == 0x%lx)\n",
-          __FUNCTION__, Lba, Status, NumBytes));
+          __func__, Lba, Status, NumBytes));
       }
     }
 

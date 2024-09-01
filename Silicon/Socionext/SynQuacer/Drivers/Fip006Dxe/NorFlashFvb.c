@@ -145,14 +145,14 @@ ValidateFvHeader (
       )
   {
     DEBUG ((DEBUG_INFO, "%a: No Firmware Volume header present\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
   // Check the Firmware Volume Guid
   if (!CompareGuid (&FwVolHeader->FileSystemGuid, &gEfiSystemNvDataFvGuid)) {
     DEBUG ((DEBUG_INFO, "%a: Firmware Volume Guid non-compatible\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -160,7 +160,7 @@ ValidateFvHeader (
   Checksum = CalculateSum16((UINT16*)FwVolHeader, FwVolHeader->HeaderLength);
   if (Checksum != 0) {
     DEBUG ((DEBUG_INFO, "%a: FV checksum is invalid (Checksum:0x%X)\n",
-      __FUNCTION__, Checksum));
+      __func__, Checksum));
     return EFI_NOT_FOUND;
   }
 
@@ -172,7 +172,7 @@ ValidateFvHeader (
       !CompareGuid (&VariableStoreHeader->Signature,
         &gEfiAuthenticatedVariableGuid)) {
     DEBUG ((DEBUG_INFO, "%a: Variable Store Guid non-compatible\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -180,7 +180,7 @@ ValidateFvHeader (
                         FwVolHeader->HeaderLength;
   if (VariableStoreHeader->Size != VariableStoreLength) {
     DEBUG ((DEBUG_INFO, "%a: Variable Store Length does not match\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 

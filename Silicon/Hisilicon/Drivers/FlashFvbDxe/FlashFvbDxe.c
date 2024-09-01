@@ -513,7 +513,7 @@ FvbRead (
     if (!Instance->Initialized && Instance->Initialize)
     {
         if (EfiAtRuntime ()) {
-            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __func__, __LINE__));
             return EFI_UNSUPPORTED;
         }
 
@@ -531,7 +531,7 @@ FvbRead (
         (*NumBytes            >  BlockSize) ||
         ((Offset + *NumBytes) >  BlockSize))
     {
-        DEBUG ((DEBUG_ERROR, "[%a]:[%dL] ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", __FUNCTION__, __LINE__, Offset, *NumBytes, BlockSize ));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL] ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", __func__, __LINE__, Offset, *NumBytes, BlockSize ));
         return EFI_BAD_BUFFER_SIZE;
     }
 
@@ -640,7 +640,7 @@ FvbWrite (
     if (!Instance->Initialized && Instance->Initialize)
     {
         if (EfiAtRuntime ()) {
-            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __func__, __LINE__));
             return EFI_UNSUPPORTED;
         }
 
@@ -1080,7 +1080,7 @@ FlashWriteBlocks (
     NumBlocks = ((UINT32)BufferSizeInBytes) / Instance->Media.BlockSize ;
     if ((Lba + NumBlocks) > (Instance->Media.LastBlock + 1))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL]ERROR - Write will exceed last block.\n", __FUNCTION__, __LINE__ ));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]ERROR - Write will exceed last block.\n", __func__, __LINE__ ));
         return EFI_INVALID_PARAMETER;
     }
 
@@ -1185,7 +1185,7 @@ FlashFvbInitialize (
     Status = FlashPlatformGetDevices (&FlashDevices, &FlashDeviceCount);
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to get Flash devices\n", __FUNCTION__, __LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to get Flash devices\n", __func__, __LINE__));
         return Status;
     }
 
@@ -1194,7 +1194,7 @@ FlashFvbInitialize (
     Status = gBS->LocateProtocol (&gHisiSpiFlashProtocolGuid, NULL, (VOID*) &mFlash);
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Status=%r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Status=%r\n", __func__, __LINE__, Status));
         return Status;
     }
 
@@ -1217,7 +1217,7 @@ FlashFvbInitialize (
                  );
         if (EFI_ERROR(Status))
         {
-            DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to create instance for Flash[%d]\n", __FUNCTION__, __LINE__, Index));
+            DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to create instance for Flash[%d]\n", __func__, __LINE__, Index));
         }
     }
     //

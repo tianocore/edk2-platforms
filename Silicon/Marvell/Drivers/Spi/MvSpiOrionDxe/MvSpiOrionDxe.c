@@ -220,7 +220,7 @@ MvSpiTransfer (
     }
 
     if (Iterator >= SPI_TIMEOUT) {
-      DEBUG ((DEBUG_ERROR, "%a: Timeout\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Timeout\n", __func__));
       return EFI_TIMEOUT;
     }
   }
@@ -337,7 +337,7 @@ MvSpiConfigRuntime (
                   SIZE_4KB,
                   EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to add memory space\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to add memory space\n", __func__));
     return Status;
   }
 
@@ -345,7 +345,7 @@ MvSpiConfigRuntime (
                   SIZE_4KB,
                   EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to set memory attributes\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to set memory attributes\n", __func__));
     gDS->RemoveMemorySpace (AlignedAddress, SIZE_4KB);
     return Status;
   }

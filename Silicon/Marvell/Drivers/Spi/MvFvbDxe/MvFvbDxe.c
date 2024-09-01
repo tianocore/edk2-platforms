@@ -236,7 +236,7 @@ MvFvbValidateFvHeader (
       (FwVolHeader->FvLength  != FlashInstance->FvbSize)) {
     DEBUG ((DEBUG_ERROR,
       "%a: No Firmware Volume header present\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -244,7 +244,7 @@ MvFvbValidateFvHeader (
   if (!CompareGuid (&FwVolHeader->FileSystemGuid, &gEfiSystemNvDataFvGuid)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Firmware Volume Guid non-compatible\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -253,7 +253,7 @@ MvFvbValidateFvHeader (
   if (Checksum != 0) {
     DEBUG ((DEBUG_ERROR,
       "%a: FV checksum is invalid (Checksum:0x%x)\n",
-      __FUNCTION__,
+      __func__,
       Checksum));
     return EFI_NOT_FOUND;
   }
@@ -266,7 +266,7 @@ MvFvbValidateFvHeader (
                     &gEfiAuthenticatedVariableGuid)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Variable Store Guid non-compatible\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -275,7 +275,7 @@ MvFvbValidateFvHeader (
   if (VariableStoreHeader->Size != VariableStoreLength) {
     DEBUG ((DEBUG_ERROR,
       "%a: Variable Store Length does not match\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
@@ -519,7 +519,7 @@ MvFvbGetBlockSize (
   if (Lba > FlashInstance->Media.LastBlock) {
     DEBUG ((DEBUG_ERROR,
       "%a: Error: Requested LBA %ld is beyond the last available LBA (%ld).\n",
-      __FUNCTION__,
+      __func__,
       Lba,
       FlashInstance->Media.LastBlock));
     return EFI_INVALID_PARAMETER;
@@ -606,7 +606,7 @@ MvFvbRead (
       (Offset + *NumBytes) >  BlockSize) {
     DEBUG ((DEBUG_ERROR,
       "%a: Wrong buffer size: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n",
-      __FUNCTION__,
+      __func__,
       Offset,
       *NumBytes,
       BlockSize));
@@ -713,7 +713,7 @@ MvFvbWrite (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Failed to write to Spi device\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -799,7 +799,7 @@ MvFvbEraseBlocks (
   if ((FlashFvbAttributes & EFI_FVB2_WRITE_STATUS) == 0) {
     DEBUG ((DEBUG_ERROR,
       "%a: Device is in WriteDisabled state.\n",
-      __FUNCTION__));
+      __func__));
     return EFI_ACCESS_DENIED;
   }
 
@@ -828,7 +828,7 @@ MvFvbEraseBlocks (
 
       DEBUG ((DEBUG_ERROR,
         "%a: Error: Requested LBA are beyond the last available LBA (%ld).\n",
-        __FUNCTION__,
+        __func__,
         FlashInstance->Media.LastBlock));
 
       VA_END (Args);
@@ -933,7 +933,7 @@ MvFvbFlashProbe (
 
   Status = SpiFlashProtocol->Init (SpiFlashProtocol, &FlashInstance->SpiDevice);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot initialize flash device\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot initialize flash device\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -967,10 +967,10 @@ MvFvbPrepareFvHeader (
   // Install the default FVB header if required
   if (EFI_ERROR (Status)) {
     // There is no valid header, so time to install one.
-    DEBUG ((DEBUG_ERROR, "%a: The FVB Header is not valid.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: The FVB Header is not valid.\n", __func__));
     DEBUG ((DEBUG_ERROR,
       "%a: Installing a correct one for this volume.\n",
-      __FUNCTION__));
+      __func__));
 
     // Erase entire region that is reserved for variable storage
     Status = FlashInstance->SpiFlashProtocol->Erase (&FlashInstance->SpiDevice,
@@ -1006,7 +1006,7 @@ MvFvbConfigureFlashInstance (
                   NULL,
                   (VOID **)&FlashInstance->SpiFlashProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot locate SpiFlash protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot locate SpiFlash protocol\n", __func__));
     return Status;
   }
 
@@ -1014,7 +1014,7 @@ MvFvbConfigureFlashInstance (
                   NULL,
                   (VOID **)&FlashInstance->SpiMasterProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot locate SpiMaster protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot locate SpiMaster protocol\n", __func__));
     return Status;
   }
 
@@ -1028,7 +1028,7 @@ MvFvbConfigureFlashInstance (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Error while performing SPI flash probe\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -1132,7 +1132,7 @@ MvFvbEntryPoint (
   mFvbDevice = AllocateRuntimeCopyPool (sizeof (mMvFvbFlashInstanceTemplate),
                  &mMvFvbFlashInstanceTemplate);
   if (mFvbDevice == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -1141,7 +1141,7 @@ MvFvbEntryPoint (
   //
   Status = MvFvbConfigureFlashInstance (mFvbDevice);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to configure Fvb SPI device\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to configure Fvb SPI device\n", __func__));
     goto ErrorConfigureFlash;
   }
 
@@ -1156,7 +1156,7 @@ MvFvbEntryPoint (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Failed to install gEdkiiNvVarStoreFormattedGuid\n",
-      __FUNCTION__));
+      __func__));
     goto ErrorInstallNvVarStoreFormatted;
   }
 
@@ -1172,7 +1172,7 @@ MvFvbEntryPoint (
                     RuntimeMmioRegionSize,
                     EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to add memory space\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to add memory space\n", __func__));
       goto ErrorAddSpace;
     }
 
@@ -1181,7 +1181,7 @@ MvFvbEntryPoint (
                     RuntimeMmioRegionSize,
                     EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
     if (EFI_ERROR (Status)) {
-     DEBUG ((DEBUG_ERROR, "%a: Failed to set memory attributes\n", __FUNCTION__));
+     DEBUG ((DEBUG_ERROR, "%a: Failed to set memory attributes\n", __func__));
       goto ErrorSetMemAttr;
     }
   }
@@ -1196,7 +1196,7 @@ MvFvbEntryPoint (
                   &gEfiEventVirtualAddressChangeGuid,
                   &mFvbVirtualAddrChangeEvent);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to register VA change event\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to register VA change event\n", __func__));
     goto ErrorSetMemAttr;
   }
 

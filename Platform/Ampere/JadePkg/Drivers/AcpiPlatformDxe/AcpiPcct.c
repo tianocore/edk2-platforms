@@ -242,7 +242,7 @@ PcctAdvertiseSharedMemoryAddress (
 
   Status = MailboxMsgSetPccSharedMem (Socket, Doorbell, TRUE, (UINT64)PccSharedMemoryRegion);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to send mailbox message!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send mailbox message!\n", __func__));
     ASSERT_EFI_ERROR (Status);
     return Status;
   }
@@ -253,7 +253,7 @@ PcctAdvertiseSharedMemoryAddress (
   Timeout = PCC_COMMAND_POLL_COUNT;
   while (PccSharedMemoryRegion->Status.CommandComplete != 1) {
     if (--Timeout <= 0) {
-      DEBUG ((DEBUG_ERROR, "%a - Timeout occurred when polling the PCC Status Complete\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a - Timeout occurred when polling the PCC Status Complete\n", __func__));
       return EFI_TIMEOUT;
     }
     MicroSecondDelay (PCC_COMMAND_POLL_INTERVAL_US);

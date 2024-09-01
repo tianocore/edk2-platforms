@@ -31,7 +31,7 @@ PhyDxeInitialization (
 {
   EFI_STATUS   Status;
 
-  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __func__));
 
   // initialize the phyaddr
   PhyDriver->PhyAddr = 0;
@@ -60,7 +60,7 @@ PhyDetectDevice (
   UINT32       PhyAddr;
   EFI_STATUS   Status;
 
-  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __func__));
 
   for (PhyAddr = 0; PhyAddr < 32; PhyAddr++) {
     Status = PhyReadId (PhyAddr, MacBaseAddress);
@@ -87,7 +87,7 @@ PhyConfig (
 {
   EFI_STATUS  Status;
 
-  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __func__));
 
   Status = PhySoftReset (PhyDriver, MacBaseAddress);
   if (EFI_ERROR (Status)) {
@@ -123,7 +123,7 @@ PhySoftReset (
   UINT32        Data32;
   EFI_STATUS    Status;
 
-  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __func__));
 
   // PHY Basic Control Register reset
   PhyWrite (PhyDriver->PhyAddr, PHY_BASIC_CTRL, PHYCTRL_RESET, MacBaseAddress);
@@ -289,7 +289,7 @@ PhyAutoNego (
   UINT32        PhyStatus;
   UINT32        Features;
 
-  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "SNP:PHY: %a ()\r\n", __func__));
 
   // Read PHY Status
   Status = PhyRead (PhyDriver->PhyAddr, PHY_BASIC_STATUS, &PhyStatus, MacBaseAddress);

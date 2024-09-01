@@ -128,7 +128,7 @@ PciHostBridgeGetRootBridges (
 
   RootBridges = AllocatePool (AC01_PCIE_MAX_ROOT_COMPLEX * sizeof (PCI_ROOT_BRIDGE));
   if (RootBridges == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to allocate RootBridges\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to allocate RootBridges\n", __func__));
     return NULL;
   }
 
@@ -161,7 +161,7 @@ PciHostBridgeGetRootBridges (
                    (VOID *)&mEfiPciRootBridgeDevicePath
                    );
     if (DevicePath == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to allocate device path\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to allocate device path\n", __func__));
       return NULL;
     }
 

@@ -120,7 +120,7 @@ PhaseNotify (
                     (VOID **)&RootBridgeDevPath
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a %d: Failed to locate RootBridge DevicePath\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a %d: Failed to locate RootBridge DevicePath\n", __func__, __LINE__));
       break;
     }
 

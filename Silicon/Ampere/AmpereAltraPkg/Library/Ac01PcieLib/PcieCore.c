@@ -1031,7 +1031,7 @@ AutoLaneBifurcationRetry:
 
     Status = PciePhyInit (RootComplex->SerdesBase);
     if (RETURN_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to initialize the PCIe PHY\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to initialize the PCIe PHY\n", __func__));
       return RETURN_DEVICE_ERROR;
     }
   }

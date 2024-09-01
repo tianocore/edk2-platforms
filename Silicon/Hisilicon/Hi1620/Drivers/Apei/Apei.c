@@ -48,7 +48,7 @@ ApeiEntryPoint (
   if (EFI_ERROR (Status)) {
     SetupData.EnRasSupport = 1;
     DEBUG ((DEBUG_ERROR, "[%a]GetVariable %r.Get default variable value\n",
-      __FUNCTION__, Status));
+      __func__, Status));
   }
   if (!SetupData.EnRasSupport) {
     return EFI_ABORTED;
@@ -89,7 +89,7 @@ ApeiEntryPoint (
   Status |= OemInitErstTable ();
   Status |= OemInitEinjTable ();
   // smc call
-  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %r\n", __FUNCTION__, __LINE__, Status));
+  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %r\n", __func__, __LINE__, Status));
   if (Status == EFI_SUCCESS) {
     SmcRegs.Arg0 = PRIVATE_ARM_SMC_ID_APEI;
     SmcRegs.Arg1 = (UINTN)mApeiTrustedfirmwareData;

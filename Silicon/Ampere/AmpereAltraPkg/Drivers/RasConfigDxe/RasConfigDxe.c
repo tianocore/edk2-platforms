@@ -113,7 +113,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -134,7 +134,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -155,7 +155,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -176,7 +176,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -197,7 +197,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -218,7 +218,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -239,7 +239,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -260,7 +260,7 @@ RasConfigNvParamGet (
                Value
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "%a:%d NVParamSet() failed!\n", __func__, __LINE__));
       ASSERT_EFI_ERROR (Status);
       Value = 0;
     }
@@ -809,7 +809,7 @@ RasConfigEntryPoint (
     DEBUG ((
       DEBUG_ERROR,
       "%a %d Fail to update Memory Configuration screen \n",
-      __FUNCTION__,
+      __func__,
       __LINE__
       ));
     RasConfigUnload ();

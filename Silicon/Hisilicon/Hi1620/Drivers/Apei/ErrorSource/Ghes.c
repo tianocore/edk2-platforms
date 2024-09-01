@@ -63,7 +63,7 @@ ErrorBlockAddErrorData (
 )
 {
   if (ErrorBlock == NULL || GenericErrorData == NULL) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]Invalid Param \n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]Invalid Param \n", __func__, __LINE__));
     return FALSE;
   }
   EFI_ACPI_6_1_GENERIC_ERROR_DATA_ENTRY_STRUCTURE*  Entry;
@@ -75,7 +75,7 @@ ErrorBlockAddErrorData (
            SizeOfGenericErrorData;
   if (sizeof (EFI_ACPI_6_1_GENERIC_ERROR_STATUS_STRUCTURE) + ExpectedNewDataLength >
       MaxBlockLength) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]Out of BlockSize \n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]Out of BlockSize \n", __func__, __LINE__));
     return FALSE;
   }
   // guid

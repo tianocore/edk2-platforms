@@ -538,7 +538,7 @@ InstallMemStructures (
                        (EFI_SMBIOS_TABLE_HEADER *)Table
                        );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: adding SMBIOS type 16 socket %d failed\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_ERROR, "%a: adding SMBIOS type 16 socket %d failed\n", __func__, Index));
       FreePool (Table);
       // stop adding rather than continuing
       return Status;
@@ -611,7 +611,7 @@ InstallMemStructures (
         DEBUG ((
           DEBUG_ERROR,
           "%a: adding SMBIOS type 17 Socket %d Slot %d failed\n",
-          __FUNCTION__,
+          __func__,
           Index,
           SlotIndex
           ));
@@ -656,7 +656,7 @@ InstallMemStructures (
         DEBUG ((
           DEBUG_ERROR,
           "%a: adding SMBIOS type 19 Socket %d MemRegion %d failed\n",
-          __FUNCTION__,
+          __func__,
           Index,
           MemRegionIndex
           ));

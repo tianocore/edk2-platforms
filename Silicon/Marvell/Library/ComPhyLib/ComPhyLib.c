@@ -187,7 +187,7 @@ MvComPhyInit (
   ChipConfig = AllocateZeroPool (ComPhyBoardDesc->ComPhyDevCount *
                                  sizeof (CHIP_COMPHY_CONFIG));
   if (ChipConfig == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     BoardDescProtocol->BoardDescFree (ComPhyBoardDesc);
     return EFI_OUT_OF_RESOURCES;
   }
@@ -195,7 +195,7 @@ MvComPhyInit (
   LaneData = AllocateZeroPool (ComPhyBoardDesc->ComPhyDevCount *
                                sizeof (PCD_LANE_MAP));
   if (ChipConfig == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     BoardDescProtocol->BoardDescFree (ComPhyBoardDesc);
     FreePool (ChipConfig);
     return EFI_OUT_OF_RESOURCES;

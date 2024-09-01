@@ -149,7 +149,7 @@ SetDeviceStatus (
       if (Rc) {
         DEBUG ((DEBUG_ERROR,
           "%a: Could not set 'status' property for '%a' node\n",
-          __FUNCTION__, Device));
+          __func__, Device));
       }
     }
   }
@@ -178,7 +178,7 @@ SetMacAddress (
       if (Rc) {
         DEBUG ((DEBUG_ERROR,
           "%a: Could not set 'mac-address' property for '%a' node\n",
-          __FUNCTION__, Device));
+          __func__, Device));
       }
     }
   }
@@ -199,14 +199,14 @@ DisableSmmu (
   Node = fdt_path_offset (Fdt, DeviceNodeName);
   if (Node <= 0) {
     DEBUG ((DEBUG_WARN, "%a: Failed to find path %s: %a\n",
-      __FUNCTION__, DeviceNodeName, fdt_strerror (Node)));
+      __func__, DeviceNodeName, fdt_strerror (Node)));
     return;
   }
 
   Error = fdt_delprop (Fdt, Node, IommuPropName);
   if (Error != 0) {
     DEBUG ((DEBUG_WARN, "%a: Failed to delete property %a: %a\n",
-      __FUNCTION__, IommuPropName, fdt_strerror (Error)));
+      __func__, IommuPropName, fdt_strerror (Error)));
     return;
   }
 
@@ -218,7 +218,7 @@ DisableSmmu (
   Error = fdt_del_node (Fdt, Node);
   if (Error != 0) {
     DEBUG ((DEBUG_WARN, "%a: Failed to delete node %a: %a\n",
-      __FUNCTION__, SmmuNodeName, fdt_strerror (Error)));
+      __func__, SmmuNodeName, fdt_strerror (Error)));
   }
 }
 

@@ -129,7 +129,7 @@ OemGetMacE2prom(
   if (EFI_ERROR (Status))
   {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n",
-            __FUNCTION__, __LINE__, Status));
+            __func__, __LINE__, Status));
     return Status;
   }
 
@@ -160,7 +160,7 @@ OemGetMacE2prom(
   }
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Call I2cRead failed! p1=0x%x.\n",
-            __FUNCTION__, __LINE__, Status));
+            __func__, __LINE__, Status));
     return Status;
   }
 
@@ -209,7 +209,7 @@ OemSetMacE2prom (
   Status = I2CInit (0, EEPROM_I2C_PORT, Normal);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n",
-           __FUNCTION__, __LINE__, Status));
+           __func__, __LINE__, Status));
     return Status;
   }
 
@@ -245,7 +245,7 @@ OemSetMacE2prom (
   }
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Call I2cWrite failed! p1=0x%x.\n",
-            __FUNCTION__, __LINE__, Status));
+            __func__, __LINE__, Status));
     return Status;
   }
   return EFI_SUCCESS;
@@ -262,7 +262,7 @@ OemGetMac (
 
   if (Mac == NULL) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n",
-            __FUNCTION__, __LINE__));
+            __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -270,7 +270,7 @@ OemGetMac (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "[%a]:[%dL] Cannot get MAC from EEPROM, Status: %r; using default MAC.\n",
-      __FUNCTION__, __LINE__, Status));
+      __func__, __LINE__, Status));
 
     Mac->Addr[0] = 0xFF;
     Mac->Addr[1] = 0xFF;
@@ -295,13 +295,13 @@ OemSetMac (
 
   if (Mac == NULL) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n",
-            __FUNCTION__, __LINE__));
+            __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
   Status = OemSetMacE2prom (Port, Mac->Addr);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Set mac failed!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Set mac failed!\n", __func__, __LINE__));
     return Status;
   }
 

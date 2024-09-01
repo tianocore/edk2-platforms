@@ -114,14 +114,14 @@ ReadGpioInput (
   Status = Gpio->Set (Gpio, Pin, GPIO_MODE_INPUT);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: failed to set GPIO %d as input - %r\n",
-      __FUNCTION__, Pin, Status));
+      __func__, Pin, Status));
     return Status;
   }
 
   Status = Gpio->Get (Gpio, Pin, Value);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: failed to get GPIO %d state - %r\n",
-      __FUNCTION__, Pin, Status));
+      __func__, Pin, Status));
   }
   return Status;
 }
@@ -144,7 +144,7 @@ PlatformPeim (
 
   Status = ReadGpioInput (Gpio, FixedPcdGet8 (PcdClearSettingsGpioPin), &Value);
   if (!EFI_ERROR (Status) && Value == CLEAR_SETTINGS_GPIO_ASSERTED) {
-    DEBUG ((DEBUG_INFO, "%a: clearing NVRAM\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: clearing NVRAM\n", __func__));
     PeiServicesSetBootMode (BOOT_WITH_DEFAULT_SETTINGS);
   }
 
@@ -152,7 +152,7 @@ PlatformPeim (
              &Value);
   if (!EFI_ERROR (Status) && Value == PCIE_GPIO_CARD_PRESENT) {
     DEBUG ((DEBUG_INFO,
-      "%a: card detected in PCIe RC #0, enabling\n", __FUNCTION__));
+      "%a: card detected in PCIe RC #0, enabling\n", __func__));
     Status = PcdSet8S (PcdPcieEnableMask, PcdGet8 (PcdPcieEnableMask) | BIT0);
     ASSERT_EFI_ERROR (Status);
   }

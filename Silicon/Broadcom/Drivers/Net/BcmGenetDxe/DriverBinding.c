@@ -129,7 +129,7 @@ GenetDriverBindingStart (
   Genet = AllocateZeroPool (sizeof (GENET_PRIVATE_DATA));
   if (Genet == NULL) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Couldn't allocate private data\n", __FUNCTION__));
+      "%a: Couldn't allocate private data\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -141,14 +141,14 @@ GenetDriverBindingStart (
                               EFI_OPEN_PROTOCOL_BY_DRIVER);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Couldn't open protocol: %r\n", __FUNCTION__, Status));
+      "%a: Couldn't open protocol: %r\n", __func__, Status));
     goto FreeDevice;
   }
 
   Status = GenetDmaAlloc (Genet);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Couldn't allocate DMA buffers: %r\n", __FUNCTION__, Status));
+      "%a: Couldn't allocate DMA buffers: %r\n", __func__, Status));
     goto FreeDevice;
   }
 
@@ -210,7 +210,7 @@ GenetDriverBindingStart (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Couldn't install protocol interfaces: %r\n", __FUNCTION__, Status));
+      "%a: Couldn't install protocol interfaces: %r\n", __func__, Status));
     gBS->CloseProtocol (ControllerHandle,
                         &gBcmGenetPlatformDeviceProtocolGuid,
                         This->DriverBindingHandle,
@@ -224,7 +224,7 @@ GenetDriverBindingStart (
 FreeEvent:
   gBS->CloseEvent (Genet->ExitBootServicesEvent);
 FreeDevice:
-  DEBUG ((DEBUG_WARN, "%a: Returning %r\n", __FUNCTION__, Status));
+  DEBUG ((DEBUG_WARN, "%a: Returning %r\n", __func__, Status));
   FreePool (Genet);
   return Status;
 }
@@ -457,7 +457,7 @@ GenetUnload (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: failed to disconnect all controllers - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 

@@ -111,7 +111,7 @@ EFI_STATUS OemGetMacE2prom(IN UINT32 Port, OUT UINT8 *pucAddr)
     Status = I2CInit(0, EEPROM_I2C_PORT, Normal);
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n", __func__, __LINE__, Status));
         return Status;
     }
 
@@ -142,7 +142,7 @@ EFI_STATUS OemGetMacE2prom(IN UINT32 Port, OUT UINT8 *pucAddr)
     }
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2cRead failed! p1=0x%x.\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2cRead failed! p1=0x%x.\n", __func__, __LINE__, Status));
         return Status;
     }
 
@@ -177,7 +177,7 @@ EFI_STATUS OemSetMacE2prom(IN UINT32 Port, IN UINT8 *pucAddr)
     Status = I2CInit(0, EEPROM_I2C_PORT, Normal);
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2CInit failed! p1=0x%x.\n", __func__, __LINE__, Status));
         return Status;
     }
 
@@ -208,7 +208,7 @@ EFI_STATUS OemSetMacE2prom(IN UINT32 Port, IN UINT8 *pucAddr)
     }
     if (EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2cWrite failed! p1=0x%x.\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Call I2cWrite failed! p1=0x%x.\n", __func__, __LINE__, Status));
         return Status;
     }
     return EFI_SUCCESS;
@@ -224,14 +224,14 @@ EFIAPI OemGetMac2P (
 
     if (NULL == Mac)
     {
-      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n", __FUNCTION__, __LINE__));
+      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n", __func__, __LINE__));
       return EFI_INVALID_PARAMETER;
     }
 
     Status = OemGetMacE2prom(Port, Mac->Addr);
     if ((EFI_ERROR(Status)))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Get mac failed!\n", __FUNCTION__, __LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Get mac failed!\n", __func__, __LINE__));
 
         Mac->Addr[0] = 0x00;
         Mac->Addr[1] = 0x18;
@@ -255,14 +255,14 @@ EFIAPI OemSetMac2P (
 
   if (NULL == Mac)
   {
-    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n", __FUNCTION__, __LINE__));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Mac buffer is null!\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
   Status = OemSetMacE2prom(Port, Mac->Addr);
   if ((EFI_ERROR(Status)))
   {
-      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Set mac failed!\n", __FUNCTION__, __LINE__));
+      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Set mac failed!\n", __func__, __LINE__));
       return Status;
   }
 
@@ -334,7 +334,7 @@ OemNicConfigEntry (
 
   if(EFI_ERROR(Status))
   {
-    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Install Protocol failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Install Protocol failed %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
@@ -347,7 +347,7 @@ OemNicConfigEntry (
 
   if(EFI_ERROR(Status))
   {
-    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Install Protocol failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] Install Protocol failed %r\n", __func__, __LINE__, Status));
     return Status;
   }
 

@@ -293,7 +293,7 @@ I2cMasterRegistrationEvent (
     if (EFI_ERROR (Status)) {
       if (Status != EFI_NOT_FOUND) {
         DEBUG ((DEBUG_WARN, "%a: gBS->LocateHandle () returned %r\n",
-          __FUNCTION__, Status));
+          __func__, Status));
       }
       break;
     }
@@ -302,7 +302,7 @@ I2cMasterRegistrationEvent (
       continue;
     }
 
-    DEBUG ((DEBUG_INFO, "%a: found I2C master!\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: found I2C master!\n", __func__));
 
     gBS->CloseEvent (Event);
 
@@ -314,7 +314,7 @@ I2cMasterRegistrationEvent (
     Status = I2cMaster->Reset (I2cMaster);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: I2CMaster->Reset () failed - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       break;
     }
 
@@ -322,7 +322,7 @@ I2cMasterRegistrationEvent (
     Status = I2cMaster->SetBusFrequency (I2cMaster, &BusFrequency);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: I2CMaster->SetBusFrequency () failed - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       break;
     }
 

@@ -73,7 +73,7 @@ UpdateSlotUsage(
     Status = OemGetSerdesParam (&SerdesParamA, &SerdesParamB, 0);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] OemGetSerdesParam failed %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] OemGetSerdesParam failed %r\n", __func__, __LINE__, Status));
         return;
     }
 
@@ -181,7 +181,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscSystemSlotDesignation)
     Status = LogSmbiosData( (UINT8*)SmbiosRecord, &SmbiosHandle);
     if(EFI_ERROR(Status))
     {
-      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type09 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+      DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type09 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
 
     FreePool(SmbiosRecord);

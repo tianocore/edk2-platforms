@@ -100,7 +100,7 @@ PchDmiSetLpcMemRange (
   )
 {
   if (IsPchDmiLocked ()) {
-    DEBUG ((DEBUG_ERROR, "%a Error. DMI is locked.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a Error. DMI is locked.\n", __func__));
     ASSERT (FALSE);
     return EFI_UNSUPPORTED;
   }
@@ -130,7 +130,7 @@ PchDmiSetEspiCs1MemRange (
   )
 {
   if (IsPchDmiLocked ()) {
-    DEBUG ((DEBUG_ERROR, "%a Error. DMI is locked.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a Error. DMI is locked.\n", __func__));
     ASSERT (FALSE);
     return EFI_UNSUPPORTED;
   }

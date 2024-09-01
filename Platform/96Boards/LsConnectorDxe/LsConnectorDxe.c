@@ -105,7 +105,7 @@ PublishOsDescription (
   Status = gBS->LocateProtocol (&g96BoardsMezzanineProtocolGuid, NULL,
                   (VOID **)&Mezzanine);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a: no mezzanine driver active\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: no mezzanine driver active\n", __func__));
     return;
   }
 
@@ -115,7 +115,7 @@ PublishOsDescription (
     Status = Mezzanine->InstallSsdtTable (Mezzanine, AcpiProtocol);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to install SSDT table - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
     return;
   }
@@ -133,7 +133,7 @@ PublishOsDescription (
 
   Status = Mezzanine->ApplyDeviceTreeOverlay (Mezzanine, Dtb);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_WARN, "%a: failed to apply DT overlay - %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_WARN, "%a: failed to apply DT overlay - %r\n", __func__,
       Status));
   }
 }
@@ -169,7 +169,7 @@ EntryPoint (
   Status = gRT->GetVariable (NINETY_SIX_BOARDS_CONFIG_VARIABLE_NAME,
                   &g96BoardsFormsetGuid, NULL, &BufferSize, &ConfigData);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a: no config data found\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: no config data found\n", __func__));
     ConfigData.MezzanineType = MEZZANINE_NONE;
   }
 
@@ -177,7 +177,7 @@ EntryPoint (
       ConfigData.MezzanineType >= MEZZANINE_MAX) {
     DEBUG ((DEBUG_WARN,
       "%a: invalid value for %s, defaulting to MEZZANINE_NONE\n",
-      __FUNCTION__, NINETY_SIX_BOARDS_CONFIG_VARIABLE_NAME));
+      __func__, NINETY_SIX_BOARDS_CONFIG_VARIABLE_NAME));
     ConfigData.MezzanineType = MEZZANINE_NONE;
     Status = EFI_INVALID_PARAMETER; // trigger setvar below
   }
@@ -194,7 +194,7 @@ EntryPoint (
 
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: gRT->SetVariable () failed - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       return Status;
     }
   }

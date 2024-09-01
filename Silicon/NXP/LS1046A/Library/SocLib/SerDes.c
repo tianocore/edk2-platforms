@@ -113,7 +113,7 @@ GetSerDesProtocolMap (
              );
 
   if (Status != EFI_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: failed for SerDes1 \n",__FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: failed for SerDes1 \n",__func__));
     *SerDesProtocolMap = 0;
   }
 }

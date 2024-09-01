@@ -39,7 +39,7 @@ UINT32 PortReadData (
             return MmioRead16 (FlashAddr);
 
         default:
-            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __func__,__LINE__));
             return 0xffffffff;
     }
 }
@@ -61,7 +61,7 @@ PortWriteData (
              MmioWrite16 (FlashAddr, InputData);
              break;
         default:
-             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
+             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __func__,__LINE__));
              return EFI_DEVICE_ERROR;
     }
     return EFI_SUCCESS;
@@ -107,7 +107,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Reset Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Reset Command!\n", __func__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -124,7 +124,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get ID Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get ID Command!\n", __func__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -141,7 +141,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Write Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Write Command!\n", __func__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -158,7 +158,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Erase Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Erase Command!\n", __func__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -214,7 +214,7 @@ EFI_STATUS FlashInit(UINT32 Base)
         Status = GetCommandIndex(i);
         if (EFI_ERROR(Status))
          {
-             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Get Command Index %r!\n", __FUNCTION__,__LINE__, Status));
+             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Get Command Index %r!\n", __func__,__LINE__, Status));
              return Status;
          }
 
@@ -310,7 +310,7 @@ EFI_STATUS BufferWriteCommand(UINTN Base, UINTN Offset, void *pData)
 
     if(gFlashBusy)
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __func__,__LINE__));
         return EFI_NOT_READY;
     }
     gFlashBusy = TRUE;
@@ -392,7 +392,7 @@ EFI_STATUS SectorEraseCommand(UINTN Base, UINTN Offset)
 
     if(gFlashBusy)
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __func__,__LINE__));
         return EFI_NOT_READY;
     }
 
@@ -434,7 +434,7 @@ EFI_STATUS CompleteCheck(UINT32 Base, UINT32 Offset, void *pData, UINT32 Length)
 
     if(gFlashBusy)
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __func__,__LINE__));
         return EFI_NOT_READY;
     }
     gFlashBusy = TRUE;

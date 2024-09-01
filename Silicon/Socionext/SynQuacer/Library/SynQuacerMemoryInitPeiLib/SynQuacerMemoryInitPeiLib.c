@@ -210,11 +210,11 @@ CheckCapsule (
                         CapsuleBufferLength);
     if (!EFI_ERROR (Status)) {
       DEBUG ((DEBUG_INFO, "%a: Coalesced capsule @ %p (0x%lx)\n",
-        __FUNCTION__, *CapsuleBuffer, *CapsuleBufferLength));
+        __func__, *CapsuleBuffer, *CapsuleBufferLength));
       return TRUE;
     } else {
       DEBUG ((DEBUG_WARN, "%a: failed to coalesce() capsule (Status == %r)\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
   }
   return FALSE;
@@ -273,7 +273,7 @@ MemoryPeim (
 
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: Capsule->CreateState failed (Status == %r)\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
   }
 

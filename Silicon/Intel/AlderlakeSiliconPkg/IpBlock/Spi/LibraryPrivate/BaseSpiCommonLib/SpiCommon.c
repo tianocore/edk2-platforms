@@ -963,7 +963,7 @@ SpiProtocolFlashReadSfdp (
   UINT32            FlashAddress;
 
   if (SpiIsSafModeActive ()) {
-    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -1022,7 +1022,7 @@ SpiProtocolFlashReadJedecId (
   UINT32            Address;
 
   if (SpiIsSafModeActive ()) {
-    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -1076,7 +1076,7 @@ SpiProtocolFlashWriteStatus (
   EFI_STATUS        Status;
 
   if (SpiIsSafModeActive ()) {
-    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -1117,7 +1117,7 @@ SpiProtocolFlashReadStatus (
   EFI_STATUS        Status;
 
   if (SpiIsSafModeActive ()) {
-    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "Unallowed call to %a while SAF Mode is active.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 

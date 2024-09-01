@@ -62,7 +62,7 @@ SetPciControllerPcdOptions (
       PcdSetBoolS (PcdPciHideRootPort, TRUE);
       break;
     default:
-      DEBUG ((DEBUG_ERROR, "%a: Invalid SoC Version 0x%x \n", __FUNCTION__,
+      DEBUG ((DEBUG_ERROR, "%a: Invalid SoC Version 0x%x \n", __func__,
               SVR_MAJOR(Svr)));
       return EFI_INVALID_PARAMETER;
     }

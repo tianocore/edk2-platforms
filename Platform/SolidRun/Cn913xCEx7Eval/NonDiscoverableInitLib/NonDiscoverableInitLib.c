@@ -39,7 +39,7 @@ ConfigurePins (
 
   Status = MvGpioGetProtocol (DriverType, &GpioProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __func__));
     return Status;
   }
 

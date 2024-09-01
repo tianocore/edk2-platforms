@@ -289,7 +289,7 @@ PlatformManagerUiLibConstructor (
     //
     CreatePlatformManagerForm (PLATFORM_MANAGER_FORM_ID);
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to add Hii package\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to add Hii package\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 

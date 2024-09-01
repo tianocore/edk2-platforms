@@ -90,7 +90,7 @@ RetrainAsm1184eDownstreamPort (
 
   DEBUG ((DEBUG_INFO,
     "%a: retraining ASM118x downstream PCIe port at %04x:%02x:%02x to Gen2\n",
-    __FUNCTION__, SegmentNumber, BusNumber, DeviceNumber));
+    __func__, SegmentNumber, BusNumber, DeviceNumber));
 
   Status = PciIo->Pci.Read (PciIo, EfiPciIoWidthUint16,
                         ASM118x_PCIE_LINK_CONTROL_OFFSET, 1, &LinkControl);
@@ -113,7 +113,7 @@ EnableAsm1061SpreadSpectrum (
   UINT8       SscVal;
 
   DEBUG ((DEBUG_INFO, "%a: enabling spread spectrum mode 0 for ASM1061\n",
-    __FUNCTION__));
+    __func__));
 
   // SSC mode 0~-4000 ppm, 1:1 modulation
 
@@ -161,7 +161,7 @@ OnPciIoProtocolNotify (
                           ARRAY_SIZE (PciVidPid), &PciVidPid);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to read PCI vendor/product ID - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       continue;
     }
 

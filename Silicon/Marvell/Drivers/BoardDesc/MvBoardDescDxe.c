@@ -45,21 +45,21 @@ MvBoardDescComPhyGet (
 
   /* Check if PCD with ComPhy is correctly defined */
   if (ComPhyDeviceTableSize > ComPhyCount) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdComPhyDevices format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdComPhyDevices format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (ComPhyDeviceTableSize * sizeof (MV_BOARD_COMPHY_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   ComPhyIndex = 0;
   for (Index = 0; Index < ComPhyDeviceTableSize; Index++) {
     if (!ComPhyDeviceEnabled[Index]) {
-      DEBUG ((DEBUG_ERROR, "%a: Skip ComPhy controller %d\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_ERROR, "%a: Skip ComPhy controller %d\n", __func__, Index));
       continue;
     }
 
@@ -107,7 +107,7 @@ MvBoardGpioDescriptionGet (
   /* Allocate and fill board description. */
   mGpioDescription = AllocateZeroPool (sizeof (MV_BOARD_GPIO_DESCRIPTION));
   if (mGpioDescription == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -157,21 +157,21 @@ MvBoardDescI2cGet (
   if (I2cDeviceEnabledSize > I2cCount) {
     DEBUG ((DEBUG_ERROR,
       "%a: Wrong PcdI2cControllersEnabled format\n",
-      __FUNCTION__));
+      __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (I2cDeviceEnabledSize * sizeof (MV_BOARD_I2C_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   I2cIndex = 0;
   for (Index = 0; Index < I2cDeviceEnabledSize; Index++) {
     if (!I2cDeviceEnabled[Index]) {
-      DEBUG ((DEBUG_INFO, "%a: Skip I2c controller %d\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_INFO, "%a: Skip I2c controller %d\n", __func__, Index));
       continue;
     }
 
@@ -207,7 +207,7 @@ MvBoardDescMdioGet (
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (MdioCount * sizeof (MV_BOARD_MDIO_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -255,21 +255,21 @@ MvBoardDescAhciGet (
 
   /* Check if PCD with AHCI controllers is correctly defined */
   if (AhciDeviceTableSize > AhciCount) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciEAhci format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciEAhci format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (AhciDeviceTableSize * sizeof (MV_BOARD_AHCI_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   AhciIndex = 0;
   for (Index = 0; Index < AhciDeviceTableSize; Index++) {
     if (!AhciDeviceEnabled[Index]) {
-      DEBUG ((DEBUG_INFO, "%a: Skip Ahci controller %d\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_INFO, "%a: Skip Ahci controller %d\n", __func__, Index));
       continue;
     }
 
@@ -307,7 +307,7 @@ MvBoardDescSdMmcGet (
   /* Get per-board configuration of the controllers */
   Status = ArmadaBoardDescSdMmcGet (&SdMmcDevCount, &BoardDesc);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: ArmadaBoardDescSdMmcGet filed\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: ArmadaBoardDescSdMmcGet filed\n", __func__));
     return Status;
   }
 
@@ -327,21 +327,21 @@ MvBoardDescSdMmcGet (
   /* Check if PCD with SDMMC controllers is correctly defined */
   if ((SdMmcDeviceTableSize > SdMmcCount) ||
       (SdMmcDeviceTableSize < SdMmcDevCount)) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciESdhci format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciESdhci format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   SdMmcIndex = 0;
   for (Index = 0; Index < SdMmcDeviceTableSize; Index++) {
     if (!SdMmcDeviceEnabled[Index]) {
-      DEBUG ((DEBUG_INFO, "%a: Skip SdMmc controller %d\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_INFO, "%a: Skip SdMmc controller %d\n", __func__, Index));
       continue;
     }
 
     if (SdMmcIndex >= SdMmcDevCount) {
       DEBUG ((DEBUG_ERROR,
         "%a: More enabled devices than returned by ArmadaBoardDescSdMmcGet\n",
-        __FUNCTION__));
+        __func__));
       return EFI_INVALID_PARAMETER;
     }
     BoardDesc[SdMmcIndex].SoC = &SoCDesc[Index];
@@ -389,21 +389,21 @@ MvBoardDescXhciGet (
 
   /* Check if PCD with XHCI controllers is correctly defined */
   if (XhciDeviceTableSize > XhciCount) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciEXhci format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPciEXhci format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (XhciDeviceTableSize * sizeof (MV_BOARD_XHCI_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   XhciIndex = 0;
   for (Index = 0; Index < XhciDeviceTableSize; Index++) {
     if (!XhciDeviceEnabled[Index]) {
-      DEBUG ((DEBUG_INFO, "%a: Skip Xhci controller %d\n", __FUNCTION__, Index));
+      DEBUG ((DEBUG_INFO, "%a: Skip Xhci controller %d\n", __func__, Index));
       continue;
     }
 
@@ -465,7 +465,7 @@ MvBoardPcieDescriptionGet (
 
   /* Sanity check of the board description. */
   if (BoardPcieControllerCount > SoCPcieControllerCount) {
-    DEBUG ((DEBUG_ERROR, "%a: Too many controllers described\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Too many controllers described\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -480,7 +480,7 @@ MvBoardPcieDescriptionGet (
     if (SoCIndex == SoCPcieControllerCount) {
       DEBUG ((DEBUG_ERROR,
         "%a: Controller #%d base address invalid: 0x%x\n",
-        __FUNCTION__,
+        __func__,
         BoardIndex,
         PcieControllers[BoardIndex].PcieDbiAddress));
       return EFI_INVALID_PARAMETER;
@@ -490,7 +490,7 @@ MvBoardPcieDescriptionGet (
   /* Allocate and fill board description. */
   mPcieDescription = AllocateZeroPool (sizeof (MV_BOARD_PCIE_DESCRIPTION));
   if (mPcieDescription == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -536,14 +536,14 @@ MvBoardDescPp2Get (
 
   /* Check if PCD with PP2 NICs is correctly defined */
   if (Pp2DeviceTableSize > Pp2Count) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPp2Controllers format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdPp2Controllers format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (Pp2DeviceTableSize * sizeof (MV_BOARD_PP2_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -597,7 +597,7 @@ MvBoardDescUtmiGet (
   /* Make sure XHCI controllers table is present */
   XhciDeviceEnabled = PcdGetPtr (PcdPciEXhci);
   if (XhciDeviceEnabled == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Missing PcdPciEXhci\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Missing PcdPciEXhci\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -608,7 +608,7 @@ MvBoardDescUtmiGet (
       (UtmiDeviceTableSize > PcdGetSize (PcdPciEXhci))) {
     DEBUG ((DEBUG_ERROR,
       "%a: Wrong PcdUtmiControllersEnabled format\n",
-      __FUNCTION__));
+      __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -616,14 +616,14 @@ MvBoardDescUtmiGet (
   UtmiPortType = PcdGetPtr (PcdUtmiPortType);
   if ((UtmiPortType == NULL) ||
       (PcdGetSize (PcdUtmiPortType) != UtmiDeviceTableSize)) {
-    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdUtmiPortType format\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Wrong PcdUtmiPortType format\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   /* Allocate and fill board description */
   BoardDesc = AllocateZeroPool (UtmiDeviceTableSize * sizeof (MV_BOARD_UTMI_DESC));
   if (BoardDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -638,7 +638,7 @@ MvBoardDescUtmiGet (
       DEBUG ((DEBUG_ERROR,
              "%a: Disabled Xhci controller %d\n",
              Index,
-             __FUNCTION__));
+             __func__));
       return EFI_INVALID_PARAMETER;
     }
 

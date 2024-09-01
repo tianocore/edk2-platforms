@@ -396,7 +396,7 @@ MvSpiFlashUpdateWithProgress (
 
   TmpBuf = (UINT8 *)AllocateZeroPool (SectorSize);
   if (TmpBuf == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -418,7 +418,7 @@ MvSpiFlashUpdateWithProgress (
                TmpBuf,
                SectorSize);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Error while updating\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Error while updating\n", __func__));
       return Status;
     }
   }
@@ -459,7 +459,7 @@ MvSpiFlashReadId (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Unrecognized JEDEC Id bytes: 0x%02x%02x%02x\n",
-      __FUNCTION__,
+      __func__,
       Id[0],
       Id[1],
       Id[2]));
@@ -617,7 +617,7 @@ MvSpiFlashEntryPoint (
                   &gEfiEventVirtualAddressChangeGuid,
                   &mMvSpiFlashVirtualAddrChangeEvent);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to register VA change event\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to register VA change event\n", __func__));
     goto ErrorCreateEvent;
   }
 

@@ -345,7 +345,7 @@ FvbReadBlock (
   UINTN                 LbaLength;
   EFI_STATUS            Status;
 
-  DEBUG ((DEBUG_INFO, "Smm %a() enter\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "Smm %a() enter\n", __func__));
 
   //
   // Check for invalid conditions

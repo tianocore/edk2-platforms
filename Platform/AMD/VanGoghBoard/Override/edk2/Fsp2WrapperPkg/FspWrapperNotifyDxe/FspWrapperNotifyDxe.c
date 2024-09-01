@@ -386,7 +386,7 @@ OnReadyToBoot (
       FspsUpd = ((FSPS_UPD *)(UINTN)(*(UINT32 *)GET_GUID_HOB_DATA (FspsUpdHob)));
       Status  = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **)&AcpiTableProtocol);
       if (!EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_INFO, "%a:FSP-S UPD Ptr:%x\n", __FUNCTION__, FspsUpd));
+        DEBUG ((DEBUG_INFO, "%a:FSP-S UPD Ptr:%x\n", __func__, FspsUpd));
         UINTN  TableKey = 0;
         if (ExportedInterfaceHob->AcpiTpm2Table != 0) {
           DEBUG ((DEBUG_INFO, "TPM2 Table: %x\n", ExportedInterfaceHob->AcpiTpm2Table));

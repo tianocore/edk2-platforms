@@ -160,7 +160,7 @@ ShadowMicrocodePatchWorker (
   DEBUG ((
     DEBUG_INFO,
     "%a: Required microcode patches have been loaded at 0x%lx, with size 0x%lx.\n",
-    __FUNCTION__, *Buffer, *BufferSize
+    __func__, *Buffer, *BufferSize
     ));
 
   return;
@@ -354,7 +354,7 @@ ShadowMicrocode (
     DEBUG ((
       DEBUG_INFO,
       "%a: 0x%x microcode patches will be loaded into memory, with size 0x%x.\n",
-      __FUNCTION__, PatchCount, TotalLoadSize
+      __func__, PatchCount, TotalLoadSize
       ));
 
     ShadowMicrocodePatchWorker (PatchInfoBuffer, PatchCount, TotalLoadSize, BufferSize, Buffer);

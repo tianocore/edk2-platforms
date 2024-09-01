@@ -1069,7 +1069,7 @@ NetsecInit (
   Status = Probe (DriverBindingHandle, LanDriver);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "NETSEC:%a(): Probe failed with status %d\n", __FUNCTION__, Status));
+      "NETSEC:%a(): Probe failed with status %d\n", __func__, Status));
     goto CloseDeviceProtocol;
   }
 
@@ -1149,7 +1149,7 @@ NetsecInit (
   // Say what the status of loading the protocol structure is
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: InstallMultipleProtocolInterfaces failed - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ogma_terminate (LanDriver->Handle);
     goto CloseDeviceProtocol;
   }

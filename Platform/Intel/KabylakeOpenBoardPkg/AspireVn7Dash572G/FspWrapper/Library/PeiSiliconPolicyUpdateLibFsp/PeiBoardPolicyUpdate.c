@@ -49,7 +49,7 @@ PeiFspBoardPolicyUpdatePreMem (
   IN OUT FSPM_UPD    *FspmUpd
   )
 {
-  DEBUG ((DEBUG_INFO, "%a() Start\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() Start\n", __func__));
 
   // BUGBUG: Preserve FSP defaults - PeiSiliconPolicyInitLibFsp ultimately overrides to 0.
   // Drop when https://edk2.groups.io/g/devel/message/79391 is merged
@@ -71,7 +71,7 @@ PeiFspBoardPolicyUpdatePreMem (
   /* PCIe config */
   FspmUpd->FspmConfig.PcieRpEnableMask = 0x341;  // Ports 1, 7, 9 and 10
 
-  DEBUG ((DEBUG_INFO, "%a() End\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() End\n", __func__));
   return EFI_SUCCESS;
 }
 
@@ -92,7 +92,7 @@ PeiFspBoardPolicyUpdate (
 {
   INTN  Index;
 
-  DEBUG ((DEBUG_INFO, "%a() Start\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() Start\n", __func__));
 
   // FIXME/NB: This is insecure and not production-ready!
   // TODO: Configure SPI lockdown by variable on FrontPage?
@@ -281,6 +281,6 @@ PeiFspBoardPolicyUpdate (
   /* GbE config */
   FspsUpd->FspsConfig.PchLanEnable = 0;
 
-  DEBUG ((DEBUG_INFO, "%a() End\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() End\n", __func__));
   return EFI_SUCCESS;
 }

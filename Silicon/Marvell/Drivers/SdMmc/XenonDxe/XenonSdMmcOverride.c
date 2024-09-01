@@ -378,7 +378,7 @@ InitializeXenonDxe (
 
   mSdMmcOverride = AllocateZeroPool (sizeof (EDKII_SD_MMC_OVERRIDE));
   if (mSdMmcOverride == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -393,7 +393,7 @@ InitializeXenonDxe (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Filed to install SdMmcOverride protocol\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 

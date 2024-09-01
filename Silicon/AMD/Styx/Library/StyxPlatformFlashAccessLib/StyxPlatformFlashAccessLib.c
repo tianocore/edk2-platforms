@@ -69,7 +69,7 @@ PerformFlashWriteWithProgress (
 
   if (FlashAddressType != FlashAddressTypeRelativeAddress) {
     DEBUG ((DEBUG_ERROR, "%a: only FlashAddressTypeRelativeAddress supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -77,7 +77,7 @@ PerformFlashWriteWithProgress (
   if (FirmwareType != PlatformFirmwareTypeSystemFirmware) {
     DEBUG ((DEBUG_ERROR,
       "%a: only PlatformFirmwareTypeSystemFirmware supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -85,14 +85,14 @@ PerformFlashWriteWithProgress (
   if ((FlashAddress % mBlockSize) != 0 || (Length % mBlockSize) != 0) {
     DEBUG ((DEBUG_ERROR,
       "%a:region [0x%lx, 0x%lx) is not a multiple of the blocksize 0x%lx\n",
-      __FUNCTION__, FlashAddress, Length, mBlockSize));
+      __func__, FlashAddress, Length, mBlockSize));
     return EFI_INVALID_PARAMETER;
   }
 
   if ((FlashAddress + Length) > mFlashMaxSize) {
     DEBUG ((DEBUG_ERROR,
       "%a: updated region [0x%lx, 0x%lx) outside of FV region [0x0, 0x%lx)\n",
-      __FUNCTION__, FlashAddress, FlashAddress + Length, mFlashMaxSize));
+      __func__, FlashAddress, FlashAddress + Length, mFlashMaxSize));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -105,20 +105,20 @@ PerformFlashWriteWithProgress (
     // Erase the block
     //
     DEBUG ((DEBUG_INFO, "%a: erasing 0x%llx bytes at address 0x%llx\n",
-      __FUNCTION__, mBlockSize, FlashAddress));
+      __func__, mBlockSize, FlashAddress));
 
     Status = IscpDxeProtocol->AmdExecuteEraseFvBlockDxe (IscpDxeProtocol,
                                 FlashAddress, mBlockSize);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: AmdExecuteEraseFvBlockDxe () failed - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
 
     //
     // Write the new data
     //
     DEBUG ((DEBUG_INFO, "%a: writing 0x%llx bytes at at address 0x%llx\\n",
-      __FUNCTION__, mBlockSize, FlashAddress));
+      __func__, mBlockSize, FlashAddress));
 
     Status = IscpDxeProtocol->AmdExecuteUpdateFvBlockDxe (IscpDxeProtocol,
                                 FlashAddress, Buffer, mBlockSize);
@@ -126,7 +126,7 @@ PerformFlashWriteWithProgress (
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR,
         "%a: write of block address 0x%lx failed - %r\n",
-        __FUNCTION__, FlashAddress, Status));
+        __func__, FlashAddress, Status));
     }
 
     FlashAddress += mBlockSize;

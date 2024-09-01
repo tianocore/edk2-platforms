@@ -57,7 +57,7 @@ AcpiNotificationEvent (
     Rsdp->RsdtAddress = 0;
   }
 
-  DEBUG ((DEBUG_INFO, "[%a:%d]-\n", __FUNCTION__, __LINE__));
+  DEBUG ((DEBUG_INFO, "[%a:%d]-\n", __func__, __LINE__));
 }
 
 VOID

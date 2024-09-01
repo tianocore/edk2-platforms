@@ -1438,7 +1438,7 @@ Pp2AipGetInformation (
     AdapterInfo->MediaState = EFI_NOT_READY;
     return EFI_SUCCESS;
   } else if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a Failed to get media status\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a Failed to get media status\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 

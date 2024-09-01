@@ -43,7 +43,7 @@ SecSetEdk2FwMemoryRegions (
   fw_memregs.flags = SBI_DOMAIN_MEMREGION_EXECUTABLE | SBI_DOMAIN_MEMREGION_READABLE;
   Ret              = sbi_domain_root_add_memregion ((CONST struct sbi_domain_memregion *)&fw_memregs);
   if (Ret != 0) {
-    DEBUG ((DEBUG_ERROR, "%a: Add firmware regions of FW Domain fail\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Add firmware regions of FW Domain fail\n", __func__));
   }
 
   //
@@ -54,7 +54,7 @@ SecSetEdk2FwMemoryRegions (
   fw_memregs.flags = SBI_DOMAIN_MEMREGION_READABLE | SBI_DOMAIN_MEMREGION_WRITEABLE;
   Ret              = sbi_domain_root_add_memregion ((CONST struct sbi_domain_memregion *)&fw_memregs);
   if (Ret != 0) {
-    DEBUG ((DEBUG_ERROR, "%a: Add firmware regions of variable FW Domain fail\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Add firmware regions of variable FW Domain fail\n", __func__));
   }
 
   return Ret;
@@ -76,7 +76,7 @@ SecPostOpenSbiPlatformEarlyInit (
 
   if (!ColdBoot) {
     HartId = current_hartid ();
-    DEBUG ((DEBUG_INFO, "%a: Non boot hart %d.\n", __FUNCTION__, HartId));
+    DEBUG ((DEBUG_INFO, "%a: Non boot hart %d.\n", __func__, HartId));
     return 0;
   }
 
@@ -91,7 +91,7 @@ SecPostOpenSbiPlatformEarlyInit (
   // Boot HART is already in the process of OpenSBI initialization.
   // We can let other HART to keep booting.
   //
-  DEBUG ((DEBUG_INFO, "%a: Set boot hart done.\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Set boot hart done.\n", __func__));
   atomic_write (&BootHartDone, (UINT64)TRUE);
   return 0;
 }
@@ -117,11 +117,11 @@ SecPostOpenSbiPlatformFinalInit (
 
   if (!ColdBoot) {
     HartId = current_hartid ();
-    DEBUG ((DEBUG_INFO, "%a: Non boot hart %d.\n", __FUNCTION__, HartId));
+    DEBUG ((DEBUG_INFO, "%a: Non boot hart %d.\n", __func__, HartId));
     return 0;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: Entry, preparing to jump to PEI Core\n\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry, preparing to jump to PEI Core\n\n", __func__));
 
   SbiScratch      = sbi_scratch_thishart_ptr ();
   SbiPlatform     = (struct sbi_platform *)sbi_platform_ptr (SbiScratch);
@@ -130,7 +130,7 @@ SecPostOpenSbiPlatformFinalInit (
   //
   // Print out scratch address of each hart
   //
-  DEBUG ((DEBUG_INFO, "%a: OpenSBI scratch address for each hart:\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: OpenSBI scratch address for each hart:\n", __func__));
   for (HartId = 0; HartId < SBI_HARTMASK_MAX_BITS; HartId++) {
     if (sbi_platform_hart_invalid (SbiPlatform, HartId)) {
       continue;
@@ -159,14 +159,14 @@ SecPostOpenSbiPlatformFinalInit (
       DEBUG ((
         DEBUG_INFO,
         "%a: OpenSBI Hart %d Firmware Context Hart-specific at address: 0x%x\n",
-        __FUNCTION__,
+        __func__,
         HartId,
         FirmwareContext->HartSpecific[HartId]
         ));
     }
   }
 
-  DEBUG ((DEBUG_INFO, "%a: Will jump to PEI Core in OpenSBI with \n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Will jump to PEI Core in OpenSBI with \n", __func__));
   DEBUG ((DEBUG_INFO, "  sbi_scratch = %x\n", SbiScratch));
   DEBUG ((DEBUG_INFO, "  sbi_platform = %x\n", SbiPlatform));
   DEBUG ((DEBUG_INFO, "  FirmwareContext = %x\n", FirmwareContext));
@@ -189,7 +189,7 @@ Edk2OpensbiPlatformEarlyInit (
 {
   INT32  ReturnCode;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.early_init) {
     ReturnCode = platform_ops.early_init (ColdBoot);
@@ -219,7 +219,7 @@ Edk2OpensbiPlatformFinalInit (
 {
   INT32  ReturnCode;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.final_init) {
     ReturnCode = platform_ops.final_init (ColdBoot);
@@ -244,7 +244,7 @@ Edk2OpensbiPlatformEarlyExit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.early_exit) {
     return platform_ops.early_exit ();
@@ -260,7 +260,7 @@ Edk2OpensbiPlatformFinalExit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.early_exit) {
     return platform_ops.early_exit ();
@@ -316,7 +316,7 @@ Edk2OpensbiPlatformDomainsInit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.domains_init) {
     return platform_ops.domains_init ();
@@ -336,7 +336,7 @@ Edk2OpensbiPlatformSerialInit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.console_init) {
     return platform_ops.console_init ();
@@ -357,7 +357,7 @@ Edk2OpensbiPlatformIrqchipInit (
   IN BOOLEAN  ColdBoot
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.irqchip_init) {
     return platform_ops.irqchip_init (ColdBoot);
@@ -375,7 +375,7 @@ Edk2OpensbiPlatformIrqchipExit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.irqchip_exit) {
     return platform_ops.irqchip_exit ();
@@ -394,7 +394,7 @@ Edk2OpensbiPlatformIpiInit (
   IN  BOOLEAN  ColdBoot
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.ipi_init) {
     return platform_ops.ipi_init (ColdBoot);
@@ -412,7 +412,7 @@ Edk2OpensbiPlatformIpiExit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.ipi_exit) {
     return platform_ops.ipi_exit ();
@@ -430,7 +430,7 @@ Edk2OpensbiPlatformTlbrFlushLimit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.get_tlbr_flush_limit) {
     return platform_ops.get_tlbr_flush_limit ();
@@ -451,7 +451,7 @@ Edk2OpensbiPlatformTimerInit (
   IN BOOLEAN  ColdBoot
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.timer_init) {
     return platform_ops.timer_init (ColdBoot);
@@ -469,7 +469,7 @@ Edk2OpensbiPlatformTimerExit (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.timer_exit) {
     return platform_ops.timer_exit ();
@@ -488,7 +488,7 @@ Edk2OpensbiPlatformVendorExtCheck (
   IN long  ExtId
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.vendor_ext_check) {
     return platform_ops.vendor_ext_check (ExtId);
@@ -518,7 +518,7 @@ Edk2OpensbiPlatformVendorExtProvider (
   IN struct sbi_trap_info        *OutTrap
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (platform_ops.vendor_ext_provider) {
     return platform_ops.vendor_ext_provider (

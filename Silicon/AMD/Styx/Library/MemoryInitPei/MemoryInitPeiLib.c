@@ -76,7 +76,7 @@ MoveNvStoreImage (
   CopyMem (NewBase, OldBase, Size);
 
   DEBUG ((DEBUG_INFO, "%a: Relocating NV store FV from %p to %p\n",
-    __FUNCTION__, OldBase, NewBase));
+    __func__, OldBase, NewBase));
 
   Status = PcdSet64S (PcdFlashNvStorageVariableBase64, (UINT64)NewBase);
   ASSERT_EFI_ERROR (Status);

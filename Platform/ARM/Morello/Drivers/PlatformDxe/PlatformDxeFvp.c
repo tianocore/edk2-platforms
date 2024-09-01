@@ -45,7 +45,7 @@ ArmMorelloEntryPoint (
                     );
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "Couldn't find the RAM Disk protocol %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
       return Status;
     }
 
@@ -58,7 +58,7 @@ ArmMorelloEntryPoint (
                         );
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: Failed to register RAM Disk - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
   }
 

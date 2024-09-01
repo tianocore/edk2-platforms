@@ -40,7 +40,7 @@ BoardDetect (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a(): Deferred until LPC programming is complete\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a(): Deferred until LPC programming is complete\n", __func__));
   return EFI_SUCCESS;
 }
 

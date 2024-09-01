@@ -41,7 +41,7 @@ TypeJunctionCityPlatformUpdateAcpiTablePcds (
   //#
   Size = AsciiStrSize (AcpiName10nm);
   Status = PcdSetPtrS (PcdOemSkuAcpiName , &Size, AcpiName10nm);
-  DEBUG ((DEBUG_INFO, "%a TypeJunctionCity ICX\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a TypeJunctionCity ICX\n", __func__));
   ASSERT_EFI_ERROR (Status);
 
   Size = AsciiStrSize (OemTableIdXhci);

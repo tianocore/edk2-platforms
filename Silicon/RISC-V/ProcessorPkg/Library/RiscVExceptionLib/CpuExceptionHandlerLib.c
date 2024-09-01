@@ -74,7 +74,7 @@ RegisterCpuInterruptHandler (
   IN EFI_CPU_INTERRUPT_HANDLER  InterruptHandler
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Type:%x Handler: %x\n", __FUNCTION__, InterruptType, InterruptHandler));
+  DEBUG ((DEBUG_INFO, "%a: Type:%x Handler: %x\n", __func__, InterruptType, InterruptHandler));
   mInterruptHandlers[InterruptType] = InterruptHandler;
   return EFI_SUCCESS;
 }

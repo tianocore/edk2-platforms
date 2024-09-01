@@ -578,7 +578,7 @@ GenetSimpleNetworkTransmit (
 
   if (This == NULL || Buffer == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid parameter (missing handle or buffer)\n",
-      __FUNCTION__));
+      __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -603,13 +603,13 @@ GenetSimpleNetworkTransmit (
     // grub send failure messages.
     //
     Retries = 1000;
-    DEBUG ((DEBUG_INFO, "%a: Waiting 10s for link\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Waiting 10s for link\n", __func__));
     do {
       gBS->Stall (10000);
       Status = GenericPhyUpdateConfig (&Genet->Phy);
     } while (EFI_ERROR (Status) && Retries-- > 0);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: no link\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: no link\n", __func__));
       return EFI_NOT_READY;
     } else {
       Genet->SnpMode.MediaPresent = TRUE;
@@ -620,32 +620,32 @@ GenetSimpleNetworkTransmit (
     if (HeaderSize != Genet->SnpMode.MediaHeaderSize) {
       DEBUG ((DEBUG_ERROR,
         "%a: Invalid parameter (header size mismatch; HeaderSize 0x%X, SnpMode.MediaHeaderSize 0x%X))\n",
-        __FUNCTION__, HeaderSize, Genet->SnpMode.MediaHeaderSize));
+        __func__, HeaderSize, Genet->SnpMode.MediaHeaderSize));
       return EFI_INVALID_PARAMETER;
     }
     if (DestAddr == NULL || Protocol == NULL) {
       DEBUG ((DEBUG_ERROR,
         "%a: Invalid parameter (dest addr or protocol missing)\n",
-        __FUNCTION__));
+        __func__));
       return EFI_INVALID_PARAMETER;
     }
   }
 
   if (BufferSize < Genet->SnpMode.MediaHeaderSize) {
-    DEBUG ((DEBUG_ERROR, "%a: Buffer too small\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Buffer too small\n", __func__));
     return EFI_BUFFER_TOO_SMALL;
   }
 
   Status = EfiAcquireLockOrFail (&Genet->Lock);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Couldn't get lock: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Couldn't get lock: %r\n", __func__, Status));
     return EFI_ACCESS_DENIED;
   }
 
   if (Genet->TxQueued == GENET_DMA_DESC_COUNT - 1) {
     EfiReleaseLock (&Genet->Lock);
 
-    DEBUG ((DEBUG_ERROR, "%a: Queue full\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Queue full\n", __func__));
     return EFI_NOT_READY;
   }
 
@@ -667,7 +667,7 @@ GenetSimpleNetworkTransmit (
                    &DmaDeviceAddress,
                    &Genet->TxBufferMap[Desc]);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: DmaMap failed: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: DmaMap failed: %r\n", __func__, Status));
     EfiReleaseLock (&Genet->Lock);
     return Status;
   }
@@ -736,7 +736,7 @@ GenetSimpleNetworkReceive (
 
   if (This == NULL || Buffer == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid parameter (missing handle or buffer)\n",
-      __FUNCTION__));
+      __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -750,7 +750,7 @@ GenetSimpleNetworkReceive (
 
   Status = EfiAcquireLockOrFail (&Genet->Lock);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Couldn't get lock: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Couldn't get lock: %r\n", __func__, Status));
     return EFI_ACCESS_DENIED;
   }
 
@@ -774,7 +774,7 @@ GenetSimpleNetworkReceive (
     if (*BufferSize < FrameLength) {
       DEBUG ((DEBUG_ERROR,
         "%a: Buffer size (0x%X) is too small for frame (0x%X)\n",
-        __FUNCTION__, *BufferSize, FrameLength));
+        __func__, *BufferSize, FrameLength));
       Status = EFI_BUFFER_TOO_SMALL;
       goto out;
     }
@@ -798,14 +798,14 @@ GenetSimpleNetworkReceive (
     Status = EFI_SUCCESS;
   } else {
     DEBUG ((DEBUG_ERROR, "%a: Short packet (FrameLength 0x%X)",
-      __FUNCTION__, FrameLength));
+      __func__, FrameLength));
     Status = EFI_NOT_READY;
   }
 
 out:
   Status = GenetDmaMapRxDescriptor (Genet, DescIndex);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to remap RX descriptor!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to remap RX descriptor!\n", __func__));
   }
 
   GenetRxComplete (Genet);

@@ -46,7 +46,7 @@ BuildSmbiosType7 (
   Type7DataHob->EndingZero                  = 0;
   Status                                    = mSmbios->Add (mSmbios, NULL, &Handle, &Type7DataHob->SmbiosType7Cache.Hdr);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to add SMBIOS Type 7\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to add SMBIOS Type 7\n", __func__));
     return Status;
   }
 
@@ -306,7 +306,7 @@ RiscVSmbiosBuilderEntry (
   RISC_V_PROCESSOR_TYPE4_HOB_DATA  *Type4HobData;
   SMBIOS_HANDLE                    Processor;
 
-  DEBUG ((DEBUG_INFO, "%a: entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: entry\n", __func__));
 
   Status = gBS->LocateProtocol (
                   &gEfiSmbiosProtocolGuid,
@@ -345,6 +345,6 @@ RiscVSmbiosBuilderEntry (
     GuidHob = GetNextGuidHob ((EFI_GUID *)PcdGetPtr (PcdProcessorSmbiosType4GuidHobGuid), GET_NEXT_HOB (GuidHob));
   } while (GuidHob != NULL);
 
-  DEBUG ((DEBUG_INFO, "%a: exit\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: exit\n", __func__));
   return Status;
 }

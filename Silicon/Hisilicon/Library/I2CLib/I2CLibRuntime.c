@@ -69,12 +69,12 @@ I2cLibRuntimeSetup (UINT32 Socket, UINT8 Port)
       EFI_MEMORY_UC | EFI_MEMORY_RUNTIME
       );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_WARN, "[%a:%d] AddMemorySpace failed: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_WARN, "[%a:%d] AddMemorySpace failed: %r\n", __func__, __LINE__, Status));
   }
 
   Status = gDS->SetMemorySpaceAttributes (Base, SIZE_64KB, EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] SetMemorySpaceAttributes failed: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "[%a:%d] SetMemorySpaceAttributes failed: %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
@@ -92,7 +92,7 @@ I2cLibRuntimeSetup (UINT32 Socket, UINT8 Port)
         &mI2cLibVirtualAddrChangeEvent
     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "[%a:%d] Create event failed: %r\n", __FUNCTION__, __LINE__, Status));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] Create event failed: %r\n", __func__, __LINE__, Status));
       return Status;
     }
   }

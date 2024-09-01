@@ -29,13 +29,13 @@ EnableDtNode (
   Node = fdt_path_offset (Dtb, NodePath);
   if (Node < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate DT path '%a': %a\n",
-      __FUNCTION__, NodePath, fdt_strerror (Node)));
+      __func__, NodePath, fdt_strerror (Node)));
     return;
   }
   Rc = fdt_setprop_string (Dtb, Node, "status", "okay");
   if (Rc < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to set status to 'disabled' on '%a': %a\n",
-      __FUNCTION__, NodePath, fdt_strerror (Rc)));
+      __func__, NodePath, fdt_strerror (Rc)));
   }
 }
 
@@ -81,7 +81,7 @@ DtPlatformLoadDtb (
 
   Rc = fdt_open_into (OrigDtb, CopyDtb, CopyDtbSize);
   if (Rc < 0) {
-    DEBUG ((DEBUG_ERROR, "%a: fdt_open_into () failed: %a\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a: fdt_open_into () failed: %a\n", __func__,
       fdt_strerror (Rc)));
     return EFI_NOT_FOUND;
   }

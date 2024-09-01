@@ -292,7 +292,7 @@ MemDevInfoUpdateSmbiosType17 (
   // PhyMemArrayInfoUpdateSmbiosType16 must be called before MemDevInfoUpdateSmbiosType17
   //
   if (mPhyMemArrayInfoType16Handle == SMBIOS_HANDLE_PI_RESERVED) {
-    DEBUG ((DEBUG_ERROR, "%a: mPhyMemArrayInfoType16Handle is not initialized\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: mPhyMemArrayInfoType16Handle is not initialized\n", __func__));
     return;
   }
 
@@ -345,7 +345,7 @@ MemArrMapInfoUpdateSmbiosType19 (
   // PhyMemArrayInfoUpdateSmbiosType16 must be called before MemDevInfoUpdateSmbiosType17
   //
   if (mPhyMemArrayInfoType16Handle == SMBIOS_HANDLE_PI_RESERVED) {
-    DEBUG ((DEBUG_ERROR, "%a: mPhyMemArrayInfoType16Handle is not initialized\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: mPhyMemArrayInfoType16Handle is not initialized\n", __func__));
     return;
   }
 

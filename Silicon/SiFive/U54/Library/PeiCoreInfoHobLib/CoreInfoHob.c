@@ -57,7 +57,7 @@ CreateU54E51CoreProcessorSpecificDataHob (
   EFI_RISCV_OPENSBI_FIRMWARE_CONTEXT *FirmwareContext;
   EFI_RISCV_FIRMWARE_CONTEXT_HART_SPECIFIC *FirmwareContextHartSpecific;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry.\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry.\n", __func__));
 
   if (GuidHobData == NULL) {
     return EFI_INVALID_PARAMETER;

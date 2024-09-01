@@ -193,7 +193,7 @@ FilterAndProcess (
     //
     // This is not an error, just an informative condition.
     //
-    DEBUG ((DEBUG_VERBOSE, "%a: %g: %r\n", __FUNCTION__, ProtocolGuid,
+    DEBUG ((DEBUG_VERBOSE, "%a: %g: %r\n", __func__, ProtocolGuid,
       Status));
     return;
   }
@@ -254,7 +254,7 @@ IsPciDisplay (
   Status = PciIo->Pci.Read (PciIo, EfiPciIoWidthUint32, 0 /* Offset */,
                         sizeof Pci / sizeof (UINT32), &Pci);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: %s: %r\n", __FUNCTION__, ReportText, Status));
+    DEBUG ((DEBUG_ERROR, "%a: %s: %r\n", __func__, ReportText, Status));
     return FALSE;
   }
 
@@ -283,7 +283,7 @@ Connect (
                   FALSE   // Recursive
                   );
   DEBUG ((EFI_ERROR (Status) ? DEBUG_ERROR : DEBUG_VERBOSE, "%a: %s: %r\n",
-    __FUNCTION__, ReportText, Status));
+    __func__, ReportText, Status));
 }
 
 
@@ -305,25 +305,25 @@ AddOutput (
   DevicePath = DevicePathFromHandle (Handle);
   if (DevicePath == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: %s: handle %p: device path not found\n",
-      __FUNCTION__, ReportText, Handle));
+      __func__, ReportText, Handle));
     return;
   }
 
   Status = EfiBootManagerUpdateConsoleVariable (ConOut, DevicePath, NULL);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: %s: adding to ConOut: %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a: %s: adding to ConOut: %r\n", __func__,
       ReportText, Status));
     return;
   }
 
   Status = EfiBootManagerUpdateConsoleVariable (ErrOut, DevicePath, NULL);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: %s: adding to ErrOut: %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a: %s: adding to ErrOut: %r\n", __func__,
       ReportText, Status));
     return;
   }
 
-  DEBUG ((DEBUG_VERBOSE, "%a: %s: added to ConOut and ErrOut\n", __FUNCTION__,
+  DEBUG ((DEBUG_VERBOSE, "%a: %s: added to ConOut and ErrOut\n", __func__,
     ReportText));
 }
 
@@ -657,7 +657,7 @@ PlatformBootManagerAfterConsole (
     if (SetupData.BmcWdtEnable) {
       Status = IpmiCmdStopWatchdogTimer (EfiBiosPost);
       if (EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_ERROR, "%a:%r\n", __FUNCTION__, Status));
+        DEBUG ((DEBUG_ERROR, "%a:%r\n", __func__, Status));
       }
     }
   }

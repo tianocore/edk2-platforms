@@ -68,7 +68,7 @@ SetOverlayFragmentTarget (
           AsciiStrLen (Target) + 1);
   if (Err) {
     DEBUG ((DEBUG_ERROR, "%a: fdt_setprop() failed - %a\n",
-      __FUNCTION__, fdt_strerror (Err)));
+      __func__, fdt_strerror (Err)));
   }
 }
 
@@ -103,7 +103,7 @@ FixupOverlay (
     if (Err) {
       DEBUG ((DEBUG_ERROR,
         "%a: fdt_setprop_u32(.., .., \"phandle\", 0x%x) failed - %a\n",
-        __FUNCTION__, GpioPhandle, fdt_strerror (Err)));
+        __func__, GpioPhandle, fdt_strerror (Err)));
     }
   }
 
@@ -171,7 +171,7 @@ ApplyDeviceTreeOverlay (
   Err = fdt_overlay_apply (Dtb, Overlay);
   if (Err) {
     DEBUG ((DEBUG_ERROR, "%a: fdt_overlay_apply() failed - %a\n",
-      __FUNCTION__, fdt_strerror (Err)));
+      __func__, fdt_strerror (Err)));
     return EFI_NOT_FOUND;
   }
 

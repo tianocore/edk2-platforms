@@ -167,10 +167,10 @@ FindFfsFileAndSection (
   UINT32                Size;
   EFI_PHYSICAL_ADDRESS  EndOfFile;
 
-  DEBUG ((DEBUG_INFO, "%a: DBT FV at 0x%x\n", __FUNCTION__, Fv));
+  DEBUG ((DEBUG_INFO, "%a: DBT FV at 0x%x\n", __func__, Fv));
 
   if (Fv->Signature != EFI_FVH_SIGNATURE) {
-    DEBUG ((DEBUG_ERROR, "%a: FV at %p does not have FV header signature\n", __FUNCTION__, Fv));
+    DEBUG ((DEBUG_ERROR, "%a: FV at %p does not have FV header signature\n", __func__, Fv));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -183,20 +183,20 @@ FindFfsFileAndSection (
   for (EndOfFile = CurrentAddress + Fv->HeaderLength; ; ) {
     CurrentAddress = (EndOfFile + 7) & ~(7ULL);
     if (CurrentAddress > EndOfFirmwareVolume) {
-      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __func__));
       return EFI_VOLUME_CORRUPTED;
     }
 
     File = (EFI_FFS_FILE_HEADER *)(UINTN)CurrentAddress;
     Size = *(UINT32 *)File->Size & 0xffffff;
     if (Size < (sizeof (*File) + sizeof (EFI_COMMON_SECTION_HEADER))) {
-      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __func__));
       return EFI_VOLUME_CORRUPTED;
     }
 
     EndOfFile = CurrentAddress + Size;
     if (EndOfFile > EndOfFirmwareVolume) {
-      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __func__));
       return EFI_VOLUME_CORRUPTED;
     }
 
@@ -204,7 +204,7 @@ FindFfsFileAndSection (
     // Look for the request file type
     //
     if (File->Type != FileType) {
-      DEBUG ((DEBUG_INFO, "%a: (File->Type != FileType), find next FFS\n", __FUNCTION__));
+      DEBUG ((DEBUG_INFO, "%a: (File->Type != FileType), find next FFS\n", __func__));
       continue;
     }
 
@@ -215,16 +215,16 @@ FindFfsFileAndSection (
                FoundSection
                );
     if (!EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_INFO, "%a: Get firmware file section\n", __FUNCTION__));
+      DEBUG ((DEBUG_INFO, "%a: Get firmware file section\n", __func__));
       return Status;
     }
 
     if (Status == EFI_VOLUME_CORRUPTED) {
-      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: FV corrupted\n", __func__));
       return Status;
     }
 
-    DEBUG ((DEBUG_INFO, "%a: Find next FFS\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Find next FFS\n", __func__));
   }
 }
 
@@ -262,12 +262,12 @@ FindPeiCoreImageBaseInFv (
                &Section
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Unable to find PEI Core image\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Unable to find PEI Core image\n", __func__));
       return Status;
     }
   }
 
-  DEBUG ((DEBUG_INFO, "%a: PeiCoreImageBase found\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: PeiCoreImageBase found\n", __func__));
   *PeiCoreImageBase = (EFI_PHYSICAL_ADDRESS)(UINTN)(Section + 1);
   return EFI_SUCCESS;
 }
@@ -287,7 +287,7 @@ FindPeiCoreImageBase (
 {
   *PeiCoreImageBase = 0;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
   FindPeiCoreImageBaseInFv (*BootFv, PeiCoreImageBase);
 }
 
@@ -311,7 +311,7 @@ FindAndReportEntryPoints (
   EFI_STATUS            Status;
   EFI_PHYSICAL_ADDRESS  PeiCoreImageBase;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   FindPeiCoreImageBase (BootFirmwareVolumePtr, &PeiCoreImageBase);
   //
@@ -322,7 +322,7 @@ FindAndReportEntryPoints (
     *PeiCoreEntryPoint = 0;
   }
 
-  DEBUG ((DEBUG_INFO, "%a: PeCoffLoaderGetEntryPoint success: %x\n", __FUNCTION__, *PeiCoreEntryPoint));
+  DEBUG ((DEBUG_INFO, "%a: PeCoffLoaderGetEntryPoint success: %x\n", __func__, *PeiCoreEntryPoint));
 
   return;
 }
@@ -364,7 +364,7 @@ SbiEcallFirmwareHandler (
       break;
     default:
       Ret = SBI_ENOTSUPP;
-      DEBUG ((DEBUG_ERROR, "%a: Called SBI firmware ecall with invalid function ID\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Called SBI firmware ecall with invalid function ID\n", __func__));
       ASSERT (FALSE);
   }
 
@@ -452,7 +452,7 @@ PeiCore (
       DEBUG_ERROR,
       "%a: OpenSBI platform table version 0x%x is newer than OpenSBI version 0x%x.\n"
       "There maybe be some backward compatable issues.\n",
-      __FUNCTION__,
+      __func__,
       ThisSbiPlatform->opensbi_version,
       OPENSBI_VERSION
       ));
@@ -462,7 +462,7 @@ PeiCore (
   DEBUG ((
     DEBUG_INFO,
     "%a: OpenSBI platform table at address: 0x%x\nFirmware Context is located at 0x%x\n",
-    __FUNCTION__,
+    __func__,
     ThisSbiPlatform,
     &FirmwareContext
     ));
@@ -481,7 +481,7 @@ PeiCore (
   //
   // Set supervisor translation mode to Bare mode
   //
-  DEBUG ((DEBUG_INFO, "%a: Set Supervisor address mode to Bare-mode.\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Set Supervisor address mode to Bare-mode.\n", __func__));
   RiscVSetSupervisorAddressTranslationRegister ((UINT64)RISCV_SATP_MODE_OFF << RISCV_SATP_MODE_BIT_POSITION);
 
   //
@@ -489,7 +489,7 @@ PeiCore (
   //
   Scratch->next_addr = (UINTN)(PeiCoreEntryPoint);
   Scratch->next_mode = PRV_S;
-  DEBUG ((DEBUG_INFO, "%a: Initializing OpenSBI library for booting hart %d\n", __FUNCTION__, BootHartId));
+  DEBUG ((DEBUG_INFO, "%a: Initializing OpenSBI library for booting hart %d\n", __func__, BootHartId));
   sbi_init (Scratch);
 }
 
@@ -716,13 +716,13 @@ SecCoreStartUpWithStack (
     NonBootHartMessageLockValue = atomic_xchg (&NonBootHartMessageLock, TRUE);
   }
 
-  DEBUG ((DEBUG_INFO, "%a: Non boot hart %d initialization.\n", __FUNCTION__, HartId));
+  DEBUG ((DEBUG_INFO, "%a: Non boot hart %d initialization.\n", __func__, HartId));
   if (Scratch->next_arg1 == (unsigned long)NULL) {
     DEBUG ((DEBUG_ERROR, "Platform Device Tree is not found\n"));
     ASSERT (FALSE);
   }
 
-  DEBUG ((DEBUG_INFO, "%a: Non boot hart %d DTB is at 0x%x.\n", __FUNCTION__, HartId, Scratch->next_arg1));
+  DEBUG ((DEBUG_INFO, "%a: Non boot hart %d DTB is at 0x%x.\n", __func__, HartId, Scratch->next_arg1));
   NonBootHartMessageLockValue = atomic_xchg (&NonBootHartMessageLock, FALSE);
   //
   // Non boot hart wiil be halted waiting for SBI_HART_STARTING.

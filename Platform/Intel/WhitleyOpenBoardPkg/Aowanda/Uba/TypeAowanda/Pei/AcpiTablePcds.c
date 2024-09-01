@@ -41,7 +41,7 @@ TypeAowandaPlatformUpdateAcpiTablePcds (
   // #
   Size   = AsciiStrSize (AcpiName10nm);
   Status = PcdSetPtrS (PcdOemSkuAcpiName, &Size, AcpiName10nm);
-  DEBUG ((DEBUG_INFO, "%a TypeAowanda ICX\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a TypeAowanda ICX\n", __func__));
   ASSERT_EFI_ERROR (Status);
 
   Size   = AsciiStrSize (OemTableIdXhci);

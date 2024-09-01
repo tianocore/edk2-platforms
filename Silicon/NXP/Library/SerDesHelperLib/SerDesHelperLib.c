@@ -147,7 +147,7 @@ GetSerDesMap (
   Status = IsSerDesProtocolValid (SerDes, SerDesProtocol, SerDesNumLanes, Config);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: SERDES%d[PRTCL] = 0x%x is not valid, Status = %r \n",
-            __FUNCTION__, SerDes + 1, SerDesProtocol, Status));
+            __func__, SerDes + 1, SerDesProtocol, Status));
     return Status;
   }
 

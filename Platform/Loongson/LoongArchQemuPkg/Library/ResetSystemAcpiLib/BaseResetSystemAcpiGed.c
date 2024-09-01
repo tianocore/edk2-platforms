@@ -136,7 +136,7 @@ ResetSystemLibConstructor (
 
   Status = GetPowerManagerByParseAcpiInfo ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "%a:%d\n",  __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_INFO, "%a:%d\n",  __func__, __LINE__));
   }
 
   ASSERT (mPowerManager.SleepControlRegAddr);

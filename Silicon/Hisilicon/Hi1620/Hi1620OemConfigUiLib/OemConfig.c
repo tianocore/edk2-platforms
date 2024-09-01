@@ -205,7 +205,7 @@ OemConfigUiLibConstructor (
                                    NULL
                                    );
   if (mOemConfigPrivate.HiiHandle == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a Fail to Add Oem Hii Package.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a Fail to Add Oem Hii Package.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
   //

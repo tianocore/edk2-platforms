@@ -720,7 +720,7 @@ PlatformPrepController (
                                         &DummyData
                                         );
               PCIDEBUG ("%a: For B(0x%x)-D(0x%x)-F(0x%x),Pci.Write() returns with %r\n",
-                        __FUNCTION__, SecBus, Device, Func, Status);
+                        __func__, SecBus, Device, Func, Status);
 
               if (EFI_ERROR (Status)) {
                 //

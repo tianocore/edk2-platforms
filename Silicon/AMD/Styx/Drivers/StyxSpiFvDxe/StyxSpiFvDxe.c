@@ -474,7 +474,7 @@ StyxSpiFvDxeInitialize (
 
   DEBUG ((DEBUG_INFO,
     "%a: Using NV store FV in-memory copy at 0x%lx, LBA offset == 0x%lx\n",
-    __FUNCTION__, mNvStorageBase, mNvStorageLbaOffset));
+    __func__, mNvStorageBase, mNvStorageLbaOffset));
 
   Status = gBS->LocateProtocol (&gAmdIscpDxeProtocolGuid, NULL,
                   (VOID **)&mIscpDxeProtocol);

@@ -290,7 +290,7 @@ CpuArchEventProtocolNotify (
   Status = Cpu->RegisterInterruptHandler (Cpu, ARM_ARCH_EXCEPTION_IRQ, NULL);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Cpu->RegisterInterruptHandler() - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ASSERT (FALSE);
     return;
   }
@@ -301,7 +301,7 @@ CpuArchEventProtocolNotify (
   Status = Cpu->RegisterInterruptHandler (Cpu, ARM_ARCH_EXCEPTION_IRQ, IrqInterruptHandler);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Cpu->RegisterInterruptHandler() - %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ASSERT (FALSE);
     return;
   }

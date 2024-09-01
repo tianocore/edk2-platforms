@@ -89,10 +89,10 @@ OemGetSerdesParam (
  )
 {
   if (NULL == ParamA) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Param == NULL!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Param == NULL!\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   } if (NULL == ParamB) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Param == NULL!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Param == NULL!\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 

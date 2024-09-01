@@ -85,7 +85,7 @@ RuntimeAmpereCpuLibConstructor (
           (CONST VOID *)FixedPcdGet64 (PcdSystemMemoryBase)
           );
   if (Hob == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to get gPlatformInfoHobGuid!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get gPlatformInfoHobGuid!\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 

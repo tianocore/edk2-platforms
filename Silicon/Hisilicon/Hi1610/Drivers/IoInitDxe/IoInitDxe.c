@@ -48,7 +48,7 @@ IoInitDxeEntry (
 
   if (EFI_ERROR(Status))
   {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] - CreateEvent failed: %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "[%a:%d] - CreateEvent failed: %r\n", __func__,
         __LINE__, Status));
   }
 

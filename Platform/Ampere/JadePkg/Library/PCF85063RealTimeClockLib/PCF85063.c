@@ -82,7 +82,7 @@ RtcI2cWaitAccess (
   }
 
   if (Timeout <= 0) {
-    DEBUG ((DEBUG_ERROR, "%a: Timeout while waiting access RTC\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Timeout while waiting access RTC\n", __func__));
     return EFI_TIMEOUT;
   }
 
@@ -293,7 +293,7 @@ PlatformInitialize (
     DEBUG ((
       DEBUG_ERROR,
       "%a:%d I2cSetupRuntime() failed - %r \n",
-      __FUNCTION__,
+      __func__,
       __LINE__,
       Status
       ));
@@ -306,7 +306,7 @@ PlatformInitialize (
     DEBUG ((
       DEBUG_ERROR,
       "%a:%d GpioSetupRuntime() failed - %r \n",
-      __FUNCTION__,
+      __func__,
       __LINE__,
       Status
       ));

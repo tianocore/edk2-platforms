@@ -366,7 +366,7 @@ GetApic (
     // Avoid dead loop due to corrupted MADT
     if (Ptr->Length == 0) {
       DEBUG ((DEBUG_ERROR, "[%a:%d] - Invalid MADT sub structure at 0x%x\n",
-            __FUNCTION__, __LINE__, (UINTN) Ptr - (UINTN) ApicTable));
+            __func__, __LINE__, (UINTN) Ptr - (UINTN) ApicTable));
       break;
     }
 

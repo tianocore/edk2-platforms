@@ -106,7 +106,7 @@ CreateU5MCProcessorSmbiosDataHob (
   RISC_V_PROCESSOR_TYPE7_HOB_DATA *L2CacheDataHobPtr;
   RISC_V_PROCESSOR_SMBIOS_HOB_DATA *SmbiosDataHobPtr;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
 
   if (SmbiosHobPtr == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -154,7 +154,7 @@ CreateU5MCProcessorSmbiosDataHob (
     ASSERT (FALSE);
   }
   *SmbiosHobPtr = SmbiosDataHobPtr;
-  DEBUG ((DEBUG_INFO, "%a: Exit\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Exit\n", __func__));
 
   return EFI_SUCCESS;
 }

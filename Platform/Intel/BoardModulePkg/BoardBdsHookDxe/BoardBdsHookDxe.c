@@ -41,7 +41,7 @@ BdsHookDxeEntryPoint (
   EFI_STATUS  Status;
   VOID        *Registration;
 
-  DEBUG ((DEBUG_INFO, "%a starts\n", __FUNCTION__ ));
+  DEBUG ((DEBUG_INFO, "%a starts\n", __func__ ));
 
   //
   // Create event to set proper video resolution and text mode for internal shell.

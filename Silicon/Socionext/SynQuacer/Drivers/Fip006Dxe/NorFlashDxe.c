@@ -85,9 +85,9 @@ NorFlashFvbInitialize (
   // Install the Default FVB header if required
   if (EFI_ERROR(Status)) {
     // There is no valid header, so time to install one.
-    DEBUG ((DEBUG_INFO, "%a: The FVB Header is not valid.\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: The FVB Header is not valid.\n", __func__));
     DEBUG ((DEBUG_INFO, "%a: Installing a correct one for this volume.\n",
-      __FUNCTION__));
+      __func__));
 
     // Erase all the NorFlash that is reserved for variable storage
     FvbNumLba = (PcdGet32(PcdFlashNvStorageVariableSize) +
@@ -119,7 +119,7 @@ NorFlashFvbInitialize (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Failed to install gEdkiiNvVarStoreFormattedGuid\n",
-      __FUNCTION__));
+      __func__));
       return Status;
   }
 

@@ -79,7 +79,7 @@ MvGpioGetProtocol (
                   &HandleCount,
                   &HandleBuffer);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unable to locate handles\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unable to locate handles\n", __func__));
     return Status;
   }
 
@@ -93,7 +93,7 @@ MvGpioGetProtocol (
                     NULL,
                     EFI_OPEN_PROTOCOL_GET_PROTOCOL);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Unable to find DevicePath\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Unable to find DevicePath\n", __func__));
       continue;
     }
 
@@ -111,7 +111,7 @@ MvGpioGetProtocol (
     } else if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR,
         "%a: Unable to open GPIO protocol\n",
-        __FUNCTION__));
+        __func__));
     }
 
     gBS->FreePool (HandleBuffer);

@@ -91,12 +91,12 @@ WaitForLink (
   UINT32 Timeout;
 
   if (!(MmioRead32 (PcieDbiAddress + PCIE_PM_STATUS) & PCIE_PM_LTSSM_STAT_MASK)) {
-    DEBUG ((DEBUG_INIT, "%a: no PCIE device detected\n", __FUNCTION__));
+    DEBUG ((DEBUG_INIT, "%a: no PCIE device detected\n", __func__));
     return;
   }
 
   /* Wait for the link to establish itself. */
-  DEBUG ((DEBUG_INIT, "%a: waiting for PCIE link\n", __FUNCTION__));
+  DEBUG ((DEBUG_INIT, "%a: waiting for PCIE link\n", __func__));
 
   Mask = PCIE_GLOBAL_STATUS_RDLH_LINK_UP | PCIE_GLOBAL_STATUS_PHY_LINK_UP;
   Timeout = PCIE_LINK_UP_TIMEOUT_US / 10;
@@ -134,7 +134,7 @@ ResetPcieSlot (
   /* Get GPIO protocol. */
   Status = MvGpioGetProtocol (PcieResetGpio->ControllerType, &GpioProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __func__));
     return Status;
   }
 
@@ -197,7 +197,7 @@ Armada7k8kPciHostBridgeLibConstructor (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -210,7 +210,7 @@ Armada7k8kPciHostBridgeLibConstructor (
   } else if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot get Pcie board desc from BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -226,7 +226,7 @@ Armada7k8kPciHostBridgeLibConstructor (
       if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_ERROR,
           "%a: Cannot reset Pcie Slot\n",
-          __FUNCTION__));
+          __func__));
         return EFI_DEVICE_ERROR;
       }
     }

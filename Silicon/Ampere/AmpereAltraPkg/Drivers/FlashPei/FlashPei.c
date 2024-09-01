@@ -50,14 +50,14 @@ FlashPeiEntryPoint (
   DEBUG ((
     DEBUG_INFO,
     "%a: Using NV store FV in-memory copy at 0x%lx with size 0x%x\n",
-    __FUNCTION__,
+    __func__,
     NvRamAddress,
     NvRamSize
     ));
 
   Status = FlashGetNvRamInfo (&FWNvRamStartOffset, &FWNvRamSize);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to get Flash NVRAM info %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get Flash NVRAM info %r\n", __func__, Status));
     return Status;
   }
 

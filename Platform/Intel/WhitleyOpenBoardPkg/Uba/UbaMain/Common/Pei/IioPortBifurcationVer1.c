@@ -373,7 +373,7 @@ CalculatePEXPHideFromIouBif_SKX (
 
   if (IioIndex >= MaxIIO || Iou >= NELEMENTS (IioGlobalData->SetupData.ConfigIOU[IioIndex])) {
 
-    DEBUG ((DEBUG_ERROR, "[IIO] ERROR: %a: IIO instance %d or IOU %d out of range", __FUNCTION__, IioIndex, Iou));
+    DEBUG ((DEBUG_ERROR, "[IIO] ERROR: %a: IIO instance %d or IOU %d out of range", __func__, IioIndex, Iou));
     ASSERT (FALSE);
     return;
   }

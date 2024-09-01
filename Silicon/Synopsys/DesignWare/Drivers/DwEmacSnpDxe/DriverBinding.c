@@ -145,14 +145,14 @@ DriverStart (
     Status = DmaAllocateBuffer (EfiBootServicesData,
                EFI_SIZE_TO_PAGES (sizeof (DESIGNWARE_HW_DESCRIPTOR)), (VOID *)&Snp->MacDriver.TxdescRing[Index]);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a () for TxdescRing: %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a () for TxdescRing: %r\n", __func__, Status));
       return Status;
     }
 
     Status = DmaMap (MapOperationBusMasterCommonBuffer, Snp->MacDriver.TxdescRing[Index],
                &DescriptorSize, &Snp->MacDriver.TxdescRingMap[Index].AddrMap, &Snp->MacDriver.TxdescRingMap[Index].Mapping);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a () for TxdescRing: %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a () for TxdescRing: %r\n", __func__, Status));
       return Status;
     }
 
@@ -160,14 +160,14 @@ DriverStart (
     Status = DmaAllocateBuffer (EfiBootServicesData,
                EFI_SIZE_TO_PAGES (sizeof (DESIGNWARE_HW_DESCRIPTOR)), (VOID *)&Snp->MacDriver.RxdescRing[Index]);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a () for RxdescRing: %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a () for RxdescRing: %r\n", __func__, Status));
       return Status;
     }
 
     Status = DmaMap (MapOperationBusMasterCommonBuffer, Snp->MacDriver.RxdescRing[Index],
                &DescriptorSize, &Snp->MacDriver.RxdescRingMap[Index].AddrMap, &Snp->MacDriver.RxdescRingMap[Index].Mapping);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a () for RxdescRing: %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a () for RxdescRing: %r\n", __func__, Status));
       return Status;
     }
 
@@ -176,7 +176,7 @@ DriverStart (
     Status = DmaMap (MapOperationBusMasterWrite,  (VOID *) RxBufferAddr,
                &BufferSize, &RxBufferAddrMap, &Snp->MacDriver.RxBufNum[Index].Mapping);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a () for Rxbuffer: %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a () for Rxbuffer: %r\n", __func__, Status));
       return Status;
     }
     Snp->MacDriver.RxBufNum[Index].AddrMap= RxBufferAddrMap;
@@ -319,7 +319,7 @@ DriverStop (
                   (VOID **)&SnpProtocol
                 );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a (): HandleProtocol: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a (): HandleProtocol: %r\n", __func__, Status));
     return Status;
   }
 
@@ -331,7 +331,7 @@ DriverStop (
                   &Snp->Snp,
                   NULL);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a (): UninstallMultipleProtocolInterfaces: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a (): UninstallMultipleProtocolInterfaces: %r\n", __func__, Status));
     return Status;
   }
 

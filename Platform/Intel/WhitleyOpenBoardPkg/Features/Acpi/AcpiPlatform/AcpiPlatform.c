@@ -57,7 +57,7 @@ AcpiOnPciEnumCmplCallback (
   }
   gBS->CloseEvent (Event);
 
-  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __func__));
   AcpiVtdTablesInstall ();
 }
 
@@ -69,7 +69,7 @@ AcpiOnEndOfDxeCallback (
   IN VOID       *Context
   )
 {
-  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __func__));
   //
   // Installing ACPI Tables: NFIT, PCAT
   //
@@ -92,7 +92,7 @@ AcpiOnExitBootServicesCallback (
 
   gBS->CloseEvent (Event);
 
-  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __func__));
   //
   // Enable SCI
   //
@@ -212,7 +212,7 @@ AcpiOnReadyToBootCallback (
     return;
   }
   mFirstNotify = TRUE;
-  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "[ACPI] %a\n", __func__));
 
   Status = GetEntireConfig (&SetupData);
   ASSERT_EFI_ERROR (Status);

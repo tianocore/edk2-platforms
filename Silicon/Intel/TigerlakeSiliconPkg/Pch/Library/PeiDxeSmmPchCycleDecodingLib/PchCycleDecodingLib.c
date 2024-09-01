@@ -147,7 +147,7 @@ LpcEspiMemRangeSetHelper (
   UINT32                                MemRangeAddr;
 
   if (((Address & (~B_LPC_CFG_LGMR_MA)) != 0) || (SlaveId >= SlaveId_Max)) {
-    DEBUG ((DEBUG_ERROR, "%a Error. Invalid Address: %x or invalid SlaveId\n", __FUNCTION__, Address));
+    DEBUG ((DEBUG_ERROR, "%a Error. Invalid Address: %x or invalid SlaveId\n", __func__, Address));
     ASSERT (FALSE);
     return EFI_INVALID_PARAMETER;
   }
@@ -266,7 +266,7 @@ LpcEspiMemRangeGetHelper (
   UINT32                                GenMemReg;
 
   if ((Address == NULL) || (SlaveId >= SlaveId_Max)) {
-    DEBUG ((DEBUG_ERROR, "%a Error. Invalid pointer or SlaveId.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a Error. Invalid pointer or SlaveId.\n", __func__));
     ASSERT (FALSE);
     return EFI_INVALID_PARAMETER;
   }

@@ -275,7 +275,7 @@ RemoveStaleFvFileOptions (
       DEBUG ((
         EFI_ERROR (Status) ? DEBUG_WARN : DEBUG_VERBOSE,
         "%a: removing stale Boot#%04x %s: %r\n",
-        __FUNCTION__,
+        __func__,
         (UINT32)BootOptions[Index].OptionNumber,
         DevicePathString == NULL ? L"<unavailable>" : DevicePathString,
         Status
@@ -948,7 +948,7 @@ SetPciIntLine (
 //      DEBUG((
 //        DEBUG_ERROR,
 //       "%a: PCI host bridge (00:00.0) should have no interrupts!\n",
-//        __FUNCTION__
+//        __func__
 //        ));
 //      ASSERT (FALSE);
     }
@@ -997,7 +997,7 @@ SetPciIntLine (
       Status = PciIo->GetLocation (PciIo, &Segment, &Bus, &Device, &Function);
       ASSERT_EFI_ERROR (Status);
 
-      DEBUG ((DEBUG_VERBOSE, "%a: [%02x:%02x.%x] %s -> 0x%02x\n", __FUNCTION__,
+      DEBUG ((DEBUG_VERBOSE, "%a: [%02x:%02x.%x] %s -> 0x%02x\n", __func__,
         (UINT32)Bus, (UINT32)Device, (UINT32)Function, DevPathString,
         IrqLine));
 
@@ -1081,7 +1081,7 @@ PciAcpiInitialization (
       break;
     default:
       DEBUG ((DEBUG_ERROR, "%a: Unknown Host Bridge Device ID: 0x%04x\n",
-        __FUNCTION__, mHostBridgeDevId));
+        __func__, mHostBridgeDevId));
       ASSERT (FALSE);
       return;
   }
@@ -1113,7 +1113,7 @@ PlatformBdsConnectSequence (
 {
   UINTN Index;
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   Index = 0;
 
@@ -1283,7 +1283,7 @@ BdsReadyToBootCallback (
   IN  VOID                      *Context
   )
 {
-   DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+   DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 }
 
 
@@ -1313,7 +1313,7 @@ BdsSmmReadyToLockCallback (
     return;
   }
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   //
   // Dispatch the deferred 3rd party images.
@@ -1377,7 +1377,7 @@ BdsPciEnumCompleteCallback (
     PlatformConsole[MaxCount - 1].DevicePath = NULL;
   }
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   PlatformInitializeConsole (PlatformConsole);
 }
@@ -1401,7 +1401,7 @@ BdsBeforeConsoleAfterTrustedConsoleCallback (
   UINTN                         Index;
   EFI_STATUS                    Status;
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   NvBootOptions = EfiBootManagerGetLoadOptions (&NvBootOptionCount, LoadOptionTypeBoot);
   for (Index = 0; Index < NvBootOptionCount; Index++) {
@@ -1410,7 +1410,7 @@ BdsBeforeConsoleAfterTrustedConsoleCallback (
       DEBUG ((
         DEBUG_ERROR,
         "%a: removing Boot#%04x %r\n",
-        __FUNCTION__,
+        __func__,
         (UINT32) NvBootOptions[Index].OptionNumber,
         Status
         ));
@@ -1441,7 +1441,7 @@ BdsBeforeConsoleBeforeEndOfDxeGuidCallback (
   IN EFI_EVENT          Event,
   IN VOID               *Context
 ){
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 }
 
 /**
@@ -1459,7 +1459,7 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
 {
   EFI_BOOT_MODE                      BootMode;
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   //
   // Get current Boot Mode

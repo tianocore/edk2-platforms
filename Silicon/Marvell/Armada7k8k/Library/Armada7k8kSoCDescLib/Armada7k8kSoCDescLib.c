@@ -47,7 +47,7 @@ ArmadaSoCAp8xxBaseGet (
   )
 {
   if (ApIndex != ARMADA7K8K_AP806_INDEX) {
-    DEBUG ((DEBUG_ERROR, "%a: Only one AP806 in A7K/A8K SoC\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Only one AP806 in A7K/A8K SoC\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -70,7 +70,7 @@ ArmadaSoCDescComPhyGet (
 
   Desc = AllocateZeroPool (CpCount * sizeof (MV_SOC_COMPHY_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -115,7 +115,7 @@ ArmadaSoCGpioGet (
   *Count = CpCount * MV_SOC_GPIO_PER_CP_COUNT + MV_SOC_AP806_COUNT;
   GpioInstance = AllocateZeroPool (*Count * sizeof (GPIO_CONTROLLER));
   if (GpioInstance == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -154,7 +154,7 @@ ArmadaSoCDescI2cGet (
   *DescCount = CpCount * MV_SOC_I2C_PER_CP_COUNT + MV_SOC_I2C_PER_AP_COUNT;
   Desc = AllocateZeroPool (*DescCount * sizeof (MV_SOC_I2C_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -205,7 +205,7 @@ ArmadaSoCDescIcuGet (
   *IcuDesc = AllocateCopyPool (sizeof (mA7k8kIcuDescTemplate),
                &mA7k8kIcuDescTemplate);
   if (*IcuDesc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -226,7 +226,7 @@ ArmadaSoCDescMdioGet (
 
   Desc = AllocateZeroPool (CpCount * sizeof (MV_SOC_MDIO_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -255,7 +255,7 @@ ArmadaSoCDescAhciGet (
 
   Desc = AllocateZeroPool (CpCount * sizeof (MV_SOC_AHCI_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -300,7 +300,7 @@ ArmadaSoCPcieGet (
   *Count = CpCount * MV_SOC_PCIE_PER_CP_COUNT;
   BaseAddress = AllocateZeroPool (*Count * sizeof (EFI_PHYSICAL_ADDRESS));
   if (BaseAddress == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -330,7 +330,7 @@ ArmadaSoCDescPp2Get (
 
   Desc = AllocateZeroPool (CpCount * sizeof (MV_SOC_PP2_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -360,7 +360,7 @@ ArmadaSoCDescSdMmcGet (
   *Count = CpCount * MV_SOC_SDMMC_PER_CP_COUNT + MV_SOC_AP806_COUNT;
   SdMmc = AllocateZeroPool (*Count * sizeof (MV_SOC_SDMMC_DESC));
   if (SdMmc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -398,7 +398,7 @@ ArmadaSoCDescUtmiGet (
   *DescCount = CpCount * MV_SOC_UTMI_PER_CP_COUNT;
   Desc = AllocateZeroPool (*DescCount * sizeof (MV_SOC_UTMI_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -435,7 +435,7 @@ ArmadaSoCDescXhciGet (
   *DescCount = CpCount * MV_SOC_XHCI_PER_CP_COUNT;
   Desc = AllocateZeroPool (*DescCount * sizeof (MV_SOC_XHCI_DESC));
   if (Desc == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate memory\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 

@@ -123,7 +123,7 @@ ConstructRootBridge (
 
   DevicePath = AllocateCopyPool(sizeof mEfiPciRootBridgeDevicePath, &mEfiPciRootBridgeDevicePath);
   if (DevicePath == NULL) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] AllocatePool failed!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] AllocatePool failed!\n", __func__, __LINE__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -182,7 +182,7 @@ PciHostBridgeGetRootBridges (
 
   Bridges = AllocatePool (RootBridgeCount * sizeof *Bridges);
   if (Bridges == NULL) {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] - AllocatePool failed!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a:%d] - AllocatePool failed!\n", __func__, __LINE__));
     return NULL;
   }
 

@@ -91,7 +91,7 @@ ArmSgiPkgEntryPoint (
 
   Status = LocateAndInstallAcpiFromFv (&gArmSgiAcpiTablesGuid);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to install ACPI tables\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to install ACPI tables\n", __func__));
     return Status;
   }
 

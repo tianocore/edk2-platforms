@@ -52,7 +52,7 @@ GenerateRandomNumbers (
     if (RandSize != 0) {
       Status = MailboxMsgGetRandomNumber64 ((UINT8 *)&Value);
       if (EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_ERROR, "%a: Failed to get random number!\n", __FUNCTION__));
+        DEBUG ((DEBUG_ERROR, "%a: Failed to get random number!\n", __func__));
         return EFI_DEVICE_ERROR;
       }
       CopyMem (Buffer + Count * sizeof (UINT64), &Value, RandSize);

@@ -628,7 +628,7 @@ AddSmbiosProcessorTypeTable (
     Status = mSmbios->Add (mSmbios, NULL, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type4Record);
     if (EFI_ERROR (Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type04 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type04 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
     FreePool (Type4Record);
 

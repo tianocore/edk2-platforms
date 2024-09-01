@@ -388,7 +388,7 @@ SdSendCommand (
     if (MmioRead32 (SDHOST_CMD) & SDHOST_CMD_NEW_FLAG) {
       DEBUG ((DEBUG_MMCHOST_SD_ERROR,
         "%a(%u): CMD%d is still being executed after %d trial(s)\n",
-        __FUNCTION__, __LINE__, MMC_GET_INDX (MmcCmd), RetryCount));
+        __func__, __LINE__, MMC_GET_INDX (MmcCmd), RetryCount));
     }
 
     // Write command and set it to start execution
@@ -445,7 +445,7 @@ SdSendCommand (
       Status = EFI_SUCCESS;
     } else {
       DEBUG ((DEBUG_MMCHOST_SD_ERROR, "%a(%u): CMD%d execution failed after %d trial(s)\n",
-        __FUNCTION__, __LINE__, MMC_GET_INDX (MmcCmd), RetryCount));
+        __func__, __LINE__, MMC_GET_INDX (MmcCmd), RetryCount));
       SdHostDumpStatus ();
     }
 

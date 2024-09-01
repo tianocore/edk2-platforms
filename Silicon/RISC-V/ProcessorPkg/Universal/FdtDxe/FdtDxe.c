@@ -49,7 +49,7 @@ FixDtb (
     DEBUG ((
       DEBUG_ERROR,
       "Device Tree can't be expanded to accommodate new node\n",
-      __FUNCTION__
+      __func__
       ));
     return EFI_OUT_OF_RESOURCES;
   }
@@ -83,7 +83,7 @@ InstallFdtFromHob (
     DEBUG ((
       DEBUG_ERROR,
       "Failed to find RISC-V DTB Hob\n",
-      __FUNCTION__
+      __func__
       ));
     return EFI_NOT_FOUND;
   }
@@ -101,7 +101,7 @@ InstallFdtFromHob (
     DEBUG ((
       DEBUG_ERROR,
       "%a: failed to install FDT configuration table\n",
-      __FUNCTION__
+      __func__
       ));
   }
 

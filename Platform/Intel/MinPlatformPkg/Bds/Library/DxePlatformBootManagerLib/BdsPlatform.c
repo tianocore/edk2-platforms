@@ -106,7 +106,7 @@ BdsSignalEventBeforeConsoleAfterTrustedConsole (
   EFI_STATUS    Status;
   EFI_EVENT     BdsConsoleEvent;
 
-  DEBUG ((DEBUG_INFO, "%a \n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a \n", __func__));
 
   Status = CreateBdsEvent (
              TPL_CALLBACK,
@@ -137,7 +137,7 @@ BdsSignalEventBeforeConsoleBeforeEndOfDxe (
   EFI_STATUS    Status;
   EFI_EVENT     BdsConsoleEvent;
 
-  DEBUG ((DEBUG_INFO, "%a \n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a \n", __func__));
 
   Status = CreateBdsEvent (
              TPL_CALLBACK,
@@ -167,7 +167,7 @@ BdsSignalEventAfterConsoleReadyBeforeBootOption (
   EFI_STATUS    Status;
   EFI_EVENT     BdsConsoleEvent;
 
-  DEBUG ((DEBUG_INFO, "%a \n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a \n", __func__));
 
   Status = CreateBdsEvent (
              TPL_CALLBACK,

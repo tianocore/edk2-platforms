@@ -288,12 +288,12 @@ EnableSettingsForm (
                     EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS,
                     sizeof (Settings), &Settings);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_WARN, "%a: EfiSetVariable failed - %r\n", __FUNCTION__,
+      DEBUG ((DEBUG_WARN, "%a: EfiSetVariable failed - %r\n", __func__,
         Status));
       return Status;
     }
   } else if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_WARN, "%a: EfiGetVariable failed - %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_WARN, "%a: EfiGetVariable failed - %r\n", __func__,
       Status));
     return Status;
   }
@@ -324,7 +324,7 @@ InstallAcpiTables (
                           &TableKey);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to install SSDT table for eMMC - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
   }
 
@@ -333,7 +333,7 @@ InstallAcpiTables (
                           &TableKey);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to install SSDT table for OP-TEE - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
   }
 }
@@ -405,7 +405,7 @@ PlatformDxeEntryPoint (
     }
     if (EFI_ERROR (Status)) {
        DEBUG ((DEBUG_ERROR,
-        "%a: failed to install FDT configuration table - %r\n", __FUNCTION__,
+        "%a: failed to install FDT configuration table - %r\n", __func__,
         Status));
     }
   } else {
@@ -418,7 +418,7 @@ PlatformDxeEntryPoint (
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR,
         "%a: failed to install gEdkiiPlatformHasAcpiGuid as a protocol\n",
-        __FUNCTION__));
+        __func__));
     }
   }
 

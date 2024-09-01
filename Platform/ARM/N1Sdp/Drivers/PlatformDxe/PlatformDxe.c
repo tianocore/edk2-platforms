@@ -44,7 +44,7 @@ ArmN1SdpEntryPoint (
       DEBUG ((
         DEBUG_ERROR,
         "%a: Couldn't find the RAM Disk protocol - %r\n",
-        __FUNCTION__,
+        __func__,
         Status
         ));
       return Status;
@@ -60,7 +60,7 @@ ArmN1SdpEntryPoint (
     if (EFI_ERROR (Status)) {
       DEBUG ((
         DEBUG_ERROR, "%a: Failed to register RAM Disk - %r\n",
-        __FUNCTION__,
+        __func__,
         Status
         ));
     }

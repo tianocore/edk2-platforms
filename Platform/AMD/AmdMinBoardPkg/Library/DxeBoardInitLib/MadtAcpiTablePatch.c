@@ -132,7 +132,7 @@ MadtAcpiTablePatch (
   LocalX2ApicPtr = NULL;
   GetIoApicInfo (&NbioIoApic, &IoApicCount);
   if ((NbioIoApic == NULL) || (IoApicCount == 0)) {
-    DEBUG ((DEBUG_INFO, "%a:%d Cannot obtain NBIO IOAPIC information.\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_INFO, "%a:%d Cannot obtain NBIO IOAPIC information.\n", __func__, __LINE__));
     return EFI_SUCCESS;
   }
 

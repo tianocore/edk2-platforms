@@ -108,7 +108,7 @@ GenetPhyRead (
 
   if (Retry == 0) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Timeout reading PhyAddr %d, Reg %d\n", __FUNCTION__, PhyAddr, Reg));
+      "%a: Timeout reading PhyAddr %d, Reg %d\n", __func__, PhyAddr, Reg));
     return EFI_DEVICE_ERROR;
   }
 
@@ -157,7 +157,7 @@ GenetPhyWrite (
 
   if (Retry == 0) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Timeout writing PhyAddr %d, Reg %d\n", __FUNCTION__, PhyAddr, Reg));
+      "%a: Timeout writing PhyAddr %d, Reg %d\n", __func__, PhyAddr, Reg));
     return EFI_DEVICE_ERROR;
   }
 
@@ -618,7 +618,7 @@ GenetDmaAlloc (
                   &Genet->RxBuffer);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "%a: Failed to allocate RX buffer: %r\n", __FUNCTION__, Status));
+      "%a: Failed to allocate RX buffer: %r\n", __func__, Status));
   }
   return Status;
 }
@@ -653,7 +653,7 @@ GenetDmaMapRxDescriptor (
              &Genet->RxBufferMap[DescIndex].Mapping);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to map RX buffer: %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     return Status;
   }
 

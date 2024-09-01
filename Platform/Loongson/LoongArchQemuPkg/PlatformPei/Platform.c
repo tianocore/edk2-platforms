@@ -289,7 +289,7 @@ GetRtcAddress (
         break;
       } else {
         DEBUG ((DEBUG_ERROR, "%a: Failed to parse FDT rtc node\n",
-          __FUNCTION__));
+          __func__));
         break;
       }
     }
@@ -383,7 +383,7 @@ SystemMemorySizeInitialization (
 
   QemuFwCfgSelectItem (QemuFwCfgItemRamSize);
   RamSize= QemuFwCfgRead64 ();
-  DEBUG ((DEBUG_INFO, "%a: QEMU reports %dM system memory\n", __FUNCTION__,
+  DEBUG ((DEBUG_INFO, "%a: QEMU reports %dM system memory\n", __func__,
     RamSize/1024/1024));
 
   //

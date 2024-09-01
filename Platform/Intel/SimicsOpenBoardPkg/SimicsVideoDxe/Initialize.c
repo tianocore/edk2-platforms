@@ -289,14 +289,14 @@ QemuVideoBochsModeSetup (
           Private->PciIo->Mem.Read (Private->PciIo, EfiPciIoWidthUint32,
                                 PCI_BAR_IDX2, 40, 1, &AvailableFbSize))) {
       DEBUG ((DEBUG_ERROR, "%a: can't read size of drawable buffer from QXL "
-        "ROM\n", __FUNCTION__));
+        "ROM\n", __func__));
       return EFI_NOT_FOUND;
     }
   } else {
     AvailableFbSize  = BochsRead (Private, VBE_DISPI_INDEX_VIDEO_MEMORY_64K);
     AvailableFbSize *= SIZE_64KB;
   }
-  DEBUG ((DEBUG_INFO, "%a: AvailableFbSize=0x%x\n", __FUNCTION__,
+  DEBUG ((DEBUG_INFO, "%a: AvailableFbSize=0x%x\n", __func__,
     AvailableFbSize));
 
   //

@@ -40,7 +40,7 @@ XhciInit (
 
   Status = MvGpioGetProtocol (MV_GPIO_DRIVER_TYPE_SOC_CONTROLLER, &GpioProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unable to find GPIO protocol\n", __func__));
     return Status;
   }
 

@@ -34,7 +34,7 @@ SwitchRtcI2cChannelAndLock (
       if (Count == 99) {
         if (!EfiAtRuntime ()) {
           DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Clear cpu_i2c_rtc_state 100 times fail!\n",
-            __FUNCTION__, __LINE__));
+            __func__, __LINE__));
         }
         return EFI_DEVICE_ERROR;
       }
@@ -55,7 +55,7 @@ SwitchRtcI2cChannelAndLock (
     if (Count == 99) {
       if (!EfiAtRuntime ()) {
         DEBUG ((DEBUG_ERROR, "[%a]:[%dL]  Clear cpu_i2c_rtc_state fail !!! \n",
-          __FUNCTION__, __LINE__));
+          __func__, __LINE__));
       }
       return EFI_DEVICE_ERROR;
     }

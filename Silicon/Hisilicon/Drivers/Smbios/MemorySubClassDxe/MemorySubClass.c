@@ -330,7 +330,7 @@ SmbiosAddType16Table (
     Status = mSmbios->Add (mSmbios, NULL, MemArraySmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type16Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type16 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type16 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
 
     FreePool(Type16Record);
@@ -381,7 +381,7 @@ SmbiosAddType19Table (
     Status = mSmbios->Add (mSmbios, NULL, &MemArrayMappedAddrSmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type19Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type19 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type19 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
 
     FreePool(Type19Record);
@@ -642,7 +642,7 @@ SmbiosAddType17Table (
     Status = mSmbios->Add (mSmbios, NULL, &MemDevSmbiosHandle, (EFI_SMBIOS_TABLE_HEADER*) Type17Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type17 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type17 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
 
     FreePool (Type17Record);

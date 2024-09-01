@@ -164,7 +164,7 @@ BoardInitAfterPciEnumeration (
 {
   EFI_STATUS  Status;
 
-  DEBUG ((DEBUG_INFO, "%a - ENTRY\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a - ENTRY\n", __func__));
 
   Status = ReserveLegacyVgaIoSpace ();
   DEBUG ((DEBUG_INFO, "ReserveLegacyVgaIoSpace...%r.\n", Status));

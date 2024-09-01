@@ -70,7 +70,7 @@ PciIoNotificationEvent (
                                &DeviceNumber, &FunctionNumber);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: failed to get SBDF for xHCI controller: %r\n",
-            __FUNCTION__, Status));
+            __func__, Status));
     return;
   }
 
@@ -81,7 +81,7 @@ PciIoNotificationEvent (
   Status = FwProtocol->NotifyXhciReset(BusNumber, DeviceNumber, FunctionNumber);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_WARN, "%a: couldn't signal xHCI firmware load: %r\n",
-            __FUNCTION__, Status));
+            __func__, Status));
   }
 }
 

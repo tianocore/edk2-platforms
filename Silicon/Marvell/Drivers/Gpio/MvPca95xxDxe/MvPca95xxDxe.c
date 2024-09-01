@@ -83,7 +83,7 @@ MvPca95xxValidate (
   if (ControllerIndex >= mPca95xxInstance->GpioExpanderCount) {
     DEBUG ((DEBUG_ERROR,
       "%a: Invalid GPIO ControllerIndex: %d\n",
-      __FUNCTION__,
+      __func__,
       ControllerIndex));
     return EFI_INVALID_PARAMETER;
   }
@@ -93,7 +93,7 @@ MvPca95xxValidate (
   if (GpioPin >= mPca95xxPinCount[ControllerId]) {
     DEBUG ((DEBUG_ERROR,
       "%a: GPIO pin #%d not available in Controller#%d\n",
-      __FUNCTION__,
+      __func__,
       GpioPin,
       ControllerIndex));
     return EFI_INVALID_PARAMETER;
@@ -125,7 +125,7 @@ MvPca95xxGetI2c (
                   &HandleCount,
                   &HandleBuffer);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Unable to locate handles\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unable to locate handles\n", __func__));
     return Status;
   }
 
@@ -138,7 +138,7 @@ MvPca95xxGetI2c (
                     NULL,
                     EFI_OPEN_PROTOCOL_GET_PROTOCOL);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Unable to open protocol\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Unable to open protocol\n", __func__));
       gBS->FreePool (HandleBuffer);
       return Status;
     }
@@ -187,7 +187,7 @@ MvPca95xxI2cTransfer (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: transmission error: 0x%d\n",
-      __FUNCTION__,
+      __func__,
       Status));
   }
 
@@ -233,7 +233,7 @@ MvPca95xxSetOutputValue (
 
   Status = MvPca95xxGetI2c (ControllerIndex, &I2cIo);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -241,7 +241,7 @@ MvPca95xxSetOutputValue (
 
   Status = MvPca95xxReadRegs (I2cIo, PCA95XX_OUTPUT_REG + Bank, &RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -253,7 +253,7 @@ MvPca95xxSetOutputValue (
 
   Status = MvPca95xxWriteRegs (I2cIo, PCA95XX_OUTPUT_REG + Bank, RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to write device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to write device register\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -275,7 +275,7 @@ MvPca95xxSetDirection (
 
   Status = MvPca95xxGetI2c (ControllerIndex, &I2cIo);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __func__));
     return Status;
   }
 
@@ -283,7 +283,7 @@ MvPca95xxSetDirection (
 
   Status = MvPca95xxReadRegs (I2cIo, PCA95XX_DIRECTION_REG + Bank, &RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __func__));
     return Status;
   }
 
@@ -295,7 +295,7 @@ MvPca95xxSetDirection (
 
   Status = MvPca95xxWriteRegs (I2cIo, PCA95XX_DIRECTION_REG + Bank, RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to write device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to write device register\n", __func__));
     return Status;
   }
 
@@ -319,7 +319,7 @@ MvPca95xxReadMode (
 
   Status = MvPca95xxGetI2c (ControllerIndex, &I2cIo);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __func__));
     return Status;
   }
 
@@ -327,7 +327,7 @@ MvPca95xxReadMode (
 
   Status = MvPca95xxReadRegs (I2cIo, PCA95XX_DIRECTION_REG + Bank, &RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __func__));
     return Status;
   }
 
@@ -336,7 +336,7 @@ MvPca95xxReadMode (
   } else {
     Status = MvPca95xxReadRegs (I2cIo, PCA95XX_INPUT_REG + Bank, &RegVal);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __func__));
       return Status;
     }
 
@@ -389,7 +389,7 @@ MvPca95xxGetMode (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: fail to get pin %d of controller#%d mode\n",
-      __FUNCTION__,
+      __func__,
       GpioPin,
       ControllerIndex));
   }
@@ -436,7 +436,7 @@ MvPca95xxGet (
 
   Status = MvPca95xxGetI2c (ControllerIndex, &I2cIo);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to get I2C protocol\n", __func__));
     return Status;
   }
 
@@ -444,7 +444,7 @@ MvPca95xxGet (
 
   Status = MvPca95xxReadRegs (I2cIo, PCA95XX_INPUT_REG + Bank, &RegVal);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: fail to read device register\n", __func__));
     return Status;
   }
 
@@ -497,7 +497,7 @@ MvPca95xxSet (
   case GPIO_MODE_OUTPUT_1:
     Status = MvPca95xxSetOutputValue (ControllerIndex, GpioPin, Mode);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: fail to set ouput value\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: fail to set ouput value\n", __func__));
       return Status;
     }
 
@@ -505,7 +505,7 @@ MvPca95xxSet (
   case GPIO_MODE_INPUT:
     Status = MvPca95xxSetDirection (ControllerIndex, GpioPin, Mode);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: fail to set direction\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: fail to set direction\n", __func__));
       return Status;
     }
     break;
@@ -576,7 +576,7 @@ MvPca95xxEntryPoint (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -585,7 +585,7 @@ MvPca95xxEntryPoint (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot get GPIO board desc from BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   } else if (GpioDescription->GpioExpanders == NULL) {
     /* Silently exit, if the board does not support the controllers */
@@ -597,7 +597,7 @@ MvPca95xxEntryPoint (
   if (Pca95xxDevicePath == NULL) {
     DEBUG ((DEBUG_ERROR,
       "%a: Fail to allocate Pca95xxDevicePath\n",
-      __FUNCTION__));
+      __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -605,7 +605,7 @@ MvPca95xxEntryPoint (
   if (mPca95xxInstance == NULL) {
     DEBUG ((DEBUG_ERROR,
       "%a: Fail to allocate mPca95xxInstance\n",
-      __FUNCTION__));
+      __func__));
     Status = EFI_OUT_OF_RESOURCES;
     goto ErrPca95xxInstanceAlloc;
   }

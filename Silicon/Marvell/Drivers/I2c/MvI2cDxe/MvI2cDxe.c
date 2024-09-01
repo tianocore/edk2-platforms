@@ -174,7 +174,7 @@ OnEndOfDxe (
     Status = gBS->ConnectController (DeviceHandle, NULL, NULL, TRUE);
     DEBUG ((DEBUG_INFO,
       "%a: ConnectController () returned %r\n",
-      __FUNCTION__,
+      __func__,
       Status));
 
     DevicePath->Instance++;

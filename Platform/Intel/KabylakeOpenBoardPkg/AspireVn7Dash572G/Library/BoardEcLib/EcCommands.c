@@ -61,19 +61,19 @@ EcCmd90Read (
 
   Status = SendEcCommand (0x90);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x90) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x90) failed!\n", __func__));
     return Status;
   }
 
   Status = SendEcData (Address);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Address) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Address) failed!\n", __func__));
     return Status;
   }
 
   Status = ReceiveEcData (Data);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): ReceiveEcData(Data) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): ReceiveEcData(Data) failed!\n", __func__));
     return Status;
   }
   return EFI_SUCCESS;
@@ -99,19 +99,19 @@ EcCmd91Write (
 
   Status = SendEcCommand (0x91);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x91) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x91) failed!\n", __func__));
     return Status;
   }
 
   Status = SendEcData (Address);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Address) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Address) failed!\n", __func__));
     return Status;
   }
 
   Status = SendEcData (Data);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Data) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcData(Data) failed!\n", __func__));
     return Status;
   }
   return EFI_SUCCESS;
@@ -140,13 +140,13 @@ EcCmd94Query (
 
   Status = SendEcCommand (0x94);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x94) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): SendEcCommand(0x94) failed!\n", __func__));
     return Status;
   }
 
   Status = ReceiveEcData (Data);
   if (EFI_ERROR (Status)) {
-    DEBUG((DEBUG_ERROR, "%a(): ReceiveEcData(Data) failed!\n", __FUNCTION__));
+    DEBUG((DEBUG_ERROR, "%a(): ReceiveEcData(Data) failed!\n", __func__));
     return Status;
   }
   return EFI_SUCCESS;

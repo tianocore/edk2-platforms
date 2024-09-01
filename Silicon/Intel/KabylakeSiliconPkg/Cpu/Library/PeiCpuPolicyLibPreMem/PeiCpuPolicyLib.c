@@ -62,7 +62,7 @@ LoadCpuConfigLibPreMemConfigDefault (
     DEBUG ((
       DEBUG_ERROR,
       "Error: [%a]:[%dL] MCHBAR configured to >4GB\n",
-      __FUNCTION__,
+      __func__,
       __LINE__
       ));
   }

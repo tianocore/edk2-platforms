@@ -245,12 +245,12 @@ MvPhyConfigureAutonegotiation (
 
     DEBUG ((DEBUG_INFO,
       "%a: Waiting for PHY auto negotiation...",
-      __FUNCTION__));
+      __func__));
 
     /* Wait for autonegotiation to complete and read media status */
     for (Index = 0; !(Data & BMSR_ANEGCOMPLETE); Index++) {
       if (Index > PHY_AUTONEGOTIATE_TIMEOUT) {
-        DEBUG ((DEBUG_ERROR, "%a: Timeout\n", __FUNCTION__));
+        DEBUG ((DEBUG_ERROR, "%a: Timeout\n", __func__));
         PhyDevice->LinkUp = FALSE;
         return EFI_TIMEOUT;
       }
@@ -259,16 +259,16 @@ MvPhyConfigureAutonegotiation (
     }
 
     PhyDevice->LinkUp = TRUE;
-    DEBUG ((DEBUG_INFO, "%a: link up\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: link up\n", __func__));
   } else {
     Mdio->Read (Mdio, PhyDevice->Addr, PhyDevice->MdioIndex, MII_BMSR, &Data);
 
     if (Data & BMSR_LSTATUS) {
       PhyDevice->LinkUp = TRUE;
-      DEBUG ((DEBUG_INFO, "%a: link up\n", __FUNCTION__));
+      DEBUG ((DEBUG_INFO, "%a: link up\n", __func__));
     } else {
       PhyDevice->LinkUp = FALSE;
-      DEBUG ((DEBUG_INFO, "%a: link down\n", __FUNCTION__));
+      DEBUG ((DEBUG_INFO, "%a: link down\n", __func__));
     }
   }
 
@@ -420,7 +420,7 @@ MvPhyInit (
   if (PhyId >= MV_PHY_DEVICE_ID_MAX) {
     DEBUG ((DEBUG_ERROR,
       "%a, Incorrect PHY ID (0x%x) for PHY#%d\n",
-      __FUNCTION__,
+      __func__,
       PhyId,
       PhyIndex));
     return EFI_INVALID_PARAMETER;

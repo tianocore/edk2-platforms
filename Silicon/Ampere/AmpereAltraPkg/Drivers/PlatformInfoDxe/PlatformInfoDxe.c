@@ -380,7 +380,7 @@ PlatformInfoEntryPoint (
     DEBUG ((
       DEBUG_ERROR,
       "%a %d Fail to update the platform info screen \n",
-      __FUNCTION__,
+      __func__,
       __LINE__
       ));
     return Status;

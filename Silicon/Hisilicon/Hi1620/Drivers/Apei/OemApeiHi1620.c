@@ -228,7 +228,7 @@ OemInitBertTable (
   }
   ErrorBlockInitial (Context.Block, EFI_ACPI_6_2_ERROR_SEVERITY_NONE);
   BertSetAcpiTable (&Context);
-  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %r\n", __FUNCTION__, __LINE__, Status));
+  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %r\n", __func__, __LINE__, Status));
   return EFI_SUCCESS;
 }
 /************************************************
@@ -261,7 +261,7 @@ OemInitEinjTable (
   (VOID)EinjConfigErrorInjectCapability (&Context, 0xFFF);// TBD
   (VOID)OemEinjConfigExecuteOperationEntry (&Context);
   EinjSetAcpiTable (&Context);
-  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %d\n", __FUNCTION__, __LINE__, Status));
+  DEBUG ((DEBUG_INFO, "[%a]:[%dL]: %d\n", __func__, __LINE__, Status));
   return EFI_SUCCESS;
 }
 /************************************************

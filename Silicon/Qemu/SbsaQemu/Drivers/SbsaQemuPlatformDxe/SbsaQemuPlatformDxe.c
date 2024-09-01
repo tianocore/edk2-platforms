@@ -29,7 +29,7 @@ InitializeSbsaQemuPlatformDxe (
   GicInfo          GicInfo;
   PlatformVersion  PlatVer;
 
-  DEBUG ((DEBUG_INFO, "%a: InitializeSbsaQemuPlatformDxe called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: InitializeSbsaQemuPlatformDxe called\n", __func__));
 
   Base = (VOID *)(UINTN)PcdGet64 (PcdPlatformAhciBase);
   ASSERT (Base != NULL);
@@ -39,7 +39,7 @@ InitializeSbsaQemuPlatformDxe (
   DEBUG ((
     DEBUG_INFO,
     "%a: Got platform AHCI %llx %u\n",
-    __FUNCTION__,
+    __func__,
     Base,
     Size
     ));
@@ -58,7 +58,7 @@ InitializeSbsaQemuPlatformDxe (
     DEBUG ((
       DEBUG_ERROR,
       "%a: NonDiscoverable: Cannot install AHCI device @%p (Staus == %r)\n",
-      __FUNCTION__,
+      __func__,
       Base,
       Status
       ));
@@ -87,7 +87,7 @@ InitializeSbsaQemuPlatformDxe (
     DEBUG ((
       DEBUG_INFO,
       "%a: Got platform XHCI %llx %u\n",
-      __FUNCTION__,
+      __func__,
       Base,
       Size
       ));
@@ -106,7 +106,7 @@ InitializeSbsaQemuPlatformDxe (
       DEBUG ((
         DEBUG_ERROR,
         "%a: NonDiscoverable: Cannot install XHCI device @%p (Status == %r)\n",
-        __FUNCTION__,
+        __func__,
         Base,
         Status
         ));

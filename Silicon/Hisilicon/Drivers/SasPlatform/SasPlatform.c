@@ -87,7 +87,7 @@ SasPlatformInitialize (
       FreePool (PrivateData);
       DEBUG ((DEBUG_ERROR,
               "[%a]:[%dL] InstallProtocolInterface fail. %r\n",
-              __FUNCTION__,
+              __func__,
               __LINE__,
               Status));
       continue;

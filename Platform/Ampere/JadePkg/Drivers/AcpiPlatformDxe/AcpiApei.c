@@ -34,13 +34,13 @@ AcpiApeiUninstallTable (
    */
   Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **)&AcpiTableProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to locate ACPI table protocol\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to locate ACPI table protocol\n", __func__, __LINE__));
     return;
   }
 
   Status = gBS->LocateProtocol (&gEfiAcpiSdtProtocolGuid, NULL, (VOID **)&AcpiTableSdtProtocol);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to locate ACPI table support protocol\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to locate ACPI table support protocol\n", __func__, __LINE__));
     return;
   }
 
@@ -56,7 +56,7 @@ AcpiApeiUninstallTable (
              &TableKey
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI table\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI table\n", __func__, __LINE__));
     return;
   }
 
@@ -65,7 +65,7 @@ AcpiApeiUninstallTable (
    */
   Status = AcpiTableProtocol->UninstallAcpiTable (AcpiTableProtocol, TableKey);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to uninstall table\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d: Unable to uninstall table\n", __func__, __LINE__));
   }
 }
 
@@ -102,7 +102,7 @@ AdjustBERTRegionLen (
              &TableKey
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI BERT table\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI BERT table\n", __func__, __LINE__));
     return;
   }
 
@@ -401,7 +401,7 @@ AcpiApeiHestUpdateTable1P (
              &TableKey
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI HEST table\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI HEST table\n", __func__, __LINE__));
     return;
   }
 

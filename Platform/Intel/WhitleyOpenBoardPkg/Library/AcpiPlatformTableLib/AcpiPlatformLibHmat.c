@@ -721,7 +721,7 @@ GetProcessorDomains (
       NodeId = (NodeId * HmatData->VirtualNumOfCluster) + (Index % HmatData->VirtualNumOfCluster);
 
       DEBUG ((DEBUG_INFO, "%a: SocketId: 0x%x SncNumOfCluster: 0x%x ImcInterBitmap:0x%x and  NodeId:0x%x\n",
-          __FUNCTION__, mSystemMemoryMap->Element[Index].SocketId, HmatData->SncNumOfCluster, mSystemMemoryMap->Element[Index].ImcInterBitmap, NodeId));
+          __func__, mSystemMemoryMap->Element[Index].SocketId, HmatData->SncNumOfCluster, mSystemMemoryMap->Element[Index].ImcInterBitmap, NodeId));
     } else {
       NodeId = SocketLogicalId;
     }
@@ -917,7 +917,7 @@ PatchHmatMsars (
         }
         ProcessorNodeId = (ProcessorNodeId * HmatData->VirtualNumOfCluster) + (Index % HmatData->VirtualNumOfCluster);
         DEBUG ((DEBUG_INFO, "%a: SocketId: 0x%x SncNumOfCluster: 0x%x ImcInterBitmap:0x%x and  NodeId:0x%x \n",
-          __FUNCTION__, mSystemMemoryMap->Element[Index].SocketId, HmatData->SncNumOfCluster, mSystemMemoryMap->Element[Index].ImcInterBitmap, ProcessorNodeId));
+          __func__, mSystemMemoryMap->Element[Index].SocketId, HmatData->SncNumOfCluster, mSystemMemoryMap->Element[Index].ImcInterBitmap, ProcessorNodeId));
       } else {
         ProcessorNodeId = SocketLogicalId;
       }

@@ -575,14 +575,14 @@ ValidateFvHeader (
       || (FwVolHeader->Signature != EFI_FVH_SIGNATURE)
       || (FwVolHeader->FvLength  != FvLength)) {
     DEBUG ((DEBUG_INFO, "%a: No Firmware Volume header present\n",
-      __FUNCTION__));
+      __func__));
     return EFI_NOT_FOUND;
   }
 
   // Check the Firmware Volume Guid
   if (!CompareGuid (&FwVolHeader->FileSystemGuid, &gEfiSystemNvDataFvGuid)) {
     DEBUG ((DEBUG_INFO, "%a: Firmware Volume Guid non-compatible\n",
-      __FUNCTION__));
+      __func__));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -590,7 +590,7 @@ ValidateFvHeader (
   Checksum = CalculateSum16 ((UINT16*)FwVolHeader, FwVolHeader->HeaderLength);
   if (Checksum != 0) {
     DEBUG ((DEBUG_INFO, "%a: FV checksum is invalid (Checksum:0x%X)\n",
-      __FUNCTION__, Checksum));
+      __func__, Checksum));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -600,7 +600,7 @@ ValidateFvHeader (
   // Check the Variable Store Guid
   if (!CompareGuid (&VariableStoreHeader->Signature, &gEfiVariableGuid) &&
       !CompareGuid (&VariableStoreHeader->Signature, &gEfiAuthenticatedVariableGuid)) {
-    DEBUG ((DEBUG_INFO, "%a: Variable Store Guid non-compatible\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Variable Store Guid non-compatible\n", __func__));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -608,7 +608,7 @@ ValidateFvHeader (
                         FwVolHeader->HeaderLength;
   if (VariableStoreHeader->Size != VariableStoreLength) {
     DEBUG ((DEBUG_INFO, "%a: Variable Store Length does not match\n",
-      __FUNCTION__));
+      __func__));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -754,7 +754,7 @@ FvbInitialize (
   Status = ValidateFvHeader (FwVolHeader);
   if (EFI_ERROR (Status)) {
     // There is no valid header, so time to install one.
-    DEBUG ((DEBUG_INFO, "%a: The FVB Header is not valid.\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: The FVB Header is not valid.\n", __func__));
 
     // Reset memory
     SetMem64 (
@@ -762,7 +762,7 @@ FvbInitialize (
       Instance->NBlocks * Instance->BlockSize,
       ~0UL
       );
-    DEBUG ((DEBUG_INFO, "%a: Erasing Flash.\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Erasing Flash.\n", __func__));
     Status = ReadWriteRpmb (
                SP_SVC_RPMB_WRITE,
                Instance->MemBaseAddress,
@@ -776,13 +776,13 @@ FvbInitialize (
     }
     // Install all appropriate headers
     DEBUG ((DEBUG_INFO, "%a: Installing a correct one for this volume.\n",
-      __FUNCTION__));
+      __func__));
     Status = InitializeFvAndVariableStoreHeaders (Instance);
     if (EFI_ERROR (Status)) {
       return Status;
     }
   } else {
-    DEBUG ((DEBUG_INFO, "%a: Found valid FVB Header.\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Found valid FVB Header.\n", __func__));
   }
   Instance->Initialized = TRUE;
 
@@ -861,9 +861,9 @@ OpTeeRpmbFvbInit (
                     );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((DEBUG_INFO, "%a: Register OP-TEE RPMB Fvb\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Register OP-TEE RPMB Fvb\n", __func__));
   DEBUG ((DEBUG_INFO, "%a: Using NV store FV in-memory copy at 0x%lx\n",
-    __FUNCTION__, PatchPcdGet64 (PcdFlashNvStorageVariableBase64)));
+    __func__, PatchPcdGet64 (PcdFlashNvStorageVariableBase64)));
 
   return Status;
 }

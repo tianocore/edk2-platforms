@@ -902,7 +902,7 @@ InstallAllStructures (
     Status = mSmbios->Add (mSmbios, NULL, &SmbiosHandle, FixedTables[Idx]);
     if (EFI_ERROR(Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to add SMBIOS type %u table - %r\n",
-        __FUNCTION__, FixedTables[Idx]->Type, Status));
+        __func__, FixedTables[Idx]->Type, Status));
       break;
     }
   }
@@ -914,7 +914,7 @@ InstallAllStructures (
   Status = InstallMemoryDeviceStructure();
   if (EFI_ERROR(Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to add SMBIOS type 17 table - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
   }
 
   for (Hob.Raw = GetHobList ();
@@ -926,7 +926,7 @@ InstallAllStructures (
                                        Hob.ResourceDescriptor->ResourceLength);
       if (EFI_ERROR(Status)) {
         DEBUG ((DEBUG_WARN, "%a: failed to add SMBIOS type 19 table - %r\n",
-          __FUNCTION__, Status));
+          __func__, Status));
         break;
       }
     }

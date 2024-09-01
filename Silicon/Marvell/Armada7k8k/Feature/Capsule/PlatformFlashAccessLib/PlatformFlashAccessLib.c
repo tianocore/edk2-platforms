@@ -63,7 +63,7 @@ SpiFlashProbe (
 
   Status = SpiFlashProtocol->Init (SpiFlashProtocol, SpiFlash);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot initialize flash device\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot initialize flash device\n", __func__));
     return Status;
   }
 
@@ -87,7 +87,7 @@ CheckImageHeader (
   if (Header->Magic != MAIN_HDR_MAGIC) {
     DEBUG ((DEBUG_ERROR,
       "%a: Bad Image magic 0x%08x != 0x%08x\n",
-      __FUNCTION__,
+      __func__,
       Header->Magic,
       MAIN_HDR_MAGIC));
     return EFI_VOLUME_CORRUPTED;
@@ -100,7 +100,7 @@ CheckImageHeader (
   if (Checksum != ChecksumBackup) {
     DEBUG ((DEBUG_ERROR,
       "%a: Bad Image checksum. 0x%x != 0x%x\n",
-      __FUNCTION__,
+      __func__,
       Checksum,
       ChecksumBackup));
     return EFI_VOLUME_CORRUPTED;
@@ -164,7 +164,7 @@ PerformFlashWriteWithProgress (
   if (FlashAddressType != FlashAddressTypeAbsoluteAddress) {
     DEBUG ((DEBUG_ERROR,
       "%a: only FlashAddressTypeAbsoluteAddress supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -172,7 +172,7 @@ PerformFlashWriteWithProgress (
   if (FirmwareType != PlatformFirmwareTypeSystemFirmware) {
     DEBUG ((DEBUG_ERROR,
       "%a: only PlatformFirmwareTypeSystemFirmware supported\n",
-      __FUNCTION__));
+      __func__));
 
     return EFI_INVALID_PARAMETER;
   }
@@ -184,7 +184,7 @@ PerformFlashWriteWithProgress (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate SpiFlash protocol\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -194,7 +194,7 @@ PerformFlashWriteWithProgress (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate SpiMaster protocol\n",
-      __FUNCTION__));
+      __func__));
     return Status;
   }
 
@@ -226,7 +226,7 @@ PerformFlashWriteWithProgress (
                                   PcdGet32 (PcdSpiFlashCs),
                                   PcdGet32 (PcdSpiFlashMode));
   if (SpiFlash == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate SPI device!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Cannot allocate SPI device!\n", __func__));
     Status = EFI_DEVICE_ERROR;
     goto HeaderError;
   }
@@ -235,7 +235,7 @@ PerformFlashWriteWithProgress (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Error while performing SPI flash probe\n",
-      __FUNCTION__));
+      __func__));
     goto FlashProbeError;
   }
 
@@ -257,13 +257,13 @@ PerformFlashWriteWithProgress (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Error while performing flash update\n",
-      __FUNCTION__));
+      __func__));
     goto FlashProbeError;
   }
 
   DEBUG ((DEBUG_ERROR,
     "%a: Update %d bytes at offset 0x%x succeeded!\n",
-    __FUNCTION__,
+    __func__,
     Length,
     FlashAddress));
 

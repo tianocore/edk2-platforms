@@ -161,27 +161,27 @@ SynQuacerI2cMasterStart (
     MmioWrite8 (I2c->MmioBase + F_I2C_REG_DAR, SlaveAddress << 1);
   }
 
-  DEBUG ((DEBUG_INFO, "%a: slave:0x%02x\n", __FUNCTION__,
+  DEBUG ((DEBUG_INFO, "%a: slave:0x%02x\n", __func__,
     SlaveAddress));
 
   Bsr = MmioRead8 (I2c->MmioBase + F_I2C_REG_BSR);
   Bcr = MmioRead8 (I2c->MmioBase + F_I2C_REG_BCR);
 
   if ((Bsr & F_I2C_BSR_BB) && !(Bcr & F_I2C_BCR_MSS)) {
-    DEBUG ((DEBUG_INFO, "%a: bus is busy\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: bus is busy\n", __func__));
     return EFI_ALREADY_STARTED;
   }
 
   if (Bsr & F_I2C_BSR_BB) { // Bus is busy
-    DEBUG ((DEBUG_INFO, "%a: Continuous Start\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Continuous Start\n", __func__));
     MmioWrite8 (I2c->MmioBase + F_I2C_REG_BCR, Bcr | F_I2C_BCR_SCC);
   } else {
     if (Bcr & F_I2C_BCR_MSS) {
       DEBUG ((DEBUG_WARN,
-        "%a: is not in master mode\n", __FUNCTION__));
+        "%a: is not in master mode\n", __func__));
       return EFI_DEVICE_ERROR;
     }
-    DEBUG ((DEBUG_INFO, "%a: Start Condition\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: Start Condition\n", __func__));
     MmioWrite8 (I2c->MmioBase + F_I2C_REG_BCR,
                 Bcr | F_I2C_BCR_MSS | F_I2C_BCR_INTE | F_I2C_BCR_BEIE);
   }
@@ -323,12 +323,12 @@ SynQuacerI2cStartRequest (
     Status = WaitForInterrupt (I2c);
     if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_WARN, "%a: Timeout waiting for interrupt - %r\n",
-          __FUNCTION__, Status));
+          __func__, Status));
       break;
     }
 
     if (MmioRead8 (I2c->MmioBase + F_I2C_REG_BSR) & F_I2C_BSR_LRB) {
-      DEBUG ((DEBUG_WARN, "%a: No ack received\n", __FUNCTION__));
+      DEBUG ((DEBUG_WARN, "%a: No ack received\n", __func__));
       Status = EFI_DEVICE_ERROR;
       break;
     }
@@ -339,13 +339,13 @@ SynQuacerI2cStartRequest (
       Bcr = MmioRead8 (I2c->MmioBase + F_I2C_REG_BCR);
 
       if (Bcr & F_I2C_BCR_BER) {
-        DEBUG ((DEBUG_WARN, "%a: Bus error detected\n", __FUNCTION__));
+        DEBUG ((DEBUG_WARN, "%a: Bus error detected\n", __func__));
         Status = EFI_DEVICE_ERROR;
         break;
       }
 
       if ((Bsr & F_I2C_BSR_AL) || !(Bcr & F_I2C_BCR_MSS)) {
-        DEBUG ((DEBUG_WARN, "%a: Arbitration lost\n", __FUNCTION__));
+        DEBUG ((DEBUG_WARN, "%a: Arbitration lost\n", __func__));
         Status = EFI_DEVICE_ERROR;
         break;
       }
@@ -362,7 +362,7 @@ SynQuacerI2cStartRequest (
         Status = WaitForInterrupt (I2c);
         if (EFI_ERROR (Status)) {
           DEBUG ((DEBUG_WARN,
-            "%a: Timeout waiting for interrupt - %r\n", __FUNCTION__, Status));
+            "%a: Timeout waiting for interrupt - %r\n", __func__, Status));
           break;
         }
 
@@ -377,12 +377,12 @@ SynQuacerI2cStartRequest (
         Status = WaitForInterrupt (I2c);
         if (EFI_ERROR (Status)) {
           DEBUG ((DEBUG_WARN,
-            "%a: Timeout waiting for interrupt - %r\n", __FUNCTION__, Status));
+            "%a: Timeout waiting for interrupt - %r\n", __func__, Status));
           break;
         }
 
         if (MmioRead8 (I2c->MmioBase + F_I2C_REG_BSR) & F_I2C_BSR_LRB) {
-          DEBUG ((DEBUG_WARN, "%a: No ack received\n", __FUNCTION__));
+          DEBUG ((DEBUG_WARN, "%a: No ack received\n", __func__));
           Status = EFI_DEVICE_ERROR;
           break;
         }
@@ -480,7 +480,7 @@ SynQuacerI2cInit (
                     EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_WARN, "%a: failed to add memory space - %r\n",
-        __FUNCTION__, Status));
+        __func__, Status));
     }
 
     Status = gDS->SetMemorySpaceAttributes (

@@ -87,7 +87,7 @@ TemporaryRamMigration (
 
   DEBUG ((DEBUG_INFO,
     "%a: Temp Mem Base:0x%Lx, Permanent Mem Base:0x%Lx, CopySize:0x%Lx\n",
-    __FUNCTION__,
+    __func__,
     TemporaryMemoryBase,
     PermanentMemoryBase,
     (UINT64)CopySize
@@ -113,7 +113,7 @@ TemporaryRamMigration (
   // Relocate PEI Service **
   //
   FirmwareContext->PeiServiceTable += (unsigned long)((UINTN)NewStack - (UINTN)OldStack);
-  DEBUG ((DEBUG_INFO, "%a: OpenSBI Firmware Context is relocated to 0x%x\n", __FUNCTION__, FirmwareContext));
+  DEBUG ((DEBUG_INFO, "%a: OpenSBI Firmware Context is relocated to 0x%x\n", __func__, FirmwareContext));
   DEBUG ((DEBUG_INFO, "OpenSBI Firmware Context at 0x%x\n", FirmwareContext));
   DEBUG ((DEBUG_INFO, "             PEI Service at 0x%x\n\n", FirmwareContext->PeiServiceTable));
 
@@ -129,7 +129,7 @@ EFI_STATUS EFIAPI TemporaryRamDone (
   VOID
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: 2nd time PEI core, temporary ram done.\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: 2nd time PEI core, temporary ram done.\n", __func__));
   return EFI_SUCCESS;
 }
 /** Return platform SEC PPI before PEI Core

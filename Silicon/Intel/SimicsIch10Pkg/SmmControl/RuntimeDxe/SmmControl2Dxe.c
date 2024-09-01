@@ -245,7 +245,7 @@ SmmControl2DxeEntryPoint (
   SmiEnableVal = IoRead32 (mSmiEnable);
   if ((SmiEnableVal & ICH10_SMI_EN_APMC_EN) != 0) {
     DEBUG ((DEBUG_ERROR, "%a: this X58 implementation lacks SMI\n",
-      __FUNCTION__));
+      __func__));
   }
 
   //
@@ -268,7 +268,7 @@ SmmControl2DxeEntryPoint (
   IoWrite32 (mSmiEnable, SmiEnableVal & ~(UINT32)ICH10_SMI_EN_GBL_SMI_EN);
   if (IoRead32 (mSmiEnable) != SmiEnableVal) {
     DEBUG ((DEBUG_ERROR, "%a: failed to lock down GBL_SMI_EN\n",
-      __FUNCTION__));
+      __func__));
     goto FatalError;
   }
 
@@ -283,14 +283,14 @@ SmmControl2DxeEntryPoint (
                   OnS3SaveStateInstalled, NULL /* Context */,
                   &mS3SaveStateInstalled);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: CreateEvent: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: CreateEvent: %r\n", __func__, Status));
     goto FatalError;
   }
 
   Status = gBS->RegisterProtocolNotify (&gEfiS3SaveStateProtocolGuid,
                   mS3SaveStateInstalled, &Registration);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: RegisterProtocolNotify: %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "%a: RegisterProtocolNotify: %r\n", __func__,
       Status));
     goto ReleaseEvent;
   }
@@ -300,7 +300,7 @@ SmmControl2DxeEntryPoint (
   //
   Status = gBS->SignalEvent (mS3SaveStateInstalled);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: SignalEvent: %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: SignalEvent: %r\n", __func__, Status));
     goto ReleaseEvent;
   }
 
@@ -313,7 +313,7 @@ SmmControl2DxeEntryPoint (
                   NULL);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: InstallMultipleProtocolInterfaces: %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     goto ReleaseEvent;
   }
 
@@ -378,7 +378,7 @@ OnS3SaveStateInstalled (
                           );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: EFI_BOOT_SCRIPT_IO_READ_WRITE_OPCODE: %r\n",
-      __FUNCTION__, Status));
+      __func__, Status));
     ASSERT (FALSE);
     CpuDeadLoop ();
   }
@@ -395,13 +395,13 @@ OnS3SaveStateInstalled (
                           );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
-      "%a: EFI_BOOT_SCRIPT_PCI_CONFIG_READ_WRITE_OPCODE: %r\n", __FUNCTION__,
+      "%a: EFI_BOOT_SCRIPT_PCI_CONFIG_READ_WRITE_OPCODE: %r\n", __func__,
       Status));
     ASSERT (FALSE);
     CpuDeadLoop ();
   }
 
-  DEBUG ((DEBUG_VERBOSE, "%a: boot script fragment saved\n", __FUNCTION__));
+  DEBUG ((DEBUG_VERBOSE, "%a: boot script fragment saved\n", __func__));
   gBS->CloseEvent (Event);
   mS3SaveStateInstalled = NULL;
 }

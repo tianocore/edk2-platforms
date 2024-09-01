@@ -56,7 +56,7 @@ OemNicConfigEntry (
 
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Install Protocol failed %r\n",
-        __FUNCTION__, __LINE__, Status));
+        __func__, __LINE__, Status));
     return Status;
   }
 

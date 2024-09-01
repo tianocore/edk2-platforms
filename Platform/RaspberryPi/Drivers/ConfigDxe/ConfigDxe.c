@@ -428,7 +428,7 @@ SetupVariables (
     //
     Status = mFwProtocol->GetMacAddress (mMacAddress.Addr);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_WARN, "%a: failed to retrieve MAC address\n", __FUNCTION__));
+      DEBUG ((DEBUG_WARN, "%a: failed to retrieve MAC address\n", __func__));
     }
   }
 

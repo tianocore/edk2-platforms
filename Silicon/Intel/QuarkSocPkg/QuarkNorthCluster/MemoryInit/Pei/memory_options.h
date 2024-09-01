@@ -68,9 +68,9 @@ uint8_t mgetch(void);
 #define D_TRN        0x0020
 #define D_TIME       0x0040
 
-#define ENTERFN()     DPF(D_FCALL, "<%s>\n", __FUNCTION__)
-#define LEAVEFN()     DPF(D_FCALL, "</%s>\n", __FUNCTION__)
-#define REPORTFN()    DPF(D_FCALL, "<%s/>\n", __FUNCTION__)
+#define ENTERFN()     DPF(D_FCALL, "<%s>\n", __func__)
+#define LEAVEFN()     DPF(D_FCALL, "</%s>\n", __func__)
+#define REPORTFN()    DPF(D_FCALL, "<%s/>\n", __func__)
 
 extern uint32_t DpfPrintMask;
 

@@ -31,7 +31,7 @@ EFI_STATUS HestAddErrorSourceDescriptor (
   }
   HestHeader = Context->HestHeader;
   if (HestHeader->Header.Length + SizeOfDescriptor > Context->OccupiedMemorySize) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: Hest Size Too small\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: Hest Size Too small\n", __func__, __LINE__));
     return EFI_BUFFER_TOO_SMALL;
   }
   Descriptor = (UINT8*)HestHeader + HestHeader->Header.Length;
@@ -58,7 +58,7 @@ HestSetAcpiTable (
   UINTN                     TableKey;
   UINT32                    Index;
   if (Context == NULL) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: ERROR\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: ERROR\n", __func__, __LINE__));
     return;
   }
 
@@ -83,7 +83,7 @@ HestSetAcpiTable (
     mApeiTrustedfirmwareData->HestTableAddress = (EFI_PHYSICAL_ADDRESS)Table;
     DEBUG ((DEBUG_INFO, "Acpi HestSetAcpiTable Table = 0x%x.\n", (EFI_PHYSICAL_ADDRESS)Table));
   }
-  DEBUG ((DEBUG_INFO, "[%a]:[%dL]:OUT %llx, IN %llx \n", __FUNCTION__, __LINE__,
+  DEBUG ((DEBUG_INFO, "[%a]:[%dL]:OUT %llx, IN %llx \n", __func__, __LINE__,
           AcpiTableHandle, Context->HestHeader));
   return;
 }

@@ -24,13 +24,13 @@ AspireVn7Dash572GBoardEnableAcpi (
    *   Further reversing will be performed */
   Status = SendEcCommand (0xE9);  /* Vendor implements using ACPI "CMDB" register" */
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(): SendEcCommand(0xE9) failed!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a(): SendEcCommand(0xE9) failed!\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
   Status = SendEcData (0x81);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(): SendEcData(0x81) failed!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a(): SendEcData(0x81) failed!\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
@@ -52,13 +52,13 @@ AspireVn7Dash572GBoardDisableAcpi (
    *   Further reversing will be performed */
   Status = SendEcCommand (0xE9);  /* Vendor implements using ACPI "CMDB" register" */
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(): SendEcCommand(0xE9) failed!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a(): SendEcCommand(0xE9) failed!\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 
   Status = SendEcData (0x80);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a(): SendEcData(0x80) failed!\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a(): SendEcData(0x80) failed!\n", __func__));
     return EFI_DEVICE_ERROR;
   }
 

@@ -91,7 +91,7 @@ PciHostBridgeGetRootBridges (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot locate BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return NULL;
   }
 
@@ -104,7 +104,7 @@ PciHostBridgeGetRootBridges (
   } else if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR,
       "%a: Cannot get Pcie board desc from BoardDesc protocol\n",
-      __FUNCTION__));
+      __func__));
     return NULL;
   }
 
@@ -112,7 +112,7 @@ PciHostBridgeGetRootBridges (
   PciRootBridges = AllocateZeroPool (BoardPcieDescription->PcieControllerCount *
                                      sizeof (PCI_ROOT_BRIDGE));
   if (PciRootBridges == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate resources\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate resources\n", __func__));
     return NULL;
   }
 

@@ -66,7 +66,7 @@ VirtNorFlashPlatformGetDevices (
     DEBUG ((
       DEBUG_ERROR,
       "%a: GetNodeProperty () failed (Status == %r)\n",
-      __FUNCTION__,
+      __func__,
       Status
       ));
     return Status;
@@ -78,7 +78,7 @@ VirtNorFlashPlatformGetDevices (
     DEBUG ((
       DEBUG_ERROR,
       "%a: reg node size(%d) is too small \n",
-      __FUNCTION__,
+      __func__,
       PropSize
       ));
     return EFI_NOT_FOUND;

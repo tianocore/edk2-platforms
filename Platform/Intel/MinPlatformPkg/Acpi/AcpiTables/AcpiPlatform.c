@@ -1472,7 +1472,7 @@ IsAcpiTableChange (
   Xsdt           = NULL;
   FacsPtr        = NULL;
 
-  DEBUG ((DEBUG_INFO, "%a() - Start\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() - Start\n", __func__));
 
   Status = EfiGetSystemConfigurationTable (&gEfiAcpiTableGuid, (VOID **)&Rsdp);
   if (EFI_ERROR (Status) || (Rsdp == NULL)) {
@@ -1527,7 +1527,7 @@ IsAcpiTableChange (
   DEBUG ((DEBUG_INFO, "HardwareSignature = %x and Status = %r\n", FacsPtr->HardwareSignature, Status));
 
   FreePool (TableCrcRecord);
-  DEBUG ((DEBUG_INFO, "%a() - End\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a() - End\n", __func__));
 }
 
 VOID

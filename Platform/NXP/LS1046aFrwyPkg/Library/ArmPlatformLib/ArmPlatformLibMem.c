@@ -40,7 +40,7 @@ ArmPlatformGetVirtualMemoryMap (
                                      MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS);
 
   if (VirtualMemoryTable == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Error: Failed AllocatePool()\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Error: Failed AllocatePool()\n", __func__));
     return;
   }
 

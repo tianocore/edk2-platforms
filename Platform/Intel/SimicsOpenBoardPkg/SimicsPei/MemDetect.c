@@ -49,7 +49,7 @@ X58TsegMbytesInitialization(
       DEBUG_ERROR,
       "%a: no TSEG (SMRAM) on host bridge DID=0x%04x; "
       "only DID=0x%04x (X58) is supported\n",
-      __FUNCTION__,
+      __func__,
       mHostBridgeDevId,
       INTEL_ICH10_DEVICE_ID
       ));
@@ -155,7 +155,7 @@ GetFirstNonAddress (
   if (Pci64Size == 0) {
     if (mBootMode != BOOT_ON_S3_RESUME) {
       DEBUG ((DEBUG_INFO, "%a: disabling 64-bit PCI host aperture\n",
-        __FUNCTION__));
+        __func__));
       PcdSet64S (PcdPciMmio64Size, 0);
     }
 
@@ -191,7 +191,7 @@ GetFirstNonAddress (
     PcdSet64S (PcdPciMmio64Base, Pci64Base);
     PcdSet64S (PcdPciMmio64Size, Pci64Size);
     DEBUG ((DEBUG_INFO, "%a: Pci64Base=0x%Lx Pci64Size=0x%Lx\n",
-      __FUNCTION__, Pci64Base, Pci64Size));
+      __func__, Pci64Base, Pci64Size));
   }
 
   //
@@ -351,7 +351,7 @@ PublishPeiMemory (
   } else {
     PeiMemoryCap = GetPeiMemoryCap ();
     DEBUG ((DEBUG_INFO, "%a: mPhysMemAddressWidth=%d PeiMemoryCap=%u KB\n",
-      __FUNCTION__, mPhysMemAddressWidth, PeiMemoryCap >> 10));
+      __func__, mPhysMemAddressWidth, PeiMemoryCap >> 10));
 
     //
     // Determine the range of memory to use during PEI
@@ -397,7 +397,7 @@ QemuInitializeRam (
   EFI_SMRAM_HOB_DESCRIPTOR_BLOCK        *SmramHobDescriptorBlock;
   VOID                                  *GuidHob;
 
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
   //
   // Determine total memory size available

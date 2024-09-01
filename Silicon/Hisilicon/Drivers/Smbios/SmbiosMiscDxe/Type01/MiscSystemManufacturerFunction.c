@@ -154,7 +154,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscSystemManufacturer)
     Status = LogSmbiosData( (UINT8*)SmbiosRecord, &SmbiosHandle);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type01 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type01 Table Log Failed! %r \n", __func__, __LINE__, Status));
     }
 
     FreePool(SmbiosRecord);

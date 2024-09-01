@@ -76,14 +76,14 @@ GetEnvMac(
   Status = gBS->LocateProtocol(&gHisiBoardNicProtocolGuid, NULL, (VOID **)&OemNic);
   if(EFI_ERROR(Status))
   {
-    DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
   Status = OemNic->GetMac(&Mac, MacNextID);
   if(EFI_ERROR(Status))
   {
-    DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
@@ -341,7 +341,7 @@ GetDeviceInfo (
   // Get NameString
   Status = AcpiTableProtocol->GetOption (ChildHandle, 1, &DataType, &Buffer, &DataSize);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "[%a:%d] Get NameString failed: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "[%a:%d] Get NameString failed: %r\n", __func__, __LINE__, Status));
     return Status;
   }
 
@@ -361,7 +361,7 @@ GetDeviceInfo (
     *FoundDev = DsdtDeviceSas;
   } else {
     DEBUG ((DEBUG_ERROR, "[%a:%d] The NameString %a is not ETHn or SASn\n",
-            __FUNCTION__, __LINE__, Data));
+            __func__, __LINE__, Data));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -433,7 +433,7 @@ EFI_STATUS ProcessDSDTDevice (
           Status = AcpiTableProtocol->GetOption(ValueHandle, 1, &DataType, &Buffer, &DataSize);
 
           Data = Buffer;
-          DBG("[%a:%d] - _HID = %a\n", __FUNCTION__, __LINE__, Data);
+          DBG("[%a:%d] - _HID = %a\n", __func__, __LINE__, Data);
 
           if (EFI_ERROR(Status) ||
               DataType != EFI_ACPI_DATA_TYPE_STRING) {
@@ -572,10 +572,10 @@ static EFI_STATUS ProcessDSDT(
   EFI_ACPI_HANDLE         ChildHandle;
   //
   // Parse table for device type
-  DBG ("[%a:%d] - TableHandle=%p\n", __FUNCTION__, __LINE__, TableHandle);
+  DBG ("[%a:%d] - TableHandle=%p\n", __func__, __LINE__, TableHandle);
   for (ChildHandle = NULL; ; ) {
     Status = AcpiTableProtocol->GetChild(TableHandle, &ChildHandle);
-    DBG ("[%a:%d] - Child=%p, %r\n", __FUNCTION__, __LINE__, ChildHandle, Status);
+    DBG ("[%a:%d] - Child=%p, %r\n", __func__, __LINE__, ChildHandle, Status);
     if (EFI_ERROR(Status))
       break;
     if (ChildHandle == NULL)

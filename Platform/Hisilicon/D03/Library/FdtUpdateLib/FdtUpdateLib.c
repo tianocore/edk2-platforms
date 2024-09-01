@@ -98,14 +98,14 @@ GetMacAddress (UINT32 Port)
     Status = gBS->LocateProtocol(&gHisiBoardNicProtocolGuid, NULL, (VOID **)&OemNic);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __func__, __LINE__, Status));
         return Status;
     }
 
     Status = OemNic->GetMac(&Mac, Port);
     if(EFI_ERROR(Status))
     {
-        DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __func__, __LINE__, Status));
         return Status;
     }
 
@@ -192,7 +192,7 @@ UpdateRefClk (IN VOID* Fdt)
 
   ArmArchTimerReadReg (CntFrq, &ArchTimerFreq);
   if (!ArchTimerFreq) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Get timer frequency failed!\n", __FUNCTION__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Get timer frequency failed!\n", __func__, __LINE__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -210,7 +210,7 @@ UpdateRefClk (IN VOID* Fdt)
 
   m_prop = fdt_get_property_w(Fdt, node, Property, &m_oldlen);
   if(!m_prop) {
-    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Can't find property %a\n", __FUNCTION__, __LINE__, Property));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Can't find property %a\n", __func__, __LINE__, Property));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -250,7 +250,7 @@ GetMemoryNode(VOID* Fdt)
 
         if(node < 0)
         {
-          DEBUG((DEBUG_ERROR, "[%a]:[%dL] fdt add subnode error\n", __FUNCTION__, __LINE__));
+          DEBUG((DEBUG_ERROR, "[%a]:[%dL] fdt add subnode error\n", __func__, __LINE__));
 
           return node;
         }
