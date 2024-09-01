@@ -91,7 +91,7 @@ VersionInfoEntry (
                       sizeof (VersionInfo->String) +
                       StrSize (ReleaseString));
   if (VersionInfo == NULL) {
-    DEBUG ((EFI_D_ERROR, "[%a]:[%d] Build HOB failed!\n", __FILE__, __LINE__));
+    DEBUG ((DEBUG_ERROR, "[%a]:[%d] Build HOB failed!\n", __FILE__, __LINE__));
     return EFI_OUT_OF_RESOURCES;
   }
 

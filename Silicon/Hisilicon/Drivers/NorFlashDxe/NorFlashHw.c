@@ -39,7 +39,7 @@ UINT32 PortReadData (
             return MmioRead16 (FlashAddr);
 
         default:
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
             return 0xffffffff;
     }
 }
@@ -61,7 +61,7 @@ PortWriteData (
              MmioWrite16 (FlashAddr, InputData);
              break;
         default:
-             DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
+             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:illegal PortWidth!\n", __FUNCTION__,__LINE__));
              return EFI_DEVICE_ERROR;
     }
     return EFI_SUCCESS;
@@ -80,7 +80,7 @@ UINT32 PortAdjustData(
         case 1:
              return (0x0000ffff & ulInputData );
         default:
-            DEBUG((EFI_D_ERROR,"[FLASH_S29GL256N_PortAdjustData]: Error--illegal g_ulFlashS29Gl256NPortWidth!\n\r"));
+            DEBUG((DEBUG_ERROR,"[FLASH_S29GL256N_PortAdjustData]: Error--illegal g_ulFlashS29Gl256NPortWidth!\n\r"));
             return 0xffffffff;
     }
 }
@@ -107,7 +107,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Can not Get Reset Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Reset Command!\n", __FUNCTION__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -124,7 +124,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Can not Get ID Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get ID Command!\n", __FUNCTION__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -141,7 +141,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Can not Get Write Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Write Command!\n", __FUNCTION__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -158,7 +158,7 @@ EFI_STATUS GetCommandIndex(
 
     if(Flag)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Can not Get Erase Command!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Can not Get Erase Command!\n", __FUNCTION__,__LINE__));
         return EFI_DEVICE_ERROR;
     }
 
@@ -214,7 +214,7 @@ EFI_STATUS FlashInit(UINT32 Base)
         Status = GetCommandIndex(i);
         if (EFI_ERROR(Status))
          {
-             DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Get Command Index %r!\n", __FUNCTION__,__LINE__, Status));
+             DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Get Command Index %r!\n", __FUNCTION__,__LINE__, Status));
              return Status;
          }
 
@@ -235,10 +235,10 @@ EFI_STATUS FlashInit(UINT32 Base)
         TempDev1 = PortReadData(i, Base + (gFlashCommandId[gIndex.IdIndex].DeviceIDAddress1 << gFlashInfo[i].ParallelNum));
         TempDev2 = PortReadData(i, Base + (gFlashCommandId[gIndex.IdIndex].DeviceIDAddress2 << gFlashInfo[i].ParallelNum));
         TempDev3 = PortReadData(i, Base + (gFlashCommandId[gIndex.IdIndex].DeviceIDAddress3 << gFlashInfo[i].ParallelNum));
-        DEBUG ((EFI_D_ERROR, "[cdtest]manufactor ID 0x%x!\n",TempData));
-        DEBUG ((EFI_D_ERROR, "[cdtest]Device ID 1 0x%x!\n",TempDev1));
-        DEBUG ((EFI_D_ERROR, "[cdtest]Device ID 2 0x%x!\n",TempDev2));
-        DEBUG ((EFI_D_ERROR, "[cdtest]Device ID 3 0x%x!\n",TempDev3));
+        DEBUG ((DEBUG_ERROR, "[cdtest]manufactor ID 0x%x!\n",TempData));
+        DEBUG ((DEBUG_ERROR, "[cdtest]Device ID 1 0x%x!\n",TempDev1));
+        DEBUG ((DEBUG_ERROR, "[cdtest]Device ID 2 0x%x!\n",TempDev2));
+        DEBUG ((DEBUG_ERROR, "[cdtest]Device ID 3 0x%x!\n",TempDev3));
 
         FlashReset(Base);
 
@@ -310,7 +310,7 @@ EFI_STATUS BufferWriteCommand(UINTN Base, UINTN Offset, void *pData)
 
     if(gFlashBusy)
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
         return EFI_NOT_READY;
     }
     gFlashBusy = TRUE;
@@ -392,7 +392,7 @@ EFI_STATUS SectorEraseCommand(UINTN Base, UINTN Offset)
 
     if(gFlashBusy)
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
         return EFI_NOT_READY;
     }
 
@@ -434,7 +434,7 @@ EFI_STATUS CompleteCheck(UINT32 Base, UINT32 Offset, void *pData, UINT32 Length)
 
     if(gFlashBusy)
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]:Flash is busy!\n", __FUNCTION__,__LINE__));
         return EFI_NOT_READY;
     }
     gFlashBusy = TRUE;
@@ -463,11 +463,11 @@ EFI_STATUS CompleteCheck(UINT32 Base, UINT32 Offset, void *pData, UINT32 Length)
 
         if((UINT16)(dwTemp1 >> 16) != (UINT16)(dwTestData >> 16))
         {
-            DEBUG((EFI_D_ERROR, "CompleteCheck ERROR: chip1 address %x, buffer %x, flash %x!\n", Offset, dwTestData, dwTemp1));
+            DEBUG((DEBUG_ERROR, "CompleteCheck ERROR: chip1 address %x, buffer %x, flash %x!\n", Offset, dwTestData, dwTemp1));
         }
         if((UINT16)(dwTemp1) != (UINT16)(dwTestData))
         {
-            DEBUG((EFI_D_ERROR, "CompleteCheck ERROR: chip2 address %x, buffer %x, flash %x!\n", Offset, dwTestData, dwTemp1));
+            DEBUG((DEBUG_ERROR, "CompleteCheck ERROR: chip2 address %x, buffer %x, flash %x!\n", Offset, dwTestData, dwTemp1));
         }
     }
     else
@@ -495,13 +495,13 @@ EFI_STATUS CompleteCheck(UINT32 Base, UINT32 Offset, void *pData, UINT32 Length)
 
     for(i = 0; i < 5; i ++)
     {
-        DEBUG((EFI_D_ERROR, "CompleteCheck ERROR: flash %x\n",PortReadData(gIndex.InfIndex, dwTestAddr)));
+        DEBUG((DEBUG_ERROR, "CompleteCheck ERROR: flash %x\n",PortReadData(gIndex.InfIndex, dwTestAddr)));
     }
 
     FlashReset(Base);
 
     gFlashBusy = FALSE;
-    DEBUG((EFI_D_ERROR, "CompleteCheck ERROR: timeout address %x, buffer %x, flash %x\n", Offset, dwTestData, dwTemp1));
+    DEBUG((DEBUG_ERROR, "CompleteCheck ERROR: timeout address %x, buffer %x, flash %x\n", Offset, dwTestData, dwTemp1));
     return EFI_TIMEOUT;
 }
 
@@ -556,7 +556,7 @@ EFI_STATUS BufferWrite(UINT32 Offset, void *pData, UINT32 Length)
             {
                 if (*(UINT8 *)(UINTN)(gIndex.Base + Offset + dwLoop) != *((UINT8 *)pData + dwLoop))
                 {
-                    DEBUG((EFI_D_ERROR, "Flash_WriteUnit ERROR: address %x, buffer %x, flash %x\n", Offset, *((UINT8 *)pData + dwLoop), *(UINT8 *)(UINTN)(gIndex.Base + Offset + dwLoop)));
+                    DEBUG((DEBUG_ERROR, "Flash_WriteUnit ERROR: address %x, buffer %x, flash %x\n", Offset, *((UINT8 *)pData + dwLoop), *(UINT8 *)(UINTN)(gIndex.Base + Offset + dwLoop)));
                     Status = EFI_ABORTED;
                     continue;
                 }
@@ -564,7 +564,7 @@ EFI_STATUS BufferWrite(UINT32 Offset, void *pData, UINT32 Length)
         }
         else
         {
-            DEBUG((EFI_D_ERROR, "Flash_WriteUnit ERROR: complete check failed, %r\n", Status));
+            DEBUG((DEBUG_ERROR, "Flash_WriteUnit ERROR: complete check failed, %r\n", Status));
             continue;
         }
     } while ((Retry--) && EFI_ERROR(Status));
@@ -600,7 +600,7 @@ EFI_STATUS SectorErase(UINT32 Base, UINT32 Offset)
             }
             else
             {
-                DEBUG((EFI_D_ERROR, "Flash_SectorErase ERROR: not all address equal 0xFF\n"));
+                DEBUG((DEBUG_ERROR, "Flash_SectorErase ERROR: not all address equal 0xFF\n"));
 
                 Status = EFI_ABORTED;
                 continue;
@@ -608,7 +608,7 @@ EFI_STATUS SectorErase(UINT32 Base, UINT32 Offset)
         }
         else
         {
-            DEBUG((EFI_D_ERROR, "Flash_SectorErase ERROR: complete check failed, %r\n", Status));
+            DEBUG((DEBUG_ERROR, "Flash_SectorErase ERROR: complete check failed, %r\n", Status));
             continue;
         }
     }while ((Retry--) && EFI_ERROR(Status));

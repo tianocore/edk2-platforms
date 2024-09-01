@@ -5,10 +5,12 @@
   It depends on which Flash Device Library to be linked with this driver.
 
 Copyright (c) 2006  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 **/
 
@@ -86,7 +88,7 @@ InstallFvbProtocol (
   FwVolHeader = &FwhInstance->VolumeHeader;
 
   //
-  // Set up the devicepath.
+  // Set uDEBUG_devicepath.
   //
   DEBUG ((EFI_D_INFO, "FwBlockService.c: Setting up DevicePath for 0x%lx:\n", FwhInstance->FvBase));
   if (FwVolHeader->ExtHeaderOffset == 0) {
@@ -114,7 +116,7 @@ InstallFvbProtocol (
                   );
   if (EFI_ERROR (Status) ) {
     //
-    // LocateDevicePath fails so install a new interface and device path.
+    // LocatDEBUG_ePath fails so install a new interface and device path.
     //
     DEBUG ((EFI_D_INFO, "FwBlockService.c: LocateDevicePath failed, install new interface 0x%lx:\n", FwhInstance->FvBase));
     FwbHandle = NULL;
@@ -125,13 +127,13 @@ InstallFvbProtocol (
                      &gEfiDevicePathProtocolGuid,
                      FvbDevice->DevicePath,
                      NULL
-                     );
+            DEBUG_   );
     ASSERT_EFI_ERROR (Status);
     DEBUG ((EFI_D_INFO, "FwBlockService.c: IMPI FirmwareVolBlockProt, DevPath 0x%lx: %r\n", FwhInstance->FvBase, Status));
 
   } else if (IsDevicePathEnd (FvbDevice->DevicePath)) {
     //
-    // Device allready exists, so reinstall the FVB protocol.
+    // DevicDEBUG_eady exists, so reinstall the FVB protocol.
     //
     DEBUG ((EFI_D_ERROR, "FwBlockService.c: LocateDevicePath succeeded, reinstall interface 0x%lx:\n", FwhInstance->FvBase));
     Status = gBS->HandleProtocol (

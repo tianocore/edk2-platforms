@@ -306,7 +306,7 @@ InitializeSmbus (
   //Configure I2C controller.
   Status = ConfigureI2c();
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_ERROR, "InitializeI2c fails.\n"));
+    DEBUG ((DEBUG_ERROR, "InitializeI2c fails.\n"));
     return Status;
   }
 

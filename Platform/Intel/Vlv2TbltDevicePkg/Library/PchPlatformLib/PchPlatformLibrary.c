@@ -1,10 +1,12 @@
 /**
 
 Copyright (c) 2012  - 2014, Intel Corporation. All rights reserved
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
   @file
   PchPlatformLib.c
@@ -122,7 +124,7 @@ IsPchSupported (
 
   //
   // Verify that this is a supported chipset
-  //
+  //DEBUG_
   if (PcuVendorId != (UINT16) V_PCH_LPC_VENDOR_ID || !IS_PCH_VLV_LPC_DEVICE_ID (PcuDeviceId)) {
     DEBUG ((EFI_D_ERROR, "VLV SC code doesn't support the PcuDeviceId: 0x%04x!\n", PcuDeviceId));
     return FALSE;

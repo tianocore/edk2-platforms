@@ -54,7 +54,7 @@ SetBifurcations(
        }
        break;
      default:
-       DEBUG((EFI_D_ERROR, "Invalid bifurcation table: Bad Iou (%d)", Iou));
+       DEBUG((DEBUG_ERROR, "Invalid bifurcation table: Bad Iou (%d)", Iou));
        ASSERT(Iou);
        break;
     }
@@ -99,7 +99,7 @@ EnableHotPlug (
     IioGlobalData->SetupData.VppPort[Port]= VppPort;
     IioGlobalData->SetupData.VppAddress[Port] = VppAddress;
   } else {
-      DEBUG((EFI_D_ERROR, "PCIE HOT Plug. Missing VPP values on slot table\n"));
+      DEBUG((DEBUG_ERROR, "PCIE HOT Plug. Missing VPP values on slot table\n"));
   }
 }
 
@@ -477,9 +477,9 @@ DumpPort(
 )
 {
   UINT8 Index;
-  DEBUG((EFI_D_INFO, "IDX, Port Hide, Slot Impl, Slot Number, HotPlug, PcieSSD, VppPort, VppAddress, Interlock\n"));
+  DEBUG((DEBUG_INFO, "IDX, Port Hide, Slot Impl, Slot Number, HotPlug, PcieSSD, VppPort, VppAddress, Interlock\n"));
   for (Index = Port; Index < (Port + NumberOfPorts); Index++ ) {
-  DEBUG((EFI_D_INFO, "%3d|   %2d    |    %2d    |   %3d      |   %3d  |  %3d  |  0x%02x  |  0x%02x     |  %2d      \n", \
+  DEBUG((DEBUG_INFO, "%3d|   %2d    |    %2d    |   %3d      |   %3d  |  %3d  |  0x%02x  |  0x%02x     |  %2d      \n", \
                        Index, \
                        IioGlobalData->SetupData.PEXPHIDE[Index],  \
                        IioGlobalData->SetupData.SLOTIMP[Index],   \
@@ -505,13 +505,13 @@ DumpIioConfiguration(
   UINT8 IouPorts;
   PortIndex = iio * NUMBER_PORTS_PER_SOCKET;
   /// First dump the socket number;
-  DEBUG((EFI_D_INFO, "Socket number: %d \n", iio));
+  DEBUG((DEBUG_INFO, "Socket number: %d \n", iio));
 
   /// Dump DMI configuration:
   if ((iio == 0) && (PortIndex == 0)){
-      DEBUG((EFI_D_INFO, "PORT 0: DMI Port\n"));
+      DEBUG((DEBUG_INFO, "PORT 0: DMI Port\n"));
   } else {
-      DEBUG((EFI_D_INFO, "PORT 0: DMI Port working as PCIE\n"));
+      DEBUG((DEBUG_INFO, "PORT 0: DMI Port working as PCIE\n"));
       DumpPort(IioGlobalData, PortIndex, 1);
   }
   IouPorts=4;
@@ -524,30 +524,30 @@ DumpIioConfiguration(
         case Iio_Iou0:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU0[iio];
           PortIndex += PORT_1A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO0: Root Port 1, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO0: Root Port 1, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou1:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU1[iio];
           PortIndex += PORT_2A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO1: Root Port 2, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO1: Root Port 2, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou2:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU2[iio];
           PortIndex += PORT_3A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO2: Root Port 3, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO2: Root Port 3, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Mcp0:
           Bifurcation = IioGlobalData->SetupData.ConfigMCP0[iio];
           PortIndex += PORT_4A_INDEX;
-          DEBUG((EFI_D_INFO, "MCP0, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "MCP0, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Mcp1:
           Bifurcation = IioGlobalData->SetupData.ConfigMCP1[iio];
           PortIndex += PORT_5A_INDEX;
-          DEBUG((EFI_D_INFO, "MCP1, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "MCP1, Bifurcation: %d\n", Bifurcation));
           break;
         default:
-          DEBUG((EFI_D_INFO, "Iou no detected = %d",Iou));
+          DEBUG((DEBUG_INFO, "Iou no detected = %d",Iou));
           break;
         }
       DumpPort(IioGlobalData, PortIndex, IouPorts);

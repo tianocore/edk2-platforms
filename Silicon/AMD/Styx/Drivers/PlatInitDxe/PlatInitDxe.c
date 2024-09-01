@@ -76,7 +76,7 @@ PlatInitDxeEntryPoint (
   UINTN                     ArmCoreCount;
   EFI_HANDLE                Handle = NULL;
 
-  DEBUG ((EFI_D_ERROR, "PlatInitDxe Loaded\n"));
+  DEBUG ((DEBUG_ERROR, "PlatInitDxe Loaded\n"));
 
   // Get core information
   ArmCoreCount = 0;

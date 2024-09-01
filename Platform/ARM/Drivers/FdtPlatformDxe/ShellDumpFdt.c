@@ -104,7 +104,7 @@ DumpFdt (
     for (i = 0; i < num; i++) {
       err = fdt_get_mem_rsv (FdtBlob, i, &addr, &size);
       if (err) {
-        DEBUG ((EFI_D_ERROR, "Error (%d) : Cannot get memreserve section (%d)\n", err, i));
+        DEBUG ((DEBUG_ERROR, "Error (%d) : Cannot get memreserve section (%d)\n", err, i));
       }
       else {
         Print (L"/memreserve/ \t0x%lx \t0x%lx;\n", addr, size);

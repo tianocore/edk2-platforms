@@ -289,7 +289,7 @@ PlatformBootManagerBeforeConsole (
   gBS->SignalEvent (EndOfDxeEvent);
   gBS->CloseEvent (EndOfDxeEvent);
 
-  DEBUG((EFI_D_INFO,"All EndOfDxe callbacks have returned successfully\n"));
+  DEBUG((DEBUG_INFO,"All EndOfDxe callbacks have returned successfully\n"));
 
   //
   // Install SMM Ready To Lock protocol so all resources can be locked down

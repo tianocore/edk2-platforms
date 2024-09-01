@@ -97,7 +97,7 @@ Returns:
     mSmmAccess.SmramDesc[Index].CpuStart      = DescriptorBlock->Descriptor[Index].CpuStart;
     mSmmAccess.SmramDesc[Index].PhysicalSize  = DescriptorBlock->Descriptor[Index].PhysicalSize;
     mSmmAccess.SmramDesc[Index].RegionState   = DescriptorBlock->Descriptor[Index].RegionState;
-    DEBUG ((EFI_D_INFO, "SM RAM index[%d] startaddr:%08X Size :%08X\n", Index, mSmmAccess.SmramDesc[Index].CpuStart,
+    DEBUG ((DEBUG_INFO, "SM RAM index[%d] startaddr:%08X Size :%08X\n", Index, mSmmAccess.SmramDesc[Index].CpuStart,
       mSmmAccess.SmramDesc[Index].PhysicalSize));
   }
 
@@ -121,8 +121,8 @@ Returns:
                 );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((EFI_D_INFO, "SMM  Base: %08X\n", (UINT32)(mSmmAccess.SmramDesc[mSmmAccess.NumberRegions-1].PhysicalStart)));
-  DEBUG ((EFI_D_INFO, "SMM  Size: %08X\n", (UINT32)(mSmmAccess.SmramDesc[mSmmAccess.NumberRegions-1].PhysicalSize)));
+  DEBUG ((DEBUG_INFO, "SMM  Base: %08X\n", (UINT32)(mSmmAccess.SmramDesc[mSmmAccess.NumberRegions-1].PhysicalStart)));
+  DEBUG ((DEBUG_INFO, "SMM  Size: %08X\n", (UINT32)(mSmmAccess.SmramDesc[mSmmAccess.NumberRegions-1].PhysicalSize)));
 
   mSmmAccess.TsegSize = (UINT8)(mSmmAccess.SmramDesc[mSmmAccess.NumberRegions-1].PhysicalSize);
   //
@@ -174,7 +174,7 @@ Returns:
   SmmAccess = SMM_ACCESS_PRIVATE_DATA_FROM_THIS (This);
 
   if (mSmmAccess.SMMRegionState & EFI_SMRAM_LOCKED) {
-    DEBUG ((EFI_D_ERROR, "Cannot open a locked SMRAM region\n"));
+    DEBUG ((DEBUG_ERROR, "Cannot open a locked SMRAM region\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -232,7 +232,7 @@ Returns:
     //
     // Cannot close a "locked" region
     //
-    DEBUG ((EFI_D_WARN, "Cannot close the locked SMRAM Region\n"));
+    DEBUG ((DEBUG_WARN, "Cannot close the locked SMRAM Region\n"));
     return EFI_DEVICE_ERROR;
   }
 

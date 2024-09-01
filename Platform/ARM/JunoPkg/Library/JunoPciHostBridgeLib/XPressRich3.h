@@ -22,7 +22,7 @@
 #define PCI_MEM64_BASE      FixedPcdGet64 (PcdPciMmio64Base)
 #define PCI_MEM64_SIZE      FixedPcdGet64 (PcdPciMmio64Size)
 
-#define PCI_TRACE(txt)  DEBUG((EFI_D_VERBOSE, "ARM_PCI: " txt "\n"))
+#define PCI_TRACE(txt)  DEBUG((DEBUG_VERBOSE, "ARM_PCI: " txt "\n"))
 
 #define PCIE_ROOTPORT_WRITE32(Add, Val) { UINT32 Value = (UINT32)(Val); CpuIo->Mem.Write (CpuIo,EfiCpuIoWidthUint32,(UINT64)(PcdGet64 (PcdPcieRootPortBaseAddress)+(Add)),1,&Value); }
 #define PCIE_ROOTPORT_READ32(Add, Val) { CpuIo->Mem.Read (CpuIo,EfiCpuIoWidthUint32,(UINT64)(PcdGet64 (PcdPcieRootPortBaseAddress)+(Add)),1,&Val); }

@@ -232,7 +232,7 @@ QNCOpenSmramRegion (
   //
   if (Smram & SMM_LOCKED) {
     // Cannot Open a locked region
-    DEBUG ((EFI_D_WARN, "Cannot open a locked SMRAM region\n"));
+    DEBUG ((DEBUG_WARN, "Cannot open a locked SMRAM region\n"));
     return FALSE;
   }
 
@@ -275,7 +275,7 @@ QNCCloseSmramRegion (
   //
   if(Smram & SMM_LOCKED) {
     // Cannot Open a locked region
-    DEBUG ((EFI_D_WARN, "Cannot close a locked SMRAM region\n"));
+    DEBUG ((DEBUG_WARN, "Cannot close a locked SMRAM region\n"));
     return FALSE;
   }
 
@@ -303,7 +303,7 @@ QNCLockSmramRegion (
   // Read the SMRAM register.
   Smram = QncHsmmcRead ();
   if(Smram & SMM_LOCKED) {
-    DEBUG ((EFI_D_WARN, "SMRAM region already locked!\n"));
+    DEBUG ((DEBUG_WARN, "SMRAM region already locked!\n"));
   }
   Smram |= SMM_LOCKED;
 

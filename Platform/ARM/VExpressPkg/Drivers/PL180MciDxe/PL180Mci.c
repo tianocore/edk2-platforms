@@ -171,10 +171,10 @@ MciSendCommand (
     MmioWrite32 (MCI_CLEAR_STATUS_REG, MCI_STATUS_CMD_ERROR);
 
     if ((Status & MCI_STATUS_CMD_START_BIT_ERROR)) {
-      DEBUG ((EFI_D_ERROR, "MciSendCommand(CmdIndex:%d) Start bit Error! Response:0x%X Status:0x%x\n", (Cmd & 0x3F), MmioRead32 (MCI_RESPONSE0_REG), Status));
+      DEBUG ((DEBUG_ERROR, "MciSendCommand(CmdIndex:%d) Start bit Error! Response:0x%X Status:0x%x\n", (Cmd & 0x3F), MmioRead32 (MCI_RESPONSE0_REG), Status));
       RetVal = EFI_NO_RESPONSE;
     } else if ((Status & MCI_STATUS_CMD_CMDTIMEOUT)) {
-      //DEBUG ((EFI_D_ERROR, "MciSendCommand(CmdIndex:%d) TIMEOUT! Response:0x%X Status:0x%x\n", (Cmd & 0x3F), MmioRead32 (MCI_RESPONSE0_REG), Status));
+      //DEBUG ((DEBUG_ERROR, "MciSendCommand(CmdIndex:%d) TIMEOUT! Response:0x%X Status:0x%x\n", (Cmd & 0x3F), MmioRead32 (MCI_RESPONSE0_REG), Status));
       RetVal = EFI_TIMEOUT;
     } else if ((!(MmcCmd & MMC_CMD_NO_CRC_RESPONSE)) && (Status & MCI_STATUS_CMD_CMDCRCFAIL)) {
       // The CMD1 and response type R3 do not contain CRC. We should ignore the CRC failed Status.
@@ -272,15 +272,15 @@ MciReadBlockData (
     } else {
       //Check for error conditions and timeouts
       if (Status & MCI_STATUS_CMD_DATATIMEOUT) {
-        DEBUG ((EFI_D_ERROR, "MciReadBlockData(): TIMEOUT! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
+        DEBUG ((DEBUG_ERROR, "MciReadBlockData(): TIMEOUT! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
         RetVal = EFI_TIMEOUT;
         break;
       } else if (Status & MCI_STATUS_CMD_DATACRCFAIL) {
-        DEBUG ((EFI_D_ERROR, "MciReadBlockData(): CRC Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
+        DEBUG ((DEBUG_ERROR, "MciReadBlockData(): CRC Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
         RetVal = EFI_CRC_ERROR;
         break;
       } else if (Status & MCI_STATUS_CMD_START_BIT_ERROR) {
-        DEBUG ((EFI_D_ERROR, "MciReadBlockData(): Start-bit Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
+        DEBUG ((DEBUG_ERROR, "MciReadBlockData(): Start-bit Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
         RetVal = EFI_NO_RESPONSE;
         break;
       }
@@ -358,15 +358,15 @@ MciWriteBlockData (
     } else {
       // Check for error conditions and timeouts
       if (Status & MCI_STATUS_CMD_DATATIMEOUT) {
-        DEBUG ((EFI_D_ERROR, "MciWriteBlockData(): TIMEOUT! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
+        DEBUG ((DEBUG_ERROR, "MciWriteBlockData(): TIMEOUT! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
         RetVal = EFI_TIMEOUT;
         goto Exit;
       } else if (Status & MCI_STATUS_CMD_DATACRCFAIL) {
-        DEBUG ((EFI_D_ERROR, "MciWriteBlockData(): CRC Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
+        DEBUG ((DEBUG_ERROR, "MciWriteBlockData(): CRC Error! Response:0x%X Status:0x%x\n", MmioRead32 (MCI_RESPONSE0_REG), Status));
         RetVal = EFI_CRC_ERROR;
         goto Exit;
       } else if (Status & MCI_STATUS_CMD_TX_UNDERRUN) {
-        DEBUG ((EFI_D_ERROR, "MciWriteBlockData(): TX buffer Underrun! Response:0x%X Status:0x%x, Number of bytes written 0x%x\n",MmioRead32(MCI_RESPONSE0_REG),Status, Loop));
+        DEBUG ((DEBUG_ERROR, "MciWriteBlockData(): TX buffer Underrun! Response:0x%X Status:0x%x, Number of bytes written 0x%x\n",MmioRead32(MCI_RESPONSE0_REG),Status, Loop));
         RetVal = EFI_BUFFER_TOO_SMALL;
         ASSERT(0);
         goto Exit;
@@ -396,7 +396,7 @@ MciWriteBlockData (
   MmioWrite32 (MCI_CLEAR_STATUS_REG, MCI_CLR_ALL_STATUS);
 
   if (Timer == 0) {
-    DEBUG ((EFI_D_ERROR, "MciWriteBlockData(): Data End timeout Number of words written 0x%x\n", Loop));
+    DEBUG ((DEBUG_ERROR, "MciWriteBlockData(): Data End timeout Number of words written 0x%x\n", Loop));
     RetVal = EFI_TIMEOUT;
   }
 
@@ -537,7 +537,7 @@ PL180MciDxeInitialize (
   EFI_STATUS    Status;
   EFI_HANDLE    Handle;
 
-  DEBUG ((EFI_D_WARN, "Probing ID registers at 0x%lx for a PL180\n",
+  DEBUG ((DEBUG_WARN, "Probing ID registers at 0x%lx for a PL180\n",
     MCI_PERIPH_ID_REG0));
 
   // Check if this is a PL180
@@ -549,7 +549,7 @@ PL180MciDxeInitialize (
       MmioRead8 (MCI_PCELL_ID_REG2)  != MCI_PCELL_ID2  ||
       MmioRead8 (MCI_PCELL_ID_REG3)  != MCI_PCELL_ID3) {
 
-    DEBUG ((EFI_D_WARN, "Probing ID registers at 0x%lx for a PL180"
+    DEBUG ((DEBUG_WARN, "Probing ID registers at 0x%lx for a PL180"
       " failed\n", MCI_PERIPH_ID_REG0));
     return EFI_NOT_FOUND;
   }

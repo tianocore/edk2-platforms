@@ -214,9 +214,9 @@ DebugDisplayReOrderTable(
 {
   UINT32 Index;
 
-  DEBUG ((EFI_D_ERROR, "Index  AcpiProcId  ApicId  Flags  SwApicId  Skt\n"));
+  DEBUG ((DEBUG_ERROR, "Index  AcpiProcId  ApicId  Flags  SwApicId  Skt\n"));
   for (Index=0; Index<MAX_CPU_NUM; Index++) {
-    DEBUG ((EFI_D_ERROR, " %02d       0x%02X      0x%02X      %d      0x%02X     %d\n",
+    DEBUG ((DEBUG_ERROR, " %02d       0x%02X      0x%02X      %d      0x%02X     %d\n",
                            Index, mCpuApicIdOrderTable[Index].AcpiProcessorId,
                            mCpuApicIdOrderTable[Index].ApicId,
                            mCpuApicIdOrderTable[Index].Flags,
@@ -338,7 +338,7 @@ SortCpuLocalApicInTable (
     //
     //keep for debug purpose
 	//
-    DEBUG(( EFI_D_ERROR, "::ACPI::  APIC ID Order Table Init.   CoreThreadMask = %x,  mNumOfBitShift = %x\n", CoreThreadMask, mNumOfBitShift));
+    DEBUG(( DEBUG_ERROR, "::ACPI::  APIC ID Order Table Init.   CoreThreadMask = %x,  mNumOfBitShift = %x\n", CoreThreadMask, mNumOfBitShift));
     DebugDisplayReOrderTable();
     //
     //make sure 1st entry is BSP
@@ -348,7 +348,7 @@ SortCpuLocalApicInTable (
     } else {
       BspApicId = (*(volatile UINT32 *)(UINTN)0xFEE00020) >> 24;
     }
-    DEBUG ((EFI_D_INFO, "BspApicId - 0x%x\n", BspApicId));
+    DEBUG ((DEBUG_INFO, "BspApicId - 0x%x\n", BspApicId));
 
     if(mCpuApicIdOrderTable[0].ApicId != BspApicId) {
       //
@@ -357,7 +357,7 @@ SortCpuLocalApicInTable (
       Index = ApicId2SwProcApicId(BspApicId);
 
       if(MAX_CPU_NUM <= Index) {
-        DEBUG ((EFI_D_ERROR, "Asserting the SortCpuLocalApicInTable Index Bufferflow\n"));
+        DEBUG ((DEBUG_ERROR, "Asserting the SortCpuLocalApicInTable Index Bufferflow\n"));
         ASSERT_EFI_ERROR(EFI_INVALID_PARAMETER);
       }
 
@@ -415,7 +415,7 @@ SortCpuLocalApicInTable (
     //
     //keep for debug purpose
     //
-    DEBUG ((EFI_D_ERROR, "APIC ID Order Table ReOrdered\n"));
+    DEBUG ((DEBUG_ERROR, "APIC ID Order Table ReOrdered\n"));
     DebugDisplayReOrderTable();
 
     mCpuOrderSorted = TRUE;
@@ -914,11 +914,11 @@ InstallMadtFromScratch (
   //
   Status = InitializeMadtHeader (&MadtTableHeader);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "InitializeMadtHeader failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "InitializeMadtHeader failed: %r\n", Status));
     goto Done;
   }
 
-  DEBUG ((EFI_D_INFO, "Number of CPUs detected = %d \n", mNumberOfCPUs));
+  DEBUG ((DEBUG_INFO, "Number of CPUs detected = %d \n", mNumberOfCPUs));
 
   //
   // Build Processor Local APIC Structures and Processor Local X2APIC Structures
@@ -961,7 +961,7 @@ InstallMadtFromScratch (
         );
     }
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "CopyMadtStructure (local APIC/x2APIC) failed: %r\n", Status));
+      DEBUG ((DEBUG_ERROR, "CopyMadtStructure (local APIC/x2APIC) failed: %r\n", Status));
       goto Done;
     }
   }
@@ -986,7 +986,7 @@ InstallMadtFromScratch (
       &MadtStructs[MadtStructsIndex++]
       );
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "CopyMadtStructure (I/O APIC) failed: %r\n", Status));
+      DEBUG ((DEBUG_ERROR, "CopyMadtStructure (I/O APIC) failed: %r\n", Status));
       goto Done;
     }
   }
@@ -1008,7 +1008,7 @@ InstallMadtFromScratch (
         &MadtStructs[MadtStructsIndex++]
         );
       if (EFI_ERROR (Status)) {
-        DEBUG ((EFI_D_ERROR, "CopyMadtStructure (I/O APIC) failed: %r\n", Status));
+        DEBUG ((DEBUG_ERROR, "CopyMadtStructure (I/O APIC) failed: %r\n", Status));
         goto Done;
       }
   }
@@ -1034,7 +1034,7 @@ InstallMadtFromScratch (
     &MadtStructs[MadtStructsIndex++]
     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "CopyMadtStructure (IRQ2 source override) failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "CopyMadtStructure (IRQ2 source override) failed: %r\n", Status));
     goto Done;
   }
 
@@ -1053,7 +1053,7 @@ InstallMadtFromScratch (
     &MadtStructs[MadtStructsIndex++]
     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "CopyMadtStructure (IRQ9 source override) failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "CopyMadtStructure (IRQ9 source override) failed: %r\n", Status));
     goto Done;
   }
 
@@ -1073,7 +1073,7 @@ InstallMadtFromScratch (
     &MadtStructs[MadtStructsIndex++]
     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "CopyMadtStructure (APIC NMI) failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "CopyMadtStructure (APIC NMI) failed: %r\n", Status));
     goto Done;
   }
 
@@ -1096,7 +1096,7 @@ InstallMadtFromScratch (
     &MadtStructs[MadtStructsIndex++]
     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "CopyMadtStructure (x2APIC NMI) failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "CopyMadtStructure (x2APIC NMI) failed: %r\n", Status));
     goto Done;
   }
 
@@ -1111,7 +1111,7 @@ InstallMadtFromScratch (
     (UINT8 **)&NewMadtTable
     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "BuildAcpiTable failed: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "BuildAcpiTable failed: %r\n", Status));
     goto Done;
   }
 
@@ -1331,9 +1331,9 @@ PlatformUpdateTables (
     FadtHeader->DutyOffset = PcdGet8 (PcdFadtDutyOffset);
     FadtHeader->DutyWidth = PcdGet8 (PcdFadtDutyWidth);
 
-    DEBUG(( EFI_D_ERROR, "ACPI FADT table @ address 0x%x\n", Table ));
-    DEBUG(( EFI_D_ERROR, "  IaPcBootArch 0x%x\n", FadtHeader->IaPcBootArch ));
-    DEBUG(( EFI_D_ERROR, "  Flags 0x%x\n", FadtHeader->Flags ));
+    DEBUG(( DEBUG_ERROR, "ACPI FADT table @ address 0x%x\n", Table ));
+    DEBUG(( DEBUG_ERROR, "  IaPcBootArch 0x%x\n", FadtHeader->IaPcBootArch ));
+    DEBUG(( DEBUG_ERROR, "  Flags 0x%x\n", FadtHeader->Flags ));
     break;
 
   case EFI_ACPI_3_0_HIGH_PRECISION_EVENT_TIMER_TABLE_SIGNATURE:
@@ -1353,8 +1353,8 @@ PlatformUpdateTables (
     HpetBlockId.Bits.VendorId       = HpetCapabilities.Bits.VendorId;
     HpetTable->EventTimerBlockId    = HpetBlockId.Uint32;
     HpetTable->MainCounterMinimumClockTickInPeriodicMode = (UINT16)HpetCapabilities.Bits.CounterClockPeriod;
-    DEBUG(( EFI_D_ERROR, "ACPI HPET table @ address 0x%x\n", Table ));
-    DEBUG(( EFI_D_ERROR, "  HPET base 0x%x\n", PcdGet32 (PcdHpetBaseAddress) ));
+    DEBUG(( DEBUG_ERROR, "ACPI HPET table @ address 0x%x\n", Table ));
+    DEBUG(( DEBUG_ERROR, "  HPET base 0x%x\n", PcdGet32 (PcdHpetBaseAddress) ));
     break;
 
   case EFI_ACPI_3_0_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE:

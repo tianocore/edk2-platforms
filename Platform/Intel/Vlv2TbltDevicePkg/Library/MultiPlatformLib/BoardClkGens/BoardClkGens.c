@@ -84,17 +84,17 @@ ConfigureClockGenerator (
   {
     UINT8 i;
     for (i = 0; i < sizeof (Buffer); i++) {
-      DEBUG((EFI_D_ERROR, "CK505 default Clock Generator Byte %d: %x\n", i, Buffer[i]));
+      DEBUG((DEBUG_ERROR, "CK505 default Clock Generator Byte %d: %x\n", i, Buffer[i]));
     }
 #if CLKGEN_EN
     for (i = 0; i < ConfigurationTableLength; i++) {
-      DEBUG((EFI_D_ERROR, "BIOS structure Clock Generator Byte %d: %x\n", i, ConfigurationTable[i]));
+      DEBUG((DEBUG_ERROR, "BIOS structure Clock Generator Byte %d: %x\n", i, ConfigurationTable[i]));
     }
 #endif
   }
 #endif
 
-  DEBUG((EFI_D_ERROR, "Expected Clock Generator ID is %x, expecting %x\n", mSupportedClockGeneratorTable[ClockType].ClockId,(Buffer[7]&0xF)));
+  DEBUG((DEBUG_ERROR, "Expected Clock Generator ID is %x, expecting %x\n", mSupportedClockGeneratorTable[ClockType].ClockId,(Buffer[7]&0xF)));
 
   //
   // Program clock generator
@@ -164,7 +164,7 @@ ConfigureClockGenerator (
         );
 
       for (i = 0; i < ConfigurationTableLength; i++) {
-        DEBUG((EFI_D_ERROR, "Clock Generator Byte %d: %x\n", i, Buffer[i]));
+        DEBUG((DEBUG_ERROR, "Clock Generator Byte %d: %x\n", i, Buffer[i]));
       }
     }
     #endif
@@ -218,7 +218,7 @@ ReadClockGeneratorID (
   //
   // Sanity check that the requested clock type is present in our supported clocks table
   //
-  DEBUG((EFI_D_ERROR, "Expected Clock Generator ID is 0x%x\n", Buffer[7]));
+  DEBUG((DEBUG_ERROR, "Expected Clock Generator ID is 0x%x\n", Buffer[7]));
 
   return (Buffer[7]);
 }
@@ -270,7 +270,7 @@ ConfigurePlatformClocks (
   Status = GetPlatformInfoHob ((CONST EFI_PEI_SERVICES **) PeiServices, &PlatformInfoHob);
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG((EFI_D_ERROR, "PlatformInfo protocol is working in ConfigurePlatformClocks()...%x\n",PlatformInfoHob->PlatformFlavor));
+  DEBUG((DEBUG_ERROR, "PlatformInfo protocol is working in ConfigurePlatformClocks()...%x\n",PlatformInfoHob->PlatformFlavor));
 
   //
   // Locate SMBUS PPI
@@ -299,7 +299,7 @@ ConfigurePlatformClocks (
                                                );
 
   if (EFI_ERROR (Status) || ((Data & 0x0F) != CK505_GENERATOR_ID)) {
-      DEBUG((EFI_D_ERROR, "Clock Generator CK505 Not Present, vendor ID on board is %x\n",(Data & 0x0F)));
+      DEBUG((DEBUG_ERROR, "Clock Generator CK505 Not Present, vendor ID on board is %x\n",(Data & 0x0F)));
       return EFI_SUCCESS;
 }
 
@@ -344,7 +344,7 @@ ConfigurePlatformClocks (
   //
   // Perform platform-specific intialization dependent upon Board ID:
   //
-  DEBUG((EFI_D_ERROR, "board id is %x, platform id is %x\n",PlatformInfoHob->BoardId,PlatformInfoHob->PlatformFlavor));
+  DEBUG((DEBUG_ERROR, "board id is %x, platform id is %x\n",PlatformInfoHob->BoardId,PlatformInfoHob->PlatformFlavor));
 
 
   switch (PlatformInfoHob->BoardId) {
@@ -404,7 +404,7 @@ InstallPlatformClocksNotify (
 {
   EFI_STATUS                    Status;
 
-  DEBUG ((EFI_D_INFO, "InstallPlatformClocksNotify()...\n"));
+  DEBUG ((DEBUG_INFO, "InstallPlatformClocksNotify()...\n"));
 
   Status = (*PeiServices)->NotifyPpi(PeiServices, &mNotifyList[0]);
   ASSERT_EFI_ERROR (Status);

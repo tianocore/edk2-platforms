@@ -56,7 +56,7 @@ X58Ich10BoardBootModeDetect (
 {
   EFI_BOOT_MODE BootMode = BOOT_WITH_FULL_CONFIGURATION;
 
-  DEBUG((EFI_D_INFO, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
+  DEBUG((DEBUG_INFO, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
   if (IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12) == 0x5) {
     BootMode = BOOT_ON_S3_RESUME;
   }

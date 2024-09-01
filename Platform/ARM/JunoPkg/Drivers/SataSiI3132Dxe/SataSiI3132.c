@@ -394,7 +394,7 @@ SataSiI3132DriverBindingStart (
                         );
   }
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SataSiI3132DriverBindingStart: failed to enable controller\n"));
+    DEBUG ((DEBUG_ERROR, "SataSiI3132DriverBindingStart: failed to enable controller\n"));
     goto CLOSE_PCIIO;
   }
 

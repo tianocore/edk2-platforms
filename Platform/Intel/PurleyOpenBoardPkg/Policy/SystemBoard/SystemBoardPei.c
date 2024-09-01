@@ -157,7 +157,7 @@ InternalDumpData (
 {
   UINTN  Index;
   for (Index = 0; Index < Size; Index++) {
-    DEBUG ((EFI_D_INFO, "%02x", (UINTN)Data[Index]));
+    DEBUG ((DEBUG_INFO, "%02x", (UINTN)Data[Index]));
   }
 }
 
@@ -184,15 +184,15 @@ InternalDumpHex (
   Count = Size / COLUME_SIZE;
   Left  = Size % COLUME_SIZE;
   for (Index = 0; Index < Count; Index++) {
-    DEBUG ((EFI_D_INFO, "%04x: ", Index * COLUME_SIZE));
+    DEBUG ((DEBUG_INFO, "%04x: ", Index * COLUME_SIZE));
     InternalDumpData (Data + Index * COLUME_SIZE, COLUME_SIZE);
-    DEBUG ((EFI_D_INFO, "\n"));
+    DEBUG ((DEBUG_INFO, "\n"));
   }
 
   if (Left != 0) {
-    DEBUG ((EFI_D_INFO, "%04x: ", Index * COLUME_SIZE));
+    DEBUG ((DEBUG_INFO, "%04x: ", Index * COLUME_SIZE));
     InternalDumpData (Data + Index * COLUME_SIZE, Left);
-    DEBUG ((EFI_D_INFO, "\n"));
+    DEBUG ((DEBUG_INFO, "\n"));
   }
 }
 
@@ -242,7 +242,7 @@ SystemBoardPeiEntry (
 {
   EFI_STATUS Status;
 
-  DEBUG ((EFI_D_ERROR, "--> SystemBoard PEI BoardDetection\n"));
+  DEBUG ((DEBUG_ERROR, "--> SystemBoard PEI BoardDetection\n"));
 
   //DumpConfig ();
 

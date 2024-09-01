@@ -274,7 +274,7 @@ LoadAndLaunchKernel (
     // Prepare the command line
     Status = LoadLinuxSetCommandLine(HandoverParams, (UINT8 *) &CmdLine);
     if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_INFO, "Unable to set linux command line; %r.\n", Status));
+        DEBUG((DEBUG_INFO, "Unable to set linux command line; %r.\n", Status));
         goto FatalError;
     }
 

@@ -631,7 +631,7 @@ ProcessorInfoUpdateSmbiosType4 (
 {
   ISCP_TYPE4_SMBIOS_INFO *SmbiosT4 = &mSmbiosInfo.SmbiosCpuBuffer.T4[0];
 
-  DEBUG ((EFI_D_ERROR, "Logging SmbiosType4 from ISCP.\n"));
+  DEBUG ((DEBUG_ERROR, "Logging SmbiosType4 from ISCP.\n"));
 
   mProcessorInfoType4.ProcessorType = SmbiosT4->T4ProcType;
   mProcessorInfoType4.ProcessorFamily = SmbiosT4->T4ProcFamily;
@@ -667,7 +667,7 @@ CacheInfoUpdateSmbiosType7 (
   ISCP_TYPE7_SMBIOS_INFO *SmbiosT7;
   SMBIOS_TABLE_TYPE7 dstType7 = {{0}};
 
-  DEBUG ((EFI_D_ERROR, "Logging SmbiosType7 from ISCP.\n"));
+  DEBUG ((DEBUG_ERROR, "Logging SmbiosType7 from ISCP.\n"));
 
   CopyMem ((VOID *) &dstType7.Hdr, (VOID *) &mCacheInfoType7.Hdr, sizeof (SMBIOS_STRUCTURE));
   dstType7.SocketDesignation = 1;  // "L# Cache"
@@ -744,7 +744,7 @@ PhyMemArrayInfoUpdateSmbiosType16 (
 {
   ISCP_TYPE16_SMBIOS_INFO *SmbiosT16 = &mSmbiosInfo.SmbiosMemBuffer.T16;
 
-  DEBUG ((EFI_D_ERROR, "Logging SmbiosType16 from ISCP.\n"));
+  DEBUG ((DEBUG_ERROR, "Logging SmbiosType16 from ISCP.\n"));
 
   mPhyMemArrayInfoType16.Location = SmbiosT16->Location;
   mPhyMemArrayInfoType16.Use = SmbiosT16->Use;
@@ -767,7 +767,7 @@ MemDevInfoUpdatedstType17 (
   ISCP_TYPE17_SMBIOS_INFO *srcType17;
   UINTN i, j, StrIndex, LastIndex;
 
-  DEBUG ((EFI_D_ERROR, "Logging SmbiosType17 from ISCP.\n"));
+  DEBUG ((DEBUG_ERROR, "Logging SmbiosType17 from ISCP.\n"));
 
   LastIndex = (sizeof(mMemDevInfoType17Strings) / sizeof (CHAR8 *)) - 1;
   for (i = 0; i < 2; ++i) {
@@ -844,7 +844,7 @@ MemArrMapInfoUpdateSmbiosType19 (
 {
   ISCP_TYPE19_SMBIOS_INFO *SmbiosT19 = &mSmbiosInfo.SmbiosMemBuffer.T19;
 
-  DEBUG ((EFI_D_ERROR, "Logging SmbiosType19 from ISCP.\n"));
+  DEBUG ((DEBUG_ERROR, "Logging SmbiosType19 from ISCP.\n"));
 
   mMemArrMapInfoType19.StartingAddress = SmbiosT19->StartingAddr;
   mMemArrMapInfoType19.EndingAddress = SmbiosT19->EndingAddr;
@@ -881,7 +881,7 @@ PlatformSmbiosDriverEntryPoint (
 {
   EFI_STATUS Status;
 
-  DEBUG ((EFI_D_ERROR, "PlatformSmbiosDxe Loaded\n"));
+  DEBUG ((DEBUG_ERROR, "PlatformSmbiosDxe Loaded\n"));
 
   //
   // Locate Smbios protocol
@@ -894,7 +894,7 @@ PlatformSmbiosDriverEntryPoint (
 
   if (EFI_ERROR (Status)) {
     mSmbiosProtocol = NULL;
-    DEBUG ((EFI_D_ERROR, "Failed to Locate SMBIOS Protocol"));
+    DEBUG ((DEBUG_ERROR, "Failed to Locate SMBIOS Protocol"));
     return Status;
   }
 
@@ -905,7 +905,7 @@ PlatformSmbiosDriverEntryPoint (
                );
   if (EFI_ERROR (Status)) {
     mIscpDxeProtocol = NULL;
-    DEBUG ((EFI_D_ERROR, "Failed to Locate ISCP DXE Protocol"));
+    DEBUG ((DEBUG_ERROR, "Failed to Locate ISCP DXE Protocol"));
     return Status;
   }
 
@@ -914,7 +914,7 @@ PlatformSmbiosDriverEntryPoint (
                     &mSmbiosInfo
                     );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Failed to get SMBIOS data via ISCP"));
+    DEBUG ((DEBUG_ERROR, "Failed to get SMBIOS data via ISCP"));
     return Status;
   }
 

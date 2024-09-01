@@ -249,12 +249,12 @@ SiI3132AtaPassThruCommand (
 
 
   if ((Packet->Timeout != 0) && (Timeout == 0)) {
-    DEBUG ((EFI_D_ERROR, "SiI3132AtaPassThru() Err:Timeout\n"));
+    DEBUG ((DEBUG_ERROR, "SiI3132AtaPassThru() Err:Timeout\n"));
     //ASSERT (0);
     return EFI_TIMEOUT;
   } else if (Value32 & (SII3132_PORT_INT_CMDERR << 16)) {
     SATA_PORT_READ32 (SataPort->RegBase + SII3132_PORT_CMDERROR_REG, &Error);
-    DEBUG ((EFI_D_ERROR, "SiI3132AtaPassThru() CmdErr:0x%X (SiI3132 Err:0x%X)\n", Value32, Error));
+    DEBUG ((DEBUG_ERROR, "SiI3132AtaPassThru() CmdErr:0x%X (SiI3132 Err:0x%X)\n", Value32, Error));
     ASSERT (0);
     return EFI_DEVICE_ERROR;
   } else if (Value32 & (SII3132_PORT_INT_CMDCOMPL << 16)) {
@@ -343,7 +343,7 @@ SiI3132AtaPassThru (
   }
   SataPort = SataDevice->Port;
 
-  DEBUG ((EFI_D_INFO, "SiI3132AtaPassThru(%d,%d) : AtaCmd:0x%X Prot:%d\n", Port, PortMultiplierPort,
+  DEBUG ((DEBUG_INFO, "SiI3132AtaPassThru(%d,%d) : AtaCmd:0x%X Prot:%d\n", Port, PortMultiplierPort,
          Packet->Acb->AtaCommand, Packet->Protocol));
 
   return SiI3132AtaPassThruCommand (SataSiI3132Instance, SataPort, PortMultiplierPort, Packet, Event);

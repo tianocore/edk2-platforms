@@ -291,7 +291,7 @@ IndirectEEPROMRead32 (
 
   // Check that operation didn't time out
   if (Lan9118MmioRead32 (LAN9118_E2P_CMD) & E2P_EPC_TIMEOUT) {
-    DEBUG ((EFI_D_ERROR, "EEPROM Operation Timed out: Read command on index %x\n",Index));
+    DEBUG ((DEBUG_ERROR, "EEPROM Operation Timed out: Read command on index %x\n",Index));
     return 0;
   }
 
@@ -338,7 +338,7 @@ IndirectEEPROMWrite32 (
 
   // Check that operation didn't time out
   if (Lan9118MmioRead32 (LAN9118_E2P_CMD) & E2P_EPC_TIMEOUT) {
-    DEBUG ((EFI_D_ERROR, "EEPROM Operation Timed out: Write command at memloc 0x%x, with value 0x%x\n",Index, Value));
+    DEBUG ((DEBUG_ERROR, "EEPROM Operation Timed out: Write command at memloc 0x%x, with value 0x%x\n",Index, Value));
     return 0;
   }
 
@@ -432,14 +432,14 @@ Lan9118Initialize (
   // Check if a MAC address was loaded from EEPROM, and if it was, set it as the
   // current address.
   if ((Lan9118MmioRead32 (LAN9118_E2P_CMD) & E2P_EPC_MAC_ADDRESS_LOADED) == 0) {
-    DEBUG ((EFI_D_ERROR, "Warning: There was an error detecting EEPROM or loading the MAC Address.\n"));
+    DEBUG ((DEBUG_ERROR, "Warning: There was an error detecting EEPROM or loading the MAC Address.\n"));
 
     // If we had an address before (set by StationAddress), continue to use it
     if (CompareMem (&Snp->Mode->CurrentAddress, &mZeroMac, NET_ETHER_ADDR_LEN)) {
       Lan9118SetMacAddress (&Snp->Mode->CurrentAddress, Snp);
     } else {
       // If there are no cached addresses, then fall back to a default
-      DEBUG ((EFI_D_WARN, "Warning: using driver-default MAC address\n"));
+      DEBUG ((DEBUG_WARN, "Warning: using driver-default MAC address\n"));
       DefaultMacAddress = FixedPcdGet64 (PcdLan9118DefaultMacAddress);
       Lan9118SetMacAddress((EFI_MAC_ADDRESS *) &DefaultMacAddress, Snp);
       CopyMem (&Snp->Mode->CurrentAddress, &DefaultMacAddress, NET_ETHER_ADDR_LEN);
@@ -620,7 +620,7 @@ AutoNegotiate (
   // First check that auto-negotiation is supported
   PhyStatus = IndirectPHYRead32 (PHY_INDEX_BASIC_STATUS);
   if ((PhyStatus & PHYSTS_AUTO_CAP) == 0) {
-    DEBUG ((EFI_D_ERROR, "Auto-negotiation not supported.\n"));
+    DEBUG ((DEBUG_ERROR, "Auto-negotiation not supported.\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -632,7 +632,7 @@ AutoNegotiate (
       gBS->Stall (LAN9118_STALL);
       Retries--;
       if (!Retries) {
-        DEBUG ((EFI_D_ERROR, "Link timeout in auto-negotiation.\n"));
+        DEBUG ((DEBUG_ERROR, "Link timeout in auto-negotiation.\n"));
         return EFI_TIMEOUT;
       }
     }

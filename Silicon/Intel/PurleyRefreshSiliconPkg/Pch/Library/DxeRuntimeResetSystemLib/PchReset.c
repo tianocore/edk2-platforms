@@ -581,7 +581,7 @@ PchResetCallback (
       ASSERT_EFI_ERROR (Status);
 
       if (!EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "Calling PchResetCallback %d\n", Index));
+        DEBUG((DEBUG_ERROR, "Calling PchResetCallback %d\n", Index));
         PchResetCallback->ResetCallback (PchResetType);
       } else {
         DEBUG ((DEBUG_ERROR | DEBUG_INFO, "Failed to locate Pch Reset Callback protocol.\n"));
@@ -589,12 +589,12 @@ PchResetCallback (
       }
     }
   }
-  DEBUG((EFI_D_ERROR, "PchResetCallback After Runtime Check\n"));
+  DEBUG((DEBUG_ERROR, "PchResetCallback After Runtime Check\n"));
   if(PchResetType == WarmReset) {
     ///
     /// Check if there are pending capsules to process
     ///
-    DEBUG((EFI_D_ERROR, "PchResetCallback Warmreset\n"));
+    DEBUG((DEBUG_ERROR, "PchResetCallback Warmreset\n"));
     Size = sizeof (CapsuleDataPtr);
     Status = EfiGetVariable (
                EFI_CAPSULE_VARIABLE_NAME,

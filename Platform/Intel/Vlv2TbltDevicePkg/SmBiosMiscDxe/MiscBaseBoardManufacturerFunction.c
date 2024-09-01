@@ -148,7 +148,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscBaseBoardManufacturer)
   if (SerialNumStrLen > SMBIOS_STRING_MAX_LENGTH) {
     return EFI_UNSUPPORTED;
   }
-  DEBUG ((EFI_D_ERROR, "MAC Address: %S\n", MacStr)); 
+  DEBUG ((DEBUG_ERROR, "MAC Address: %S\n", MacStr)); 
   
   TokenToGet = STRING_TOKEN (STR_MISC_BASE_BOARD_ASSET_TAG);
   AssertTag = SmbiosMiscGetString (TokenToGet);

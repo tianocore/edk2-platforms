@@ -262,13 +262,13 @@ PciPlatformInitPciIovData (
       return Status;
     }
     DEBUG ((
-          EFI_D_INFO,
+          DEBUG_INFO,
           " Initialized SR-IOV Platform Data: PCIIovPolicy = 0x%x; SystemPageSize = 0x%x;\n",
           PciIovPolicy, SystemPageSize
           ));
   } else {
     DEBUG ((
-          EFI_D_INFO,
+          DEBUG_INFO,
           " Using default values for SystemPageSize;\n"
           ));
   }

@@ -28,7 +28,7 @@ CheckFirmwareVersionRollbackProtection (
 
   Result = TRUE;
 
-  DEBUG ((EFI_D_INFO, "  Firmware Version Rollback Protection\n"));
+  DEBUG ((DEBUG_INFO, "  Firmware Version Rollback Protection\n"));
 
   //
   // ALL PASS

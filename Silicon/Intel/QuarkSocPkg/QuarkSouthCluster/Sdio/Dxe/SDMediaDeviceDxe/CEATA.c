@@ -277,7 +277,7 @@ SendATACommand (
              (UINT8*)TaskFile
              );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "ReadWriteMultipleRegister 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "ReadWriteMultipleRegister 0x%x\n", Status));
     goto Exit;
   }
 
@@ -303,7 +303,7 @@ SendATACommand (
   } while (TimeOut > 0);
 
   if (TimeOut == 0) {
-    DEBUG((EFI_D_ERROR, "ReadWriteMultipleRegister FastIO EFI_TIMEOUT 0x%x\n", Data));
+    DEBUG((DEBUG_ERROR, "ReadWriteMultipleRegister FastIO EFI_TIMEOUT 0x%x\n", Data));
     Status = EFI_TIMEOUT;
     goto Exit;
   }
@@ -317,7 +317,7 @@ SendATACommand (
                (UINT8*)Buffer
                );
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "ReadWriteMultipleBlock EFI_TIMEOUT 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "ReadWriteMultipleBlock EFI_TIMEOUT 0x%x\n", Status));
       goto Exit;
     }
 
@@ -343,7 +343,7 @@ SendATACommand (
       TimeOut --;
     } while (TimeOut > 0);
     if (TimeOut == 0) {
-      DEBUG((EFI_D_ERROR, "ReadWriteMultipleBlock FastIO EFI_TIMEOUT 0x%x\n", Data));
+      DEBUG((DEBUG_ERROR, "ReadWriteMultipleBlock FastIO EFI_TIMEOUT 0x%x\n", Data));
       Status = EFI_TIMEOUT;
       goto Exit;
     }

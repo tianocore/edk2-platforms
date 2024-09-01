@@ -378,7 +378,7 @@ ArmJunoEntryPoint (
   // Install dynamic Shell command to run baremetal binaries.
   Status = ShellDynCmdRunAxfInstall (ImageHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "ArmJunoDxe: Failed to install ShellDynCmdRunAxf\n"));
+    DEBUG ((DEBUG_ERROR, "ArmJunoDxe: Failed to install ShellDynCmdRunAxf\n"));
   }
 
   GetJunoRevision(JunoRevision);
@@ -440,7 +440,7 @@ ArmJunoEntryPoint (
 
   if (EFI_ERROR (Status)) {
     DEBUG (
-      (EFI_D_ERROR,
+      (DEBUG_ERROR,
       "ArmJunoDxe: Setting of FDT device path in PcdFdtDevicePaths failed - %r\n", Status)
       );
     return Status;

@@ -130,8 +130,8 @@ GetWakeupEventAndSaveToHob (
     WakeEventData = SMBIOS_WAKEUP_TYPE_UNKNOWN;
   }
 
-  DEBUG ((EFI_D_ERROR, "ACPI Wake Status Register: %04x\n", Pm1Sts));
-  DEBUG ((EFI_D_ERROR, "ACPI Wake Event Data: %02x\n", WakeEventData));
+  DEBUG ((DEBUG_ERROR, "ACPI Wake Status Register: %04x\n", Pm1Sts));
+  DEBUG ((DEBUG_ERROR, "ACPI Wake Event Data: %02x\n", WakeEventData));
 
   return EFI_SUCCESS;
 }
@@ -230,13 +230,13 @@ VlvPolicyInit (
 
   mVlvPolicyPpi->PlatformData.FastBoot = SystemConfiguration->FastBoot;
   mVlvPolicyPpi->PlatformData.DynSR = 1;
-  DEBUG ((EFI_D_ERROR, "Setup Option ISPEn: 0x%x\n", SystemConfiguration->ISPEn));
+  DEBUG ((DEBUG_ERROR, "Setup Option ISPEn: 0x%x\n", SystemConfiguration->ISPEn));
   mVlvPolicyPpi->ISPEn                      = SystemConfiguration->ISPEn;
-  DEBUG ((EFI_D_ERROR, "Setup Option ISPDevSel: 0x%x\n", SystemConfiguration->ISPDevSel));
+  DEBUG ((DEBUG_ERROR, "Setup Option ISPDevSel: 0x%x\n", SystemConfiguration->ISPDevSel));
   mVlvPolicyPpi->ISPPciDevConfig            = SystemConfiguration->ISPDevSel;
   if (SystemConfiguration->ISPEn == 0) {
     mVlvPolicyPpi->ISPPciDevConfig          = 0;
-    DEBUG ((EFI_D_ERROR, "Update Setup Option ISPDevSel: 0x%x\n", mVlvPolicyPpi->ISPPciDevConfig));
+    DEBUG ((DEBUG_ERROR, "Update Setup Option ISPDevSel: 0x%x\n", mVlvPolicyPpi->ISPPciDevConfig));
   }
   Status = (*PeiServices)->InstallPpi(
                              PeiServices,
@@ -254,9 +254,9 @@ ConfigureSoCGpio (
   )
 {
 
-    DEBUG ((EFI_D_ERROR, "ConfigureSoCGpio------------start\n"));
+    DEBUG ((DEBUG_ERROR, "ConfigureSoCGpio------------start\n"));
     if (SystemConfiguration->eMMCBootMode== 1) {// Auto detection mode
-     DEBUG ((EFI_D_ERROR, "Auto detection mode------------start\n"));
+     DEBUG ((DEBUG_ERROR, "Auto detection mode------------start\n"));
 
      //
      //Silicon Steppings
@@ -264,28 +264,28 @@ ConfigureSoCGpio (
      switch (PchStepping()) {
        case PchA0:  // SOC A0 and A1
        case PchA1:
-         DEBUG ((EFI_D_ERROR, "SOC A0/A1: eMMC 4.41 GPIO Configuration\n"));
+         DEBUG ((DEBUG_ERROR, "SOC A0/A1: eMMC 4.41 GPIO Configuration\n"));
          SystemConfiguration->LpsseMMCEnabled            = 1;
          SystemConfiguration->LpsseMMC45Enabled          = 0;
          break;
        case PchB0:  // SOC B0 and later
        default:
-         DEBUG ((EFI_D_ERROR, "SOC B0 and later: eMMC 4.5 GPIO Configuration\n"));
+         DEBUG ((DEBUG_ERROR, "SOC B0 and later: eMMC 4.5 GPIO Configuration\n"));
          SystemConfiguration->LpsseMMCEnabled            = 0;
          SystemConfiguration->LpsseMMC45Enabled          = 1;
          break;
      }
     } else if (SystemConfiguration->eMMCBootMode == 2) { // eMMC 4.41
-        DEBUG ((EFI_D_ERROR, "Force to eMMC 4.41 GPIO Configuration\n"));
+        DEBUG ((DEBUG_ERROR, "Force to eMMC 4.41 GPIO Configuration\n"));
         SystemConfiguration->LpsseMMCEnabled            = 1;
         SystemConfiguration->LpsseMMC45Enabled          = 0;
     } else if (SystemConfiguration->eMMCBootMode == 3) { // eMMC 4.5
-         DEBUG ((EFI_D_ERROR, "Force to eMMC 4.5 GPIO Configuration\n"));
+         DEBUG ((DEBUG_ERROR, "Force to eMMC 4.5 GPIO Configuration\n"));
          SystemConfiguration->LpsseMMCEnabled            = 0;
          SystemConfiguration->LpsseMMC45Enabled          = 1;
 
     } else { // Disable eMMC controllers
-         DEBUG ((EFI_D_ERROR, "Disable eMMC GPIO controllers\n"));
+         DEBUG ((DEBUG_ERROR, "Disable eMMC GPIO controllers\n"));
          SystemConfiguration->LpsseMMCEnabled            = 0;
          SystemConfiguration->LpsseMMC45Enabled          = 0;
     }
@@ -352,7 +352,7 @@ ConfigureSoCGpio (
 //
   IoWrite32 (GPIO_BASE_ADDRESS + R_PCH_GPIO_SC_USE_SEL,
            (IoRead32(GPIO_BASE_ADDRESS + R_PCH_GPIO_SC_USE_SEL) & (UINT32)~BIT0));
-  DEBUG ((EFI_D_ERROR, "ConfigureSoCGpio------------end\n"));
+  DEBUG ((DEBUG_ERROR, "ConfigureSoCGpio------------end\n"));
   return EFI_SUCCESS;
 }
 
@@ -383,7 +383,7 @@ ConfigureLpssAndSccGpio (
   GPIO NCORE -  write 0x01001002 to IOBASE + 0x0F00
   GPIO SSUS -    write 0x01001002 to IOBASE + 0x1700
   */
-    DEBUG ((EFI_D_ERROR, "ConfigureLpssAndSccGpio------------start\n"));
+    DEBUG ((DEBUG_ERROR, "ConfigureLpssAndSccGpio------------start\n"));
 
   /*
   19.1.1  PWM0
@@ -414,11 +414,11 @@ ConfigureLpssAndSccGpio (
     MmioWrite32 (IO_BASE_ADDRESS + 0x0020, 0x2003CC81); // uart1
     MmioWrite32 (IO_BASE_ADDRESS + 0x0010, 0x2003CC81);
   if (SystemConfiguration->LpssHsuart0FlowControlEnabled== 0) {
-    DEBUG ((EFI_D_ERROR, "LpssHsuart0FlowControlEnabled[0]\n"));
+    DEBUG ((DEBUG_ERROR, "LpssHsuart0FlowControlEnabled[0]\n"));
     MmioWrite32 (IO_BASE_ADDRESS + 0x0000, 0x2003CC80);
     MmioWrite32 (IO_BASE_ADDRESS + 0x0040, 0x2003CC80);
   } else {
-    DEBUG ((EFI_D_ERROR, "LpssHsuart0FlowControlEnabled[1]\n"));
+    DEBUG ((DEBUG_ERROR, "LpssHsuart0FlowControlEnabled[1]\n"));
     MmioWrite32 (IO_BASE_ADDRESS + 0x0000, 0x2003CC81);
     MmioWrite32 (IO_BASE_ADDRESS + 0x0040, 0x2003CC01);//W/A HSD 4752617 0x2003CC81
     }
@@ -440,11 +440,11 @@ ConfigureLpssAndSccGpio (
     MmioWrite32 (IO_BASE_ADDRESS + 0x0070, 0x2003CC81);
 
   if (SystemConfiguration->LpssHsuart1FlowControlEnabled== 0) {
-    DEBUG ((EFI_D_ERROR, "LpssHsuart1FlowControlEnabled[0]\n"));
+    DEBUG ((DEBUG_ERROR, "LpssHsuart1FlowControlEnabled[0]\n"));
     MmioWrite32 (IO_BASE_ADDRESS + 0x0090, 0x2003CC80); // UART2_RTS_B
     MmioWrite32 (IO_BASE_ADDRESS + 0x0080, 0x2003CC80); // UART2_CTS_B
   } else {
-    DEBUG ((EFI_D_ERROR, "LpssHsuart1FlowControlEnabled[1]\n"));
+    DEBUG ((DEBUG_ERROR, "LpssHsuart1FlowControlEnabled[1]\n"));
     MmioWrite32 (IO_BASE_ADDRESS + 0x0090, 0x2003CC81); // uart2
     MmioWrite32 (IO_BASE_ADDRESS + 0x0080, 0x2003CC01); //W/A HSD 4752617 0x2003CC81
   }
@@ -591,7 +591,7 @@ ConfigureLpssAndSccGpio (
   }
 
 
-     DEBUG ((EFI_D_ERROR, "ConfigureLpssAndSccGpio------------end\n"));
+     DEBUG ((DEBUG_ERROR, "ConfigureLpssAndSccGpio------------end\n"));
     return EFI_SUCCESS;
 }
 
@@ -600,7 +600,7 @@ ConfigureLpeGpio (
   IN SYSTEM_CONFIGURATION  *SystemConfiguration
   )
 {
-  DEBUG ((EFI_D_ERROR, "ConfigureLpeGpio------------start\n"));
+  DEBUG ((DEBUG_ERROR, "ConfigureLpeGpio------------start\n"));
 
   if (SystemConfiguration->PchAzalia == 0) {
     MmioAndThenOr32 (IO_BASE_ADDRESS + 0x220, (UINT32)~(0x7), (UINT32) (0x01));
@@ -613,7 +613,7 @@ ConfigureLpeGpio (
     MmioAndThenOr32 (IO_BASE_ADDRESS + 0x540, (UINT32)~(0x7), (UINT32) (0x01));
   }
 
-  DEBUG ((EFI_D_ERROR, "ConfigureLpeGpio------------end\n"));
+  DEBUG ((DEBUG_ERROR, "ConfigureLpeGpio------------end\n"));
 
   return EFI_SUCCESS;
 }

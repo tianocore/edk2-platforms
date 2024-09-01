@@ -82,12 +82,12 @@ OhciControlTransfer (
       (DeviceSpeed != EFI_USB_SPEED_LOW && DeviceSpeed != EFI_USB_SPEED_FULL) ||
       (MaxPacketLength != 8 && MaxPacketLength != 16 &&
        MaxPacketLength != 32 && MaxPacketLength != 64)) {
-    DEBUG ((EFI_D_INFO, "OhciControlTransfer: EFI_INVALID_PARAMETER\n"));
+    DEBUG ((DEBUG_INFO, "OhciControlTransfer: EFI_INVALID_PARAMETER\n"));
     return EFI_INVALID_PARAMETER;
   }
 
   if (*DataLength > MAX_BYTES_PER_TD) {
-    DEBUG ((EFI_D_ERROR, "OhciControlTransfer: Request data size is too large\n"));
+    DEBUG ((DEBUG_ERROR, "OhciControlTransfer: Request data size is too large\n"));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -106,14 +106,14 @@ OhciControlTransfer (
     MicroSecondDelay (HC_1_MILLISECOND);
     if (OhciGetHcControl (Ohc, CONTROL_ENABLE) != 0) {
       *TransferResult = EFI_USB_ERR_SYSTEM;
-      DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to disable CONTROL transfer\n"));
+      DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to disable CONTROL transfer\n"));
       return EFI_DEVICE_ERROR;
     }
   }
   OhciSetMemoryPointer (Ohc, HC_CONTROL_HEAD, NULL);
   Ed = OhciCreateED (Ohc);
   if (Ed == NULL) {
-    DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to allocate ED buffer\n"));
+    DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to allocate ED buffer\n"));
     return EFI_OUT_OF_RESOURCES;
   }
   OhciSetEDField (Ed, ED_SKIP, 1);
@@ -138,7 +138,7 @@ OhciControlTransfer (
   SetupTd = OhciCreateTD (Ohc);
   if (SetupTd == NULL) {
     Status = EFI_OUT_OF_RESOURCES;
-    DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to allocate Setup TD buffer\n"));
+    DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to allocate Setup TD buffer\n"));
     goto FREE_ED_BUFF;
   }
   HeadTd = SetupTd;
@@ -173,7 +173,7 @@ OhciControlTransfer (
     }
     DataTd = OhciCreateTD (Ohc);
     if (DataTd == NULL) {
-      DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to allocate Data TD buffer\n"));
+      DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to allocate Data TD buffer\n"));
       Status = EFI_OUT_OF_RESOURCES;
       goto FREE_TD_BUFF;
     }
@@ -200,7 +200,7 @@ OhciControlTransfer (
   //
   StatusTd = OhciCreateTD (Ohc);
   if (StatusTd == NULL) {
-    DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to allocate Status TD buffer\n"));
+    DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to allocate Status TD buffer\n"));
     Status = EFI_OUT_OF_RESOURCES;
     goto FREE_TD_BUFF;
   }
@@ -224,7 +224,7 @@ OhciControlTransfer (
   EmptyTd = OhciCreateTD (Ohc);
   if (EmptyTd == NULL) {
     Status = EFI_OUT_OF_RESOURCES;
-    DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to allocate Empty TD buffer\n"));
+    DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to allocate Empty TD buffer\n"));
     goto FREE_TD_BUFF;
   }
   OhciSetTDField (EmptyTd, TD_PDATA, 0);
@@ -255,7 +255,7 @@ OhciControlTransfer (
     if (OhciGetHcControl (Ohc, CONTROL_ENABLE) != 1) {
       *TransferResult = EFI_USB_ERR_SYSTEM;
       Status = EFI_DEVICE_ERROR;
-      DEBUG ((EFI_D_INFO, "OhciControlTransfer: Fail to enable CONTROL transfer\n"));
+      DEBUG ((DEBUG_INFO, "OhciControlTransfer: Fail to enable CONTROL transfer\n"));
       goto FREE_TD_BUFF;
     }
   }
@@ -273,9 +273,9 @@ OhciControlTransfer (
 
   if (ErrorCode != TD_NO_ERROR) {
     if (ErrorCode == TD_TOBE_PROCESSED) {
-      DEBUG ((EFI_D_INFO, "Control pipe timeout, > %d mS\r\n", TimeOut));
+      DEBUG ((DEBUG_INFO, "Control pipe timeout, > %d mS\r\n", TimeOut));
     } else {
-      DEBUG ((EFI_D_INFO, "Control pipe broken\r\n"));
+      DEBUG ((DEBUG_INFO, "Control pipe broken\r\n"));
     }
 
     *DataLength = 0;
@@ -286,7 +286,7 @@ OhciControlTransfer (
   MicroSecondDelay (HC_1_MILLISECOND);
     if (OhciGetHcControl (Ohc, CONTROL_ENABLE) != 0) {
       *TransferResult = EFI_USB_ERR_SYSTEM;
-      DEBUG ((EFI_D_INFO, "OhciControlTransfer: Cannot disable CONTROL_ENABLE transfer\n"));
+      DEBUG ((DEBUG_INFO, "OhciControlTransfer: Cannot disable CONTROL_ENABLE transfer\n"));
       goto FREE_TD_BUFF;
     }
   }
@@ -399,7 +399,7 @@ OhciBulkTransfer (
 
   Ed = OhciCreateED (Ohc);
   if (Ed == NULL) {
-    DEBUG ((EFI_D_INFO, "OhcBulkTransfer: Fail to allocate ED buffer\r\n"));
+    DEBUG ((DEBUG_INFO, "OhcBulkTransfer: Fail to allocate ED buffer\r\n"));
     return EFI_OUT_OF_RESOURCES;
   }
   OhciSetEDField (Ed, ED_SKIP, 1);
@@ -435,7 +435,7 @@ OhciBulkTransfer (
     }
     DataTd = OhciCreateTD (Ohc);
     if (DataTd == NULL) {
-      DEBUG ((EFI_D_INFO, "OhcBulkTransfer: Fail to allocate Data TD buffer\r\n"));
+      DEBUG ((DEBUG_INFO, "OhcBulkTransfer: Fail to allocate Data TD buffer\r\n"));
       Status = EFI_OUT_OF_RESOURCES;
       goto FREE_TD_BUFF;
     }
@@ -468,7 +468,7 @@ OhciBulkTransfer (
   EmptyTd = OhciCreateTD (Ohc);
   if (EmptyTd == NULL) {
     Status = EFI_OUT_OF_RESOURCES;
-      DEBUG ((EFI_D_INFO, "OhcBulkTransfer: Fail to allocate Empty TD buffer\r\n"));
+      DEBUG ((DEBUG_INFO, "OhcBulkTransfer: Fail to allocate Empty TD buffer\r\n"));
     goto FREE_TD_BUFF;
   }
   OhciSetTDField (EmptyTd, TD_PDATA, 0);
@@ -513,9 +513,9 @@ OhciBulkTransfer (
 
   if (ErrorCode != TD_NO_ERROR) {
     if (ErrorCode == TD_TOBE_PROCESSED) {
-      DEBUG ((EFI_D_INFO, "Bulk pipe timeout, > %d mS\r\n", TimeOut));
+      DEBUG ((DEBUG_INFO, "Bulk pipe timeout, > %d mS\r\n", TimeOut));
     } else {
-      DEBUG ((EFI_D_INFO, "Bulk pipe broken\r\n"));
+      DEBUG ((DEBUG_INFO, "Bulk pipe broken\r\n"));
     }
     *DataLength = 0;
   }
@@ -1336,7 +1336,7 @@ OhcPeimEntry (
                &TempPtr
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "OhcPeimEntry: Fail to allocate buffer for the %dth OHCI ControllerPpi\n", Index));
+      DEBUG ((DEBUG_INFO, "OhcPeimEntry: Fail to allocate buffer for the %dth OHCI ControllerPpi\n", Index));
       return EFI_OUT_OF_RESOURCES;
     }
     ZeroMem((VOID *)(UINTN)TempPtr, MemPages*PAGESIZE);
@@ -1355,7 +1355,7 @@ OhcPeimEntry (
                EFI_USB_HC_RESET_GLOBAL
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "OhcPeimEntry: Fail to init %dth OHCI ControllerPpi\n", Index));
+      DEBUG ((DEBUG_INFO, "OhcPeimEntry: Fail to init %dth OHCI ControllerPpi\n", Index));
       return Status;
     }
     //

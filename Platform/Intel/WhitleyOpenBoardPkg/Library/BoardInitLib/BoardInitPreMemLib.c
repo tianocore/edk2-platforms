@@ -150,7 +150,7 @@ EarlyPlatformPchInit (
   //
   Data8 = IoRead8 (PCH_TCO_BASE_ADDRESS + R_TCO_IO_TCO2_STS);
   if ((Data8 & B_TCO_IO_TCO2_STS_SECOND_TO) == B_TCO_IO_TCO2_STS_SECOND_TO) {
-    DEBUG ((EFI_D_INFO, "EarlyPlatformPchInit - TCO Second TO status bit is set. This might be a TCO reboot\n"));
+    DEBUG ((DEBUG_INFO, "EarlyPlatformPchInit - TCO Second TO status bit is set. This might be a TCO reboot\n"));
   }
 
   //
@@ -178,7 +178,7 @@ EarlyPlatformPchInit (
   // Enable LPC decode at 0xCA0 for BMC
   //
   DynamicSiLibraryPpi->PchLpcGenIoRangeSet ((IPMI_DEFAULT_SMM_IO_BASE & 0xFF0), 0x10);
-  DEBUG ((EFI_D_INFO, "[IPMI_DEBUG]: PchLpcGenIoRangeSet 0x%x!\n", IPMI_DEFAULT_SMM_IO_BASE));
+  DEBUG ((DEBUG_INFO, "[IPMI_DEBUG]: PchLpcGenIoRangeSet 0x%x!\n", IPMI_DEFAULT_SMM_IO_BASE));
 
   DEBUG((DEBUG_INFO, "EarlyPlatformPchInit - End\n"));
 }

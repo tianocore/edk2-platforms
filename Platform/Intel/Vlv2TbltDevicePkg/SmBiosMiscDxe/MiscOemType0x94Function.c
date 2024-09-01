@@ -827,7 +827,7 @@ AddSmbiosT0x94Callback (
 
   ForType94InputData        = (EFI_MISC_OEM_TYPE_0x94 *)Context;
 
-  DEBUG ((EFI_D_INFO, "Executing SMBIOS T0x94 callback.\n"));
+  DEBUG ((DEBUG_INFO, "Executing SMBIOS T0x94 callback.\n"));
 
   gBS->CloseEvent (Event);    // Unload this event.
 

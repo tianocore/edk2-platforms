@@ -27,7 +27,7 @@ CheckNoTestKeyVerification (
   }
 
   Result = TRUE;
-  DEBUG ((EFI_D_INFO, "  No Test Key Verification \n"));
+  DEBUG ((DEBUG_INFO, "  No Test Key Verification \n"));
 
   //
   // Get db and check Microsoft Test Key

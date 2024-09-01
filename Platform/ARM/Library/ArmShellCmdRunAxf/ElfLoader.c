@@ -99,13 +99,13 @@ ElfCheckHeader (
     }
 
     if (Hdr32->e_flags != 0) {
-      DEBUG ((EFI_D_INFO, "Warning: Wrong processor-specific flags, expected 0.\n"));
+      DEBUG ((DEBUG_INFO, "Warning: Wrong processor-specific flags, expected 0.\n"));
     }
 
-    DEBUG ((EFI_D_INFO, "Entry point addr: 0x%lx\n", Hdr32->e_entry));
-    DEBUG ((EFI_D_INFO, "Start of program headers: 0x%lx\n", Hdr32->e_phoff));
-    DEBUG ((EFI_D_INFO, "Size of 1 program header: %d\n", Hdr32->e_phentsize));
-    DEBUG ((EFI_D_INFO, "Number of program headers: %d\n", Hdr32->e_phnum));
+    DEBUG ((DEBUG_INFO, "Entry point addr: 0x%lx\n", Hdr32->e_entry));
+    DEBUG ((DEBUG_INFO, "Start of program headers: 0x%lx\n", Hdr32->e_phoff));
+    DEBUG ((DEBUG_INFO, "Size of 1 program header: %d\n", Hdr32->e_phentsize));
+    DEBUG ((DEBUG_INFO, "Number of program headers: %d\n", Hdr32->e_phnum));
   } else if (Hdr32->e_ident[EI_CLASS] == ELFCLASS64) {
       Elf64_Ehdr *Hdr64 = (Elf64_Ehdr*)Buf;
 
@@ -115,13 +115,13 @@ ElfCheckHeader (
     }
 
     if (Hdr64->e_flags != 0) {
-      DEBUG ((EFI_D_INFO, "Warning: Wrong processor-specific flags, expected 0.\n"));
+      DEBUG ((DEBUG_INFO, "Warning: Wrong processor-specific flags, expected 0.\n"));
     }
 
-    DEBUG ((EFI_D_INFO, "Entry point addr: 0x%lx\n", Hdr64->e_entry));
-    DEBUG ((EFI_D_INFO, "Start of program headers: 0x%lx\n", Hdr64->e_phoff));
-    DEBUG ((EFI_D_INFO, "Size of 1 program header: %d\n", Hdr64->e_phentsize));
-    DEBUG ((EFI_D_INFO, "Number of program headers: %d\n", Hdr64->e_phnum));
+    DEBUG ((DEBUG_INFO, "Entry point addr: 0x%lx\n", Hdr64->e_entry));
+    DEBUG ((DEBUG_INFO, "Start of program headers: 0x%lx\n", Hdr64->e_phoff));
+    DEBUG ((DEBUG_INFO, "Size of 1 program header: %d\n", Hdr64->e_phentsize));
+    DEBUG ((DEBUG_INFO, "Number of program headers: %d\n", Hdr64->e_phnum));
   } else {
     ShellPrintHiiEx (-1, -1, NULL, STRING_TOKEN (STR_RUNAXF_ELFWRONGCLASS), gRunAxfHiiHandle);
     return EFI_INVALID_PARAMETER;
@@ -177,7 +177,7 @@ ElfLoadSegment (
 
   // Load the segment in memory.
   if (ProgramHdr->p_filesz != 0) {
-    DEBUG ((EFI_D_INFO, "Loading segment from 0x%lx to 0x%lx (size = %ld)\n",
+    DEBUG ((DEBUG_INFO, "Loading segment from 0x%lx to 0x%lx (size = %ld)\n",
                  FileSegment, MemSegment, ProgramHdr->p_filesz));
 
     LoadNode = AllocateRuntimeZeroPool (sizeof (RUNAXF_LOAD_LIST));
@@ -192,7 +192,7 @@ ElfLoadSegment (
 
   ExtraZeroes = ((UINTN)MemSegment + ProgramHdr->p_filesz);
   ExtraZeroesCount = ProgramHdr->p_memsz - ProgramHdr->p_filesz;
-  DEBUG ((EFI_D_INFO, "Completing segment with %d zero bytes.\n", ExtraZeroesCount));
+  DEBUG ((DEBUG_INFO, "Completing segment with %d zero bytes.\n", ExtraZeroesCount));
   if (ExtraZeroesCount > 0) {
     // Extra Node to add the Zeroes.
     LoadNode = AllocateRuntimeZeroPool (sizeof (RUNAXF_LOAD_LIST));
@@ -297,7 +297,7 @@ ElfLoadFile (
   ASSERT (LoadList   != NULL);
 
   ProgramHdr = (UINT8*)ElfImage + ElfHdr->e_phoff;
-  DEBUG ((EFI_D_INFO, "ELF program header entry : 0x%lx\n", ProgramHdr));
+  DEBUG ((DEBUG_INFO, "ELF program header entry : 0x%lx\n", ProgramHdr));
 
   ImageSize = 0;
 

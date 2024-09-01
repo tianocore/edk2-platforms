@@ -339,7 +339,7 @@ MMCSendCommand (
 
   MmcCmd = TranslateCommand(MmcCmd);
 
-  //DEBUG ((EFI_D_ERROR, "MMCSendCommand(%d)\n", MmcCmd));
+  //DEBUG ((DEBUG_ERROR, "MMCSendCommand(%d)\n", MmcCmd));
 
   // Check if command line is in use or not. Poll till command line is available.
   while ((MmioRead32 (MMCHS_PSTATE) & DATI_MASK) == DATI_NOT_ALLOWED);
@@ -376,7 +376,7 @@ MMCSendCommand (
       MmioOr32 (MMCHS_SYSCTL, SRC);
       while ((MmioRead32 (MMCHS_SYSCTL) & SRC));
 
-      //DEBUG ((EFI_D_INFO, "MmcStatus: 0x%x\n", MmcStatus));
+      //DEBUG ((DEBUG_INFO, "MmcStatus: 0x%x\n", MmcStatus));
       return EFI_DEVICE_ERROR;
     }
 

@@ -1,10 +1,12 @@
 /** @file
 
   Copyright (c) 2004  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 Module Name:
 
@@ -168,7 +170,7 @@ PlatformRecoveryModule (
   DeviceRecoveryModule    = NULL;
 
   FoundCapsule = FALSE;
-  FoundFvMain = FALSE;
+  FoundFvMDEBUG_FALSE;DEBUG_
 
   DEBUG ((EFI_D_ERROR | EFI_D_LOAD, "Recovery Entry\n"));
 
@@ -185,7 +187,7 @@ PlatformRecoveryModule (
                                NULL,
                                &DeviceRecoveryModule
                                );
-
+DEBUG_DEBUG_
     if (!EFI_ERROR (Status)) {
       DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Device Recovery PPI located\n"));
       NumberOfImageProviders++;
@@ -194,7 +196,7 @@ PlatformRecoveryModule (
                                        (EFI_PEI_SERVICES**)PeiServices,
                                        DeviceRecoveryModule,
                                        &NumberRecoveryCapsules
-                                       );
+              DEBUG_       DEBUG_      );
 
       DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Number Of Recovery Capsules: %d\n", NumberRecoveryCapsules));
 
@@ -224,7 +226,7 @@ PlatformRecoveryModule (
 
     if (EFI_ERROR (Status)) {
       return Status;
-    }
+    }DEBUG_DEBUG_
 
     DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Recovery Capsule Size: %d\n", RecoveryCapsuleSize));
 
@@ -246,7 +248,7 @@ PlatformRecoveryModule (
                                EfiBootServicesCode,
                                (RecoveryCapsuleSize - 1) / 0x1000 + 1,
                                &Address
-                               );
+            DEBUG_       DEBUG_);
 
     DEBUG ((EFI_D_INFO | EFI_D_LOAD, "AllocatePage Returns: %r\n", Status));
 
@@ -270,7 +272,7 @@ PlatformRecoveryModule (
                                      DeviceRecoveryModule,
                                      0,
                                      Buffer
-                                     );
+            DEBUG_       DEBUG_      );
 
     DEBUG ((EFI_D_INFO | EFI_D_LOAD, "LoadRecoveryCapsule Returns: %r\n", Status));
 
@@ -283,7 +285,7 @@ PlatformRecoveryModule (
     //
     Status = (*PeiServices)->GetHobList (PeiServices, &Hob.Raw);
     HobOld.Raw  = Hob.Raw;
-    while (!END_OF_HOB_LIST (Hob)) {
+    while (!END_DEBUG__LIST (DEBUG_{
       if (Hob.Header->HobType == EFI_HOB_TYPE_FV) {
         DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Hob FV Length: %x\n", Hob.FirmwareVolume->Length));
         //
@@ -292,7 +294,7 @@ PlatformRecoveryModule (
         if (Hob.FirmwareVolume->Length > 0x50000) {
           HobUpdate = TRUE;
           //
-          // This looks like the Hob we are interested in
+          // This DEBUG_like thDEBUG_we are interested in
           //
           DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Hob Updated\n"));
           Hob.FirmwareVolume->BaseAddress = (UINTN) Buffer;
@@ -320,7 +322,7 @@ PlatformRecoveryModule (
     if (FoundFvMain) {
       //
       // build FV Hob if it is not built before
-      //
+      //DEBUG_DEBUG_
       if (!HobUpdate) {
         DEBUG ((EFI_D_INFO | EFI_D_LOAD, "FV Hob is not found, Build FV Hob then..\n"));
 
@@ -354,7 +356,7 @@ PlatformRecoveryModule (
                         NULL,
                         NULL
                         );
-    }
+    }DEBUG_DEBUG_
   }
   DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Recovery Module Returning: %r\n", Status));
   return Status;

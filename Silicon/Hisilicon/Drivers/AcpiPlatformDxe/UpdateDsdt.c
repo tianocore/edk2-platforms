@@ -39,7 +39,7 @@
 //#define ACPI_DEBUG
 
 #ifdef ACPI_DEBUG
-#define DBG(arg...) DEBUG((EFI_D_ERROR,## arg))
+#define DBG(arg...) DEBUG((DEBUG_ERROR,## arg))
 #else
 #define DBG(arg...)
 #endif
@@ -76,19 +76,19 @@ GetEnvMac(
   Status = gBS->LocateProtocol(&gHisiBoardNicProtocolGuid, NULL, (VOID **)&OemNic);
   if(EFI_ERROR(Status))
   {
-    DEBUG((EFI_D_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
     return Status;
   }
 
   Status = OemNic->GetMac(&Mac, MacNextID);
   if(EFI_ERROR(Status))
   {
-    DEBUG((EFI_D_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
     return Status;
   }
 
   CopyMem (MacBuffer, &Mac, 6);
-  DEBUG((EFI_D_ERROR, "Port %d MAC %02x:%02x:%02x:%02x:%02x:%02x\n",
+  DEBUG((DEBUG_ERROR, "Port %d MAC %02x:%02x:%02x:%02x:%02x:%02x\n",
         MacNextID,
         MacBuffer[0],
         MacBuffer[1],
@@ -341,7 +341,7 @@ GetDeviceInfo (
   // Get NameString
   Status = AcpiTableProtocol->GetOption (ChildHandle, 1, &DataType, &Buffer, &DataSize);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "[%a:%d] Get NameString failed: %r\n", __FUNCTION__, __LINE__, Status));
+    DEBUG ((DEBUG_ERROR, "[%a:%d] Get NameString failed: %r\n", __FUNCTION__, __LINE__, Status));
     return Status;
   }
 
@@ -623,7 +623,7 @@ UpdateAcpiDsdtTable (
   EFI_ACPI_HANDLE         TableHandle;
   UINTN                   i;
 
-  DEBUG ((EFI_D_ERROR, "Updating Ethernet MAC in ACPI DSDT...\n"));
+  DEBUG ((DEBUG_ERROR, "Updating Ethernet MAC in ACPI DSDT...\n"));
 
   //
   // Find the AcpiTable protocol

@@ -23,6 +23,6 @@ TiogaPassBoardDetect (
   VOID
   )
 {
-  DEBUG ((EFI_D_INFO, "TiogaPassBoardDetect\n"));
+  DEBUG ((DEBUG_INFO, "TiogaPassBoardDetect\n"));
   return EFI_SUCCESS;
 }

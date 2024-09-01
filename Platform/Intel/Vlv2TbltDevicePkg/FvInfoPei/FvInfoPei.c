@@ -1,10 +1,12 @@
 /** @file
 
   Copyright (c) 2004  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 Module Name:
 
@@ -60,7 +62,7 @@ PeimInitializeFvInfo (
 {
   EFI_STATUS  Status;
   Status = (**PeiServices).InstallPpi (PeiServices, &mPpiList[0]);
-  ASSERT_EFI_ERROR (Status);
+  ASSERT_EDEBUG_OR (Status);
 
   DEBUG ((EFI_D_INFO, "\nFvInfo Add Fv Info\n"));
 

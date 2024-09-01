@@ -363,7 +363,7 @@ MiscInitialization (
       AcpiEnBit  = ICH10_ACPI_CNTL_ACPI_EN;
       break;
     default:
-      DEBUG ((EFI_D_ERROR, "%a: Unknown Host Bridge Device ID: 0x%04x\n",
+      DEBUG ((DEBUG_ERROR, "%a: Unknown Host Bridge Device ID: 0x%04x\n",
         __FUNCTION__, mHostBridgeDevId));
       ASSERT (FALSE);
       return;
@@ -449,7 +449,7 @@ BootModeInitialization (
 {
   EFI_STATUS    Status;
 
- DEBUG((EFI_D_INFO, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
+ DEBUG((DEBUG_INFO, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
   if (IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12) == 0x5) {
     mBootMode = BOOT_ON_S3_RESUME;
   }
@@ -479,7 +479,7 @@ ReserveEmuVariableNvStore (
       AllocateRuntimePages (
         EFI_SIZE_TO_PAGES (2 * PcdGet32 (PcdFlashNvStorageFtwSpareSize))
         );
-  DEBUG ((EFI_D_INFO,
+  DEBUG ((DEBUG_INFO,
           "Reserved variable store memory: 0x%lX; size: %dkb\n",
           VariableStore,
           (2 * PcdGet32 (PcdFlashNvStorageFtwSpareSize)) / 1024
@@ -511,12 +511,12 @@ SimicsVersionCheck(
     for (i = 0; i < 0x80; i++) {
       SimicsStr[i] = PciRead8(PciAddrPtr + CapOffset + 0x10 + i);
     }
-    DEBUG((EFI_D_INFO, "=============SIMICS Version info=============\n"));
-    DEBUG((EFI_D_INFO, "Model number = %d\n", ModelNumber));
-    DEBUG((EFI_D_INFO, "Major version = %d\n", MajorVersion));
-    DEBUG((EFI_D_INFO, "Minor version = %d\n", MinorVersion));
-    DEBUG((EFI_D_INFO, "%a\n", SimicsStr));
-    DEBUG((EFI_D_INFO, "=============================================\n"));
+    DEBUG((DEBUG_INFO, "=============SIMICS Version info=============\n"));
+    DEBUG((DEBUG_INFO, "Model number = %d\n", ModelNumber));
+    DEBUG((DEBUG_INFO, "Major version = %d\n", MajorVersion));
+    DEBUG((DEBUG_INFO, "Minor version = %d\n", MinorVersion));
+    DEBUG((DEBUG_INFO, "%a\n", SimicsStr));
+    DEBUG((DEBUG_INFO, "=============================================\n"));
   }
 }
 
@@ -527,15 +527,15 @@ DebugDumpCmos (
 {
   UINT8 Loop;
 
-  DEBUG ((EFI_D_INFO, "CMOS:\n"));
+  DEBUG ((DEBUG_INFO, "CMOS:\n"));
 
   for (Loop = 0; Loop < 0x80; Loop++) {
     if ((Loop % 0x10) == 0) {
-      DEBUG ((EFI_D_INFO, "%02x:", Loop));
+      DEBUG ((DEBUG_INFO, "%02x:", Loop));
     }
-    DEBUG ((EFI_D_INFO, " %02x", CmosRead8 (Loop)));
+    DEBUG ((DEBUG_INFO, " %02x", CmosRead8 (Loop)));
     if ((Loop % 0x10) == 0xf) {
-      DEBUG ((EFI_D_INFO, "\n"));
+      DEBUG ((DEBUG_INFO, "\n"));
     }
   }
 }
@@ -593,13 +593,13 @@ InitializePlatform (
 {
   EFI_STATUS    Status;
 
-  DEBUG ((EFI_D_ERROR, "Platform PEIM Loaded\n"));
+  DEBUG ((DEBUG_ERROR, "Platform PEIM Loaded\n"));
 
   SimicsVersionCheck ();
   DebugDumpCmos ();
 
   if (QemuFwCfgS3Enabled ()) {
-    DEBUG ((EFI_D_INFO, "S3 support was detected on SIMICS\n"));
+    DEBUG ((DEBUG_INFO, "S3 support was detected on SIMICS\n"));
     mS3Supported = TRUE;
     Status = PcdSetBoolS (PcdAcpiS3Enable, TRUE);
     ASSERT_EFI_ERROR (Status);

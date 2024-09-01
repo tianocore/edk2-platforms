@@ -52,14 +52,14 @@ CheckAndReAssignSocketId(
   UINT32                MaxSocketCount;
 
   MaxSocketCount = FixedPcdGet32(PcdMaxCpuSocketCount);
-  DEBUG ((EFI_D_ERROR, "::SocketCount %08x\n", MaxSocketCount));
+  DEBUG ((DEBUG_ERROR, "::SocketCount %08x\n", MaxSocketCount));
   pcdSktIdPtr = (CPU_SOCKET_ID_INFO *)PcdGetPtr(PcdCpuSocketId);
   PcdSize = PcdGetSize (PcdCpuSocketId); //MAX_SOCKET * sizeof(CPU_SOCKET_ID_INFO);
   ASSERT(PcdSize == (MAX_SOCKET * sizeof(CPU_SOCKET_ID_INFO)));
   Status = PcdSetPtrS (PcdCpuSocketId, &PcdSize, (VOID *)pcdSktIdPtr);
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR(Status)) return;
-  DEBUG ((EFI_D_INFO, "::SockeId Pcd at %08x, size %x\n", PcdGetPtr(PcdCpuSocketId), PcdSize));
+  DEBUG ((DEBUG_INFO, "::SockeId Pcd at %08x, size %x\n", PcdGetPtr(PcdCpuSocketId), PcdSize));
 
   for(i = 0; i < MAX_SOCKET; i++) {
     if(mIioUds->PlatformData.CpuQpiInfo[i].Valid) {
@@ -99,7 +99,7 @@ CheckAndReAssignSocketId(
         break;
 
      default:
-        DEBUG ((EFI_D_INFO, "::Need more info to make sure we can support!!!\n"));
+        DEBUG ((DEBUG_INFO, "::Need more info to make sure we can support!!!\n"));
         break;
 
     } //end switch
@@ -173,7 +173,7 @@ PlatformCpuPolicyEntryPoint (
                         (VOID **) &Addr
                         );
   if(Status != EFI_SUCCESS) {
-    DEBUG ((EFI_D_INFO, "::Failed to allocate mem for PPM Struct\n"));
+    DEBUG ((DEBUG_INFO, "::Failed to allocate mem for PPM Struct\n"));
     ASSERT_EFI_ERROR (Status);      //may need to create a default
   } else {
     ZeroMem(Addr, sizeof(EFI_PPM_STRUCT));
@@ -182,15 +182,15 @@ PlatformCpuPolicyEntryPoint (
     Status = PcdSet64S (PcdCpuPmStructAddr, i);
     ASSERT_EFI_ERROR (Status);
     if (EFI_ERROR(Status)) return Status;
-    DEBUG ((EFI_D_INFO, "::PPM mem allocate @ %x %X %X\n", i, PcdGet64(PcdCpuPmStructAddr), ppm));
+    DEBUG ((DEBUG_INFO, "::PPM mem allocate @ %x %X %X\n", i, PcdGet64(PcdCpuPmStructAddr), ppm));
     UpiInPkgCEntry = (UINT32 *)(((EFI_PPM_STRUCT *)Addr)->Cst.PkgCstEntryCriteriaMaskKti);
     PcieInPkgCEntry = (UINT32 *)(((EFI_PPM_STRUCT *)Addr)->Cst.PkgCstEntryCriteriaMaskPcie);
     XePtr = (XE_STRUCT *)(&((EFI_PPM_STRUCT *)Addr)->Xe);
     TurboRatioLimitRatioCores = (TURBO_RATIO_LIMIT_RATIO_CORES *)(&((EFI_PPM_STRUCT *)Addr)->TurboRatioLimitRatioCores);
-    DEBUG ((EFI_D_INFO, ":: XE @ %X\n", (UINTN) XePtr));
+    DEBUG ((DEBUG_INFO, ":: XE @ %X\n", (UINTN) XePtr));
 
     CStateLatencyCtrl = (MSR_REGISTER *)(ppm->Cst.LatencyCtrl);
-    DEBUG ((EFI_D_INFO, "CStateLatencyCtrl[%X]\n", (UINTN) CStateLatencyCtrl));
+    DEBUG ((DEBUG_INFO, "CStateLatencyCtrl[%X]\n", (UINTN) CStateLatencyCtrl));
   }
 
   //
@@ -216,7 +216,7 @@ PlatformCpuPolicyEntryPoint (
 
     // Temporary override to prevent accidental enabling until CR dungeon approves
     if (SetupData.SocketConfig.PowerManagementConfig.PackageCState != 0) {
-      DEBUG((EFI_D_ERROR, "Crystal Ridge Configuration Warning: Package c-states are not disabled\n"));
+      DEBUG((DEBUG_ERROR, "Crystal Ridge Configuration Warning: Package c-states are not disabled\n"));
     }
 
     if ((SetupData.SocketConfig.PowerManagementConfig.C6Enable == PPM_AUTO) ||
@@ -322,7 +322,7 @@ PlatformCpuPolicyEntryPoint (
       ASSERT_EFI_ERROR (Status);
       if (EFI_ERROR(Status)) return Status;
     }
-    DEBUG ((EFI_D_INFO, ":: PcdCpuSmmRuntimeCtlHooks= %x\n", PcdGetBool(PcdCpuSmmRuntimeCtlHooks)));
+    DEBUG ((DEBUG_INFO, ":: PcdCpuSmmRuntimeCtlHooks= %x\n", PcdGetBool(PcdCpuSmmRuntimeCtlHooks)));
 
     if(mIioUds->PlatformData.EVMode || SetupData.SystemConfig.LmceEn) {
       Status = PcdSet8S (PcdCpuProcessorMsrLockCtrl, 0);

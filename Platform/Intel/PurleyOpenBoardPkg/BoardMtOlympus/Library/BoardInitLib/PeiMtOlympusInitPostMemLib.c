@@ -56,30 +56,30 @@ MtOlympusBoardInitAfterSiliconInit (
 {
   IIO_UDS               *IioUds;
 
-  DEBUG((EFI_D_ERROR, "MtOlympusBoardInitAfterSiliconInit\n"));
+  DEBUG((DEBUG_ERROR, "MtOlympusBoardInitAfterSiliconInit\n"));
 
   GetIioUdsHob(&IioUds);
 
-  DEBUG ((EFI_D_ERROR, "Memory TOLM: %X\n", IioUds->PlatformData.MemTolm));
+  DEBUG ((DEBUG_ERROR, "Memory TOLM: %X\n", IioUds->PlatformData.MemTolm));
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCIE   BASE: %lX     Size : %X\n",
     IioUds->PlatformData.PciExpressBase,
     IioUds->PlatformData.PciExpressSize)
     );
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCI32  BASE: %X     Limit: %X\n",
     IioUds->PlatformData.PlatGlobalMmiolBase,
     IioUds->PlatformData.PlatGlobalMmiolLimit)
     );
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCI64  BASE: %lX     Limit: %lX\n",
     IioUds->PlatformData.PlatGlobalMmiohBase,
     IioUds->PlatformData.PlatGlobalMmiohLimit)
     );
-  DEBUG ((EFI_D_ERROR, "UC    START: %lX     End  : %lX\n", IioUds->PlatformData.PlatGlobalMmiohBase, (IioUds->PlatformData.PlatGlobalMmiohLimit + 1)));
+  DEBUG ((DEBUG_ERROR, "UC    START: %lX     End  : %lX\n", IioUds->PlatformData.PlatGlobalMmiohBase, (IioUds->PlatformData.PlatGlobalMmiohLimit + 1)));
 
   return EFI_SUCCESS;
 }

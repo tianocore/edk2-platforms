@@ -102,59 +102,59 @@ AddSmbiosManuCallback (
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"A0");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "A0 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "A0 Stepping Detected\n"));
       break;
     case PchA1:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"A1 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"A1");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "A1 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "A1 Stepping Detected\n"));
       break;
     case PchB0:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"B0 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"B0");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "B0 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "B0 Stepping Detected\n"));
       break;
     case PchB1:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"B1 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"B1");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "B1 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "B1 Stepping Detected\n"));
       break;
     case PchB2:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"B2 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"B2");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "B2 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "B2 Stepping Detected\n"));
       break;
     case PchB3:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"B3 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"B3");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "B3 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "B3 Stepping Detected\n"));
       break;
     case PchC0:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"C0 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"C0");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "C0 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "C0 Stepping Detected\n"));
       break;
    case PchD0:
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s%s", PlatformNameBuffer, L"D0 PLATFORM");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_PRODUCT_NAME), Buffer, NULL);
       UnicodeSPrint (Buffer, sizeof (Buffer),L"%s",L"D0");
       HiiSetString(mHiiHandle,STRING_TOKEN(STR_MISC_SYSTEM_VERSION), Buffer, NULL);
-      DEBUG ((EFI_D_ERROR, "D0 Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "D0 Stepping Detected\n"));
       break;
     default:
-      DEBUG ((EFI_D_ERROR, "Unknow Stepping Detected\n"));
+      DEBUG ((DEBUG_ERROR, "Unknow Stepping Detected\n"));
       break;
     }
 
@@ -344,7 +344,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscSystemManufacturer)
 
   if (CallbackIsInstalledManu == FALSE) {
     CallbackIsInstalledManu = TRUE;        	// Prevent more than 1 callback.
-    DEBUG ((EFI_D_INFO, "Create Smbios Manu callback.\n"));
+    DEBUG ((DEBUG_INFO, "Create Smbios Manu callback.\n"));
 
     //
     // gEfiDxeSmmReadyToLockProtocolGuid is ready

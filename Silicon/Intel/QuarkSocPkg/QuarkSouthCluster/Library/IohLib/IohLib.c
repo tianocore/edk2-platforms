@@ -79,7 +79,7 @@ ReadIohGpioValues (
   SaveCmdReg = PciRead16 (GipAddr + PCI_COMMAND_OFFSET);
   SaveBarReg = PciRead32 (GipAddr + PcdGet8 (PcdIohGpioBarRegister));
 
-  DEBUG ((EFI_D_INFO, "SC GPIO temporary enable  at %08X\n", TempBarAddr));
+  DEBUG ((DEBUG_INFO, "SC GPIO temporary enable  at %08X\n", TempBarAddr));
 
   // Use predefined temporary memory resource.
   PciWrite32 ( GipAddr + PcdGet8 (PcdIohGpioBarRegister), TempBarAddr);

@@ -98,7 +98,7 @@ ReadPartitionEntries (
   // Check there is a GPT on the media
   if (GptHeader->Header.Signature != EFI_PTAB_HEADER_ID ||
       GptHeader->MyLBA != 1) {
-    DEBUG ((EFI_D_ERROR,
+    DEBUG ((DEBUG_ERROR,
       "Fastboot platform: No GPT on flash. "
       "Fastboot on Versatile Express does not support MBR.\n"
       ));
@@ -177,7 +177,7 @@ ArmFastbootPlatformInit (
   FlashDevicePathDup = FlashDevicePath;
   Status = gBS->LocateDevicePath (&gEfiBlockIoProtocolGuid, &FlashDevicePathDup, &FlashHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Warning: Couldn't locate Android NVM device (status: %r)\n", Status));
+    DEBUG ((DEBUG_ERROR, "Warning: Couldn't locate Android NVM device (status: %r)\n", Status));
     // Failing to locate partitions should not prevent to do other Android FastBoot actions
     return EFI_SUCCESS;
   }
@@ -191,14 +191,14 @@ ArmFastbootPlatformInit (
                   EFI_OPEN_PROTOCOL_GET_PROTOCOL
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Fastboot platform: Couldn't open Android NVM device (status: %r)\n", Status));
+    DEBUG ((DEBUG_ERROR, "Fastboot platform: Couldn't open Android NVM device (status: %r)\n", Status));
     return EFI_DEVICE_ERROR;
   }
 
   // Read the GPT partition entry array into memory so we can get the partition names
   Status = ReadPartitionEntries (FlashBlockIo, &PartitionEntries);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Warning: Failed to read partitions from Android NVM device (status: %r)\n", Status));
+    DEBUG ((DEBUG_ERROR, "Warning: Failed to read partitions from Android NVM device (status: %r)\n", Status));
     // Failing to locate partitions should not prevent to do other Android FastBoot actions
     return EFI_SUCCESS;
   }
@@ -277,7 +277,7 @@ ArmFastbootPlatformInit (
       // Print a debug message if the partition label is empty or looks like
       // garbage.
       if (!IS_ALPHA (Entry->PartitionName[0])) {
-        DEBUG ((EFI_D_ERROR,
+        DEBUG ((DEBUG_ERROR,
           "Warning: Partition %d doesn't seem to have a GPT partition label. "
           "You won't be able to flash it with Fastboot.\n",
           PartitionNode->PartitionNumber
@@ -362,15 +362,15 @@ ArmFastbootPlatformFlashPartition (
                   EFI_OPEN_PROTOCOL_GET_PROTOCOL
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Fastboot platform: couldn't open Block IO for flash: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "Fastboot platform: couldn't open Block IO for flash: %r\n", Status));
     return EFI_NOT_FOUND;
   }
 
   // Check image will fit on device
   PartitionSize = (BlockIo->Media->LastBlock + 1) * BlockIo->Media->BlockSize;
   if (PartitionSize < Size) {
-    DEBUG ((EFI_D_ERROR, "Partition not big enough.\n"));
-    DEBUG ((EFI_D_ERROR, "Partition Size:\t%d\nImage Size:\t%d\n", PartitionSize, Size));
+    DEBUG ((DEBUG_ERROR, "Partition not big enough.\n"));
+    DEBUG ((DEBUG_ERROR, "Partition Size:\t%d\nImage Size:\t%d\n", PartitionSize, Size));
 
     return EFI_VOLUME_FULL;
   }
@@ -477,10 +477,10 @@ ArmFastbootPlatformOemCommand (
   AsciiStrToUnicodeStrS (Command, CommandUnicode, ARRAY_SIZE (CommandUnicode));
 
   if (AsciiStrCmp (Command, "Demonstrate") == 0) {
-    DEBUG ((EFI_D_ERROR, "ARM OEM Fastboot command 'Demonstrate' received.\n"));
+    DEBUG ((DEBUG_ERROR, "ARM OEM Fastboot command 'Demonstrate' received.\n"));
     return EFI_SUCCESS;
   } else {
-    DEBUG ((EFI_D_ERROR,
+    DEBUG ((DEBUG_ERROR,
       "VExpress: Unrecognised Fastboot OEM command: %s\n",
       CommandUnicode
       ));

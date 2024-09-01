@@ -45,13 +45,13 @@ CpldRuntimeLibConstructor (
     mCpldRegAddr = PcdGet64(PcdCpldBaseAddress);
     Status = gDS->GetMemorySpaceDescriptor(mCpldRegAddr,&desp);
     if(EFI_ERROR(Status)){
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL] GetMemorySpaceDescriptor failed: %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL] GetMemorySpaceDescriptor failed: %r\n", __FUNCTION__, __LINE__, Status));
         return Status;
     }
     desp.Attributes |= EFI_MEMORY_RUNTIME;
     Status = gDS->SetMemorySpaceAttributes(mCpldRegAddr,0x10000, desp.Attributes);
     if(EFI_ERROR(Status)){
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL] SetMemorySpaceAttributes failed: %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL] SetMemorySpaceAttributes failed: %r\n", __FUNCTION__, __LINE__, Status));
         return Status;
     }
     //

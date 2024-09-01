@@ -42,7 +42,7 @@ SetTranslationAddressEntry (
   // Ensure the size is a power of two. Restriction form the AXI Translation logic
   // Othwerwise we increase the translation size
   if (TranslationSize != (1ULL << Log2Size)) {
-    DEBUG ((EFI_D_WARN, "PCI: The size 0x%lX of the region 0x%lx has been increased to "
+    DEBUG ((DEBUG_WARN, "PCI: The size 0x%lX of the region 0x%lx has been increased to "
                         "be a power of two for the AXI translation table.\n",
                         TranslationSize, SourceAddress));
     Log2Size++;
@@ -148,7 +148,7 @@ HWPciRbInit (
 
   // Check for reset
   if (!(Value & PCIE_CONTROL_RST_STS_RCPHYPLL_OUT)) {
-    DEBUG ((EFI_D_ERROR, "PCIe failed to come out of reset: %x.\n", Value));
+    DEBUG ((DEBUG_ERROR, "PCIe failed to come out of reset: %x.\n", Value));
     return EFI_NOT_READY;
   }
 
@@ -166,7 +166,7 @@ HWPciRbInit (
 
   // Check for link up
   if (!(Value & LINK_UP)) {
-    DEBUG ((EFI_D_ERROR, "PCIe link not up: %x.\n", Value));
+    DEBUG ((DEBUG_ERROR, "PCIe link not up: %x.\n", Value));
     return EFI_NOT_READY;
   }
 

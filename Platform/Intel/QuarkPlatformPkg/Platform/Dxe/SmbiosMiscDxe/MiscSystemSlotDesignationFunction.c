@@ -223,7 +223,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscSystemSlotDesignator)
 
   for (Index = 0; Index < SMBIOS_SYSTEM_SLOT_MAX_NUM; Index++) {
     if (ForType9InputData->SlotDesignation == (mMiscSlotArray[Index])->SlotDesignation) {
-      //DEBUG ((EFI_D_ERROR, "Found slot Data %d : ", Index));
+      //DEBUG ((DEBUG_ERROR, "Found slot Data %d : ", Index));
       break;
     }
   }

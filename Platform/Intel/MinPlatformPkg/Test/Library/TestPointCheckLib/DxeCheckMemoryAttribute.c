@@ -147,7 +147,7 @@ TestPointCheckImageMemoryAttribute (
 
   PdbPointer = PeCoffLoaderGetPdbPointer (ImageAddress);
   if (PdbPointer != NULL) {
-    DEBUG ((EFI_D_INFO, "  Image - %a\n", PdbPointer));
+    DEBUG ((DEBUG_INFO, "  Image - %a\n", PdbPointer));
   }
 
   //
@@ -161,7 +161,7 @@ TestPointCheckImageMemoryAttribute (
 
   Hdr.Pe32 = (EFI_IMAGE_NT_HEADERS32 *)((UINT8 *) (UINTN) ImageAddress + PeCoffHeaderOffset);
   if (Hdr.Pe32->Signature != EFI_IMAGE_NT_SIGNATURE) {
-    DEBUG ((EFI_D_INFO, "Hdr.Pe32->Signature invalid - 0x%x\n", Hdr.Pe32->Signature));
+    DEBUG ((DEBUG_INFO, "Hdr.Pe32->Signature invalid - 0x%x\n", Hdr.Pe32->Signature));
     return EFI_INVALID_PARAMETER;
   }
   
@@ -183,10 +183,10 @@ TestPointCheckImageMemoryAttribute (
   }
 
   if ((SectionAlignment & (RUNTIME_PAGE_ALLOCATION_GRANULARITY - 1)) != 0) {
-    DEBUG ((EFI_D_INFO, "!!!!!!!!  RecordImageMemoryMap - Section Alignment(0x%x) is not %dK  !!!!!!!!\n", SectionAlignment, RUNTIME_PAGE_ALLOCATION_GRANULARITY >> 10));
+    DEBUG ((DEBUG_INFO, "!!!!!!!!  RecordImageMemoryMap - Section Alignment(0x%x) is not %dK  !!!!!!!!\n", SectionAlignment, RUNTIME_PAGE_ALLOCATION_GRANULARITY >> 10));
     PdbPointer = PeCoffLoaderGetPdbPointer ((VOID*) (UINTN) ImageAddress);
     if (PdbPointer != NULL) {
-      DEBUG ((EFI_D_INFO, "!!!!!!!!  Image - %a  !!!!!!!!\n", PdbPointer));
+      DEBUG ((DEBUG_INFO, "!!!!!!!!  Image - %a  !!!!!!!!\n", PdbPointer));
     }
     return EFI_INVALID_PARAMETER;
   }
@@ -213,7 +213,7 @@ TestPointCheckImageMemoryAttribute (
   for (Index = 0; Index < Hdr.Pe32->FileHeader.NumberOfSections; Index++) {
     Name = Section[Index].Name;
     DEBUG ((
-      EFI_D_INFO,
+      DEBUG_INFO,
       "  Section - '%c%c%c%c%c%c%c%c'\n",
       Name[0],
       Name[1],
@@ -225,15 +225,15 @@ TestPointCheckImageMemoryAttribute (
       Name[7]
       ));
       
-    DEBUG ((EFI_D_INFO, "    VirtualSize          - 0x%08x\n", Section[Index].Misc.VirtualSize));
-    DEBUG ((EFI_D_INFO, "    VirtualAddress       - 0x%08x\n", Section[Index].VirtualAddress));
-    DEBUG ((EFI_D_INFO, "    SizeOfRawData        - 0x%08x\n", Section[Index].SizeOfRawData));
-    DEBUG ((EFI_D_INFO, "    PointerToRawData     - 0x%08x\n", Section[Index].PointerToRawData));
-    DEBUG ((EFI_D_INFO, "    PointerToRelocations - 0x%08x\n", Section[Index].PointerToRelocations));
-    DEBUG ((EFI_D_INFO, "    PointerToLinenumbers - 0x%08x\n", Section[Index].PointerToLinenumbers));
-    DEBUG ((EFI_D_INFO, "    NumberOfRelocations  - 0x%08x\n", Section[Index].NumberOfRelocations));
-    DEBUG ((EFI_D_INFO, "    NumberOfLinenumbers  - 0x%08x\n", Section[Index].NumberOfLinenumbers));
-    DEBUG ((EFI_D_INFO, "    Characteristics      - 0x%08x\n", Section[Index].Characteristics));
+    DEBUG ((DEBUG_INFO, "    VirtualSize          - 0x%08x\n", Section[Index].Misc.VirtualSize));
+    DEBUG ((DEBUG_INFO, "    VirtualAddress       - 0x%08x\n", Section[Index].VirtualAddress));
+    DEBUG ((DEBUG_INFO, "    SizeOfRawData        - 0x%08x\n", Section[Index].SizeOfRawData));
+    DEBUG ((DEBUG_INFO, "    PointerToRawData     - 0x%08x\n", Section[Index].PointerToRawData));
+    DEBUG ((DEBUG_INFO, "    PointerToRelocations - 0x%08x\n", Section[Index].PointerToRelocations));
+    DEBUG ((DEBUG_INFO, "    PointerToLinenumbers - 0x%08x\n", Section[Index].PointerToLinenumbers));
+    DEBUG ((DEBUG_INFO, "    NumberOfRelocations  - 0x%08x\n", Section[Index].NumberOfRelocations));
+    DEBUG ((DEBUG_INFO, "    NumberOfLinenumbers  - 0x%08x\n", Section[Index].NumberOfLinenumbers));
+    DEBUG ((DEBUG_INFO, "    Characteristics      - 0x%08x\n", Section[Index].Characteristics));
     if ((Section[Index].Characteristics & EFI_IMAGE_SCN_CNT_CODE) != 0) {
       //
       // Check code section

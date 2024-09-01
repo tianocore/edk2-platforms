@@ -2,10 +2,12 @@
   Multiplatform initialization.
 
   Copyright (c) 2010 - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 **/
 
@@ -87,7 +89,7 @@ MultiPlatformInfoInit (
   //
   // Enable ICH IOAPIC
   //
-  PlatformInfoHob->SysData.SysIoApicEnable  = ICH_IOAPIC;
+  PlatformDEBUG_b->SysData.SysIoApicEnable  = ICH_IOAPIC;
 
   DEBUG ((EFI_D_ERROR, "PlatformFlavor is %x (%x=tablet,%x=mobile,%x=desktop)\n",
     PlatformInfoHob->PlatformFlavor,

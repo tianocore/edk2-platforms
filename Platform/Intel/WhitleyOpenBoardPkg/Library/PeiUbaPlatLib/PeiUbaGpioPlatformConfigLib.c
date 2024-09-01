@@ -456,12 +456,12 @@ GpioConfigForMFGMode (
     return EFI_UNSUPPORTED;
   }
 
-  DEBUG ((EFI_D_INFO, "Start ConfigureGpio() for BootMode Detection.\n"));
+  DEBUG ((DEBUG_INFO, "Start ConfigureGpio() for BootMode Detection.\n"));
 
   Status = DynamicSiLibraryPpi->GpioSetPadConfig (GpioPlatformConfig.GpioMfgPad.GpioPad, &GpioPlatformConfig.GpioMfgPad.GpioConfig);
 
   ASSERT_EFI_ERROR (Status);
-  DEBUG ((EFI_D_INFO, "End ConfigureGpio() for BootMode Detection.\n"));
+  DEBUG ((DEBUG_INFO, "End ConfigureGpio() for BootMode Detection.\n"));
   return Status;
 }
 

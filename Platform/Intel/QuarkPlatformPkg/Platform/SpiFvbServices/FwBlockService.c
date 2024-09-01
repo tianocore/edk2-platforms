@@ -1428,7 +1428,7 @@ GetFvbHeader (
     return EFI_NOT_FOUND;
   }
 
-  DEBUG((EFI_D_INFO, "Fvb base : %08x\n",*BaseAddress));
+  DEBUG((DEBUG_INFO, "Fvb base : %08x\n",*BaseAddress));
 
   *FwVolHeader  = (EFI_FIRMWARE_VOLUME_HEADER *) (UINTN) (*BaseAddress);
   Status        = ValidateFvHeader (*FwVolHeader);
@@ -1500,7 +1500,7 @@ SmmSpiInit (
           // Supported SPI device found
           //
           DEBUG (
-              ((EFI_D_INFO),
+              ((DEBUG_INFO),
               "Smm Mode: Supported SPI Flash device found, Vendor Id: 0x%02x, Device ID: 0x%02x%02x!\n",
               FlashID[0],
               FlashID[1],
@@ -1515,7 +1515,7 @@ SmmSpiInit (
   if (FlashIndex >= EnumSpiFlashMax) {
     Status = EFI_UNSUPPORTED;
     DEBUG (
-        (EFI_D_ERROR,
+        (DEBUG_ERROR,
         "ERROR - Unknown SPI Flash Device, Vendor Id: 0x%02x, Device ID: 0x%02x%02x!\n",
         FlashID[0],
         FlashID[1],
@@ -1727,7 +1727,7 @@ Returns:
             // Supported SPI device found
             //
             DEBUG (
-              ((EFI_D_INFO),
+              ((DEBUG_INFO),
               "Supported SPI Flash device found, Vendor Id: 0x%02x, Device ID: 0x%02x%02x!\n",
               FlashID[0],
               FlashID[1],

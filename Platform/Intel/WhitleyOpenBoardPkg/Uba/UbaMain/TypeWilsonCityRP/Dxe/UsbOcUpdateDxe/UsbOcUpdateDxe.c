@@ -106,7 +106,7 @@ UsbOcUpdateEntry (
   EFI_STATUS                          Status;
   UBA_CONFIG_DATABASE_PROTOCOL        *UbaConfigProtocol = NULL;
 
-  DEBUG((EFI_D_INFO, "UBA:UsbOcUpdate-TypeWilsonCityRP\n"));
+  DEBUG((DEBUG_INFO, "UBA:UsbOcUpdate-TypeWilsonCityRP\n"));
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,

@@ -410,7 +410,7 @@ PrepareSetupInformation (
              ReleaseTime
              );
 
-  DEBUG ((EFI_D_ERROR, "GetBiosVersionDateTime :%s %s %s \n", Version, ReleaseDate, ReleaseTime));
+  DEBUG ((DEBUG_ERROR, "GetBiosVersionDateTime :%s %s %s \n", Version, ReleaseDate, ReleaseTime));
   if (!EFI_ERROR (Status)) {
     UINTN         Length = 0;
     CHAR16        *BuildDateTime;
@@ -423,11 +423,11 @@ PrepareSetupInformation (
     StrCatS (BuildDateTime, Length + 2, ReleaseTime);
 
     TokenToUpdate = (STRING_REF)STR_BIOS_VERSION_VALUE;
-    DEBUG ((EFI_D_ERROR, "update STR_BIOS_VERSION_VALUE\n"));
+    DEBUG ((DEBUG_ERROR, "update STR_BIOS_VERSION_VALUE\n"));
     HiiSetString(mHiiHandle, TokenToUpdate, Version, NULL);
 
     TokenToUpdate = (STRING_REF)STR_BIOS_BUILD_TIME_VALUE;
-    DEBUG ((EFI_D_ERROR, "update STR_BIOS_BUILD_TIME_VALUE\n"));
+    DEBUG ((DEBUG_ERROR, "update STR_BIOS_BUILD_TIME_VALUE\n"));
     HiiSetString(mHiiHandle, TokenToUpdate, BuildDateTime, NULL);
   }
 

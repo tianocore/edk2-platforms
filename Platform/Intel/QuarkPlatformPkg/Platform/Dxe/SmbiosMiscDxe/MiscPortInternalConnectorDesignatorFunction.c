@@ -216,7 +216,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscPortInternalConnectorDesignator)
 
   for (Index = 0; Index < SMBIOS_PORT_CONNECTOR_MAX_NUM; Index++) {
     if (ForType8InputData->PortInternalConnectorDesignator == (mMiscConnectorArray[Index])->PortInternalConnectorDesignator) {
-      //DEBUG ((EFI_D_ERROR, "Found Port Connector Data %d : ", Index));
+      //DEBUG ((DEBUG_ERROR, "Found Port Connector Data %d : ", Index));
       break;
     }
   }

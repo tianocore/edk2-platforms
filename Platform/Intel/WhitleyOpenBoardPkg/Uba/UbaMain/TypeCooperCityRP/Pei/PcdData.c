@@ -35,7 +35,7 @@ TypeCooperCityRPPlatformUpdateVrIdAddress (
   Size = sizeof (MEM_SVID_MAP);
   MemSvidMap = (MEM_SVID_MAP *) PcdGetPtr (PcdMemSrvidMap);
   if (MemSvidMap == NULL) {
-    DEBUG ((EFI_D_ERROR, "UpdateVrIdAddress() - PcdMemSrvidMap == NULL\n"));
+    DEBUG ((DEBUG_ERROR, "UpdateVrIdAddress() - PcdMemSrvidMap == NULL\n"));
     return;
   }
   /*
@@ -218,7 +218,7 @@ TypeCooperCityRPPlatformPcdUpdateCallback (
     return Status;
   }
 
-  DEBUG ((EFI_D_INFO, "Uba Callback: PlatformPcdUpdateCallback is called!\n"));
+  DEBUG ((DEBUG_INFO, "Uba Callback: PlatformPcdUpdateCallback is called!\n"));
   Status = TypeCooperCityRPPlatformUpdateAcpiTablePcds ();
 
   //# Board Type Bit Mask

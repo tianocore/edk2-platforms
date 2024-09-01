@@ -121,12 +121,12 @@ PlatInitPeiEntryPoint (
   UINTN                       Index, CoreNum;
   UINT32                      *CpuIdReg = (UINT32 *)FixedPcdGet32 (PcdCpuIdRegister);
 
-  DEBUG ((EFI_D_ERROR, "PlatInit PEIM Loaded\n"));
+  DEBUG ((DEBUG_ERROR, "PlatInit PEIM Loaded\n"));
 
   // CPUID
   Status = PcdSet32S (PcdSocCpuId, *CpuIdReg);
   ASSERT_EFI_ERROR (Status);
-  DEBUG ((EFI_D_ERROR, "SocCpuId = 0x%X\n", PcdGet32 (PcdSocCpuId)));
+  DEBUG ((DEBUG_ERROR, "SocCpuId = 0x%X\n", PcdGet32 (PcdSocCpuId)));
 
   // Update core count based on PCD option
   if (mAmdCoreCount > PcdGet32 (PcdSocCoreCount)) {
@@ -169,7 +169,7 @@ PlatInitPeiEntryPoint (
       mAmdMpCoreInfoTable[Index].Mpidr = GET_MPID (CpuResetInfo.CoreStatus.ClusterId,
 		                           CpuResetInfo.CoreStatus.CoreId);
 
-      DEBUG ((EFI_D_ERROR, "Core[%d]: ClusterId = %d   CoreId = %d\n",
+      DEBUG ((DEBUG_ERROR, "Core[%d]: ClusterId = %d   CoreId = %d\n",
         Index, GET_MPIDR_AFF1 (mAmdMpCoreInfoTable[Index].Mpidr),
         GET_MPIDR_AFF0 (mAmdMpCoreInfoTable[Index].Mpidr)));
 
@@ -191,7 +191,7 @@ PlatInitPeiEntryPoint (
     ASSERT_EFI_ERROR (Status);
   }
 
-  DEBUG ((EFI_D_ERROR, "SocCoreCount = %d\n", PcdGet32 (PcdSocCoreCount)));
+  DEBUG ((DEBUG_ERROR, "SocCoreCount = %d\n", PcdGet32 (PcdSocCoreCount)));
 
   // Build AmdMpCoreInfo HOB
   BuildGuidDataHob (&gAmdStyxMpCoreInfoGuid, mAmdMpCoreInfoTable, sizeof (ARM_CORE_INFO) * mAmdCoreCount);
@@ -207,10 +207,10 @@ PlatInitPeiEntryPoint (
     ASSERT_EFI_ERROR (Status);
   }
   if (IscpMemDescriptor.Size0 == 0) {
-    DEBUG ((EFI_D_ERROR, "Warning: Could not get SystemMemorySize via ISCP, using default value.\n"));
+    DEBUG ((DEBUG_ERROR, "Warning: Could not get SystemMemorySize via ISCP, using default value.\n"));
   }
 
-  DEBUG ((EFI_D_ERROR, "SystemMemorySize = %ld\n", PcdGet64 (PcdSystemMemorySize)));
+  DEBUG ((DEBUG_ERROR, "SystemMemorySize = %ld\n", PcdGet64 (PcdSystemMemorySize)));
 
 
   if (FixedPcdGetBool (PcdXgbeEnable)) {
@@ -232,11 +232,11 @@ PlatInitPeiEntryPoint (
       ASSERT_EFI_ERROR (Status);
     }
 
-    DEBUG ((EFI_D_ERROR, "EthMacA = %02x:%02x:%02x:%02x:%02x:%02x\n",
+    DEBUG ((DEBUG_ERROR, "EthMacA = %02x:%02x:%02x:%02x:%02x:%02x\n",
       ((UINT8 *)PcdGetPtr (PcdEthMacA))[0], ((UINT8 *)PcdGetPtr (PcdEthMacA))[1],
       ((UINT8 *)PcdGetPtr (PcdEthMacA))[2], ((UINT8 *)PcdGetPtr (PcdEthMacA))[3],
       ((UINT8 *)PcdGetPtr (PcdEthMacA))[4], ((UINT8 *)PcdGetPtr (PcdEthMacA))[5]));
-    DEBUG ((EFI_D_ERROR, "EthMacB = %02x:%02x:%02x:%02x:%02x:%02x\n",
+    DEBUG ((DEBUG_ERROR, "EthMacB = %02x:%02x:%02x:%02x:%02x:%02x\n",
       ((UINT8 *)PcdGetPtr (PcdEthMacB))[0], ((UINT8 *)PcdGetPtr (PcdEthMacB))[1],
       ((UINT8 *)PcdGetPtr (PcdEthMacB))[2], ((UINT8 *)PcdGetPtr (PcdEthMacB))[3],
       ((UINT8 *)PcdGetPtr (PcdEthMacB))[4], ((UINT8 *)PcdGetPtr (PcdEthMacB))[5]));

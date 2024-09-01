@@ -141,7 +141,7 @@ AdjustDefaultRtcTimeCallback (
     EfiTime.TimeZone = EFI_UNSPECIFIED_TIMEZONE;
     EfiTime.Daylight = 1; 
 
-    DEBUG ((EFI_D_INFO, "Day:%d Month:%d Year:%d \n", (UINT32)EfiTime.Day, (UINT32)EfiTime.Month, (UINT32)EfiTime.Year));
+    DEBUG ((DEBUG_INFO, "Day:%d Month:%d Year:%d \n", (UINT32)EfiTime.Day, (UINT32)EfiTime.Month, (UINT32)EfiTime.Year));
 
     //
     // Reset time value according to new RTC configuration

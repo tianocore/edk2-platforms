@@ -208,17 +208,17 @@ EarlyPlatformPchInit (
   // Read the Second TO status bit
   //
   Data8 = IoRead8 (PcdGet16 (PcdTcoBaseAddress) + R_PCH_TCO2_STS);
-  DEBUG((EFI_D_ERROR, "pre read:%x\n", Data8));
+  DEBUG((DEBUG_ERROR, "pre read:%x\n", Data8));
 
   Data8 = IoRead8 (PcdGet16 (PcdTcoBaseAddress) + R_PCH_TCO2_STS);
-  DEBUG((EFI_D_ERROR, "read:%x\n", Data8));
+  DEBUG((DEBUG_ERROR, "read:%x\n", Data8));
   if ((Data8 & B_PCH_TCO2_STS_SECOND_TO) == B_PCH_TCO2_STS_SECOND_TO) {
     TcoRebootHappened = 1;
   } else {
     TcoRebootHappened = 0;
   }
   if (TcoRebootHappened) {
-    DEBUG ((EFI_D_ERROR, "EarlyPlatformPchInit - TCO Second TO status bit is set. This might be a TCO reboot\n"));
+    DEBUG ((DEBUG_ERROR, "EarlyPlatformPchInit - TCO Second TO status bit is set. This might be a TCO reboot\n"));
   }
 
   //
@@ -268,7 +268,7 @@ UpdatePlatformInfo (
   UINTN                              Index;
 #endif
 
-  DEBUG((EFI_D_ERROR, "platform update platform info entry\n"));
+  DEBUG((DEBUG_ERROR, "platform update platform info entry\n"));
 
   SocketProcessorCoreConfig = &SocketConfiguration->SocketProcessorCoreConfiguration;
   SocketIioConfig = &SocketConfiguration->IioConfig;
@@ -546,7 +546,7 @@ CheckPowerOffNow (
   // Read and check the ACPI registers
   //
   Pm1Sts = IoRead16 (PcdGet16 (PcdPchAcpiIoPortBaseAddress) + R_PCH_ACPI_PM1_STS);
-  DEBUG ((EFI_D_ERROR, "CheckPowerOffNow()- Pm1Sts= 0x%04x\n", Pm1Sts ));
+  DEBUG ((DEBUG_ERROR, "CheckPowerOffNow()- Pm1Sts= 0x%04x\n", Pm1Sts ));
 
   if ((Pm1Sts & B_PCH_ACPI_PM1_STS_PWRBTN) == B_PCH_ACPI_PM1_STS_PWRBTN) {
     IoWrite16 (PcdGet16 (PcdPchAcpiIoPortBaseAddress) + R_PCH_ACPI_PM1_STS, B_PCH_ACPI_PM1_STS_PWRBTN);

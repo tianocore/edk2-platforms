@@ -339,7 +339,7 @@ Connect (
                   NULL,   // RemainingDevicePath -- produce all children
                   FALSE   // Recursive
                   );
-  DEBUG ((EFI_ERROR (Status) ? EFI_D_ERROR : EFI_D_VERBOSE, "%a: %s: %r\n",
+  DEBUG ((EFI_ERROR (Status) ? DEBUG_ERROR : DEBUG_VERBOSE, "%a: %s: %r\n",
     __FUNCTION__, ReportText, Status));
 }
 
@@ -457,7 +457,7 @@ RemoveStaleBootOptions (
 
       DevicePathString = ConvertDevicePathToText(BootOptions[Index].FilePath, FALSE, FALSE);
       DEBUG ((
-        EFI_ERROR (Status) ? EFI_D_WARN : EFI_D_INFO,
+        EFI_ERROR (Status) ? DEBUG_WARN : DEBUG_INFO,
         "%a: removing stale Boot#%04x %s: %r\n",
         __FUNCTION__,
         (UINT32)BootOptions[Index].OptionNumber,

@@ -37,12 +37,12 @@ VerifySysHostStructureSize (
 
   if (PcdGet32 (PcdPeiSyshostMemorySize) != sizeof (SYSHOST)) {
 
-    DEBUG ((EFI_D_ERROR, "ERROR: In DXE sizeof SysHost = %d, in PEI sizeof SysHost = %d\n",
+    DEBUG ((DEBUG_ERROR, "ERROR: In DXE sizeof SysHost = %d, in PEI sizeof SysHost = %d\n",
       sizeof (SYSHOST),
       PcdGet32 (PcdPeiSyshostMemorySize)
       ));
 
-    DEBUG ((EFI_D_ERROR, "Size of SysHost must match in PEI and DXE\n"));
+    DEBUG ((DEBUG_ERROR, "Size of SysHost must match in PEI and DXE\n"));
     ASSERT (FALSE);
 
   }

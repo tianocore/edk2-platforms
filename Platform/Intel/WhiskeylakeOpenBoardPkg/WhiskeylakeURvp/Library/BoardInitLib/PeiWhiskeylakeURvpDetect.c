@@ -50,7 +50,7 @@ WhiskeylakeURvpBoardDetect (
     return EFI_SUCCESS;
   }
 
-  DEBUG ((EFI_D_INFO, "WhiskeylakeURvpDetectionCallback\n"));
+  DEBUG ((DEBUG_INFO, "WhiskeylakeURvpDetectionCallback\n"));
 
   if (WhiskeylakeURvp()) {
     LibPcdSetSku (BoardIdWhiskeyLakeRvp);

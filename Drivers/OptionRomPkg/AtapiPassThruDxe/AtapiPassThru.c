@@ -3215,7 +3215,7 @@ Returns:
 
     if (StatusRegister & DWF) {
       DEBUG (
-        (EFI_D_BLKIO,
+        (DEBUG_BLKIO,
         "AtapiPassThruCheckErrorStatus()-- %02x : Error : Write Fault\n",
         StatusRegister)
         );
@@ -3223,7 +3223,7 @@ Returns:
 
     if (StatusRegister & CORR) {
       DEBUG (
-        (EFI_D_BLKIO,
+        (DEBUG_BLKIO,
         "AtapiPassThruCheckErrorStatus()-- %02x : Error : Corrected Data\n",
         StatusRegister)
         );
@@ -3235,7 +3235,7 @@ Returns:
 
       if (ErrorRegister & BBK_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Bad Block Detected\n",
           ErrorRegister)
           );
@@ -3243,7 +3243,7 @@ Returns:
 
       if (ErrorRegister & UNC_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Uncorrectable Data\n",
           ErrorRegister)
           );
@@ -3251,7 +3251,7 @@ Returns:
 
       if (ErrorRegister & MC_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Media Change\n",
           ErrorRegister)
           );
@@ -3259,7 +3259,7 @@ Returns:
 
       if (ErrorRegister & ABRT_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Abort\n",
           ErrorRegister)
           );
@@ -3267,7 +3267,7 @@ Returns:
 
       if (ErrorRegister & TK0NF_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Track 0 Not Found\n",
           ErrorRegister)
           );
@@ -3275,7 +3275,7 @@ Returns:
 
       if (ErrorRegister & AMNF_ERR) {
         DEBUG (
-          (EFI_D_BLKIO,
+          (DEBUG_BLKIO,
           "AtapiPassThruCheckErrorStatus()-- %02x : Error : Address Mark Not Found\n",
           ErrorRegister)
           );

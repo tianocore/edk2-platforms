@@ -84,7 +84,7 @@ InternalGetSystemBoardInfo (
                   );
 
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_ERROR,"  [GetSystemBoardInfo] Locate UbaConfigProtocol fail!\n"));
+    DEBUG ((DEBUG_ERROR,"  [GetSystemBoardInfo] Locate UbaConfigProtocol fail!\n"));
     return Status;
   }
 
@@ -97,7 +97,7 @@ InternalGetSystemBoardInfo (
                                 );
 
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_ERROR," [GetSystemBoardInfo] Get Data fail!\n"));
+    DEBUG ((DEBUG_ERROR," [GetSystemBoardInfo] Get Data fail!\n"));
     return Status;
   }
 
@@ -268,7 +268,7 @@ GetPciRom (
   Status = InternalGetSystemBoardInfo (&SystemBoardInfo);
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "[GetPciRom] Get system board info fail!\n"));
+    DEBUG ((DEBUG_ERROR, "[GetPciRom] Get system board info fail!\n"));
     return Status;
   }
 
@@ -344,7 +344,7 @@ GetPciRom (
         Pcir->DeviceId = DeviceId;
       }
     } else {
-      DEBUG ((EFI_D_ERROR, "MS-HD5770 video adapter detected but PciIo->RomImage == NULL!\n"));
+      DEBUG ((DEBUG_ERROR, "MS-HD5770 video adapter detected but PciIo->RomImage == NULL!\n"));
     }
   }
 

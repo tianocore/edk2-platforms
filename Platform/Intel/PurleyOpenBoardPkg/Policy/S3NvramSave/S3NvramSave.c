@@ -67,7 +67,7 @@ SaveS3StructToNvram (
     HobData = GET_GUID_HOB_DATA(GuidHob); 
     CurrentHobSize = GET_GUID_HOB_DATA_SIZE (GuidHob);
 
-    DEBUG((EFI_D_INFO, "   Current Hob Size(bytes) is: %d\n", CurrentHobSize));
+    DEBUG((DEBUG_INFO, "   Current Hob Size(bytes) is: %d\n", CurrentHobSize));
     //
     // Use the HOB data to save Memory Configuration Data
     //
@@ -80,7 +80,7 @@ SaveS3StructToNvram (
 
     ASSERT (VariableData != NULL); 
     S3ChunkSize = MAX_HOB_ENTRY_SIZE / 8;
-    DEBUG((EFI_D_INFO, "   S3ChunkSize Hob Size(bytes): %d\n", S3ChunkSize));
+    DEBUG((DEBUG_INFO, "   S3ChunkSize Hob Size(bytes): %d\n", S3ChunkSize));
 
     while (CurrentHobSize) {
       if (S3ChunkSize > CurrentHobSize) {
@@ -147,7 +147,7 @@ SaveS3StructToNvram (
         }
 
         if (EFI_ERROR (Status)) {
-          DEBUG((EFI_D_ERROR, "Getting variables error: 0x%x\n", Status));
+          DEBUG((DEBUG_ERROR, "Getting variables error: 0x%x\n", Status));
           ASSERT (Status == EFI_SUCCESS); 
         }
 
@@ -198,7 +198,7 @@ SaveS3StructToNvram (
       }
     
         if (EFI_ERROR (Status)) {
-          DEBUG((EFI_D_ERROR, "Set variable error. Status: 0x%x\n", Status));
+          DEBUG((DEBUG_ERROR, "Set variable error. Status: 0x%x\n", Status));
           ASSERT_EFI_ERROR (Status);
         }
       }

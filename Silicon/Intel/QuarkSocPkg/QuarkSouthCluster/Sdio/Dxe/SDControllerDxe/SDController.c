@@ -148,7 +148,7 @@ DividedClockModeBits (
   //
   *Bits |= ((UINT16) ((UINT8) N) << 8);
   DEBUG (
-    (EFI_D_INFO,
+    (DEBUG_INFO,
     "SDIO:DividedClockModeBits: %dbit mode Want %dHz Got %dHz bits = %04x\r\n",
     (Is8BitMode) ? 8 : 10,
     TargetFreq,
@@ -180,52 +180,52 @@ GetErrorReason (
 
   Status = EFI_DEVICE_ERROR;
 
-  DEBUG((EFI_D_ERROR, "[%2d] -- ", CommandIndex));
+  DEBUG((DEBUG_ERROR, "[%2d] -- ", CommandIndex));
 
   if (ErrorCode & BIT0) {
     Status = EFI_TIMEOUT;
-    DEBUG((EFI_D_ERROR, "Command Timeout Erro"));
+    DEBUG((DEBUG_ERROR, "Command Timeout Erro"));
   }
 
   if (ErrorCode & BIT1) {
     Status = EFI_CRC_ERROR;
-    DEBUG((EFI_D_ERROR, "Command CRC Error"));
+    DEBUG((DEBUG_ERROR, "Command CRC Error"));
   }
 
   if (ErrorCode & BIT2) {
-    DEBUG((EFI_D_ERROR, "Command End Bit Error"));
+    DEBUG((DEBUG_ERROR, "Command End Bit Error"));
   }
 
   if (ErrorCode & BIT3) {
-    DEBUG((EFI_D_ERROR, "Command Index Error"));
+    DEBUG((DEBUG_ERROR, "Command Index Error"));
   }
   if (ErrorCode & BIT4) {
     Status = EFI_TIMEOUT;
-    DEBUG((EFI_D_ERROR, "Data Timeout Error"));
+    DEBUG((DEBUG_ERROR, "Data Timeout Error"));
   }
 
   if (ErrorCode & BIT5) {
     Status = EFI_CRC_ERROR;
-    DEBUG((EFI_D_ERROR, "Data CRC Error"));
+    DEBUG((DEBUG_ERROR, "Data CRC Error"));
   }
 
   if (ErrorCode & BIT6) {
-    DEBUG((EFI_D_ERROR, "Data End Bit Error"));
+    DEBUG((DEBUG_ERROR, "Data End Bit Error"));
   }
 
   if (ErrorCode & BIT7) {
-    DEBUG((EFI_D_ERROR, "Current Limit Error"));
+    DEBUG((DEBUG_ERROR, "Current Limit Error"));
   }
 
   if (ErrorCode & BIT8) {
-    DEBUG((EFI_D_ERROR, "Auto CMD12 Error"));
+    DEBUG((DEBUG_ERROR, "Auto CMD12 Error"));
   }
 
   if (ErrorCode & BIT9) {
-    DEBUG((EFI_D_ERROR, "ADMA Error"));
+    DEBUG((DEBUG_ERROR, "ADMA Error"));
   }
 
-  DEBUG((EFI_D_ERROR, "\n"));
+  DEBUG((DEBUG_ERROR, "\n"));
 
   return Status;
 }
@@ -262,10 +262,10 @@ SetHighSpeedMode (
 
   if (Enable) {
     if (PcdGetBool(PcdSdHciQuirkNoHiSpd)) {
-      DEBUG ((EFI_D_INFO, "SDIO: Quirk never set High Speed Enable bit\r\n"));
+      DEBUG ((DEBUG_INFO, "SDIO: Quirk never set High Speed Enable bit\r\n"));
       return EFI_SUCCESS;
     }
-    DEBUG ((EFI_D_INFO, "Enable High Speed transfer mode ... \r\n"));
+    DEBUG ((DEBUG_INFO, "Enable High Speed transfer mode ... \r\n"));
     Data |= BIT2;
   } else {
     Data &= ~BIT2;
@@ -456,17 +456,17 @@ SendCommand (
 
   if (Buffer != NULL && DataType == NoData) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG ((EFI_D_ERROR, "SendCommand: invalid parameter \r\n"));
+    DEBUG ((DEBUG_ERROR, "SendCommand: invalid parameter \r\n"));
     goto Exit;
   }
 
   if (((UINTN)Buffer & (This->HostCapability.BoundarySize - 1)) != (UINTN)NULL) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG ((EFI_D_ERROR, "SendCommand: invalid parameter \r\n"));
+    DEBUG ((DEBUG_ERROR, "SendCommand: invalid parameter \r\n"));
     goto Exit;
   }
 
-  DEBUG ((EFI_D_INFO, "SendCommand: Command Index = %d \r\n", CommandIndex));
+  DEBUG ((DEBUG_INFO, "SendCommand: Command Index = %d \r\n", CommandIndex));
   //
   TimeOut2 = 1000; // 10 ms
   do {
@@ -607,7 +607,7 @@ SendCommand (
                );
 
 
-  DEBUG ((EFI_D_INFO, "Transfer mode read  = 0x%x \r\n", (Data & 0xFFFF)));
+  DEBUG ((DEBUG_INFO, "Transfer mode read  = 0x%x \r\n", (Data & 0xFFFF)));
   //
   //BIT0 - DMA Enable
   //BIT2 - Auto Cmd12
@@ -632,7 +632,7 @@ SendCommand (
      }
   }
 
-  DEBUG ((EFI_D_INFO, "Transfer mode write = 0x%x \r\n", (Data & 0xffff)));
+  DEBUG ((DEBUG_INFO, "Transfer mode write = 0x%x \r\n", (Data & 0xffff)));
   PciIo->Mem.Write (
                PciIo,
                EfiPciIoWidthUint16,
@@ -685,7 +685,7 @@ SendCommand (
     default:
       ASSERT (0);
       Status = EFI_INVALID_PARAMETER;
-      DEBUG ((EFI_D_ERROR, "SendCommand: invalid parameter \r\n"));
+      DEBUG ((DEBUG_ERROR, "SendCommand: invalid parameter \r\n"));
       goto Exit;
   }
 
@@ -719,7 +719,7 @@ SendCommand (
 
     if ((Data & 0x07FF) != 0) {
       Status = GetErrorReason (CommandIndex, (UINT16)Data);
-      DEBUG ((EFI_D_ERROR, "SendCommand: Error happens \r\n"));
+      DEBUG ((DEBUG_ERROR, "SendCommand: Error happens \r\n"));
       goto Exit;
     }
 
@@ -756,7 +756,7 @@ SendCommand (
 
   if (TimeOut == 0) {
     Status = EFI_TIMEOUT;
-    DEBUG ((EFI_D_ERROR, "SendCommand: Time out \r\n"));
+    DEBUG ((DEBUG_ERROR, "SendCommand: Time out \r\n"));
     goto Exit;
   }
 
@@ -879,15 +879,15 @@ SetClockFrequency (
     gBS->Stall (1 * 1000);
     TimeOutCount --;
     if (TimeOutCount == 0) {
-      DEBUG ((EFI_D_ERROR, "SetClockFrequency: Time out \r\n"));
+      DEBUG ((DEBUG_ERROR, "SetClockFrequency: Time out \r\n"));
       return EFI_TIMEOUT;
     }
   } while ((Data & BIT1) != BIT1);
 
-  DEBUG ((EFI_D_INFO, "Base Clock In MHz: %d\r\n", SDHostData->BaseClockInMHz));
+  DEBUG ((DEBUG_INFO, "Base Clock In MHz: %d\r\n", SDHostData->BaseClockInMHz));
 
   Data = (BIT0 | ((UINT32) FreqSelBits));
-  DEBUG ((EFI_D_INFO, "Data write to MMIO_CLKCTL: 0x%04x \r\n", Data));
+  DEBUG ((DEBUG_INFO, "Data write to MMIO_CLKCTL: 0x%04x \r\n", Data));
   PciIo->Mem.Write (
                PciIo,
                EfiPciIoWidthUint16,
@@ -910,7 +910,7 @@ SetClockFrequency (
     gBS->Stall (1 * 1000);
     TimeOutCount --;
     if (TimeOutCount == 0) {
-      DEBUG ((EFI_D_ERROR, "SetClockFrequency: Time out \r\n"));
+      DEBUG ((DEBUG_ERROR, "SetClockFrequency: Time out \r\n"));
       return EFI_TIMEOUT;
     }
   } while ((Data & BIT1) != BIT1);
@@ -953,12 +953,12 @@ SetBusWidth (
 
 
   if ((BusWidth != 1) && (BusWidth != 4) && (BusWidth != 8)) {
-    DEBUG ((EFI_D_ERROR, "SetBusWidth: Invalid parameter \r\n"));
+    DEBUG ((DEBUG_ERROR, "SetBusWidth: Invalid parameter \r\n"));
     return EFI_INVALID_PARAMETER;
   }
 
   if ((SDHostData->SDHostIo.HostCapability.BusWidth8 == FALSE) && (BusWidth == 8)) {
-     DEBUG ((EFI_D_ERROR, "SetBusWidth: Invalid parameter \r\n"));
+     DEBUG ((DEBUG_ERROR, "SetBusWidth: Invalid parameter \r\n"));
      return EFI_INVALID_PARAMETER;
   }
 
@@ -977,14 +977,14 @@ SetBusWidth (
   // If set, IOH supports 8-bit MMC. When cleared, IOH does not support this feature
   //
   if (BusWidth == 8) {
-    DEBUG ((EFI_D_INFO, "Bus Width is 8-bit ... \r\n"));
+    DEBUG ((DEBUG_INFO, "Bus Width is 8-bit ... \r\n"));
     Data |= BIT5;
   } else if (BusWidth == 4) {
-    DEBUG ((EFI_D_INFO, "Bus Width is 4-bit ... \r\n"));
+    DEBUG ((DEBUG_INFO, "Bus Width is 4-bit ... \r\n"));
     Data &= ~BIT5;
     Data |= BIT1;
   } else {
-    DEBUG ((EFI_D_INFO, "Bus Width is 1-bit ... \r\n"));
+    DEBUG ((DEBUG_INFO, "Bus Width is 1-bit ... \r\n"));
     Data &= ~BIT5;
     Data &= ~BIT1;
   }
@@ -1220,7 +1220,7 @@ ResetSDHost (
                );
 
   if (TimeOutCount == 0) {
-    DEBUG ((EFI_D_ERROR, "ResetSDHost: Time out \r\n"));
+    DEBUG ((DEBUG_ERROR, "ResetSDHost: Time out \r\n"));
     return EFI_TIMEOUT;
   }
 
@@ -1275,7 +1275,7 @@ SetBlockLength (
 
   SDHostData = SDHOST_DATA_FROM_THIS (This);
 
-  DEBUG ((EFI_D_INFO, "Block length on the host controller: %d \r\n", BlockLength));
+  DEBUG ((DEBUG_INFO, "Block length on the host controller: %d \r\n", BlockLength));
   SDHostData->BlockLength = BlockLength;
 
   return EFI_SUCCESS;
@@ -1323,36 +1323,36 @@ DetectCardAndInitHost (
     //
     // Has no card inserted
     //
-    DEBUG ((EFI_D_INFO, "DetectCardAndInitHost: No Cards \r\n"));
+    DEBUG ((DEBUG_INFO, "DetectCardAndInitHost: No Cards \r\n"));
     Status =  EFI_NOT_FOUND;
     goto Exit;
   }
-  DEBUG ((EFI_D_INFO, "DetectCardAndInitHost: Find Cards \r\n"));
+  DEBUG ((DEBUG_INFO, "DetectCardAndInitHost: Find Cards \r\n"));
 
   Status =  EFI_NOT_FOUND;
   for (Loop = 0; Loop < sizeof (Voltages); Loop++) {
     DEBUG ((
-      EFI_D_INFO,
+      DEBUG_INFO,
       "DetectCardAndInitHost: SetHostVoltage %d.%dV \r\n",
       Voltages[Loop] / 10,
       Voltages[Loop] % 10
       ));
     Status = SetHostVoltage (This, Voltages[Loop]);
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "DetectCardAndInitHost set voltages: [failed]\n"));
+      DEBUG ((DEBUG_INFO, "DetectCardAndInitHost set voltages: [failed]\n"));
     } else {
-      DEBUG ((EFI_D_INFO, "DetectCardAndInitHost set voltages: [success]\n"));
+      DEBUG ((DEBUG_INFO, "DetectCardAndInitHost set voltages: [success]\n"));
       break;
     }
   }
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "DetectCardAndInitHost: Fail to set voltage \r\n"));
+    DEBUG ((DEBUG_ERROR, "DetectCardAndInitHost: Fail to set voltage \r\n"));
     goto Exit;
   }
 
   Status = SetClockFrequency (This, FREQUENCY_OD);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "DetectCardAndInitHost: Fail to set frequency \r\n"));
+    DEBUG ((DEBUG_ERROR, "DetectCardAndInitHost: Fail to set frequency \r\n"));
     goto Exit;
   }
   SetBusWidth (This, 1);
@@ -1617,7 +1617,7 @@ SDControllerStart (
               &Data
               );
   SDHostData->SDHostIo.HostCapability.HostVersion = Data & 0xFF;
-  DEBUG ((EFI_D_INFO, "SdHostDriverBindingStart: HostVersion 0x%x \r\n", SDHostData->SDHostIo.HostCapability.HostVersion));
+  DEBUG ((DEBUG_INFO, "SdHostDriverBindingStart: HostVersion 0x%x \r\n", SDHostData->SDHostIo.HostCapability.HostVersion));
 
   PciIo->Mem.Read (
                PciIo,
@@ -1627,7 +1627,7 @@ SDControllerStart (
                1,
                &Data
                );
-  DEBUG ((EFI_D_INFO, "SdHostDriverBindingStart: MMIO_CAP 0x%x \r\n", Data));
+  DEBUG ((DEBUG_INFO, "SdHostDriverBindingStart: MMIO_CAP 0x%x \r\n", Data));
   if ((Data & BIT18) != 0) {
     SDHostData->SDHostIo.HostCapability.BusWidth8 = TRUE;
   }
@@ -1662,7 +1662,7 @@ SDControllerStart (
    }
 
   SDHostData->BlockLength = 512 << ((Data >> 16) & 0x03);
-  DEBUG ((EFI_D_INFO, "SdHostDriverBindingStart: BlockLength 0x%x \r\n", SDHostData->BlockLength));
+  DEBUG ((DEBUG_INFO, "SdHostDriverBindingStart: BlockLength 0x%x \r\n", SDHostData->BlockLength));
   SDHostData->IsAutoStopCmd  = TRUE;
 
   Status = gBS->InstallProtocolInterface (

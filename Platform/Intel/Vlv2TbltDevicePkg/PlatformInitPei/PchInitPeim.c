@@ -472,7 +472,7 @@ UARTInit (
     }
 
 
-    DEBUG ((EFI_D_ERROR, "EnableInternalUart\n"));
+    DEBUG ((DEBUG_ERROR, "EnableInternalUart\n"));
   } else {
   	//
     // If SIO UART interface selected
@@ -608,7 +608,7 @@ PchPolicySetupInit (
   //
   //Todo: confirm if we need update to PCH_PLATFORM_POLICY_PPI_REVISION_5
   //
-  DEBUG ((EFI_D_ERROR, "PchPolicySetupInit() - Start\n"));
+  DEBUG ((DEBUG_ERROR, "PchPolicySetupInit() - Start\n"));
 
   Status = (*PeiServices)->AllocatePool (PeiServices, sizeof (EFI_PEI_PPI_DESCRIPTOR), (void **)&PchPlatformPolicyPpiDesc);
   ASSERT_EFI_ERROR (Status);
@@ -712,7 +712,7 @@ PchPolicySetupInit (
               );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((EFI_D_ERROR, "PchPolicySetupInit() - End\n"));
+  DEBUG ((DEBUG_ERROR, "PchPolicySetupInit() - End\n"));
 }
 
 EFI_STATUS
@@ -726,7 +726,7 @@ InstallPeiPchUsbPolicy (
   PCH_USB_POLICY_PPI      *PeiPchUsbPolicyPpi;
   PCH_USB_CONFIG          *UsbConfig;
 
-  DEBUG ((EFI_D_INFO, "InstallPeiPchUsbPolicy...\n"));
+  DEBUG ((DEBUG_INFO, "InstallPeiPchUsbPolicy...\n"));
 
   //
   // Allocate descriptor and PPI structures.  Since these are dynamically updated

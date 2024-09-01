@@ -238,8 +238,8 @@ Returns:
   TsegBase  = (UINTN)DescriptorBlock->Descriptor[TsegIndex].PhysicalStart;
   TsegSize  = (UINTN)DescriptorBlock->Descriptor[TsegIndex].PhysicalSize;
 
-  DEBUG ((EFI_D_INFO, "SMM  Base: %08X\n", TsegBase));
-  DEBUG ((EFI_D_INFO, "SMM  Size: %08X\n", TsegSize));
+  DEBUG ((DEBUG_INFO, "SMM  Base: %08X\n", TsegBase));
+  DEBUG ((DEBUG_INFO, "SMM  Size: %08X\n", TsegSize));
 
   //
   // Now find the location of the data structure that is used to store the address
@@ -258,9 +258,9 @@ Returns:
   }
   AcpiS3Range->SystemMemoryLength = (UINT32)SystemMemoryLength;
 
-  DEBUG ((EFI_D_INFO, "S3 Memory  Base:    %08X\n", AcpiS3Range->AcpiReservedMemoryBase));
-  DEBUG ((EFI_D_INFO, "S3 Memory  Size:    %08X\n", AcpiS3Range->AcpiReservedMemorySize));
-  DEBUG ((EFI_D_INFO, "S3 SysMemoryLength: %08X\n", AcpiS3Range->SystemMemoryLength));
+  DEBUG ((DEBUG_INFO, "S3 Memory  Base:    %08X\n", AcpiS3Range->AcpiReservedMemoryBase));
+  DEBUG ((DEBUG_INFO, "S3 Memory  Size:    %08X\n", AcpiS3Range->AcpiReservedMemorySize));
+  DEBUG ((DEBUG_INFO, "S3 SysMemoryLength: %08X\n", AcpiS3Range->SystemMemoryLength));
 
   return EFI_SUCCESS;
 }

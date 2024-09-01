@@ -146,7 +146,7 @@
 #define MCI_CPSM_LONG_PENDING           BIT9
 #define MCI_CPSM_ENABLE                 BIT10
 
-#define MCI_TRACE(txt)                  DEBUG ((EFI_D_BLKIO, "ARM_MCI: " txt "\n"))
+#define MCI_TRACE(txt)                  DEBUG ((DEBUG_BLKIO, "ARM_MCI: " txt "\n"))
 
 EFI_STATUS
 EFIAPI

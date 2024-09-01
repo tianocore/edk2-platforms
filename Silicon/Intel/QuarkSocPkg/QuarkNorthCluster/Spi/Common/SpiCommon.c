@@ -186,7 +186,7 @@ Returns:
             EnumSpiRegionAll
             );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unlock flash component 1 fail!\n"));
+    DEBUG ((DEBUG_ERROR, "Unlock flash component 1 fail!\n"));
     return Status;
   }
 
@@ -331,7 +331,7 @@ Returns:
             UnlockCmdOpcodeIndex
             );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unlock flash components fail!\n"));
+    DEBUG ((DEBUG_ERROR, "Unlock flash components fail!\n"));
   }
 
   SpiPhaseInit ();
@@ -716,7 +716,7 @@ Returns:
     return EFI_SUCCESS;
   }
   //
-  // DEBUG((EFI_D_ERROR, "SPIADDR %x, %x, %x, %x\n", Address, HardwareSpiAddr, BaseAddress,
+  // DEBUG((DEBUG_ERROR, "SPIADDR %x, %x, %x, %x\n", Address, HardwareSpiAddr, BaseAddress,
   // LimitAddress));
   //
   if ((DataCycle == FALSE) && (DataByteCount > 0)) {

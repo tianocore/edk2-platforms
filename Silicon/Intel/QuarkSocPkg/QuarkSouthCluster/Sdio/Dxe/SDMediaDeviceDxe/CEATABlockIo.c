@@ -39,7 +39,7 @@ CEATABlockReset (
   } else {
     Status = SDHostIo->ResetSDHost (SDHostIo, Reset_DAT_CMD);
     if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "CEATABlockReset: Fail to ResetSDHost\n" ));
+    DEBUG((DEBUG_ERROR, "CEATABlockReset: Fail to ResetSDHost\n" ));
       return Status;
     }
     Status = MMCSDCardInit (CardData);
@@ -99,19 +99,19 @@ CEATABlockReadBlocks (
 
   if (!Buffer) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG((EFI_D_ERROR, "CEATABlockReadBlocks:Invalid parameter\n" ));
+    DEBUG((DEBUG_ERROR, "CEATABlockReadBlocks:Invalid parameter\n" ));
     goto Exit;
   }
 
   if (MediaId != CardData->BlockIoMedia.MediaId) {
     Status = EFI_MEDIA_CHANGED;
-  DEBUG((EFI_D_ERROR, "CEATABlockReadBlocks:Media changed\n" ));
+  DEBUG((DEBUG_ERROR, "CEATABlockReadBlocks:Media changed\n" ));
     goto Exit;
   }
 
   if ((BufferSize % CardData->BlockIoMedia.BlockSize) != 0) {
     Status = EFI_BAD_BUFFER_SIZE;
-  DEBUG((EFI_D_ERROR, "CEATABlockReadBlocks:Bad buffer size\n" ));
+  DEBUG((DEBUG_ERROR, "CEATABlockReadBlocks:Bad buffer size\n" ));
     goto Exit;
   }
 
@@ -122,7 +122,7 @@ CEATABlockReadBlocks (
 
   if ((Address + BufferSize) > MultU64x32 (CardData->BlockIoMedia.LastBlock + 1, CardData->BlockIoMedia.BlockSize)) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG((EFI_D_ERROR, "CEATABlockReadBlocks:Invalid parameter\n" ));
+    DEBUG((DEBUG_ERROR, "CEATABlockReadBlocks:Invalid parameter\n" ));
     goto Exit;
   }
 
@@ -145,7 +145,7 @@ CEATABlockReadBlocks (
                (UINT16)(TransferSize / DATA_UNIT_SIZE)
                );
     if (EFI_ERROR (Status)) {
-     DEBUG((EFI_D_ERROR, "Read Failed at 0x%x, Index %d, Size 0x%x\n", Address, Index, TransferSize));
+     DEBUG((DEBUG_ERROR, "Read Failed at 0x%x, Index %d, Size 0x%x\n", Address, Index, TransferSize));
      This->Reset (This, TRUE);
      goto Exit;
     }
@@ -258,7 +258,7 @@ CEATABlockWriteBlocks (
                (UINT16)(TransferSize / DATA_UNIT_SIZE)
                );
     if (EFI_ERROR (Status)) {
-     DEBUG((EFI_D_ERROR, "Write Failed at 0x%x, Index %d, Size 0x%x\n", Address, Index, TransferSize));
+     DEBUG((DEBUG_ERROR, "Write Failed at 0x%x, Index %d, Size 0x%x\n", Address, Index, TransferSize));
      This->Reset (This, TRUE);
      goto Exit;
     }

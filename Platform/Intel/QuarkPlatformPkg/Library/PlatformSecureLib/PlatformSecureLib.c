@@ -33,7 +33,7 @@ CheckResetButtonState (
   UINTN                   ReadLength;
   UINT8                   Buffer[2];
 
-  DEBUG ((EFI_D_INFO, "CheckResetButtonState(): mPlatformType == %d\n", mPlatformType));
+  DEBUG ((DEBUG_INFO, "CheckResetButtonState(): mPlatformType == %d\n", mPlatformType));
   if (mPlatformType == GalileoGen2) {
     //
     // Read state of Reset Button - EXP2.P1_7
@@ -54,7 +54,7 @@ CheckResetButtonState (
     } else {
       I2CSlaveAddress.I2CDeviceAddress = GALILEO_IOEXP_J2LO_7BIT_SLAVE_ADDR;
     }
-    DEBUG ((EFI_D_INFO, "Galileo GPIO Expender Slave Address = %02x\n", I2CSlaveAddress.I2CDeviceAddress));
+    DEBUG ((DEBUG_INFO, "Galileo GPIO Expender Slave Address = %02x\n", I2CSlaveAddress.I2CDeviceAddress));
 
     //
     // Read state of RESET_N_SHLD (GPORT5_BIT0)

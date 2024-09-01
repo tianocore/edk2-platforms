@@ -355,7 +355,7 @@ GetGsxBoardID(
     //
     // Unhable to read GSX HW error Hang the system
     //
-    DEBUG ((EFI_D_ERROR, "ERROR: GSX HW is unavailable, SYSTEM HANG\n"));
+    DEBUG ((DEBUG_ERROR, "ERROR: GSX HW is unavailable, SYSTEM HANG\n"));
     CpuDeadLoop ();
   }
 }
@@ -423,7 +423,7 @@ PdrGetPlatformInfo (
     //
     // Reading PIT from SPI PDR Failed or a unknown platform identified
     //
-    DEBUG ((EFI_D_ERROR, "PIT from SPI PDR reports Platform ID as %x. This is unknown ID. Assuming Greencity Platform!\n", PlatformInfoHob->BoardId));
+    DEBUG ((DEBUG_ERROR, "PIT from SPI PDR reports Platform ID as %x. This is unknown ID. Assuming Greencity Platform!\n", PlatformInfoHob->BoardId));
     PlatformInfoHob->BoardId = TypePlatformUnknown;
     Status = EFI_INCOMPATIBLE_VERSION;
   }
@@ -512,12 +512,12 @@ GetPlatformInfo (
 
   Status = GpioGetBoardId (&BoardId);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Error: Can't read GPIO to get Board ID!\n"));
+    DEBUG ((DEBUG_ERROR, "Error: Can't read GPIO to get Board ID!\n"));
     return Status;
   }
   Status = GpioGetBoardRevId (&BoardRev);
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_ERROR, "Error: Can't read GPIO to get Board ID!\n"));
+    DEBUG ((DEBUG_ERROR, "Error: Can't read GPIO to get Board ID!\n"));
     return Status;
   }
   PlatformInfoHob->TypeRevisionId = BoardRev;
@@ -644,7 +644,7 @@ PlatformInfoInit (
 
   PciCfgPpi = (**PeiServices).PciCfg;
   if (PciCfgPpi == NULL) {
-    DEBUG ((EFI_D_ERROR, "\nError! PlatformInfoInit() - PeiServices is a NULL Pointer!!!\n"));
+    DEBUG ((DEBUG_ERROR, "\nError! PlatformInfoInit() - PeiServices is a NULL Pointer!!!\n"));
     ASSERT_EFI_ERROR (EFI_INVALID_PARAMETER);
     return EFI_INVALID_PARAMETER;
   }
@@ -679,7 +679,7 @@ PlatformInfoInit (
 
   if (EFI_ERROR (Status))
   {
-        DEBUG((EFI_D_ERROR, "LocatePpi Error in PlatformInfo.c !\n"));
+        DEBUG((DEBUG_ERROR, "LocatePpi Error in PlatformInfo.c !\n"));
   }
 
   Status = GetIioPlatformSetupPolicy (&PlatformInfoHob);

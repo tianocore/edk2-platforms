@@ -144,7 +144,7 @@ Lan9118DxeEntry (
   // Power up the device so we can find the MAC address
   Status = Lan9118Initialize (Snp);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "LAN9118: Error initialising hardware\n"));
+    DEBUG ((DEBUG_ERROR, "LAN9118: Error initialising hardware\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -275,11 +275,11 @@ SnpInitialize (
 
   // First check that driver has not already been initialized
   if (Snp->Mode->State == EfiSimpleNetworkInitialized) {
-    DEBUG ((EFI_D_WARN, "LAN9118 Driver already initialized\n"));
+    DEBUG ((DEBUG_WARN, "LAN9118 Driver already initialized\n"));
     return EFI_SUCCESS;
   } else
   if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "LAN9118 Driver not started\n"));
+    DEBUG ((DEBUG_WARN, "LAN9118 Driver not started\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -287,14 +287,14 @@ SnpInitialize (
   Status = PhySoftReset (PHY_RESET_PMT, Snp);
   if (EFI_ERROR (Status)) {
     Snp->Mode->State = EfiSimpleNetworkStopped;
-    DEBUG ((EFI_D_WARN, "Warning: Link not ready after TimeOut. Check ethernet cable\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Link not ready after TimeOut. Check ethernet cable\n"));
     return EFI_NOT_STARTED;
   }
 
   // Initiate a software reset
   Status = SoftReset (0, Snp);
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_WARN, "Soft Reset Failed: Hardware Error\n"));
+    DEBUG ((DEBUG_WARN, "Soft Reset Failed: Hardware Error\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -343,7 +343,7 @@ SnpInitialize (
   // Do auto-negotiation if supported
   Status = AutoNegotiate (AUTO_NEGOTIATE_ADVERTISE_ALL, Snp);
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_WARN, "LAN9118: Auto Negotiation failed.\n"));
+    DEBUG ((DEBUG_WARN, "LAN9118: Auto Negotiation failed.\n"));
   }
 
   // Configure flow control depending on speed capabilities
@@ -394,10 +394,10 @@ SnpReset (
 
   // First check that driver has not already been initialized
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not yet initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not yet initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not started\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not started\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -417,7 +417,7 @@ SnpReset (
 
   Status = SoftReset (ResetFlags, Snp);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_WARN, "Warning: Soft Reset Failed: Hardware Error\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Soft Reset Failed: Hardware Error\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -476,10 +476,10 @@ SnpShutdown (
 
   // First check that driver has not already been initialized
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not yet initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not yet initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not started\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not started\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -492,7 +492,7 @@ SnpShutdown (
   // Initiate a software reset
   Status = SoftReset (0, Snp);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_WARN, "Warning: Soft Reset Failed: Hardware Error\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Soft Reset Failed: Hardware Error\n"));
     return Status;
   }
 
@@ -572,10 +572,10 @@ SnpReceiveFilters (
 
   // Check that driver was started and initialised
   if (Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -748,10 +748,10 @@ SnpStationAddress (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -765,7 +765,7 @@ SnpStationAddress (
       New = (EFI_MAC_ADDRESS *) PermAddr;
       Lan9118SetMacAddress ((EFI_MAC_ADDRESS *) PermAddr, Snp);
     } else {
-      DEBUG ((EFI_D_ERROR, "LAN9118: Warning: No valid MAC address in EEPROM, using fallback\n"));
+      DEBUG ((DEBUG_ERROR, "LAN9118: Warning: No valid MAC address in EEPROM, using fallback\n"));
       New = (EFI_MAC_ADDRESS*) (FixedPcdGet64 (PcdLan9118DefaultMacAddress));
     }
   } else {
@@ -826,10 +826,10 @@ SnpStatistics (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -890,10 +890,10 @@ SnpMcastIptoMac (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -982,10 +982,10 @@ SnpGetStatus (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -1033,24 +1033,24 @@ SnpGetStatus (
     PacketTag = TxStatus >> 16;
     TxStatus = TxStatus & 0xFFFF;
     if ((TxStatus & TXSTATUS_ES) && (TxStatus != (TXSTATUS_ES | TXSTATUS_NO_CA))) {
-      DEBUG ((EFI_D_ERROR, "LAN9118: There was an error transmitting. TxStatus=0x%08x:", TxStatus));
+      DEBUG ((DEBUG_ERROR, "LAN9118: There was an error transmitting. TxStatus=0x%08x:", TxStatus));
       if (TxStatus & TXSTATUS_NO_CA) {
-        DEBUG ((EFI_D_ERROR, "- No carrier\n"));
+        DEBUG ((DEBUG_ERROR, "- No carrier\n"));
       }
       if (TxStatus & TXSTATUS_DEF) {
-        DEBUG ((EFI_D_ERROR, "- Packet tx was deferred\n"));
+        DEBUG ((DEBUG_ERROR, "- Packet tx was deferred\n"));
       }
       if (TxStatus & TXSTATUS_EDEF) {
-        DEBUG ((EFI_D_ERROR, "- Tx ended because of excessive deferral\n"));
+        DEBUG ((DEBUG_ERROR, "- Tx ended because of excessive deferral\n"));
       }
       if (TxStatus & TXSTATUS_ECOLL) {
-        DEBUG ((EFI_D_ERROR, "- Tx ended because of Excessive Collisions\n"));
+        DEBUG ((DEBUG_ERROR, "- Tx ended because of Excessive Collisions\n"));
       }
       if (TxStatus & TXSTATUS_LCOLL) {
-        DEBUG ((EFI_D_ERROR, "- Packet Tx aborted after coll window of 64 bytes\n"));
+        DEBUG ((DEBUG_ERROR, "- Packet Tx aborted after coll window of 64 bytes\n"));
       }
       if (TxStatus & TXSTATUS_LOST_CA) {
-        DEBUG ((EFI_D_ERROR, "- Lost carrier during Tx\n"));
+        DEBUG ((DEBUG_ERROR, "- Lost carrier during Tx\n"));
       }
       return EFI_DEVICE_ERROR;
     } else if (TxBuff != NULL) {
@@ -1064,12 +1064,12 @@ SnpGetStatus (
   // Check for a TX Error interrupt
   Interrupts = Lan9118MmioRead32 (LAN9118_INT_STS);
   if (Interrupts & INSTS_TXE) {
-    DEBUG ((EFI_D_ERROR, "LAN9118: Transmitter error. Restarting..."));
+    DEBUG ((DEBUG_ERROR, "LAN9118: Transmitter error. Restarting..."));
 
     // Software reset, the TXE interrupt is cleared by the reset.
     Status = SoftReset (0, Snp);
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "\n\tSoft Reset Failed: Hardware Error\n"));
+      DEBUG ((DEBUG_ERROR, "\n\tSoft Reset Failed: Hardware Error\n"));
       return EFI_DEVICE_ERROR;
     }
 
@@ -1146,10 +1146,10 @@ SnpTransmit (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -1284,7 +1284,7 @@ SnpTransmit (
 
 #if defined(EVAL_PERFORMANCE)
   EndClock = GetPerformanceCounter ();
-  DEBUG ((EFI_D_ERROR, "Time processing: %d counts @ %d Hz\n", StartClock - EndClock,Perf));
+  DEBUG ((DEBUG_ERROR, "Time processing: %d counts @ %d Hz\n", StartClock - EndClock,Perf));
 #endif
 
   LanDriver->Stats.TxGoodFrames += 1;
@@ -1338,10 +1338,10 @@ SnpReceive (
 
   // Check that driver was started and initialised
   if (Snp->Mode->State == EfiSimpleNetworkStarted) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver not initialized\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver not initialized\n"));
     return EFI_DEVICE_ERROR;
   } else if (Snp->Mode->State == EfiSimpleNetworkStopped) {
-    DEBUG ((EFI_D_WARN, "Warning: LAN9118 Driver in stopped state\n"));
+    DEBUG ((DEBUG_WARN, "Warning: LAN9118 Driver in stopped state\n"));
     return EFI_NOT_STARTED;
   }
 
@@ -1387,13 +1387,13 @@ SnpReceive (
       (RxFifoStatus & RXSTATUS_LE) ||
       (RxFifoStatus & RXSTATUS_DB))
   {
-    DEBUG ((EFI_D_WARN, "Warning: There was an error on frame reception.\n"));
+    DEBUG ((DEBUG_WARN, "Warning: There was an error on frame reception.\n"));
     return EFI_DEVICE_ERROR;
   }
 
   // Check if we got a CRC error
   if (RxFifoStatus & RXSTATUS_CRC_ERROR) {
-    DEBUG ((EFI_D_WARN, "Warning: Crc Error\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Crc Error\n"));
     LanDriver->Stats.RxCrcErrorFrames += 1;
     LanDriver->Stats.RxDroppedFrames += 1;
     return EFI_DEVICE_ERROR;
@@ -1401,7 +1401,7 @@ SnpReceive (
 
   // Check if we got a runt frame
   if (RxFifoStatus & RXSTATUS_RUNT) {
-    DEBUG ((EFI_D_WARN, "Warning: Runt Frame\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Runt Frame\n"));
     LanDriver->Stats.RxUndersizeFrames += 1;
     LanDriver->Stats.RxDroppedFrames += 1;
     return EFI_DEVICE_ERROR;
@@ -1409,7 +1409,7 @@ SnpReceive (
 
   // Check filtering status for this packet
   if (RxFifoStatus & RXSTATUS_FILT_FAIL) {
-    DEBUG ((EFI_D_WARN, "Warning: Frame Failed Filtering\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Frame Failed Filtering\n"));
     // fast forward?
   }
 
@@ -1502,12 +1502,12 @@ SnpReceive (
 
   // Check for Rx errors (worst possible error)
   if (Lan9118MmioRead32 (LAN9118_INT_STS) & INSTS_RXE) {
-    DEBUG ((EFI_D_WARN, "Warning: Receiver Error. Restarting...\n"));
+    DEBUG ((DEBUG_WARN, "Warning: Receiver Error. Restarting...\n"));
 
     // Software reset, the RXE interrupt is cleared by the reset.
     Status = SoftReset (0, Snp);
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "Error: Soft Reset Failed: Hardware Error.\n"));
+      DEBUG ((DEBUG_ERROR, "Error: Soft Reset Failed: Hardware Error.\n"));
       return EFI_DEVICE_ERROR;
     }
 
@@ -1530,7 +1530,7 @@ SnpReceive (
 
 #if defined(EVAL_PERFORMANCE)
   UINT64 EndClock = GetPerformanceCounter ();
-  DEBUG ((EFI_D_ERROR, "Receive Time processing: %d counts @ %d Hz\n", StartClock - EndClock,Perf));
+  DEBUG ((DEBUG_ERROR, "Receive Time processing: %d counts @ %d Hz\n", StartClock - EndClock,Perf));
 #endif
 
   LanDriver->Stats.RxGoodFrames += 1;

@@ -154,11 +154,11 @@ AssertPostGpio (
   GPIO_B20 = PcdGet32 (PcdOemSkuAssertPostGPIO);
   Data32 = PcdGet32(PcdOemSkuAssertPostGPIOValue);
   if (GPIO_B20 == 0xFFFFFFFF) {
-    DEBUG ((EFI_D_ERROR, "GPIO Pcd is invalid, so abort the GPIO Set and just return! \n"));
+    DEBUG ((DEBUG_ERROR, "GPIO Pcd is invalid, so abort the GPIO Set and just return! \n"));
     return;
   }
   DynamicSiLibraryProtocol->GpioSetOutputValue (GPIO_B20, Data32);
-  DEBUG ((EFI_D_INFO, "System Post Complete GPIO has been set ! \n"));
+  DEBUG ((DEBUG_INFO, "System Post Complete GPIO has been set ! \n"));
 }
 
 /**
@@ -225,7 +225,7 @@ PlatformTypeInit (
   PlatformName = AllocateZeroPool (PlatformNameSize);
   ASSERT (PlatformName != NULL);
   if (PlatformName == NULL) {
-    DEBUG ((EFI_D_ERROR, "Failed to allocate memory\n"));
+    DEBUG ((DEBUG_ERROR, "Failed to allocate memory\n"));
     return EFI_OUT_OF_RESOURCES;
   }
   //
@@ -234,7 +234,7 @@ PlatformTypeInit (
   GuidHob       = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "gEfiPlatformInfoGuid not found\n"));
+    DEBUG ((DEBUG_ERROR, "gEfiPlatformInfoGuid not found\n"));
     return EFI_NOT_FOUND;
   }
   PlatformInfoHobData  = GET_GUID_HOB_DATA(GuidHob);
@@ -272,12 +272,12 @@ PlatformTypeInit (
   PcdPlatformName = PcdGetPtr (PcdOemSkuPlatformName);
   ASSERT(PlatformNameSize >= PcdPlatformNameSize);
   if (PlatformNameSize < PcdPlatformNameSize) {
-    DEBUG ((EFI_D_ERROR, "Invalid buffer size\n"));
+    DEBUG ((DEBUG_ERROR, "Invalid buffer size\n"));
     return EFI_BUFFER_TOO_SMALL;
   }
   ASSERT(PcdPlatformName != NULL);
   if (PcdPlatformName == NULL) {
-    DEBUG ((EFI_D_ERROR, "Invalid PCD detected\n"));
+    DEBUG ((DEBUG_ERROR, "Invalid PCD detected\n"));
     return EFI_NOT_FOUND;
   }
   CopyMem (PlatformName, PcdPlatformName, PcdPlatformNameSize);
@@ -286,7 +286,7 @@ PlatformTypeInit (
 
   Status = GetPchName (PlatformInfoHobData);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Failed to get PCH name: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "Failed to get PCH name: %r\n", Status));
     return Status;
   }
 
@@ -311,7 +311,7 @@ PlatformTypeInit (
   GuidHob    = GetFirstGuidHob (&UniversalDataGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "UniversalDataGuid not found\n"));
+    DEBUG ((DEBUG_ERROR, "UniversalDataGuid not found\n"));
     return EFI_NOT_FOUND;
   }
   UdsHobPtr = GET_GUID_HOB_DATA(GuidHob);

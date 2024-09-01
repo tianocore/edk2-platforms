@@ -89,22 +89,22 @@ EarlyConfigEntry (
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-    DEBUG((EFI_D_INFO,"SMMU CONFIG........."));
+    DEBUG((DEBUG_INFO,"SMMU CONFIG........."));
     (VOID)SmmuConfigForOS();
-    DEBUG((EFI_D_INFO,"Done\n"));
+    DEBUG((DEBUG_INFO,"Done\n"));
 
 
-    DEBUG((EFI_D_INFO,"AP CONFIG........."));
+    DEBUG((DEBUG_INFO,"AP CONFIG........."));
     (VOID)QResetAp();
-    DEBUG((EFI_D_INFO,"Done\n"));
+    DEBUG((DEBUG_INFO,"Done\n"));
 
-    DEBUG((EFI_D_INFO,"MN CONFIG........."));
+    DEBUG((DEBUG_INFO,"MN CONFIG........."));
     (VOID)MN_CONFIG();
-    DEBUG((EFI_D_INFO,"Done\n"));
+    DEBUG((DEBUG_INFO,"Done\n"));
 
     if(OemIsMpBoot())
     {
-        DEBUG((EFI_D_INFO,"Event Broadcast CONFIG........."));
+        DEBUG((DEBUG_INFO,"Event Broadcast CONFIG........."));
         //EVENT broadcast
         MmioWrite32 (MDIO_SUBCTRL_BASE + SC_BROADCAST_EN_REG, SC_BROADCAST_EN_REG_VALUE);
         MmioWrite32 (MDIO_SUBCTRL_BASE + SC_BROADCAST_SCL1_ADDR0_REG, SC_BROADCAST_SCLx_ADDRx_REG_VALUE1);
@@ -138,10 +138,10 @@ EarlyConfigEntry (
         MmioWrite32 (S1_BASE + PERI_SUBCTRL_BASE + SC_BROADCAST_SCL3_ADDR0_REG, SC_BROADCAST_SCLx_ADDRx_REG_VALUE1);
         MmioWrite32 (S1_BASE + PERI_SUBCTRL_BASE + SC_BROADCAST_SCL3_ADDR1_REG, SC_BROADCAST_SCLx_ADDRx_REG_VALUE0);
 
-        DEBUG((EFI_D_INFO,"Done\n"));
+        DEBUG((DEBUG_INFO,"Done\n"));
     }
 
-    DEBUG((EFI_D_INFO,"PCIE RAM Address CONFIG........."));
+    DEBUG((DEBUG_INFO,"PCIE RAM Address CONFIG........."));
 
     if(OemIsMpBoot())
     {
@@ -161,13 +161,13 @@ EarlyConfigEntry (
         MmioWrite32 (PCIE2_SUBCTRL_BASE + PCIE_SUBCTRL_SC_DISPATCH_DAW_ARRAY6_REG, PCIE_SUBCTRL_SC_DISPATCH_DAW_ARRAY6_REG_VALUE0);
     }
 
-    DEBUG((EFI_D_INFO,"Done\n"));
+    DEBUG((DEBUG_INFO,"Done\n"));
 
     MmioWrite32(ALG_BASE + SC_ITS_M3_INT_MUX_SEL_REG, SC_ITS_M3_INT_MUX_SEL_REG_VALUE);
 
-    DEBUG((EFI_D_INFO,"Timer CONFIG........."));
+    DEBUG((DEBUG_INFO,"Timer CONFIG........."));
     PlatformTimerStart ();
-    DEBUG((EFI_D_INFO,"Done\n"));
+    DEBUG((DEBUG_INFO,"Done\n"));
 
     return EFI_SUCCESS;
 }

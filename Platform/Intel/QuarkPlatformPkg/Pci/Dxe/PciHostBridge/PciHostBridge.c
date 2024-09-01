@@ -125,7 +125,7 @@ Returns:
   ASSERT_EFI_ERROR (Status);
   ZeroMem (mResAperture, HostBridge->RootBridgeCount * sizeof(PCI_ROOT_BRIDGE_RESOURCE_APERTURE));
 
-  DEBUG ((EFI_D_INFO, "Address of resource Aperture:  %x\n", mResAperture));
+  DEBUG ((DEBUG_INFO, "Address of resource Aperture:  %x\n", mResAperture));
 
   //
   // Create Root Bridge Device Handle in this Host Bridge
@@ -158,14 +158,14 @@ Returns:
   PrivateData->Aperture.IoBase  = PcdGet16 (PcdPciHostBridgeIoBase);
   PrivateData->Aperture.IoLimit = PcdGet16 (PcdPciHostBridgeIoBase) + (PcdGet16 (PcdPciHostBridgeIoSize) - 1);
 
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge BusBase:               %x\n",  QNC_PCI_HOST_BRIDGE_RESOURCE_APPETURE_BUSBASE));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge BusLimit:              %x\n",  QNC_PCI_HOST_BRIDGE_RESOURCE_APPETURE_BUSLIMIT));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceMem32Base:  %x\n",  PcdGet32 (PcdPciHostBridgeMemory32Base)));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceMem32Limit: %x\n",  PcdGet32 (PcdPciHostBridgeMemory32Base) + (PcdGet32 (PcdPciHostBridgeMemory32Size) - 1)));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceMem64Base:  %lX\n", PcdGet64 (PcdPciHostBridgeMemory64Base)));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceMem64Limit: %lX\n", PcdGet64 (PcdPciHostBridgeMemory64Base) + (PcdGet64 (PcdPciHostBridgeMemory64Size) - 1)));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceIoBase:     %x\n",  PcdGet16 (PcdPciHostBridgeIoBase)));
-  DEBUG ((EFI_D_INFO, "PCI Host Bridge PciResourceIoLimit:    %x\n",  PcdGet16 (PcdPciHostBridgeIoBase) + (PcdGet16 (PcdPciHostBridgeIoSize) - 1)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge BusBase:               %x\n",  QNC_PCI_HOST_BRIDGE_RESOURCE_APPETURE_BUSBASE));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge BusLimit:              %x\n",  QNC_PCI_HOST_BRIDGE_RESOURCE_APPETURE_BUSLIMIT));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceMem32Base:  %x\n",  PcdGet32 (PcdPciHostBridgeMemory32Base)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceMem32Limit: %x\n",  PcdGet32 (PcdPciHostBridgeMemory32Base) + (PcdGet32 (PcdPciHostBridgeMemory32Size) - 1)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceMem64Base:  %lX\n", PcdGet64 (PcdPciHostBridgeMemory64Base)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceMem64Limit: %lX\n", PcdGet64 (PcdPciHostBridgeMemory64Base) + (PcdGet64 (PcdPciHostBridgeMemory64Size) - 1)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceIoBase:     %x\n",  PcdGet16 (PcdPciHostBridgeIoBase)));
+  DEBUG ((DEBUG_INFO, "PCI Host Bridge PciResourceIoLimit:    %x\n",  PcdGet16 (PcdPciHostBridgeIoBase) + (PcdGet16 (PcdPciHostBridgeIoSize) - 1)));
 
   PrivateData->Handle = NULL;
   Status = gBS->InstallMultipleProtocolInterfaces (
@@ -354,10 +354,10 @@ Returns:
             }
 
             RootBridgeInstance = DRIVER_INSTANCE_FROM_LIST_ENTRY (List);
-            DEBUG ((EFI_D_INFO, "Address of RootBridgeInstance:   %x)\n", RootBridgeInstance));
-            DEBUG ((EFI_D_INFO, "  Signature:              %x\n", RootBridgeInstance->Signature));
-            DEBUG ((EFI_D_INFO, "  Bus Number Assigned:    %x\n", RootBridgeInstance->BusNumberAssigned));
-            DEBUG ((EFI_D_INFO, "  Bus Scan Count:         %x\n", RootBridgeInstance->BusScanCount));
+            DEBUG ((DEBUG_INFO, "Address of RootBridgeInstance:   %x)\n", RootBridgeInstance));
+            DEBUG ((DEBUG_INFO, "  Signature:              %x\n", RootBridgeInstance->Signature));
+            DEBUG ((DEBUG_INFO, "  Bus Number Assigned:    %x\n", RootBridgeInstance->BusNumberAssigned));
+            DEBUG ((DEBUG_INFO, "  Bus Scan Count:         %x\n", RootBridgeInstance->BusScanCount));
 
             for (Index1 = TypeIo; Index1 < TypeBus; Index1++) {
               if (RootBridgeInstance->ResAllocNode[Index1].Status == ResNone) {
@@ -396,9 +396,9 @@ Returns:
                 AddrLen   = RootBridgeInstance->ResAllocNode[Index].Length;
                 Alignment = RootBridgeInstance->ResAllocNode[Index].Alignment;
 
-                DEBUG ((EFI_D_INFO, "\n\nResource Type to assign :   %x\n", Index));
-                DEBUG ((EFI_D_INFO, "  Length to allocate:       %x\n", RootBridgeInstance->ResAllocNode[Index].Length));
-                DEBUG ((EFI_D_INFO, "  Aligment:                 %x\n", Alignment));
+                DEBUG ((DEBUG_INFO, "\n\nResource Type to assign :   %x\n", Index));
+                DEBUG ((DEBUG_INFO, "  Length to allocate:       %x\n", RootBridgeInstance->ResAllocNode[Index].Length));
+                DEBUG ((DEBUG_INFO, "  Aligment:                 %x\n", Alignment));
 
                 switch (Index) {
                   case TypeIo:
@@ -493,17 +493,17 @@ Returns:
 
                         while(RootBridgeInstance->Aperture.Mem32Base <= BaseAddress) {
 
-                          DEBUG ((EFI_D_INFO, "      Attempting %x allocation at 0x%lx .....", Index, BaseAddress));
+                          DEBUG ((DEBUG_INFO, "      Attempting %x allocation at 0x%lx .....", Index, BaseAddress));
                           Status = gDS->AllocateMemorySpace ( EfiGcdAllocateAddress, EfiGcdMemoryTypeMemoryMappedIo,
                                                   BitsOfAlignment, AddrLen, &BaseAddress, mDriverImageHandle, NULL);
 
                           if (!EFI_ERROR (Status)) {
                             RootBridgeInstance->ResAllocNode[Index].Base    = (UINT64) BaseAddress;
                             RootBridgeInstance->ResAllocNode[Index].Status  = ResAllocated;
-                            DEBUG ((EFI_D_INFO, "... Passed!!\n"));
+                            DEBUG ((DEBUG_INFO, "... Passed!!\n"));
                             goto TypePMem32Found;
                           }
-                          DEBUG ((EFI_D_INFO, "... Failed!!\n"));
+                          DEBUG ((DEBUG_INFO, "... Failed!!\n"));
                           BaseAddress -= (Alignment + 1);
                         } // while
                       } // if
@@ -533,10 +533,10 @@ Returns:
                       break;
                 } // End switch (Index)
 
-                DEBUG ((EFI_D_INFO, "Resource Type Assigned:   %x\n", Index));
+                DEBUG ((DEBUG_INFO, "Resource Type Assigned:   %x\n", Index));
                 if (RootBridgeInstance->ResAllocNode[Index].Status == ResAllocated) {
-                  DEBUG ((EFI_D_INFO, "  Base Address Assigned: %x\n", RootBridgeInstance->ResAllocNode[Index].Base));
-                  DEBUG ((EFI_D_INFO, "  Length Assigned:       %x\n", RootBridgeInstance->ResAllocNode[Index].Length));
+                  DEBUG ((DEBUG_INFO, "  Base Address Assigned: %x\n", RootBridgeInstance->ResAllocNode[Index].Base));
+                  DEBUG ((DEBUG_INFO, "  Length Assigned:       %x\n", RootBridgeInstance->ResAllocNode[Index].Length));
                 } else {
                   DEBUG ((DEBUG_ERROR, "  Resource Allocation failed!  There was no room at the inn\n"));
                 }
@@ -1025,8 +1025,8 @@ Returns:
       //
       while (*Temp == ACPI_ADDRESS_SPACE_DESCRIPTOR) {
         ptr = (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *) Temp;
-        DEBUG ((EFI_D_INFO, " ptr->ResType:%x \n",ptr->ResType));
-        DEBUG ((EFI_D_INFO, "  ptr->AddrLen:0x%lx AddrRangeMin:0x%lx AddrRangeMax:0x%lx\n\n",ptr->AddrLen,ptr->AddrRangeMin,ptr->AddrRangeMax));
+        DEBUG ((DEBUG_INFO, " ptr->ResType:%x \n",ptr->ResType));
+        DEBUG ((DEBUG_INFO, "  ptr->AddrLen:0x%lx AddrRangeMin:0x%lx AddrRangeMax:0x%lx\n\n",ptr->AddrLen,ptr->AddrRangeMin,ptr->AddrRangeMax));
 
         switch (ptr->ResType) {
           case ACPI_ADDRESS_SPACE_TYPE_MEM:

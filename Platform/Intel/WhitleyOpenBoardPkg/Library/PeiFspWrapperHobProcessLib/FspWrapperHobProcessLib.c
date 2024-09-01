@@ -140,7 +140,7 @@ TransferHobData (
 
   GuidHob = GetNextGuidHob (InfoGuid, HobStart);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "Transfer Hob Can't Find %a\n", Info));
+    DEBUG ((DEBUG_ERROR, "Transfer Hob Can't Find %a\n", Info));
     return;
   }
 
@@ -170,7 +170,7 @@ CopyHobData (
 
   GuidHob = GetNextGuidHob (InfoGuid, HobStart);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "Transfer Hob Can't Find %a\n", Info));
+    DEBUG ((DEBUG_ERROR, "Transfer Hob Can't Find %a\n", Info));
     return;
   }
 
@@ -179,7 +179,7 @@ CopyHobData (
 
   OrgGuidHob = GetFirstGuidHob (InfoGuid);
   if (OrgGuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "Copy Hob Can't Find org %a\n", Info));
+    DEBUG ((DEBUG_ERROR, "Copy Hob Can't Find org %a\n", Info));
   }
 
   OrgData = GET_GUID_HOB_DATA (OrgGuidHob);
@@ -190,7 +190,7 @@ CopyHobData (
   }
   CopyMem (OrgData, Data, DataSize);
 
-  DEBUG ((EFI_D_ERROR, "CopyHobData %a Hob from %x to %x, Size: %x\n", Info, Data, OrgData, DataSize));
+  DEBUG ((DEBUG_ERROR, "CopyHobData %a Hob from %x to %x, Size: %x\n", Info, Data, OrgData, DataSize));
 }
 
 
@@ -204,7 +204,7 @@ TransferPcd (
 
   GuidHob = GetNextGuidHob (&gSaveHostToMemoryGuid, HobStart);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_ERROR, "Transfer Hob Can't Find gSaveHostToMemoryGuid\n"));
+    DEBUG ((DEBUG_ERROR, "Transfer Hob Can't Find gSaveHostToMemoryGuid\n"));
     return;
   }
 

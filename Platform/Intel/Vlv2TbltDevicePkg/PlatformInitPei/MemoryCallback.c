@@ -68,27 +68,27 @@ EndOfPeiPpiNotifyCallback (
 
   UpdateDefaultSetupValue (PlatformInfo);
 
-  DEBUG ((EFI_D_ERROR, "Memory TOLM: %X\n", PlatformInfo->MemData.MemTolm));
-  DEBUG ((EFI_D_ERROR, "PCIE OSBASE: %lX\n", PlatformInfo->PciData.PciExpressBase));
+  DEBUG ((DEBUG_ERROR, "Memory TOLM: %X\n", PlatformInfo->MemData.MemTolm));
+  DEBUG ((DEBUG_ERROR, "PCIE OSBASE: %lX\n", PlatformInfo->PciData.PciExpressBase));
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCIE   BASE: %lX     Size : %X\n",
     PlatformInfo->PciData.PciExpressBase,
     PlatformInfo->PciData.PciExpressSize)
     );
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCI32  BASE: %X     Limit: %X\n",
     PlatformInfo->PciData.PciResourceMem32Base,
     PlatformInfo->PciData.PciResourceMem32Limit)
     );
   DEBUG (
-    (EFI_D_ERROR,
+    (DEBUG_ERROR,
     "PCI64  BASE: %lX     Limit: %lX\n",
     PlatformInfo->PciData.PciResourceMem64Base,
     PlatformInfo->PciData.PciResourceMem64Limit)
     );
-  DEBUG ((EFI_D_ERROR, "UC    START: %lX     End  : %lX\n", PlatformInfo->MemData.MemMir0, PlatformInfo->MemData.MemMir1));
+  DEBUG ((DEBUG_ERROR, "UC    START: %lX     End  : %lX\n", PlatformInfo->MemData.MemMir0, PlatformInfo->MemData.MemMir1));
 
   LowUncableBase = PlatformInfo->MemData.MemMaxTolm;
   LowUncableBase &= (0x0FFF00000);
@@ -185,7 +185,7 @@ MemoryDiscoveredPpiNotifyCallback (
     RootComplexBar,
     0x1000
     );
-  DEBUG ((EFI_D_INFO, "RootComplexBar     : 0x%x\n", RootComplexBar));
+  DEBUG ((DEBUG_INFO, "RootComplexBar     : 0x%x\n", RootComplexBar));
 
   PmcBase = MmPci32( 0, DEFAULT_PCI_BUS_NUMBER_PCH, PCI_DEVICE_NUMBER_PCH_LPC, 0, R_PCH_LPC_PMC_BASE ) & B_PCH_LPC_PMC_BASE_BAR;
   BuildResourceDescriptorHob (
@@ -194,7 +194,7 @@ MemoryDiscoveredPpiNotifyCallback (
     PmcBase,
     0x1000
     );
-  DEBUG ((EFI_D_INFO, "PmcBase            : 0x%x\n", PmcBase));
+  DEBUG ((DEBUG_INFO, "PmcBase            : 0x%x\n", PmcBase));
 
   IoBase = MmPci32( 0, DEFAULT_PCI_BUS_NUMBER_PCH, PCI_DEVICE_NUMBER_PCH_LPC, 0, R_PCH_LPC_IO_BASE ) & B_PCH_LPC_IO_BASE_BAR;
   BuildResourceDescriptorHob (
@@ -203,7 +203,7 @@ MemoryDiscoveredPpiNotifyCallback (
     IoBase,
     0x4000
     );
-  DEBUG ((EFI_D_INFO, "IoBase             : 0x%x\n", IoBase));
+  DEBUG ((DEBUG_INFO, "IoBase             : 0x%x\n", IoBase));
 
   IlbBase = MmPci32( 0, DEFAULT_PCI_BUS_NUMBER_PCH, PCI_DEVICE_NUMBER_PCH_LPC, 0, R_PCH_LPC_ILB_BASE ) & B_PCH_LPC_ILB_BASE_BAR;
   BuildResourceDescriptorHob (
@@ -212,7 +212,7 @@ MemoryDiscoveredPpiNotifyCallback (
     IlbBase,
     0x1000
     );
-  DEBUG ((EFI_D_INFO, "IlbBase            : 0x%x\n", IlbBase));
+  DEBUG ((DEBUG_INFO, "IlbBase            : 0x%x\n", IlbBase));
 
   SpiBase = MmPci32( 0, DEFAULT_PCI_BUS_NUMBER_PCH, PCI_DEVICE_NUMBER_PCH_LPC, 0, R_PCH_LPC_SPI_BASE ) & B_PCH_LPC_SPI_BASE_BAR;
   BuildResourceDescriptorHob (
@@ -221,7 +221,7 @@ MemoryDiscoveredPpiNotifyCallback (
     SpiBase,
     0x1000
     );
-  DEBUG ((EFI_D_INFO, "SpiBase            : 0x%x\n", SpiBase));
+  DEBUG ((DEBUG_INFO, "SpiBase            : 0x%x\n", SpiBase));
 
   MphyBase = MmPci32( 0, DEFAULT_PCI_BUS_NUMBER_PCH, PCI_DEVICE_NUMBER_PCH_LPC, 0, R_PCH_LPC_MPHY_BASE ) & B_PCH_LPC_MPHY_BASE_BAR;
   BuildResourceDescriptorHob (
@@ -230,7 +230,7 @@ MemoryDiscoveredPpiNotifyCallback (
     MphyBase,
     0x100000
     );
-  DEBUG ((EFI_D_INFO, "MphyBase           : 0x%x\n", MphyBase));
+  DEBUG ((DEBUG_INFO, "MphyBase           : 0x%x\n", MphyBase));
 
   //
   // Local APIC
@@ -241,7 +241,7 @@ MemoryDiscoveredPpiNotifyCallback (
     LOCAL_APIC_ADDRESS,
     0x1000
   );
-  DEBUG ((EFI_D_INFO, "LOCAL_APIC_ADDRESS : 0x%x\n", LOCAL_APIC_ADDRESS));
+  DEBUG ((DEBUG_INFO, "LOCAL_APIC_ADDRESS : 0x%x\n", LOCAL_APIC_ADDRESS));
 
   //
   // IO APIC
@@ -252,7 +252,7 @@ MemoryDiscoveredPpiNotifyCallback (
     IO_APIC_ADDRESS,
     0x1000
   );
-  DEBUG ((EFI_D_INFO, "IO_APIC_ADDRESS    : 0x%x\n", IO_APIC_ADDRESS));
+  DEBUG ((DEBUG_INFO, "IO_APIC_ADDRESS    : 0x%x\n", IO_APIC_ADDRESS));
 
   //
   // Adding the PCIE Express area to the E820 memory table as type 2 memory.
@@ -263,7 +263,7 @@ MemoryDiscoveredPpiNotifyCallback (
     PlatformInfo->PciData.PciExpressBase,
     PlatformInfo->PciData.PciExpressSize
     );
-  DEBUG ((EFI_D_INFO, "PciExpressBase     : 0x%x\n", PlatformInfo->PciData.PciExpressBase));
+  DEBUG ((DEBUG_INFO, "PciExpressBase     : 0x%x\n", PlatformInfo->PciData.PciExpressBase));
 
   //
   // Adding the Flashpart to the E820 memory table as type 2 memory.
@@ -274,7 +274,7 @@ MemoryDiscoveredPpiNotifyCallback (
     FixedPcdGet32 (PcdFlashAreaBaseAddress),
     FixedPcdGet32 (PcdFlashAreaSize)
     );
-  DEBUG ((EFI_D_INFO, "FLASH_BASE_ADDRESS : 0x%x\n", FixedPcdGet32 (PcdFlashAreaBaseAddress)));
+  DEBUG ((DEBUG_INFO, "FLASH_BASE_ADDRESS : 0x%x\n", FixedPcdGet32 (PcdFlashAreaBaseAddress)));
 
   //
   // Create a CPU hand-off information

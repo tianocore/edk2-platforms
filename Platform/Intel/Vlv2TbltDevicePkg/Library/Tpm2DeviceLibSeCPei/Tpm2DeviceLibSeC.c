@@ -76,7 +76,7 @@ Tpm2SubmitCommand (
   EFI_STATUS  Status = EFI_SUCCESS;
 
   if(NULL == InputParameterBlock || NULL == OutputParameterBlock || 0 == InputParameterBlockSize) {
-    DEBUG ((EFI_D_ERROR, "Buffer == NULL or InputParameterBlockSize == 0\n"));
+    DEBUG ((DEBUG_ERROR, "Buffer == NULL or InputParameterBlockSize == 0\n"));
     Status = EFI_INVALID_PARAMETER;
     return Status;
   }

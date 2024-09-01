@@ -1,10 +1,12 @@
 /** @file
 
   Copyright (c) 2004  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 Module Name:
 
@@ -306,7 +308,7 @@ UpdateBootMode (
       break;
     default:
       strBootMode = L"Unknown boot mode";
-  } // switch (BootMode)
+  } // swiDEBUG_ootMode)
 
   DEBUG ((EFI_D_ERROR, "Setting BootMode to %s\n", strBootMode));
   Status = (*PeiServices)->SetBootMode(

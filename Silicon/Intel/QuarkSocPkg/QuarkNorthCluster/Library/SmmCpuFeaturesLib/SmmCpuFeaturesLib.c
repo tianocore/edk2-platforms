@@ -65,7 +65,7 @@ SmmCpuFeaturesInitializeProcessor (
   if ((CpuHotPlugData->SmrrSize < SIZE_4KB) ||
       (CpuHotPlugData->SmrrSize != GetPowerOfTwo32 (CpuHotPlugData->SmrrSize)) ||
       ((CpuHotPlugData->SmrrBase & ~(CpuHotPlugData->SmrrSize - 1)) != CpuHotPlugData->SmrrBase)) {
-    DEBUG ((EFI_D_ERROR, "SMM Base/Size does not meet alignment/size requirement!\n"));
+    DEBUG ((DEBUG_ERROR, "SMM Base/Size does not meet alignment/size requirement!\n"));
     CpuDeadLoop ();
   }
 

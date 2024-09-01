@@ -151,13 +151,13 @@ InitRootBridge (
   DevicePath = AllocateCopyPool (sizeof mRootBridgeDevicePathTemplate,
                  &mRootBridgeDevicePathTemplate);
   if (DevicePath == NULL) {
-    DEBUG ((EFI_D_ERROR, "%a: %r\n", __FUNCTION__, EFI_OUT_OF_RESOURCES));
+    DEBUG ((DEBUG_ERROR, "%a: %r\n", __FUNCTION__, EFI_OUT_OF_RESOURCES));
     return EFI_OUT_OF_RESOURCES;
   }
   DevicePath->AcpiDevicePath.UID = RootBusNumber;
   RootBus->DevicePath = (EFI_DEVICE_PATH_PROTOCOL *)DevicePath;
 
-  DEBUG ((EFI_D_INFO,
+  DEBUG ((DEBUG_INFO,
     "%a: populated root bus %d, with room for %d subordinate bus(es)\n",
     __FUNCTION__, RootBusNumber, MaxSubBusNumber - RootBusNumber));
   return EFI_SUCCESS;
@@ -243,7 +243,7 @@ PciHostBridgeGetRootBridges (
   //
   Bridges = AllocatePool ((1 + (UINTN)ExtraRootBridges) * sizeof *Bridges);
   if (Bridges == NULL) {
-    DEBUG ((EFI_D_ERROR, "%a: %r\n", __FUNCTION__, EFI_OUT_OF_RESOURCES));
+    DEBUG ((DEBUG_ERROR, "%a: %r\n", __FUNCTION__, EFI_OUT_OF_RESOURCES));
     return NULL;
   }
   Initialized = 0;
@@ -383,24 +383,24 @@ PciHostBridgeResourceConflict (
 {
   EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *Descriptor;
   UINTN                             RootBridgeIndex;
-  DEBUG ((EFI_D_ERROR, "PciHostBridge: Resource conflict happens!\n"));
+  DEBUG ((DEBUG_ERROR, "PciHostBridge: Resource conflict happens!\n"));
 
   RootBridgeIndex = 0;
   Descriptor = (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *) Configuration;
   while (Descriptor->Desc == ACPI_ADDRESS_SPACE_DESCRIPTOR) {
-    DEBUG ((EFI_D_ERROR, "RootBridge[%d]:\n", RootBridgeIndex++));
+    DEBUG ((DEBUG_ERROR, "RootBridge[%d]:\n", RootBridgeIndex++));
     for (; Descriptor->Desc == ACPI_ADDRESS_SPACE_DESCRIPTOR; Descriptor++) {
       ASSERT (Descriptor->ResType <
               (sizeof (mPciHostBridgeLibAcpiAddressSpaceTypeStr) /
                sizeof (mPciHostBridgeLibAcpiAddressSpaceTypeStr[0])
                )
               );
-      DEBUG ((EFI_D_ERROR, " %s: Length/Alignment = 0x%lx / 0x%lx\n",
+      DEBUG ((DEBUG_ERROR, " %s: Length/Alignment = 0x%lx / 0x%lx\n",
               mPciHostBridgeLibAcpiAddressSpaceTypeStr[Descriptor->ResType],
               Descriptor->AddrLen, Descriptor->AddrRangeMax
               ));
       if (Descriptor->ResType == ACPI_ADDRESS_SPACE_TYPE_MEM) {
-        DEBUG ((EFI_D_ERROR, "     Granularity/SpecificFlag = %ld / %02x%s\n",
+        DEBUG ((DEBUG_ERROR, "     Granularity/SpecificFlag = %ld / %02x%s\n",
                 Descriptor->AddrSpaceGranularity, Descriptor->SpecificFlag,
                 ((Descriptor->SpecificFlag &
                   EFI_ACPI_MEMORY_RESOURCE_SPECIFIC_FLAG_CACHEABLE_PREFETCHABLE

@@ -751,13 +751,13 @@ SdtCheckParentPackage (
     //
     // There is valid INTA update item, but no INA package exist, should add it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould add INTA item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould add INTA item for this device(0x%x)\n\n", PciAddress));
 
   } else if ((PciDeviceInfo->INTA[IsAPIC] == 0xFF) && (INTAPkgHandle != NULL) && IsAllFunctions) {
     //
     // For all functions senario, if there is invalid INTA update item, but INTA package does exist, should delete it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould remove INTA item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould remove INTA item for this device(0x%x)\n\n", PciAddress));
 
   }
 
@@ -773,13 +773,13 @@ SdtCheckParentPackage (
     //
     // There is valid INTB update item, but no INTB package exist, should add it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould add INTB item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould add INTB item for this device(0x%x)\n\n", PciAddress));
 
   } else if ((PciDeviceInfo->INTB[IsAPIC] == 0xFF) && (INTBPkgHandle != NULL) && IsAllFunctions) {
     //
     // For all functions senario, if there is invalid INTB update item, but INTB package does exist, should delete it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould remove INTB item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould remove INTB item for this device(0x%x)\n\n", PciAddress));
 
   }
 
@@ -795,13 +795,13 @@ SdtCheckParentPackage (
     //
     // There is valid INTC update item, but no INTC package exist, should add it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould add INTC item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould add INTC item for this device(0x%x)\n\n", PciAddress));
 
   } else if ((PciDeviceInfo->INTC[IsAPIC] == 0xFF) && (INTCPkgHandle != NULL) && IsAllFunctions) {
     //
     // For all functions senario, if there is invalid INTC update item, but INTC package does exist, should delete it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould remove INTC item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould remove INTC item for this device(0x%x)\n\n", PciAddress));
   }
 
   //
@@ -816,13 +816,13 @@ SdtCheckParentPackage (
     //
     // There is valid INTD update item, but no INTD package exist, should add it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould add INTD item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould add INTD item for this device(0x%x)\n\n", PciAddress));
 
   }  else if ((PciDeviceInfo->INTD[IsAPIC] == 0xFF) && (INTDPkgHandle != NULL) && IsAllFunctions) {
     //
     // For all functions senario, if there is invalid INTD update item, but INTD package does exist, should delete it
     //
-    DEBUG ((EFI_D_ERROR, "\n\nShould remove INTD item for this device(0x%x)\n\n", PciAddress));
+    DEBUG ((DEBUG_ERROR, "\n\nShould remove INTD item for this device(0x%x)\n\n", PciAddress));
   }
 
 
@@ -1374,7 +1374,7 @@ SdtCheckPciDeviceInfoChanged (
       if (CompareMem (&(mQNCPciInfo[Index].INTA[0]), &PciDeviceInfo->INTA[0], 10) == 0) {
         *UpdatePRT = FALSE;
         *UpdatePRW = FALSE;
-        //DEBUG ((EFI_D_ERROR, "Find one matched entry[%d] and no change\n", Index));
+        //DEBUG ((DEBUG_ERROR, "Find one matched entry[%d] and no change\n", Index));
       } else {
         if (CompareMem (&(mQNCPciInfo[Index].INTA[0]), &PciDeviceInfo->INTA[0], 8) == 0)
           *UpdatePRT = FALSE;
@@ -1388,14 +1388,14 @@ SdtCheckPciDeviceInfoChanged (
         if (*(UINT16 *)(&PciDeviceInfo->GPEPin) == 0xFFFF)
           *UpdatePRW = FALSE;
 
-        //DEBUG ((EFI_D_ERROR, "Find one matched entry[%d] and but need update PRT:0x%x PRW:0x%x\n", Index, *UpdatePRT, *UpdatePRW));
+        //DEBUG ((DEBUG_ERROR, "Find one matched entry[%d] and but need update PRT:0x%x PRW:0x%x\n", Index, *UpdatePRT, *UpdatePRW));
       }
       break;
     }
   }
 
   //if (Index == 42) {
-  //  DEBUG ((EFI_D_ERROR, "Find No matched entry\n"));
+  //  DEBUG ((DEBUG_ERROR, "Find No matched entry\n"));
   //}
 
   return;

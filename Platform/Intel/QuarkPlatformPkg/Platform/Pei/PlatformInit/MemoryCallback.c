@@ -106,7 +106,7 @@ MemoryDiscoveredPpiNotifyCallback (
   UINT8                                 MorControl;
   UINTN                                 DataSize;
 
-  DEBUG ((EFI_D_INFO, "Platform PEIM Memory Callback\n"));
+  DEBUG ((DEBUG_INFO, "Platform PEIM Memory Callback\n"));
 
   NumSmramRegions = 0;
   SmramDescriptor = NULL;
@@ -176,7 +176,7 @@ MemoryDiscoveredPpiNotifyCallback (
   // If OS requested a memory overwrite perform it now for Embedded SRAM
   //
   if (MOR_CLEAR_MEMORY_VALUE (MorControl)) {
-    DEBUG ((EFI_D_INFO, "Clear Embedded SRAM per MOR request.\n"));
+    DEBUG ((DEBUG_INFO, "Clear Embedded SRAM per MOR request.\n"));
     if (PcdGet32 (PcdESramMemorySize) > 0) {
       if (PcdGet32 (PcdEsramStage1Base) == 0) {
         //
@@ -269,7 +269,7 @@ MemoryDiscoveredPpiNotifyCallback (
     AsmCpuid (CPUID_VIR_PHY_ADDRESS_SIZE, &RegEax, NULL, NULL, NULL);
     CpuAddressWidth = (UINT8) (RegEax & 0xFF);
   }
-  DEBUG ((EFI_D_INFO, "CpuAddressWidth: %d\n", CpuAddressWidth));
+  DEBUG ((DEBUG_INFO, "CpuAddressWidth: %d\n", CpuAddressWidth));
 
   BuildCpuHob (CpuAddressWidth, 16);
 

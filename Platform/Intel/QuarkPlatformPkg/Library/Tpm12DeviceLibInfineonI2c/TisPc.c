@@ -156,7 +156,7 @@ TpmWriteByte (
              &WriteData
              );
   if (EFI_ERROR(Status)) {
-    DEBUG ((EFI_D_ERROR, "TpmWriteByte(): I2C Write to TPM address %0x failed (%r)\n", TpmAddress, Status));
+    DEBUG ((DEBUG_ERROR, "TpmWriteByte(): I2C Write to TPM address %0x failed (%r)\n", TpmAddress, Status));
     ASSERT (FALSE);  // Writes to TPM should always succeed.
   }
 
@@ -224,7 +224,7 @@ TpmReadByte (
                );
 
     if (EFI_ERROR(Status)) {
-      DEBUG ((EFI_D_INFO, "TpmReadByte(): write to TPM address %0x failed (%r)\n", TpmAddress, Status));
+      DEBUG ((DEBUG_INFO, "TpmReadByte(): write to TPM address %0x failed (%r)\n", TpmAddress, Status));
     }
 
     mI2CPrevReadTransfer = FALSE;
@@ -240,7 +240,7 @@ TpmReadByte (
                );
 
     if (EFI_ERROR(Status)) {
-      DEBUG ((EFI_D_INFO, "TpmReadByte(): read from TPM address %0x failed (%r)\n", TpmAddress, Status));
+      DEBUG ((DEBUG_INFO, "TpmReadByte(): read from TPM address %0x failed (%r)\n", TpmAddress, Status));
       ReadData = 0xFF;
     } else {
       ReadData = Data[0];
@@ -264,7 +264,7 @@ TpmReadByte (
     //  Only reads to access register allowed to fail.
     //
     if (TpmAddress != INFINEON_TPM_ACCESS_0_ADDRESS_DEFAULT) {
-      DEBUG ((EFI_D_ERROR, "TpmReadByte(): read from TPM address %0x failed\n", TpmAddress));
+      DEBUG ((DEBUG_ERROR, "TpmReadByte(): read from TPM address %0x failed\n", TpmAddress));
       ASSERT_EFI_ERROR (Status);
     }
   }

@@ -444,7 +444,7 @@ LibRtcInitialize (
       Status = LibSetTime(&EfiTime);
       if (EFI_ERROR(Status))
       {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Status : %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Status : %r\n", __FUNCTION__, __LINE__, Status));
       }
   }
 

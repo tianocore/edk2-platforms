@@ -120,7 +120,7 @@ GetChipComPhyInit (
     }
   }
 
-  return EFI_D_ERROR;
+  return DEBUG_ERROR;
 }
 
 STATIC

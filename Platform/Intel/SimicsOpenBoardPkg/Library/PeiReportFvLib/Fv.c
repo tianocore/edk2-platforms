@@ -28,10 +28,10 @@ PeiFvInitialization (
 {
   BOOLEAN SecureS3Needed;
 
-  DEBUG ((EFI_D_INFO, "Platform PEI Firmware Volume Initialization\n"));
+  DEBUG ((DEBUG_INFO, "Platform PEI Firmware Volume Initialization\n"));
 
   DEBUG (
-    (EFI_D_ERROR, "Firmware Volume HOB: 0x%x 0x%x\n",
+    (DEBUG_ERROR, "Firmware Volume HOB: 0x%x 0x%x\n",
       PcdGet32 (PcdSimicsPeiMemFvBase),
       PcdGet32 (PcdSimicsPeiMemFvSize)
       )

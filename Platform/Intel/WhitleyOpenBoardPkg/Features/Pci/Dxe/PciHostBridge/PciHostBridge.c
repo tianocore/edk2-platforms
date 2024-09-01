@@ -681,7 +681,7 @@ BridgeAllocateResources (
                 break;
 
               default:
-                DEBUG ((EFI_D_ERROR, "[PCI] ERROR: Unhandled resource type (%d)\n", Index));
+                DEBUG ((DEBUG_ERROR, "[PCI] ERROR: Unhandled resource type (%d)\n", Index));
                 break;
             } // End switch (Index)
 
@@ -1529,7 +1529,7 @@ GetProposedResources (
             ptr->AddrLen                = 0;
             break;
             default:
-              DEBUG ((EFI_D_INFO, "default case.\n"));  //Auto added. Please review.
+              DEBUG ((DEBUG_INFO, "default case.\n"));  //Auto added. Please review.
               break;
           }
 

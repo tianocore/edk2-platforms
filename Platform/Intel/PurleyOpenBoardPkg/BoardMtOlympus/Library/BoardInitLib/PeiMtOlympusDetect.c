@@ -22,6 +22,6 @@ MtOlympusBoardDetect (
   VOID
   )
 {
-  DEBUG ((EFI_D_INFO, "MtOlympusBoardDetect\n"));
+  DEBUG ((DEBUG_INFO, "MtOlympusBoardDetect\n"));
   return EFI_SUCCESS;
 }

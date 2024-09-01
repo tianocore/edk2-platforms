@@ -57,7 +57,7 @@ WriteTpmBufferMultiple (
 
   I2CDeviceAddr.I2CDeviceAddress = ATMEL_I2C_TPM_SLAVE_ADDRESS;
 
-  DEBUG ((EFI_D_VERBOSE, "WriteTpmBufferMultiple: Addr=%02x  Length=%02x\n", I2CDeviceAddr.I2CDeviceAddress, Length));
+  DEBUG ((DEBUG_VERBOSE, "WriteTpmBufferMultiple: Addr=%02x  Length=%02x\n", I2CDeviceAddr.I2CDeviceAddress, Length));
 
   for (PartialLength = 0; Length > 0; Length -= PartialLength, Buffer += PartialLength) {
     //
@@ -70,18 +70,18 @@ WriteTpmBufferMultiple (
       &PartialLength,
       Buffer
       );
-    DEBUG ((EFI_D_VERBOSE, "  "));
+    DEBUG ((DEBUG_VERBOSE, "  "));
     for (Index = 0; Index < PartialLength; Index++) {
-      DEBUG ((EFI_D_VERBOSE, "%02x ", Buffer[Index]));
+      DEBUG ((DEBUG_VERBOSE, "%02x ", Buffer[Index]));
     }
-    DEBUG ((EFI_D_VERBOSE, "\n"));
+    DEBUG ((DEBUG_VERBOSE, "\n"));
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_VERBOSE, "  Status = %r\n", Status));
+      DEBUG ((DEBUG_VERBOSE, "  Status = %r\n", Status));
       return Status;
     }
   }
 
-  DEBUG ((EFI_D_VERBOSE, "  Status = %r\n", Status));
+  DEBUG ((DEBUG_VERBOSE, "  Status = %r\n", Status));
   return Status;
 }
 
@@ -113,7 +113,7 @@ ReadTpmBufferMultiple (
   I2CDeviceAddr.I2CDeviceAddress = ATMEL_I2C_TPM_SLAVE_ADDRESS;
   WriteLength = 0;
 
-  DEBUG ((EFI_D_VERBOSE, "ReadTpmBufferMultiple: Addr=%02x  Length=%02x\n", I2CDeviceAddr.I2CDeviceAddress, Length));
+  DEBUG ((DEBUG_VERBOSE, "ReadTpmBufferMultiple: Addr=%02x  Length=%02x\n", I2CDeviceAddr.I2CDeviceAddress, Length));
 
   for (PartialLength = 0; Length > 0; Length -= PartialLength, Buffer += PartialLength) {
     //
@@ -128,19 +128,19 @@ ReadTpmBufferMultiple (
       Buffer
       );
     if (!EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_VERBOSE, "  "));
+      DEBUG ((DEBUG_VERBOSE, "  "));
       for (Index = 0; Index < PartialLength; Index++) {
-        DEBUG ((EFI_D_VERBOSE, "%02x ", Buffer[Index]));
+        DEBUG ((DEBUG_VERBOSE, "%02x ", Buffer[Index]));
       }
-      DEBUG ((EFI_D_VERBOSE, "\n"));
+      DEBUG ((DEBUG_VERBOSE, "\n"));
     }
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_VERBOSE, "  Status = %r\n", Status));
+      DEBUG ((DEBUG_VERBOSE, "  Status = %r\n", Status));
       return Status;
     }
   }
 
-  DEBUG ((EFI_D_VERBOSE, "  Status = %r\n", Status));
+  DEBUG ((DEBUG_VERBOSE, "  Status = %r\n", Status));
   return Status;
 }
 
@@ -216,7 +216,7 @@ Tpm12RequestUseTpm (
     Total += Delta;
     if (Total >= Timeout) {
       Status = EFI_TIMEOUT;
-      DEBUG ((EFI_D_ERROR, "Atmel I2C TPM failed to read: %r\n", Status));
+      DEBUG ((DEBUG_ERROR, "Atmel I2C TPM failed to read: %r\n", Status));
       return Status;
     }
   } while (EFI_ERROR (Status));
@@ -394,7 +394,7 @@ Tpm12SubmitCommand (
 
 Done:
   DEBUG ((
-    EFI_D_VERBOSE,
+    DEBUG_VERBOSE,
     "Tpm12SubmitCommand() Status = %r  Time = %ld ms\n",
     Status,
     DivU64x64Remainder (

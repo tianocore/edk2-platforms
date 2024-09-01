@@ -144,7 +144,7 @@ SetLanControllerMacAddr (
   Addr =  Bar0 + R_IOH_MAC_GMAC_REG_8;
   MacVer = *((volatile UINT32 *) (UINTN)(Addr));
 
-  DEBUG ((EFI_D_INFO, "Ioh MAC [B:%d, D:%d, F:%d] VER:%04x ADDR:",
+  DEBUG ((DEBUG_INFO, "Ioh MAC [B:%d, D:%d, F:%d] VER:%04x ADDR:",
     (UINTN) Bus,
     (UINTN) Device,
     (UINTN) Func,
@@ -158,7 +158,7 @@ SetLanControllerMacAddr (
   Data32 = *((UINT32 *) (UINTN)(&MacAddr[0]));
   *((volatile UINT32 *) (UINTN)(Addr)) = Data32;
   Wrote = (volatile UINT8 *) (UINTN)(Addr);
-  DEBUG ((EFI_D_INFO, "%02x-%02x-%02x-%02x-",
+  DEBUG ((DEBUG_INFO, "%02x-%02x-%02x-%02x-",
     (UINTN) Wrote[0],
     (UINTN) Wrote[1],
     (UINTN) Wrote[2],
@@ -177,7 +177,7 @@ SetLanControllerMacAddr (
   *((volatile UINT32 *) (UINTN)(Addr)) = Data32;
   Wrote = (volatile UINT8 *) (UINTN)(Addr);
 
-  DEBUG ((EFI_D_INFO, "%02x-%02x\n", (UINTN) Wrote[0], (UINTN) Wrote[1]));
+  DEBUG ((DEBUG_INFO, "%02x-%02x\n", (UINTN) Wrote[0], (UINTN) Wrote[1]));
 
   //
   // Restore settings for PCI CMD/BAR registers
@@ -272,7 +272,7 @@ EarlyPlatformConfigGpioExpanders (
              GALILEO_GEN2_IOEXP2_7BIT_SLAVE_ADDR,  // IO Expander 2
              15                                    // P1-7
              )) {
-        DEBUG ((EFI_D_INFO, "  Force Recovery mode and reset\n"));
+        DEBUG ((DEBUG_INFO, "  Force Recovery mode and reset\n"));
 
         //
         // Set 'B_CFG_STICKY_RW_FORCE_RECOVERY' sticky bit so we know we need to do a recovery following warm reset
@@ -301,7 +301,7 @@ EarlyPlatformConfigGpioExpanders (
     } else {
       I2CSlaveAddress.I2CDeviceAddress = GALILEO_IOEXP_J2LO_7BIT_SLAVE_ADDR;
     }
-    DEBUG ((EFI_D_INFO, "Galileo GPIO Expender Slave Address = %02x\n", I2CSlaveAddress.I2CDeviceAddress));
+    DEBUG ((DEBUG_INFO, "Galileo GPIO Expender Slave Address = %02x\n", I2CSlaveAddress.I2CDeviceAddress));
 
     //
     // Set I2C_MUX (GPORT1_BIT5) low to route I2C to Arduino Shield connector
@@ -433,7 +433,7 @@ EarlyPlatformConfigGpioExpanders (
       // Return the state of GPORT5_BIT0
       //
       if ((Buffer[1] & BIT0) == 0) {
-        DEBUG ((EFI_D_INFO, "  Force Recovery mode and reset\n"));
+        DEBUG ((DEBUG_INFO, "  Force Recovery mode and reset\n"));
 
         //
         // Set 'B_CFG_STICKY_RW_FORCE_RECOVERY' sticky bit so we know we need to do a recovery following warm reset
@@ -550,23 +550,23 @@ PeiInitPlatform (
     QNCClearSmiAndWake ();
   }
 
-  DEBUG ((EFI_D_INFO, "MRC Entry\n"));
+  DEBUG ((DEBUG_INFO, "MRC Entry\n"));
   MemoryInit ((EFI_PEI_SERVICES**)PeiServices);
 
   //
   // Do Early PCIe init.
   //
-  DEBUG ((EFI_D_INFO, "Early PCIe controller initialization\n"));
+  DEBUG ((DEBUG_INFO, "Early PCIe controller initialization\n"));
   PlatformPciExpressEarlyInit (PlatformType);
 
 
-  DEBUG ((EFI_D_INFO, "Platform Erratas After MRC\n"));
+  DEBUG ((DEBUG_INFO, "Platform Erratas After MRC\n"));
   PlatformErratasPostMrc ();
 
   //
   //
   //
-  DEBUG ((EFI_D_INFO, "EarlyPlatformConfigGpioExpanders ()\n"));
+  DEBUG ((DEBUG_INFO, "EarlyPlatformConfigGpioExpanders ()\n"));
   EarlyPlatformConfigGpioExpanders (PlatformType, BootMode);
 
   //
@@ -602,7 +602,7 @@ EndOfPeiSignalPpiNotifyCallback (
 {
   EFI_STATUS                            Status;
 
-  DEBUG ((EFI_D_INFO, "End of PEI Signal Callback\n"));
+  DEBUG ((DEBUG_INFO, "End of PEI Signal Callback\n"));
 
     //
   // Restore the flash region to be UC
@@ -705,7 +705,7 @@ EarlyPlatformThermalSensorInit (
   VOID
   )
 {
-  DEBUG ((EFI_D_INFO, "Early Platform Thermal Sensor Init\n"));
+  DEBUG ((DEBUG_INFO, "Early Platform Thermal Sensor Init\n"));
 
   //
   // Set Thermal sensor mode.
@@ -740,36 +740,36 @@ EarlyPlatformInfoMessages (
   // Find which 'Stage1' image we are running and print the details
   //
   Edk2ImageHeader = (QUARK_EDKII_STAGE1_HEADER *) PcdGet32 (PcdEsramStage1Base);
-  DEBUG ((EFI_D_INFO, "\n************************************************************\n"));
+  DEBUG ((DEBUG_INFO, "\n************************************************************\n"));
 
   switch ((UINT8)Edk2ImageHeader->ImageIndex & QUARK_STAGE1_IMAGE_TYPE_MASK) {
     case QUARK_STAGE1_BOOT_IMAGE_TYPE:
-      DEBUG ((EFI_D_INFO, "****  Quark EDKII Stage 1 Boot Image %d                ****\n", ((UINT8)Edk2ImageHeader->ImageIndex & ~(QUARK_STAGE1_IMAGE_TYPE_MASK))));
+      DEBUG ((DEBUG_INFO, "****  Quark EDKII Stage 1 Boot Image %d                ****\n", ((UINT8)Edk2ImageHeader->ImageIndex & ~(QUARK_STAGE1_IMAGE_TYPE_MASK))));
       break;
 
     case QUARK_STAGE1_RECOVERY_IMAGE_TYPE:
-      DEBUG ((EFI_D_INFO, "****  Quark EDKII Stage 1 Recovery Image %d            ****\n", ((UINT8)Edk2ImageHeader->ImageIndex & ~(QUARK_STAGE1_IMAGE_TYPE_MASK))));
+      DEBUG ((DEBUG_INFO, "****  Quark EDKII Stage 1 Recovery Image %d            ****\n", ((UINT8)Edk2ImageHeader->ImageIndex & ~(QUARK_STAGE1_IMAGE_TYPE_MASK))));
       break;
 
     default:
-      DEBUG ((EFI_D_INFO, "****  Quark EDKII Unknown Stage 1 Image !!!!           ****\n"));
+      DEBUG ((DEBUG_INFO, "****  Quark EDKII Unknown Stage 1 Image !!!!           ****\n"));
       break;
   }
   DEBUG (
-    (EFI_D_INFO,
+    (DEBUG_INFO,
     "****  Quark EDKII Stage 2 Image 0x%08X:0x%08X ****\n" ,
     (UINTN) PcdGet32 (PcdFlashFvMainBase),
     (UINTN) PcdGet32 (PcdFlashFvMainSize)
     ));
 
   DEBUG (
-    (EFI_D_INFO,
+    (DEBUG_INFO,
     "****  Quark EDKII Payload Image 0x%08X:0x%08X ****\n" ,
     (UINTN) PcdGet32 (PcdFlashFvPayloadBase),
     (UINTN) PcdGet32 (PcdFlashFvPayloadSize)
     ));
 
-  DEBUG ((EFI_D_INFO, "************************************************************\n\n"));
+  DEBUG ((DEBUG_INFO, "************************************************************\n\n"));
 
   DEBUG_CODE_END ();
 }
@@ -801,7 +801,7 @@ CheckForResetDueToErrors (
     ResetDueToError = TRUE;
 
     DEBUG (
-      (EFI_D_ERROR,
+      (DEBUG_ERROR,
       "\nReset due to access violation: %s %s %s %s\n",
       ((RegValue & B_CFG_STICKY_RW_IMR_VIOLATION) != 0) ? L"'IMR'" : L".",
       ((RegValue & B_CFG_STICKY_RW_DECC_VIOLATION) != 0) ? L"'DECC'" : L".",
@@ -837,14 +837,14 @@ EarlyPlatformInit (
 
   PlatformType = (EFI_PLATFORM_TYPE) PcdGet16 (PcdPlatformType);
 
-  DEBUG ((EFI_D_INFO, "EarlyPlatformInit for PlatType=0x%02x\n", (UINTN) PlatformType));
+  DEBUG ((DEBUG_INFO, "EarlyPlatformInit for PlatType=0x%02x\n", (UINTN) PlatformType));
 
   //
   // Check if system reset due to error condition.
   //
   if (CheckForResetDueToErrors (TRUE)) {
     if(FeaturePcdGet (WaitIfResetDueToError)) {
-      DEBUG ((EFI_D_ERROR, "Wait 10 seconds.\n"));
+      DEBUG ((DEBUG_ERROR, "Wait 10 seconds.\n"));
       MicroSecondDelay(10000000);
     }
   }
@@ -1171,7 +1171,7 @@ EarlyPlatformMacInit (
     (CompareMem (ChipsetDefaultMac, IohMac0Address, sizeof (ChipsetDefaultMac))) != 0;
   if (SetMacAddr) {
     if ((*(IohMac0Address) & BIT0) != 0) {
-      DEBUG ((EFI_D_ERROR, "HALT: Multicast Mac Address configured for Ioh MAC [B:%d, D:%d, F:%d]\n",
+      DEBUG ((DEBUG_ERROR, "HALT: Multicast Mac Address configured for Ioh MAC [B:%d, D:%d, F:%d]\n",
         (UINTN) IOH_MAC0_BUS_NUMBER,
         (UINTN) IOH_MAC0_DEVICE_NUMBER,
         (UINTN) IOH_MAC0_FUNCTION_NUMBER
@@ -1187,7 +1187,7 @@ EarlyPlatformMacInit (
         );
     }
   } else {
-    DEBUG ((EFI_D_WARN, "WARNING: Ioh MAC [B:%d, D:%d, F:%d] NO HW ADDR CONFIGURED!!!\n",
+    DEBUG ((DEBUG_WARN, "WARNING: Ioh MAC [B:%d, D:%d, F:%d] NO HW ADDR CONFIGURED!!!\n",
       (UINTN) IOH_MAC0_BUS_NUMBER,
       (UINTN) IOH_MAC0_DEVICE_NUMBER,
       (UINTN) IOH_MAC0_FUNCTION_NUMBER
@@ -1201,7 +1201,7 @@ EarlyPlatformMacInit (
     (CompareMem (ChipsetDefaultMac, IohMac1Address, sizeof (ChipsetDefaultMac))) != 0;
   if (SetMacAddr) {
     if ((*(IohMac1Address) & BIT0) != 0) {
-      DEBUG ((EFI_D_ERROR, "HALT: Multicast Mac Address configured for Ioh MAC [B:%d, D:%d, F:%d]\n",
+      DEBUG ((DEBUG_ERROR, "HALT: Multicast Mac Address configured for Ioh MAC [B:%d, D:%d, F:%d]\n",
         (UINTN) IOH_MAC1_BUS_NUMBER,
         (UINTN) IOH_MAC1_DEVICE_NUMBER,
         (UINTN) IOH_MAC1_FUNCTION_NUMBER
@@ -1217,7 +1217,7 @@ EarlyPlatformMacInit (
           );
     }
   } else {
-    DEBUG ((EFI_D_WARN, "WARNING: Ioh MAC [B:%d, D:%d, F:%d] NO HW ADDR CONFIGURED!!!\n",
+    DEBUG ((DEBUG_WARN, "WARNING: Ioh MAC [B:%d, D:%d, F:%d] NO HW ADDR CONFIGURED!!!\n",
       (UINTN) IOH_MAC1_BUS_NUMBER,
       (UINTN) IOH_MAC1_DEVICE_NUMBER,
       (UINTN) IOH_MAC1_FUNCTION_NUMBER

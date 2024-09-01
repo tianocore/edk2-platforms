@@ -135,7 +135,7 @@ VOID PcieRxValidCtrl(UINT32 soctype, UINT32 HostBridgeNum, UINT32 Port, BOOLEAN 
                     MicroSecondDelay(500);
                 }
             if (Loopcnt == 0)
-                DEBUG((EFI_D_ERROR, "pcs locked timeout!\n"));
+                DEBUG((DEBUG_ERROR, "pcs locked timeout!\n"));
             for (i = 0; i < Lanenum; i++) {
                 RegRead(PCIE_PHY_BASE_1610[HostBridgeNum][Port] + 0x204 + i * 0x4, Value);
                 Value &= (~BIT14);
@@ -453,7 +453,7 @@ EFI_STATUS PcieSetupRC(UINT32 Port, PCIE_PORT_WIDTH Width)
     }
     else
     {
-        DEBUG((EFI_D_ERROR,"Width is not valid\n"));
+        DEBUG((DEBUG_ERROR,"Width is not valid\n"));
     }
 
     PcieRegWrite(Port, PCIE_EP_PORT_LOGIC4_REG, Value);
@@ -477,7 +477,7 @@ EFI_STATUS PcieSetupRC(UINT32 Port, PCIE_PORT_WIDTH Width)
     }
     else
     {
-        DEBUG((EFI_D_ERROR,"Width is not valid\n"));
+        DEBUG((DEBUG_ERROR,"Width is not valid\n"));
     }
 
     logic22.UInt32 |= (0x100<<8);
@@ -1150,7 +1150,7 @@ PciePortInit (
      else
      {
          mPcieIntCfg.RegResource[PortIndex] = (VOID *)(UINTN)PCIE_REG_BASE(HostBridgeNum, PortIndex);
-         DEBUG((EFI_D_INFO, "Soc type is 660\n"));
+         DEBUG((DEBUG_INFO, "Soc type is 660\n"));
      }
 
      /* assert reset signals */
@@ -1168,7 +1168,7 @@ PciePortInit (
          MicroSecondDelay(1000);
          Count++;
          if (Count >= 50) {
-            DEBUG((EFI_D_ERROR, "HostBridge %d, Port %d PLL Lock failed\n", HostBridgeNum, PortIndex));
+            DEBUG((DEBUG_ERROR, "HostBridge %d, Port %d PLL Lock failed\n", HostBridgeNum, PortIndex));
             return PCIE_ERR_LINK_OVER_TIME;
          }
      }
@@ -1209,11 +1209,11 @@ PciePortInit (
          MicroSecondDelay(1000);
          Count++;
          if (Count >= 1000) {
-            DEBUG((EFI_D_ERROR, "HostBridge %d, Port %d link up failed\n", HostBridgeNum, PortIndex));
+            DEBUG((DEBUG_ERROR, "HostBridge %d, Port %d link up failed\n", HostBridgeNum, PortIndex));
             return PCIE_ERR_LINK_OVER_TIME;
          }
      }
-     DEBUG((EFI_D_INFO, "HostBridge %d, Port %d Link up ok\n", HostBridgeNum, PortIndex));
+     DEBUG((DEBUG_INFO, "HostBridge %d, Port %d Link up ok\n", HostBridgeNum, PortIndex));
 
      PcieRegWrite(PortIndex, 0x8BC, 0);
 

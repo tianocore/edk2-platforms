@@ -326,7 +326,7 @@ STATIC EFI_STATUS prepare_cmd (
     if (slot->used || (r == (w+1) % QUEUE_SLOTS)) {
       queue = (queue + 1) % QUEUE_CNT;
       if (queue == hba->queue) {
-        DEBUG ((EFI_D_ERROR, "could not find free slot\n"));
+        DEBUG ((DEBUG_ERROR, "could not find free slot\n"));
         return EFI_NOT_READY;
       }
       continue;
@@ -429,10 +429,10 @@ STATIC EFI_STATUS prepare_cmd (
       // Check whether dma transfer error
       if ((data & CMPLT_HDR_ERR_RCRD_XFRD_MSK) &&
         !(data & CMPLT_HDR_RSPNS_XFRD_MSK)) {
-        DEBUG ((EFI_D_VERBOSE, "sas retry data=0x%x\n", data));
-        DEBUG ((EFI_D_VERBOSE, "sts[0]=0x%x\n", sts->status[0]));
-        DEBUG ((EFI_D_VERBOSE, "sts[1]=0x%x\n", sts->status[1]));
-        DEBUG ((EFI_D_VERBOSE, "sts[2]=0x%x\n", sts->status[2]));
+        DEBUG ((DEBUG_VERBOSE, "sas retry data=0x%x\n", data));
+        DEBUG ((DEBUG_VERBOSE, "sts[0]=0x%x\n", sts->status[0]));
+        DEBUG ((DEBUG_VERBOSE, "sts[1]=0x%x\n", sts->status[1]));
+        DEBUG ((DEBUG_VERBOSE, "sts[2]=0x%x\n", sts->status[2]));
         Status = EFI_NOT_READY;
         // wait 1 second and retry, some disk need long time to be ready
         // and ScsiDisk treat retry over 3 times as error

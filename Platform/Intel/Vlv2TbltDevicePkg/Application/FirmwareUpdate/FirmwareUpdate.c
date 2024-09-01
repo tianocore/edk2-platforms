@@ -373,9 +373,9 @@ ShellAppMain (
       // Handle block based on address and contents.
       //
       if (!UpdateBlock (Address)) {
-        DEBUG((EFI_D_INFO, "Skipping block at 0x%lx\n", Address));
+        DEBUG((DEBUG_INFO, "Skipping block at 0x%lx\n", Address));
       } else if (!EFI_ERROR (InternalCompareBlock (Address, Buffer))) {
-        DEBUG((EFI_D_INFO, "Skipping block at 0x%lx (already programmed)\n", Address));
+        DEBUG((DEBUG_INFO, "Skipping block at 0x%lx (already programmed)\n", Address));
       } else {
         //
         // Display a dot for each block being updated.
@@ -597,7 +597,7 @@ Returns:
   Status = SpiFlashWrite ((UINTN) BaseAddress, &BufferSize, Buffer);
   ASSERT_EFI_ERROR(Status);
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "\nFlash write error."));
+    DEBUG((DEBUG_ERROR, "\nFlash write error."));
     return Status;
   }
 
@@ -605,9 +605,9 @@ Returns:
 
   Status = InternalCompareBlock (BaseAddress, Buffer);
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "\nError when writing to BaseAddress %lx with different at offset %x.", BaseAddress, Status));
+    DEBUG((DEBUG_ERROR, "\nError when writing to BaseAddress %lx with different at offset %x.", BaseAddress, Status));
   } else {
-    DEBUG((EFI_D_INFO, "\nVerified data written to Block at %lx is correct.", BaseAddress));
+    DEBUG((DEBUG_INFO, "\nVerified data written to Block at %lx is correct.", BaseAddress));
   }
 
   return Status;

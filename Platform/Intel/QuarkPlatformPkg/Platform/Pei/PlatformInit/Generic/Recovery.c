@@ -150,7 +150,7 @@ Returns:
 
   DeviceRecoveryModule    = NULL;
 
-  DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Recovery Entry\n"));
+  DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Recovery Entry\n"));
 
   //
   // Search the platform for some recovery capsule if the DXE IPL
@@ -166,7 +166,7 @@ Returns:
               );
 
     if (!EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Device Recovery PPI located\n"));
+      DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Device Recovery PPI located\n"));
       NumberOfImageProviders++;
 
       Status = DeviceRecoveryModule->GetNumberRecoveryCapsules (
@@ -175,7 +175,7 @@ Returns:
                                       &NumberRecoveryCapsules
                                       );
 
-      DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Number Of Recovery Capsules: %d\n", NumberRecoveryCapsules));
+      DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Number Of Recovery Capsules: %d\n", NumberRecoveryCapsules));
 
       if (NumberRecoveryCapsules == 0) {
         Index++;
@@ -209,7 +209,7 @@ Returns:
       return Status;
     }
 
-    DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Recovery Capsule Size: %d\n", RecoveryCapsuleSize));
+    DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Recovery Capsule Size: %d\n", RecoveryCapsuleSize));
 
     //
     // Only support the 2 capsule types known
@@ -234,7 +234,7 @@ Returns:
                                      Buffer
                                      );
 
-    DEBUG ((EFI_D_INFO | EFI_D_LOAD, "LoadRecoveryCapsule Returns: %r\n", Status));
+    DEBUG ((DEBUG_INFO | DEBUG_LOAD, "LoadRecoveryCapsule Returns: %r\n", Status));
 
     if (Status == EFI_DEVICE_ERROR) {
       AssertMediaDeviceError (PeiServices);
@@ -253,14 +253,14 @@ Returns:
     Status      = PeiServicesGetHobList ((VOID **)&Hob.Raw);
     while (!END_OF_HOB_LIST (Hob)) {
       if (Hob.Header->HobType == EFI_HOB_TYPE_FV) {
-        DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Hob FV Length: %x\n", Hob.FirmwareVolume->Length));
+        DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Hob FV Length: %x\n", Hob.FirmwareVolume->Length));
 
         if (Hob.FirmwareVolume->BaseAddress == (UINTN) PcdGet32 (PcdFlashFvMainBase)) {
           HobUpdate = TRUE;
           //
           // This looks like the Hob we are interested in
           //
-          DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Hob Updated\n"));
+          DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Hob Updated\n"));
           Hob.FirmwareVolume->BaseAddress = (UINTN) Buffer;
           Hob.FirmwareVolume->Length      = RecoveryCapsuleSize;
         }
@@ -278,13 +278,13 @@ Returns:
       // build FV Hob if it is not built before
       //
       if (!HobUpdate) {
-        DEBUG ((EFI_D_INFO | EFI_D_LOAD, "FV Hob is not found, Build FV Hob then..\n"));
+        DEBUG ((DEBUG_INFO | DEBUG_LOAD, "FV Hob is not found, Build FV Hob then..\n"));
         BuildFvHob (
           (UINTN) Buffer,
           FvHeader->FvLength
           );
 
-        DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Install FV Info PPI..\n"));
+        DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Install FV Info PPI..\n"));
 
         PeiServicesInstallFvInfoPpi (
           NULL,
@@ -326,7 +326,7 @@ Returns:
     }
   }
 
-  DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Recovery Module Returning: %r\n", Status));
+  DEBUG ((DEBUG_INFO | DEBUG_LOAD, "Recovery Module Returning: %r\n", Status));
   return Status;
 }
 

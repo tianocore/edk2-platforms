@@ -1,10 +1,12 @@
 /** @file
 
   Copyright (c) 2004  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 Module Name:
 
@@ -83,7 +85,7 @@ Port80ReportStatusCode (
       }
     }
   }
-  if (Port80Code != 0){
+  if (Port80DEBUG_= 0){
     IoWrite16 (0x80, (UINT16) Port80Code);
     DEBUG ((EFI_D_ERROR, "POSTCODE=<%04x>\n", Port80Code));
   }

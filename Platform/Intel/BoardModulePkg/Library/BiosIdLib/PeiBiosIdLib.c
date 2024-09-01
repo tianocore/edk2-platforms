@@ -104,6 +104,6 @@ GetBiosId (
     Instance++;
   }
 
-  DEBUG ((EFI_D_ERROR, "PEI get BIOS ID failed: %r\n", EFI_NOT_FOUND));
+  DEBUG ((DEBUG_ERROR, "PEI get BIOS ID failed: %r\n", EFI_NOT_FOUND));
   return EFI_NOT_FOUND;
 }

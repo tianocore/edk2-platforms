@@ -103,7 +103,7 @@ UINTN OemGetDimmSlot(UINTN Socket, UINTN Channel)
 VOID OemPostEndIndicator (VOID)
 {
 
-     DEBUG((EFI_D_ERROR,"M3 release reset CONFIG........."));
+     DEBUG((DEBUG_ERROR,"M3 release reset CONFIG........."));
 
      MmioWrite32(0xd0002180, 0x3);
      MmioWrite32(0xd0002194, 0xa4);
@@ -117,7 +117,7 @@ VOID OemPostEndIndicator (VOID)
      MmioWrite32(0xd0003108, 0x1);
 
      MicroSecondDelay(500000);
-     DEBUG((EFI_D_ERROR,"Done\n"));
+     DEBUG((DEBUG_ERROR,"Done\n"));
 
 }
 

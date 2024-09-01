@@ -167,13 +167,13 @@ ArmFvpInitialise (
   // Declare the Virtio BlockIo device
   Status = VirtioMmioInstallDevice (ARM_FVP_BASE_VIRTIO_BLOCK_BASE, ImageHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "ArmFvpDxe: Failed to install Virtio block device\n"));
+    DEBUG ((DEBUG_ERROR, "ArmFvpDxe: Failed to install Virtio block device\n"));
   }
 
   // Install dynamic Shell command to run baremetal binaries.
   Status = ShellDynCmdRunAxfInstall (ImageHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "ArmFvpDxe: Failed to install ShellDynCmdRunAxf\n"));
+    DEBUG ((DEBUG_ERROR, "ArmFvpDxe: Failed to install ShellDynCmdRunAxf\n"));
   }
 
   // If FVP RevC - Configure SMMUv3 to set NS transactions in bypass mode.

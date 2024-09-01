@@ -200,7 +200,7 @@ ShellDynCmdRunAxfHandler (
           TmpChar16 = StrStr (TmpFileName, L".");
           if (TmpChar16 != NULL) {
             *TmpChar16 = '\0';
-            DEBUG((EFI_D_ERROR, "Trying to open file: %s\n", TmpFileName));
+            DEBUG((DEBUG_ERROR, "Trying to open file: %s\n", TmpFileName));
             Status = ShellOpenFileByName (TmpFileName, &FileHandle,
                                           EFI_FILE_MODE_READ, 0);
           }
@@ -288,7 +288,7 @@ ShellDynCmdRunAxfHandler (
     // have access to UEFI functions.
     Status = ShutdownUefiBootServices ();
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR,"Can not shutdown UEFI boot services. Status=0x%X\n",
+      DEBUG ((DEBUG_ERROR,"Can not shutdown UEFI boot services. Status=0x%X\n",
               Status));
     } else {
       // Process linked list. Copy data to Memory.

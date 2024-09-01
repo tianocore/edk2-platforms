@@ -1,10 +1,12 @@
 /*++
 
 Copyright (c) 2010 - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 
 Module Name:
@@ -24,8 +26,8 @@ Abstract:
 
 #define DEFAULT_VALUE          0
 #define  DEFAULT_ATTRIBUTES     0
-#define  EXCLUDE_FROM_CHECKSUM   CMOS_ATTRIBUTE_EXCLUDE_FROM_CHECKSUM
-
+#define  EXCLUDE_FROM_CHECKSUM   CMOS_ATTRIBUTE_EXCLUDE_FROMDEBUG_SUMDEBUG_DEBUG_
+DEBUG_
 #define CMOS_DEBUG_PRINT_LEVEL_DEFAULT_VALUE      0x46   // EFI_D_WARN|EFI_D_INFO|EFI_D_LOAD
 #define CMOS_DEBUG_PRINT_LEVEL_3_DEFAULT_VALUE    0x80   // EFI_D_ERROR
 

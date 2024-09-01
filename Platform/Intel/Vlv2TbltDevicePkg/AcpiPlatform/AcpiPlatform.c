@@ -352,7 +352,7 @@ PlatformUpdateTables (
             //
             // Sanity check to make sure proc-id is not arbitrary.
             //
-            DEBUG ((EFI_D_ERROR, "ApicPtr->AcpiLocalApic.AcpiProcessorId = %x, MaximumNumberOfCPUs = %x\n", \
+            DEBUG ((DEBUG_ERROR, "ApicPtr->AcpiLocalApic.AcpiProcessorId = %x, MaximumNumberOfCPUs = %x\n", \
             ApicPtr->AcpiLocalApic.AcpiProcessorId, MaximumNumberOfCPUs));
             if(ApicPtr->AcpiLocalApic.AcpiProcessorId > MaximumNumberOfCPUs) {
               ApicPtr->AcpiLocalApic.AcpiProcessorId = (UINT8)MaximumNumberOfCPUs;
@@ -713,11 +713,11 @@ PR1FSASetting (
   // for FSA on  PR1.
   //
   if (mPlatformInfo->BoardId == BOARD_ID_BL_FFRD && mPlatformInfo->BoardRev >= PR1) {
-    DEBUG((EFI_D_ERROR, "Set FSA status = 1 for FFRD PR1\n"));
+    DEBUG((DEBUG_ERROR, "Set FSA status = 1 for FFRD PR1\n"));
     mGlobalNvsArea.Area->FsaStatus  = mSystemConfiguration.PchFSAOn;
   }
   if (mPlatformInfo->BoardId == BOARD_ID_BL_FFRD8) {
-    DEBUG((EFI_D_ERROR, "Set FSA status = 1 for FFRD8\n"));
+    DEBUG((DEBUG_ERROR, "Set FSA status = 1 for FFRD8\n"));
     mGlobalNvsArea.Area->FsaStatus  = mSystemConfiguration.PchFSAOn;
   }
 
@@ -877,7 +877,7 @@ AcpiPlatformEntryPoint (
          sizeof (EFI_GLOBAL_NVS_AREA),
          0
          );
-  DEBUG((EFI_D_ERROR, "mGlobalNvsArea.Area is at 0x%X\n", mGlobalNvsArea.Area));
+  DEBUG((DEBUG_ERROR, "mGlobalNvsArea.Area is at 0x%X\n", mGlobalNvsArea.Area));
 
   //
   // Update global NVS area for ASL and SMM init code to use.
@@ -980,7 +980,7 @@ AcpiPlatformEntryPoint (
       mSystemConfiguration.PchUsb20       = 1;
       mSystemConfiguration.PchUsb30Mode   = 0;
       mSystemConfiguration.UsbXhciSupport = 0;
-      DEBUG ((EFI_D_INFO, "EHCI is enabled as default. SOC 0x%x\n", pchStepping));
+      DEBUG ((DEBUG_INFO, "EHCI is enabled as default. SOC 0x%x\n", pchStepping));
     } else {
       //
       //  For A1 and later, XHCI is enabled as default.
@@ -988,7 +988,7 @@ AcpiPlatformEntryPoint (
       mSystemConfiguration.PchUsb20       = 0;
       mSystemConfiguration.PchUsb30Mode   = 1;
       mSystemConfiguration.UsbXhciSupport = 1;
-      DEBUG ((EFI_D_INFO, "XHCI is enabled as default. SOC 0x%x\n", pchStepping));
+      DEBUG ((DEBUG_INFO, "XHCI is enabled as default. SOC 0x%x\n", pchStepping));
     }
   }
 
@@ -1006,7 +1006,7 @@ AcpiPlatformEntryPoint (
     mGlobalNvsArea.Area->XhciMode = 3;
   }
 
-  DEBUG ((EFI_D_ERROR, "ACPI NVS XHCI:0x%x\n", mGlobalNvsArea.Area->XhciMode));
+  DEBUG ((DEBUG_ERROR, "ACPI NVS XHCI:0x%x\n", mGlobalNvsArea.Area->XhciMode));
 
   mGlobalNvsArea.Area->PmicEnable                       = GLOBAL_NVS_DEVICE_DISABLE;
   mGlobalNvsArea.Area->BatteryChargingSolution          = GLOBAL_NVS_DEVICE_DISABLE;
@@ -1036,7 +1036,7 @@ AcpiPlatformEntryPoint (
     //
     // Auto detect mode.
     //
-    DEBUG ((EFI_D_ERROR, "Auto detect mode------------start\n"));
+    DEBUG ((DEBUG_ERROR, "Auto detect mode------------start\n"));
 
     //
     // Silicon Steppings.
@@ -1044,14 +1044,14 @@ AcpiPlatformEntryPoint (
     switch (PchStepping()) {
       case PchA0: // A0/A1
       case PchA1:
-        DEBUG ((EFI_D_ERROR, "SOC A0/A1: eMMC 4.41 Configuration\n"));
+        DEBUG ((DEBUG_ERROR, "SOC A0/A1: eMMC 4.41 Configuration\n"));
         mSystemConfiguration.LpsseMMCEnabled            = 1;
         mSystemConfiguration.LpsseMMC45Enabled          = 0;
         break;
 
       case PchB0: // B0 and later.
       default:
-        DEBUG ((EFI_D_ERROR, "SOC B0 and later: eMMC 4.5 Configuration\n"));
+        DEBUG ((DEBUG_ERROR, "SOC B0 and later: eMMC 4.5 Configuration\n"));
         mSystemConfiguration.LpsseMMCEnabled            = 0;
         mSystemConfiguration.LpsseMMC45Enabled          = 1;
         break;
@@ -1060,14 +1060,14 @@ AcpiPlatformEntryPoint (
       //
       // eMMC 4.41
       //
-      DEBUG ((EFI_D_ERROR, "Force to eMMC 4.41 Configuration\n"));
+      DEBUG ((DEBUG_ERROR, "Force to eMMC 4.41 Configuration\n"));
       mSystemConfiguration.LpsseMMCEnabled            = 1;
       mSystemConfiguration.LpsseMMC45Enabled          = 0;
   } else if (mSystemConfiguration.eMMCBootMode == 3) {
       //
       // eMMC 4.5
       //
-      DEBUG ((EFI_D_ERROR, "Force to eMMC 4.5 Configuration\n"));
+      DEBUG ((DEBUG_ERROR, "Force to eMMC 4.5 Configuration\n"));
       mSystemConfiguration.LpsseMMCEnabled            = 0;
       mSystemConfiguration.LpsseMMC45Enabled          = 1;
 
@@ -1075,19 +1075,19 @@ AcpiPlatformEntryPoint (
       //
       // Disable eMMC controllers.
       //
-      DEBUG ((EFI_D_ERROR, "Disable eMMC controllers\n"));
+      DEBUG ((DEBUG_ERROR, "Disable eMMC controllers\n"));
       mSystemConfiguration.LpsseMMCEnabled            = 0;
       mSystemConfiguration.LpsseMMC45Enabled          = 0;
   }
 
   mGlobalNvsArea.Area->emmcVersion = 0;
   if (mSystemConfiguration.LpsseMMCEnabled) {
-     DEBUG ((EFI_D_ERROR, "mGlobalNvsArea.Area->emmcVersion = 0\n"));
+     DEBUG ((DEBUG_ERROR, "mGlobalNvsArea.Area->emmcVersion = 0\n"));
      mGlobalNvsArea.Area->emmcVersion = 0;
   }
 
   if (mSystemConfiguration.LpsseMMC45Enabled) {
-     DEBUG ((EFI_D_ERROR, "mGlobalNvsArea.Area->emmcVersion = 1\n"));
+     DEBUG ((DEBUG_ERROR, "mGlobalNvsArea.Area->emmcVersion = 1\n"));
      mGlobalNvsArea.Area->emmcVersion = 1;
   }
 
@@ -1100,10 +1100,10 @@ AcpiPlatformEntryPoint (
       (mSystemConfiguration.LpssPwm0Enabled == 0) && \
       (mSystemConfiguration.LpssPwm1Enabled == 0)) {
     mGlobalNvsArea.Area->MicrosoftIoT = GLOBAL_NVS_DEVICE_ENABLE;
-    DEBUG ((EFI_D_ERROR, "JP1 is set to be MSFT IOT configuration.\n"));
+    DEBUG ((DEBUG_ERROR, "JP1 is set to be MSFT IOT configuration.\n"));
   } else {
     mGlobalNvsArea.Area->MicrosoftIoT = GLOBAL_NVS_DEVICE_DISABLE;
-    DEBUG ((EFI_D_ERROR, "JP1 is not set to be MSFT IOT configuration.\n"));
+    DEBUG ((DEBUG_ERROR, "JP1 is not set to be MSFT IOT configuration.\n"));
   }
 
   //
@@ -1237,7 +1237,7 @@ SettingI2CTouchAddress (
   } else {
     mGlobalNvsArea.Area->I2CTouchAddress = mSystemConfiguration.I2CTouchAd;
   }
-  DEBUG((EFI_D_ERROR, "GlobalNvsArea.Area->I2CTouchAddress: [%02x]\n", mGlobalNvsArea.Area->I2CTouchAddress));
+  DEBUG((DEBUG_ERROR, "GlobalNvsArea.Area->I2CTouchAddress: [%02x]\n", mGlobalNvsArea.Area->I2CTouchAddress));
 }
 
 

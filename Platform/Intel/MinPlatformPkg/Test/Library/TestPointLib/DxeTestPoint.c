@@ -161,15 +161,15 @@ InternalTestPointIsValidTable (
   // basic check for header
   //
   if (TestPointData == NULL) {
-    DEBUG ((EFI_D_ERROR, "TestPointData == NULL\n"));
+    DEBUG ((DEBUG_ERROR, "TestPointData == NULL\n"));
     return FALSE;
   }
   if (TestPointSize < sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)) {
-    DEBUG ((EFI_D_ERROR, "TestPointSize < sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)\n"));
+    DEBUG ((DEBUG_ERROR, "TestPointSize < sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)\n"));
     return FALSE;
   }
   if (((TestPointSize - sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)) / TEST_POINT_FEATURES_ITEM_NUMBER) < TestPoint->FeaturesSize) {
-    DEBUG ((EFI_D_ERROR, "((TestPointSize - sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)) / TEST_POINT_FEATURES_ITEM_NUMBER) < FeaturesSize\n"));
+    DEBUG ((DEBUG_ERROR, "((TestPointSize - sizeof(ADAPTER_INFO_PLATFORM_TEST_POINT)) / TEST_POINT_FEATURES_ITEM_NUMBER) < FeaturesSize\n"));
     return FALSE;
   }
 
@@ -177,7 +177,7 @@ InternalTestPointIsValidTable (
   // Check Version
   //
   if (TestPoint->Version != PLATFORM_TEST_POINT_VERSION) {
-    DEBUG ((EFI_D_ERROR, "Version != PLATFORM_TEST_POINT_VERSION\n"));
+    DEBUG ((DEBUG_ERROR, "Version != PLATFORM_TEST_POINT_VERSION\n"));
     return FALSE;
   }
 
@@ -186,8 +186,8 @@ InternalTestPointIsValidTable (
   //
   if ((TestPoint->Role < PLATFORM_TEST_POINT_ROLE_PLATFORM_REFERENCE) ||
       (TestPoint->Role > PLATFORM_TEST_POINT_ROLE_IMPLEMENTOR_ODM)) {
-    DEBUG ((EFI_D_ERROR, "Role < PLATFORM_TEST_POINT_ROLE_PLATFORM_REFERENCE ||\n"));
-    DEBUG ((EFI_D_ERROR, "Role > PLATFORM_TEST_POINT_ROLE_IMPLEMENTOR_ODM\n"));
+    DEBUG ((DEBUG_ERROR, "Role < PLATFORM_TEST_POINT_ROLE_PLATFORM_REFERENCE ||\n"));
+    DEBUG ((DEBUG_ERROR, "Role > PLATFORM_TEST_POINT_ROLE_IMPLEMENTOR_ODM\n"));
     return FALSE;
   }
 
@@ -200,7 +200,7 @@ InternalTestPointIsValidTable (
     }
   }
   if (Index == sizeof(TestPoint->ImplementationID)/sizeof(TestPoint->ImplementationID[0])) {
-    DEBUG ((EFI_D_ERROR, "ImplementationID is no NUL CHAR\n"));
+    DEBUG ((DEBUG_ERROR, "ImplementationID is no NUL CHAR\n"));
     return FALSE;
   }
 
@@ -211,11 +211,11 @@ InternalTestPointIsValidTable (
   // basic check for ErrorString
   //
   if (ErrorStringSize == 0) {
-    DEBUG ((EFI_D_ERROR, "ErrorStringSize == 0\n"));
+    DEBUG ((DEBUG_ERROR, "ErrorStringSize == 0\n"));
     return FALSE;
   }
   if ((ErrorStringSize & BIT0) != 0) {
-    DEBUG ((EFI_D_ERROR, "(ErrorStringSize & BIT0) != 0\n"));
+    DEBUG ((DEBUG_ERROR, "(ErrorStringSize & BIT0) != 0\n"));
     return FALSE;
   }
 
@@ -232,11 +232,11 @@ InternalTestPointIsValidTable (
   // check the length of ErrorString
   //
   if (ErrorChar != 0) {
-    DEBUG ((EFI_D_ERROR, "ErrorString has no NUL CHAR\n"));
+    DEBUG ((DEBUG_ERROR, "ErrorString has no NUL CHAR\n"));
     return FALSE;
   }
   if (ErrorStringLength == (ErrorStringSize/2)) {
-    DEBUG ((EFI_D_ERROR, "ErrorString Length incorrect\n"));
+    DEBUG ((DEBUG_ERROR, "ErrorString Length incorrect\n"));
     return FALSE;
   }
 
@@ -270,10 +270,10 @@ TestPointLibSetTable (
   UINT32                           Role;
   CHAR16                           *ImplementationID;
 
-  DEBUG ((EFI_D_ERROR, "TestPointLibSetTable\n"));
+  DEBUG ((DEBUG_ERROR, "TestPointLibSetTable\n"));
 
   if (!InternalTestPointIsValidTable (TestPoint, TestPointSize)) {
-    DEBUG ((EFI_D_ERROR, "InternalTestPointIsValidTable\n"));
+    DEBUG ((DEBUG_ERROR, "InternalTestPointIsValidTable\n"));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -281,7 +281,7 @@ TestPointLibSetTable (
   ImplementationID = ((ADAPTER_INFO_PLATFORM_TEST_POINT *)TestPoint)->ImplementationID;
   Aip = InternalTestPointFindAip (Role, ImplementationID, NULL, NULL);
   if (Aip != NULL) {
-    DEBUG ((EFI_D_ERROR, "Aip (0x%x, %S) is found\n", Role, ImplementationID));
+    DEBUG ((DEBUG_ERROR, "Aip (0x%x, %S) is found\n", Role, ImplementationID));
     return EFI_ALREADY_STARTED;
   }
 

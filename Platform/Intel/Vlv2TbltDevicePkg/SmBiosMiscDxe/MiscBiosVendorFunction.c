@@ -182,7 +182,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscBiosVendor)
   SetMem(BiosReleaseDate, sizeof(BiosReleaseDate), 0);
   SetMem(BiosReleaseTime, sizeof(BiosReleaseTime), 0);
   Status = GetBiosVersionDateTime (BiosVersion, BiosReleaseDate, BiosReleaseTime);
-  DEBUG ((EFI_D_ERROR, "GetBiosVersionDateTime :%s %s %s \n", BiosVersion, BiosReleaseDate, BiosReleaseTime));
+  DEBUG ((DEBUG_ERROR, "GetBiosVersionDateTime :%s %s %s \n", BiosVersion, BiosReleaseDate, BiosReleaseTime));
   if (StrLen (BiosVersion) > 0) {
     TokenToUpdate = STRING_TOKEN (STR_MISC_BIOS_VERSION);
     HiiSetString (mHiiHandle, TokenToUpdate, BiosVersion, NULL);

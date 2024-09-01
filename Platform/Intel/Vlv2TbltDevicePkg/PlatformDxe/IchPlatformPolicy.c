@@ -54,7 +54,7 @@ InitPchPlatformPolicy (
   BOOLEAN                          ModifyVariable;
 
   ModifyVariable = FALSE;
-  DEBUG ((EFI_D_INFO, "InitPchPlatformPolicy() - Start\n"));
+  DEBUG ((DEBUG_INFO, "InitPchPlatformPolicy() - Start\n"));
 
   Status  = gBS->LocateProtocol (&gDxePchPlatformPolicyProtocolGuid, NULL, (VOID **) &DxePlatformPchPolicy);
   ASSERT_EFI_ERROR (Status);
@@ -130,7 +130,7 @@ InitPchPlatformPolicy (
       mSystemConfiguration.PchUsb20       = 1;
       mSystemConfiguration.PchUsb30Mode   = 0;
       mSystemConfiguration.UsbXhciSupport = 0;
-      DEBUG ((EFI_D_INFO, "EHCI is enabled as default. SOC 0x%x\n", SocStepping));
+      DEBUG ((DEBUG_INFO, "EHCI is enabled as default. SOC 0x%x\n", SocStepping));
     } else {
     	//
       //  For A1 and later, XHCI is enabled as default.
@@ -138,7 +138,7 @@ InitPchPlatformPolicy (
       mSystemConfiguration.PchUsb20       = 0;
       mSystemConfiguration.PchUsb30Mode   = 1;
       mSystemConfiguration.UsbXhciSupport = 1;
-      DEBUG ((EFI_D_INFO, "XHCI is enabled as default. SOC 0x%x\n", SocStepping));
+      DEBUG ((DEBUG_INFO, "XHCI is enabled as default. SOC 0x%x\n", SocStepping));
     }
     //
     //overwrite the setting
@@ -228,7 +228,7 @@ InitPchPlatformPolicy (
   DxePlatformPchPolicy->UsbConfig->Usb30OverCurrentPins[0]  = PchUsbOverCurrentPinSkip;//PchUsbOverCurrentPin0;
 
   DxePlatformPchPolicy->EhciPllCfgEnable = mSystemConfiguration.EhciPllCfgEnable;
-  DEBUG ((EFI_D_INFO, "InitPchPlatformPolicy() DxePlatformPchPolicy->EhciPllCfgEnable = 0x%x \n",DxePlatformPchPolicy->EhciPllCfgEnable));
+  DEBUG ((DEBUG_INFO, "InitPchPlatformPolicy() DxePlatformPchPolicy->EhciPllCfgEnable = 0x%x \n",DxePlatformPchPolicy->EhciPllCfgEnable));
     DxePlatformPchPolicy->PciExpressConfig->PcieDynamicGating                                 = mSystemConfiguration.PcieDynamicGating;
   for (PortIndex = 0; PortIndex < PCH_PCIE_MAX_ROOT_PORTS; PortIndex++) {
     DxePlatformPchPolicy->PciExpressConfig->RootPort[PortIndex].Enable                        = mSystemConfiguration.IchPciExp[PortIndex];
@@ -334,7 +334,7 @@ InitPchPlatformPolicy (
   switch (PchStepping()) {
     case PchA0: // A0 and A1
     case PchA1:
-      DEBUG ((EFI_D_ERROR, "Auto Detect: SOC A0/A1: SCC eMMC 4.41 Configuration\n"));
+      DEBUG ((DEBUG_ERROR, "Auto Detect: SOC A0/A1: SCC eMMC 4.41 Configuration\n"));
       DxePlatformPchPolicy->SccConfig->eMMCEnabled            = 1;
       DxePlatformPchPolicy->SccConfig->eMMC45Enabled          = 0;
       DxePlatformPchPolicy->SccConfig->eMMC45DDR50Enabled     = 0;
@@ -343,7 +343,7 @@ InitPchPlatformPolicy (
       break;
     case PchB0: // B0 and later
     default:
-      DEBUG ((EFI_D_ERROR, "Auto Detect: SOC B0 and later: SCC eMMC 4.5 Configuration\n"));
+      DEBUG ((DEBUG_ERROR, "Auto Detect: SOC B0 and later: SCC eMMC 4.5 Configuration\n"));
       DxePlatformPchPolicy->SccConfig->eMMCEnabled            = 0;
       DxePlatformPchPolicy->SccConfig->eMMC45Enabled          = mSystemConfiguration.LpsseMMC45Enabled;
       DxePlatformPchPolicy->SccConfig->eMMC45DDR50Enabled     = mSystemConfiguration.LpsseMMC45DDR50Enabled;
@@ -352,7 +352,7 @@ InitPchPlatformPolicy (
       break;
   }
  } else if (mSystemConfiguration.eMMCBootMode == 2) { // eMMC 4.41
-    DEBUG ((EFI_D_ERROR, "Force to SCC eMMC 4.41 Configuration\n"));
+    DEBUG ((DEBUG_ERROR, "Force to SCC eMMC 4.41 Configuration\n"));
     DxePlatformPchPolicy->SccConfig->eMMCEnabled            = 1;
     DxePlatformPchPolicy->SccConfig->eMMC45Enabled          = 0;
     DxePlatformPchPolicy->SccConfig->eMMC45DDR50Enabled     = 0;
@@ -360,7 +360,7 @@ InitPchPlatformPolicy (
     DxePlatformPchPolicy->SccConfig->eMMC45RetuneTimerValue = 0;
 
  } else if (mSystemConfiguration.eMMCBootMode == 3) { // eMMC 4.5
-      DEBUG ((EFI_D_ERROR, "Force to eMMC 4.5 Configuration\n"));
+      DEBUG ((DEBUG_ERROR, "Force to eMMC 4.5 Configuration\n"));
       DxePlatformPchPolicy->SccConfig->eMMCEnabled            = 0;
       DxePlatformPchPolicy->SccConfig->eMMC45Enabled          = mSystemConfiguration.LpsseMMC45Enabled;
       DxePlatformPchPolicy->SccConfig->eMMC45DDR50Enabled     = mSystemConfiguration.LpsseMMC45DDR50Enabled;
@@ -368,7 +368,7 @@ InitPchPlatformPolicy (
       DxePlatformPchPolicy->SccConfig->eMMC45RetuneTimerValue = mSystemConfiguration.LpsseMMC45RetuneTimerValue;
 
  } else { // Disable eMMC controllers
-      DEBUG ((EFI_D_ERROR, "Disable eMMC controllers\n"));
+      DEBUG ((DEBUG_ERROR, "Disable eMMC controllers\n"));
       DxePlatformPchPolicy->SccConfig->eMMCEnabled            = 0;
       DxePlatformPchPolicy->SccConfig->eMMC45Enabled          = 0;
       DxePlatformPchPolicy->SccConfig->eMMC45DDR50Enabled     = 0;
@@ -431,7 +431,7 @@ InitPchPlatformPolicy (
                   );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((EFI_D_INFO, "InitPchPlatformPolicy() - End\n"));
+  DEBUG ((DEBUG_INFO, "InitPchPlatformPolicy() - End\n"));
 }
 
 

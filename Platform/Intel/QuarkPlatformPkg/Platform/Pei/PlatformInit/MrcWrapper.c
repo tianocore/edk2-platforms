@@ -84,10 +84,10 @@ MrcConfigureFromMcFuses (
                  QUARK_NC_MEMORY_CONTROLLER_REG_DFUSESTAT
                  );
 
-  DEBUG ((EFI_D_INFO, "MRC McFuseStat 0x%08x\n", McFuseStat));
+  DEBUG ((DEBUG_INFO, "MRC McFuseStat 0x%08x\n", McFuseStat));
 
   if ((McFuseStat & B_DFUSESTAT_ECC_DIS) != 0) {
-    DEBUG ((EFI_D_INFO, "MRC Fuse : fus_dun_ecc_dis.\n"));
+    DEBUG ((DEBUG_INFO, "MRC Fuse : fus_dun_ecc_dis.\n"));
     MrcData->ecc_enables = 0;
   } else {
     MrcData->ecc_enables = 1;
@@ -136,14 +136,14 @@ MrcConfigureFromInfoHob (
   MrcData->rtt_nom_value       = ItemData->DramRttNomVal;
   MrcData->rd_odt_value        = ItemData->SocRdOdtVal;
 
-  DEBUG ((EFI_D_INFO, "MRC dram_width %d\n",  MrcData->dram_width));
-  DEBUG ((EFI_D_INFO, "MRC rank_enables %d\n",MrcData->rank_enables));
-  DEBUG ((EFI_D_INFO, "MRC ddr_speed %d\n",   MrcData->ddr_speed));
-  DEBUG ((EFI_D_INFO, "MRC flags: %s\n",
+  DEBUG ((DEBUG_INFO, "MRC dram_width %d\n",  MrcData->dram_width));
+  DEBUG ((DEBUG_INFO, "MRC rank_enables %d\n",MrcData->rank_enables));
+  DEBUG ((DEBUG_INFO, "MRC ddr_speed %d\n",   MrcData->ddr_speed));
+  DEBUG ((DEBUG_INFO, "MRC flags: %s\n",
     (MrcData->scrambling_enables) ? L"SCRAMBLE_EN" : L""
     ));
 
-  DEBUG ((EFI_D_INFO, "MRC density=%d tCL=%d tRAS=%d tWTR=%d tRRD=%d tFAW=%d\n",
+  DEBUG ((DEBUG_INFO, "MRC density=%d tCL=%d tRAS=%d tWTR=%d tRRD=%d tFAW=%d\n",
     MrcData->params.DENSITY,
     MrcData->params.tCL,
     MrcData->params.tRAS,
@@ -216,7 +216,7 @@ PostInstallMemory (
   // Find the 64KB of memory for Rmu Main at the top of available memory.
   //
   InfoPostInstallMemory (&RmuMainDestBaseAddress, NULL, NULL);
-  DEBUG ((EFI_D_INFO, "RmuMain Base Address : 0x%x\n", RmuMainDestBaseAddress));
+  DEBUG ((DEBUG_INFO, "RmuMain Base Address : 0x%x\n", RmuMainDestBaseAddress));
 
   //
   // Relocate RmuMain.
@@ -227,7 +227,7 @@ PostInstallMemory (
     Status = PlatformFindFvFileRawDataSection (NULL, PcdGetPtr(PcdQuarkMicrocodeFile), (VOID **) &RmuMainSrcBaseAddress, &RmuMainSize);
     ASSERT_EFI_ERROR (Status);
     if (!EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Found Microcode ADDR:SIZE 0x%08x:0x%04x\n", (UINTN) RmuMainSrcBaseAddress, RmuMainSize));
+      DEBUG ((DEBUG_INFO, "Found Microcode ADDR:SIZE 0x%08x:0x%04x\n", (UINTN) RmuMainSrcBaseAddress, RmuMainSize));
     }
 
     RmuMainRelocation (RmuMainDestBaseAddress, (UINT32) RmuMainSrcBaseAddress, RmuMainSize);
@@ -400,7 +400,7 @@ MemoryInit (
 
   if (BootMode == BOOT_ON_S3_RESUME) {
 
-    DEBUG ((EFI_D_INFO, "Following BOOT_ON_S3_RESUME boot path.\n"));
+    DEBUG ((DEBUG_INFO, "Following BOOT_ON_S3_RESUME boot path.\n"));
 
     Status = InstallS3Memory (PeiServices, VariableServices, MrcData.mem_size);
     if (EFI_ERROR (Status)) {
@@ -417,7 +417,7 @@ MemoryInit (
   //
   // Assign physical memory to PEI and DXE
   //
-  DEBUG ((EFI_D_INFO, "InstallEfiMemory.\n"));
+  DEBUG ((DEBUG_INFO, "InstallEfiMemory.\n"));
 
   Status = InstallEfiMemory (
              PeiServices,
@@ -432,13 +432,13 @@ MemoryInit (
   //
   // Save current configuration into Hob and will save into Variable later in DXE
   //
-  DEBUG ((EFI_D_INFO, "SaveConfig.\n"));
+  DEBUG ((DEBUG_INFO, "SaveConfig.\n"));
   Status = SaveConfig (
              &MrcData
              );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((EFI_D_INFO, "MemoryInit Complete.\n"));
+  DEBUG ((DEBUG_INFO, "MemoryInit Complete.\n"));
 
   return EFI_SUCCESS;
 }
@@ -470,8 +470,8 @@ SaveConfig (
     ((sizeof (MrcData->timings) + 0x7) & (~0x7))
     );
 
-  DEBUG ((EFI_D_INFO, "IIO IoApicBase  = %x IoApicLimit=%x\n", IOAPIC_BASE, (IOAPIC_BASE + IOAPIC_SIZE - 1)));
-  DEBUG ((EFI_D_INFO, "IIO RcbaAddress = %x\n", (UINT32)PcdGet64 (PcdRcbaMmioBaseAddress)));
+  DEBUG ((DEBUG_INFO, "IIO IoApicBase  = %x IoApicLimit=%x\n", IOAPIC_BASE, (IOAPIC_BASE + IOAPIC_SIZE - 1)));
+  DEBUG ((DEBUG_INFO, "IIO RcbaAddress = %x\n", (UINT32)PcdGet64 (PcdRcbaMmioBaseAddress)));
 
   return EFI_SUCCESS;
 }
@@ -624,15 +624,15 @@ InstallEfiMemory (
 
   for (Index = 0; Index < NumRanges; Index++)
   {
-    DEBUG ((EFI_D_INFO, "Found 0x%x bytes at ", MemoryMap[Index].RangeLength));
-    DEBUG ((EFI_D_INFO, "0x%x.\n", MemoryMap[Index].PhysicalAddress));
+    DEBUG ((DEBUG_INFO, "Found 0x%x bytes at ", MemoryMap[Index].RangeLength));
+    DEBUG ((DEBUG_INFO, "0x%x.\n", MemoryMap[Index].PhysicalAddress));
 
     //
     // If OS requested a memory overwrite perform it now.  Only do it for memory
     // used by the OS.
     //
     if (MOR_CLEAR_MEMORY_VALUE (MorControl) && MemoryMap[Index].Type == DualChannelDdrMainMemory) {
-      DEBUG ((EFI_D_INFO, "Clear memory per MOR request.\n"));
+      DEBUG ((DEBUG_INFO, "Clear memory per MOR request.\n"));
       if ((UINTN)MemoryMap[Index].RangeLength > 0) {
         if ((UINTN)MemoryMap[Index].PhysicalAddress == 0) {
           //
@@ -1003,14 +1003,14 @@ InstallS3Memory (
   // install it as PEI Memory.
   //
 
-  DEBUG ((EFI_D_INFO, "TSEG Base = 0x%08x\n", SmramHobDescriptorBlock->Descriptor[SmramRanges-1].PhysicalStart));
+  DEBUG ((DEBUG_INFO, "TSEG Base = 0x%08x\n", SmramHobDescriptorBlock->Descriptor[SmramRanges-1].PhysicalStart));
   S3MemoryRangeData = (RESERVED_ACPI_S3_RANGE*)(UINTN)
     (SmramHobDescriptorBlock->Descriptor[SmramRanges-1].PhysicalStart + RESERVED_ACPI_S3_RANGE_OFFSET);
 
   S3MemoryBase  = (UINTN) (S3MemoryRangeData->AcpiReservedMemoryBase);
-  DEBUG ((EFI_D_INFO, "S3MemoryBase = 0x%08x\n", S3MemoryBase));
+  DEBUG ((DEBUG_INFO, "S3MemoryBase = 0x%08x\n", S3MemoryBase));
   S3MemorySize  = (UINTN) (S3MemoryRangeData->AcpiReservedMemorySize);
-  DEBUG ((EFI_D_INFO, "S3MemorySize = 0x%08x\n", S3MemorySize));
+  DEBUG ((DEBUG_INFO, "S3MemorySize = 0x%08x\n", S3MemorySize));
 
   Status        = PeiServicesInstallPeiMemory (S3MemoryBase, S3MemorySize);
   ASSERT_EFI_ERROR (Status);
@@ -1051,8 +1051,8 @@ InstallS3Memory (
         MemoryMap[Index].PhysicalAddress,
         MemoryMap[Index].RangeLength
         );
-      DEBUG ((EFI_D_INFO, "Build resource HOB for Legacy Region on S3 patch :"));
-      DEBUG ((EFI_D_INFO, " Memory Base:0x%lX Length:0x%lX\n", MemoryMap[Index].PhysicalAddress, MemoryMap[Index].RangeLength));
+      DEBUG ((DEBUG_INFO, "Build resource HOB for Legacy Region on S3 patch :"));
+      DEBUG ((DEBUG_INFO, " Memory Base:0x%lX Length:0x%lX\n", MemoryMap[Index].PhysicalAddress, MemoryMap[Index].RangeLength));
     }
   }
 
@@ -1317,7 +1317,7 @@ GetPlatformMemorySize (
 
     *MemorySize = PEI_MIN_MEMORY_SIZE;
     for (Index = 0; Index < DataSize / sizeof (EFI_MEMORY_TYPE_INFORMATION); Index++) {
-      DEBUG ((EFI_D_INFO, "Index %d, Page: %d\n", Index, MemoryData[Index].NumberOfPages));
+      DEBUG ((DEBUG_INFO, "Index %d, Page: %d\n", Index, MemoryData[Index].NumberOfPages));
       *MemorySize += MemoryData[Index].NumberOfPages * EFI_PAGE_SIZE;
     }
 
@@ -1386,7 +1386,7 @@ BaseMemoryTest (
   while (TempAddress < BeginAddress + MemoryLength) {
     if ((*(UINT32 *) (UINTN) TempAddress) != TestPattern) {
       *ErrorAddress = TempAddress;
-      DEBUG ((EFI_D_ERROR, "Memory test failed at 0x%x.\n", TempAddress));
+      DEBUG ((DEBUG_ERROR, "Memory test failed at 0x%x.\n", TempAddress));
       return EFI_DEVICE_ERROR;
     }
 

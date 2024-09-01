@@ -238,26 +238,26 @@ QNCInit (
   //
   Status = QncInitRootPorts ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "QNC Root Port initialization is failed!\n"));
+    DEBUG ((DEBUG_ERROR, "QNC Root Port initialization is failed!\n"));
     return Status;
   }
 
   Status = LegacyRegionInit ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "QNC LegacyRegion initialization is failed!\n"));
+    DEBUG ((DEBUG_ERROR, "QNC LegacyRegion initialization is failed!\n"));
     return Status;
   }
 
 
   Status = InitializeQNCPolicy ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "QNC Policy initialization is failed!\n"));
+    DEBUG ((DEBUG_ERROR, "QNC Policy initialization is failed!\n"));
     return Status;
   }
 
   Status = InitializeQNCSmbus (ImageHandle,SystemTable);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "QNC Smbus driver is failed!\n"));
+    DEBUG ((DEBUG_ERROR, "QNC Smbus driver is failed!\n"));
     return Status;
   }
 
@@ -308,7 +308,7 @@ QNCReserveSpaceInGcd(
                     );
     if (EFI_ERROR (Status)) {
       DEBUG ((
-        EFI_D_ERROR,
+        DEBUG_ERROR,
         "Failed to add memory space :0x%x 0x%x\n",
         BaseAddress,
         Length
@@ -398,7 +398,7 @@ QNCInitializeResource (
   //
   Status = gDS->GetMemorySpaceDescriptor (0, &Descriptor);
   DEBUG ((
-    EFI_D_INFO,
+    DEBUG_INFO,
     "DOS Area Memory: base = 0x%x, length = 0x%x, attribute = 0x%x\n",
     Descriptor.BaseAddress,
     Descriptor.Length,
@@ -427,7 +427,7 @@ QNCInitializeResource (
   //
   Status = gDS->GetMemorySpaceDescriptor (0xA0000, &Descriptor);
   DEBUG ((
-    EFI_D_INFO,
+    DEBUG_INFO,
     "ABSEG Memory: base = 0x%x, length = 0x%x, attribute = 0x%x\n",
     Descriptor.BaseAddress,
     Descriptor.Length,
@@ -446,7 +446,7 @@ QNCInitializeResource (
   //
   Status = gDS->GetMemorySpaceDescriptor (0xC0000, &Descriptor);
   DEBUG ((
-    EFI_D_INFO,
+    DEBUG_INFO,
     "Memory base = 0x%x, length = 0x%x, attribute = 0x%x\n",
     Descriptor.BaseAddress,
     Descriptor.Length,

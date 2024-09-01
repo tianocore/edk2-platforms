@@ -42,7 +42,7 @@ TimerConstructor (
 
     // Disable OMAP Watchdog timer (WDT2)
     MmioWrite32 (WDTIMER2_BASE + WSPR, 0xAAAA);
-    DEBUG ((EFI_D_ERROR, "Magic delay to disable watchdog timers properly.\n"));
+    DEBUG ((DEBUG_ERROR, "Magic delay to disable watchdog timers properly.\n"));
     MmioWrite32 (WDTIMER2_BASE + WSPR, 0x5555);
   }
   return EFI_SUCCESS;

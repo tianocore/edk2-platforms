@@ -837,7 +837,7 @@ QNCDownStreamPortsInit (
 
       if (!EFI_ERROR (Status)) {
         (*RpEnableMask) |= LShiftU64(1, Index);
-        DEBUG ((EFI_D_INFO, " Root Port %x device found, enabled. RpEnableMask: 0x%x\n", Index + 1, *RpEnableMask));
+        DEBUG ((DEBUG_INFO, " Root Port %x device found, enabled. RpEnableMask: 0x%x\n", Index + 1, *RpEnableMask));
       }
     }
   }
@@ -913,7 +913,7 @@ PciExpressInit (
   mQNCDeviceEnables.Uint32 = PcdGet32 (PcdDeviceEnables);
   mRootPortConfig = (PCIEXP_ROOT_PORT_CONFIGURATION*) PcdGetPtr (PcdPcieRootPortConfiguration);
 
-  DEBUG ((EFI_D_INFO, " mRootPortConfig: 0x%x,  value1: 0x%x, value2: 0x%x, value3: 0x%x, value4: 0x%x\n",
+  DEBUG ((DEBUG_INFO, " mRootPortConfig: 0x%x,  value1: 0x%x, value2: 0x%x, value3: 0x%x, value4: 0x%x\n",
           mRootPortConfig, mRootPortConfig[0].Uint32, mRootPortConfig[1].Uint32,
           mRootPortConfig[2].Uint32, mRootPortConfig[3].Uint32));
 

@@ -64,7 +64,7 @@ SmbiosMiscEntryPoint(
     EfiStatus = gBS->LocateProtocol(&gEfiSmbiosProtocolGuid, NULL, (VOID**)&Smbios);
     if (EFI_ERROR(EfiStatus))
     {
-        DEBUG((EFI_D_ERROR, "Could not locate SMBIOS protocol.  %r\n", EfiStatus));
+        DEBUG((DEBUG_ERROR, "Could not locate SMBIOS protocol.  %r\n", EfiStatus));
         return EfiStatus;
     }
 
@@ -95,7 +95,7 @@ SmbiosMiscEntryPoint(
 
             if (EFI_ERROR(EfiStatus))
             {
-                DEBUG((EFI_D_ERROR, "Misc smbios store error.  Index=%d, ReturnStatus=%r\n", Index, EfiStatus));
+                DEBUG((DEBUG_ERROR, "Misc smbios store error.  Index=%d, ReturnStatus=%r\n", Index, EfiStatus));
                 return EfiStatus;
             }
         }
@@ -158,7 +158,7 @@ GetLinkTypeHandle(
     *HandleArray = AllocateZeroPool(sizeof(UINT16) * MAX_HANDLE_COUNT);
     if (*HandleArray == NULL)
     {
-        DEBUG ((EFI_D_INFO, "HandleArray allocate memory resource failed.\n"));
+        DEBUG ((DEBUG_INFO, "HandleArray allocate memory resource failed.\n"));
         return;
     }
 

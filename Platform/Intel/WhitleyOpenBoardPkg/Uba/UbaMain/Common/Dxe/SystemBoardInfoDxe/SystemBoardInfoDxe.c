@@ -181,7 +181,7 @@ SystemBoardInfoEntry (
   EFI_STATUS                                Status;
   UBA_CONFIG_DATABASE_PROTOCOL             *UbaConfigProtocol = NULL;
 
-  DEBUG((EFI_D_INFO, "UBA:System Board Info Table.\n"));
+  DEBUG((DEBUG_INFO, "UBA:System Board Info Table.\n"));
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,

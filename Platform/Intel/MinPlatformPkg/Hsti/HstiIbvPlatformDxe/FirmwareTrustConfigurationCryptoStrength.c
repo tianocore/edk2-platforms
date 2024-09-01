@@ -27,7 +27,7 @@ CheckFirmwareTrustContinuationCryptoStrength (
   }
 
   Result = TRUE;
-  DEBUG ((EFI_D_INFO, "  Firmware Trust Continuation Crypto Strength\n"));
+  DEBUG ((DEBUG_INFO, "  Firmware Trust Continuation Crypto Strength\n"));
 
   //
   // ALL PASS

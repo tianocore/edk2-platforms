@@ -2,10 +2,12 @@
 /*++
 
 Copyright (c)  1999  - 2014, Intel Corporation. All rights reserved
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 
 Module Name:
@@ -271,13 +273,13 @@ VlvPlatformInitEntryPoint (
   ASSERT_EFI_ERROR (Status);
 
   //
-  // GtPostInit Initialization
+  // GtPosDEBUG_Initialization
   //
   DEBUG ((EFI_D_ERROR, "Initializing GT PowerManagement and other GT POST related\n"));
   IgdPmHook (ImageHandle, DxePlatformSaPolicy);
 
   //
-  // IgdOpRegion Install Initialization
+  // IgdOpDEBUG_ Install Initialization
   //
   DEBUG ((EFI_D_ERROR, "Initializing IGD OpRegion\n"));
   IgdOpRegionInit ();

@@ -41,7 +41,7 @@ IsBootWithNoChange (
   IsFirstBoot = PcdGetBool(PcdBootState);
   EnableFastBoot = PcdGetBool (PcdEnableFastBoot);
 
-  DEBUG ((EFI_D_INFO, "IsFirstBoot = %x , EnableFastBoot= %x. \n", IsFirstBoot, EnableFastBoot));
+  DEBUG ((DEBUG_INFO, "IsFirstBoot = %x , EnableFastBoot= %x. \n", IsFirstBoot, EnableFastBoot));
 
   if ((!IsFirstBoot) && EnableFastBoot) {
     return TRUE;
@@ -75,7 +75,7 @@ ValidateFvHeader (
   EFI_FIRMWARE_VOLUME_HEADER  *FwVolHeader;
 
   if (BOOT_IN_RECOVERY_MODE == *BootMode) {
-    DEBUG ((EFI_D_INFO, "Boot mode recovery\n"));
+    DEBUG ((DEBUG_INFO, "Boot mode recovery\n"));
     return EFI_SUCCESS;
   }
   //
@@ -143,14 +143,14 @@ UpdateBootMode (
   // Read Sticky R/W Bits
   //
   RegValue = QNCAltPortRead (QUARK_SCSS_SOC_UNIT_SB_PORT_ID, QUARK_SCSS_SOC_UNIT_CFG_STICKY_RW);
-  DEBUG ((EFI_D_ERROR, "RegValue = %08x\n", RegValue));
+  DEBUG ((DEBUG_ERROR, "RegValue = %08x\n", RegValue));
 
   //
   // Check if we need to boot in recovery mode
   //
   if ((RegValue & B_CFG_STICKY_RW_FORCE_RECOVERY) != 0) {
     NewBootMode = BOOT_IN_RECOVERY_MODE;
-    DEBUG ((EFI_D_ERROR, "RECOVERY from sticky bit\n"));;
+    DEBUG ((DEBUG_ERROR, "RECOVERY from sticky bit\n"));;
 
     //
     // Clear force recovery sticky bit
@@ -163,7 +163,7 @@ UpdateBootMode (
 
   } else if (ValidateFvHeader (BootMode) != EFI_SUCCESS) {
     NewBootMode = BOOT_IN_RECOVERY_MODE;
-    DEBUG ((EFI_D_ERROR, "RECOVERY from corrupt FV\n"));;
+    DEBUG ((DEBUG_ERROR, "RECOVERY from corrupt FV\n"));;
   } else if (QNCCheckS3AndClearState ()) {
     //
     // Determine if we're in capsule update mode
@@ -177,14 +177,14 @@ UpdateBootMode (
     if (Status == EFI_SUCCESS) {
       Status = Capsule->CheckCapsuleUpdate (PeiServices);
       if (Status == EFI_SUCCESS) {
-        DEBUG ((EFI_D_INFO, "Boot mode Flash Update\n"));
+        DEBUG ((DEBUG_INFO, "Boot mode Flash Update\n"));
         NewBootMode = BOOT_ON_FLASH_UPDATE;
       } else {
-        DEBUG ((EFI_D_INFO, "Boot mode S3 resume\n"));
+        DEBUG ((DEBUG_INFO, "Boot mode S3 resume\n"));
         NewBootMode = BOOT_ON_S3_RESUME;
       }
     } else {
-      DEBUG ((EFI_D_INFO, "Boot mode S3 resume\n"));
+      DEBUG ((DEBUG_INFO, "Boot mode S3 resume\n"));
       NewBootMode = BOOT_ON_S3_RESUME;
     }
   } else {
@@ -192,19 +192,19 @@ UpdateBootMode (
     // Check if this is a power on reset
     //
     if (QNCCheckPowerOnResetAndClearState ()) {
-      DEBUG ((EFI_D_INFO, "Power On Reset\n"));
+      DEBUG ((DEBUG_INFO, "Power On Reset\n"));
     }
     if (IsBootWithNoChange (PeiServices)) {
-      DEBUG ((EFI_D_INFO, "Boot with Minimum cfg\n"));
+      DEBUG ((DEBUG_INFO, "Boot with Minimum cfg\n"));
       NewBootMode = BOOT_ASSUMING_NO_CONFIGURATION_CHANGES;
     } else {
-      DEBUG ((EFI_D_INFO, "Boot with Full cfg\n"));
+      DEBUG ((DEBUG_INFO, "Boot with Full cfg\n"));
       NewBootMode = BOOT_WITH_FULL_CONFIGURATION;
     }
   }
 
   if (NewBootMode == BOOT_IN_RECOVERY_MODE) {
-    DEBUG ((EFI_D_INFO, "Boot mode recovery\n"));
+    DEBUG ((DEBUG_INFO, "Boot mode recovery\n"));
     Status = PeiServicesInstallPpi (&mPpiListRecoveryBootMode);
     ASSERT_EFI_ERROR (Status);
   }

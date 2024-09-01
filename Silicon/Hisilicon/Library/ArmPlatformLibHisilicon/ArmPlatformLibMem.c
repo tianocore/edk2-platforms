@@ -81,7 +81,7 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes   = (ARM_MEMORY_REGION_ATTRIBUTES)0;
 
   ASSERT((Index + 1) <= MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS);
-  DEBUG((EFI_D_INFO, "[%a]:[%dL] discriptor count=%d\n", __FUNCTION__, __LINE__, Index+1));
+  DEBUG((DEBUG_INFO, "[%a]:[%dL] discriptor count=%d\n", __FUNCTION__, __LINE__, Index+1));
 
   *VirtualMemoryMap = VirtualMemoryTable;
 }

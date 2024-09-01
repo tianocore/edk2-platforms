@@ -79,14 +79,14 @@ Returns:
                                 &DataSize
                                 );
     if (Status == EFI_SUCCESS) {
-      DEBUG ((EFI_D_INFO, "IPMI: SendCommand success!\n"));
+      DEBUG ((DEBUG_INFO, "IPMI: SendCommand success!\n"));
       break;
     } else {
       //
       // Display message and retry.
       //
       DEBUG (
-             (DEBUG_WARN | EFI_D_INFO,
+             (DEBUG_WARN | DEBUG_INFO,
               "IPMI: Waiting for BMC (KCS 0x%x)...\n",
               IpmiInstance->IpmiIoBase)
              );

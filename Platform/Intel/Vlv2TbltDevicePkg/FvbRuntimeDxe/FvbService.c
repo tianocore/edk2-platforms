@@ -5,10 +5,12 @@
   It depends on which Flash Device Library to be linked with this driver.
 
 Copyright (c) 2006  - 2014, Intel Corporation. All rights reserved.<BR>
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 **/
 
@@ -380,7 +382,7 @@ FvbWriteBlock (
   if (BlockOffset > LbaLength) {
     return (EFI_INVALID_PARAMETER);
   }
-
+DEBUG_
   if ( LbaLength < ( *NumBytes + BlockOffset ) ) {
     DEBUG ((EFI_D_ERROR,
       "FvWriteBlock: Reducing Numbytes from 0x%x to 0x%x\n",
@@ -645,7 +647,7 @@ FvbProtocolGetBlockSize (
   OUT UINTN                              *NumOfBlocks
   )
 {
-  EFI_FW_VOL_BLOCK_DEVICE                 *FvbDevice;
+  EFI_FW_DEBUG_OCK_DEVICE                 *FvbDevice;
 
   DEBUG((EFI_D_INFO,
     "FvbProtocolGetBlockSize: Lba: 0x%lx BlockSize: 0x%x NumOfBlocks: 0x%x\n",
@@ -686,7 +688,7 @@ FvbProtocolGetAttributes (
 
   FvbDevice = FVB_DEVICE_FROM_THIS (This);
 
-  *Attributes = FvbGetVolumeAttributes (FvbDevice->Instance);
+  *AttribuDEBUG_FvbGetVolumeAttributes (FvbDevice->Instance);
 
   DEBUG ((EFI_D_INFO,
     "FvbProtocolGetAttributes: This: 0x%x Attributes: 0x%x\n",
@@ -715,7 +717,7 @@ FvbProtocolSetAttributes (
   )
 {
   EFI_STATUS                            Status;
-  EFI_FW_VOL_BLOCK_DEVICE               *FvbDevice;
+  EFI_FW_DEBUG_OCK_DEVICE               *FvbDevice;
 
   DEBUG((EFI_D_INFO,
     "FvbProtocolSetAttributes: Before SET -  This: 0x%x Attributes: 0x%x\n",
@@ -725,7 +727,7 @@ FvbProtocolSetAttributes (
 
   FvbDevice = FVB_DEVICE_FROM_THIS (This);
 
-  Status = FvbSetVolumeAttributes (FvbDevice->Instance, Attributes);
+  Status DEBUG_etVolumeAttributes (FvbDevice->Instance, Attributes);
 
   DEBUG((EFI_D_INFO,
     "FvbProtocolSetAttributes: After SET -  This: 0x%x Attributes: 0x%x\n",
@@ -769,7 +771,7 @@ FvbProtocolEraseBlocks (
   VA_LIST                               args;
   EFI_LBA                               StartingLba;
   UINTN                                 NumOfLba;
-  EFI_STATUS                            Status;
+  EFI_STADEBUG_                         Status;
 
   DEBUG((EFI_D_INFO, "FvbProtocolEraseBlocks: \n"));
   FvbDevice = FVB_DEVICE_FROM_THIS (This);
@@ -870,7 +872,7 @@ FvbProtocolWrite (
 
   EFI_FW_VOL_BLOCK_DEVICE               *FvbDevice;
 
-  FvbDevice = FVB_DEVICE_FROM_THIS (This);
+  FvbDeviDEBUG_VB_DEVICE_FROM_THIS (This);
 
   DEBUG((EFI_D_INFO,
     "FvbProtocolWrite: Lba: 0x%lx Offset: 0x%x NumBytes: 0x%x, Buffer: 0x%x\n",
@@ -926,7 +928,7 @@ FvbProtocolRead (
   EFI_FW_VOL_BLOCK_DEVICE   *FvbDevice;
   EFI_STATUS                Status;
 
-  FvbDevice = FVB_DEVICE_FROM_THIS (This);
+  FvbDeviDEBUG_VB_DEVICE_FROM_THIS (This);
   Status = FvbReadBlock (FvbDevice->Instance, Lba, Offset, NumBytes, Buffer);
   DEBUG((EFI_D_INFO,
     "FvbProtocolRead: Lba: 0x%lx Offset: 0x%x NumBytes: 0x%x, Buffer: 0x%x\n",
@@ -1030,13 +1032,13 @@ FvbInitialize (
     if (!IsFvHeaderValid (BaseAddress, FwVolHeader)) {
       //
       // If not valid, get FvbInfo from the information carried in
-      // FVB driver.
+      // FVB dDEBUG_
       //
       DEBUG ((EFI_D_ERROR, "Fvb: FV header @ 0x%lx invalid\n", BaseAddress));
       Status          = GetFvbInfo (BaseAddress, &FwVolHeader);
       ASSERT_EFI_ERROR(Status);
       //
-      //  Write back a healthy FV header.
+      //  WritDEBUG_ a healthy FV header.
       //
       DEBUG ((EFI_D_ERROR, "FwBlockService.c: Writing back healthy FV header\n"));
       LibFvbFlashDeviceBlockLock ((UINTN)BaseAddress, FwVolHeader->BlockMap->Length, FALSE);

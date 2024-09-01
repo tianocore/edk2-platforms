@@ -755,7 +755,7 @@ AcpiPlatformEntryPoint (
           //
           if ((PciDeviceInfo->BridgeAddress != 0xFFFFFFFF) && (PciDeviceInfo->DeviceAddress != 0xFFFFFFFF)) {
 
-            //DEBUG ((EFI_D_ERROR, "Valid pci info structure: bridge address:0x%x, device address:0x%x\n", PciDeviceInfo->BridgeAddress, PciDeviceInfo->DeviceAddress));
+            //DEBUG ((DEBUG_ERROR, "Valid pci info structure: bridge address:0x%x, device address:0x%x\n", PciDeviceInfo->BridgeAddress, PciDeviceInfo->DeviceAddress));
 
             UpdatePRT = FALSE;
             UpdatePRW = FALSE;
@@ -768,7 +768,7 @@ AcpiPlatformEntryPoint (
               //
               // Update the pci routing information
               //
-              //DEBUG ((EFI_D_ERROR, "Update _PRT\n"));
+              //DEBUG ((DEBUG_ERROR, "Update _PRT\n"));
               SdtUpdatePciRouting (mAcpiSdt, PciRootHandle, PciDeviceInfo);
             }
             //
@@ -778,7 +778,7 @@ AcpiPlatformEntryPoint (
               //
               // Update the pci wakeup information
               //
-              //DEBUG ((EFI_D_ERROR, "Update _PRW\n"));
+              //DEBUG ((DEBUG_ERROR, "Update _PRW\n"));
               SdtUpdatePowerWake (mAcpiSdt, PciRootHandle, PciDeviceInfo);
             }
           }

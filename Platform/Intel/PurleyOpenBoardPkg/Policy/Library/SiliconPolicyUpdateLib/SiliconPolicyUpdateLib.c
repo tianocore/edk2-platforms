@@ -134,7 +134,7 @@ Returns:
   SYSTEM_CONFIGURATION           *SetupVariables;
   PCH_RC_CONFIGURATION           *PchRcVariables;
 
-  DEBUG((EFI_D_ERROR, "platform common UpdatePeiPchPolicy entry\n"));
+  DEBUG((DEBUG_ERROR, "platform common UpdatePeiPchPolicy entry\n"));
 
   SetupVariables = PcdGetPtr(PcdSetupData);
   PchRcVariables = PcdGetPtr(PcdPchRcConfigurationData);

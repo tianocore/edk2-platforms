@@ -28,7 +28,7 @@ FlashBlockIoReadBlocks (
 
     Instance = INSTANCE_FROM_BLKIO_THIS(This);
 
-    DEBUG ((EFI_D_INFO, "FlashBlockIoReadBlocks(MediaId=0x%x, Lba=%ld, BufferSize=0x%x bytes (%d kB), BufferPtr @ 0x%08x)\n", MediaId, Lba, BufferSizeInBytes, Buffer));
+    DEBUG ((DEBUG_INFO, "FlashBlockIoReadBlocks(MediaId=0x%x, Lba=%ld, BufferSize=0x%x bytes (%d kB), BufferPtr @ 0x%08x)\n", MediaId, Lba, BufferSizeInBytes, Buffer));
 
     if ( !This->Media->MediaPresent )
     {
@@ -64,7 +64,7 @@ FlashBlockIoWriteBlocks (
 
     Instance = INSTANCE_FROM_BLKIO_THIS(This);
 
-    DEBUG ((EFI_D_INFO, "FlashBlockIoWriteBlocks(MediaId=0x%x, Lba=%ld, BufferSize=0x%x bytes (%d kB), BufferPtr @ 0x%08x)\n", MediaId, Lba, BufferSizeInBytes, Buffer));
+    DEBUG ((DEBUG_INFO, "FlashBlockIoWriteBlocks(MediaId=0x%x, Lba=%ld, BufferSize=0x%x bytes (%d kB), BufferPtr @ 0x%08x)\n", MediaId, Lba, BufferSizeInBytes, Buffer));
 
     if ( !This->Media->MediaPresent )
     {

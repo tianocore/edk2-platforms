@@ -29,7 +29,7 @@ QemuVideoCompleteModeInfo (
     Info->PixelInformation.BlueMask = PIXEL24_BLUE_MASK;
     Info->PixelInformation.ReservedMask = 0;
   } else if (ModeData->ColorDepth == 32) {
-    DEBUG ((EFI_D_INFO, "PixelBlueGreenRedReserved8BitPerColor\n"));
+    DEBUG ((DEBUG_INFO, "PixelBlueGreenRedReserved8BitPerColor\n"));
     Info->PixelFormat = PixelBlueGreenRedReserved8BitPerColor;
   }
   Info->PixelsPerScanLine = Info->HorizontalResolution;
@@ -64,7 +64,7 @@ QemuVideoCompleteModeData (
   Mode->FrameBufferSize = EFI_PAGES_TO_SIZE (
                             EFI_SIZE_TO_PAGES (Mode->FrameBufferSize)
                             );
-  DEBUG ((EFI_D_INFO, "FrameBufferBase: 0x%Lx, FrameBufferSize: 0x%Lx\n",
+  DEBUG ((DEBUG_INFO, "FrameBufferBase: 0x%Lx, FrameBufferSize: 0x%Lx\n",
     Mode->FrameBufferBase, (UINT64)Mode->FrameBufferSize));
 
   FreePool (FrameBufDesc);

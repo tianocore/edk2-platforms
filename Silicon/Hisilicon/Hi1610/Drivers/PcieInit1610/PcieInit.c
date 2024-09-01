@@ -145,7 +145,7 @@ PcieInitEntry (
             Status = PciePortInit(soctype, HostBridgeNum, &gastr_pcie_driver_cfg[Port]);
             if(EFI_ERROR(Status))
             {
-                DEBUG((EFI_D_ERROR, "HostBridge %d, Pcie Port %d Init Failed! \n", HostBridgeNum, Port));
+                DEBUG((DEBUG_ERROR, "HostBridge %d, Pcie Port %d Init Failed! \n", HostBridgeNum, Port));
             }
 
         }

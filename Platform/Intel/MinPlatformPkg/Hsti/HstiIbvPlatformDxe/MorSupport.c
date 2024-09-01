@@ -28,7 +28,7 @@ CheckMorSupport (
 
   Result = TRUE;
 
-  DEBUG ((EFI_D_INFO, "  MOR Strength\n"));
+  DEBUG ((DEBUG_INFO, "  MOR Strength\n"));
 
   //
   // ALL PASS

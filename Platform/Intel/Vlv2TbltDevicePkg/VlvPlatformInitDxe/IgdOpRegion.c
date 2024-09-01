@@ -564,7 +564,7 @@ GetVBiosVbtCallback (
         //
         // Video BIOS not found, use VBT from FV
         //
-        DEBUG ((EFI_D_ERROR, "VBT data found\n"));
+        DEBUG ((DEBUG_ERROR, "VBT data found\n"));
         (gBS->CopyMem) (
                 mIgdOpRegion.OpRegion->VBT.GVD1,
                 VbtFileBuffer,
@@ -583,7 +583,7 @@ GetVBiosVbtCallback (
     }
   }
 
-  DEBUG ((EFI_D_ERROR, "VBIOS found at 0x%X\n", VBiosPtr));
+  DEBUG ((DEBUG_ERROR, "VBIOS found at 0x%X\n", VBiosPtr));
   VBiosVbtPtr = (VBIOS_VBT_STRUCTURE *) ((UINT8 *) VBiosPtr + VBiosPtr->VbtOffset);
 
   if ((*((UINT32 *) (VBiosVbtPtr->HeaderSignature))) != VBT_SIGNATURE) {
@@ -699,7 +699,7 @@ IgdOpRegionInit (
          sizeof(gSVER)
          );
 #endif
-  DEBUG ((EFI_D_ERROR, "System BIOS ID is %a\n", mIgdOpRegion.OpRegion->Header.SVER));
+  DEBUG ((DEBUG_ERROR, "System BIOS ID is %a\n", mIgdOpRegion.OpRegion->Header.SVER));
 
 
   mIgdOpRegion.OpRegion->Header.MBOX = HEADER_MBOX_SUPPORT;

@@ -103,22 +103,22 @@ UpdateData (
   IN UINT32                   Role
   )
 {
-  DEBUG ((EFI_D_INFO, "2.0 Firmware Trust Continuation Crypto Strength\n"));
+  DEBUG ((DEBUG_INFO, "2.0 Firmware Trust Continuation Crypto Strength\n"));
   CheckFirmwareTrustContinuationCryptoStrength (Role);
 
-  DEBUG ((EFI_D_INFO, "2.1 No Test Key Verification\n"));
+  DEBUG ((DEBUG_INFO, "2.1 No Test Key Verification\n"));
   CheckNoTestKeyVerification (Role);
 
-  DEBUG ((EFI_D_INFO, "2.2 Firmware Version Rollback Protection\n"));
+  DEBUG ((DEBUG_INFO, "2.2 Firmware Version Rollback Protection\n"));
   CheckFirmwareVersionRollbackProtection (Role);
 
-  DEBUG ((EFI_D_INFO, "2.3 SecureBoot Bypass Checking\n"));
+  DEBUG ((DEBUG_INFO, "2.3 SecureBoot Bypass Checking\n"));
   CheckSecureBootBypass (Role);
 
-  DEBUG ((EFI_D_INFO, "2.4 External Device DMA Protection\n"));
+  DEBUG ((DEBUG_INFO, "2.4 External Device DMA Protection\n"));
   CheckExternalDeviceDmaProtection (Role);
 
-  DEBUG ((EFI_D_INFO, "2.5 MOR Support\n"));
+  DEBUG ((DEBUG_INFO, "2.5 MOR Support\n"));
   CheckMorSupport (Role);
 }
 
@@ -139,42 +139,42 @@ DumpHsti (
   CHAR16                         ErrorChar;
 
   Hsti = HstiData;
-  DEBUG ((EFI_D_INFO, "HSTI\n"));
-  DEBUG ((EFI_D_INFO, "  Version                     - 0x%08x\n", Hsti->Version));
-  DEBUG ((EFI_D_INFO, "  Role                        - 0x%08x\n", Hsti->Role));
-  DEBUG ((EFI_D_INFO, "  ImplementationID            - %S\n", Hsti->ImplementationID));
-  DEBUG ((EFI_D_INFO, "  SecurityFeaturesSize        - 0x%08x\n", Hsti->SecurityFeaturesSize));
+  DEBUG ((DEBUG_INFO, "HSTI\n"));
+  DEBUG ((DEBUG_INFO, "  Version                     - 0x%08x\n", Hsti->Version));
+  DEBUG ((DEBUG_INFO, "  Role                        - 0x%08x\n", Hsti->Role));
+  DEBUG ((DEBUG_INFO, "  ImplementationID            - %S\n", Hsti->ImplementationID));
+  DEBUG ((DEBUG_INFO, "  SecurityFeaturesSize        - 0x%08x\n", Hsti->SecurityFeaturesSize));
 
   SecurityFeatures = (UINT8 *)(Hsti + 1);
-  DEBUG ((EFI_D_INFO, "  SecurityFeaturesRequired    - "));
+  DEBUG ((DEBUG_INFO, "  SecurityFeaturesRequired    - "));
   for (Index = 0; Index < Hsti->SecurityFeaturesSize; Index++) {
-    DEBUG ((EFI_D_INFO, "%02x ", SecurityFeatures[Index]));
+    DEBUG ((DEBUG_INFO, "%02x ", SecurityFeatures[Index]));
   }
-  DEBUG ((EFI_D_INFO, "\n"));
+  DEBUG ((DEBUG_INFO, "\n"));
 
   SecurityFeatures = (UINT8 *)(SecurityFeatures + Hsti->SecurityFeaturesSize);
-  DEBUG ((EFI_D_INFO, "  SecurityFeaturesImplemented - "));
+  DEBUG ((DEBUG_INFO, "  SecurityFeaturesImplemented - "));
   for (Index = 0; Index < Hsti->SecurityFeaturesSize; Index++) {
-    DEBUG ((EFI_D_INFO, "%02x ", SecurityFeatures[Index]));
+    DEBUG ((DEBUG_INFO, "%02x ", SecurityFeatures[Index]));
   }
-  DEBUG ((EFI_D_INFO, "\n"));
+  DEBUG ((DEBUG_INFO, "\n"));
 
   SecurityFeatures = (UINT8 *)(SecurityFeatures + Hsti->SecurityFeaturesSize);
-  DEBUG ((EFI_D_INFO, "  SecurityFeaturesVerified    - "));
+  DEBUG ((DEBUG_INFO, "  SecurityFeaturesVerified    - "));
   for (Index = 0; Index < Hsti->SecurityFeaturesSize; Index++) {
-    DEBUG ((EFI_D_INFO, "%02x ", SecurityFeatures[Index]));
+    DEBUG ((DEBUG_INFO, "%02x ", SecurityFeatures[Index]));
   }
-  DEBUG ((EFI_D_INFO, "\n"));
+  DEBUG ((DEBUG_INFO, "\n"));
 
   ErrorString = (CHAR16 *)(SecurityFeatures + Hsti->SecurityFeaturesSize);
-  DEBUG ((EFI_D_INFO, "  ErrorString                 - \""));
+  DEBUG ((DEBUG_INFO, "  ErrorString                 - \""));
   CopyMem (&ErrorChar, ErrorString, sizeof(ErrorChar));
   for (; ErrorChar != 0;) {
-    DEBUG ((EFI_D_INFO, "%c", ErrorChar));
+    DEBUG ((DEBUG_INFO, "%c", ErrorChar));
     ErrorString++;
     CopyMem (&ErrorChar, ErrorString, sizeof(ErrorChar));
   }
-  DEBUG ((EFI_D_INFO, "\"\n"));
+  DEBUG ((DEBUG_INFO, "\"\n"));
 }
 
 /**
@@ -191,7 +191,7 @@ DumpData (
 
   Status = HstiLibGetTable (Role, NULL, &Hsti, &HstiSize);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "HSTI (Role - 0x%08x) not found!\n", Role));
+    DEBUG ((DEBUG_ERROR, "HSTI (Role - 0x%08x) not found!\n", Role));
     return ;
   }
 

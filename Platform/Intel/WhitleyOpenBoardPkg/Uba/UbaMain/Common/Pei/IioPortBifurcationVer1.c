@@ -115,7 +115,7 @@ GetBw5Id (
   }
 
   if (Status != EFI_SUCCESS || Smbus == NULL) {
-    DEBUG ((EFI_D_INFO, "!!!!Get SMBus protocol error %x\n", Status));
+    DEBUG ((DEBUG_INFO, "!!!!Get SMBus protocol error %x\n", Status));
   } else {
 
     // Read Socket 0 HP Controller
@@ -162,7 +162,7 @@ GetBw5Id (
                                &SmbusLength,
                                &SmbusData );
            if (!EFI_ERROR(Status)){
-             DEBUG ((EFI_D_INFO, "SmbusData Port0/1 %x\n", SmbusData));
+             DEBUG ((DEBUG_INFO, "SmbusData Port0/1 %x\n", SmbusData));
              //
              // Mask the Input Port0/1 register data [15:0] to get BW5 ID.
              //
@@ -345,7 +345,7 @@ EnableHotPlug_SKX (
     IioGlobalData->SetupData.VppPort[Port]= VppPort;
     IioGlobalData->SetupData.VppAddress[Port] = VppAddress;
   } else {
-      DEBUG((EFI_D_ERROR, "PCIE HOT Plug. Missing VPP values on slot table\n"));
+      DEBUG((DEBUG_ERROR, "PCIE HOT Plug. Missing VPP values on slot table\n"));
   }
 }
 
@@ -484,9 +484,9 @@ DumpPort_SKX(
 )
 {
   UINT8 Index;
-  DEBUG((EFI_D_INFO, "IDX, Port Hide, Slot Impl, Slot Number, HotPlug, PcieSSD, VppPort, VppAddress, Interlock\n"));
+  DEBUG((DEBUG_INFO, "IDX, Port Hide, Slot Impl, Slot Number, HotPlug, PcieSSD, VppPort, VppAddress, Interlock\n"));
   for (Index = Port; Index < (Port + NumberOfPorts); Index++ ) {
-  DEBUG((EFI_D_INFO, "%3d|   %2d    |    %2d    |   %3d      |   %3d  |  %3d  |  0x%02x  |  0x%02x     |  %2d      \n", \
+  DEBUG((DEBUG_INFO, "%3d|   %2d    |    %2d    |   %3d      |   %3d  |  %3d  |  0x%02x  |  0x%02x     |  %2d      \n", \
                        Index, \
                        IioGlobalData->SetupData.PEXPHIDE[Index],  \
                        IioGlobalData->SetupData.SLOTIMP[Index],   \
@@ -517,13 +517,13 @@ DumpIioConfiguration_SKX(
   MaxPortNumberPerSocket = IioGlobalData->IioVar.IioOutData.MaxPciePortNumberPerSocket[iio];
   PortIndex = iio * MaxPortNumberPerSocket;
   /// First dump the socket number;
-  DEBUG((EFI_D_INFO, "Socket number: %d \n", iio));
+  DEBUG((DEBUG_INFO, "Socket number: %d \n", iio));
 
   /// Dump DMI configuration:
   if ((iio == 0) && (PortIndex == 0)){
-      DEBUG((EFI_D_INFO, "PORT 0: DMI Port\n"));
+      DEBUG((DEBUG_INFO, "PORT 0: DMI Port\n"));
   } else {
-      DEBUG((EFI_D_INFO, "PORT 0: DMI Port working as PCIE\n"));
+      DEBUG((DEBUG_INFO, "PORT 0: DMI Port working as PCIE\n"));
       DumpPort_SKX(IioGlobalData, PortIndex, 1);
   }
   IouPorts=4;
@@ -536,30 +536,30 @@ DumpIioConfiguration_SKX(
         case Iio_Iou0:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU[iio][0];
           PortIndex += PORT_1A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO0: Root Port 1, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO0: Root Port 1, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou1:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU[iio][1];
           PortIndex += PORT_2A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO1: Root Port 2, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO1: Root Port 2, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou2:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU[iio][2];
           PortIndex += PORT_3A_INDEX;
-          DEBUG((EFI_D_INFO, "IUO2: Root Port 3, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IUO2: Root Port 3, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou3:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU[iio][3];
           PortIndex += PORT_4A_INDEX;
-          DEBUG((EFI_D_INFO, "IOU3, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IOU3, Bifurcation: %d\n", Bifurcation));
           break;
         case Iio_Iou4:
           Bifurcation = IioGlobalData->SetupData.ConfigIOU[iio][4];
           PortIndex += PORT_5A_INDEX;
-          DEBUG((EFI_D_INFO, "IOU4, Bifurcation: %d\n", Bifurcation));
+          DEBUG((DEBUG_INFO, "IOU4, Bifurcation: %d\n", Bifurcation));
           break;
         default:
-          DEBUG((EFI_D_INFO, "Iou no detected = %d",Iou));
+          DEBUG((DEBUG_INFO, "Iou no detected = %d",Iou));
           break;
         }
       DumpPort_SKX(IioGlobalData, PortIndex, IouPorts);
@@ -717,7 +717,7 @@ SlotImplemented_SKX (
       }
       break;
     default:
-      DEBUG ((EFI_D_INFO, "default case.\n"));  //Auto added. Please review.
+      DEBUG ((DEBUG_INFO, "default case.\n"));  //Auto added. Please review.
       break;
   }
   DEBUG ((DEBUG_INFO, "SlotImplemented_SKX:  = %x\n", SlotImp));
@@ -844,10 +844,10 @@ OverrideDefaultBifSlots_SKX (
 
   Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_B3, &QATGpio);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_B3 Failed\n"));
+    DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_B3 Failed\n"));
     return;
   }
-  DEBUG ((EFI_D_INFO, "QAT GPIO: %d\n", QATGpio));
+  DEBUG ((DEBUG_INFO, "QAT GPIO: %d\n", QATGpio));
 
   if ((IioGlobalData->IioVar.IioVData.SkuPersonality[0] == TYPE_FPGA) &&\
       (IioGlobalData->IioVar.IioVData.SkuPersonality[1] == TYPE_FPGA)) {
@@ -877,33 +877,33 @@ OverrideDefaultBifSlots_SKX (
     //
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_B4, &RiserBit);  // PresentSignal
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_B4 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_B4 Failed\n"));
       return;
     }
     RightRiser.Bits.PresentSignal = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_C15, &RiserBit);  // HotPlugConf
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_C15 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_C15 Failed\n"));
       return;
     }
     RightRiser.Bits.HPConf = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_C16, &RiserBit);  // WingConf
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_C16 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_C16 Failed\n"));
       return;
     }
     RightRiser.Bits.WingConf = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_C17, &RiserBit);  // Slot9En
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_C17 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_C17 Failed\n"));
       return;
     }
     RightRiser.Bits.Slot9En = (UINT8) RiserBit;
 
-    DEBUG ((EFI_D_INFO, "GPIO Right riser information: PresentSignal=%x, HotPlugConf=%x, WingConf=%x, Slot9En=%x\n",
+    DEBUG ((DEBUG_INFO, "GPIO Right riser information: PresentSignal=%x, HotPlugConf=%x, WingConf=%x, Slot9En=%x\n",
             RightRiser.Bits.PresentSignal, RightRiser.Bits.HPConf, RightRiser.Bits.WingConf, RightRiser.Bits.Slot9En));
 
     //
@@ -911,33 +911,33 @@ OverrideDefaultBifSlots_SKX (
     //
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_B5, &RiserBit);  // PresentSignal
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_B5 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_B5 Failed\n"));
       return;
     }
     LeftRiser.Bits.PresentSignal = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_C18, &RiserBit);  // HotPlugConf
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_C18 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_C18 Failed\n"));
       return;
     }
     LeftRiser.Bits.HPConf = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_C19, &RiserBit);  // WingConf
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_C19 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_C19 Failed\n"));
       return;
     }
     LeftRiser.Bits.WingConf = (UINT8) RiserBit;
 
     Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, GPIO_SKL_H_GPP_B21, &RiserBit);  // Slot9En
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Get GPIO_SKL_H_GPP_B21 Failed\n"));
+      DEBUG ((DEBUG_INFO, "Get GPIO_SKL_H_GPP_B21 Failed\n"));
       return;
     }
     LeftRiser.Bits.Slot9En = (UINT8) RiserBit;
 
-    DEBUG ((EFI_D_INFO, "GPIO Left riser information: PresentSignal=%x, HotPlugConf=%x, WingConf=%x, Slot9En=%x\n",
+    DEBUG ((DEBUG_INFO, "GPIO Left riser information: PresentSignal=%x, HotPlugConf=%x, WingConf=%x, Slot9En=%x\n",
             LeftRiser.Bits.PresentSignal, LeftRiser.Bits.HPConf, LeftRiser.Bits.WingConf, LeftRiser.Bits.Slot9En));
   }
 
@@ -1038,7 +1038,7 @@ OverrideDefaultBifSlots_SKX (
   /// Broadway overrides.
   if (BroadwayTable != NULL) {
     GetBw5Id (IioGlobalData, Bw5id);
-    DEBUG ((EFI_D_INFO,"Broadway Config: 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", Bw5id[Bw5_Addr_0].Data, Bw5id[Bw5_Addr_1].Data, Bw5id[Bw5_Addr_2].Data, Bw5id[Bw5_Addr_3].Data));
+    DEBUG ((DEBUG_INFO,"Broadway Config: 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", Bw5id[Bw5_Addr_0].Data, Bw5id[Bw5_Addr_1].Data, Bw5id[Bw5_Addr_2].Data, Bw5id[Bw5_Addr_3].Data));
     for (Index = 0; Index < 3; Index ++) {
       //
       // Check if BW5 is present before override IOUx Bifurcation
@@ -1209,7 +1209,7 @@ SetBifurcations_SKX(
           IioGlobalData->SetupData.ConfigIOU[Socket][4] = BifurcationTable[Index].Bifurcation;
           break;
         default:
-          DEBUG ((EFI_D_ERROR, "Invalid bifurcation table: Bad Iou (%d)", Iou));
+          DEBUG ((DEBUG_ERROR, "Invalid bifurcation table: Bad Iou (%d)", Iou));
           ASSERT(Iou);
           break;
       }

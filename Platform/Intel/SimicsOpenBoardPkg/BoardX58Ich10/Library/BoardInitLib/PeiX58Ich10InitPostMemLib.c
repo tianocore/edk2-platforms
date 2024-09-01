@@ -29,6 +29,6 @@ X58Ich10BoardInitAfterSiliconInit (
   )
 {
 
-  DEBUG((EFI_D_ERROR, "X58Ich10BoardInitAfterSiliconInit\n"));
+  DEBUG((DEBUG_ERROR, "X58Ich10BoardInitAfterSiliconInit\n"));
   return EFI_SUCCESS;
 }

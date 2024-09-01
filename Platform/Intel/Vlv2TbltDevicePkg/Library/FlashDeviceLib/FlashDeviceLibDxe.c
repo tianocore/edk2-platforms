@@ -50,7 +50,7 @@ LibFvbFlashDeviceSupportInit (
                   );
   ASSERT_EFI_ERROR (Status);
   // There is no need to call Init, because Runtime or SMM FVB already does that.
-  DEBUG((EFI_D_ERROR, "LibFvbFlashDeviceSupportInit - no init\n"));
+  DEBUG((DEBUG_ERROR, "LibFvbFlashDeviceSupportInit - no init\n"));
   return EFI_SUCCESS;
 }
 

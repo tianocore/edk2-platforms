@@ -170,7 +170,7 @@ NandDetectPart (
   }
 
   if (Found == FALSE) {
-    DEBUG ((EFI_D_ERROR, "Nand part is not currently supported. Manufacture id: %x, Device id: %x\n", PartInfo[0], PartInfo[1]));
+    DEBUG ((DEBUG_ERROR, "Nand part is not currently supported. Manufacture id: %x, Device id: %x\n", PartInfo[0], PartInfo[1]));
     return EFI_NOT_FOUND;
   }
 
@@ -182,21 +182,21 @@ NandDetectPart (
   if (PAGE_SIZE(NandInfo) == PAGE_SIZE_2K_VAL) {
     gNandFlashInfo->PageSize = PAGE_SIZE_2K;
   } else {
-    DEBUG ((EFI_D_ERROR, "Unknown Page size.\n"));
+    DEBUG ((DEBUG_ERROR, "Unknown Page size.\n"));
     return EFI_DEVICE_ERROR;
   }
 
   if (SPARE_AREA_SIZE(NandInfo) == SPARE_AREA_SIZE_64B_VAL) {
     gNandFlashInfo->SparePageSize = SPARE_AREA_SIZE_64B;
   } else {
-    DEBUG ((EFI_D_ERROR, "Unknown Spare area size.\n"));
+    DEBUG ((DEBUG_ERROR, "Unknown Spare area size.\n"));
     return EFI_DEVICE_ERROR;
   }
 
   if (BLOCK_SIZE(NandInfo) == BLOCK_SIZE_128K_VAL) {
     gNandFlashInfo->BlockSize = BLOCK_SIZE_128K;
   } else {
-    DEBUG ((EFI_D_ERROR, "Unknown Block size.\n"));
+    DEBUG ((DEBUG_ERROR, "Unknown Block size.\n"));
     return EFI_DEVICE_ERROR;
   }
 
@@ -310,7 +310,7 @@ NandReadPage (
   }
 
   if (Timeout == 0) {
-    DEBUG ((EFI_D_ERROR, "Read page timed out.\n"));
+    DEBUG ((DEBUG_ERROR, "Read page timed out.\n"));
     return EFI_TIMEOUT;
   }
 
@@ -409,7 +409,7 @@ NandWritePage (
   }
 
   if (Timeout == 0) {
-    DEBUG ((EFI_D_ERROR, "Program page timed out.\n"));
+    DEBUG ((DEBUG_ERROR, "Program page timed out.\n"));
     return EFI_TIMEOUT;
   }
 
@@ -462,7 +462,7 @@ NandEraseBlock (
   }
 
   if (Timeout == 0) {
-    DEBUG ((EFI_D_ERROR, "Erase block timed out for Block: %d.\n", BlockIndex));
+    DEBUG ((DEBUG_ERROR, "Erase block timed out for Block: %d.\n", BlockIndex));
     return EFI_TIMEOUT;
   }
 
@@ -602,7 +602,7 @@ NandFlashReadBlocks (
   //Read block
   Status = NandReadBlock((UINTN)Lba, EndBlockIndex, Buffer, SpareBuffer);
   if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Read block fails: %x\n", Status));
+    DEBUG((DEBUG_ERROR, "Read block fails: %x\n", Status));
     goto exit;
   }
 
@@ -658,7 +658,7 @@ NandFlashWriteBlocks (
   for (BlockIndex = (UINTN)Lba; BlockIndex <= EndBlockIndex; BlockIndex++) {
     Status = NandEraseBlock(BlockIndex);
     if (EFI_ERROR(Status)) {
-      DEBUG((EFI_D_ERROR, "Erase block failed. Status: %x\n", Status));
+      DEBUG((DEBUG_ERROR, "Erase block failed. Status: %x\n", Status));
       goto exit;
     }
   }
@@ -666,7 +666,7 @@ NandFlashWriteBlocks (
   // Program data
   Status = NandWriteBlock((UINTN)Lba, EndBlockIndex, Buffer, SpareBuffer);
   if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Block write fails: %x\n", Status));
+    DEBUG((DEBUG_ERROR, "Block write fails: %x\n", Status));
     goto exit;
   }
 
@@ -731,7 +731,7 @@ NandFlashInitialize (
   //Detect NAND part and populate gNandFlashInfo structure
   Status = NandDetectPart ();
   if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Nand part id detection failure: Status: %x\n", Status));
+    DEBUG((DEBUG_ERROR, "Nand part id detection failure: Status: %x\n", Status));
     return Status;
   }
 

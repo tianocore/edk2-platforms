@@ -53,7 +53,7 @@ IioCfgUpdateEntry (
   EFI_STATUS                    Status;
   UBA_CONFIG_DATABASE_PROTOCOL  *UbaConfigProtocol = NULL;
 
-  DEBUG ((EFI_D_INFO, "UBA:IioCfgUpdate-TypeAowanda\n"));
+  DEBUG ((DEBUG_INFO, "UBA:IioCfgUpdate-TypeAowanda\n"));
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,

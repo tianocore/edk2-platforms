@@ -156,7 +156,7 @@ typedef struct _SATA_SI3132_INSTANCE {
 #define SATA_PORT_READ32(Offset, Value)  PciIo->Mem.Read (PciIo, EfiPciIoWidthUint32, 1, Offset, 1, Value)
 #define SATA_PORT_WRITE32(Offset, Value) { UINT32 Value32 = Value; PciIo->Mem.Write (PciIo, EfiPciIoWidthUint32, 1, Offset, 1, &Value32); }
 
-#define SATA_TRACE(txt)  DEBUG((EFI_D_VERBOSE, "ARM_SATA: " txt "\n"))
+#define SATA_TRACE(txt)  DEBUG((DEBUG_VERBOSE, "ARM_SATA: " txt "\n"))
 
 extern EFI_COMPONENT_NAME_PROTOCOL  gSataSiI3132ComponentName;
 extern EFI_COMPONENT_NAME2_PROTOCOL gSataSiI3132ComponentName2;

@@ -27,7 +27,7 @@ TypeWilsonCityRPPlatformUpdateAcpiTablePcds (
 
   EFI_HOB_GUID_TYPE                     *GuidHob;
 
-  DEBUG ((EFI_D_INFO, "Uba Callback: PlatformUpdateAcpiTablePcds entered\n"));
+  DEBUG ((DEBUG_INFO, "Uba Callback: PlatformUpdateAcpiTablePcds entered\n"));
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);

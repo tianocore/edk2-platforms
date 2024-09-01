@@ -330,7 +330,7 @@ SmbiosAddType16Table (
     Status = mSmbios->Add (mSmbios, NULL, MemArraySmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type16Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Smbios Type16 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type16 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
     }
 
     FreePool(Type16Record);
@@ -381,7 +381,7 @@ SmbiosAddType19Table (
     Status = mSmbios->Add (mSmbios, NULL, &MemArrayMappedAddrSmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type19Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Smbios Type19 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type19 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
     }
 
     FreePool(Type19Record);
@@ -642,7 +642,7 @@ SmbiosAddType17Table (
     Status = mSmbios->Add (mSmbios, NULL, &MemDevSmbiosHandle, (EFI_SMBIOS_TABLE_HEADER*) Type17Record);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Smbios Type17 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type17 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
     }
 
     FreePool (Type17Record);
@@ -699,7 +699,7 @@ MemorySubClassEntryPoint(
     GuidHob = GetFirstGuidHob(&gHisiEfiMemoryMapGuid);
     if(NULL == GuidHob)
     {
-        DEBUG((EFI_D_ERROR, "Could not get MemoryMap Guid hob.  %r\n"));
+        DEBUG((DEBUG_ERROR, "Could not get MemoryMap Guid hob.  %r\n"));
         return EFI_NOT_FOUND;
     }
     pGblData = (GBL_INTERFACE*) GET_GUID_HOB_DATA(GuidHob);
@@ -710,7 +710,7 @@ MemorySubClassEntryPoint(
     Status = gBS->LocateProtocol(&gEfiSmbiosProtocolGuid, NULL, (VOID**)&Smbios);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "Could not locate SMBIOS protocol.  %r\n", Status));
+        DEBUG((DEBUG_ERROR, "Could not locate SMBIOS protocol.  %r\n", Status));
         return Status;
     }
     mSmbios = Smbios;
@@ -732,14 +732,14 @@ MemorySubClassEntryPoint(
     Status = SmbiosAddType16Table (pGblData, &MemArraySmbiosHandle);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "Smbios Add Type16 Table Failed.  %r\n", Status));
+        DEBUG((DEBUG_ERROR, "Smbios Add Type16 Table Failed.  %r\n", Status));
         return Status;
     }
 
     Status = SmbiosAddType19Table (pGblData, MemArraySmbiosHandle);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "Smbios Add Type19 Table Failed.  %r\n", Status));
+        DEBUG((DEBUG_ERROR, "Smbios Add Type19 Table Failed.  %r\n", Status));
         return Status;
     }
 
@@ -752,7 +752,7 @@ MemorySubClassEntryPoint(
                 Status = SmbiosAddType17Table (pGblData, Skt, Ch, Dimm, MemArraySmbiosHandle);
                 if(EFI_ERROR(Status))
                 {
-                    DEBUG((EFI_D_ERROR, "Smbios Add Type17 Table Failed.  %r\n", Status));
+                    DEBUG((DEBUG_ERROR, "Smbios Add Type17 Table Failed.  %r\n", Status));
                 }
             }
         }

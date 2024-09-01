@@ -487,7 +487,7 @@ Returns:
 Error:
   FreePool (Record);
   //
-  // DEBUG((EFI_D_ERROR,"Free pool status %d\n", Status ));
+  // DEBUG((DEBUG_ERROR,"Free pool status %d\n", Status ));
   //
   return EFI_INVALID_PARAMETER;
 }

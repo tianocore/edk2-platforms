@@ -28,79 +28,79 @@ CheckCardStatus (
   CardStatus = (CARD_STATUS*)(&Status);
 
   if (CardStatus->ADDRESS_OUT_OF_RANGE) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ADDRESS_OUT_OF_RANGE\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ADDRESS_OUT_OF_RANGE\n"));
   }
 
   if (CardStatus->ADDRESS_MISALIGN) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ADDRESS_MISALIGN\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ADDRESS_MISALIGN\n"));
   }
 
   if (CardStatus->BLOCK_LEN_ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: BLOCK_LEN_ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: BLOCK_LEN_ERROR\n"));
   }
 
   if (CardStatus->ERASE_SEQ_ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ERASE_SEQ_ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ERASE_SEQ_ERROR\n"));
   }
 
   if (CardStatus->ERASE_PARAM) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ERASE_PARAM\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ERASE_PARAM\n"));
   }
 
   if (CardStatus->WP_VIOLATION) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: WP_VIOLATION\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: WP_VIOLATION\n"));
   }
 
   if (CardStatus->CARD_IS_LOCKED) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: CARD_IS_LOCKED\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: CARD_IS_LOCKED\n"));
   }
 
   if (CardStatus->LOCK_UNLOCK_FAILED) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: LOCK_UNLOCK_FAILED\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: LOCK_UNLOCK_FAILED\n"));
   }
 
   if (CardStatus->COM_CRC_ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: COM_CRC_ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: COM_CRC_ERROR\n"));
   }
 
   if (CardStatus->ILLEGAL_COMMAND) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ILLEGAL_COMMAND\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ILLEGAL_COMMAND\n"));
   }
 
   if (CardStatus->CARD_ECC_FAILED) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: CARD_ECC_FAILED\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: CARD_ECC_FAILED\n"));
   }
 
   if (CardStatus->CC_ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: CC_ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: CC_ERROR\n"));
   }
 
   if (CardStatus->ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ERROR\n"));
   }
 
   if (CardStatus->UNDERRUN) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: UNDERRUN\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: UNDERRUN\n"));
   }
 
   if (CardStatus->OVERRUN) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: OVERRUN\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: OVERRUN\n"));
   }
 
   if (CardStatus->CID_CSD_OVERWRITE) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: CID_CSD_OVERWRITE\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: CID_CSD_OVERWRITE\n"));
   }
 
   if (CardStatus->WP_ERASE_SKIP) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: WP_ERASE_SKIP\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: WP_ERASE_SKIP\n"));
   }
 
   if (CardStatus->ERASE_RESET) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: ERASE_RESET\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: ERASE_RESET\n"));
   }
 
   if (CardStatus->SWITCH_ERROR) {
-    DEBUG ((EFI_D_ERROR, "CardStatus: SWITCH_ERROR\n"));
+    DEBUG ((DEBUG_ERROR, "CardStatus: SWITCH_ERROR\n"));
   }
 
   if ((Status & 0xFCFFA080) != 0) {
@@ -517,7 +517,7 @@ CaculateCardParameter (
   }
 
   DEBUG((
-    EFI_D_INFO,
+    DEBUG_INFO,
           "CalculateCardParameter: Card Size: 0x%lx\n", MultU64x32 (CardData->BlockNumber, CardData->BlockLen)
     ));
 
@@ -582,7 +582,7 @@ MMCCardBusWidthTest (
               (UINT32*)&(CardData->CardStatus)
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "MMCCardBusWidthTest:SendCommand BUSTEST_W 0x%x\n", *(UINT32*)&(CardData->CardStatus)));
+    DEBUG((DEBUG_ERROR, "MMCCardBusWidthTest:SendCommand BUSTEST_W 0x%x\n", *(UINT32*)&(CardData->CardStatus)));
     goto Exit;
   }
 
@@ -602,7 +602,7 @@ MMCCardBusWidthTest (
               (UINT32*)&(CardData->CardStatus)
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "MMCCardBusWidthTest:SendCommand BUSTEST_R 0x%x\n", *(UINT32*)&(CardData->CardStatus)));
+    DEBUG((DEBUG_ERROR, "MMCCardBusWidthTest:SendCommand BUSTEST_R 0x%x\n", *(UINT32*)&(CardData->CardStatus)));
     goto Exit;
   }
   CopyMem (&Data, CardData->AlignedBuffer, Width);
@@ -673,7 +673,7 @@ GetCardType (
               NULL
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "GO_IDLE_STATE Fail Status = 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "GO_IDLE_STATE Fail Status = 0x%x\n", Status));
     goto Exit;
   }
 
@@ -705,12 +705,12 @@ GetCardType (
 
   if (EFI_ERROR (Status)) {
     if (Status != EFI_TIMEOUT) {
-       DEBUG((EFI_D_ERROR, "SEND_IF_COND Fail, none time out error\n"));
+       DEBUG((DEBUG_ERROR, "SEND_IF_COND Fail, none time out error\n"));
        goto Exit;
     }
   } else {
      if (ResponseData != Argument) {
-       DEBUG((EFI_D_ERROR, "SEND_IF_COND Fail, respond data does not match send data\n"));
+       DEBUG((DEBUG_ERROR, "SEND_IF_COND Fail, respond data does not match send data\n"));
        Status = EFI_DEVICE_ERROR;
        goto Exit;
     }
@@ -755,13 +755,13 @@ GetCardType (
       if ((Status == EFI_TIMEOUT) && (!SDCommand8Support)) {
         CardData->CardType = MMCCard;
         Status = EFI_SUCCESS;
-        DEBUG((EFI_D_INFO, "SD_SEND_OP_COND, MMC card was identified\n"));
+        DEBUG((DEBUG_INFO, "SD_SEND_OP_COND, MMC card was identified\n"));
       } else {
         //
         // Not as expected, MMC card should has no response, which means timeout.
         // SD card should pass this command
         //
-        DEBUG((EFI_D_ERROR, "SD_SEND_OP_COND Fail, check whether it is neither a MMC card nor a SD card\n"));
+        DEBUG((DEBUG_ERROR, "SD_SEND_OP_COND Fail, check whether it is neither a MMC card nor a SD card\n"));
       }
       goto Exit;
     }
@@ -775,7 +775,7 @@ GetCardType (
     gBS->Stall (50 * 1000);
     Count--;
     if (Count == 0) {
-      DEBUG((EFI_D_ERROR, "Card is always in busy state\n"));
+      DEBUG((DEBUG_ERROR, "Card is always in busy state\n"));
       Status = EFI_TIMEOUT;
       goto Exit;
     }
@@ -804,7 +804,7 @@ GetCardType (
      //No matched support voltage
      //
      PutCardInactive (CardData);
-     DEBUG((EFI_D_ERROR, "No matched voltage for this card\n"));
+     DEBUG((DEBUG_ERROR, "No matched voltage for this card\n"));
      Status = EFI_UNSUPPORTED;
      goto Exit;
   }
@@ -812,12 +812,12 @@ GetCardType (
   CardData->CardType = SDMemoryCard;
   if (SDCommand8Support == TRUE) {
    CardData->CardType = SDMemoryCard2;
-   DEBUG((EFI_D_INFO, "SD_SEND_OP_COND, SD 2.0 or above standard card was identified\n"));
+   DEBUG((DEBUG_INFO, "SD_SEND_OP_COND, SD 2.0 or above standard card was identified\n"));
   }
 
   if ((CardData->OCRRegister.AccessMode & BIT1) == BIT1) {
     CardData->CardType = SDMemoryCard2High;
-    DEBUG((EFI_D_INFO, "SD_SEND_OP_COND, SD 2.0 or above high capacity card was identified\n"));
+    DEBUG((DEBUG_INFO, "SD_SEND_OP_COND, SD 2.0 or above high capacity card was identified\n"));
   }
 
 
@@ -869,7 +869,7 @@ MMCCardVoltageSelection (
                   NULL
                   );
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "GO_IDLE_STATE Fail Status = 0x%x\n", Status));
+        DEBUG((DEBUG_ERROR, "GO_IDLE_STATE Fail Status = 0x%x\n", Status));
         continue;
       }
       //
@@ -897,7 +897,7 @@ MMCCardVoltageSelection (
     }
 
     if (Retry == 3) {
-      DEBUG((EFI_D_ERROR, "SEND_OP_COND Fail Status = 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "SEND_OP_COND Fail Status = 0x%x\n", Status));
       Status = EFI_DEVICE_ERROR;
       goto Exit;
     }
@@ -920,7 +920,7 @@ MMCCardVoltageSelection (
                   (UINT32*)&(CardData->OCRRegister)
                   );
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "SEND_OP_COND Fail Status = 0x%x\n", Status));
+        DEBUG((DEBUG_ERROR, "SEND_OP_COND Fail Status = 0x%x\n", Status));
         goto Exit;
       }
 
@@ -928,14 +928,14 @@ MMCCardVoltageSelection (
       TimeOut--;
       if (TimeOut == 0) {
         Status = EFI_TIMEOUT;
-      DEBUG((EFI_D_ERROR, "Card is always in busy state\n"));
+      DEBUG((DEBUG_ERROR, "Card is always in busy state\n"));
         goto Exit;
       }
     } while (CardData->OCRRegister.Busy != 1);
 
   if (CardData->OCRRegister.AccessMode == 2) // eMMC Card uses Sector Addressing - High Capacity
     {
-    DEBUG((EFI_D_INFO, "eMMC Card is High Capacity\n"));
+    DEBUG((DEBUG_INFO, "eMMC Card is High Capacity\n"));
     CardData->CardType = MMCCardHighCap;
   }
 
@@ -1025,13 +1025,13 @@ MMCCardSetBusWidth (
                  (UINT32*)&(CardData->CardStatus)
                  );
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "SWITCH %d bits Fail\n", BusWidth));
+      DEBUG((DEBUG_ERROR, "SWITCH %d bits Fail\n", BusWidth));
       goto Exit;
     } else {
-      DEBUG((EFI_D_ERROR, "MMCCardSetBusWidth:SWITCH Card Status:0x%x\n", *(UINT32*)&(CardData->CardStatus)));
+      DEBUG((DEBUG_ERROR, "MMCCardSetBusWidth:SWITCH Card Status:0x%x\n", *(UINT32*)&(CardData->CardStatus)));
       Status = SDHostIo->SetBusWidth (SDHostIo, BusWidth);
       if (EFI_ERROR (Status)) {
-         DEBUG((EFI_D_ERROR, "SWITCH set %d bits Fail\n", BusWidth));
+         DEBUG((DEBUG_ERROR, "SWITCH set %d bits Fail\n", BusWidth));
          goto Exit;
       }
       gBS->Stall (5 * 1000);
@@ -1040,13 +1040,13 @@ MMCCardSetBusWidth (
 
   if (!EnableDDRMode) {     // CMD19 and CMD14 are illegal commands in ddr mode
   //if (EFI_ERROR (Status)) {
-  //  DEBUG((EFI_D_ERROR, "MMCCardBusWidthTest: Fail to enable high speed mode\n"));
+  //  DEBUG((DEBUG_ERROR, "MMCCardBusWidthTest: Fail to enable high speed mode\n"));
   //  goto Exit;
   //}
 
   Status = MMCCardBusWidthTest (CardData, BusWidth);
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "MMCCardBusWidthTest %d bit Fail\n", BusWidth));
+    DEBUG((DEBUG_ERROR, "MMCCardBusWidthTest %d bit Fail\n", BusWidth));
     goto Exit;
     }
   }
@@ -1120,18 +1120,18 @@ MMCSDCardInit (
               (UINT32*)&(CardData->CIDRegister)
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "ALL_SEND_CID Fail Status = 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "ALL_SEND_CID Fail Status = 0x%x\n", Status));
     goto Exit;
   } else {
     // Dump out the Card ID data
-    DEBUG((EFI_D_INFO, "Product Name: "));
+    DEBUG((DEBUG_INFO, "Product Name: "));
     for ( nIndex=0; nIndex<6; nIndex++ ) {
-      DEBUG((EFI_D_INFO, "%c", CardData->CIDRegister.PNM[nIndex]));
+      DEBUG((DEBUG_INFO, "%c", CardData->CIDRegister.PNM[nIndex]));
     }
-    DEBUG((EFI_D_INFO, "\nApplication ID : %d\n", CardData->CIDRegister.OID));
-    DEBUG((EFI_D_INFO, "Manufacturer ID: %d\n", CardData->CIDRegister.MID));
-    DEBUG((EFI_D_INFO, "Revision ID    : %d\n", CardData->CIDRegister.PRV));
-    DEBUG((EFI_D_INFO, "Serial Number  : %d\n", CardData->CIDRegister.PSN));
+    DEBUG((DEBUG_INFO, "\nApplication ID : %d\n", CardData->CIDRegister.OID));
+    DEBUG((DEBUG_INFO, "Manufacturer ID: %d\n", CardData->CIDRegister.MID));
+    DEBUG((DEBUG_INFO, "Revision ID    : %d\n", CardData->CIDRegister.PRV));
+    DEBUG((DEBUG_INFO, "Serial Number  : %d\n", CardData->CIDRegister.PSN));
   }
 
   //
@@ -1158,7 +1158,7 @@ MMCSDCardInit (
                 (UINT32*)&(CardData->CardStatus)
                 );
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
       goto Exit;
     }
   } else {
@@ -1175,7 +1175,7 @@ MMCSDCardInit (
                 &Data
                 );
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
       goto Exit;
     }
 
@@ -1186,7 +1186,7 @@ MMCSDCardInit (
     CardData->CardStatus.COM_CRC_ERROR   = (Data >> 15) & 0x1;
     Status = CheckCardStatus (*(UINT32*)&CardData->CardStatus);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "SET_RELATIVE_ADDR Fail Status = 0x%x\n", Status));
       goto Exit;
     }
   }
@@ -1206,12 +1206,12 @@ MMCSDCardInit (
               (UINT32*)&(CardData->CSDRegister)
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "SEND_CSD Fail Status = 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "SEND_CSD Fail Status = 0x%x\n", Status));
     goto Exit;
   }
 
-  DEBUG((EFI_D_INFO, "CardData->CSDRegister.SPEC_VERS = 0x%x\n", CardData->CSDRegister.SPEC_VERS));
-  DEBUG((EFI_D_INFO, "CardData->CSDRegister.CSD_STRUCTURE = 0x%x\n", CardData->CSDRegister.CSD_STRUCTURE));
+  DEBUG((DEBUG_INFO, "CardData->CSDRegister.SPEC_VERS = 0x%x\n", CardData->CSDRegister.SPEC_VERS));
+  DEBUG((DEBUG_INFO, "CardData->CSDRegister.CSD_STRUCTURE = 0x%x\n", CardData->CSDRegister.CSD_STRUCTURE));
 
   Status = CaculateCardParameter (CardData);
   if (EFI_ERROR (Status)) {
@@ -1238,7 +1238,7 @@ MMCSDCardInit (
                 NULL
                 );
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "SET_DSR Fail Status = 0x%x\n", Status));
+      DEBUG((DEBUG_ERROR, "SET_DSR Fail Status = 0x%x\n", Status));
       //
       // Assume can operate even fail
       //
@@ -1249,7 +1249,7 @@ MMCSDCardInit (
   //
   Status = SDHostIo->SetClockFrequency (SDHostIo, CardData->MaxFrequency);
   if (EFI_ERROR (Status)) {
-  DEBUG((EFI_D_ERROR, "MMCSDCardInit:Fail to SetClockFrequency \n"));
+  DEBUG((DEBUG_ERROR, "MMCSDCardInit:Fail to SetClockFrequency \n"));
   goto Exit;
   }
 
@@ -1268,7 +1268,7 @@ MMCSDCardInit (
              (UINT32*)&(CardData->CardStatus)
              );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "SELECT_DESELECT_CARD Fail Status = 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "SELECT_DESELECT_CARD Fail Status = 0x%x\n", Status));
     goto Exit;
   }
 
@@ -1292,7 +1292,7 @@ MMCSDCardInit (
               (UINT32*)&(CardData->CardStatus)
               );
   if (EFI_ERROR (Status)) {
-     DEBUG((EFI_D_ERROR, "SELECT_DESELECT_CARD SEND_STATUS Fail Status = 0x%x\n", Status));
+     DEBUG((DEBUG_ERROR, "SELECT_DESELECT_CARD SEND_STATUS Fail Status = 0x%x\n", Status));
      goto Exit;
   }
   //
@@ -1322,7 +1322,7 @@ MMCSDCardInit (
                   (UINT32*)&(CardData->CardStatus)
                   );
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "SEND_EXT_CSD Fail Status = 0x%x\n", Status));
+        DEBUG((DEBUG_ERROR, "SEND_EXT_CSD Fail Status = 0x%x\n", Status));
         goto Exit;
       }
 
@@ -1340,7 +1340,7 @@ MMCSDCardInit (
         CardData->BlockNumber = Data;
       }
       DEBUG((DEBUG_INFO, "CardData->BlockNumber  %d\n", Data));
-      DEBUG((EFI_D_ERROR, "CardData->ExtCSDRegister.CARD_TYPE -> %d\n", (UINTN)CardData->ExtCSDRegister.CARD_TYPE));
+      DEBUG((DEBUG_ERROR, "CardData->ExtCSDRegister.CARD_TYPE -> %d\n", (UINTN)CardData->ExtCSDRegister.CARD_TYPE));
       if ((CardData->ExtCSDRegister.CARD_TYPE & BIT2)||
           (CardData->ExtCSDRegister.CARD_TYPE & BIT3)) {
           //DEBUG((DEBUG_INFO, "To enable DDR mode\n"));
@@ -1373,7 +1373,7 @@ MMCSDCardInit (
                     (UINT32*)&(CardData->CardStatus)
                     );
         if (EFI_ERROR (Status)) {
-          DEBUG((EFI_D_ERROR, "MMCSDCardInit:SWITCH frequency Fail Status = 0x%x\n", Status));
+          DEBUG((DEBUG_ERROR, "MMCSDCardInit:SWITCH frequency Fail Status = 0x%x\n", Status));
         }
 
         gBS->Stall (5 * 1000);
@@ -1393,10 +1393,10 @@ MMCSDCardInit (
                       );
           if (!EFI_ERROR (Status)) {
             if (EnableDDRMode) {
-              DEBUG((EFI_D_ERROR, "Enable ddr mode on host controller\n"));
+              DEBUG((DEBUG_ERROR, "Enable ddr mode on host controller\n"));
               SDHostIo->SetDDRMode (SDHostIo, TRUE);
             } else  {
-              DEBUG((EFI_D_ERROR, "Enable high speed mode on host controller\n"));
+              DEBUG((DEBUG_ERROR, "Enable high speed mode on host controller\n"));
               SDHostIo->SetHighSpeedMode (SDHostIo, TRUE);
             }
           //
@@ -1411,7 +1411,7 @@ MMCSDCardInit (
               Status = EFI_UNSUPPORTED;
             }
             if (EFI_ERROR (Status)) {
-              DEBUG((EFI_D_ERROR, "MMCSDCardInit:Fail to SetClockFrequency \n"));
+              DEBUG((DEBUG_ERROR, "MMCSDCardInit:Fail to SetClockFrequency \n"));
               goto Exit;
             }
             //
@@ -1504,7 +1504,7 @@ MMCSDCardInit (
                        (UINT32*)&(CardData->CardStatus)
                        );
            if (EFI_ERROR (Status)) {
-             DEBUG((EFI_D_ERROR, "SWITCH Power Class Fail Status = 0x%x\n", Status));
+             DEBUG((DEBUG_ERROR, "SWITCH Power Class Fail Status = 0x%x\n", Status));
            }
            //gBS->Stall (10 * 1000);
          }
@@ -1515,7 +1515,7 @@ MMCSDCardInit (
     } else {
 
 
-      DEBUG((EFI_D_ERROR, "MMC Card version %d only supportes 1 bits at lower transfer speed\n",CardData->CSDRegister.SPEC_VERS));
+      DEBUG((DEBUG_ERROR, "MMC Card version %d only supportes 1 bits at lower transfer speed\n",CardData->CSDRegister.SPEC_VERS));
     }
   } else {
       //
@@ -1535,7 +1535,7 @@ MMCSDCardInit (
                   (UINT32*)&(CardData->CardStatus)
                   );
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "SET_CLR_CARD_DETECT Fail Status = 0x%x\n", Status));
+        DEBUG((DEBUG_ERROR, "SET_CLR_CARD_DETECT Fail Status = 0x%x\n", Status));
         goto Exit;
       }
 
@@ -1582,7 +1582,7 @@ MMCSDCardInit (
                   (UINT32*)&(CardData->CardStatus)
                   );
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "SET_BUS_WIDTH 4 bits Fail Status = 0x%x\n", Status));
+        DEBUG((DEBUG_ERROR, "SET_BUS_WIDTH 4 bits Fail Status = 0x%x\n", Status));
         goto Exit;
       }
 
@@ -1695,7 +1695,7 @@ MMCSDCardInit (
               (UINT32*)&(CardData->CardStatus)
               );
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "SET_BLOCKLEN Fail Status = 0x%x\n", Status));
+    DEBUG((DEBUG_ERROR, "SET_BLOCKLEN Fail Status = 0x%x\n", Status));
     goto Exit;
   }
   }

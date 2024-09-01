@@ -51,7 +51,7 @@ EmulationPlatformInitEntry (
   //
   EmulationSetting = BuildGuidHob (&gEmulationHobGuid, sizeof (EMULATION_SETTING));
   if (EmulationSetting == NULL) {
-    DEBUG((EFI_D_ERROR, "Emulation BuildGuidDataHob fail!\n"));
+    DEBUG((DEBUG_ERROR, "Emulation BuildGuidDataHob fail!\n"));
     return EFI_OUT_OF_RESOURCES;
   }
 

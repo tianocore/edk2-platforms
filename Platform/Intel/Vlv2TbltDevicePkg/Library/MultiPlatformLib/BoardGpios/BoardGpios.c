@@ -44,7 +44,7 @@ ConfigurePlatformSysCtrlGpio (
   UINT32        Status;
   EFI_PLATFORM_INFO_HOB               *PlatformInfoHob;
 
-   DEBUG ((EFI_D_INFO, "ConfigurePlatformSysCtrlGpio()...\n"));
+   DEBUG ((DEBUG_INFO, "ConfigurePlatformSysCtrlGpio()...\n"));
 
   //
   // Obtain Platform Info from HOB.
@@ -56,7 +56,7 @@ ConfigurePlatformSysCtrlGpio (
   // The GPIO settings are dependent upon the platform.  Obtain the Board ID through
   // the EC to determine the current platform.
   //
-   DEBUG ((EFI_D_INFO, "Platform Flavor | Board ID = 0x%X | 0x%X\n", PlatformInfoHob->PlatformFlavor, PlatformInfoHob->BoardId));
+   DEBUG ((DEBUG_INFO, "Platform Flavor | Board ID = 0x%X | 0x%X\n", PlatformInfoHob->PlatformFlavor, PlatformInfoHob->BoardId));
 
 
 
@@ -100,7 +100,7 @@ InstallPlatformSysCtrlGPIONotify (
 {
   EFI_STATUS                    Status;
 
-  DEBUG ((EFI_D_INFO, "InstallPlatformSysCtrlGPIONotify()...\n"));
+  DEBUG ((DEBUG_INFO, "InstallPlatformSysCtrlGPIONotify()...\n"));
 
   Status = (*PeiServices)->NotifyPpi(PeiServices, &mNotifyList[0]);
   ASSERT_EFI_ERROR (Status);
@@ -133,7 +133,7 @@ MultiPlatformGpioTableInit (
   UINTN                           VarSize;
   SYSTEM_CONFIGURATION            SystemConfiguration;
 
-  DEBUG ((EFI_D_INFO, "MultiPlatformGpioTableInit()...\n"));
+  DEBUG ((DEBUG_INFO, "MultiPlatformGpioTableInit()...\n"));
 
   //
   // Select/modify the GPIO initialization data based on the Board ID.
@@ -234,10 +234,10 @@ InternalGpioConfig (
     mmio_padval= IO_BASE_ADDRESS + Gpio_Mmio_Offset + R_PCH_CFIO_PAD_VAL   + Gpio_Conf_Data[index].offset * 16;
 
 #ifdef EFI_DEBUG
-    DEBUG ((EFI_D_INFO, "%s, ", Gpio_Conf_Data[index].pad_name));
+    DEBUG ((DEBUG_INFO, "%s, ", Gpio_Conf_Data[index].pad_name));
 
 #endif
-    DEBUG ((EFI_D_INFO, "Usage = %d, Func# = %d, IntType = %d, Pull Up/Down = %d, MMIO Base = 0x%08x, ",
+    DEBUG ((DEBUG_INFO, "Usage = %d, Func# = %d, IntType = %d, Pull Up/Down = %d, MMIO Base = 0x%08x, ",
       Gpio_Conf_Data[index].usage,
       Gpio_Conf_Data[index].func,
       Gpio_Conf_Data[index].int_type,
@@ -267,7 +267,7 @@ InternalGpioConfig (
     }
 
 
-    DEBUG ((EFI_D_INFO, "Set PAD_VAL = 0x%08x, ", pad_val.dw));
+    DEBUG ((DEBUG_INFO, "Set PAD_VAL = 0x%08x, ", pad_val.dw));
 
     MmioWrite32(mmio_padval, pad_val.dw);
 
@@ -354,7 +354,7 @@ InternalGpioConfig (
       conf0_val.dw |= (Gpio_Conf_Data[index].int_type & 0x0f)<<24;
     }
 
-    DEBUG ((EFI_D_INFO, "Set CONF0 = 0x%08x\n", conf0_val.dw));
+    DEBUG ((DEBUG_INFO, "Set CONF0 = 0x%08x\n", conf0_val.dw));
 
     //
     // Write back the targeted GPIO config value according to platform (board) GPIO setting.
@@ -390,7 +390,7 @@ MultiPlatformGpioProgram (
   CFIO_INIT_STRUCT*           PlatformCfioDataPtr;
 
   PlatformCfioDataPtr = (CFIO_INIT_STRUCT *) (UINTN) PlatformInfoHob->PlatformCfioData;
-  DEBUG ((EFI_D_INFO, "MultiPlatformGpioProgram()...\n"));
+  DEBUG ((DEBUG_INFO, "MultiPlatformGpioProgram()...\n"));
 
   //
   //  SCORE GPIO WELL -- IO base registers
@@ -501,7 +501,7 @@ MultiPlatformGpioProgram (
   switch (PlatformInfoHob->BoardId) {
     case BOARD_ID_MINNOW2:
     case BOARD_ID_MINNOW2_TURBOT:
-      DEBUG ((EFI_D_INFO, "Start to config Minnow2 GPIO pins\n"));
+      DEBUG ((DEBUG_INFO, "Start to config Minnow2 GPIO pins\n"));
       InternalGpioConfig(GPIO_SCORE_OFFSET, sizeof(mMinnow2_GpioInitData_SC)/sizeof(mMinnow2_GpioInitData_SC[0]),   (GPIO_CONF_PAD_INIT *) (UINTN) PlatformInfoHob->PlatformGpioData_SC);
       InternalGpioConfig(GPIO_NCORE_OFFSET, sizeof(mMinnow2_GpioInitData_NC)/sizeof(mMinnow2_GpioInitData_NC[0]),   (GPIO_CONF_PAD_INIT *) (UINTN) PlatformInfoHob->PlatformGpioData_NC);
       InternalGpioConfig(GPIO_SSUS_OFFSET,  sizeof(mMinnow2_GpioInitData_SUS)/sizeof(mMinnow2_GpioInitData_SUS[0]), (GPIO_CONF_PAD_INIT *) (UINTN) PlatformInfoHob->PlatformGpioData_SUS);
@@ -520,7 +520,7 @@ MultiPlatformGpioProgram (
      }
    }
 #else
-   DEBUG ((EFI_D_INFO, "Skip MultiPlatformGpioProgram()...for SIMICS or HYB model\n"));
+   DEBUG ((DEBUG_INFO, "Skip MultiPlatformGpioProgram()...for SIMICS or HYB model\n"));
 #endif
   return EFI_SUCCESS;
 }

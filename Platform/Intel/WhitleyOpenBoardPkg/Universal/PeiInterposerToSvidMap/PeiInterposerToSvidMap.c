@@ -49,7 +49,7 @@ MapInterposerToSvid (
   BOOLEAN                 InterposerPresent = FALSE;
   DYNAMIC_SI_LIBARY_PPI   *DynamicSiLibraryPpi = NULL;
 
-  DEBUG ((EFI_D_INFO, "MapInterposerToSvid   Entry\n"));
+  DEBUG ((DEBUG_INFO, "MapInterposerToSvid   Entry\n"));
 
   Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
@@ -59,7 +59,7 @@ MapInterposerToSvid (
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   if (GuidHob == NULL) {
-    DEBUG ((EFI_D_INFO, "No Platform Info HOB Detected Exiting...\n"));
+    DEBUG ((DEBUG_INFO, "No Platform Info HOB Detected Exiting...\n"));
     return EFI_SUCCESS;
   } else {
     MemInterposerMap = (INTERPOSER_MAP *) PcdGetPtr (PcdMemInterposerMap);
@@ -67,7 +67,7 @@ MapInterposerToSvid (
       return EFI_SUCCESS;
     }
     Size = sizeof (MEM_SVID_MAP);
-    DEBUG ((EFI_D_INFO, "Allocate memory for MemSvidMap PCD\n"));
+    DEBUG ((DEBUG_INFO, "Allocate memory for MemSvidMap PCD\n"));
     Status = PeiServicesAllocatePool (Size, (VOID **) &MemSvidMap);
     ASSERT_EFI_ERROR (Status);
     ZeroMem (MemSvidMap, Size);
@@ -90,7 +90,7 @@ MapInterposerToSvid (
             MemSvidMap->Socket[Socket].Mc[CurrentMcId] = SvidValue;
             InterposerPresent = TRUE;
           }
-          DEBUG ((EFI_D_INFO, "Current MC id = %d, Original MC id = %d, SVID = %d\n", CurrentMcId, OriginalMcId, SvidValue));
+          DEBUG ((DEBUG_INFO, "Current MC id = %d, Original MC id = %d, SVID = %d\n", CurrentMcId, OriginalMcId, SvidValue));
         }
       }
     }
@@ -98,10 +98,10 @@ MapInterposerToSvid (
   if (InterposerPresent) {
     PcdSetPtrS (PcdMemSrvidMap, &Size, (VOID *) MemSvidMap);
   } else {
-    DEBUG ((EFI_D_INFO, "No Interposer Present....\n"));
+    DEBUG ((DEBUG_INFO, "No Interposer Present....\n"));
   }
 
-  DEBUG ((EFI_D_INFO, "MapInterposerToSvid   Exit\n"));
+  DEBUG ((DEBUG_INFO, "MapInterposerToSvid   Exit\n"));
   return EFI_SUCCESS;
 }
 
@@ -127,11 +127,11 @@ InterposerToSvidMapEntry (
   )
 {
   EFI_STATUS Status = EFI_SUCCESS;
-  DEBUG ((EFI_D_INFO, "InterposerToSvidMap   Entry\n"));
+  DEBUG ((DEBUG_INFO, "InterposerToSvidMap   Entry\n"));
 
   Status = PeiServicesNotifyPpi (&mMapInterposerToSvidNotifyList);
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG ((EFI_D_INFO, "InterposerToSvidMap   Exit\n"));
+  DEBUG ((DEBUG_INFO, "InterposerToSvidMap   Exit\n"));
   return EFI_SUCCESS;;
 }

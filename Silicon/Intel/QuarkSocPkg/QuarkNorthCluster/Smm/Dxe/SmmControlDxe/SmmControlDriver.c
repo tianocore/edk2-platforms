@@ -327,7 +327,7 @@ SmmControl2Init (
   DEBUG_CODE_BEGIN ();
   if (IoRead32 (GPE0BLK_Base + R_QNC_GPE0BLK_SMIS) & B_QNC_GPE0BLK_SMIS_EOS) {
     DEBUG ((
-      EFI_D_ERROR,
+      DEBUG_ERROR,
       "******************************************************************************\n"
       "BIG ERROR: SmmControl constructor couldn't properly initialize the ACPI table.\n"
       "           SmmControl->Clear will probably hang.                              \n"

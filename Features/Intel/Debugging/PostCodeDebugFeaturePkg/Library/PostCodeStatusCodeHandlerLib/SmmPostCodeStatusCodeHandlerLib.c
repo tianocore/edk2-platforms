@@ -54,7 +54,7 @@ PostCodeStatusCodeReportWorker (
 
   PostCodeValue = GetPostCodeFromStatusCode (CodeType, Value);
   if (PostCodeValue != 0) {
-    DEBUG ((EFI_D_INFO, "POSTCODE=<%02x>\n", PostCodeValue));
+    DEBUG ((DEBUG_INFO, "POSTCODE=<%02x>\n", PostCodeValue));
     PostCode (PostCodeValue);
   }
 

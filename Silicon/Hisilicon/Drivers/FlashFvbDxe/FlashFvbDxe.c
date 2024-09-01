@@ -230,14 +230,14 @@ ValidateFvHeader (
            || (FwVolHeader->FvLength  != FvLength)
        )
     {
-        DEBUG ((EFI_D_ERROR, "ValidateFvHeader: No Firmware Volume header present\n"));
+        DEBUG ((DEBUG_ERROR, "ValidateFvHeader: No Firmware Volume header present\n"));
         return EFI_NOT_FOUND;
     }
 
     // Check the Firmware Volume Guid
     if ( CompareGuid (&FwVolHeader->FileSystemGuid, &gEfiSystemNvDataFvGuid) == FALSE )
     {
-        DEBUG ((EFI_D_ERROR, "ValidateFvHeader: Firmware Volume Guid non-compatible\n"));
+        DEBUG ((DEBUG_ERROR, "ValidateFvHeader: Firmware Volume Guid non-compatible\n"));
         return EFI_NOT_FOUND;
     }
 
@@ -245,7 +245,7 @@ ValidateFvHeader (
     Checksum = CalculateSum16((UINT16*)FwVolHeader, FwVolHeader->HeaderLength);
     if (Checksum != 0)
     {
-        DEBUG ((EFI_D_ERROR, "ValidateFvHeader: FV checksum is invalid (Checksum:0x%X)\n", Checksum));
+        DEBUG ((DEBUG_ERROR, "ValidateFvHeader: FV checksum is invalid (Checksum:0x%X)\n", Checksum));
         return EFI_NOT_FOUND;
     }
 
@@ -254,14 +254,14 @@ ValidateFvHeader (
     // Check the Variable Store Guid
     if ( CompareGuid (&VariableStoreHeader->Signature, &gEfiVariableGuid) == FALSE )
     {
-        DEBUG ((EFI_D_ERROR, "ValidateFvHeader: Variable Store Guid non-compatible\n"));
+        DEBUG ((DEBUG_ERROR, "ValidateFvHeader: Variable Store Guid non-compatible\n"));
         return EFI_NOT_FOUND;
     }
 
     VariableStoreLength = PcdGet32 (PcdFlashNvStorageVariableSize) - FwVolHeader->HeaderLength;
     if (VariableStoreHeader->Size != VariableStoreLength)
     {
-        DEBUG ((EFI_D_ERROR, "ValidateFvHeader: Variable Store Length does not match\n"));
+        DEBUG ((DEBUG_ERROR, "ValidateFvHeader: Variable Store Length does not match\n"));
         return EFI_NOT_FOUND;
     }
 
@@ -343,7 +343,7 @@ FvbSetAttributes(
     IN OUT    EFI_FVB_ATTRIBUTES_2*                 Attributes
 )
 {
-    DEBUG ((EFI_D_ERROR, "FvbSetAttributes(0x%X) is not supported\n", *Attributes));
+    DEBUG ((DEBUG_ERROR, "FvbSetAttributes(0x%X) is not supported\n", *Attributes));
     return EFI_UNSUPPORTED;
 }
 
@@ -513,7 +513,7 @@ FvbRead (
     if (!Instance->Initialized && Instance->Initialize)
     {
         if (EfiAtRuntime ()) {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
             return EFI_UNSUPPORTED;
         }
 
@@ -531,7 +531,7 @@ FvbRead (
         (*NumBytes            >  BlockSize) ||
         ((Offset + *NumBytes) >  BlockSize))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL] ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", __FUNCTION__, __LINE__, Offset, *NumBytes, BlockSize ));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL] ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", __FUNCTION__, __LINE__, Offset, *NumBytes, BlockSize ));
         return EFI_BAD_BUFFER_SIZE;
     }
 
@@ -640,7 +640,7 @@ FvbWrite (
     if (!Instance->Initialized && Instance->Initialize)
     {
         if (EfiAtRuntime ()) {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL] Initialize at runtime is not supported!\n", __FUNCTION__, __LINE__));
             return EFI_UNSUPPORTED;
         }
 
@@ -652,7 +652,7 @@ FvbWrite (
     // Detect WriteDisabled state
     if (Instance->Media.ReadOnly == TRUE)
     {
-        DEBUG ((EFI_D_ERROR, "FvbWrite: ERROR - Can not write: Device is in WriteDisabled state.\n"));
+        DEBUG ((DEBUG_ERROR, "FvbWrite: ERROR - Can not write: Device is in WriteDisabled state.\n"));
         // It is in WriteDisabled state, return an error right away
         return EFI_ACCESS_DENIED;
     }
@@ -666,14 +666,14 @@ FvbWrite (
          ( *NumBytes            >  BlockSize ) ||
          ( (Offset + *NumBytes) >  BlockSize )    )
     {
-        DEBUG ((EFI_D_ERROR, "FvbWrite: ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", Offset, *NumBytes, BlockSize ));
+        DEBUG ((DEBUG_ERROR, "FvbWrite: ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", Offset, *NumBytes, BlockSize ));
         return EFI_BAD_BUFFER_SIZE;
     }
 
     // We must have some bytes to write
     if (*NumBytes == 0)
     {
-        DEBUG ((EFI_D_ERROR, "FvbWrite: ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", Offset, *NumBytes, BlockSize ));
+        DEBUG ((DEBUG_ERROR, "FvbWrite: ERROR - EFI_BAD_BUFFER_SIZE: (Offset=0x%x + NumBytes=0x%x) > BlockSize=0x%x\n", Offset, *NumBytes, BlockSize ));
         return EFI_BAD_BUFFER_SIZE;
     }
 
@@ -683,7 +683,7 @@ FvbWrite (
     Status = mFlash->Write(mFlash, (UINT32)WriteAddress, (UINT8*)Buffer, *NumBytes);
     if (EFI_SUCCESS != Status)
     {
-        DEBUG((EFI_D_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
         return Status;
     }
 
@@ -999,7 +999,7 @@ FlashEraseSingleBlock (
     Status = mFlash->Erase(mFlash, (UINT32)EraseAddress, Instance->Media.BlockSize);
     if (EFI_SUCCESS != Status)
     {
-        DEBUG((EFI_D_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
         return Status;
     }
 
@@ -1034,7 +1034,7 @@ FlashUnlockAndEraseSingleBlock (
 
     if (Index == FLASH_ERASE_RETRY)
     {
-        DEBUG((EFI_D_ERROR, "EraseSingleBlock(BlockAddress=0x%08x: Block Locked Error (try to erase %d times)\n", BlockAddress, Index));
+        DEBUG((DEBUG_ERROR, "EraseSingleBlock(BlockAddress=0x%08x: Block Locked Error (try to erase %d times)\n", BlockAddress, Index));
     }
 
     return Status;
@@ -1080,7 +1080,7 @@ FlashWriteBlocks (
     NumBlocks = ((UINT32)BufferSizeInBytes) / Instance->Media.BlockSize ;
     if ((Lba + NumBlocks) > (Instance->Media.LastBlock + 1))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL]ERROR - Write will exceed last block.\n", __FUNCTION__, __LINE__ ));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL]ERROR - Write will exceed last block.\n", __FUNCTION__, __LINE__ ));
         return EFI_INVALID_PARAMETER;
     }
 
@@ -1091,7 +1091,7 @@ FlashWriteBlocks (
     Status = mFlash->Write(mFlash, (UINT32)WriteAddress, (UINT8*)Buffer, BufferSizeInBytes);
     if (EFI_SUCCESS != Status)
     {
-        DEBUG((EFI_D_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
         return Status;
     }
 
@@ -1133,7 +1133,7 @@ FlashReadBlocks (
     NumBlocks = ((UINT32)BufferSizeInBytes) / Instance->Media.BlockSize ;
     if ((Lba + NumBlocks) > (Instance->Media.LastBlock + 1))
     {
-        DEBUG((EFI_D_ERROR, "FlashReadBlocks: ERROR - Read will exceed last block\n"));
+        DEBUG((DEBUG_ERROR, "FlashReadBlocks: ERROR - Read will exceed last block\n"));
         return EFI_INVALID_PARAMETER;
     }
 
@@ -1149,7 +1149,7 @@ FlashReadBlocks (
     Status = mFlash->Read(mFlash, (UINT32)ReadAddress, Buffer, BufferSizeInBytes);
     if (EFI_SUCCESS != Status)
     {
-        DEBUG((EFI_D_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "%s - %d Status=%r\n", __FILE__, __LINE__, Status));
         return Status;
     }
 
@@ -1185,7 +1185,7 @@ FlashFvbInitialize (
     Status = FlashPlatformGetDevices (&FlashDevices, &FlashDeviceCount);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Fail to get Flash devices\n", __FUNCTION__, __LINE__));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to get Flash devices\n", __FUNCTION__, __LINE__));
         return Status;
     }
 
@@ -1194,7 +1194,7 @@ FlashFvbInitialize (
     Status = gBS->LocateProtocol (&gHisiSpiFlashProtocolGuid, NULL, (VOID*) &mFlash);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Status=%r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Status=%r\n", __FUNCTION__, __LINE__, Status));
         return Status;
     }
 
@@ -1217,7 +1217,7 @@ FlashFvbInitialize (
                  );
         if (EFI_ERROR(Status))
         {
-            DEBUG((EFI_D_ERROR, "[%a]:[%dL] Fail to create instance for Flash[%d]\n", __FUNCTION__, __LINE__, Index));
+            DEBUG((DEBUG_ERROR, "[%a]:[%dL] Fail to create instance for Flash[%d]\n", __FUNCTION__, __LINE__, Index));
         }
     }
     //

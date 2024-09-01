@@ -117,7 +117,7 @@ SetPeiCacheMode (
     //
     // Clear the CAR Settings (Default Cache Type => UC)
     //
-    DEBUG ((EFI_D_INFO, "Reset cache attribute and disable CAR. \n"));
+    DEBUG ((DEBUG_INFO, "Reset cache attribute and disable CAR. \n"));
     CachePpi->ResetCache(
                 (EFI_PEI_SERVICES**)PeiServices,
                 CachePpi
@@ -239,7 +239,7 @@ SetPeiCacheMode (
     if (MtrrSetting.Variables.Mtrr[Index].Base == 0){
       break;
     }
-    DEBUG ((EFI_D_INFO, "Base=%lx, Mask=%lx\n",MtrrSetting.Variables.Mtrr[Index].Base ,MtrrSetting.Variables.Mtrr[Index].Mask));
+    DEBUG ((DEBUG_INFO, "Base=%lx, Mask=%lx\n",MtrrSetting.Variables.Mtrr[Index].Base ,MtrrSetting.Variables.Mtrr[Index].Mask));
   }
 
   //
@@ -341,8 +341,8 @@ PublishMemoryTypeInfo (
             (void **)&Variable
              );
   if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "WARNING: Locating Pei variable failed 0x%x \n", Status));
-    DEBUG((EFI_D_ERROR, "Build Hob from default\n"));
+    DEBUG((DEBUG_ERROR, "WARNING: Locating Pei variable failed 0x%x \n", Status));
+    DEBUG((DEBUG_ERROR, "Build Hob from default\n"));
     //
     // Build the default GUID'd HOB for DXE
     //
@@ -373,7 +373,7 @@ PublishMemoryTypeInfo (
   	//
     //build default
     //
-    DEBUG((EFI_D_ERROR, "Build Hob from default\n"));
+    DEBUG((DEBUG_ERROR, "Build Hob from default\n"));
     BuildGuidDataHob (
       &gEfiMemoryTypeInformationGuid,
       mDefaultMemoryTypeInformation,
@@ -384,7 +384,7 @@ PublishMemoryTypeInfo (
   	//
     // Build the GUID'd HOB for DXE from variable
     //
-    DEBUG((EFI_D_ERROR, "Build Hob from variable \n"));
+    DEBUG((DEBUG_ERROR, "Build Hob from variable \n"));
     BuildGuidDataHob (
       &gEfiMemoryTypeInformationGuid,
       MemoryData,

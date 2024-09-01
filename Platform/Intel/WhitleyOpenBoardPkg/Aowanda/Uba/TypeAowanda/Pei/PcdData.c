@@ -57,7 +57,7 @@ GpioGetRiserId (
   RevId = 0;
   DynamicSiLibraryPpi = NULL;
 
-  DEBUG((EFI_D_INFO, "%a Entry...\n", __FUNCTION__));
+  DEBUG((DEBUG_INFO, "%a Entry...\n", __FUNCTION__));
 
   Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
@@ -71,7 +71,7 @@ GpioGetRiserId (
     //
     for (i = 0; i < EDSFFRiserIdGpioPadsNum; i++){
       Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, mEDSFFRiserId[i], &Data32);
-      DEBUG((EFI_D_INFO,"GpioGetInputValueByPchId[%x] mEDSFFRiserId Status = %r\n", i, Status));
+      DEBUG((DEBUG_INFO,"GpioGetInputValueByPchId[%x] mEDSFFRiserId Status = %r\n", i, Status));
       if (EFI_ERROR(Status)) {
         return Status;
       }
@@ -85,7 +85,7 @@ GpioGetRiserId (
     //
     for (i = 0; i < PCIeRiserIdGpioPadsNum; i++){
       Status = DynamicSiLibraryPpi->GpioGetInputValueByPchId (PCH_LEGACY_ID, mPCIeRiserId[i], &Data32);
-      DEBUG((EFI_D_INFO,"GpioGetInputValueByPchId[%x] PCIe Riser Status = %r\n", i, Status));
+      DEBUG((DEBUG_INFO,"GpioGetInputValueByPchId[%x] PCIe Riser Status = %r\n", i, Status));
       if (EFI_ERROR(Status)) {
         return Status;
       }

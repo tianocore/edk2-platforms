@@ -254,7 +254,7 @@ Returns:
   //
   QNCGetTSEGMemoryRange (&BaseAddress, &SmramLength);
   NewValue = (UINT32)(BaseAddress + SmramLength);
-  DEBUG ((EFI_D_INFO,"Locking HMBOUND at: = 0x%8x\n",NewValue));
+  DEBUG ((DEBUG_INFO,"Locking HMBOUND at: = 0x%8x\n",NewValue));
   QNCPortWrite (QUARK_NC_HOST_BRIDGE_SB_PORT_ID, QUARK_NC_HOST_BRIDGE_HMBOUND_REG, (NewValue | HMBOUND_LOCK));
 
   //

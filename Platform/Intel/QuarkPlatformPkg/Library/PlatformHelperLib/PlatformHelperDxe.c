@@ -173,9 +173,9 @@ PlatformFlashLockConfig (
     Status = SpiProtocol->Lock (SpiProtocol);
 
     if (!EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_INFO, "Platform: Spi Config Locked Down\n"));
+      DEBUG ((DEBUG_INFO, "Platform: Spi Config Locked Down\n"));
     } else if (Status == EFI_ACCESS_DENIED) {
-      DEBUG ((EFI_D_INFO, "Platform: Spi Config already locked down\n"));
+      DEBUG ((DEBUG_INFO, "Platform: Spi Config already locked down\n"));
     } else {
       ASSERT_EFI_ERROR (Status);
     }
@@ -243,7 +243,7 @@ PlatformFlashLockPolicy (
   SpiFlashDeviceSize = (UINTN) PcdGet32 (PcdSpiFlashDeviceSize);
   CpuAddressFlashDevice = SIZE_4GB - SpiFlashDeviceSize;
   DEBUG (
-      (EFI_D_INFO,
+      (DEBUG_INFO,
       "Platform:FlashDeviceSize = 0x%08x Bytes\n",
       SpiFlashDeviceSize)
       );
@@ -264,7 +264,7 @@ PlatformFlashLockPolicy (
     SpiAddress = 0;
     if (!PlatformIsSpiRangeProtected ((UINT32) SpiAddress, (UINT32) (CpuAddressNvStorage - CpuAddressFlashDevice))) {
       DEBUG (
-        (EFI_D_INFO,
+        (DEBUG_INFO,
         "Platform: Protect Region Base:Len 0x%08x:0x%08x\n",
         (UINTN) SpiAddress, (UINTN)(CpuAddressNvStorage - CpuAddressFlashDevice))
         );
@@ -287,7 +287,7 @@ PlatformFlashLockPolicy (
     //
     if (!PlatformIsSpiRangeProtected ((UINT32) SpiAddress, SpiFlashDeviceSize - ((UINT32) SpiAddress))) {
       DEBUG (
-        (EFI_D_INFO,
+        (DEBUG_INFO,
         "Platform: Protect Region Base:Len 0x%08x:0x%08x\n",
         (UINTN) SpiAddress,
         (UINTN) (SpiFlashDeviceSize - ((UINT32) SpiAddress)))

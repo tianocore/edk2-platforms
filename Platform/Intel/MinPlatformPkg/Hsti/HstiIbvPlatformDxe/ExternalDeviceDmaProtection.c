@@ -27,7 +27,7 @@ CheckExternalDeviceDmaProtection (
   }
   Result = TRUE;
 
-  DEBUG ((EFI_D_INFO, "  External Device DMA Protection \n"));
+  DEBUG ((DEBUG_INFO, "  External Device DMA Protection \n"));
 
   //
   // ALL PASS

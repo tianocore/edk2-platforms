@@ -181,7 +181,7 @@ SaveSetupRecoveryVar(
   EDKII_VARIABLE_LOCK_PROTOCOL *VariableLock = NULL;
 
 
-  DEBUG ((EFI_D_INFO, "SaveSetupRecoveryVar() Entry \n"));
+  DEBUG ((DEBUG_INFO, "SaveSetupRecoveryVar() Entry \n"));
   SizeOfNvStore = sizeof(SYSTEM_CONFIGURATION);
   RecoveryNvData = AllocateZeroPool (sizeof(SYSTEM_CONFIGURATION));
   if (NULL == RecoveryNvData) {
@@ -275,10 +275,10 @@ TristateLpcGpioConfig (
     mmio_padval= IO_BASE_ADDRESS + Gpio_Mmio_Offset + R_PCH_CFIO_PAD_VAL   + Gpio_Conf_Data[index].offset * 16;
 
 #ifdef EFI_DEBUG
-    DEBUG ((EFI_D_INFO, "%s, ", Gpio_Conf_Data[index].pad_name));
+    DEBUG ((DEBUG_INFO, "%s, ", Gpio_Conf_Data[index].pad_name));
 
 #endif
-    DEBUG ((EFI_D_INFO, "Usage = %d, Func# = %d, IntType = %d, Pull Up/Down = %d, MMIO Base = 0x%08x, ",
+    DEBUG ((DEBUG_INFO, "Usage = %d, Func# = %d, IntType = %d, Pull Up/Down = %d, MMIO Base = 0x%08x, ",
       Gpio_Conf_Data[index].usage,
       Gpio_Conf_Data[index].func,
       Gpio_Conf_Data[index].int_type,
@@ -308,7 +308,7 @@ TristateLpcGpioConfig (
     }
 
 
-    DEBUG ((EFI_D_INFO, "Set PAD_VAL = 0x%08x, ", pad_val.dw));
+    DEBUG ((DEBUG_INFO, "Set PAD_VAL = 0x%08x, ", pad_val.dw));
 
     MmioWrite32(mmio_padval, pad_val.dw);
 
@@ -374,7 +374,7 @@ TristateLpcGpioConfig (
       conf0_val.dw |= (Gpio_Conf_Data[index].int_type & 0x0f)<<24;
     }
 
-    DEBUG ((EFI_D_INFO, "Set CONF0 = 0x%08x\n", conf0_val.dw));
+    DEBUG ((DEBUG_INFO, "Set CONF0 = 0x%08x\n", conf0_val.dw));
 
     //
     // Write back the targeted GPIO config value according to platform (board) GPIO setting
@@ -430,7 +430,7 @@ SpiBiosProtectionFunction(
     //
     //Already locked. we could take no action here
     //
-    DEBUG((EFI_D_INFO, "PR0 already locked down. Stop configuring PR0.\n"));
+    DEBUG((DEBUG_INFO, "PR0 already locked down. Stop configuring PR0.\n"));
     return;
   }
 
@@ -458,7 +458,7 @@ SpiBiosProtectionFunction(
   // Verify if it's really locked.
   //
   if ((MmioRead16 (SpiBase + R_PCH_SPI_HSFS) & B_PCH_SPI_HSFS_FLOCKDN) == 0) {
-    DEBUG((EFI_D_ERROR, "Failed to lock down PRx.\n"));
+    DEBUG((DEBUG_ERROR, "Failed to lock down PRx.\n"));
   }
   return;
 
@@ -492,7 +492,7 @@ InitPciDevPME (
   //
   PchSataPciCfg32Or (R_PCH_SATA_PMCS, B_PCH_SATA_PMCS_PMEE);
 
-  DEBUG ((EFI_D_INFO, "InitPciDevPME mSystemConfiguration.EhciPllCfgEnable = 0x%x \n",mSystemConfiguration.EhciPllCfgEnable));
+  DEBUG ((DEBUG_INFO, "InitPciDevPME mSystemConfiguration.EhciPllCfgEnable = 0x%x \n",mSystemConfiguration.EhciPllCfgEnable));
  if (mSystemConfiguration.EhciPllCfgEnable != 1) {
   //
   //Program EHCI PME_EN
@@ -516,9 +516,9 @@ InitPciDevPME (
                       PCI_FUNCTION_NUMBER_PCH_EHCI,
                       0
                     );
-    DEBUG ((EFI_D_INFO, "ConfigureAdditionalPm() EhciPciMmBase = 0x%x \n",EhciPciMmBase));
+    DEBUG ((DEBUG_INFO, "ConfigureAdditionalPm() EhciPciMmBase = 0x%x \n",EhciPciMmBase));
     Buffer32 = MmioRead32(EhciPciMmBase + R_PCH_EHCI_PWR_CNTL_STS);
-    DEBUG ((EFI_D_INFO, "ConfigureAdditionalPm() R_PCH_EHCI_PWR_CNTL_STS = 0x%x \n",Buffer32));
+    DEBUG ((DEBUG_INFO, "ConfigureAdditionalPm() R_PCH_EHCI_PWR_CNTL_STS = 0x%x \n",Buffer32));
   }
 }
 
@@ -575,7 +575,7 @@ TristateLpcGpioS0i3Config (
       mmio_val = 0;
       mmio_val = MmioRead32(mmio_reg);
 
-      DEBUG ((EFI_D_INFO, "Set MMIO=0x%08x  PAD_VAL = 0x%08x,\n", mmio_reg, mmio_val));
+      DEBUG ((DEBUG_INFO, "Set MMIO=0x%08x  PAD_VAL = 0x%08x,\n", mmio_reg, mmio_val));
     }
 
      return EFI_SUCCESS;
@@ -623,7 +623,7 @@ EnableAcpiCallback (
                PCI_FUNCTION_NUMBER_PCH_LPC) + R_PCH_LPC_ACPI_BASE
                ) & B_PCH_LPC_ACPI_BASE_BAR;
 
-  DEBUG ((EFI_D_INFO, "EnableAcpiCallback: AcpiBase = %x\n", AcpiBase));
+  DEBUG ((DEBUG_INFO, "EnableAcpiCallback: AcpiBase = %x\n", AcpiBase));
 
   //
   // Disable SW SMI Timer, SMI from USB & Intel Specific USB 2
@@ -741,7 +741,7 @@ InitializePlatform (
 
   Status = SaveSetupRecoveryVar();
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "InitializePlatform() Save SetupRecovery variable failed \n"));
+    DEBUG ((DEBUG_ERROR, "InitializePlatform() Save SetupRecovery variable failed \n"));
   }
 
   VarSize = sizeof(SYSTEM_CONFIGURATION);

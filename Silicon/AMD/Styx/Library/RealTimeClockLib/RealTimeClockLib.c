@@ -55,7 +55,7 @@ LibGetTime (
   EFI_STATUS     Status;
 
   if (mRtcIscpDxeProtocol == NULL) {
-      DEBUG((EFI_D_ERROR, "RTC: ISCP DXE Protocol is NULL!\n"));
+      DEBUG((DEBUG_ERROR, "RTC: ISCP DXE Protocol is NULL!\n"));
       return EFI_DEVICE_ERROR;
   }
 
@@ -67,7 +67,7 @@ LibGetTime (
                                   &RtcInfo
                                   );
   if (EFI_ERROR(Status)) {
-      DEBUG((EFI_D_ERROR, "RTC: Failed GetRtc() via ISCP - Status = %r \n", Status));
+      DEBUG((DEBUG_ERROR, "RTC: Failed GetRtc() via ISCP - Status = %r \n", Status));
       return Status;
   }
 
@@ -112,7 +112,7 @@ LibSetTime (
   RtcInfo.Second = Time->Second;
 
   if (mRtcIscpDxeProtocol == NULL) {
-      DEBUG((EFI_D_ERROR, "RTC: ISCP DXE Protocol is NULL!\n"));
+      DEBUG((DEBUG_ERROR, "RTC: ISCP DXE Protocol is NULL!\n"));
       return EFI_DEVICE_ERROR;
   }
 
@@ -121,7 +121,7 @@ LibSetTime (
                                   &RtcInfo
                                   );
   if (EFI_ERROR(Status)) {
-      DEBUG((EFI_D_ERROR, "RTC: Failed SetRtc() via ISCP - Status = %r \n", Status));
+      DEBUG((DEBUG_ERROR, "RTC: Failed SetRtc() via ISCP - Status = %r \n", Status));
       return Status;
   }
 
@@ -233,7 +233,7 @@ LibRtcInitialize (
                (VOID **)&mRtcIscpDxeProtocol
                );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "RTC: Failed to Locate ISCP DXE Protocol - Status = %r \n", Status));
+    DEBUG ((DEBUG_ERROR, "RTC: Failed to Locate ISCP DXE Protocol - Status = %r \n", Status));
     return Status;
   }
 

@@ -136,7 +136,7 @@ Uint32SqRt (
        Mask = Mask >> 1
       ) {
     SqRtMask = SqRt | Mask;
-    //DEBUG ((EFI_D_INFO, "Uint32=0x%x SqRtMask=0x%x\n", Uint32, SqRtMask));
+    //DEBUG ((DEBUG_INFO, "Uint32=0x%x SqRtMask=0x%x\n", Uint32, SqRtMask));
     Squared = (UINT32) (SqRtMask * SqRtMask);
     if (Squared > Uint32) {
       continue;
@@ -196,14 +196,14 @@ TestColor (
                         10000000
                         );
   if (TriWidth > ScreenWidth) {
-    DEBUG ((EFI_D_INFO, "TriWidth at %d was too big\n", TriWidth));
+    DEBUG ((DEBUG_INFO, "TriWidth at %d was too big\n", TriWidth));
     TriWidth = ScreenWidth;
   } else if (TriHeight > ScreenHeight) {
-    DEBUG ((EFI_D_INFO, "TriHeight at %d was too big\n", TriHeight));
+    DEBUG ((DEBUG_INFO, "TriHeight at %d was too big\n", TriHeight));
     TriHeight = ScreenHeight;
   }
 
-  DEBUG ((EFI_D_INFO, "Triangle Width: %d; Height: %d\n", TriWidth, TriHeight));
+  DEBUG ((DEBUG_INFO, "Triangle Width: %d; Height: %d\n", TriWidth, TriHeight));
 
   X1 = (ScreenWidth - TriWidth) / 2;
   X3 = X1 + TriWidth - 1;

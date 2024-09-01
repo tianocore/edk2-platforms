@@ -21,7 +21,7 @@ AcpiPmControl (
   )
 {
   ASSERT (SuspendType < 6);
-  DEBUG((EFI_D_ERROR, "SuspendType = 0x%x\n", SuspendType));
+  DEBUG((DEBUG_ERROR, "SuspendType = 0x%x\n", SuspendType));
 
   IoBitFieldWrite16 (ICH10_PMBASE_IO + 4, 10, 13, (UINT16) SuspendType);
   IoOr16 (ICH10_PMBASE_IO + 0x04, BIT13);
@@ -43,11 +43,11 @@ ResetCold (
   VOID
   )
 {
-  DEBUG((EFI_D_ERROR, "ResetCold_CF9\n"));
+  DEBUG((DEBUG_ERROR, "ResetCold_CF9\n"));
   IoWrite8 (0xCF9, BIT3 | BIT2 | BIT1); // 1st choice: PIIX3 RCR, RCPU|SRST
   MicroSecondDelay (50);
 
-  DEBUG((EFI_D_ERROR, "ResetCold_Port64\n"));
+  DEBUG((DEBUG_ERROR, "ResetCold_Port64\n"));
   IoWrite8 (0x64, 0xfe);         // 2nd choice: keyboard controller
   CpuDeadLoop ();
 }
@@ -65,7 +65,7 @@ ResetWarm (
   VOID
   )
 {
-  DEBUG((EFI_D_ERROR, "ResetWarm\n"));
+  DEBUG((DEBUG_ERROR, "ResetWarm\n"));
   //
   //BUGBUG workaround for warm reset
   //
@@ -89,7 +89,7 @@ ResetShutdown (
   VOID
   )
 {
-  DEBUG((EFI_D_ERROR, "ResetShutdown\n"));
+  DEBUG((DEBUG_ERROR, "ResetShutdown\n"));
   AcpiPmControl (0);
   ASSERT (FALSE);
 }
@@ -109,7 +109,7 @@ EnterS3WithImmediateWake (
   VOID
   )
 {
-  DEBUG((EFI_D_ERROR, "EnterS3WithImmediateWake\n"));
+  DEBUG((DEBUG_ERROR, "EnterS3WithImmediateWake\n"));
   AcpiPmControl (1);
   ASSERT (FALSE);
 }
@@ -132,6 +132,6 @@ ResetPlatformSpecific (
   IN VOID    *ResetData
   )
 {
-  DEBUG((EFI_D_ERROR, "ResetPlatformSpecific\n"));
+  DEBUG((DEBUG_ERROR, "ResetPlatformSpecific\n"));
   ResetCold ();
 }

@@ -165,7 +165,7 @@ FindFfsSectionInstance (
     }
 
     Section = (EFI_COMMON_SECTION_HEADER*)(UINTN) CurrentAddress;
-    DEBUG ((EFI_D_VERBOSE, "Section->Type: 0x%x\n", Section->Type));
+    DEBUG ((DEBUG_VERBOSE, "Section->Type: 0x%x\n", Section->Type));
 
     Size = SECTION_SIZE (Section);
     if (Size < sizeof (*Section)) {
@@ -188,7 +188,7 @@ FindFfsSectionInstance (
         Instance--;
       }
     }
-    DEBUG ((EFI_D_VERBOSE, "Section->Type (0x%x) != SectionType (0x%x)\n", Section->Type, SectionType));
+    DEBUG ((DEBUG_VERBOSE, "Section->Type (0x%x) != SectionType (0x%x)\n", Section->Type, SectionType));
   }
 
   return EFI_NOT_FOUND;
@@ -255,7 +255,7 @@ FindFfsFileAndSection (
   EFI_PHYSICAL_ADDRESS        EndOfFile;
 
   if (Fv->Signature != EFI_FVH_SIGNATURE) {
-    DEBUG ((EFI_D_ERROR, "FV at %p does not have FV header signature\n", Fv));
+    DEBUG ((DEBUG_ERROR, "FV at %p does not have FV header signature\n", Fv));
     return EFI_VOLUME_CORRUPTED;
   }
 
@@ -277,7 +277,7 @@ FindFfsFileAndSection (
     if (Size < (sizeof (*File) + sizeof (EFI_COMMON_SECTION_HEADER))) {
       return EFI_VOLUME_CORRUPTED;
     }
-    DEBUG ((EFI_D_VERBOSE, "File->Type: 0x%x\n", File->Type));
+    DEBUG ((DEBUG_VERBOSE, "File->Type: 0x%x\n", File->Type));
 
     EndOfFile = CurrentAddress + Size;
     if (EndOfFile > EndOfFirmwareVolume) {
@@ -288,7 +288,7 @@ FindFfsFileAndSection (
     // Look for the request file type
     //
     if (File->Type != FileType) {
-      DEBUG ((EFI_D_VERBOSE, "File->Type (0x%x) != FileType (0x%x)\n", File->Type, FileType));
+      DEBUG ((DEBUG_VERBOSE, "File->Type (0x%x) != FileType (0x%x)\n", File->Type, FileType));
       continue;
     }
 
@@ -336,7 +336,7 @@ DecompressMemFvs (
 
   FvSection = (EFI_COMMON_SECTION_HEADER*) NULL;
 
-  DEBUG ((EFI_D_VERBOSE, "Find and decompress FV image.\n"));
+  DEBUG ((DEBUG_VERBOSE, "Find and decompress FV image.\n"));
   Status = FindFfsFileAndSection (
              *Fv,
              EFI_FV_FILETYPE_FIRMWARE_VOLUME_IMAGE,
@@ -344,7 +344,7 @@ DecompressMemFvs (
              (EFI_COMMON_SECTION_HEADER**) &Section
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unable to find GUID defined section\n"));
+    DEBUG ((DEBUG_ERROR, "Unable to find GUID defined section\n"));
     return Status;
   }
 
@@ -355,21 +355,21 @@ DecompressMemFvs (
              &SectionAttribute
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unable to GetInfo for GUIDed section\n"));
+    DEBUG ((DEBUG_ERROR, "Unable to GetInfo for GUIDed section\n"));
     return Status;
   }
 
   OutputBuffer = (VOID*) ((UINT8*)(UINTN) PcdGet32 (PcdSimicsDxeMemFvBase) + SIZE_1MB);
   ScratchBuffer = ALIGN_POINTER ((UINT8*) OutputBuffer + OutputBufferSize, SIZE_1MB);
 
-  DEBUG ((EFI_D_VERBOSE, "PcdSimicsDxeMemFvBase: 0x%x\n", PcdGet32 (PcdSimicsDxeMemFvBase)));
-  DEBUG ((EFI_D_VERBOSE, "OutputBuffer: 0x%x\n", OutputBuffer));
-  DEBUG ((EFI_D_VERBOSE, "OutputBufferSize: 0x%x\n", OutputBufferSize));
-  DEBUG ((EFI_D_VERBOSE, "ScratchBuffer: 0x%x\n", ScratchBuffer));
-  DEBUG ((EFI_D_VERBOSE, "ScratchBufferSize: 0x%x\n", ScratchBufferSize));
-  DEBUG ((EFI_D_VERBOSE, "PcdSimicsDecompressionScratchEnd: 0x%x\n", PcdGet32 (PcdSimicsDecompressionScratchEnd)));
+  DEBUG ((DEBUG_VERBOSE, "PcdSimicsDxeMemFvBase: 0x%x\n", PcdGet32 (PcdSimicsDxeMemFvBase)));
+  DEBUG ((DEBUG_VERBOSE, "OutputBuffer: 0x%x\n", OutputBuffer));
+  DEBUG ((DEBUG_VERBOSE, "OutputBufferSize: 0x%x\n", OutputBufferSize));
+  DEBUG ((DEBUG_VERBOSE, "ScratchBuffer: 0x%x\n", ScratchBuffer));
+  DEBUG ((DEBUG_VERBOSE, "ScratchBufferSize: 0x%x\n", ScratchBufferSize));
+  DEBUG ((DEBUG_VERBOSE, "PcdSimicsDecompressionScratchEnd: 0x%x\n", PcdGet32 (PcdSimicsDecompressionScratchEnd)));
 
-  DEBUG ((EFI_D_VERBOSE, "%a: OutputBuffer@%p+0x%x ScratchBuffer@%p+0x%x "
+  DEBUG ((DEBUG_VERBOSE, "%a: OutputBuffer@%p+0x%x ScratchBuffer@%p+0x%x "
     "PcdSimicsDecompressionScratchEnd=0x%x\n", __FUNCTION__, OutputBuffer,
     OutputBufferSize, ScratchBuffer, ScratchBufferSize,
     PcdGet32 (PcdSimicsDecompressionScratchEnd)));
@@ -383,7 +383,7 @@ DecompressMemFvs (
              &AuthenticationStatus
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Error during GUID section decode\n"));
+    DEBUG ((DEBUG_ERROR, "Error during GUID section decode\n"));
     return Status;
   }
 
@@ -395,7 +395,7 @@ DecompressMemFvs (
              &FvSection
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unable to find PEI FV section\n"));
+    DEBUG ((DEBUG_ERROR, "Unable to find PEI FV section\n"));
     return Status;
   }
 
@@ -407,7 +407,7 @@ DecompressMemFvs (
   CopyMem (PeiMemFv, (VOID*) (FvSection + 1), PcdGet32 (PcdSimicsPeiMemFvSize));
 
   if (PeiMemFv->Signature != EFI_FVH_SIGNATURE) {
-    DEBUG ((EFI_D_ERROR, "Extracted FV at %p does not have FV header signature\n", PeiMemFv));
+    DEBUG ((DEBUG_ERROR, "Extracted FV at %p does not have FV header signature\n", PeiMemFv));
     CpuDeadLoop ();
     return EFI_VOLUME_CORRUPTED;
   }
@@ -420,7 +420,7 @@ DecompressMemFvs (
              &FvSection
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Unable to find DXE FV section\n"));
+    DEBUG ((DEBUG_ERROR, "Unable to find DXE FV section\n"));
     return Status;
   }
 
@@ -440,7 +440,7 @@ DecompressMemFvs (
   CopyMem (DxeMemFv, (VOID*) ((UINTN)FvSection + FvHeaderSize), PcdGet32 (PcdSimicsDxeMemFvSize));
 
   if (DxeMemFv->Signature != EFI_FVH_SIGNATURE) {
-    DEBUG ((EFI_D_ERROR, "Extracted FV at %p does not have FV header signature\n", DxeMemFv));
+    DEBUG ((DEBUG_ERROR, "Extracted FV at %p does not have FV header signature\n", DxeMemFv));
     CpuDeadLoop ();
     return EFI_VOLUME_CORRUPTED;
   }
@@ -469,7 +469,7 @@ FindPeiCoreImageBaseInFv (
   EFI_STATUS                  Status;
   EFI_COMMON_SECTION_HEADER   *Section;
 
-  DEBUG ((EFI_D_VERBOSE, "Find PEI Core image.\n"));
+  DEBUG ((DEBUG_VERBOSE, "Find PEI Core image.\n"));
   Status = FindFfsFileAndSection (
              Fv,
              EFI_FV_FILETYPE_PEI_CORE,
@@ -484,13 +484,13 @@ FindPeiCoreImageBaseInFv (
                &Section
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "Unable to find PEI Core image\n"));
+      DEBUG ((DEBUG_ERROR, "Unable to find PEI Core image\n"));
       return Status;
     }
   }
 
   *PeiCoreImageBase = (EFI_PHYSICAL_ADDRESS)(UINTN)(Section + 1);
-  DEBUG ((EFI_D_VERBOSE, "PEI core image base 0x%016LX.\n", *PeiCoreImageBase));
+  DEBUG ((DEBUG_VERBOSE, "PEI core image base 0x%016LX.\n", *PeiCoreImageBase));
   return EFI_SUCCESS;
 }
 
@@ -500,7 +500,7 @@ IsS3Resume (
   VOID
   )
 {
-  DEBUG((EFI_D_VERBOSE, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
+  DEBUG((DEBUG_VERBOSE, "modeValue = %x\n", IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12)));
   return (IoBitFieldRead16(ICH10_PMBASE_IO + 4, 10, 12) == 0x5);
 }
 
@@ -543,14 +543,14 @@ FindPeiCoreImageBase (
     // A malicious runtime OS may have injected something into our previously
     // decoded PEI FV, but we don't care about that unless SMM/SMRAM is required.
     //
-    DEBUG ((EFI_D_VERBOSE, "SEC: S3 resume\n"));
+    DEBUG ((DEBUG_VERBOSE, "SEC: S3 resume\n"));
     GetS3ResumePeiFv (BootFv);
   } else {
     //
     // We're either not resuming, or resuming "securely" -- we'll decompress
     // both PEI FV and DXE FV from pristine flash.
     //
-    DEBUG ((EFI_D_VERBOSE, "SEC: %a\n",
+    DEBUG ((DEBUG_VERBOSE, "SEC: %a\n",
       S3Resume ? "S3 resume (with PEI decompression)" : "Normal boot"));
     FindMainFv (BootFv);
 
@@ -739,7 +739,7 @@ SecCoreStartupWithStack (
 
   ProcessLibraryConstructorList ();
 
-  DEBUG ((EFI_D_INFO,
+  DEBUG ((DEBUG_INFO,
     "SecCoreStartupWithStack(0x%x, 0x%x)\n",
     (UINT32)(UINTN)BootFv,
     (UINT32)(UINTN)TopOfCurrentStack
@@ -868,7 +868,7 @@ TemporaryRamMigration (
   BOOLEAN                          OldStatus;
   BASE_LIBRARY_JUMP_BUFFER         JumpBuffer;
 
-  DEBUG ((EFI_D_INFO,
+  DEBUG ((DEBUG_INFO,
     "TemporaryRamMigration(0x%Lx, 0x%Lx, 0x%Lx)\n",
     TemporaryMemoryBase,
     PermanentMemoryBase,

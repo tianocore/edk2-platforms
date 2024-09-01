@@ -21,7 +21,7 @@ ExitBootServicesEventSmmu (
   IN VOID       *Context
   )
 {
-  DEBUG((EFI_D_INFO,"SMMU ExitBootServicesEvent\n"));
+  DEBUG((DEBUG_INFO,"SMMU ExitBootServicesEvent\n"));
 }
 
 
@@ -48,7 +48,7 @@ IoInitDxeEntry (
 
   if (EFI_ERROR(Status))
   {
-    DEBUG ((EFI_D_ERROR, "[%a:%d] - CreateEvent failed: %r\n", __FUNCTION__,
+    DEBUG ((DEBUG_ERROR, "[%a:%d] - CreateEvent failed: %r\n", __FUNCTION__,
         __LINE__, Status));
   }
 

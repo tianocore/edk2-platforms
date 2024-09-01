@@ -364,7 +364,7 @@ Returns:
   ASSERT_EFI_ERROR(Status);
 
   DEBUG (
-    (EFI_D_INFO, "SMM Base:Size %08X:%08X\n",
+    (DEBUG_INFO, "SMM Base:Size %08X:%08X\n",
     (UINTN)(SmmAccessPrivate->SmramDesc[SmmAccessPrivate->NumberRegions-1].PhysicalStart),
     (UINTN)(SmmAccessPrivate->SmramDesc[SmmAccessPrivate->NumberRegions-1].PhysicalSize)
     ));

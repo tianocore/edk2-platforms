@@ -76,7 +76,7 @@ MMCSDBlockReadBlocks (
   BOOLEAN                     SectorAddressing;
   UINTN                       TotalBlock;
 
-  DEBUG((EFI_D_INFO, "Read(LBA=%08lx, Buffer=%08x, Size=%08x)\n", LBA, Buffer, BufferSize));
+  DEBUG((DEBUG_INFO, "Read(LBA=%08lx, Buffer=%08x, Size=%08x)\n", LBA, Buffer, BufferSize));
   Status   = EFI_SUCCESS;
   CardData  = CARD_DATA_FROM_THIS(This);
   SDHostIo = CardData->SDHostIo;
@@ -111,13 +111,13 @@ MMCSDBlockReadBlocks (
 
   if (!Buffer) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG ((EFI_D_ERROR, "MMCSDBlockReadBlocks:Invalid parameter \r\n"));
+    DEBUG ((DEBUG_ERROR, "MMCSDBlockReadBlocks:Invalid parameter \r\n"));
     goto Done;
   }
 
   if ((BufferSize % CardData->BlockIoMedia.BlockSize) != 0) {
     Status = EFI_BAD_BUFFER_SIZE;
-    DEBUG ((EFI_D_ERROR, "MMCSDBlockReadBlocks: Bad buffer size \r\n"));
+    DEBUG ((DEBUG_ERROR, "MMCSDBlockReadBlocks: Bad buffer size \r\n"));
     goto Done;
   }
 
@@ -185,7 +185,7 @@ MMCSDBlockReadBlocks (
                  );
 
       if (EFI_ERROR (Status)) {
-        DEBUG ((EFI_D_ERROR, "MMCSDBlockReadBlocks: READ_MULTIPLE_BLOCK -> Fail\n"));
+        DEBUG ((DEBUG_ERROR, "MMCSDBlockReadBlocks: READ_MULTIPLE_BLOCK -> Fail\n"));
         break;
       }
     } else {
@@ -207,7 +207,7 @@ MMCSDBlockReadBlocks (
                  (UINT32*)&(CardData->CardStatus)
                  );
       if (EFI_ERROR (Status)) {
-        DEBUG ((EFI_D_ERROR, "MMCSDBlockReadBlocks: READ_SINGLE_BLOCK -> Fail\n"));
+        DEBUG ((DEBUG_ERROR, "MMCSDBlockReadBlocks: READ_SINGLE_BLOCK -> Fail\n"));
         break;
       }
     }
@@ -262,7 +262,7 @@ MMCSDBlockReadBlocks (
 
 
 Done:
-  DEBUG((EFI_D_INFO, "MMCSDBlockReadBlocks: Status = %r\n", Status));
+  DEBUG((DEBUG_INFO, "MMCSDBlockReadBlocks: Status = %r\n", Status));
   return Status;
 }
 
@@ -305,7 +305,7 @@ MMCSDBlockWriteBlocks (
   UINT8                       *BufferPointer;
   BOOLEAN                     SectorAddressing;
 
-  DEBUG((EFI_D_INFO, "Write(LBA=%08lx, Buffer=%08x, Size=%08x)\n", LBA, Buffer, BufferSize));
+  DEBUG((DEBUG_INFO, "Write(LBA=%08lx, Buffer=%08x, Size=%08x)\n", LBA, Buffer, BufferSize));
   Status   = EFI_SUCCESS;
   CardData  = CARD_DATA_FROM_THIS(This);
   SDHostIo = CardData->SDHostIo;
@@ -328,13 +328,13 @@ MMCSDBlockWriteBlocks (
 
   if (!Buffer) {
     Status = EFI_INVALID_PARAMETER;
-    DEBUG ((EFI_D_ERROR, "MMCSDBlockWriteBlocks: Invalid parameter \r\n"));
+    DEBUG ((DEBUG_ERROR, "MMCSDBlockWriteBlocks: Invalid parameter \r\n"));
     goto Done;
   }
 
   if ((BufferSize % CardData->BlockIoMedia.BlockSize) != 0) {
     Status = EFI_BAD_BUFFER_SIZE;
-    DEBUG ((EFI_D_ERROR, "MMCSDBlockWriteBlocks: Bad buffer size \r\n"));
+    DEBUG ((DEBUG_ERROR, "MMCSDBlockWriteBlocks: Bad buffer size \r\n"));
     goto Done;
   }
 
@@ -345,7 +345,7 @@ MMCSDBlockWriteBlocks (
 
   if (This->Media->ReadOnly == TRUE) {
     Status = EFI_WRITE_PROTECTED;
-    DEBUG ((EFI_D_ERROR, "MMCSDBlockWriteBlocks: Write protected \r\n"));
+    DEBUG ((DEBUG_ERROR, "MMCSDBlockWriteBlocks: Write protected \r\n"));
     goto Done;
   }
 
@@ -410,7 +410,7 @@ MMCSDBlockWriteBlocks (
                  (UINT32*)&(CardData->CardStatus)
                  );
       if (EFI_ERROR (Status)) {
-        DEBUG ((EFI_D_ERROR, "MMCSDBlockWriteBlocks: WRITE_MULTIPLE_BLOCK -> Fail\n"));
+        DEBUG ((DEBUG_ERROR, "MMCSDBlockWriteBlocks: WRITE_MULTIPLE_BLOCK -> Fail\n"));
         break;
       }
     } else {

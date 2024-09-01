@@ -516,7 +516,7 @@ BootMonFsEntryPoint (
                     );
     ASSERT_EFI_ERROR (Status);
   } else {
-    DEBUG((EFI_D_ERROR,"Warning: No Device Paths supporting BootMonFs have been defined in the PCD.\n"));
+    DEBUG((DEBUG_ERROR,"Warning: No Device Paths supporting BootMonFs have been defined in the PCD.\n"));
   }
 
   return Status;

@@ -27,7 +27,7 @@ CheckSecureBootBypass (
   }
 
   Result = TRUE;
-  DEBUG ((EFI_D_INFO, "  Secure Boot Bypass\n"));
+  DEBUG ((DEBUG_INFO, "  Secure Boot Bypass\n"));
 
   //
   // ALL PASS

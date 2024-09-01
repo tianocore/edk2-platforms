@@ -199,16 +199,16 @@ UtmiPhyPowerUp (
   Data = MmioRead32 (UtmiPllAddr + UTMI_CALIB_CTRL_REG);
   if ((Data & UTMI_CALIB_CTRL_IMPCAL_DONE_MASK) == 0) {
     DEBUG((DEBUG_ERROR, "UtmiPhy: Impedance calibration is not done\n"));
-    Status = EFI_D_ERROR;
+    Status = DEBUG_ERROR;
   }
   if ((Data & UTMI_CALIB_CTRL_PLLCAL_DONE_MASK) == 0) {
     DEBUG((DEBUG_ERROR, "UtmiPhy: PLL calibration is not done\n"));
-    Status = EFI_D_ERROR;
+    Status = DEBUG_ERROR;
   }
   Data = MmioRead32 (UtmiPllAddr + UTMI_PLL_CTRL_REG);
   if ((Data & UTMI_PLL_CTRL_PLL_RDY_MASK) == 0) {
     DEBUG((DEBUG_ERROR, "UtmiPhy: PLL is not ready\n"));
-    Status = EFI_D_ERROR;
+    Status = DEBUG_ERROR;
   }
 
   return Status;

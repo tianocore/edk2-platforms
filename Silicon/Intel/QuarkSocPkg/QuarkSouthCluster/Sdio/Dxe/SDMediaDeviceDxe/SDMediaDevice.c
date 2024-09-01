@@ -138,20 +138,20 @@ SDMediaDeviceStart (
                   EFI_OPEN_PROTOCOL_BY_DRIVER
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to open gEfiSDHostIoProtocolGuid \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to open gEfiSDHostIoProtocolGuid \r\n"));
     goto Exit;
   }
 
   Status = SDHostIo->DetectCardAndInitHost (SDHostIo);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_INFO, "SDMediaDeviceStart: Fail to DetectCardAndInitHost \r\n"));
+    DEBUG ((DEBUG_INFO, "SDMediaDeviceStart: Fail to DetectCardAndInitHost \r\n"));
     goto Exit;
   }
 
   CardData = (CARD_DATA*)AllocateZeroPool(sizeof (CARD_DATA));
   if (CardData == NULL) {
     Status =  EFI_OUT_OF_RESOURCES;
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to AllocateZeroPool(CARD_DATA) \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to AllocateZeroPool(CARD_DATA) \r\n"));
     goto Exit;
   }
 
@@ -165,7 +165,7 @@ SDMediaDeviceStart (
                   );
 
   if (CardData->RawBufferPointer == NULL) {
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to AllocateZeroPool(2*x) \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to AllocateZeroPool(2*x) \r\n"));
     Status =  EFI_OUT_OF_RESOURCES;
     goto Exit;
   }
@@ -176,10 +176,10 @@ SDMediaDeviceStart (
 
   Status = MMCSDCardInit (CardData);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to MMCSDCardInit \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to MMCSDCardInit \r\n"));
     goto Exit;
   }
-  DEBUG ((EFI_D_INFO, "SDMediaDeviceStart: MMCSDCardInit SuccessFul\n"));
+  DEBUG ((DEBUG_INFO, "SDMediaDeviceStart: MMCSDCardInit SuccessFul\n"));
 
   if (CardData->CardType == CEATACard) {
     Status = CEATABlockIoInit (CardData);
@@ -188,10 +188,10 @@ SDMediaDeviceStart (
   }
 
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to BlockIoInit \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to BlockIoInit \r\n"));
     goto Exit;
   }
-  DEBUG ((EFI_D_INFO, "SDMediaDeviceStart: BlockIo is successfully installed\n"));
+  DEBUG ((DEBUG_INFO, "SDMediaDeviceStart: BlockIo is successfully installed\n"));
 
 
   Status = gBS->InstallProtocolInterface (
@@ -201,7 +201,7 @@ SDMediaDeviceStart (
                   &CardData->BlockIo
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SDMediaDeviceStart: Fail to install gEfiBlockIoProtocolGuid \r\n"));
+    DEBUG ((DEBUG_ERROR, "SDMediaDeviceStart: Fail to install gEfiBlockIoProtocolGuid \r\n"));
     goto Exit;
   }
 
@@ -227,7 +227,7 @@ SDMediaDeviceStart (
 
 Exit:
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_INFO, "SDMediaDeviceStart: End with failure\r\n"));
+    DEBUG ((DEBUG_INFO, "SDMediaDeviceStart: End with failure\r\n"));
     if (CardData != NULL) {
       if (CardData->RawBufferPointer != NULL) {
         gBS->FreePages ((EFI_PHYSICAL_ADDRESS) (UINTN) CardData->RawBufferPointer, EFI_SIZE_TO_PAGES (2 * SDHostIo->HostCapability.BoundarySize));

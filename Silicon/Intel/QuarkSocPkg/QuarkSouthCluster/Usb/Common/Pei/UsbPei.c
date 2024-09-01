@@ -82,7 +82,7 @@ SwitchConfigFlag (
     EhciCapLen = MmioRead8 (UsbBaseAddr + R_IOH_EHCI_CAPLENGTH);
     MmioWrite32 (UsbBaseAddr + EhciCapLen + R_IOH_EHCI_CONFIGFLAGS, 0);
 
-    DEBUG ((EFI_D_INFO, "CF@EHCI = %x \n", UsbBaseAddr + EhciCapLen + R_IOH_EHCI_CONFIGFLAGS));
+    DEBUG ((DEBUG_INFO, "CF@EHCI = %x \n", UsbBaseAddr + EhciCapLen + R_IOH_EHCI_CONFIGFLAGS));
     //
     // Restore EHCI UsbBaseAddr in PCI space
     //
@@ -233,7 +233,7 @@ PeimInitializeIchUsb (
     );
 
   if (FeaturePcdGet (PcdEhciRecoveryEnabled)) {
-    DEBUG ((EFI_D_INFO, "UsbPei:EHCI is used for recovery\n"));
+    DEBUG ((DEBUG_INFO, "UsbPei:EHCI is used for recovery\n"));
     //
     // EHCI recovery is enabled
     //
@@ -249,7 +249,7 @@ PeimInitializeIchUsb (
     // Assign resources and enable Ehci controllers
     //
     for (i = 0; i < IOH_MAX_EHCI_USB_CONTROLLERS; i++) {
-      DEBUG ((EFI_D_INFO, "UsbPei:Enable the %dth EHCI controller for recovery\n", i));
+      DEBUG ((DEBUG_INFO, "UsbPei:Enable the %dth EHCI controller for recovery\n", i));
       PeiIohEhciDev->MmioBase[i] = PcdGet32(PcdPeiQNCUsbControllerMemoryBaseAddress) + IOH_USB_CONTROLLER_MMIO_RANGE * i;
       //
       // Assign base address register, Enable Bus Master and Memory Io
@@ -269,7 +269,7 @@ PeimInitializeIchUsb (
 
     ASSERT_EFI_ERROR (Status);
   } else {
-    DEBUG ((EFI_D_INFO, "UsbPei:OHCI is used for recovery\n"));
+    DEBUG ((DEBUG_INFO, "UsbPei:OHCI is used for recovery\n"));
     //
     // OHCI recovery is enabled
     //
@@ -285,7 +285,7 @@ PeimInitializeIchUsb (
     // Assign resources and enable OHCI controllers
     //
     for (i = 0; i < IOH_MAX_OHCI_USB_CONTROLLERS; i++) {
-      DEBUG ((EFI_D_INFO, "UsbPei:Enable the %dth OHCI controller for recovery\n", i));
+      DEBUG ((DEBUG_INFO, "UsbPei:Enable the %dth OHCI controller for recovery\n", i));
       PeiIohOhciDev->MmioBase[i] = PcdGet32(PcdPeiQNCUsbControllerMemoryBaseAddress) + IOH_USB_CONTROLLER_MMIO_RANGE * i;
       //
       // Assign base address register, Enable Bus Master and Memory Io

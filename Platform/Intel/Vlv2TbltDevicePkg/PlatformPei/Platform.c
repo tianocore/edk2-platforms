@@ -205,7 +205,7 @@ DetermineTurbotBoard (
   UINT32 SSUSOffset = 0x2000;
   UINT32 IoBase = 0;
 
-  DEBUG ((EFI_D_ERROR, "DetermineTurbotBoard() Entry\n"));
+  DEBUG ((DEBUG_ERROR, "DetermineTurbotBoard() Entry\n"));
   PciD31F0RegBase = MmPciAddress (0,
                       0,
                       PCI_DEVICE_NUMBER_PCH_LPC,
@@ -217,7 +217,7 @@ DetermineTurbotBoard (
   MmioConf0 = IoBase + SSUSOffset + PConf0Offset;
   MmioPadval = IoBase + SSUSOffset + PValueOffset;
   //0xFED0E200/0xFED0E208 is pad_Conf/pad_val register address of GPIO_S5_4
-  DEBUG ((EFI_D_ERROR, "MmioConf0[0x%x], MmioPadval[0x%x]\n", MmioConf0, MmioPadval));
+  DEBUG ((DEBUG_ERROR, "MmioConf0[0x%x], MmioPadval[0x%x]\n", MmioConf0, MmioPadval));
   
   MmioWrite32 (MmioConf0, 0x2003CC00);  
 
@@ -228,7 +228,7 @@ DetermineTurbotBoard (
 
   GpioValue = MmioRead32 (MmioPadval);
 
-  DEBUG ((EFI_D_ERROR, "Gpio_S5_4 value is 0x%x\n", GpioValue));
+  DEBUG ((DEBUG_ERROR, "Gpio_S5_4 value is 0x%x\n", GpioValue));
   return (GpioValue & 0x1);
 }
 
@@ -245,10 +245,10 @@ FtpmPolicyInit (
   SEC_FTPM_POLICY_PPI             *mFtpmPolicyPpi;
 
 
-  DEBUG((EFI_D_INFO, "FtpmPolicyInit Entry \n"));
+  DEBUG((DEBUG_INFO, "FtpmPolicyInit Entry \n"));
 
   if (NULL == PeiServices ||  NULL == pSystemConfiguration) {
-    DEBUG((EFI_D_ERROR, "Input error. \n"));
+    DEBUG((DEBUG_ERROR, "Input error. \n"));
     return EFI_INVALID_PARAMETER;
   }
   
@@ -275,7 +275,7 @@ FtpmPolicyInit (
   mFtpmPolicyPpiDesc->Ppi = mFtpmPolicyPpi;
 
 
-  DEBUG((EFI_D_INFO, "pSystemConfiguration->fTPM = 0x%x \n", pSystemConfiguration->fTPM)); 
+  DEBUG((DEBUG_INFO, "pSystemConfiguration->fTPM = 0x%x \n", pSystemConfiguration->fTPM)); 
   if(pSystemConfiguration->fTPM == 1) {
     mFtpmPolicyPpi->fTPMEnable = TRUE;
   } else {
@@ -288,7 +288,7 @@ FtpmPolicyInit (
                              );
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG((EFI_D_INFO, "FtpmPolicyInit done \n"));
+  DEBUG((DEBUG_INFO, "FtpmPolicyInit done \n"));
   
   return EFI_SUCCESS;
 }
@@ -370,7 +370,7 @@ MfgMemoryTest (
   //
   //Output Message for MFG
   //
-  DEBUG ((EFI_D_ERROR, "MFGMODE SET\n"));
+  DEBUG ((DEBUG_ERROR, "MFGMODE SET\n"));
 
   //
   //Writting the pattern in defined location.
@@ -403,9 +403,9 @@ MfgMemoryTest (
     // If xorData is nonzero, this particular memAddr has a failure.
 	  //
     if (xorData != 0x00000000) {
-      DEBUG ((EFI_D_ERROR, "Expected value....: %x\n", DataPatternForMemoryTest[i]));
-      DEBUG ((EFI_D_ERROR, "ReadData value....: %x\n", readData));
-      DEBUG ((EFI_D_ERROR, "Pattern failure at....: %x\n", memAddr));
+      DEBUG ((DEBUG_ERROR, "Expected value....: %x\n", DataPatternForMemoryTest[i]));
+      DEBUG ((DEBUG_ERROR, "ReadData value....: %x\n", readData));
+      DEBUG ((DEBUG_ERROR, "Pattern failure at....: %x\n", memAddr));
       TestFlag = 1;
     }
     memAddr = memAddr + 4;
@@ -418,7 +418,7 @@ MfgMemoryTest (
   //
   //Output Message for MFG
   //
-  DEBUG ((EFI_D_ERROR, "MFGMODE MEMORY TEST PASSED\n"));
+  DEBUG ((DEBUG_ERROR, "MFGMODE MEMORY TEST PASSED\n"));
   return EFI_SUCCESS;
 }
 
@@ -776,14 +776,14 @@ PeiInitPlatform (
     GGC = ((2 << 3) | 0x200);
     PciCfg16Write(EC_BASE, 0, 2, 0, 0x50, GGC);
     GGC = PciCfg16Read(EC_BASE, 0, 2, 0, 0x50);
-    DEBUG((EFI_D_INFO , "GGC: 0x%08x GMSsize:0x%08x\n", GGC, (GGC & (BIT7|BIT6|BIT5|BIT4|BIT3))>>3));
+    DEBUG((DEBUG_INFO , "GGC: 0x%08x GMSsize:0x%08x\n", GGC, (GGC & (BIT7|BIT6|BIT5|BIT4|BIT3))>>3));
   } else {
     if (SystemConfiguration.Igd == 1 && SystemConfiguration.PrimaryVideoAdaptor != 2) {
       GGC = (SystemConfiguration.IgdDvmt50PreAlloc << 3) |
             (SystemConfiguration.GTTSize == GTT_SIZE_1MB ? 0x100: 0x200);
       PciCfg16Write(EC_BASE, 0, 2, 0, 0x50, GGC);
       GGC = PciCfg16Read(EC_BASE, 0, 2, 0, 0x50);
-      DEBUG((EFI_D_INFO , "GGC: 0x%08x GMSsize:0x%08x\n", GGC, (GGC & (BIT7|BIT6|BIT5|BIT4|BIT3))>>3));
+      DEBUG((DEBUG_INFO , "GGC: 0x%08x GMSsize:0x%08x\n", GGC, (GGC & (BIT7|BIT6|BIT5|BIT4|BIT3))>>3));
     }
   }
 
@@ -797,10 +797,10 @@ PeiInitPlatform (
   // 0 -> Disable , 1 -> Enable
   //
   if(SystemConfiguration.CfioPnpSettings == 1) {
-    DEBUG((EFI_D_INFO, "CheckCfioPnpSettings: CFIO Pnp Settings Enabled\n"));
+    DEBUG((DEBUG_INFO, "CheckCfioPnpSettings: CFIO Pnp Settings Enabled\n"));
     PlatformInfo.CfioEnabled = 1;
   } else {
-    DEBUG((EFI_D_INFO, "CheckCfioPnpSettings: CFIO Pnp Settings Disabled\n"));
+    DEBUG((DEBUG_INFO, "CheckCfioPnpSettings: CFIO Pnp Settings Disabled\n"));
     PlatformInfo.CfioEnabled = 0;
   }
 
@@ -819,7 +819,7 @@ PeiInitPlatform (
   Status = UpdateBootMode (PeiServices);
   ASSERT_EFI_ERROR (Status);
 
-  DEBUG((EFI_D_INFO, "Setup MMIO size ... \n\n"));
+  DEBUG((DEBUG_INFO, "Setup MMIO size ... \n\n"));
 
   //
   // Setup MMIO size
@@ -917,10 +917,10 @@ ReadPlatformIds (
     CompatibleBoard = DetermineTurbotBoard();
    if (1 == CompatibleBoard) {
      PlatformInfoHob->BoardId    = BOARD_ID_MINNOW2_TURBOT;
-     DEBUG ((EFI_D_INFO,  "I'm MinnowBoard Turbot!\n"));
+     DEBUG ((DEBUG_INFO,  "I'm MinnowBoard Turbot!\n"));
    } else {       
      PlatformInfoHob->BoardId    = BOARD_ID_MINNOW2;
-     DEBUG ((EFI_D_INFO,  "I'm MinnowBoard Max!\n"));
+     DEBUG ((DEBUG_INFO,  "I'm MinnowBoard Max!\n"));
    }
     
 

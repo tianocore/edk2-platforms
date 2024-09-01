@@ -64,17 +64,17 @@ EFIAPI Read(
 
     if (Offset + ulLen > (gFlashInfo[gIndex.InfIndex].SingleChipSize * gFlashInfo[gIndex.InfIndex].ParallelNum))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Exceed the flash scope!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Exceed the flash scope!\n", __FUNCTION__,__LINE__));
         return EFI_INVALID_PARAMETER;
     }
     if (0 == ulLen)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Length is Zero!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Length is Zero!\n", __FUNCTION__,__LINE__));
         return EFI_INVALID_PARAMETER;
     }
     if (NULL == Buffer)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Buffer is NULL!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Buffer is NULL!\n", __FUNCTION__,__LINE__));
         return EFI_BAD_BUFFER_SIZE;
     }
 
@@ -151,7 +151,7 @@ static EFI_STATUS WriteAfterErase_Fill(
     }
     if ((Offset % FlashUnitLength + Length) > FlashUnitLength)
     {
-        DEBUG ((EFI_D_INFO, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_INFO, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
         return EFI_UNSUPPORTED;
     }
 
@@ -159,7 +159,7 @@ static EFI_STATUS WriteAfterErase_Fill(
     Status = gBS->AllocatePool(EfiBootServicesData, FlashUnitLength, (VOID *)&NewDataUnit);
     if (EFI_ERROR(Status))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Allocate Pool failed, %r!\n", __FUNCTION__,__LINE__, Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Allocate Pool failed, %r!\n", __FUNCTION__,__LINE__, Status));
         return Status;
     }
 
@@ -177,7 +177,7 @@ static EFI_STATUS WriteAfterErase_Fill(
     Status = BufferWrite(NewOffset, (void *)NewDataUnit, FlashUnitLength);
     if (EFI_ERROR(Status))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:BufferWrite %r!\n", __FUNCTION__,__LINE__, Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:BufferWrite %r!\n", __FUNCTION__,__LINE__, Status));
         return Status;
     }
 
@@ -205,7 +205,7 @@ static EFI_STATUS WriteAfterErase_Final(
 
     if (0 != (Offset % FlashUnitLength))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]: Offset must be a multiple of 0x%x!\n", __FUNCTION__,__LINE__,FlashUnitLength));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: Offset must be a multiple of 0x%x!\n", __FUNCTION__,__LINE__,FlashUnitLength));
         return EFI_UNSUPPORTED;
     }
 
@@ -216,7 +216,7 @@ static EFI_STATUS WriteAfterErase_Final(
         Status = BufferWrite(Offset, (void *)Buffer, FlashUnitLength);
         if (EFI_ERROR(Status))
         {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:BufferWrite Failed: %r!\n", __FUNCTION__,__LINE__, Status));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:BufferWrite Failed: %r!\n", __FUNCTION__,__LINE__, Status));
             return EFI_DEVICE_ERROR;
         }
         Offset += FlashUnitLength;
@@ -230,7 +230,7 @@ static EFI_STATUS WriteAfterErase_Final(
         Status = WriteAfterErase_Fill(Offset, Buffer, Length);
         if (EFI_ERROR(Status))
         {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:WriteAfterErase_Fill failed,%r!\n", __FUNCTION__,__LINE__, Status));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:WriteAfterErase_Fill failed,%r!\n", __FUNCTION__,__LINE__, Status));
             return Status;
         }
     }
@@ -270,7 +270,7 @@ WriteAfterErase(
         Status = WriteAfterErase_Fill(Offset, Buffer, TempLength);
         if (EFI_ERROR(Status))
         {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__, Status));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__, Status));
             return Status;
         }
 
@@ -291,7 +291,7 @@ WriteAfterErase(
     Status = WriteAfterErase_Final(Offset, Buffer, Length);
     if (EFI_ERROR(Status))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__, Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__, Status));
         return Status;
     }
 
@@ -365,7 +365,7 @@ FlashSectorErase(
     Status = WriteAfterErase(TempBase, TempOffset, Buffer, TempLength);
     if (EFI_ERROR(Status))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__,Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: %r!\n", __FUNCTION__,__LINE__,Status));
         goto DO;
     }
 
@@ -394,7 +394,7 @@ EFIAPI Erase(
 
     if (Offset + Length > (gFlashInfo[gIndex.InfIndex].SingleChipSize * gFlashInfo[gIndex.InfIndex].ParallelNum))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
         return EFI_ABORTED;
     }
     if (0 == Length)
@@ -427,7 +427,7 @@ EFIAPI Erase(
         Status = FlashSectorErase(TempBase, Offset, TempLength);
         if (EFI_ERROR(Status))
         {
-            DEBUG ((EFI_D_ERROR, "[%a]:[%dL]: FlashErase One Sector Error, Status = %r!\n", __FUNCTION__,__LINE__,Status));
+            DEBUG ((DEBUG_ERROR, "[%a]:[%dL]: FlashErase One Sector Error, Status = %r!\n", __FUNCTION__,__LINE__,Status));
             return Status;
         }
 
@@ -462,7 +462,7 @@ EFIAPI Write(
 
     if((Offset + ulLength) > (gFlashInfo[gIndex.InfIndex].SingleChipSize * gFlashInfo[gIndex.InfIndex].ParallelNum))
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Exceed the Flash Size!\n", __FUNCTION__,__LINE__));
         return EFI_INVALID_PARAMETER;
     }
     if (0 == ulLength)
@@ -498,7 +498,7 @@ EFIAPI Write(
             Status = FlashSectorErase(TempBase, Offset, TempLength);
             if (EFI_ERROR(Status))
             {
-                DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:FlashErase One Sector Error, Status = %r!\n", __FUNCTION__,__LINE__,Status));
+                DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:FlashErase One Sector Error, Status = %r!\n", __FUNCTION__,__LINE__,Status));
                 return Status;
             }
 
@@ -506,7 +506,7 @@ EFIAPI Write(
             Status = WriteAfterErase(TempBase, Offset, Buffer, TempLength);
             if (EFI_ERROR(Status))
             {
-                DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:WriteAfterErase Status = %r!\n", __FUNCTION__,__LINE__,Status));
+                DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:WriteAfterErase Status = %r!\n", __FUNCTION__,__LINE__,Status));
                 return Status;
             }
         }
@@ -535,7 +535,7 @@ VOID SetFlashAttributeToUncache(VOID)
     Status = gBS->LocateProtocol (&gEfiCpuArchProtocolGuid, NULL, (VOID **)&gCpu);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "LocateProtocol gEfiCpuArchProtocolGuid Status = %r !\n", Status));
+        DEBUG((DEBUG_ERROR, "LocateProtocol gEfiCpuArchProtocolGuid Status = %r !\n", Status));
     }
 
     Status = gCpu->SetMemoryAttributes(
@@ -547,7 +547,7 @@ VOID SetFlashAttributeToUncache(VOID)
 
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "gCpu->SetMemoryAttributes Status = %r !\n", Status));
+        DEBUG((DEBUG_ERROR, "gCpu->SetMemoryAttributes Status = %r !\n", Status));
     }
 
 }
@@ -566,12 +566,12 @@ EFIAPI InitializeFlash (
     Status = FlashInit(gIndex.Base);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "Init Flash Error !\n"));
+        DEBUG((DEBUG_ERROR, "Init Flash Error !\n"));
         return Status;
     }
     else
     {
-        DEBUG((EFI_D_ERROR, "Init Flash OK!\n"));
+        DEBUG((DEBUG_ERROR, "Init Flash OK!\n"));
     }
 
     Status = gBS->InstallProtocolInterface (
@@ -581,7 +581,7 @@ EFIAPI InitializeFlash (
                             &gUniNorFlash);
     if(EFI_SUCCESS != Status)
     {
-        DEBUG ((EFI_D_ERROR, "[%a]:[%dL]:Install Protocol Interface %r!\n", __FUNCTION__,__LINE__,Status));
+        DEBUG ((DEBUG_ERROR, "[%a]:[%dL]:Install Protocol Interface %r!\n", __FUNCTION__,__LINE__,Status));
     }
 
     return Status;

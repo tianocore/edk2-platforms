@@ -628,7 +628,7 @@ AddSmbiosProcessorTypeTable (
     Status = mSmbios->Add (mSmbios, NULL, &SmbiosHandle, (EFI_SMBIOS_TABLE_HEADER *)Type4Record);
     if (EFI_ERROR (Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Smbios Type04 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type04 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
     }
     FreePool (Type4Record);
 
@@ -687,7 +687,7 @@ ProcessorSubClassEntryPoint(
     Status = gBS->LocateProtocol(&gEfiSmbiosProtocolGuid, NULL, (VOID**)&mSmbios);
     if (EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "Could not locate SMBIOS protocol.  %r\n", Status));
+        DEBUG((DEBUG_ERROR, "Could not locate SMBIOS protocol.  %r\n", Status));
         return Status;
     }
 
@@ -718,7 +718,7 @@ ProcessorSubClassEntryPoint(
         Status = AddSmbiosProcessorTypeTable (SocketIndex);
         if(EFI_ERROR(Status))
         {
-            DEBUG((EFI_D_ERROR, "Add Processor Type Table Failed!  %r.\n", Status));
+            DEBUG((DEBUG_ERROR, "Add Processor Type Table Failed!  %r.\n", Status));
             return Status;
         }
     }

@@ -196,7 +196,7 @@ PlatformBootManagerBeforeConsole (
   )
 {
 
-  DEBUG ((EFI_D_INFO, "PlatformBootManagerBeforeConsole\n"));
+  DEBUG ((DEBUG_INFO, "PlatformBootManagerBeforeConsole\n"));
 
   //
   // Trusted console can be added in a PciEnumComplete callback
@@ -242,7 +242,7 @@ PlatformBootManagerAfterConsole (
   VOID
   )
 {
-  DEBUG ((EFI_D_INFO, "PlatformBootManagerAfterConsole\n"));
+  DEBUG ((DEBUG_INFO, "PlatformBootManagerAfterConsole\n"));
 
   BdsSignalEventAfterConsoleReadyBeforeBootOption ();
 }

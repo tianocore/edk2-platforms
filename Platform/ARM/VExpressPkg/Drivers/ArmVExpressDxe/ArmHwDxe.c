@@ -25,7 +25,7 @@ ArmHwInitialise (
   // Install dynamic Shell command to run baremetal binaries.
   Status = ShellDynCmdRunAxfInstall (ImageHandle);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "ArmHwDxe: Failed to install ShellDynCmdRunAxf\n"));
+    DEBUG ((DEBUG_ERROR, "ArmHwDxe: Failed to install ShellDynCmdRunAxf\n"));
   }
 
   return Status;

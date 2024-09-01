@@ -191,7 +191,7 @@ PlatformHookInit (
   ASSERT_EFI_ERROR (Status);
   mAcpiParameter = (BIOS_ACPI_PARAM *)AcpiParameterAddr;
 
-  DEBUG ((EFI_D_ERROR, "ACPI Parameter Block Address: 0x%X\n", mAcpiParameter));
+  DEBUG ((DEBUG_ERROR, "ACPI Parameter Block Address: 0x%X\n", mAcpiParameter));
   Status = PcdSet64S (PcdAcpiGnvsAddress, (UINT64)(UINTN)mAcpiParameter);
   ASSERT_EFI_ERROR (Status);
 
@@ -202,7 +202,7 @@ PlatformHookInit (
 #else
   mAcpiParameter->IoApicEnable  = (PcdGet32 (PcdPcIoApicEnable) << 1) | 1;
 #endif
-  DEBUG((EFI_D_ERROR, "io apic settings:%d\n", mAcpiParameter->IoApicEnable));
+  DEBUG((DEBUG_ERROR, "io apic settings:%d\n", mAcpiParameter->IoApicEnable));
 
   AsmCpuid (CPUID_VERSION_INFO,  &RegEax, &RegEbx, &RegEcx, &RegEdx);
   mAcpiParameter->ProcessorId = (RegEax & 0xFFFF0);

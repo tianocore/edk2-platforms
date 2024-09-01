@@ -55,14 +55,14 @@ ConfigurePixelBitMaskFormat (
       mPixelShr[Loop] = 0;
     }
     MergedMasks = (UINT32) (MergedMasks | Masks[Loop]);
-    DEBUG ((EFI_D_INFO, "%d: shl:%d shr:%d mask:%x\n", Loop, mPixelShl[Loop], mPixelShr[Loop], Masks[Loop]));
+    DEBUG ((DEBUG_INFO, "%d: shl:%d shr:%d mask:%x\n", Loop, mPixelShl[Loop], mPixelShr[Loop], Masks[Loop]));
   }
   MergedMasks = (UINT32) (MergedMasks | Masks[3]);
 
   ASSERT (MergedMasks != 0);
   mBltLibBytesPerPixel = (UINTN) ((HighBitSet32 (MergedMasks) + 7) / 8);
 
-  DEBUG ((EFI_D_INFO, "Bytes per pixel: %d\n", mBltLibBytesPerPixel));
+  DEBUG ((DEBUG_INFO, "Bytes per pixel: %d\n", mBltLibBytesPerPixel));
 
   CopyMem (&mPixelBitMasks, BitMask, sizeof (*BitMask));
 }
@@ -245,17 +245,17 @@ BltLibVideoFill (
   // BltBuffer to Video: Source is BltBuffer, destination is Video
   //
   if (DestinationY + Height > mBltLibHeight) {
-    DEBUG ((EFI_D_INFO, "VideoFill: Past screen (Y)\n"));
+    DEBUG ((DEBUG_INFO, "VideoFill: Past screen (Y)\n"));
     return EFI_INVALID_PARAMETER;
   }
 
   if (DestinationX + Width > mBltLibWidthInPixels) {
-    DEBUG ((EFI_D_INFO, "VideoFill: Past screen (X)\n"));
+    DEBUG ((DEBUG_INFO, "VideoFill: Past screen (X)\n"));
     return EFI_INVALID_PARAMETER;
   }
 
   if (Width == 0 || Height == 0) {
-    DEBUG ((EFI_D_INFO, "VideoFill: Width or Height is 0\n"));
+    DEBUG ((DEBUG_INFO, "VideoFill: Width or Height is 0\n"));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -268,7 +268,7 @@ BltLibVideoFill (
         (((Uint32 << mPixelShl[1]) >> mPixelShr[1]) & mPixelBitMasks.GreenMask) |
         (((Uint32 << mPixelShl[2]) >> mPixelShr[2]) & mPixelBitMasks.BlueMask)
       );
-  VDEBUG ((EFI_D_INFO, "VideoFill: color=0x%x, wide-fill=0x%x\n", Uint32, WideFill));
+  VDEBUG ((DEBUG_INFO, "VideoFill: color=0x%x, wide-fill=0x%x\n", Uint32, WideFill));
 
   //
   // If the size of the pixel data evenly divides the sizeof
@@ -299,7 +299,7 @@ BltLibVideoFill (
   }
 
   if (UseWideFill && (DestinationX == 0) && (Width == mBltLibWidthInPixels)) {
-    VDEBUG ((EFI_D_INFO, "VideoFill (wide, one-shot)\n"));
+    VDEBUG ((DEBUG_INFO, "VideoFill (wide, one-shot)\n"));
     Offset = DestinationY * mBltLibWidthInPixels;
     Offset = mBltLibBytesPerPixel * Offset;
     BltMemDst = (VOID*) (mBltLibFrameBuffer + Offset);
@@ -319,7 +319,7 @@ BltLibVideoFill (
       BltMemDst = (VOID*) (mBltLibFrameBuffer + Offset);
 
       if (UseWideFill && (((UINTN) BltMemDst & 7) == 0)) {
-        VDEBUG ((EFI_D_INFO, "VideoFill (wide)\n"));
+        VDEBUG ((DEBUG_INFO, "VideoFill (wide)\n"));
         SizeInBytes = WidthInBytes;
         if (SizeInBytes >= 8) {
           SetMem64 (BltMemDst, SizeInBytes & ~7, WideFill);
@@ -329,7 +329,7 @@ BltLibVideoFill (
           CopyMem (BltMemDst, (VOID*) &WideFill, SizeInBytes);
         }
       } else {
-        VDEBUG ((EFI_D_INFO, "VideoFill (not wide)\n"));
+        VDEBUG ((DEBUG_INFO, "VideoFill (not wide)\n"));
         if (!LineBufferReady) {
           CopyMem (mBltLibLineBuffer, &WideFill, mBltLibBytesPerPixel);
           for (X = 1; X < Width; ) {

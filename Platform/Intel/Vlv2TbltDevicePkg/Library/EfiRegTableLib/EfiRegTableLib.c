@@ -225,7 +225,7 @@ ProcessRegTablePci (
       break;
 
     default:
-      DEBUG ((EFI_D_ERROR, "RegTable ERROR: Unknown RegTable OpCode (%x)\n", OPCODE_BASE (RegTableEntry->Generic.OpCode)));
+      DEBUG ((DEBUG_ERROR, "RegTable ERROR: Unknown RegTable OpCode (%x)\n", OPCODE_BASE (RegTableEntry->Generic.OpCode)));
       ASSERT (0);
       break;
     }

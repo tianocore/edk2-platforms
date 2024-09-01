@@ -21,6 +21,6 @@ X58Ich10BoardDetect (
   VOID
   )
 {
-  DEBUG ((EFI_D_INFO, "X58Ich10BoardDetect\n"));
+  DEBUG ((DEBUG_INFO, "X58Ich10BoardDetect\n"));
   return EFI_SUCCESS;
 }

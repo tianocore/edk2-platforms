@@ -185,7 +185,7 @@ QNCCheckS3AndClearState (
     if (S3WakeEventFound == FALSE) {
       EventDescStr = "Unknown";
     }
-    DEBUG ((EFI_D_INFO, "S3 Wake Event - %a\n", EventDescStr));
+    DEBUG ((DEBUG_INFO, "S3 Wake Event - %a\n", EventDescStr));
 
     //
     // If no Power Button Override event occurs and one enabled wake event occurs,
@@ -386,7 +386,7 @@ QNCGetTSEGMemoryRange (
   *MemorySize = SMMAddress - (*BaseAddress);
 
   DEBUG ((
-    EFI_D_INFO,
+    DEBUG_INFO,
     "TSEG's memory range: BaseAddress = 0x%x, Size = 0x%x\n",
     (UINT32)*BaseAddress,
     (UINT32)*MemorySize
@@ -502,7 +502,7 @@ QncEnableLegacyFlashAccessViolationSmi (
 
   LpcPciCfg32 (R_QNC_LPC_BIOS_CNTL) = BcValue;
 
-  DEBUG ((EFI_D_INFO, "BIOS Control Lock Enabled!\n"));
+  DEBUG ((DEBUG_INFO, "BIOS Control Lock Enabled!\n"));
 }
 
 /**

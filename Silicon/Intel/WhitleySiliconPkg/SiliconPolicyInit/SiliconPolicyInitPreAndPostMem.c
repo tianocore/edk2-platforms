@@ -54,7 +54,7 @@ SiliconPolicyInitPreAndPostMemPeimEntry (
   //
   Status = PeiServicesInstallPpi (&mSiliconPolicyInitLibPpiDescriptor);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "EntryPoint: failed to register PPI!\n"));
+    DEBUG ((DEBUG_ERROR, "EntryPoint: failed to register PPI!\n"));
     ASSERT_EFI_ERROR (Status);
     return Status;
   }

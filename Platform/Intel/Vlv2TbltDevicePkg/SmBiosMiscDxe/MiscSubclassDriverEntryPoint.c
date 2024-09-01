@@ -126,7 +126,7 @@ MiscSubclassDriverEntryPoint (
     }
   }
   
-  DEBUG ((EFI_D_ERROR, "PlatformInfoHob->BoardId [0x%x]\n", mPlatformInfo->BoardId));
+  DEBUG ((DEBUG_ERROR, "PlatformInfoHob->BoardId [0x%x]\n", mPlatformInfo->BoardId));
   
   //
   // Retrieve the pointer to the UEFI HII String Protocol
@@ -145,7 +145,7 @@ MiscSubclassDriverEntryPoint (
                      );
 
   if (EFI_ERROR(EfiStatus)) {
-    DEBUG((EFI_D_ERROR, "Could not locate SMBIOS protocol.  %r\n", EfiStatus));
+    DEBUG((DEBUG_ERROR, "Could not locate SMBIOS protocol.  %r\n", EfiStatus));
     return EfiStatus;
   }
 
@@ -168,7 +168,7 @@ MiscSubclassDriverEntryPoint (
         );
 
       if (EFI_ERROR(EfiStatus)) {
-        DEBUG((EFI_D_ERROR, "Misc smbios store error.  Index=%d, ReturnStatus=%r\n", Index, EfiStatus));
+        DEBUG((DEBUG_ERROR, "Misc smbios store error.  Index=%d, ReturnStatus=%r\n", Index, EfiStatus));
         return EfiStatus;
       }
     }

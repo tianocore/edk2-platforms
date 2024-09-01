@@ -36,7 +36,7 @@ InitMp (
 {
   EFI_STATUS  Status;
 
-  DEBUG ((EFI_D_INFO, "InitMp\n"));
+  DEBUG ((DEBUG_INFO, "InitMp\n"));
 
   Status = gBS->LocateProtocol (&gEfiMpServiceProtocolGuid, NULL, (VOID **) &mMpService);
   if (EFI_ERROR (Status)) {

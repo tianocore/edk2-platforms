@@ -33,14 +33,14 @@ InstallFdtIntoConfigurationTable (
   // production device and this ASSERT() becomes not valid.
   if(!(fdt_check_header (FdtBlob) == 0))
   {
-      DEBUG ((EFI_D_ERROR,"can not find FdtBlob \n"));
+      DEBUG ((DEBUG_ERROR,"can not find FdtBlob \n"));
       return EFI_INVALID_PARAMETER;
   }
 
   // Ensure the Size of the Device Tree is smaller than the size of the read file
   if(!((UINTN)fdt_totalsize (FdtBlob) <= FdtSize))
   {
-      DEBUG ((EFI_D_ERROR,"FdtBlob <= FdtSize \n"));
+      DEBUG ((DEBUG_ERROR,"FdtBlob <= FdtSize \n"));
       return EFI_INVALID_PARAMETER;
   }
 
@@ -62,13 +62,13 @@ SetNvramSpace (VOID)
 
     Status = gDS->GetMemorySpaceDescriptor(PcdGet64(PcdReservedNvramBase),&desp);
     if(EFI_ERROR(Status)){
-         DEBUG ((EFI_D_ERROR,"get memory space error:--------- \n"));
+         DEBUG ((DEBUG_ERROR,"get memory space error:--------- \n"));
         return Status;
     }
     desp.Attributes |= EFI_MEMORY_RUNTIME | EFI_MEMORY_WB;
     Status = gDS->SetMemorySpaceAttributes(PcdGet64(PcdReservedNvramBase),PcdGet64(PcdReservedNvramSize), desp.Attributes);
     if(EFI_ERROR(Status)){
-        DEBUG ((EFI_D_ERROR,"set memory space error:--------- \n"));
+        DEBUG ((DEBUG_ERROR,"set memory space error:--------- \n"));
         return Status;
     }
 
@@ -96,10 +96,10 @@ EFIAPI UpdateFdt (
 
 
     Error = fdt_check_header ((VOID*)(PcdGet64(FdtFileAddress)));
-    DEBUG ((EFI_D_ERROR,"fdtfileaddress:--------- 0x%lx\n",PcdGet64(FdtFileAddress)));
+    DEBUG ((DEBUG_ERROR,"fdtfileaddress:--------- 0x%lx\n",PcdGet64(FdtFileAddress)));
     if (Error != 0)
     {
-        DEBUG ((EFI_D_ERROR,"ERROR: Device Tree header not valid (%a)\n", fdt_strerror(Error)));
+        DEBUG ((DEBUG_ERROR,"ERROR: Device Tree header not valid (%a)\n", fdt_strerror(Error)));
         return EFI_INVALID_PARAMETER;
     }
 
@@ -117,16 +117,16 @@ EFIAPI UpdateFdt (
     Status = EFIFdtUpdate(NewFdtBlobBase);
     if (EFI_ERROR (Status))
     {
-        DEBUG((EFI_D_ERROR, "%a(%d):EFIFdtUpdate Fail!\n", __FUNCTION__,__LINE__));
+        DEBUG((DEBUG_ERROR, "%a(%d):EFIFdtUpdate Fail!\n", __FUNCTION__,__LINE__));
         goto EXIT;
     }
 
 
     Status = InstallFdtIntoConfigurationTable ((VOID*)(UINTN)NewFdtBlobBase, NewFdtBlobSize);
-    DEBUG ((EFI_D_ERROR, "NewFdtBlobBase: 0x%lx  NewFdtBlobSize:0x%lx\n",NewFdtBlobBase,NewFdtBlobSize));
+    DEBUG ((DEBUG_ERROR, "NewFdtBlobBase: 0x%lx  NewFdtBlobSize:0x%lx\n",NewFdtBlobBase,NewFdtBlobSize));
     if (EFI_ERROR (Status))
     {
-        DEBUG ((EFI_D_ERROR, "installfdtconfiguration table fail():\n"));
+        DEBUG ((DEBUG_ERROR, "installfdtconfiguration table fail():\n"));
         goto EXIT;
     }
 
@@ -136,7 +136,7 @@ EFIAPI UpdateFdt (
         if (CompareGuid (&gFdtTableGuid, &(gST->ConfigurationTable[Index].VendorGuid)))
         {
             FDTConfigTable = (UINTN)gST->ConfigurationTable[Index].VendorTable;
-            DEBUG ((EFI_D_ERROR, "FDTConfigTable Address: 0x%lx\n",FDTConfigTable));
+            DEBUG ((DEBUG_ERROR, "FDTConfigTable Address: 0x%lx\n",FDTConfigTable));
             break;
         }
     }

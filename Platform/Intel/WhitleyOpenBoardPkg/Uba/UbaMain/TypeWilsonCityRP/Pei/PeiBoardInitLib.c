@@ -45,7 +45,7 @@ TypeWilsonCityRPPeiBoardInitLibConstructor (
 
   if (PlatformInfo->BoardId == TypeWilsonCityRP) {
 
-    DEBUG ((EFI_D_INFO, "PEI UBA init BoardId 0x%X: WilsonCityRP\n", PlatformInfo->BoardId));
+    DEBUG ((DEBUG_INFO, "PEI UBA init BoardId 0x%X: WilsonCityRP\n", PlatformInfo->BoardId));
 
     // Socket 0 has SMT DIMM connector, Socket 1 has PTH DIMM connector
     for (SocketIndex = 0; SocketIndex < MAX_SOCKET; SocketIndex++) {

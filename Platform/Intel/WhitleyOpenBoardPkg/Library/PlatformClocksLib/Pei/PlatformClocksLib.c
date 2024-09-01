@@ -120,7 +120,7 @@ ConfigureClockGenerator (
       );
       if(Status != EFI_SUCCESS)
       {
-        DEBUG ((EFI_D_ERROR, "SMBUS reading error\n"));
+        DEBUG ((DEBUG_ERROR, "SMBUS reading error\n"));
 
       }
 
@@ -178,7 +178,7 @@ ConfigureClockGenerator (
 
      if(Status != EFI_SUCCESS)
      {
-       DEBUG ((EFI_D_ERROR, "SMBUS writing error\n"));
+       DEBUG ((DEBUG_ERROR, "SMBUS writing error\n"));
      }
 
      SmbErrorsCounter ++;

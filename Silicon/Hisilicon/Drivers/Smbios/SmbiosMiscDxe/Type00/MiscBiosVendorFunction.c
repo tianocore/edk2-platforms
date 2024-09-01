@@ -66,7 +66,7 @@ GetBiosReleaseDate (
 
     Hob = GetFirstGuidHob (&gVersionInfoHobGuid);
     if (Hob == NULL) {
-      DEBUG ((EFI_D_ERROR, "[%a:%d] Version info HOB not found!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] Version info HOB not found!\n", __FUNCTION__, __LINE__));
       return NULL;
     }
 
@@ -91,7 +91,7 @@ GetBiosVersion (
 
     Hob = GetFirstGuidHob (&gVersionInfoHobGuid);
     if (Hob == NULL) {
-      DEBUG ((EFI_D_ERROR, "[%a:%d] Version info HOB not found!\n", __FUNCTION__, __LINE__));
+      DEBUG ((DEBUG_ERROR, "[%a:%d] Version info HOB not found!\n", __FUNCTION__, __LINE__));
       return NULL;
     }
     Version = GET_GUID_HOB_DATA (Hob);
@@ -225,7 +225,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscBiosVendor)
     Status = LogSmbiosData( (UINT8*)SmbiosRecord, &SmbiosHandle);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] Smbios Type00 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] Smbios Type00 Table Log Failed! %r \n", __FUNCTION__, __LINE__, Status));
     }
 
     FreePool(SmbiosRecord);

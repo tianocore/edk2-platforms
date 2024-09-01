@@ -291,7 +291,7 @@ AddSmbiosT0x90Callback (
   UINTN                 OptionalStrSize;
   EFI_SMBIOS_PROTOCOL               *SmbiosProtocol;
 
-  DEBUG ((EFI_D_INFO, "Executing SMBIOS T0x90 callback.\n"));
+  DEBUG ((DEBUG_INFO, "Executing SMBIOS T0x90 callback.\n"));
 
   gBS->CloseEvent (Event);    // Unload this event.
 
@@ -426,7 +426,7 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscOemType0x90)
   //
   if (CallbackIsInstalledT0x90 == FALSE) {
     CallbackIsInstalledT0x90 = TRUE;        	// Prevent more than 1 callback.
-    DEBUG ((EFI_D_INFO, "Create Smbios T0x90 callback.\n"));
+    DEBUG ((DEBUG_INFO, "Create Smbios T0x90 callback.\n"));
 
   //
   // gEfiDxeSmmReadyToLockProtocolGuid is ready

@@ -67,14 +67,14 @@ PlatformCpuSmbiosData (
   CpuSocketNames = AllocatePool (CpuSocketCount * sizeof (UINTN));
 
   if (CpuSocketNames == NULL) {
-    DEBUG ((EFI_D_ERROR, "\nEFI_OUT_OF_RESOURCES!!! AllocatePool() returned NULL pointer.\n"));
+    DEBUG ((DEBUG_ERROR, "\nEFI_OUT_OF_RESOURCES!!! AllocatePool() returned NULL pointer.\n"));
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     return;
   }
 
   CpuAssetTags = AllocatePool (CpuSocketCount * sizeof (UINTN));
   if (CpuAssetTags == NULL) {
-    DEBUG ((EFI_D_ERROR, "\nEFI_OUT_OF_RESOURCES!!! AllocatePool() returned NULL pointer.\n"));
+    DEBUG ((DEBUG_ERROR, "\nEFI_OUT_OF_RESOURCES!!! AllocatePool() returned NULL pointer.\n"));
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     gBS->FreePool (CpuSocketNames);
     return;
@@ -122,7 +122,7 @@ CheckAndReAssignSocketId(
   if (EFI_ERROR(Status)) {
     return;
   }
-  DEBUG ((EFI_D_INFO, "::SockeId Pcd at %08x, size %x\n", PcdGetPtr(PcdCpuSocketId), PcdSize));
+  DEBUG ((DEBUG_INFO, "::SockeId Pcd at %08x, size %x\n", PcdGetPtr(PcdCpuSocketId), PcdSize));
 
   for(i = 0; i < MAX_SOCKET; i++) {
     if (mIioUds->PlatformData.CpuQpiInfo[i].Valid) {
@@ -164,7 +164,7 @@ CheckAndReAssignSocketId(
         break;
 
      default:
-        DEBUG ((EFI_D_INFO, "::Need more info to make sure we can support!!!\n"));
+        DEBUG ((DEBUG_INFO, "::Need more info to make sure we can support!!!\n"));
         break;
 
     } //end switch
@@ -247,7 +247,7 @@ PlatformCpuPolicyEntryPoint (
   CopyMem (&SetupData.PchSetup, PcdGetPtr(PcdPchSetup), sizeof(PCH_SETUP));
 
   Sp7.Data = DynamicSiLibraryProtocol->ReadScratchpad7 ();
-  DEBUG ((EFI_D_INFO, "AYP Debug scratchpad7: %x Stepping %x\n", Sp7.Bits.AepDimmPresent, CpuFamilyModelStepping & 0x0f));
+  DEBUG ((DEBUG_INFO, "AYP Debug scratchpad7: %x Stepping %x\n", Sp7.Bits.AepDimmPresent, CpuFamilyModelStepping & 0x0f));
   if ((Sp7.Bits.AepDimmPresent == 1) && ((CpuFamilyModelStepping & 0x0f) < 0x04) && ((CpuFamilyModelStepping >> 4) == CPU_FAMILY_SKX)) {
     SetupData.SocketConfig.PowerManagementConfig.PackageCState = 0;
   }

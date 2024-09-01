@@ -98,14 +98,14 @@ GetMacAddress (UINT32 Port)
     Status = gBS->LocateProtocol(&gHisiBoardNicProtocolGuid, NULL, (VOID **)&OemNic);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] LocateProtocol failed %r\n", __FUNCTION__, __LINE__, Status));
         return Status;
     }
 
     Status = OemNic->GetMac(&Mac, Port);
     if(EFI_ERROR(Status))
     {
-        DEBUG((EFI_D_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
+        DEBUG((DEBUG_ERROR, "[%a]:[%dL] GetMac failed %r\n", __FUNCTION__, __LINE__, Status));
         return Status;
     }
 
@@ -115,7 +115,7 @@ GetMacAddress (UINT32 Port)
     gMacAddress[0].data3=Mac.Addr[3];
     gMacAddress[0].data4=Mac.Addr[4];
     gMacAddress[0].data5=Mac.Addr[5];
-    DEBUG((EFI_D_INFO, "Port%d:0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
+    DEBUG((DEBUG_INFO, "Port%d:0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
         Port,gMacAddress[0].data0,gMacAddress[0].data1,gMacAddress[0].data2,
         gMacAddress[0].data3,gMacAddress[0].data4,gMacAddress[0].data5));
 
@@ -138,7 +138,7 @@ DelPhyhandleUpdateMacAddress(IN VOID* Fdt)
     node = fdt_subnode_offset(Fdt, 0, "soc");
     if (node < 0)
     {
-        DEBUG ((EFI_D_ERROR, "can not find soc root node\n"));
+        DEBUG ((DEBUG_ERROR, "can not find soc root node\n"));
         return EFI_INVALID_PARAMETER;
     }
     else
@@ -152,8 +152,8 @@ DelPhyhandleUpdateMacAddress(IN VOID* Fdt)
 
                 if (ethernetnode < 0)
                 {
-                    DEBUG ((EFI_D_WARN, "Can not find ethernet@%d node\n",port));
-                    DEBUG ((EFI_D_WARN, "Suppose port %d is not enabled.\n", port));
+                    DEBUG ((DEBUG_WARN, "Can not find ethernet@%d node\n",port));
+                    DEBUG ((DEBUG_WARN, "Suppose port %d is not enabled.\n", port));
                     continue;
                 }
                 m_prop = fdt_get_property_w(Fdt, ethernetnode, "local-mac-address", &m_oldlen);
@@ -162,13 +162,13 @@ DelPhyhandleUpdateMacAddress(IN VOID* Fdt)
                     Error = fdt_delprop(Fdt, ethernetnode, "local-mac-address");
                     if (Error)
                     {
-                        DEBUG ((EFI_D_ERROR, "ERROR:fdt_delprop() Local-mac-address: %a\n", fdt_strerror (Error)));
+                        DEBUG ((DEBUG_ERROR, "ERROR:fdt_delprop() Local-mac-address: %a\n", fdt_strerror (Error)));
                         Status = EFI_INVALID_PARAMETER;
                     }
                     Error = fdt_setprop(Fdt, ethernetnode, "local-mac-address",gMacAddress,sizeof(MAC_ADDRESS));
                     if (Error)
                     {
-                        DEBUG ((EFI_D_ERROR, "ERROR:fdt_setprop():local-mac-address %a\n", fdt_strerror (Error)));
+                        DEBUG ((DEBUG_ERROR, "ERROR:fdt_setprop():local-mac-address %a\n", fdt_strerror (Error)));
                         Status = EFI_INVALID_PARAMETER;
                     }
                 }
@@ -250,7 +250,7 @@ GetMemoryNode(VOID* Fdt)
 
         if(node < 0)
         {
-          DEBUG((EFI_D_ERROR, "[%a]:[%dL] fdt add subnode error\n", __FUNCTION__, __LINE__));
+          DEBUG((DEBUG_ERROR, "[%a]:[%dL] fdt add subnode error\n", __FUNCTION__, __LINE__));
 
           return node;
         }
@@ -264,7 +264,7 @@ GetMemoryNode(VOID* Fdt)
 
         if (Error)
         {
-            DEBUG ((EFI_D_ERROR, "ERROR:fdt_delprop(): %a\n", fdt_strerror (Error)));
+            DEBUG ((DEBUG_ERROR, "ERROR:fdt_delprop(): %a\n", fdt_strerror (Error)));
             node = -1;
             return node;
         }
@@ -299,7 +299,7 @@ EFI_STATUS UpdateMemoryNode(VOID* Fdt)
     node = GetMemoryNode(Fdt);
     if (node < 0)
     {
-        DEBUG((EFI_D_ERROR, "Can not find memory node\n"));
+        DEBUG((DEBUG_ERROR, "Can not find memory node\n"));
         return EFI_NOT_FOUND;
     }
     MemoryMap = NULL;
@@ -322,14 +322,14 @@ EFI_STATUS UpdateMemoryNode(VOID* Fdt)
 
         if (EFI_ERROR(Status))
         {
-            DEBUG ((EFI_D_ERROR, "FdtUpdateLib GetMemoryMap Error\n"));
+            DEBUG ((DEBUG_ERROR, "FdtUpdateLib GetMemoryMap Error\n"));
             FreePages (MemoryMap, Pages0);
             return Status;
         }
     }
     else
     {
-        DEBUG ((EFI_D_ERROR, "FdtUpdateLib GetmemoryMap Status: %r\n",Status));
+        DEBUG ((DEBUG_ERROR, "FdtUpdateLib GetmemoryMap Status: %r\n",Status));
         return EFI_ABORTED;
     }
 
@@ -388,7 +388,7 @@ EFI_STATUS UpdateMemoryNode(VOID* Fdt)
     FreePages (MemoryMap, Pages0);
     if (Error)
     {
-        DEBUG ((EFI_D_ERROR, "ERROR:fdt_setprop(): %a\n", fdt_strerror (Error)));
+        DEBUG ((DEBUG_ERROR, "ERROR:fdt_setprop(): %a\n", fdt_strerror (Error)));
         Status = EFI_INVALID_PARAMETER;
         return Status;
     }
@@ -421,7 +421,7 @@ EFI_STATUS EFIFdtUpdate(UINTN FdtFileAddr)
     Error = fdt_check_header ((VOID*)(FdtFileAddr));
     if (0 != Error)
     {
-        DEBUG ((EFI_D_ERROR,"ERROR: Device Tree header not valid (%a)\n", fdt_strerror(Error)));
+        DEBUG ((DEBUG_ERROR,"ERROR: Device Tree header not valid (%a)\n", fdt_strerror(Error)));
         return EFI_INVALID_PARAMETER;
     }
 
@@ -438,7 +438,7 @@ EFI_STATUS EFIFdtUpdate(UINTN FdtFileAddr)
 
     Error = fdt_open_into(Fdt,(VOID*)(UINTN)(NewFdtBlobBase), (NewFdtBlobSize));
     if (Error) {
-        DEBUG ((EFI_D_ERROR, "ERROR:fdt_open_into(): %a\n", fdt_strerror (Error)));
+        DEBUG ((DEBUG_ERROR, "ERROR:fdt_open_into(): %a\n", fdt_strerror (Error)));
         Status = EFI_INVALID_PARAMETER;
         goto EXIT;
     }
@@ -447,7 +447,7 @@ EFI_STATUS EFIFdtUpdate(UINTN FdtFileAddr)
     Status = DelPhyhandleUpdateMacAddress(Fdt);
     if (EFI_ERROR (Status))
     {
-        DEBUG ((EFI_D_ERROR, "DelPhyhandleUpdateMacAddress fail:\n"));
+        DEBUG ((DEBUG_ERROR, "DelPhyhandleUpdateMacAddress fail:\n"));
         Status = EFI_SUCCESS;
     }
 
@@ -459,14 +459,14 @@ EFI_STATUS EFIFdtUpdate(UINTN FdtFileAddr)
     Status = UpdateMemoryNode(Fdt);
     if (EFI_ERROR (Status))
     {
-        DEBUG ((EFI_D_ERROR, "UpdateMemoryNode Error\n"));
+        DEBUG ((DEBUG_ERROR, "UpdateMemoryNode Error\n"));
         goto EXIT;
     }
 
     UpdateNumaStatus = UpdateNumaNode(Fdt);
     if (EFI_ERROR (UpdateNumaStatus))
     {
-        DEBUG ((EFI_D_ERROR, "Update NumaNode fail\n"));
+        DEBUG ((DEBUG_ERROR, "Update NumaNode fail\n"));
     }
 
     gBS->CopyMem(((VOID*)(UINTN)(FdtFileAddr)),((VOID*)(UINTN)(NewFdtBlobBase)),NewFdtBlobSize);

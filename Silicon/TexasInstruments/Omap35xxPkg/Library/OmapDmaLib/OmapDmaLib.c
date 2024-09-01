@@ -152,7 +152,7 @@ DisableDmaChannel (
     Reg = MmioRead32 (DMA4_CSR(Channel));
     if ((Reg & ErrorMask) != 0) {
       Status = EFI_DEVICE_ERROR;
-      DEBUG ((EFI_D_ERROR, "DMA Error (%d) %x\n", Channel, Reg));
+      DEBUG ((DEBUG_ERROR, "DMA Error (%d) %x\n", Channel, Reg));
       break;
     }
   } while ((Reg & SuccessMask) != SuccessMask);
