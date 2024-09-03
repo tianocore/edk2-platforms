@@ -27,8 +27,8 @@
   FLASH_DEFINITION               = Platform/ARM/N1Sdp/N1SdpPlatform.fdf
   BUILD_NUMBER                   = 1
 
-!include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 !include MdePkg/MdeLibs.dsc.inc
+!include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 

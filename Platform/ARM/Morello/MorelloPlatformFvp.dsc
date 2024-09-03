@@ -30,13 +30,13 @@
   # Network definition
   DEFINE NETWORK_ISCSI_ENABLE    = FALSE
 
+# include common/basic libraries from MdePkg.
+!include MdePkg/MdeLibs.dsc.inc
+
 !include Platform/ARM/Morello/MorelloPlatform.dsc.inc
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 !include Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerFvp.dsc.inc
-
-# include common/basic libraries from MdePkg.
-!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses.common]
   # Virtio Support
