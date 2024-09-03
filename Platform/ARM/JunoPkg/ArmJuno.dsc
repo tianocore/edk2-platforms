@@ -219,7 +219,7 @@
   #
   # Juno Support Trng. Override PcdEnforceSecureRngAlgorithms.
   #
-  gEfiNetworkPkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
+  gEfiMdePkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)
