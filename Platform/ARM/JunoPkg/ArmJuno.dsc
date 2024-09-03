@@ -45,6 +45,8 @@
   # Trng Supports.
   ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
   ArmTrngLib|ArmPkg/Library/ArmTrngLib/ArmTrngLib.inf
+  # Rng
+  RngLib|MdePkg/Library/DxeRngLib/DxeRngLib.inf
 
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/JunoPkg/Library/NorFlashJunoLib/NorFlashJunoLib.inf
@@ -406,6 +408,18 @@
 
   # SCMI Driver
   ArmPkg/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+
+  #
+  # Rng
+  #
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf {
+    <LibraryClasses>
+    !if $(ENABLE_UNSAFE_RNGLIB) == TRUE
+      RngLib|MdeModulePkg/Library/BaseRngLibTimerLib/BaseRngLibTimerLib.inf
+    !else
+      RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+    !endif
+  }
 
 [Components.AARCH64]
   #
