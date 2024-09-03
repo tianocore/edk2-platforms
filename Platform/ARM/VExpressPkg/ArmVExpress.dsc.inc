@@ -452,7 +452,7 @@
   #
 
 !if $(ENABLE_UNSAFE_RNGLIB) == TRUE
-  gEfiNetworkPkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|FALSE
+  gEfiMdePkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|FALSE
 !endif
 
 [PcdsDynamicHii.common.DEFAULT]
