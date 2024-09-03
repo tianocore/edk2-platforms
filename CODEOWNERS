@@ -76,7 +76,7 @@
 /Silicon/Intel/** @nate-desimone @SaiChaganty
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
 /Silicon/Intel/QuarkSocPkg/** @mdkinney @nate-desimone @SaiChaganty
-/Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone @SaiChaganty @yqian
+/Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone @SaiChaganty @yqian4
 /Silicon/Intel/CoffeelakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/KabylakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/PurleyRefreshSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
