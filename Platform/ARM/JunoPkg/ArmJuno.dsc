@@ -25,9 +25,10 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/ARM/JunoPkg/ArmJuno.fdf
 
+!include MdePkg/MdeLibs.dsc.inc
+
 # On RTSM, most peripherals are VExpress Motherboard peripherals
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
-!include MdePkg/MdeLibs.dsc.inc
 
 !ifdef DYNAMIC_TABLES_FRAMEWORK
 !include DynamicTablesPkg/DynamicTables.dsc.inc
