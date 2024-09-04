@@ -90,10 +90,6 @@ ArmPlatformInitialize (
   IN  UINTN  MpId
   )
 {
-  if (!ArmPlatformIsPrimaryCore (MpId)) {
-    return RETURN_SUCCESS;
-  }
-
   return RETURN_SUCCESS;
 }
 
