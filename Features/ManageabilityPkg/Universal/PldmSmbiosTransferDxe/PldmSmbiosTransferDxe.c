@@ -2,6 +2,7 @@
   This file provides edk2 PLDM SMBIOS Transfer Protocol implementation.
 
   Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Revision Reference:
@@ -44,6 +45,7 @@ UINT32  SetSmbiosStructureTableHandle;
                                        PLDM terminus ID.
 **/
 EFI_STATUS
+EFIAPI
 SetPldmSmbiosTransferTerminusId (
   IN  UINT8  SourceId,
   IN  UINT8  DestinationId
