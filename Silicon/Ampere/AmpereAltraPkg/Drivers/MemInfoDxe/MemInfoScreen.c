@@ -353,7 +353,7 @@ DriverCallback (
       //
       // ECC mode default to be enabled
       //
-      Value->u32 = EccSecded;
+      Value->u32 = EccAuto;
       break;
 
     case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_DE_QUESTION_ID:

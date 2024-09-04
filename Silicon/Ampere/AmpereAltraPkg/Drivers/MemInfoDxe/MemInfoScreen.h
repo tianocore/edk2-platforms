@@ -38,6 +38,7 @@ typedef enum {
   EccDisabled = 0,
   EccSecded,
   EccSymbol,
+  EccAuto,
   EccMax
 } DDR_ECC_MODE;
 

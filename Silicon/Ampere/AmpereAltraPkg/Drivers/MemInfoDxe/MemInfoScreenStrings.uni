@@ -27,7 +27,7 @@
 #string STR_MEM_INFO_PERFORMANCE_FORM              #language en-US "Memory RAS and Performance Configuration"
 #string STR_MEM_INFO_PERFORMANCE_FORM_HELP         #language en-US "Displays and provides options to change the memory RAS and performance Settings"
 #string STR_MEM_INFO_ENABLE_ECC_PROMPT             #language en-US "ECC mode"
-#string STR_MEM_INFO_ENABLE_ECC_HELP               #language en-US "ECC mode: Disabled, SECDED or Symbol"
+#string STR_MEM_INFO_ENABLE_ECC_HELP               #language en-US "ECC mode: Auto, Disabled, SECDED or Symbol. Symbol is recommended only for x4 DIMM. For non x4 DIMMs, SECDED should be selected. Auto: Autodetect device width & select recommended mode."
 #string STR_MEM_INFO_ENABLE_ERRCTRL_DE_PROMPT      #language en-US "Defer uncorrectable read errors"
 #string STR_MEM_INFO_ENABLE_ERRCTRL_DE_HELP        #language en-US "When enabled the DMC defers uncorrectable read errors to the consumer by sending an OK response and setting the TXDAT poison flag on the CHI-B interconnect. If this bit is clear the DMC defaults to non-deferred behavior when encountering an unrecoverable error"
 #string STR_MEM_INFO_ENABLE_ERRCTRL_FI_PROMPT      #language en-US "Fault handling interrupt"

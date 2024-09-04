@@ -54,7 +54,7 @@ MemInfoNvparamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    VarStoreConfig->EccMode = EccSecded; /* Default enable */
+    VarStoreConfig->EccMode = EccAuto;
   } else {
     VarStoreConfig->EccMode = Value;
   }
@@ -186,15 +186,24 @@ MemInfoNvparamSet (
              NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
              &Value
              );
-  if (EFI_ERROR (Status) || Value != VarStoreConfig->EccMode) {
-    Status = NVParamSet (
-               NV_SI_DDR_ECC_MODE,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
-               NV_PERM_BIOS | NV_PERM_MANU,
-               VarStoreConfig->EccMode
-               );
-    if (EFI_ERROR (Status)) {
-      return Status;
+
+  TmpValue = VarStoreConfig->EccMode;
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
+    if (TmpValue == EccAuto) {
+      Status = NVParamClr (
+                 NV_SI_DDR_ECC_MODE,
+                 NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC
+                 );
+    } else {
+      Status = NVParamSet (
+                 NV_SI_DDR_ECC_MODE,
+                 NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
+                 NV_PERM_BIOS | NV_PERM_MANU,
+                 VarStoreConfig->EccMode
+                 );
+      if (EFI_ERROR (Status)) {
+        return Status;
+      }
     }
   }
 
