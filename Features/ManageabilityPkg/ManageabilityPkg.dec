@@ -60,6 +60,9 @@
   # Manageability Protocol PLDM
   gManageabilityProtocolPldmGuid    = { 0x3958090D, 0x69DD, 0x4868, { 0x9C, 0x41, 0xC9, 0xAC, 0x31, 0xB5, 0x25, 0xC5 } }
 
+  # Manageability variable Guid
+  gManageabilityVariableGuid        = { 0xac4cf43f, 0x3f64, 0x416a, { 0x96, 0x1d, 0x03, 0x1b, 0x53, 0x5b, 0x91, 0x5f } }
+
 [Protocols]
   gEdkiiPldmProtocolGuid                = { 0x60997616, 0xDB70, 0x4B5F, { 0x86, 0xA4, 0x09, 0x58, 0xA3, 0x71, 0x47, 0xB4 } }
   gEdkiiPldmSmbiosTransferProtocolGuid  = { 0xFA431C3C, 0x816B, 0x4B32, { 0xA3, 0xE0, 0xAD, 0x9B, 0x7F, 0x64, 0x27, 0x2E } }
@@ -104,9 +107,15 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb|FALSE|BOOLEAN|0x1000000B
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiFrb|FALSE|BOOLEAN|0x1000000C
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcAcpi|FALSE|BOOLEAN|0x1000000D
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSmbiosTransferEnable|FALSE|BOOLEAN|0x1000000E
 
 [PcdsDynamic, PcdsDynamicEx]
   gManageabilityPkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0x20000001
   ## This is the timeout value in milliseconds, default set to 360 milliseconds
   # @Prompt IPMI Fault Resilient Booting timeout value in milliseconds.
   gManageabilityPkgTokenSpaceGuid.PcdFRBTimeoutValue|360|UINT16|0x20000002
+  ## The BlobId of SMBIOS Blob in OpenBMC Phosphor Blob Transfer architecture
+  gManageabilityPkgTokenSpaceGuid.PcdBmcSmbiosBlobTransferId|"/smbios"|VOID*|0x20000003
+  ## When this PCD is set to TRUE, IpmiSmbiosTransferDxe only sends SMBIOS table to
+  #  BMC when SMBIOS table is changed.
+  gManageabilityPkgTokenSpaceGuid.PcdSendSmbiosOnChanged|TRUE|BOOLEAN|0x20000004
