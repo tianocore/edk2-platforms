@@ -13,6 +13,7 @@
   MODULE_TYPE                   = DXE_RUNTIME_DRIVER
   VERSION_STRING                = 0.1
   LIBRARY_CLASS                 = NVParamLib
+  CONSTRUCTOR                   = NVParamLibConstructor
 
 [Sources.common]
   NVParamLibCommon.c
