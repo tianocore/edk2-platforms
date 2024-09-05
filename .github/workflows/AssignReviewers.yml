@@ -27,7 +27,7 @@ jobs:
           app-id: ${{ secrets.TIANOCORE_ASSIGN_REVIEWERS_APPLICATION_ID }}
           private-key: ${{ secrets.TIANOCORE_ASSIGN_REVIEWERS_APPLICATION_PRIVATE_KEY }}
       - name: Checkout Pull Request Target
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Assign Reviewers
         uses: mdkinney/github-action-assign-reviewers@main
         with:
