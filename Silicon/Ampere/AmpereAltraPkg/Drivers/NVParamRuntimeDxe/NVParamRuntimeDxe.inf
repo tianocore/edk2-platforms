@@ -1,0 +1,42 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = NVParamRuntimeDxe
+  FILE_GUID                      = 7500354a-65e1-11ef-b503-8f3eeaa02615
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = NVParamRuntimeDxeInitialize
+
+[Sources]
+  NVParamRuntimeDxe.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  NVParamLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+  UefiRuntimeLib
+
+[Guids]
+  gAmpereNVParamRuntimeGuid
+  gEfiEventVirtualAddressChangeGuid
+
+[Depex]
+  TRUE
