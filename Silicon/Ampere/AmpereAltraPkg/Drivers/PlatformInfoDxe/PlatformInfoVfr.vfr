@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -79,6 +79,13 @@ formset
       help   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE),
       text   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE),
       text   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_L3CACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L3CACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L3CACHE_VALUE),
       flags  = 0,
       key    = 0;
 

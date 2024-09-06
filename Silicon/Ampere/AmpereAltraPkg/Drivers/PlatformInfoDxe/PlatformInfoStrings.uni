@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+// Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 //
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 //
@@ -40,6 +40,9 @@
 
 #string STR_PLATFORM_INFO_L2CACHE                   #language en-US "L2 Cache"
 #string STR_PLATFORM_INFO_L2CACHE_VALUE             #language en-US "0KB"
+
+#string STR_PLATFORM_INFO_L3CACHE                   #language en-US "SLC as L3 Cache"
+#string STR_PLATFORM_INFO_L3CACHE_VALUE             #language en-US "0KB"
 
 #string STR_PLATFORM_INFO_SOCCLK                    #language en-US "SOC Clock"
 #string STR_PLATFORM_INFO_SOCCLK_VALUE              #language en-US "0MHz"

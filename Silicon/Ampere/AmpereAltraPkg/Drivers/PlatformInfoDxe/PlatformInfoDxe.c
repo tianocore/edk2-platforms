@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -202,6 +202,20 @@ UpdatePlatformInfoScreen (
   HiiSetString (
     HiiHandle,
     STRING_TOKEN (STR_PLATFORM_INFO_L2CACHE_VALUE),
+    Str,
+    NULL
+    );
+
+  /* SLC cache as L3 */
+  if (IsAc01Processor ()) {
+    UnicodeSPrint (Str, sizeof (Str), L"32MB");
+  } else {
+    UnicodeSPrint (Str, sizeof (Str), L"16MB");
+  }
+
+  HiiSetString (
+    HiiHandle,
+    STRING_TOKEN (STR_PLATFORM_INFO_L3CACHE_VALUE),
     Str,
     NULL
     );
