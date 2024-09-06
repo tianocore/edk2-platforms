@@ -29,7 +29,7 @@
   As each non-volatile parameter requires 8 bytes, there is a total of 8K
   parameters.
 
-  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -212,7 +212,10 @@
 #define NV_SI_DDR_TCAL_SOC_VOLT_CAP_MV            ((64 * 8) + NV_MANU_PARAM_START)
 #define NV_SI_ALTRAMAX_ICCMAX_EN                  ((65 * 8) + NV_MANU_PARAM_START)
 #define NV_SI_MESH_TURBO_ACTIVITY_THRESHOLD       ((66 * 8) + NV_MANU_PARAM_START)
-#define NV_PMPRO_REGION2_LOAD_END                 (NV_SI_MESH_TURBO_ACTIVITY_THRESHOLD)
+#define NV_SI_ALTRAMAX_ICCMAX_OC_LIMIT_MARGIN     ((67 * 8) + NV_MANU_PARAM_START)
+#define NV_SI_SLT_VREF_EXT_PROG_EN                ((68 * 8) + NV_MANU_PARAM_START)
+#define NV_SI_SLT_FLAGS                           ((69 * 8) + NV_MANU_PARAM_START)
+#define NV_PMPRO_REGION2_LOAD_END                 (NV_SI_SLT_FLAGS)
 //
 // NOTE: Add before NV_MANU_PARAM_MAX and increase its value
 //
@@ -289,10 +292,48 @@
 #define NV_SI_HCR_EL2_CTL_LOW                     ((62 * 8) + NV_USER_PARAM_START)
 #define NV_SI_HCR_EL2_CTL_HIGH                    ((63 * 8) + NV_USER_PARAM_START)
 #define NV_SI_ESM_SPEED                           ((64 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_DDR_CE_TH1                      ((65 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_DDR_CE_TH2                      ((66 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_DDR_CE_WINDOW1                  ((67 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_DDR_CE_WINDOW2                  ((68 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_2P_CE_FILTER_THRESHOLD          ((69 * 8) + NV_USER_PARAM_START)
+#define NV_SI_RAS_2P_CE_FILTER_WINDOW             ((70 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC0_AER_CE_THRESHOLD        ((71 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC0_AER_CE_INTERVAL         ((72 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC1_AER_CE_THRESHOLD        ((73 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC1_AER_CE_INTERVAL         ((74 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC2_AER_CE_THRESHOLD        ((75 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC2_AER_CE_INTERVAL         ((76 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC3_AER_CE_THRESHOLD        ((77 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC3_AER_CE_INTERVAL         ((78 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC4_AER_CE_THRESHOLD        ((79 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC4_AER_CE_INTERVAL         ((80 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC5_AER_CE_THRESHOLD        ((81 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC5_AER_CE_INTERVAL         ((82 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC6_AER_CE_THRESHOLD        ((83 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC6_AER_CE_INTERVAL         ((84 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC7_AER_CE_THRESHOLD        ((85 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S0_RC7_AER_CE_INTERVAL         ((86 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC0_AER_CE_THRESHOLD        ((87 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC0_AER_CE_INTERVAL         ((88 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC1_AER_CE_THRESHOLD        ((89 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC1_AER_CE_INTERVAL         ((90 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC2_AER_CE_THRESHOLD        ((91 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC2_AER_CE_INTERVAL         ((92 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC3_AER_CE_THRESHOLD        ((93 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC3_AER_CE_INTERVAL         ((94 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC4_AER_CE_THRESHOLD        ((95 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC4_AER_CE_INTERVAL         ((96 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC5_AER_CE_THRESHOLD        ((97 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC5_AER_CE_INTERVAL         ((98 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC6_AER_CE_THRESHOLD        ((99 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC6_AER_CE_INTERVAL         ((100 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC7_AER_CE_THRESHOLD        ((101 * 8) + NV_USER_PARAM_START)
+#define NV_SI_PCIE_S1_RC7_AER_CE_INTERVAL         ((102 * 8) + NV_USER_PARAM_START)
 //
 // NOTE: Add before NV_USER_PARAM_MAX and increase its value
 //
-#define NV_USER_PARAM_MAX                         ((64 * 8) + NV_USER_PARAM_START)
+#define NV_USER_PARAM_MAX                         (NV_SI_PCIE_S1_RC7_AER_CE_INTERVAL)
 #define NV_PMPRO_REGION3_LOAD_START               (NV_USER_PARAM_START)
 #define NV_PMPRO_REGION3_LOAD_END                 (NV_USER_PARAM_MAX)
 
@@ -555,11 +596,27 @@
 #define NV_SI_RO_BOARD_MQ_S1_RCA5_TXRX_G4PRESET           ((237 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
 #define NV_SI_RO_BOARD_MQ_S1_RCA6_TXRX_G4PRESET           ((238 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
 #define NV_SI_RO_BOARD_MQ_S1_RCA7_TXRX_G4PRESET           ((239 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
-#define NV_PMPRO_REGION4_LOAD_END                         (NV_SI_RO_BOARD_MQ_S1_RCA7_TXRX_G4PRESET)
+#define NV_SI_RO_BOARD_RAS_FLAGS                          ((240 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_DDR_PROGRESS_LOG_CTRL              ((241 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_2P_ALI_CE_MASK_THRESHOLD           ((242 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000001 */
+#define NV_SI_RO_BOARD_2P_ALI_CE_MASK_INTERVAL            ((243 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_RAS_2P_CE_FILTER                   ((244 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_PCIE_AER_CE_THRESHOLD_EN           ((245 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_BMC_HANDSHAKE_SPI_TO1              ((246 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_BMC_HANDSHAKE_SPI_TO2              ((247 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_PCIE_AER_CE_THRESHOLD              ((248 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000001 */
+#define NV_SI_RO_BOARD_PCIE_AER_CE_INTERVAL               ((249 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_I2C_RCA_VRD_VOUT_FORMAT            ((250 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_CCIX_MODE_OVERWRITE                ((251 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_DVFS_VOLT_READ_BACK_MARGIN_MV      ((252 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_2P_DPLL                            ((253 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_RC_DOMAIN_CTRL                     ((254 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_SI_RO_BOARD_PCIE_SRIS_MODE                     ((255 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
+#define NV_PMPRO_REGION4_LOAD_END                         (NV_SI_RO_BOARD_PCIE_SRIS_MODE)
 //
 // NOTE: Add before NV_BOARD_PARAM_MAX and increase its value
 //
-#define NV_BOARD_PARAM_MAX                                ((207 * 8) + NV_BOARD_PARAM_START)
+#define NV_BOARD_PARAM_MAX                                ((255 * 8) + NV_BOARD_PARAM_START)
 
 typedef UINT32 NVPARAM;
 
