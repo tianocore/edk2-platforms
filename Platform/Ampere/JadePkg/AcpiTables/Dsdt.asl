@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -1018,6 +1018,22 @@ DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "Ampere", "Jade", 1) {
           return (0xf)
         }
       }
+    }
+
+    //
+    // LED Device
+    //
+    Device (LED) {
+      Name (_HID, "AMPC0008")
+      Name (_CCA, ONE)
+      Name (_STR, Unicode ("Altra LED Device"))
+
+      Name (_DSD, Package () {
+        ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+        Package () {
+          Package () { "uuid", Package (4) { 0x5598273c, 0xa49611ea, 0xbb370242, 0xac130002 }},
+        }
+      })
     }
 
     Include ("PCI-S0.Rca01.asi")
