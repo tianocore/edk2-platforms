@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -18,7 +18,6 @@
 [Sources.common]
   CpuConfigDxe.c
   CpuConfigDxe.h
-  CpuConfigNVDataStruc.h
   CpuConfigVfr.vfr
   CpuConfigStrings.uni
 
@@ -29,6 +28,7 @@
   Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
 
 [LibraryClasses]
+  AmpereCpuLib
   ArmLib
   BaseLib
   DebugLib

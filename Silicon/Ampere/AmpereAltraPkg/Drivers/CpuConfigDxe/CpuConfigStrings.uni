@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+// Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 //
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 //
@@ -15,3 +15,8 @@
 #string STR_CPU_SUBNUMA_MODE_MONOLITHIC             #language en-US "Monolithic"
 #string STR_CPU_SUBNUMA_MODE_HEMISPHERE             #language en-US "Hemisphere"
 #string STR_CPU_SUBNUMA_MODE_QUADRANT               #language en-US "Quadrant"
+
+#string STR_CPU_SLC_AS_L3_PROMPT                    #language en-US "SLC as L3$"
+#string STR_CPU_SLC_AS_L3_HELP                      #language en-US "This option enables / disables PPTT to indicate SLC as L3$. This is limited to only 1P Monolithic mode."
+#string STR_CPU_SLC_AS_L3_ENABLE                    #language en-US "Enabled"
+#string STR_CPU_SLC_AS_L3_DISABLE                   #language en-US "Disabled"

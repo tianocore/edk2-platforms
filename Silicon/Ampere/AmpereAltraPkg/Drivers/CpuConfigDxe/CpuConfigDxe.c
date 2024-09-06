@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -33,12 +33,10 @@
 //
 // Default settings definitions
 //
-#define NV_SI_SUBNUMA_MODE_DEFAULT   0x00 /* Monolithic mode */
+#define NV_SI_SUBNUMA_MODE_DEFAULT   CPU_SUBNUMA_MODE_MONO
 #define WA_ERRATUM_1542419_DEFAULT   0x00 /* Disable I-Cache coherency */
 #define NEAR_ATOMIC_DISABLE_DEFAULT  0x00 /* Enable Near Atomic */
 #define CPU_SLC_REPLACE_POLICY       0x00 /* eLRU */
-
-CHAR16 CpuVarstoreDataName[] = L"CpuConfigNVData";
 
 EFI_HANDLE              mDriverHandle = NULL;
 CPU_CONFIG_PRIVATE_DATA *mPrivateData = NULL;
@@ -253,12 +251,24 @@ CpuConfigExtractConfig (
   *Progress         = Request;
   AllocatedRequest  = FALSE;
 
-  if ((Request != NULL) && !HiiIsConfigHdrMatch (Request, &gCpuConfigFormSetGuid, CpuVarstoreDataName)) {
+  if ((Request != NULL) && !HiiIsConfigHdrMatch (Request, &gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME)) {
     return EFI_NOT_FOUND;
   }
 
   PrivateData = CPU_CONFIG_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
+
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status = gRT->GetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
+  }
 
   //
   // Get current setting from NVParam.
@@ -278,7 +288,7 @@ CpuConfigExtractConfig (
     // Allocate and fill a buffer large enough to hold the <ConfigHdr> template
     // followed by "&OFFSET=0&WIDTH=WWWWWWWWWWWWWWWW" followed by a Null-terminator
     //
-    ConfigRequestHdr = HiiConstructConfigHdr (&gCpuConfigFormSetGuid, CpuVarstoreDataName, PrivateData->DriverHandle);
+    ConfigRequestHdr = HiiConstructConfigHdr (&gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME, PrivateData->DriverHandle);
     Size = (StrLen (ConfigRequestHdr) + 32 + 1) * sizeof (CHAR16);
     ConfigRequest = AllocateZeroPool (Size);
     ASSERT (ConfigRequest != NULL);
@@ -365,7 +375,19 @@ CpuConfigRouteConfig (
   // Check routing data in <ConfigHdr>.
   // Note: if only one Storage is used, then this checking could be skipped.
   //
-  if (!HiiIsConfigHdrMatch (Configuration, &gCpuConfigFormSetGuid, CpuVarstoreDataName)) {
+  if (!HiiIsConfigHdrMatch (Configuration, &gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME)) {
+    return EFI_NOT_FOUND;
+  }
+
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status = gRT->GetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
     return EFI_NOT_FOUND;
   }
 
@@ -390,6 +412,17 @@ CpuConfigRouteConfig (
                                );
   if (EFI_ERROR (Status)) {
     return Status;
+  }
+
+  Status = gRT->SetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                  sizeof (CPU_VARSTORE_DATA),
+                  &PrivateData->Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
   }
 
   //
@@ -432,17 +465,67 @@ CpuConfigCallback (
   OUT      EFI_BROWSER_ACTION_REQUEST     *ActionRequest
   )
 {
-  if (Action != EFI_BROWSER_ACTION_CHANGING) {
-    //
-    // Do nothing for other UEFI Action. Only do call back when data is changed.
-    //
-    return EFI_UNSUPPORTED;
-  }
+  CPU_VARSTORE_DATA  *Configuration;
+
   if (((Value == NULL) && (Action != EFI_BROWSER_ACTION_FORM_OPEN) && (Action != EFI_BROWSER_ACTION_FORM_CLOSE))||
       (ActionRequest == NULL))
   {
     return EFI_INVALID_PARAMETER;
   }
+
+  if (Action == EFI_BROWSER_ACTION_CHANGED) {
+    Configuration = AllocateZeroPool (sizeof (CPU_VARSTORE_DATA));
+    ASSERT (Configuration != NULL);
+    if (!HiiGetBrowserData (&gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME, sizeof (CPU_VARSTORE_DATA), (UINT8 *)Configuration)) {
+      FreePool (Configuration);
+      return EFI_NOT_FOUND;
+    }
+
+    //
+    // Disable SLC as L3$ option if the CPU configuration is 1P monolithic mode
+    //
+    if (!IsSlaveSocketActive () && Configuration->CpuSubNumaMode == CPU_SUBNUMA_MODE_MONO) {
+      Configuration->CpuSlcAsL3Permitted = CPU_SLC_AS_L3_PERMITTED_YES;
+    } else {
+      Configuration->CpuSlcAsL3Permitted = CPU_SLC_AS_L3_PERMITTED_NO;
+      Configuration->CpuSlcAsL3 = CPU_SLC_AS_L3_DISABLE;
+    }
+
+    //
+    // Pass changed uncommitted data back to Form Browser
+    //
+    HiiSetBrowserData (&gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME, sizeof (CPU_VARSTORE_DATA), (UINT8 *)Configuration, NULL);
+    FreePool (Configuration);
+  }
+
+  return EFI_SUCCESS;
+}
+
+EFI_STATUS
+CpuConfigUnload (
+  VOID
+  )
+{
+  ASSERT (mPrivateData != NULL);
+
+  if (mDriverHandle != NULL) {
+    gBS->UninstallMultipleProtocolInterfaces (
+           mDriverHandle,
+           &gEfiDevicePathProtocolGuid,
+           &mCpuConfigHiiVendorDevicePath,
+           &gEfiHiiConfigAccessProtocolGuid,
+           &mPrivateData->ConfigAccess,
+           NULL
+           );
+    mDriverHandle = NULL;
+  }
+
+  if (mPrivateData->HiiHandle != NULL) {
+    HiiRemovePackages (mPrivateData->HiiHandle);
+  }
+
+  FreePool (mPrivateData);
+  mPrivateData = NULL;
 
   return EFI_SUCCESS;
 }
@@ -456,6 +539,20 @@ CpuConfigDxeEntryPoint (
   EFI_STATUS                      Status;
   EFI_HII_HANDLE                  HiiHandle;
   EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
+  BOOLEAN                         ActionFlag;
+  CPU_VARSTORE_DATA               *Configuration;
+  EFI_STRING                      ConfigRequestHdr;
+  UINTN                           BufferSize;
+
+  //
+  // With the fresh system, the NVParam value is invalid (0xFFFFFFFF).
+  // It causes reading from the NVParam is failed.
+  // So, the NVParam should be setting with default values if any params is invalid.
+  //
+  Status = SetupDefaultSettings ();
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
 
   //
   // Initialize driver private data
@@ -517,13 +614,76 @@ CpuConfigDxeEntryPoint (
   mPrivateData->HiiHandle = HiiHandle;
 
   //
-  // With the fresh system, the NVParam value is invalid (0xFFFFFFFF).
-  // It causes reading from the NVParam is failed.
-  // So, the NVParam should be setting with default values if any params is invalid.
+  // Initialize configuration data
   //
-  Status = SetupDefaultSettings ();
+  Configuration = &mPrivateData->Configuration;
+  ZeroMem (Configuration, sizeof (CPU_VARSTORE_DATA));
+
+  //
+  // Try to read NV config EFI variable first
+  //
+  ConfigRequestHdr = HiiConstructConfigHdr (&gCpuConfigFormSetGuid, CPU_CONFIG_VARIABLE_NAME, mDriverHandle);
+  ASSERT (ConfigRequestHdr != NULL);
+
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  Status     = gRT->GetVariable (CPU_CONFIG_VARIABLE_NAME, &gCpuConfigFormSetGuid, NULL, &BufferSize, Configuration);
   if (EFI_ERROR (Status)) {
-    return Status;
+    //
+    // Store zero data Buffer Storage to EFI variable
+    //
+    Status = gRT->SetVariable (
+                    CPU_CONFIG_VARIABLE_NAME,
+                    &gCpuConfigFormSetGuid,
+                    EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                    sizeof (CPU_VARSTORE_DATA),
+                    Configuration
+                    );
+    if (EFI_ERROR (Status)) {
+      CpuConfigUnload ();
+      return Status;
+    }
+
+    //
+    // EFI variable for NV config doesn't exit, we should build this variable
+    // based on default values stored in IFR
+    //
+    ActionFlag = HiiSetToDefaults (ConfigRequestHdr, EFI_HII_DEFAULT_CLASS_STANDARD);
+    if (!ActionFlag) {
+      CpuConfigUnload ();
+      return EFI_INVALID_PARAMETER;
+    }
+  } else {
+    //
+    // EFI variable does exist and Validate Current Setting
+    //
+    ActionFlag = HiiValidateSettings (ConfigRequestHdr);
+    if (!ActionFlag) {
+      CpuConfigUnload ();
+      return EFI_INVALID_PARAMETER;
+    }
+  }
+
+  FreePool (ConfigRequestHdr);
+
+  //
+  // Limit SLC as L3$ to only 1P monolithic mode
+  //
+  if (!IsSlaveSocketActive () && (Configuration->CpuSubNumaMode == CPU_SUBNUMA_MODE_MONO)) {
+    Configuration->CpuSlcAsL3Permitted = CPU_SLC_AS_L3_PERMITTED_YES;
+  } else {
+    Configuration->CpuSlcAsL3Permitted = CPU_SLC_AS_L3_PERMITTED_NO;
+    Configuration->CpuSlcAsL3          = CPU_SLC_AS_L3_DISABLE;
+  }
+
+  Status = gRT->SetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+                  sizeof (CPU_VARSTORE_DATA),
+                  Configuration
+                  );
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_FOUND;
   }
 
   return EFI_SUCCESS;

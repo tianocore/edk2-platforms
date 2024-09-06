@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -9,7 +9,7 @@
 #ifndef CPU_CONFIG_H_
 #define CPU_CONFIG_H_
 
-#include "CpuConfigNVDataStruc.h"
+#include <CpuConfigNVDataStruc.h>
 
 //
 // This is the generated IFR binary data for each formset defined in VFR.

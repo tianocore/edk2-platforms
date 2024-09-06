@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -9,7 +9,7 @@
 #include <Uefi/UefiMultiPhase.h>
 #include <Guid/PlatformManagerHii.h>
 #include <Guid/CpuConfigHii.h>
-#include "CpuConfigNVDataStruc.h"
+#include <CpuConfigNVDataStruc.h>
 
 #define SUBNUMA_MODE_FORM_ID 1
 
@@ -28,15 +28,28 @@ formset
     title  = STRING_TOKEN(STR_CPU_FORM);
     subtitle text = STRING_TOKEN(STR_CPU_FORM_HELP);
 
-    oneof
-      varid   = CpuConfigNVData.CpuSubNumaMode,
-      prompt  = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_PROMPT),
-      help    = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_HELP),
-      flags   = RESET_REQUIRED,
-      option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_MONOLITHIC), value = 0x0, flags = DEFAULT;
-      option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_HEMISPHERE), value = 0x1, flags = 0;
-      option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_QUADRANT), value = 0x2, flags = 0;
-    endoneof;
+    grayoutif ideqval CpuConfigNVData.CpuSlcAsL3 == CPU_SLC_AS_L3_ENABLE;
+      oneof
+        varid   = CpuConfigNVData.CpuSubNumaMode,
+        prompt  = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_PROMPT),
+        help    = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_HELP),
+        flags   = INTERACTIVE | RESET_REQUIRED,
+        option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_MONOLITHIC), value = CPU_SUBNUMA_MODE_MONO, flags = DEFAULT;
+        option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_HEMISPHERE), value = CPU_SUBNUMA_MODE_HEMI, flags = 0;
+        option text = STRING_TOKEN(STR_CPU_SUBNUMA_MODE_QUADRANT), value = CPU_SUBNUMA_MODE_QUAD, flags = 0;
+      endoneof;
+    endif;
+
+    grayoutif ideqval CpuConfigNVData.CpuSlcAsL3Permitted == CPU_SLC_AS_L3_PERMITTED_NO;
+      oneof
+        varid   = CpuConfigNVData.CpuSlcAsL3,
+        prompt  = STRING_TOKEN(STR_CPU_SLC_AS_L3_PROMPT),
+        help    = STRING_TOKEN(STR_CPU_SLC_AS_L3_HELP),
+        flags   = RESET_REQUIRED,
+        option text = STRING_TOKEN(STR_CPU_SLC_AS_L3_ENABLE), value = CPU_SLC_AS_L3_ENABLE, flags = DEFAULT;
+        option text = STRING_TOKEN(STR_CPU_SLC_AS_L3_DISABLE), value = CPU_SLC_AS_L3_DISABLE, flags = 0;
+      endoneof;
+    endif;
 
   endform;
 
