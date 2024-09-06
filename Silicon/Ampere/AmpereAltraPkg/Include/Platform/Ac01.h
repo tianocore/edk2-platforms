@@ -233,6 +233,15 @@
 #define PLATFORM_CPM_UID_BIT_OFFSET              8
 
 //
+// MPIDR manipulation
+//
+#define AC01_GET_MPIDR(SocketId, ClusterId, CoreId) \
+          (((SocketId) << 32) | ((ClusterId) << 16) | ((CoreId) << 8))
+#define AC01_GET_SOCKET_ID(Mpidr)  (((Mpidr) & ARM_CORE_AFF3) >> 32)
+#define AC01_GET_CLUSTER_ID(Mpidr) (((Mpidr) & ARM_CORE_AFF2) >> 16)
+#define AC01_GET_CORE_ID(Mpidr)    (((Mpidr) & ARM_CORE_AFF1) >> 8)
+
+//
 // Max number for AC01 PCIE Root Complexes
 //
 #define AC01_PCIE_MAX_ROOT_COMPLEX       16
