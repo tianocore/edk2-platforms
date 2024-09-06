@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -63,9 +63,9 @@ ArmPlatformInitialize (
 
   Status = EFI_SUCCESS;
 
-  if (FixedPcdGet64 (PcdSerialRegisterBase) != 0) {
+  if (FixedPcdGet64 (PcdSerialDbgRegisterBase) != 0) {
     /* Debug port should use the same parameters with console */
-    BaudRate = FixedPcdGet64 (PcdUartDefaultBaudRate);
+    BaudRate = FixedPcdGet64 (PcdSerialDbgUartBaudRate);
     ReceiveFifoDepth = FixedPcdGet32 (PcdUartDefaultReceiveFifoDepth);
     Parity = (EFI_PARITY_TYPE)FixedPcdGet8 (PcdUartDefaultParity);
     DataBits = FixedPcdGet8 (PcdUartDefaultDataBits);
@@ -73,7 +73,7 @@ ArmPlatformInitialize (
 
     /* Initialize uart debug port */
     Status = PL011UartInitializePort (
-               (UINTN)FixedPcdGet64 (PcdSerialRegisterBase),
+               (UINTN)FixedPcdGet64 (PcdSerialDbgRegisterBase),
                FixedPcdGet32 (PL011UartClkInHz),
                &BaudRate,
                &ReceiveFifoDepth,
