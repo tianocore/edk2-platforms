@@ -122,7 +122,6 @@ SratAddGiccAffinity (
   UINTN               Count, NumNode, Idx;
   UINT32              AcpiProcessorUid;
   UINT8               Socket;
-  UINT8               Core;
   UINT8               Cpm;
 
   Hob = GetFirstGuidHob (&gArmMpCoreInfoGuid);
@@ -141,14 +140,17 @@ SratAddGiccAffinity (
   NumNode = 0;
   while (Count != NumberOfEntries) {
     for (Idx = 0; Idx < NumberOfEntries; Idx++ ) {
-      Socket = GET_MPIDR_AFF1 (ArmCoreInfoTable[Idx].Mpidr);
-      Core   = GET_MPIDR_AFF0 (ArmCoreInfoTable[Idx].Mpidr);
-      Cpm = Core >> PLATFORM_CPM_UID_BIT_OFFSET;
+      Socket = AC01_GET_SOCKET_ID (ArmCoreInfoTable[Idx].Mpidr);
+      Cpm    = AC01_GET_CLUSTER_ID (ArmCoreInfoTable[Idx].Mpidr);
       if (CpuGetSubNumNode (Socket, Cpm) != NumNode) {
         /* We add nodes based on ProximityDomain order */
         continue;
       }
-      AcpiProcessorUid = (Socket << PLATFORM_SOCKET_UID_BIT_OFFSET) + Core;
+
+      AcpiProcessorUid =
+        (AC01_GET_SOCKET_ID (ArmCoreInfoTable[Idx].Mpidr) << PLATFORM_SOCKET_UID_BIT_OFFSET)
+        + (AC01_GET_CLUSTER_ID (ArmCoreInfoTable[Idx].Mpidr) << PLATFORM_CPM_UID_BIT_OFFSET)
+        +  AC01_GET_CORE_ID (ArmCoreInfoTable[Idx].Mpidr);
       ZeroMem ((VOID *)&SratGiccAffinity[Count], sizeof (SratGiccAffinity[Count]));
       SratGiccAffinity[Count].AcpiProcessorUid = AcpiProcessorUid;
       SratGiccAffinity[Count].Flags = 1;

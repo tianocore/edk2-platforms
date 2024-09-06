@@ -94,8 +94,7 @@ AcpiInstallMadtProcessorNode (
     (ClusterId << 8) + (CpuId  % PLATFORM_CPU_NUM_CORES_PER_CPM);
   MadtProcessorEntryPointer->Flags = 1;
   MadtProcessorEntryPointer->MPIDR =
-    (((ClusterId << 8) + (CpuId  % PLATFORM_CPU_NUM_CORES_PER_CPM)) << 8);
-  MadtProcessorEntryPointer->MPIDR += (((UINT64)SocketId) << 32);
+    AC01_GET_MPIDR ((UINT64)SocketId, ClusterId, CpuId  % PLATFORM_CPU_NUM_CORES_PER_CPM);
 
   return Size;
 }
