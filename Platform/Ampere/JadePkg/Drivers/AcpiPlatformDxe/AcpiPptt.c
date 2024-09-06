@@ -7,7 +7,10 @@
 **/
 
 #include <IndustryStandard/ArmCache.h>
+#include <Library/AmpereCpuLib.h>
 #include <Library/ArmLib.h>
+#include <Guid/CpuConfigHii.h>
+#include <CpuConfigNVDataStruc.h>
 #include "AcpiPlatform.h"
 
 #define NUMBER_OF_RESOURCES  2 // L1I & L1D
@@ -106,9 +109,12 @@ AddClusterNode (
 UINT32
 AddSocketNode (
   EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  *PpttProcessorEntryPointer,
-  UINT32                                 ParentOffset
+  UINT32                                 ParentOffset,
+  UINT32                                 SlcNodeOffset
   )
 {
+  UINT32  *ResPointer;
+
   CopyMem (
     PpttProcessorEntryPointer,
     &PpttProcessorTemplate,
@@ -118,6 +124,15 @@ AddSocketNode (
   PpttProcessorEntryPointer->Flags.PhysicalPackage         = EFI_ACPI_6_3_PPTT_PACKAGE_PHYSICAL;
   PpttProcessorEntryPointer->Flags.IdenticalImplementation = EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL;
   PpttProcessorEntryPointer->Parent                        = ParentOffset;
+  if (SlcNodeOffset > 0) {
+    PpttProcessorEntryPointer->NumberOfPrivateResources = 1;
+    PpttProcessorEntryPointer->Length                  += sizeof (UINT32) * PpttProcessorEntryPointer->NumberOfPrivateResources;
+
+    ResPointer    = (UINT32 *)((UINT64)PpttProcessorEntryPointer + sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR));
+    ResPointer[0] = SlcNodeOffset;
+  } else {
+    PpttProcessorEntryPointer->NumberOfPrivateResources = 0;
+  }
 
   return PpttProcessorEntryPointer->Length;
 }
@@ -224,6 +239,40 @@ AddL2CacheNode (
   return PpttCacheEntryPointer->Length;
 }
 
+UINT32
+AddSlcCacheNode (
+  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE  *PpttCacheEntryPointer
+  )
+{
+  CopyMem (
+    PpttCacheEntryPointer,
+    &PpttCacheTemplate,
+    sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE)
+    );
+
+  PpttCacheEntryPointer->Flags.SizePropertyValid  = 1;
+  PpttCacheEntryPointer->Flags.LineSizeValid      = EFI_ACPI_6_3_PPTT_LINE_SIZE_VALID;
+  PpttCacheEntryPointer->Flags.NumberOfSetsValid  = EFI_ACPI_6_3_PPTT_NUMBER_OF_SETS_VALID;
+  PpttCacheEntryPointer->Flags.AssociativityValid = EFI_ACPI_6_3_PPTT_ASSOCIATIVITY_VALID;
+  PpttCacheEntryPointer->Flags.CacheTypeValid     = EFI_ACPI_6_3_PPTT_CACHE_TYPE_VALID;
+
+  if (IsAc01Processor ()) {
+    PpttCacheEntryPointer->Size = SIZE_32MB;
+  } else {
+    PpttCacheEntryPointer->Size = SIZE_16MB;
+  }
+
+  PpttCacheEntryPointer->NumberOfSets = 0x400;     /* 1024 sets per 1MB HN-F */
+
+  PpttCacheEntryPointer->Associativity    = 0x10; /* 16-way set-associative */
+  PpttCacheEntryPointer->LineSize         = 0x40; /* 64 bytes */
+  PpttCacheEntryPointer->NextLevelOfCache = 0;
+
+  PpttCacheEntryPointer->Attributes.CacheType = 0x3; /* Unified Cache */
+
+  return PpttCacheEntryPointer->Length;
+}
+
 /*
  *  Install PPTT table.
  */
@@ -238,6 +287,7 @@ AcpiInstallPpttTable (
   UINT32                   L1DNodeOffset;
   UINT32                   L1INodeOffset;
   UINT32                   L2NodeOffset;
+  UINT32                   SlcNodeOffset;
   UINT32                   RootNodeOffset;
   UINT32                   SocketNodeOffset[PLATFORM_CPU_MAX_SOCKET];
   UINTN                    ClusterId;
@@ -248,6 +298,21 @@ AcpiInstallPpttTable (
   UINTN                    Size;
   UINTN                    SocketId;
   VOID                     *PpttTablePointer;
+  CPU_VARSTORE_DATA        CpuConfigData;
+  UINTN                    BufferSize;
+
+  BufferSize = sizeof (CPU_VARSTORE_DATA);
+  ZeroMem (&CpuConfigData, BufferSize);
+  Status = gRT->GetVariable (
+                  CPU_CONFIG_VARIABLE_NAME,
+                  &gCpuConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &CpuConfigData
+                  );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Could not get CPU Configuration Data \n", __func__));
+  }
 
   Status = gBS->LocateProtocol (
                   &gEfiAcpiTableProtocolGuid,
@@ -268,6 +333,9 @@ AcpiInstallPpttTable (
          sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE) +                                                                           // L1I node
          sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE) +                                                                           // L1D node
          sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE);                                                                            // L2 node
+  if (CpuConfigData.CpuSlcAsL3 == CPU_SLC_AS_L3_ENABLE) {
+    Size += sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE) + sizeof (UINT32);                                                       // SLC node
+  }
 
   PpttTablePointer = AllocateZeroPool (Size);
   if (PpttTablePointer == NULL) {
@@ -278,6 +346,12 @@ AcpiInstallPpttTable (
 
   RootNodeOffset  = NextNodeOffset;
   NextNodeOffset += AddRootNode (PpttTablePointer + NextNodeOffset);
+
+  SlcNodeOffset = 0;
+  if (CpuConfigData.CpuSlcAsL3 == CPU_SLC_AS_L3_ENABLE) {
+    SlcNodeOffset   = NextNodeOffset;
+    NextNodeOffset += AddSlcCacheNode (PpttTablePointer + NextNodeOffset);
+  }
 
   L2NodeOffset    = NextNodeOffset;
   NextNodeOffset += AddL2CacheNode (PpttTablePointer + NextNodeOffset);
@@ -290,7 +364,7 @@ AcpiInstallPpttTable (
 
   for (SocketId = 0; SocketId < NumSockets; SocketId++) {
     SocketNodeOffset[SocketId] = NextNodeOffset;
-    NextNodeOffset            += AddSocketNode (PpttTablePointer + NextNodeOffset, RootNodeOffset);
+    NextNodeOffset            += AddSocketNode (PpttTablePointer + NextNodeOffset, RootNodeOffset, SlcNodeOffset);
   }
 
   for (ClusterId = 0; ClusterId < PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_MAX_SOCKET; ClusterId++) {
