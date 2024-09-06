@@ -108,8 +108,10 @@ PrePeiCoreGetMpCoreInfo (
     }
     SocketId = SOCKET_ID (Index);
     ClusterId = CLUSTER_ID (Index);
-    mArmPlatformMpCoreInfoTable[mArmPlatformCoreCount].Mpidr = GET_MPID (
-      SocketId, (ClusterId << 8) | (Index % PLATFORM_CPU_NUM_CORES_PER_CPM));
+
+    mArmPlatformMpCoreInfoTable[mArmPlatformCoreCount].Mpidr =
+      AC01_GET_MPIDR ((UINT64)SocketId, ClusterId, (Index % PLATFORM_CPU_NUM_CORES_PER_CPM));
+
     mArmPlatformMpCoreInfoTable[mArmPlatformCoreCount].MailboxClearAddress = 0;
     mArmPlatformMpCoreInfoTable[mArmPlatformCoreCount].MailboxClearValue = 0;
     mArmPlatformMpCoreInfoTable[mArmPlatformCoreCount].MailboxGetAddress = 0;
