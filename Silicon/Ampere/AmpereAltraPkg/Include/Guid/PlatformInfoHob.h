@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -183,6 +183,9 @@ typedef struct {
   UINT8 Link2PSpeed[2];
   UINT8 Link2PWidth[2];
 
+  UINT32  Ecid[2][4];
+  UINT8   SkuMaxLink2pSpeed;
+  UINT8   VdmCapability[2];
 } PLATFORM_INFO_HOB;
 
 #endif /* PLATFORM_INFO_HOB_H_ */
