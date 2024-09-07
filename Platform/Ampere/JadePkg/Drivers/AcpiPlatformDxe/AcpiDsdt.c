@@ -383,7 +383,13 @@ AcpiPatchDsu (
   UINTN Index;
 
   for (Index = 0; Index < PLATFORM_CPU_MAX_NUM_CORES; Index += PLATFORM_CPU_NUM_CORES_PER_CPM) {
-    AsciiSPrint (NodePath, sizeof (NodePath), "\\_SB.DU%2X._STA", Index / PLATFORM_CPU_NUM_CORES_PER_CPM);
+    AsciiSPrint (
+      NodePath,
+      sizeof (NodePath),
+      "\\_SB.SYST.CL%2X.DU%2X._STA",
+      Index / PLATFORM_CPU_NUM_CORES_PER_CPM,
+      Index / PLATFORM_CPU_NUM_CORES_PER_CPM
+      );
     if (IsCpuEnabled (Index)) {
       UpdateStatusMethodObject (AcpiSdtProtocol, TableHandle, NodePath, 0xF);
     } else {
