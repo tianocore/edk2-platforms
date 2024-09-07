@@ -1,7 +1,7 @@
 /** @file
  *  Based on files under Nt32Pkg/MiscSubClassPlatformDxe/
  *
- *  Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+ *  Copyright (c) 2023 - 2024, Ampere Computing LLC. All rights reserved.<BR>
  *  Copyright (c) 2021, NUVIA Inc. All rights reserved.<BR>
  *  Copyright (c) 2006 - 2010, Intel Corporation. All rights reserved.<BR>
  *  Copyright (c) 2015, Hisilicon Limited. All rights reserved.<BR>
@@ -15,6 +15,7 @@
 
 #langdef en-US "English"
 
+#include "Type07/PlatformCache.uni"
 #include "Type08/PlatformPortConnector.uni"
 #include "Type09/PlatformSystemSlot.uni"
 #include "Type11/PlatformOemString.uni"

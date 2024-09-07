@@ -3,7 +3,7 @@
 
   Based on files under Nt32Pkg/MiscSubClassPlatformDxe/
 
-  Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2023 - 2024, Ampere Computing LLC. All rights reserved.<BR>
   Copyright (c) 2021, NUVIA Inc. All rights reserved.<BR>
   Copyright (c) 2006 - 2011, Intel Corporation. All rights reserved.<BR>
   Copyright (c) 2015, Hisilicon Limited. All rights reserved.<BR>
@@ -14,6 +14,10 @@
 
 #include "SmbiosPlatformDxe.h"
 
+SMBIOS_PLATFORM_DXE_TABLE_EXTERNS (
+  SMBIOS_TABLE_TYPE7,
+  PlatformCache
+  )
 SMBIOS_PLATFORM_DXE_TABLE_EXTERNS (
   SMBIOS_TABLE_TYPE8,
   PlatformPortConnector
@@ -52,6 +56,10 @@ SMBIOS_PLATFORM_DXE_TABLE_EXTERNS (
   )
 
 SMBIOS_PLATFORM_DXE_DATA_TABLE mSmbiosPlatformDxeDataTable[] = {
+  // Type7
+  SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
+    PlatformCache
+  ),
   // Type8
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformPortConnector
