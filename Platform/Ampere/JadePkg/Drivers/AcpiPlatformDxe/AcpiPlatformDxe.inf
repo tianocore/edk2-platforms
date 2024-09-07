@@ -17,6 +17,8 @@
 [Sources.common]
   AcpiApei.c
   AcpiApei.h
+  AcpiBdat.c
+  AcpiBdat.h
   AcpiDsdt.c
   AcpiIort.c
   AcpiMadt.c

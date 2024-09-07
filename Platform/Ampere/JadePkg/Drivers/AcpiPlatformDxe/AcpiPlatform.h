@@ -95,4 +95,9 @@ AcpiInstallSpmiTable (
   VOID
   );
 
+EFI_STATUS
+AcpiInstallBdatTable (
+  VOID
+  );
+
 #endif /* ACPI_PLATFORM_H_ */

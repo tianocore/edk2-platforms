@@ -119,6 +119,11 @@ InstallAcpiOnReadyToBoot (
     DEBUG ((DEBUG_INFO, "Installed SPMI table\n"));
   }
 
+  Status = AcpiInstallBdatTable ();
+  if (!EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_INFO, "Installed BDAT table\n"));
+  }
+
   //
   // Close the event, so it will not be signalled again.
   //
