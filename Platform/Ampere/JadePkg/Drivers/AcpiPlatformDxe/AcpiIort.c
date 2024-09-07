@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -124,7 +124,7 @@ AC01_RC_NODE mRcNodeTemplate = {
     0x0,
     EFI_ACPI_IORT_MEM_ACCESS_FLAGS_CPM |
     EFI_ACPI_IORT_MEM_ACCESS_FLAGS_DACS,
-    EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,
+    EFI_ACPI_IORT_ROOT_COMPLEX_ATS_SUPPORTED,
     .PciSegmentNumber = 0,
     .MemoryAddressSize = 64,
   },
