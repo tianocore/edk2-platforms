@@ -241,6 +241,8 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
   INF ArmPkg/Drivers/MmCommunicationDxe/MmCommunication.inf
 
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/PlatformInitDxe/PlatformInitDxe.inf
+
   #
   # Environment Variables Protocol
   #

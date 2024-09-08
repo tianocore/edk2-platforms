@@ -615,6 +615,11 @@
   }
 
   #
+  # Initialize works at Dxe phase
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/PlatformInitDxe/PlatformInitDxe.inf
+
+  #
   # Timer
   #
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
