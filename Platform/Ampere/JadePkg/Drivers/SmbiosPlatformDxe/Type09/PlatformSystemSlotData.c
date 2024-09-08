@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -39,7 +39,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth16X,            // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     2,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1
@@ -75,7 +75,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth8X,             // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     4,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1
@@ -93,7 +93,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth8X,             // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     5,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1
@@ -111,7 +111,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth8X,             // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     6,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1
@@ -129,7 +129,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth8X,             // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     7,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1
@@ -147,7 +147,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE9, PlatformSystemSlot) = {
     ADDITIONAL_STR_INDEX_1,         // Slot Designation
     SlotTypePciExpressGen4,         // Slot Type
     SlotDataBusWidth16X,            // Slot Data Bus Width
-    SlotUsageAvailable,             // Current Usage
+    SlotUsageUnavailable,           // Current Usage
     SlotLengthLong,                 // Slot Length
     8,                              // Slot ID
     {0, 0, 1},                      // Slot Characteristics 1

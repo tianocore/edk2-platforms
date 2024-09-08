@@ -55,7 +55,7 @@
   HiiLib
   MemoryAllocationLib
   NVParamLib
-  #IOExpanderLib
+  IOExpanderLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiLib
