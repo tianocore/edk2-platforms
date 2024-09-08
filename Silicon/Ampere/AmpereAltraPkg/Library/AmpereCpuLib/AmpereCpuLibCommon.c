@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -194,6 +194,74 @@ CpuGetVoltage (
   Voltage = 0x80 | (PlatformHob->CoreVoltage[Socket] / 100);
 
   return Voltage;
+}
+
+/**
+  Get CPU Ecid.
+
+  @param        SocketId   Socket index.
+  @param[out]   Ecid       Pointer to contain Ecid value.
+
+**/
+VOID
+EFIAPI
+CpuGetEcid (
+  UINT8  SocketId,
+  UINT32 **Ecid
+  )
+{
+  PLATFORM_INFO_HOB  *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob != NULL) {
+    *Ecid = (UINT32 *)(PlatformHob->Ecid[SocketId]);
+  }
+}
+
+/**
+  Get max cores of socket.
+
+  @param    SocketId   Socket index.
+  @return   UINT8      Max cores of socket.
+
+**/
+UINT8
+EFIAPI
+GetSkuMaxCore (
+  UINT8 SocketId
+  )
+{
+  PLATFORM_INFO_HOB  *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob == NULL) {
+    return 0;
+  }
+
+  return PlatformHob->SkuMaxCore[SocketId];
+}
+
+/**
+  Get max turbo of socket.
+
+  @param    SocketId   Socket index.
+  @return   UINT8      Max turbo of socket.
+
+**/
+UINT8
+EFIAPI
+GetSkuMaxTurbo (
+  UINT8 SocketId
+  )
+{
+  PLATFORM_INFO_HOB  *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob == NULL) {
+    return 0;
+  }
+
+  return PlatformHob->SkuMaxTurbo[SocketId];
 }
 
 /**
