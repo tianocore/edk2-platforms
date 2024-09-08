@@ -34,6 +34,8 @@
 
 #define SCP_VERSION_STRING_MAX_LENGTH 32
 
+UINTN mProcessorIndex = 0xFF;
+
 UINT32
 GetCacheConfig (
   IN UINT32  CacheLevel,
@@ -217,6 +219,13 @@ OemIsProcessorPresent (
   )
 {
   //
+  // The framework always checks the presence of the processor before retrieving
+  // the processor information such as part number, serial number. This caches
+  // the processor index for subsequent use in the OemUpdateSmbiosInfo().
+  //
+  mProcessorIndex = ProcessorIndex;
+
+  //
   // Platform only supports 2 sockets: Master and Slave.
   // The master socket is always online.
   //
@@ -314,6 +323,7 @@ OemUpdateSmbiosInfo (
   EFI_STRING UnicodeString;
   UINT8      StringLength;
   CHAR8      *AsciiString;
+  UINT32     *Ecid;
 
   StringLength = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
   UnicodeString = AllocatePool (StringLength);
@@ -477,6 +487,58 @@ OemUpdateSmbiosInfo (
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
+      }
+
+      break;
+
+    case ProcessorVersionType04:
+      if (IsAc01Processor ()){
+        UnicodeSPrint (
+          UnicodeString,
+          StringLength,
+          PROCESSOR_VERSION_ALTRA
+        );
+      } else {
+        UnicodeSPrint (
+          UnicodeString,
+          StringLength,
+          PROCESSOR_VERSION_ALTRA_MAX
+          );
+      }
+
+      break;
+
+    case ProcessorSerialNumType04:
+      CpuGetEcid (mProcessorIndex, &Ecid);
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        L"%08X%08X%08X%08X",
+        Ecid[0],
+        Ecid[1],
+        Ecid[2],
+        Ecid[3]
+        );
+
+      break;
+
+    case ProcessorPartNumType04:
+      if (IsAc01Processor ()) {
+        UnicodeSPrint (
+          UnicodeString,
+          StringLength,
+          L"Q%02d-%02X",
+          GetSkuMaxCore (mProcessorIndex),
+          GetSkuMaxTurbo (mProcessorIndex)
+          );
+      } else {
+        UnicodeSPrint (
+          UnicodeString,
+          StringLength,
+          L"M%02d-%02X",
+          GetSkuMaxCore (mProcessorIndex),
+          GetSkuMaxTurbo (mProcessorIndex)
+          );
       }
 
       break;
