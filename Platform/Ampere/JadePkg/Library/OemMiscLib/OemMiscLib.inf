@@ -1,7 +1,7 @@
 #/** @file
 #    OemMiscLib.inf
 #
-#    Copyright (c) 2021 - 2023, Ampere Computing LLC. All rights reserved.
+#    Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.
 #    Copyright (c) 2021, NUVIA Inc. All rights reserved.
 #    Copyright (c) 2018, Hisilicon Limited. All rights reserved.
 #    Copyright (c) 2018, Linaro Limited. All rights reserved.
@@ -19,6 +19,8 @@
   LIBRARY_CLASS                  = OemMiscLib
 
 [Sources.common]
+  IpmiFruInfo.h
+  IpmiFruInfo.c
   OemMiscLib.c
 
 [Packages]
@@ -35,15 +37,13 @@
   BaseLib
   BaseMemoryLib
   DebugLib
+  IpmiCommandLib
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-
-[Guids]
-  gZeroGuid
 
 [Depex]
   TRUE
