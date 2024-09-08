@@ -65,12 +65,12 @@
 //
 // The maximum number of I2C bus
 //
-#define AC01_I2C_MAX_BUS_NUM              2
+#define AC01_I2C_MAX_BUS_NUM              4
 
 //
 // The base address of DW I2C
 //
-#define AC01_I2C_BASE_ADDRESS_LIST        0x1000026B0000ULL, 0x100002750000ULL
+#define AC01_I2C_BASE_ADDRESS_LIST        0x1000026B0000ULL, 0x100002750000ULL, 0x100002770000ULL, 0x500002770000ULL
 
 //
 // The Array of Soc Gpio Base Address
