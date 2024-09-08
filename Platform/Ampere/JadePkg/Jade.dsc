@@ -85,6 +85,7 @@
   OemMiscLib|Platform/Ampere/JadePkg/Library/OemMiscLib/OemMiscLib.inf
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+  IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   #
