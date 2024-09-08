@@ -66,7 +66,7 @@ GetCacheConfig (
     return 1; // Write Back
   }
 
-  return 3; // Unknown
+  return 1; // Write Back
 }
 
 /** Gets the CPU frequency of the specified processor.
@@ -160,6 +160,11 @@ OemGetCacheInformation (
   IN OUT SMBIOS_TABLE_TYPE7 *SmbiosCacheTable
   )
 {
+  UINT16       CacheSize16;
+  UINT32       CacheSize32;
+  UINT64       CacheSize64;
+  UINT8        Granularity32;
+
   SmbiosCacheTable->CacheConfiguration = CacheLevel - 1;
   SmbiosCacheTable->CacheConfiguration |= (1 << 7); // Enable
   SmbiosCacheTable->CacheConfiguration |= (GetCacheConfig (CacheLevel, DataCache, UnifiedCache) << 8);
@@ -169,11 +174,44 @@ OemGetCacheInformation (
   SmbiosCacheTable->CurrentSRAMType.Unknown = 0;
   SmbiosCacheTable->CurrentSRAMType.Synchronous = 1;
 
-  if (CacheLevel == 1 && !DataCache && !UnifiedCache) {
+  if (CacheLevel == CpuCacheL1) {
     SmbiosCacheTable->ErrorCorrectionType = CacheErrorParity;
   } else {
     SmbiosCacheTable->ErrorCorrectionType = CacheErrorSingleBit;
   }
+
+  // Cache Size
+  CacheSize16 = SmbiosCacheTable->MaximumCacheSize;
+  CacheSize32 = SmbiosCacheTable->MaximumCacheSize2;
+
+  Granularity32 = CacheSize32 >> 31;
+  if (Granularity32 == 0) {
+    CacheSize64 = CacheSize32;
+  } else {
+    CacheSize64 = (CacheSize32 & (~BIT31)) * 64;
+  }
+
+  CacheSize64 *= GetNumberOfActiveCoresPerSocket (ProcessorIndex);
+  if (CacheSize64 < MAX_INT16) {
+    CacheSize16 = CacheSize64;
+    CacheSize32 = CacheSize16;
+  } else if ((CacheSize64 / 64) < MAX_INT16) {
+    CacheSize16 = (UINT16)(BIT15 | (CacheSize64 / 64));
+    CacheSize32 = (UINT32)(BIT31 | (CacheSize64 / 64));
+  } else {
+    if ((CacheSize64 / 1024) <= 2047) {
+      CacheSize32 = CacheSize64;
+    } else {
+      CacheSize32 = (UINT32)(BIT31 | (CacheSize64 / 64));
+    }
+
+    CacheSize16 = 0xFFFF;
+  }
+
+  SmbiosCacheTable->MaximumCacheSize  = CacheSize16;
+  SmbiosCacheTable->InstalledSize     = CacheSize16;
+  SmbiosCacheTable->MaximumCacheSize2 = CacheSize32;
+  SmbiosCacheTable->InstalledSize2    = CacheSize32;
 
   return TRUE;
 }
