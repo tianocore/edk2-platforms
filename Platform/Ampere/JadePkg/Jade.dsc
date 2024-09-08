@@ -171,24 +171,11 @@
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[35]|{ 35, 1, 7, 6, 0, 0x24, 0x70, 0x4, 0, 11, 8 }   # S1 RCB3.6 - SSD8
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[36]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
 
-!ifdef $(FIRMWARE_VER)
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
-!endif
-
 [PcdsFixedAtBuild.common]
   #
   # Platform config UUID
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
-
-  #
-  # SMBIOS PCDs
-  #
-  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
-  gArmTokenSpaceGuid.PcdProcessorVersion|L"Ampere(R) Altra(R) Processor"
-
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
 
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the

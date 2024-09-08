@@ -311,10 +311,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
 [PcdsFixedAtBuild.common]
-!ifdef $(FIRMWARE_VER)
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
-!endif
-
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumLinkedListLength|1000000
@@ -506,6 +502,16 @@
   # Number of address lines in the I/O space for the CPU
   #
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|32
+
+  #
+  # SMBIOS PCDs
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
+  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Ampere(R)"
+  gArmTokenSpaceGuid.PcdProcessorAssetTag|L"Not Set"
 
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|10
