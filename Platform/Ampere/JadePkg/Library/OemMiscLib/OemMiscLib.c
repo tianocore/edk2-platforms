@@ -30,8 +30,6 @@
 #define PROCESSOR_VERSION_ALTRA       L"Ampere(R) Altra(R) Processor"
 #define PROCESSOR_VERSION_ALTRA_MAX   L"Ampere(R) Altra(R) Max Processor"
 
-#define MHZ_SCALE_FACTOR    1000000
-
 #define SCP_VERSION_STRING_MAX_LENGTH 32
 
 UINTN mProcessorIndex = 0xFF;
@@ -133,8 +131,8 @@ OemGetProcessorInformation (
   ProcessorCharacteristics->ProcessorReserved2  = 0;
 
   MiscProcessorData->Voltage      = CpuGetVoltage (ProcessorIndex);
-  MiscProcessorData->CurrentSpeed = (UINT16)(CpuGetCurrentFreq (ProcessorIndex) / MHZ_SCALE_FACTOR);
-  MiscProcessorData->MaxSpeed     = (UINT16)(CpuGetMaxFreq (ProcessorIndex) / MHZ_SCALE_FACTOR);
+  MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex);
+  MiscProcessorData->MaxSpeed     = CpuGetMaxFreq (ProcessorIndex);
   MiscProcessorData->CoreCount    = GetMaximumNumberOfCores ();
   MiscProcessorData->ThreadCount  = GetMaximumNumberOfCores ();
   MiscProcessorData->CoresEnabled = GetNumberOfActiveCoresPerSocket (ProcessorIndex);
