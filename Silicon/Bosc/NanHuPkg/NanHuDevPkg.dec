@@ -20,12 +20,32 @@
 [Protocols]
 
 [Guids]
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid  = { 0x245C5C80, 0x7945, 0x43BE, { 0xB4, 0x01, 0xC9, 0x92, 0x8A, 0x13, 0xDD, 0x0A }}
 
 [PcdsFixedAtBuild]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00001004
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|0x0|UINT64|0x00001005
   gHisiTokenSpaceGuid.PcdSerialPortSendDelay|0x0|UINT32|0x00001006
   gHisiTokenSpaceGuid.PcdUartClkInHz|0x0|UINT32|0x00001007
+
+  #
+  # PCI configuration address space
+  #
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciConfigBase|0x0|UINT64|0x00000008
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciConfigSize|0x0|UINT64|0x00000009
+
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciIoBase|0x0|UINT64|0x0000000a
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciIoSize|0x0|UINT64|0x0000000b
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciMmio32Base|0x0|UINT32|0x0000000c
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciMmio32Size|0x0|UINT32|0x0000000d
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciMmio64Base|0x0|UINT64|0x0000000e
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciMmio64Size|0x0|UINT64|0x0000000f
+
+  #
+  # Inclusive range of allowed PCI buses.
+  #
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciBusMin|0x0|UINT32|0x00000010
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid.PcdPciBusMax|0x0|UINT32|0x00000011
 
 [UserExtensions.TianoCore."ExtraFiles"]
   NanHuPkgExtra.uni
