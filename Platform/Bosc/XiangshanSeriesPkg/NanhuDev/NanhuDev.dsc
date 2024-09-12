@@ -241,6 +241,7 @@
   PlatformUpdateProgressLib|Platform/RISC-V/PlatformPkg/Library/PlatformUpdateProgressLibNull/PlatformUpdateProgressLibNull.inf
   # Pci dependencies
   PciSegmentLib|Silicon/Bosc/NanHuPkg/Library/PciSegmentLib/PciSegmentLib.inf
+  PciHostBridgeLib|Silicon/Bosc/NanHuPkg/Library/PciHostBridgeLib/PciHostBridgeLib.inf
 
 [LibraryClasses.common.UEFI_APPLICATION]
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
@@ -264,6 +265,24 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
 [PcdsFixedAtBuild]
+  #
+  # XILINX PCI Root Complex
+  #
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x40000000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|FALSE
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x50000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigBase|0x40000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigSize|0x10000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMin|0
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMax|255
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoBase|0x00000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoSize|0xf00000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Base|0x50000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Size|0x10000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Base|0x1000000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Size|0x0000000000
+
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeUseMemory|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeUseSerial|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
@@ -429,11 +448,13 @@
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
 !endif
 
-  UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
+  UefiCpuPkg/CpuMmio2Dxe/CpuMmio2Dxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf {
     <LibraryClasses>
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   }
+  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
   MdeModulePkg/Universal/Metronome/Metronome.inf
   MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf {
