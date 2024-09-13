@@ -527,6 +527,7 @@
       PeiServicesTablePointerLib|MdePkg/Library/PeiServicesTablePointerLibIdt/PeiServicesTablePointerLibIdt.inf
       PeiServicesLib|MdePkg/Library/PeiServicesLib/PeiServicesLib.inf
       PlatformSecLib|ChachaniBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
+      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
   !if $(CAPSULE_ENABLE) == TRUE

@@ -36,12 +36,6 @@
 [LibraryClasses.common.UEFI_DRIVER]
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
 
-[LibraryClasses.AARCH64]
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
-
-[LibraryClasses.ARM]
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
-
 [PcdsFixedAtBuild]
 !ifdef $(DEBUG_ENABLE_OUTPUT)
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x3f
