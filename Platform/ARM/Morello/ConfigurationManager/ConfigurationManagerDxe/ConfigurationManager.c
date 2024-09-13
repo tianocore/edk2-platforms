@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -172,7 +172,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       CM_NULL_TOKEN,
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       SOC_RESOURCE_COUNT,
@@ -194,7 +194,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -215,7 +215,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -236,7 +236,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[0]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -257,7 +257,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[1]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -278,7 +278,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[2]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -300,7 +300,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[3]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -650,7 +650,7 @@ GetGicCInfo (
   @param [in]      This           Pointer to the Configuration Manager Protocol.
   @param [in]      CmObjectId     The Object ID of the CM object requested
   @param [in]      SearchToken    A unique token for identifying the requested
-                                  CM_ARM_OBJ_REF list.
+                                  CM_ARCH_COMMON_OBJ_REF list.
   @param [in, out] CmObject       Pointer to the Configuration Manager Object
                                   descriptor describing the requested Object.
 
@@ -764,6 +764,137 @@ GetStandardNameSpaceObject (
   return Status;
 }
 
+/** Return an Arch Common namespace object.
+
+  @param [in]      This        Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId  The Configuration Manager Object ID.
+  @param [in]      Token       An optional token identifying the object. If
+                               unused this must be CM_NULL_TOKEN.
+  @param [in, out] CmObject    Pointer to the Configuration Manager Object
+                               descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS           Success.
+  @retval EFI_INVALID_PARAMETER A parameter is invalid.
+  @retval EFI_NOT_FOUND         The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetArchCommonNameSpaceObject (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EFI_STATUS                             Status;
+  EDKII_PLATFORM_REPOSITORY_INFO         *PlatformRepo;
+  EDKII_COMMON_PLATFORM_REPOSITORY_INFO  *CommonPlatRepo;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = EFI_NOT_FOUND;
+  PlatformRepo = This->PlatRepoInfo;
+  CommonPlatRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
+
+  // Search for the FVP platform specific Arch Common namespace objects
+  Status = GetArchCommonNameSpaceObjectPlat (This, CmObjectId, Token, CmObject);
+
+  // Get the object if not found in the platform specific search
+  if (Status == EFI_NOT_FOUND) {
+    switch (GET_CM_OBJECT_ID (CmObjectId)) {
+      case EArchCommonObjPowerManagementProfileInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->PmProfileInfo,
+                   sizeof (CommonPlatRepo->PmProfileInfo),
+                   1,
+                   CmObject
+                   );
+        break;
+
+      case EArchCommonObjConsolePortInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->SpcrSerialPort,
+                   sizeof (CommonPlatRepo->SpcrSerialPort),
+                   1,
+                   CmObject
+                   );
+        break;
+
+      case EArchCommonObjSerialDebugPortInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->DbgSerialPort,
+                   sizeof (CommonPlatRepo->DbgSerialPort),
+                   1,
+                   CmObject
+                   );
+        break;
+
+ #ifdef HEADLESS_PLATFORM
+      case EArchCommonObjFixedFeatureFlags:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   &CommonPlatRepo->FixedFeatureFlags,
+                   sizeof (CommonPlatRepo->FixedFeatureFlags),
+                   1,
+                   CmObject
+                   );
+        break;
+ #endif
+
+      case EArchCommonObjCmRef:
+        Status = HandleCmObjectSearchPlatformRepo (
+                   This,
+                   CmObjectId,
+                   Token,
+                   GetCmObjRefs,
+                   CmObject
+                   );
+        break;
+
+      case EArchCommonObjProcHierarchyInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   CommonPlatRepo->ProcHierarchyInfo,
+                   sizeof (CommonPlatRepo->ProcHierarchyInfo),
+                   PLAT_PROC_HIERARCHY_NODE_COUNT,
+                   CmObject
+                   );
+        break;
+
+      case EArchCommonObjCacheInfo:
+        Status = HandleCmObject (
+                   CmObjectId,
+                   CommonPlatRepo->CacheInfo,
+                   sizeof (CommonPlatRepo->CacheInfo),
+                   ARRAY_SIZE (CommonPlatRepo->CacheInfo),
+                   CmObject
+                   );
+        break;
+
+      default:
+      {
+        Status = EFI_NOT_FOUND;
+        DEBUG ((
+          DEBUG_INFO,
+          "INFO: Object 0x%x. Status = %r\n",
+          CmObjectId,
+          Status
+          ));
+        break;
+      }
+    } // switch
+  } // if
+
+  return Status;
+}
+
 /** Return an ARM namespace object.
 
   @param [in]      This        Pointer to the Configuration Manager Protocol.
@@ -807,27 +938,6 @@ GetArmNameSpaceObject (
                    CmObjectId,
                    &CommonPlatRepo->BootArchInfo,
                    sizeof (CommonPlatRepo->BootArchInfo),
-                   1,
-                   CmObject
-                   );
-      break;
-
-#ifdef HEADLESS_PLATFORM
-      case EArmObjFixedFeatureFlags:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->FixedFeatureFlags,
-                   sizeof (CommonPlatRepo->FixedFeatureFlags),
-                   1,
-                   CmObject
-                   );
-      break;
-#endif
-      case EArmObjPowerManagementProfileInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->PmProfileInfo,
-                   sizeof (CommonPlatRepo->PmProfileInfo),
                    1,
                    CmObject
                    );
@@ -905,56 +1015,6 @@ GetArmNameSpaceObject (
                    &CommonPlatRepo->GicRedistInfo,
                    sizeof (CommonPlatRepo->GicRedistInfo),
                    1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjSerialConsolePortInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->SpcrSerialPort,
-                   sizeof (CommonPlatRepo->SpcrSerialPort),
-                   1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjSerialDebugPortInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   &CommonPlatRepo->DbgSerialPort,
-                   sizeof (CommonPlatRepo->DbgSerialPort),
-                   1,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjProcHierarchyInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   CommonPlatRepo->ProcHierarchyInfo,
-                   sizeof (CommonPlatRepo->ProcHierarchyInfo),
-                   PLAT_PROC_HIERARCHY_NODE_COUNT,
-                   CmObject
-                   );
-      break;
-
-      case EArmObjCacheInfo:
-        Status = HandleCmObject (
-                   CmObjectId,
-                   CommonPlatRepo->CacheInfo,
-                   sizeof (CommonPlatRepo->CacheInfo),
-                   ARRAY_SIZE (CommonPlatRepo->CacheInfo),
-                   CmObject
-                   );
-      break;
-
-      case EArmObjCmRef:
-        Status = HandleCmObjectSearchPlatformRepo (
-                   This,
-                   CmObjectId,
-                   Token,
-                   GetCmObjRefs,
                    CmObject
                    );
       break;
@@ -1056,6 +1116,9 @@ MorelloPlatformGetObject (
   switch (GET_CM_NAMESPACE_ID (CmObjectId)) {
     case EObjNameSpaceStandard:
       Status = GetStandardNameSpaceObject (This, CmObjectId, Token, CmObject);
+      break;
+    case EObjNameSpaceArchCommon:
+      Status = GetArchCommonNameSpaceObject (This, CmObjectId, Token, CmObject);
       break;
     case EObjNameSpaceArm:
       Status = GetArmNameSpaceObject (This, CmObjectId, Token, CmObject);

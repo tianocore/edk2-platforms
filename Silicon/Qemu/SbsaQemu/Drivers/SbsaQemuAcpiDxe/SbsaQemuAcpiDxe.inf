@@ -44,7 +44,6 @@
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdClusterCount
 
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicRedistributorsBase

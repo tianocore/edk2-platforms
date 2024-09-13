@@ -143,7 +143,7 @@ PciSegmentRead8 (
   Value = WORD_GET_BYTE (Val32, CfgBase & WORD_ALIGN_MASK);
 
   DEBUG ((
-    DEBUG_INFO,
+    DEBUG_VERBOSE,
     "PCIe CFG RD8: 0x%p value: 0x%02X (0x%08llX 0x%08X)\n",
     CfgBase,
     Value,
@@ -190,7 +190,7 @@ PciSegmentWrite8 (
   MmioWrite32 (AlignedAddr, Val32);
 
   DEBUG ((
-    DEBUG_INFO,
+    DEBUG_VERBOSE,
     "PCIe CFG WR8: 0x%p value: 0x%02X (0x%08llX 0x%08X)\n",
     CfgBase,
     Value,
@@ -522,7 +522,7 @@ PciSegmentRead16 (
   if ((GET_BUS_NUM (CfgBase) > 0) && (GET_DEV_NUM (CfgBase) > 0) && (GET_REG_NUM (CfgBase) == 0)) {
     Value = MmioRead32 (CfgBase);
     DEBUG ((
-      DEBUG_INFO,
+      DEBUG_VERBOSE,
       "PCIe CFG RD16: B%X|D%X 0x%p value: 0x%08X\n",
       GET_BUS_NUM (CfgBase),
       GET_DEV_NUM (CfgBase),
@@ -534,7 +534,7 @@ PciSegmentRead16 (
       Val32 = MmioRead32 (CfgBase + HEADER_TYPE_REG);
 
       HeaderType = GET_HEADER_TYPE (Val32);
-      DEBUG ((DEBUG_INFO, "  Peek RD: HeaderType=0x%02X\n", HeaderType));
+      DEBUG ((DEBUG_VERBOSE, "  Peek RD: HeaderType=0x%02X\n", HeaderType));
 
       // Type 1 Configuration Space Header
       if (HeaderType != 0) {
@@ -545,7 +545,7 @@ PciSegmentRead16 (
       if ((HeaderType == 0) || (PrimaryBus != 0)) {
         Value = 0xFFFF;
         DEBUG ((
-          DEBUG_INFO,
+          DEBUG_VERBOSE,
           "  Skip RD16 B%X|D%X PCIe CFG RD: 0x%p return 0xFFFF\n",
           GET_BUS_NUM (CfgBase),
           GET_DEV_NUM (CfgBase),
@@ -560,7 +560,7 @@ PciSegmentRead16 (
   Value = WORD_GET_HALF_WORD (Val32, CfgBase & WORD_ALIGN_MASK);
 
   DEBUG ((
-    DEBUG_INFO,
+    DEBUG_VERBOSE,
     "PCIe CFG RD16: 0x%p value: 0x%04X (0x%08llX 0x%08X)\n",
     CfgBase,
     Value,
@@ -614,7 +614,7 @@ PciSegmentWrite16 (
   MmioWrite32 (AlignedAddr, Val32);
 
   DEBUG ((
-    DEBUG_INFO,
+    DEBUG_VERBOSE,
     "PCIe CFG WR16: 0x%p value: 0x%04X (0x%08llX 0x%08X)\n",
     CfgBase,
     Value,
@@ -955,7 +955,7 @@ PciSegmentRead32 (
   if ((GET_BUS_NUM (CfgBase) > 0) && (GET_DEV_NUM (CfgBase) > 0) && (GET_REG_NUM (CfgBase) == 0)) {
     Value = MmioRead32 (CfgBase);
     DEBUG ((
-      DEBUG_INFO,
+      DEBUG_VERBOSE,
       "PCIe CFG RD32: B%X|D%X 0x%p value: 0x%08X\n",
       GET_BUS_NUM (CfgBase),
       GET_DEV_NUM (CfgBase),
@@ -967,7 +967,7 @@ PciSegmentRead32 (
       Val32 = MmioRead32 (CfgBase + HEADER_TYPE_REG);
 
       HeaderType = GET_HEADER_TYPE (Val32);
-      DEBUG ((DEBUG_INFO, "  Peek RD: HeaderType=0x%02X\n", HeaderType));
+      DEBUG ((DEBUG_VERBOSE, "  Peek RD: HeaderType=0x%02X\n", HeaderType));
 
       // Type 1 Configuration Space Header
       if (HeaderType != 0) {
@@ -978,7 +978,7 @@ PciSegmentRead32 (
       if ((HeaderType == 0) || (PrimaryBus != 0)) {
         Value = 0xFFFFFFFF;
         DEBUG ((
-          DEBUG_INFO,
+          DEBUG_VERBOSE,
           "  Skip RD32 B%X|D%X PCIe CFG RD: 0x%p return 0xFFFFFFFF\n",
           GET_BUS_NUM (CfgBase),
           GET_DEV_NUM (CfgBase),
@@ -991,7 +991,7 @@ PciSegmentRead32 (
     Value = MmioRead32 (CfgBase);
   }
 
-  DEBUG ((DEBUG_INFO, "PCIe CFG RD32: 0x%p value: 0x%08X\n", CfgBase, Value));
+  DEBUG ((DEBUG_VERBOSE, "PCIe CFG RD32: 0x%p value: 0x%08X\n", CfgBase, Value));
 
   return Value;
 }
@@ -1025,7 +1025,7 @@ PciSegmentWrite32 (
   CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFC);
   MmioWrite32 (CfgBase, Value);
   DEBUG ((
-    DEBUG_INFO,
+    DEBUG_VERBOSE,
     "PCIe CFG WR32: 0x%p value: 0x%08X (0x%08X)\n",
     CfgBase,
     Value,

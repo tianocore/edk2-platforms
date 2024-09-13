@@ -10,6 +10,8 @@
 
 #include "VarBlockService.h"
 
+#include <Protocol/ResetNotification.h>
+
 //
 // Minimum delay to enact before reset, when variables are dirty (in μs).
 // Needed to ensure that SSD-based USB 3.0 devices have time to flush their
@@ -51,6 +53,8 @@ InstallProtocolInterfaces (
                     &FvbDevice->FwVolBlockInstance,
                     &gEfiDevicePathProtocolGuid,
                     FvbDevice->DevicePath,
+                    &gEdkiiNvVarStoreFormattedGuid,
+                    NULL,
                     NULL
                   );
     ASSERT_EFI_ERROR (Status);
@@ -159,10 +163,8 @@ DoDump (
 
 STATIC
 VOID
-EFIAPI
 DumpVars (
-  IN EFI_EVENT Event,
-  IN VOID *Context
+  VOID
   )
 {
   EFI_STATUS Status;
@@ -200,6 +202,29 @@ DumpVars (
   mFvInstance->Dirty = FALSE;
 }
 
+STATIC
+VOID
+EFIAPI
+DumpVarsOnEvent (
+  IN EFI_EVENT Event,
+  IN VOID *Context
+  )
+{
+  DumpVars ();
+}
+
+STATIC
+VOID
+EFIAPI
+DumpVarsOnReset (
+  IN EFI_RESET_TYPE  ResetType,
+  IN EFI_STATUS      ResetStatus,
+  IN UINTN           DataSize,
+  IN VOID            *ResetData OPTIONAL
+  )
+{
+  DumpVars ();
+}
 
 VOID
 ReadyToBootHandler (
@@ -214,7 +239,7 @@ ReadyToBootHandler (
   Status = gBS->CreateEvent (
                   EVT_NOTIFY_SIGNAL,
                   TPL_CALLBACK,
-                  DumpVars,
+                  DumpVarsOnEvent,
                   NULL,
                   &ImageInstallEvent
                 );
@@ -227,7 +252,7 @@ ReadyToBootHandler (
                 );
   ASSERT_EFI_ERROR (Status);
 
-  DumpVars (NULL, NULL);
+  DumpVars ();
   Status = gBS->CloseEvent (Event);
   ASSERT_EFI_ERROR (Status);
 }
@@ -238,19 +263,9 @@ InstallDumpVarEventHandlers (
   VOID
   )
 {
-  EFI_STATUS Status;
-  EFI_EVENT ResetEvent;
-  EFI_EVENT ReadyToBootEvent;
-
-  Status = gBS->CreateEventEx (
-                  EVT_NOTIFY_SIGNAL,
-                  TPL_CALLBACK,
-                  DumpVars,
-                  NULL,
-                  &gRaspberryPiEventResetGuid,
-                  &ResetEvent
-                );
-  ASSERT_EFI_ERROR (Status);
+  EFI_STATUS                       Status;
+  EFI_EVENT                        ReadyToBootEvent;
+  EFI_RESET_NOTIFICATION_PROTOCOL  *ResetNotify;
 
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
@@ -261,6 +276,20 @@ InstallDumpVarEventHandlers (
                   &ReadyToBootEvent
                 );
   ASSERT_EFI_ERROR (Status);
+
+  Status = gBS->LocateProtocol (
+                  &gEfiResetNotificationProtocolGuid,
+                  NULL,
+                  (VOID **)&ResetNotify
+                  );
+  ASSERT_EFI_ERROR (Status);
+  if (!EFI_ERROR (Status)) {
+    Status = ResetNotify->RegisterResetNotify (
+                            ResetNotify,
+                            DumpVarsOnReset
+                            );
+    ASSERT_EFI_ERROR (Status);
+  }
 }
 
 

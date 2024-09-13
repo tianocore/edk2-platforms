@@ -1,0 +1,35 @@
+// *++
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+// https://spdx.org/licenses
+//
+// Copyright (C) 2023 Marvell
+//
+// Copyright (c) 2014, ARM Ltd. All rights reserved.<BR>
+//
+//
+// Module Name:
+//
+//   DumpFdt
+//
+// Abstract:
+//
+//   String definitions for the EFI Shell 'dumpfdt' command
+//
+// Revision History:
+//
+// --*/
+
+/=#
+
+#langdef   en-US "English"
+
+#string STR_GET_HELP_DUMPFDT            #language en-US ""
+".TH dumpfdt 0 "Dump installed Flat Device Tree (FDT) of the platform."\r\n"
+".SH NAME\r\n"
+"Dump current Flat Device Tree (FDT)\r\n"
+".SH SYNOPSIS\r\n"
+"dumpfdt\r\n"
+"\r\n"
+".SH DESCRIPTION\r\n"
+"\r\n"

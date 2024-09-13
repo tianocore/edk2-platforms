@@ -132,11 +132,9 @@
 
   gArmTokenSpaceGuid.PcdVFPEnabled|1
 
-  # Stacks for MPCores in Normal World
   # Non-Trusted SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top
@@ -214,12 +212,6 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0x10000000
 
   #
-  # ARM Architectural Timer Frequency
-  #
-  # Set tick frequency value to 100Mhz
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|100000000
-
-  #
   # ACPI Table Version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
@@ -236,13 +228,14 @@
   #
 !ifdef EDK2_SKIP_PEICORE
   # UEFI is placed in RAM by bootloader
-  ArmPlatformPkg/PrePi/PeiUniCore.inf {
+  ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
+      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       ArmPlatformLib|Platform/ARM/VExpressPkg/Library/ArmVExpressLibRTSM/ArmVExpressLib.inf
   }
 !else
   # UEFI lives in FLASH and copies itself to RAM
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf  {
     <LibraryClasses>

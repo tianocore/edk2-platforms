@@ -128,7 +128,6 @@
   IoLib                            | MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
   PlatformHookLib                  | Platform/Loongson/LoongArchQemuPkg/Library/Fdt16550SerialPortHookLib/Fdt16550SerialPortHookLib.inf
   SerialPortLib                    | MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
-  EfiResetSystemLib                | Platform/Loongson/LoongArchQemuPkg/Library/ResetSystemAcpiLib/BaseResetSystemAcpiGedLib.inf
   ResetSystemLib                   | Platform/Loongson/LoongArchQemuPkg/Library/ResetSystemAcpiLib/BaseResetSystemAcpiGedLib.inf
 
   UefiLib                          | MdePkg/Library/UefiLib/UefiLib.inf
@@ -242,7 +241,6 @@
   RealTimeClockLib                 | Platform/Loongson/LoongArchQemuPkg/Library/LsRealTimeClockLib/LsRealTimeClockLib.inf
   VariablePolicyLib                | MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
   QemuFwCfgLib                     | Platform/Loongson/LoongArchQemuPkg/Library/QemuFwCfgLib/QemuFwCfgPeiLib.inf
-  EfiResetSystemLib                | Platform/Loongson/LoongArchQemuPkg/Library/ResetSystemAcpiLib/DxeResetSystemAcpiGedLib.inf
   ResetSystemLib                   | Platform/Loongson/LoongArchQemuPkg/Library/ResetSystemAcpiLib/DxeResetSystemAcpiGedLib.inf
   PciExpressLib                    | MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
 !if $(TARGET) != RELEASE
@@ -356,12 +354,6 @@
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamBase                 | 0x10000
   gLoongArchQemuPkgTokenSpaceGuid.PcdSecPeiTempRamSize                 | 0x10000
   gLoongArchQemuPkgTokenSpaceGuid.PcdDeviceTreeBase                    | 0x100000
-  #
-  # minimal memory for uefi bios should be 512M
-  # 0x00000000 - 0x10000000
-  # 0x90000000 - 0xA0000000
-  #
-  gLoongArchQemuPkgTokenSpaceGuid.PcdUefiRamTop                        | 0x10000000
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions           | 0x06
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile                | { 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }

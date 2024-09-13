@@ -54,13 +54,13 @@
             TT_S2_VALID | (\cont << TT_S2_CONT_SHIFT)
   .endm
 
-  .macro    s2_l3_entry, base, offset=0, cont=0
+  .macro    s2_l3_entry, base, offset=0, cont=0, ignore=0
   .quad     ((\base << 12) + \offset) | TT_S2_AF | TT_S2_AP_RW | \
             TT_S2_SH_NON_SHAREABLE | TT_S2_MEMATTR_MEMORY_WB | \
             TT_S2_L3_PAGE | TT_S2_VALID | (\cont << TT_S2_CONT_SHIFT)
   .endm
 
-  .macro    smmu_l3_entry, base, offset=0, ignore=0
+  .macro    smmu_l3_entry, base, offset=0, ignore=0, ignore2=0
   .quad     ((\base << 12) + \offset) | TT_S2_AF | TT_S2_AP_RO | \
             TT_S2_SH_NON_SHAREABLE | TT_S2_MEMATTR_DEVICE_nGnRE | \
             TT_S2_L3_PAGE | TT_S2_VALID

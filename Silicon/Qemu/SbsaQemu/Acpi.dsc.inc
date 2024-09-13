@@ -16,7 +16,7 @@
 [PcdsFixedAtBuild.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId|"LINARO"
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId|0x554D455141534253 #SBSAQEMU
-  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision|0x20200810
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision|0x20240625
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId|0x4f524e4c #LNRO
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision|1
 

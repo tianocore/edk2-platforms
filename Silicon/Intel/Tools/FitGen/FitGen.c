@@ -267,6 +267,8 @@ typedef struct {
 #define DEFAULT_FIT_ENTRY_VERSION         0x0100
 #define STARTUP_ACM_FIT_ENTRY_200_VERSION 0x0200
 
+#define MAX_MMCFW_MODULE_ENTRY   0x02
+
 #define TOP_FLASH_ADDRESS  (gFitTableContext.TopFlashAddressRemapValue)
 
 #define MEMORY_TO_FLASH(FileBuffer, FvBuffer, FvSize)  \
@@ -279,6 +281,7 @@ typedef struct {
 #define FIT_TABLE_TYPE_STARTUP_ACM                 2
 #define FIT_TABLE_TYPE_DIAGNST_ACM                 3
 #define FIT_TABLE_TYPE_PROT_BOOT_POLICY            4
+#define FIT_TABLE_TYPE_MMC_FW                      5
 #define FIT_TABLE_TYPE_BIOS_MODULE                 7
 #define FIT_TABLE_TYPE_TPM_POLICY                  8
 #define FIT_TABLE_TYPE_BIOS_POLICY                 9
@@ -318,6 +321,7 @@ typedef struct {
   UINT32                     FitEntryNumber;
   UINT32                     BiosModuleNumber;
   UINT32                     MicrocodeNumber;
+  UINT32                     MmcFwNumber;
   UINT32                     StartupAcmNumber;
   UINT32                     OptionalModuleNumber;
   UINT32                     PortModuleNumber;
@@ -336,6 +340,7 @@ typedef struct {
   UINT32                     MicrocodeVersion;
   FIT_TABLE_CONTEXT_ENTRY    OptionalModule[MAX_OPTIONAL_ENTRY];
   FIT_TABLE_CONTEXT_ENTRY    PortModule[MAX_PORT_ENTRY];
+  FIT_TABLE_CONTEXT_ENTRY    MmcFw[MAX_MMCFW_MODULE_ENTRY];
   UINT64                     TopFlashAddressRemapValue;
 } FIT_TABLE_CONTEXT;
 
@@ -1044,6 +1049,10 @@ GetFitEntryNumber (
   UINT32    MicrocodeRegionOffset;
   UINT32    MicrocodeRegionSize;
   UINT32    SlotSize;
+  UINT32    MMCRegionOffset;
+  UINT8     *MMCBuffer;
+  UINT8     *MMCFileBuffer;
+  EFI_FIRMWARE_VOLUME_HEADER  *MMCFvHeader;
   STATUS    Status;
   EFI_FIRMWARE_VOLUME_HEADER  *FvHeader;
   UINTN                       FitEntryNumber;
@@ -1302,6 +1311,29 @@ GetFitEntryNumber (
           gFitTableContext.ProtBootPolicy.Size     = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
           gFitTableContext.ProtBootPolicy.Version  = DEFAULT_FIT_ENTRY_VERSION;
           gFitTableContext.FitEntryNumber ++;
+          break;
+        case FIT_TABLE_TYPE_MMC_FW:
+          if (gFitTableContext.MmcFwNumber >= MAX_MMCFW_MODULE_ENTRY) {
+            Error (NULL, 0, 0, "-I Parameter incorrect, Too many Bios Mmc Fw!", NULL);
+            return 0;
+          }
+          MMCRegionOffset = (UINT32)BiosInfoStruct[BiosInfoIndex].Address;
+          if (MMCRegionOffset == 0) {
+            continue;
+          }
+          MMCBuffer = FLASH_TO_MEMORY (MMCRegionOffset, FdBuffer, FdSize);
+          MMCFvHeader = (EFI_FIRMWARE_VOLUME_HEADER *)MMCBuffer;
+          if (MMCFvHeader->Signature == EFI_FVH_SIGNATURE) {
+            MMCFileBuffer = GetMicrocodeBufferFromFv (MMCFvHeader);
+          } else {
+            MMCFileBuffer = MMCBuffer;
+          }
+          gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Type     = BiosInfoStruct[BiosInfoIndex].Type;
+          gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Address  = (UINT32)BiosInfoStruct[BiosInfoIndex].Address + (UINT32)((UINTN) MMCFileBuffer - (UINTN) MMCBuffer);
+          gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Size     = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
+          gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Version  = DEFAULT_FIT_ENTRY_VERSION;
+          gFitTableContext.MmcFwNumber++;
+          gFitTableContext.FitEntryNumber++;
           break;
         case FIT_TABLE_TYPE_BIOS_MODULE:
           if ((BiosInfoStruct[BiosInfoIndex].Attributes & BIOS_INFO_STRUCT_ATTRIBUTE_BIOS_POST_IBB) != 0) {
@@ -2413,6 +2445,9 @@ PrintFitData (
   for (Index = 0; Index < gFitTableContext.MicrocodeNumber; Index++) {
     printf ("Microcode[%d] - (0x%08x, 0x%08x, 0x%04x)\n", Index, gFitTableContext.Microcode[Index].Address, gFitTableContext.Microcode[Index].Size, gFitTableContext.MicrocodeVersion);
   }
+  for (Index = 0; Index < gFitTableContext.MmcFwNumber; Index++) {
+    printf ("MmcFw[%d] - (0x%08x, 0x%08x)\n", Index, gFitTableContext.MmcFw[Index].Address, gFitTableContext.MmcFw[Index].Size);
+  }
   for (Index = 0; Index < gFitTableContext.OptionalModuleNumber; Index++) {
     printf ("OptionalModule[%d] - (0x%08x, 0x%08x, 0x%02x, 0x%04x)\n", Index, gFitTableContext.OptionalModule[Index].Address, gFitTableContext.OptionalModule[Index].Size, gFitTableContext.OptionalModule[Index].Type, gFitTableContext.OptionalModule[Index].Version);
   }
@@ -2450,7 +2485,7 @@ CHAR8 *mFitTypeStr[] = {
   "STARTUP_ACM",
   "DIAGNST_ACM",
   "BOOT_POLICY",
-  "           ",
+  "MMCFW      ",
   "           ",
   "BIOS_MODULE",
   "TPM_POLICY ",
@@ -3096,6 +3131,20 @@ FillFitTable (
     FitIndex++;
   }
 
+  for (Index = 0; Index < gFitTableContext.MmcFwNumber; Index++) {
+    FitEntrySizeValue           = 0; // gFitTableContext.MMCVersion.Size / 16
+    FitEntry[FitIndex].Address  = gFitTableContext.MmcFw[Index].Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.MmcFw[Index].Version;
+    FitEntry[FitIndex].Type     = 0x5;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
+    FitIndex++;
+  }
+
   //
   // 4.5. DiagnosticAcm
   //
@@ -3577,6 +3626,11 @@ GetFitEntryInfo (
       gFitTableContext.ProtBootPolicy.Address = (UINT32)FitEntry[FitIndex].Address;
       gFitTableContext.ProtBootPolicy.Version = FitEntry[FitIndex].Version;
       gFitTableContext.ProtBootPolicy.Size = GetFirmwareInterfaceTableEntrySize (&FitEntry[FitIndex]);
+      break;
+    case FIT_TABLE_TYPE_MMC_FW:
+      gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Address = (UINT32)FitEntry[FitIndex].Address;
+      gFitTableContext.MmcFw[gFitTableContext.MmcFwNumber].Version = FitEntry[FitIndex].Version;
+      gFitTableContext.MmcFwNumber++;
       break;
     case FIT_TABLE_TYPE_BIOS_MODULE:
       gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Address = (UINT32)FitEntry[FitIndex].Address;

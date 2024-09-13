@@ -131,7 +131,6 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0xE1000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0xFF00
 
@@ -196,13 +195,6 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x4D000000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x4D100000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFE000000
-
-
-  #
-  # ARM Architectual Timer Frequency
-  #
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|50000000
-
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 
@@ -423,7 +415,7 @@
   #
   # PEI Phase modules
   #
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreMPCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   Platform/Hisilicon/D05/Drivers/Ipmi/IpmiInterfacePei/IpmiInterfacePei.inf

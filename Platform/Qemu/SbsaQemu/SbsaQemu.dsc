@@ -117,7 +117,8 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
   MemoryInitPeiLib|ArmPlatformPkg/MemoryInitPei/MemoryInitPeiLib.inf
-  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
 
   # ARM PL031 RTC Driver
   RealTimeClockLib|ArmPlatformPkg/Library/PL031RealTimeClockLib/PL031RealTimeClockLib.inf
@@ -309,6 +310,9 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
+  # Enable WriteCombine for FrameBuffer
+  gUefiOvmfPkgTokenSpaceGuid.PcdRemapFrameBufferWriteCombine|TRUE
+
 [PcdsFixedAtBuild.common]
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength|1000000
@@ -412,11 +416,6 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
 
-  #
-  # ARM Virtual Architectural Timer -- fetch frequency from QEMU (TCG) or KVM
-  #
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|0
-
   gEfiNetworkPkgTokenSpaceGuid.PcdAllowHttpConnections|TRUE
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
@@ -497,10 +496,6 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 
 [PcdsDynamicDefault.common]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|3
-
-  # Core and Cluster Count
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdCoreCount|1
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdClusterCount|1
 
   # System Memory Size -- 128 MB initially, actual size will be fetched from DT
   # TODO as no DT will be used we should pass this by some other method
@@ -597,7 +592,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   #
   # PEI Phase modules
   #
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf {
     <LibraryClasses>
@@ -662,6 +657,12 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuHighMemDxe/SbsaQemuHighMemDxe.inf
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf {
+    <LibraryClasses>
+      RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+      ArmTrngLib|ArmPkg/Library/ArmTrngLib/ArmTrngLib.inf
+      ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
+  }
 
   #
   # FAT filesystem + GPT/MBR partitioning

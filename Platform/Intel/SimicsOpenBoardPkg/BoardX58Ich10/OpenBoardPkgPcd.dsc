@@ -26,6 +26,8 @@
   #
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
 
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x400
+
 [PcdsFeatureFlag.common]
   ######################################
   # Edk2 Configuration
@@ -43,7 +45,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuHotPlugSupport|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
-  gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|FALSE
+  gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
 
   ######################################
   # Platform Configuration

@@ -45,7 +45,6 @@
 
 [FixedPcd]
   gArmPlatformTokenSpaceGuid.PcdCoreCount
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
 
 [Depex]
   gEfiSmbiosProtocolGuid AND

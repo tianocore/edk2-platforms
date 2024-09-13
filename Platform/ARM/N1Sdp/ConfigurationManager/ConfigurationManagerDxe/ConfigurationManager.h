@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021-2024, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -229,10 +229,10 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_BOOT_ARCH_INFO                 BootArchInfo;
 
   /// Fixed feature flag information
-  CM_ARM_FIXED_FEATURE_FLAGS            FixedFeatureFlags;
+  CM_ARCH_COMMON_FIXED_FEATURE_FLAGS    FixedFeatureFlags;
 
   /// Power management profile information
-  CM_ARM_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
+  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
 
   /// GIC CPU interface information
   CM_ARM_GICC_INFO                      GicCInfo[PLAT_CPU_COUNT * 2];
@@ -261,25 +261,25 @@ typedef struct PlatformRepositoryInfo {
   /** Serial port information for the
       serial port console redirection port
   */
-  CM_ARM_SERIAL_PORT_INFO               SpcrSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO       SpcrSerialPort;
 
   /// Serial port information for the DBG2 UART port
-  CM_ARM_SERIAL_PORT_INFO               DbgSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO       DbgSerialPort;
 
   // Processor topology information
-  CM_ARM_PROC_HIERARCHY_INFO            ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT * 2];
+  CM_ARCH_COMMON_PROC_HIERARCHY_INFO    ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT * 2];
 
   // Cache information
-  CM_ARM_CACHE_INFO                     CacheInfo[PLAT_CACHE_COUNT];
+  CM_ARCH_COMMON_CACHE_INFO             CacheInfo[PLAT_CACHE_COUNT];
 
   // Cluster private resources
-  CM_ARM_OBJ_REF                        ClusterResources[CLUSTER_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                ClusterResources[CLUSTER_RESOURCE_COUNT];
 
   // Core private resources
-  CM_ARM_OBJ_REF                        CoreResources[CORE_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                CoreResources[CORE_RESOURCE_COUNT];
 
   // SoC Resources
-  CM_ARM_OBJ_REF                        SocResources[SOC_RESOURCE_COUNT];
+  CM_ARCH_COMMON_OBJ_REF                SocResources[SOC_RESOURCE_COUNT];
 
   /// ITS Group node
   CM_ARM_ITS_GROUP_NODE                 ItsGroupInfo[Its_max];
@@ -297,10 +297,10 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_ID_MAPPING                     DeviceIdMapping[Devicemapping_max][2];
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo[Root_pcie_max];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[Root_pcie_max];
 
   /// Memory Affinity Info
-  CM_ARM_MEMORY_AFFINITY_INFO           MemAffInfo[DDR_REGION_COUNT];
+  CM_ARCH_COMMON_MEMORY_AFFINITY_INFO   MemAffInfo[DDR_REGION_COUNT];
 
   /// N1Sdp Platform Info
   NEOVERSEN1SOC_PLAT_INFO               *PlatInfo;

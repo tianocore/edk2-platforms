@@ -19,11 +19,15 @@
 
 [Packages]
   ArmPkg/ArmPkg.dec
-  EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   Silicon/Qemu/SbsaQemu/SbsaQemu.dec
 
 [LibraryClasses]
-  ArmSmcLib
+  ArmMonitorLib
   ResetSystemLib
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase

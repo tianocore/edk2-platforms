@@ -1,0 +1,34 @@
+## @file
+# Assign reviewers from a REVIEWERS file using CODEOWNERS syntax
+#
+# Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+name: Assign reviewers from a REVIEWERS file using CODEOWNERS syntax
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - master
+
+jobs:
+  assign_reviewers:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Generate Token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.TIANOCORE_ASSIGN_REVIEWERS_APPLICATION_ID }}
+          private-key: ${{ secrets.TIANOCORE_ASSIGN_REVIEWERS_APPLICATION_PRIVATE_KEY }}
+      - name: Checkout Pull Request Target
+        uses: actions/checkout@v4
+      - name: Assign Reviewers
+        uses: mdkinney/github-action-assign-reviewers@main
+        with:
+          token: ${{ steps.generate-token.outputs.token }}

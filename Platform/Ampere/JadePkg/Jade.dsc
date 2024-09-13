@@ -89,6 +89,8 @@
 
   OemMiscLib|Platform/Ampere/JadePkg/Library/OemMiscLib/OemMiscLib.inf
 
+  PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+
 ################################################################################
 #
 # Specific Platform Pcds
@@ -257,3 +259,4 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/CpuConfigDxe/CpuConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/AcpiConfigDxe/AcpiConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
+  Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf

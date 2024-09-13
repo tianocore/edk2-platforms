@@ -35,6 +35,9 @@
 [Sources.AARCH64]
   HiKeyHelper.S
 
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
 [FixedPcd]
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask

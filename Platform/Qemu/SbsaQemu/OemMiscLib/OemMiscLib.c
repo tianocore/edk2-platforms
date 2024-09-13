@@ -29,7 +29,7 @@
 BOOLEAN
 EFIAPI
 OemIsProcessorPresent (
-  UINTN ProcessorIndex
+  UINTN  ProcessorIndex
   )
 {
   if (ProcessorIndex < GetCpuCount ()) {
@@ -48,7 +48,7 @@ OemIsProcessorPresent (
 UINTN
 EFIAPI
 OemGetCpuFreq (
-  UINT8 ProcessorIndex
+  UINT8  ProcessorIndex
   )
 {
   return 2000000000; // 2 GHz
@@ -67,13 +67,13 @@ OemGetCpuFreq (
 BOOLEAN
 EFIAPI
 OemGetProcessorInformation (
-  IN  UINTN                             ProcessorIndex,
-  IN OUT PROCESSOR_STATUS_DATA          *ProcessorStatus,
-  IN OUT PROCESSOR_CHARACTERISTIC_FLAGS *ProcessorCharacteristics,
-  IN OUT OEM_MISC_PROCESSOR_DATA        *MiscProcessorData
+  IN  UINTN                              ProcessorIndex,
+  IN OUT PROCESSOR_STATUS_DATA           *ProcessorStatus,
+  IN OUT PROCESSOR_CHARACTERISTIC_FLAGS  *ProcessorCharacteristics,
+  IN OUT OEM_MISC_PROCESSOR_DATA         *MiscProcessorData
   )
 {
-  UINT16 ProcessorCount;
+  UINT16  ProcessorCount;
 
   ProcessorCount = GetCpuCount ();
 
@@ -89,17 +89,17 @@ OemGetProcessorInformation (
     ProcessorStatus->Bits.Reserved2       = 0;
   }
 
-  ProcessorCharacteristics->ProcessorReserved1      = 0;
-  ProcessorCharacteristics->ProcessorUnknown        = 0;
-  ProcessorCharacteristics->Processor64BitCapable   = 1;
-  ProcessorCharacteristics->ProcessorMultiCore      = 0;
-  ProcessorCharacteristics->ProcessorHardwareThread = 0;
+  ProcessorCharacteristics->ProcessorReserved1              = 0;
+  ProcessorCharacteristics->ProcessorUnknown                = 0;
+  ProcessorCharacteristics->Processor64BitCapable           = 1;
+  ProcessorCharacteristics->ProcessorMultiCore              = 0;
+  ProcessorCharacteristics->ProcessorHardwareThread         = 0;
   ProcessorCharacteristics->ProcessorExecuteProtection      = 1;
   ProcessorCharacteristics->ProcessorEnhancedVirtualization = 0;
   ProcessorCharacteristics->ProcessorPowerPerformanceCtrl   = 0;
-  ProcessorCharacteristics->Processor128BitCapable = 0;
-  ProcessorCharacteristics->ProcessorArm64SocId = 1;
-  ProcessorCharacteristics->ProcessorReserved2  = 0;
+  ProcessorCharacteristics->Processor128BitCapable          = 0;
+  ProcessorCharacteristics->ProcessorArm64SocId             = 1;
+  ProcessorCharacteristics->ProcessorReserved2              = 0;
 
   MiscProcessorData->CurrentSpeed = 2000;
   MiscProcessorData->MaxSpeed     = 2000;
@@ -136,16 +136,16 @@ OemGetMaxProcessors (
 BOOLEAN
 EFIAPI
 OemGetCacheInformation (
-  IN UINT8     ProcessorIndex,
-  IN UINT8     CacheLevel,
-  IN BOOLEAN   DataCache,
-  IN BOOLEAN   UnifiedCache,
-  IN OUT SMBIOS_TABLE_TYPE7 *SmbiosCacheTable
+  IN UINT8                   ProcessorIndex,
+  IN UINT8                   CacheLevel,
+  IN BOOLEAN                 DataCache,
+  IN BOOLEAN                 UnifiedCache,
+  IN OUT SMBIOS_TABLE_TYPE7  *SmbiosCacheTable
   )
 {
   SmbiosCacheTable->CacheConfiguration = CacheLevel - 1;
 
-  if (CacheLevel == 1 && !DataCache && !UnifiedCache) {
+  if ((CacheLevel == 1) && !DataCache && !UnifiedCache) {
     // Unknown operational mode
     SmbiosCacheTable->CacheConfiguration |= (3 << 8);
   } else {
@@ -178,57 +178,57 @@ OemGetChassisType (
 VOID
 EFIAPI
 OemUpdateSmbiosInfo (
-  IN EFI_HII_HANDLE HiiHandle,
-  IN EFI_STRING_ID TokenToUpdate,
-  IN OEM_MISC_SMBIOS_HII_STRING_FIELD Field
+  IN EFI_HII_HANDLE                    HiiHandle,
+  IN EFI_STRING_ID                     TokenToUpdate,
+  IN OEM_MISC_SMBIOS_HII_STRING_FIELD  Field
   )
 {
-  CHAR16 *String;
+  CHAR16  *String;
 
   // These values are fixed for now, but should be configurable via
   // something like an emulated SCP.
   switch (Field) {
     case SystemManufacturerType01:
-      String = (CHAR16*)PcdGetPtr (PcdSystemManufacturer);
+      String = (CHAR16 *)PcdGetPtr (PcdSystemManufacturer);
       break;
     case SerialNumType01:
-      String = (CHAR16*)PcdGetPtr (PcdSystemSerialNumber);
+      String = (CHAR16 *)PcdGetPtr (PcdSystemSerialNumber);
       break;
     case SkuNumberType01:
-      String = (CHAR16*)PcdGetPtr (PcdSystemSKU);
+      String = (CHAR16 *)PcdGetPtr (PcdSystemSKU);
       break;
     case FamilyType01:
-      String = (CHAR16*)PcdGetPtr (PcdSystemFamily);
+      String = (CHAR16 *)PcdGetPtr (PcdSystemFamily);
       break;
     case AssetTagType02:
-      String = (CHAR16*)PcdGetPtr (PcdBaseBoardAssetTag);
+      String = (CHAR16 *)PcdGetPtr (PcdBaseBoardAssetTag);
       break;
     case SerialNumberType02:
-      String = (CHAR16*)PcdGetPtr (PcdBaseBoardSerialNumber);
+      String = (CHAR16 *)PcdGetPtr (PcdBaseBoardSerialNumber);
       break;
     case BoardManufacturerType02:
-      String = (CHAR16*)PcdGetPtr (PcdBaseBoardManufacturer);
+      String = (CHAR16 *)PcdGetPtr (PcdBaseBoardManufacturer);
       break;
     case SkuNumberType02:
-      String = (CHAR16*)PcdGetPtr (PcdBaseBoardSKU);
+      String = (CHAR16 *)PcdGetPtr (PcdBaseBoardSKU);
       break;
     case ChassisLocationType02:
-      String = (CHAR16*)PcdGetPtr (PcdBaseBoardLocation);
+      String = (CHAR16 *)PcdGetPtr (PcdBaseBoardLocation);
       break;
     case SerialNumberType03:
-      String = (CHAR16*)PcdGetPtr (PcdChassisSerialNumber);
+      String = (CHAR16 *)PcdGetPtr (PcdChassisSerialNumber);
       break;
     case VersionType03:
-      String = (CHAR16*)PcdGetPtr (PcdChassisVersion);
+      String = (CHAR16 *)PcdGetPtr (PcdChassisVersion);
       break;
     case ManufacturerType03:
-      String = (CHAR16*)PcdGetPtr (PcdChassisManufacturer);
+      String = (CHAR16 *)PcdGetPtr (PcdChassisManufacturer);
       break;
     case AssetTagType03:
-      String = (CHAR16*)PcdGetPtr (PcdChassisAssetTag);
+      String = (CHAR16 *)PcdGetPtr (PcdChassisAssetTag);
       break;
     case SkuNumberType03:
-      String = (CHAR16*)PcdGetPtr (PcdChassisSKU);
+      String = (CHAR16 *)PcdGetPtr (PcdChassisSKU);
       break;
     default:
       String = NULL;

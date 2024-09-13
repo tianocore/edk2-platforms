@@ -330,6 +330,7 @@ Returns:
 
 **/
 EFI_STATUS
+EFIAPI
 InitializeGenericIpmiStandaloneMm (
   IN EFI_HANDLE           ImageHandle,
   IN EFI_MM_SYSTEM_TABLE  *SystemTable

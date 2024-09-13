@@ -1,0 +1,31 @@
+## @file  NanHuDevPkg.dec
+# This Package provides modules and libraries.for Bosc NanHuDev platform.
+#
+# Copyright (c) 2023, Academy of Intelligent Innovation, Shandong Universiy, China.P.R. All rights reserved.<BR>
+# Copyright (c) 2024, Bosc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001b
+  PACKAGE_NAME                   = NanHuPkg
+  PACKAGE_UNI_FILE               = NanHuPkg.uni
+  PACKAGE_GUID                   = C5CAFBE1-C384-4750-BAD8-C1D89E44D3EA
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+
+[Protocols]
+
+[Guids]
+
+[PcdsFixedAtBuild]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00001004
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|0x0|UINT64|0x00001005
+  gHisiTokenSpaceGuid.PcdSerialPortSendDelay|0x0|UINT32|0x00001006
+  gHisiTokenSpaceGuid.PcdUartClkInHz|0x0|UINT32|0x00001007
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  NanHuPkgExtra.uni

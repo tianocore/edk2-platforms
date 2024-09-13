@@ -27,6 +27,7 @@
 
 
 [Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
   MdePkg/MdePkg.dec
   ServerPlatformPkg/PlatformPkg.dec
 

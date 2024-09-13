@@ -35,12 +35,12 @@
   A global variable to store the SMBIOS handle for table Type 16. This variable should
   only be modified by calling PhyMemArrayInfoUpdateSmbiosType16.
 **/
-STATIC SMBIOS_HANDLE mPhyMemArrayInfoType16Handle = SMBIOS_HANDLE_PI_RESERVED;
+STATIC SMBIOS_HANDLE  mPhyMemArrayInfoType16Handle = SMBIOS_HANDLE_PI_RESERVED;
 
 /**
   SMBIOS data definition, TYPE16, Physical Memory Array
 **/
-SMBIOS_TABLE_TYPE16 mPhyMemArrayInfoType16 = {
+SMBIOS_TABLE_TYPE16  mPhyMemArrayInfoType16 = {
   { EFI_SMBIOS_TYPE_PHYSICAL_MEMORY_ARRAY, sizeof (SMBIOS_TABLE_TYPE16), 0 },
   MemoryArrayLocationSystemBoard,  // Location; (system board)
   MemoryArrayUseSystemMemory,      // Use; (system memory)
@@ -50,14 +50,14 @@ SMBIOS_TABLE_TYPE16 mPhyMemArrayInfoType16 = {
   1,                               // NumberOfMemoryDevices
   0x0000080000000000ULL            // ExtendedMaximumCapacity; (fixed at 8 TiB for SbsaQemu)
 };
-CHAR8 *mPhyMemArrayInfoType16Strings[] = {
+CHAR8                *mPhyMemArrayInfoType16Strings[] = {
   NULL
 };
 
 /**
   SMBIOS data definition, TYPE17, Physical Memory Array
 **/
-SMBIOS_TABLE_TYPE17 mMemDevInfoType17 = {
+SMBIOS_TABLE_TYPE17  mMemDevInfoType17 = {
   { EFI_SMBIOS_TYPE_MEMORY_DEVICE, sizeof (SMBIOS_TABLE_TYPE17), 0 },
   0,                        // MemoryArrayHandle; should match SMBIOS_TABLE_TYPE16.Handle,
                             // initialized at runtime, refer to MemDevInfoUpdateSmbiosType17
@@ -70,7 +70,7 @@ SMBIOS_TABLE_TYPE17 mMemDevInfoType17 = {
   0,                        // DeviceLocator String
   0,                        // BankLocator String
   MemoryTypeUnknown,        // MemoryType; (unknown)
-  {                         // TypeDetail;
+  {     // TypeDetail;
     0,  // Reserved        :1;
     0,  // Other           :1;
     1,  // Unknown         :1;
@@ -101,15 +101,17 @@ SMBIOS_TABLE_TYPE17 mMemDevInfoType17 = {
   0,                        // MaximumVoltage; (unknown)
   0,                        // ConfiguredVoltage; (unknown)
   MemoryTechnologyDram,     // MemoryTechnology; (DRAM)
-  {{                        // MemoryOperatingModeCapability
-    0,  // Reserved                        :1;
-    0,  // Other                           :1;
-    0,  // Unknown                         :1;
-    1,  // VolatileMemory                  :1;
-    0,  // ByteAccessiblePersistentMemory  :1;
-    0,  // BlockAccessiblePersistentMemory :1;
-    0   // Reserved                        :10;
-  }},
+  {                         // MemoryOperatingModeCapability
+    {
+      0, // Reserved                        :1;
+      0, // Other                           :1;
+      0, // Unknown                         :1;
+      1, // VolatileMemory                  :1;
+      0, // ByteAccessiblePersistentMemory  :1;
+      0, // BlockAccessiblePersistentMemory :1;
+      0  // Reserved                        :10;
+    }
+  },
   0,                        // FirwareVersion
   0,                        // ModuleManufacturerID (unknown)
   0,                        // ModuleProductID (unknown)
@@ -122,12 +124,11 @@ SMBIOS_TABLE_TYPE17 mMemDevInfoType17 = {
   0,                        // ExtendedSpeed
   0                         // ExtendedConfiguredMemorySpeed
 };
-CHAR8 *mMemDevInfoType17Strings[] = {
+CHAR8                *mMemDevInfoType17Strings[] = {
   NULL
 };
 
-
-SMBIOS_TABLE_TYPE19 mMemArrMapInfoType19 = {
+SMBIOS_TABLE_TYPE19  mMemArrMapInfoType19 = {
   { EFI_SMBIOS_TYPE_MEMORY_ARRAY_MAPPED_ADDRESS, sizeof (SMBIOS_TABLE_TYPE19), 0 },
   0,  // StartingAddress; initialized at runtime, refer to MemArrMapInfoUpdateSmbiosType19
   0,  // EndingAddress; initialized at runtime, refer to MemArrMapInfoUpdateSmbiosType19
@@ -139,10 +140,9 @@ SMBIOS_TABLE_TYPE19 mMemArrMapInfoType19 = {
   0,  // ExtendedEndingAddress; potentially initialized at runtime,
       // refer to MemDevInfoUpdateSmbiosType17
 };
-CHAR8 *mMemArrMapInfoType19Strings[] = {
+CHAR8                *mMemArrMapInfoType19Strings[] = {
   NULL
 };
-
 
 /**
   Create an SMBIOS record.
@@ -159,26 +159,25 @@ CHAR8 *mMemArrMapInfoType19Strings[] = {
 
   @return  EFI_SUCCESS on success, other values on error.
 **/
-
 STATIC
 EFI_STATUS
 EFIAPI
 LogSmbiosData (
-  IN  EFI_SMBIOS_TABLE_HEADER *Template,
-  IN  CHAR8                   **StringPack,
-  OUT EFI_SMBIOS_HANDLE       *DataSmbiosHandle
+  IN  EFI_SMBIOS_TABLE_HEADER  *Template,
+  IN  CHAR8                    **StringPack,
+  OUT EFI_SMBIOS_HANDLE        *DataSmbiosHandle
   )
 {
-  EFI_STATUS                Status;
-  EFI_SMBIOS_PROTOCOL       *Smbios;
-  EFI_SMBIOS_HANDLE         SmbiosHandle;
-  EFI_SMBIOS_TABLE_HEADER   *Record;
-  UINTN                     Index;
-  UINTN                     StringSize;
-  UINTN                     Size;
-  CHAR8                     *Str;
+  EFI_STATUS               Status;
+  EFI_SMBIOS_PROTOCOL      *Smbios;
+  EFI_SMBIOS_HANDLE        SmbiosHandle;
+  EFI_SMBIOS_TABLE_HEADER  *Record;
+  UINTN                    Index;
+  UINTN                    StringSize;
+  UINTN                    Size;
+  CHAR8                    *Str;
 
-  Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID**)&Smbios);
+  Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **)&Smbios);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Failed to locate SMBIOS protocol: %r\n", Status));
     return Status;
@@ -196,8 +195,9 @@ LogSmbiosData (
   } else {
     for (Index = 0; StringPack[Index] != NULL; Index++) {
       StringSize = AsciiStrSize (StringPack[Index]);
-      Size += StringSize;
+      Size      += StringSize;
     }
+
     if (StringPack[0] == NULL) {
       //
       // If the only string is NULL, include it in size calculation
@@ -214,22 +214,24 @@ LogSmbiosData (
   //
   // Copy over the template
   //
-  Record = (EFI_SMBIOS_TABLE_HEADER*)AllocateZeroPool (Size);
+  Record = (EFI_SMBIOS_TABLE_HEADER *)AllocateZeroPool (Size);
   if (Record == NULL) {
     DEBUG ((DEBUG_ERROR, "Failed to allocate memory for SMBIOS table\n"));
     return EFI_OUT_OF_RESOURCES;
   }
+
   CopyMem (Record, Template, Template->Length);
 
   //
   // Append the string pack
   //
-  Str = ((CHAR8*)Record) + Record->Length;
+  Str = ((CHAR8 *)Record) + Record->Length;
   for (Index = 0; StringPack[Index] != NULL; Index++) {
     StringSize = AsciiStrSize (StringPack[Index]);
     CopyMem (Str, StringPack[Index], StringSize);
     Str += StringSize;
   }
+
   //
   // Add an additional NULL for a terminating double NULL
   //
@@ -239,12 +241,12 @@ LogSmbiosData (
   // Add the table to SMBIOS
   //
   SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
-  Status = Smbios->Add (
-                     Smbios,
-                     gImageHandle,
-                     &SmbiosHandle,
-                     Record
-                     );
+  Status       = Smbios->Add (
+                           Smbios,
+                           gImageHandle,
+                           &SmbiosHandle,
+                           Record
+                           );
 
   if ((Status == EFI_SUCCESS) && (DataSmbiosHandle != NULL)) {
     *DataSmbiosHandle = SmbiosHandle;
@@ -254,7 +256,6 @@ LogSmbiosData (
   FreePool (Record);
   return Status;
 }
-
 
 /**
   Updates SMBIOS table Type 16 and creates an SMBIOS record for it.
@@ -268,12 +269,11 @@ PhyMemArrayInfoUpdateSmbiosType16 (
   )
 {
   LogSmbiosData (
-    (EFI_SMBIOS_TABLE_HEADER*)&mPhyMemArrayInfoType16,
+    (EFI_SMBIOS_TABLE_HEADER *)&mPhyMemArrayInfoType16,
     mPhyMemArrayInfoType16Strings,
     &mPhyMemArrayInfoType16Handle
     );
 }
-
 
 /**
   Updates SMBIOS table Type 17 and creates an SMBIOS record for it.
@@ -320,12 +320,11 @@ MemDevInfoUpdateSmbiosType17 (
   mMemDevInfoType17.VolatileSize = MemorySize;
 
   LogSmbiosData (
-    (EFI_SMBIOS_TABLE_HEADER*)&mMemDevInfoType17,
+    (EFI_SMBIOS_TABLE_HEADER *)&mMemDevInfoType17,
     mMemDevInfoType17Strings,
     NULL
     );
 }
-
 
 /**
   Updates SMBIOS table Type 19 and creates an SMBIOS record for it.
@@ -380,12 +379,11 @@ MemArrMapInfoUpdateSmbiosType19 (
   }
 
   LogSmbiosData (
-    (EFI_SMBIOS_TABLE_HEADER*)&mMemArrMapInfoType19,
+    (EFI_SMBIOS_TABLE_HEADER *)&mMemArrMapInfoType19,
     mMemArrMapInfoType19Strings,
     NULL
     );
 }
-
 
 /**
   Driver entry point.

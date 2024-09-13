@@ -114,6 +114,11 @@ InstallAcpiOnReadyToBoot (
     DEBUG ((DEBUG_INFO, "Populate BERT record\n"));
   }
 
+  Status = AcpiInstallSpmiTable ();
+  if (!EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_INFO, "Installed SPMI table\n"));
+  }
+
   //
   // Close the event, so it will not be signalled again.
   //

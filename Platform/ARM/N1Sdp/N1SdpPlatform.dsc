@@ -104,10 +104,8 @@
   gArmN1SdpTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmN1SdpTokenSpaceGuid.PcdRamDiskSize|0x18000000
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # System Memory (2GB) - Reserved Secure Memory (16MB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
@@ -149,8 +147,6 @@
   # ARM OS Loader
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|0
 
-  # ARM Architectural Timer Frequency
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|100000000
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|1000
 
@@ -178,7 +174,7 @@
   # PEI Phase modules
   ArmPkg/Drivers/CpuPei/CpuPei.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf {

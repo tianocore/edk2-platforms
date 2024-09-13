@@ -1,0 +1,49 @@
+#/** @file
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  https://spdx.org/licenses
+#
+#  Copyright (C) 2023 Marvell
+#
+#  Copyright (c) 2015, ARM Ltd. All rights reserved.<BR>
+#
+#**/
+
+[Defines]
+  INF_VERSION     = 0x00010006
+  BASE_NAME       = FdtPlatformDxe
+  FILE_GUID       = 6e9a4c69-57c6-4fcd-b083-4f2c3bdb6051
+  MODULE_TYPE     = UEFI_DRIVER
+  VERSION_STRING  = 0.1
+  ENTRY_POINT     = FdtPlatformEntryPoint
+
+[Sources.common]
+  FdtPlatform.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Platform/ARM/ARM.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  DebugLib
+  FdtLib
+  HobLib
+
+[Guids]
+  gFdtHobGuid
+  gFdtTableGuid
+
+[FeaturePcd]
+  gMarvellSiliconTokenSpaceGuid.PcdPublishFdt
+  gMarvellSiliconTokenSpaceGuid.PcdFixupFdt
+
+[FixedPcd]
+  gMarvellSiliconTokenSpaceGuid.PcdFdtConfigRootNode
+
+[Depex]
+  TRUE

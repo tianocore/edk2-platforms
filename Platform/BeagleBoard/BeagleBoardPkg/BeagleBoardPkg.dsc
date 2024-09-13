@@ -31,7 +31,6 @@
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/BeagleBoard/BeagleBoardPkg/Library/BeagleBoardLib/BeagleBoardLib.inf
-  ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
 
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf

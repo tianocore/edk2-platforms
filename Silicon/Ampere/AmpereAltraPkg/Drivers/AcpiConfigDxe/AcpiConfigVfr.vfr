@@ -51,19 +51,6 @@ formset
       option text = STRING_TOKEN(STR_ACPI_COMMON_ENABLE), value = 1, flags = DEFAULT;
     endoneof;
 
-    grayoutif ideqval AcpiConfigNVData.AcpiTurboSupport == 0;
-      oneof
-        varid   = AcpiConfigNVData.AcpiTurboMode,
-        prompt  = STRING_TOKEN(STR_ACPI_TURBO_PROMPT),
-        help    = STRING_TOKEN(STR_ACPI_TURBO_HELP),
-        option text = STRING_TOKEN(STR_ACPI_COMMON_ENABLE), value = 1, flags = DEFAULT;
-        option text = STRING_TOKEN(STR_ACPI_COMMON_DISABLE), value = 0, flags = 0;
-        suppressif ideqval AcpiConfigNVData.AcpiTurboSupport > 0;
-        option text = STRING_TOKEN(STR_ACPI_UNSUPPORTED), value = 2, flags = 0;
-        endif;
-      endoneof;
-    endif;
-
   endform;
 
 endformset;

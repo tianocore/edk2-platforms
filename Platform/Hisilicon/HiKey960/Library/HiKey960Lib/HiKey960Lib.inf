@@ -31,6 +31,9 @@
   HiKey960Helper.S
   HiKey960Mem.c
 
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
 [FixedPcd]
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask

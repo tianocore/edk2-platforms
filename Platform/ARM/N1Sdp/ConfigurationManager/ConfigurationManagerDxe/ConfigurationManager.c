@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2021 - 2024, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -341,7 +341,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       CM_NULL_TOKEN,
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       SOC_RESOURCE_COUNT,
@@ -362,7 +362,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -383,7 +383,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -404,7 +404,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[0]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -425,7 +425,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[1]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -446,7 +446,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[2]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -467,7 +467,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[3]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -489,7 +489,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       CM_NULL_TOKEN,
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       SOC_RESOURCE_COUNT,
@@ -510,7 +510,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[7]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -531,7 +531,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[7]), // -> Package
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       CM_NULL_TOKEN,
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
@@ -552,7 +552,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[8]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[4]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -573,7 +573,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[8]), // -> 'cluster in Cluster0
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[5]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -594,7 +594,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[9]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[6]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -615,7 +615,7 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
       ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[9]), // -> 'cluster in Cluster1
-      // CM_OBJECT_TOKEN  GicCToken
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
       REFERENCE_TOKEN (GicCInfo[7]),
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
@@ -1557,7 +1557,7 @@ GetGicCInfo (
   @param [in]        This        Pointer to the Configuration Manager Protocol.
   @param [in]        CmObjectId  The Object ID of the CM object requested
   @param [in]        SearchToken A unique token for identifying the requested
-                                 CM_ARM_OBJ_REF list.
+                                 CM_ARCH_COMMON_OBJ_REF list.
   @param [in, out]   CmObject    Pointer to the Configuration Manager Object
                                  descriptor describing the requested Object.
 
@@ -1678,6 +1678,156 @@ GetStandardNameSpaceObject (
   return Status;
 }
 
+/** Return an Arch Common namespace object.
+
+  @param [in]      This        Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId  The Configuration Manager Object ID.
+  @param [in]      Token       An optional token identifying the object. If
+                               unused this must be CM_NULL_TOKEN.
+  @param [in, out] CmObject    Pointer to the Configuration Manager Object
+                               descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS           Success.
+  @retval EFI_INVALID_PARAMETER A parameter is invalid.
+  @retval EFI_NOT_FOUND         The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetArchCommonNameSpaceObject (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EFI_STATUS                        Status;
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            PciConfigInfoCount;
+  UINT32                            ProcHierarchyInfoCount;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = EFI_NOT_FOUND;
+  PlatformRepo = This->PlatRepoInfo;
+
+  if (PlatformRepo->PlatInfo->MultichipMode == 1) {
+    PciConfigInfoCount = Root_pcie_max;
+    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT * 2;
+  } else {
+    PciConfigInfoCount = Root_pcie_master_chip_max;
+    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT;
+  }
+
+  switch (GET_CM_OBJECT_ID (CmObjectId)) {
+    case EArchCommonObjPowerManagementProfileInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->PmProfileInfo,
+                 sizeof (PlatformRepo->PmProfileInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjConsolePortInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->SpcrSerialPort,
+                 sizeof (PlatformRepo->SpcrSerialPort),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case  EArchCommonObjSerialDebugPortInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->DbgSerialPort,
+                 sizeof (PlatformRepo->DbgSerialPort),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjFixedFeatureFlags:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->FixedFeatureFlags,
+                 sizeof (PlatformRepo->FixedFeatureFlags),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjCmRef:
+      Status = HandleCmObjectSearchPlatformRepo (
+                 This,
+                 CmObjectId,
+                 Token,
+                 GetCmObjRefs,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 PciConfigInfoCount,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjProcHierarchyInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->ProcHierarchyInfo,
+                 sizeof (PlatformRepo->ProcHierarchyInfo),
+                 ProcHierarchyInfoCount,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjCacheInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->CacheInfo,
+                 sizeof (PlatformRepo->CacheInfo),
+                 ARRAY_SIZE (PlatformRepo->CacheInfo),
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjMemoryAffinityInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->MemAffInfo,
+                 sizeof (PlatformRepo->MemAffInfo),
+                 ARRAY_SIZE (PlatformRepo->MemAffInfo),
+                 CmObject
+                 );
+      break;
+
+      default: {
+      Status = EFI_NOT_FOUND;
+      DEBUG ((
+        DEBUG_INFO,
+        "INFO: Object 0x%x. Status = %r\n",
+        CmObjectId,
+        Status
+        ));
+      break;
+    }
+  } //switch
+
+  return Status;
+}
+
 /** Return an ARM namespace object.
 
   @param [in]        This        Pointer to the Configuration Manager Protocol.
@@ -1704,14 +1854,12 @@ GetArmNameSpaceObject (
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
   UINT32                            GicRedistCount;
   UINT32                            GicCpuCount;
-  UINT32                            ProcHierarchyInfoCount;
   UINT32                            GicItsInfoCount;
   UINT32                            ItsGroupInfoCount;
   UINT32                            ItsIdentifierArrayCount;
   UINT32                            SmmuV3InfoCount;
   UINT32                            DeviceIdMappingCount;
   UINT32                            RootComplexInfoCount;
-  UINT32                            PciConfigInfoCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -1726,25 +1874,21 @@ GetArmNameSpaceObject (
   if (PlatformRepo->PlatInfo->MultichipMode == 1) {
     GicRedistCount = 2;
     GicCpuCount = PLAT_CPU_COUNT * 2;
-    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT * 2;
     GicItsInfoCount = Its_max;
     ItsGroupInfoCount = Its_max;
     ItsIdentifierArrayCount = Its_max;
     SmmuV3InfoCount = Smmuv3info_max;
     DeviceIdMappingCount = Devicemapping_max;
     RootComplexInfoCount = Root_pcie_max;
-    PciConfigInfoCount = Root_pcie_max;
   } else {
     GicRedistCount = 1;
     GicCpuCount = PLAT_CPU_COUNT;
-    ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT;
     GicItsInfoCount = Its_master_chip_max;
     ItsGroupInfoCount = Its_master_chip_max;
     ItsIdentifierArrayCount = Its_master_chip_max;
     SmmuV3InfoCount = Smmuv3info_master_chip_max;
     DeviceIdMappingCount = Devicemapping_master_chip_max;
     RootComplexInfoCount = Root_pcie_master_chip_max;
-    PciConfigInfoCount = Root_pcie_master_chip_max;
   }
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -1753,26 +1897,6 @@ GetArmNameSpaceObject (
                  CmObjectId,
                  &PlatformRepo->BootArchInfo,
                  sizeof (PlatformRepo->BootArchInfo),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjFixedFeatureFlags:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->FixedFeatureFlags,
-                 sizeof (PlatformRepo->FixedFeatureFlags),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPowerManagementProfileInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->PmProfileInfo,
-                 sizeof (PlatformRepo->PmProfileInfo),
                  1,
                  CmObject
                  );
@@ -1854,26 +1978,6 @@ GetArmNameSpaceObject (
                  );
       break;
 
-    case EArmObjSerialConsolePortInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->SpcrSerialPort,
-                 sizeof (PlatformRepo->SpcrSerialPort),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case  EArmObjSerialDebugPortInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->DbgSerialPort,
-                 sizeof (PlatformRepo->DbgSerialPort),
-                 1,
-                 CmObject
-                 );
-      break;
-
     case EArmObjGicItsInfo:
       Status = HandleCmObject (
                  CmObjectId,
@@ -1939,56 +2043,6 @@ GetArmNameSpaceObject (
                  DeviceIdMappingCount,
                  Token,
                  GetDeviceIdMappingArray,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjProcHierarchyInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->ProcHierarchyInfo,
-                 sizeof (PlatformRepo->ProcHierarchyInfo),
-                 ProcHierarchyInfoCount,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjCacheInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->CacheInfo,
-                 sizeof (PlatformRepo->CacheInfo),
-                 ARRAY_SIZE (PlatformRepo->CacheInfo),
-                 CmObject
-                 );
-      break;
-
-    case EArmObjCmRef:
-      Status = HandleCmObjectSearchPlatformRepo (
-                 This,
-                 CmObjectId,
-                 Token,
-                 GetCmObjRefs,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 PciConfigInfoCount,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjMemoryAffinityInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->MemAffInfo,
-                 sizeof (PlatformRepo->MemAffInfo),
-                 ARRAY_SIZE (PlatformRepo->MemAffInfo),
                  CmObject
                  );
       break;
@@ -2090,6 +2144,9 @@ N1sdpPlatformGetObject (
   switch (GET_CM_NAMESPACE_ID (CmObjectId)) {
     case EObjNameSpaceStandard:
       Status = GetStandardNameSpaceObject (This, CmObjectId, Token, CmObject);
+      break;
+    case EObjNameSpaceArchCommon:
+      Status = GetArchCommonNameSpaceObject (This, CmObjectId, Token, CmObject);
       break;
     case EObjNameSpaceArm:
       Status = GetArmNameSpaceObject (This, CmObjectId, Token, CmObject);

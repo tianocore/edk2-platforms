@@ -11,8 +11,7 @@
 
 #include <Ppi/ArmMpCoreInfo.h>
 
-
-ARM_CORE_INFO mArmPlatformNullMpCoreInfoTable[] = {
+ARM_CORE_INFO  mArmPlatformNullMpCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
     0x000,
@@ -88,24 +87,20 @@ ArmPlatformGetBootMode (
 **/
 RETURN_STATUS
 ArmPlatformInitialize (
-  IN  UINTN                     MpId
+  IN  UINTN  MpId
   )
 {
-  if (!ArmPlatformIsPrimaryCore (MpId)) {
-    return RETURN_SUCCESS;
-  }
-
   return RETURN_SUCCESS;
 }
 
 EFI_STATUS
 PrePeiCoreGetMpCoreInfo (
-  OUT UINTN                   *CoreCount,
-  OUT ARM_CORE_INFO           **ArmCoreTable
+  OUT UINTN          *CoreCount,
+  OUT ARM_CORE_INFO  **ArmCoreTable
   )
 {
-  if (ArmIsMpCore()) {
-    *CoreCount    = ARRAY_SIZE(mArmPlatformNullMpCoreInfoTable);
+  if (ArmIsMpCore ()) {
+    *CoreCount    = ARRAY_SIZE (mArmPlatformNullMpCoreInfoTable);
     *ArmCoreTable = mArmPlatformNullMpCoreInfoTable;
     return EFI_SUCCESS;
   } else {
@@ -113,9 +108,9 @@ PrePeiCoreGetMpCoreInfo (
   }
 }
 
-ARM_MP_CORE_INFO_PPI mMpCoreInfoPpi = { PrePeiCoreGetMpCoreInfo };
+ARM_MP_CORE_INFO_PPI  mMpCoreInfoPpi = { PrePeiCoreGetMpCoreInfo };
 
-EFI_PEI_PPI_DESCRIPTOR      gPlatformPpiTable[] = {
+EFI_PEI_PPI_DESCRIPTOR  gPlatformPpiTable[] = {
   {
     EFI_PEI_PPI_DESCRIPTOR_PPI,
     &gArmMpCoreInfoPpiGuid,
@@ -129,11 +124,11 @@ ArmPlatformGetPlatformPpiList (
   OUT EFI_PEI_PPI_DESCRIPTOR  **PpiList
   )
 {
-  if (ArmIsMpCore()) {
+  if (ArmIsMpCore ()) {
     *PpiListSize = sizeof (gPlatformPpiTable);
-    *PpiList = gPlatformPpiTable;
+    *PpiList     = gPlatformPpiTable;
   } else {
     *PpiListSize = 0;
-    *PpiList = NULL;
+    *PpiList     = NULL;
   }
 }

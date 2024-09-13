@@ -35,8 +35,6 @@ FlashLibAddressChangeEvent (
 {
   gRT->ConvertPointer (0x0, (VOID **)&gFlashLibVirtualBuffer);
   gRT->ConvertPointer (0x0, (VOID **)&mMmCommunicationProtocol);
-
-  gFlashLibRuntime = TRUE;
 }
 
 /**

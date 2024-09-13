@@ -68,12 +68,6 @@ ArmPlatformInitialize (
   IN  UINTN                     MpId
   )
 {
-  if (!ArmPlatformIsPrimaryCore (MpId)) {
-    return RETURN_SUCCESS;
-  }
-
-  // XXX Place holder XXX ...
-
   return RETURN_SUCCESS;
 }
 

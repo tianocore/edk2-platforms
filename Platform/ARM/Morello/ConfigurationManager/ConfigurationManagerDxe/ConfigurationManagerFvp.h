@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -56,7 +56,7 @@ typedef struct FvpPlatformRepositoryInfo {
   CM_ARM_ID_MAPPING                     DeviceIdMapping[2][2];
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo[1];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[1];
 
 } EDKII_FVP_PLATFORM_REPOSITORY_INFO;
 
@@ -74,6 +74,28 @@ typedef struct PlatformRepositoryInfo {
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
 extern EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo;
+
+/** Return platform specific arch common namespace object.
+
+  @param [in]      This        Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId  The Configuration Manager Object ID.
+  @param [in]      Token       An optional token identifying the object. If
+                               unused this must be CM_NULL_TOKEN.
+  @param [in, out] CmObject    Pointer to the Configuration Manager Object
+                               descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS           Success.
+  @retval EFI_INVALID_PARAMETER A parameter is invalid.
+  @retval EFI_NOT_FOUND         The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetArchCommonNameSpaceObjectPlat (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
+  );
 
 /** Return platform specific ARM namespace object.
 

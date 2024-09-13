@@ -1,0 +1,42 @@
+/** @file
+
+  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#include <Guid/PlatformManagerHii.h>
+#include <Guid/BmcConfigHii.h>
+#include "BmcConfigDxe.h"
+
+formset
+  guid    = BMC_CONFIG_FORMSET_GUID,
+  title   = STRING_TOKEN(STR_BMC_CONFIG_FORM),
+  help    = STRING_TOKEN(STR_BMC_CONFIG_HELP),
+  classguid = gPlatformManagerFormsetGuid,
+
+  form
+    formid = MAIN_FORM_ID,
+    title = STRING_TOKEN(STR_BMC_CONFIG_FORM);
+
+    text
+      help   = STRING_TOKEN(STR_BMC_FIRMWARE_REV_LABEL),
+      text   = STRING_TOKEN(STR_BMC_FIRMWARE_REV_LABEL),
+      text   = STRING_TOKEN(STR_BMC_FIRMWARE_REV_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_BMC_IPMI_VER_LABEL),
+      text   = STRING_TOKEN(STR_BMC_IPMI_VER_LABEL),
+      text   = STRING_TOKEN(STR_BMC_IPMI_VER_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    label LABEL_UPDATE;
+    // dynamic content here
+    label LABEL_END;
+
+  endform;
+endformset;

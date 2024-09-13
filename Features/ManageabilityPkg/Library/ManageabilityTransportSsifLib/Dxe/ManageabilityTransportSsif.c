@@ -221,8 +221,8 @@ SsifTransportTransmitReceive (
              &AdditionalStatus
              );
 
-  TransferToken->TransferStatus             = Status;
-  TransferToken->TransportAdditionalStatus  = AdditionalStatus;
+  TransferToken->TransferStatus            = Status;
+  TransferToken->TransportAdditionalStatus = AdditionalStatus;
 }
 
 /**
@@ -294,8 +294,8 @@ AcquireTransportSession (
   SsifTransportToken->Token.Transport->Function.Version1_0                 = AllocateZeroPool (sizeof (MANAGEABILITY_TRANSPORT_FUNCTION_V1_0));
   if (SsifTransportToken->Token.Transport->Function.Version1_0 == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_FUNCTION_V1_0\n", __func__));
-    FreePool (SsifTransportToken);
     FreePool (SsifTransportToken->Token.Transport);
+    FreePool (SsifTransportToken);
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -362,21 +362,23 @@ ReleaseTransportSession (
   EFI_STATUS                    Status;
   MANAGEABILITY_TRANSPORT_SSIF  *SsifTransportToken;
 
-  if (TransportToken == NULL) {
-    Status = EFI_INVALID_PARAMETER;
-  }
+  Status = EFI_INVALID_PARAMETER;
 
-  SsifTransportToken = MANAGEABILITY_TRANSPORT_SSIF_FROM_LINK (TransportToken);
-  if (mSingleSessionToken != SsifTransportToken) {
-    Status = EFI_INVALID_PARAMETER;
-  }
+  if (TransportToken != NULL) {
+    SsifTransportToken = MANAGEABILITY_TRANSPORT_SSIF_FROM_LINK (TransportToken);
 
-  if (SsifTransportToken != NULL) {
-    FreePool (SsifTransportToken->Token.Transport->Function.Version1_0);
-    FreePool (SsifTransportToken->Token.Transport);
-    FreePool (SsifTransportToken);
-    mSingleSessionToken = NULL;
-    Status              = EFI_SUCCESS;
+    if (SsifTransportToken != NULL) {
+      if ((mSingleSessionToken != NULL) &&
+          (mSingleSessionToken == SsifTransportToken))
+      {
+        mSingleSessionToken = NULL;
+        Status              = EFI_SUCCESS;
+      }
+
+      FreePool (SsifTransportToken->Token.Transport->Function.Version1_0);
+      FreePool (SsifTransportToken->Token.Transport);
+      FreePool (SsifTransportToken);
+    }
   }
 
   if (EFI_ERROR (Status)) {

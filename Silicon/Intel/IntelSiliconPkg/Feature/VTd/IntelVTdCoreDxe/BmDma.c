@@ -464,7 +464,7 @@ IoMmuAllocateBuffer (
   if (!EFI_ERROR (Status)) {
     *HostAddress = (VOID *) (UINTN) PhysicalAddress;
 
-    VTdLogAddEvent (VTDLOG_DXE_IOMMU_ALLOC_BUFFER, (UINT64) Pages, (UINT64) (*HostAddress));
+    VTdLogAddEvent (VTDLOG_DXE_IOMMU_ALLOC_BUFFER, (UINT64) Pages, (UINT64) (UINTN) (*HostAddress));
   }
 
   DEBUG ((DEBUG_VERBOSE, "IoMmuAllocateBuffer: 0x%08x <==\n", *HostAddress));
@@ -494,7 +494,7 @@ IoMmuFreeBuffer (
 {
   DEBUG ((DEBUG_VERBOSE, "IoMmuFreeBuffer: 0x%\n", Pages));
 
-  VTdLogAddEvent (VTDLOG_DXE_IOMMU_FREE_BUFFER, Pages, (UINT64) HostAddress);
+  VTdLogAddEvent (VTDLOG_DXE_IOMMU_FREE_BUFFER, Pages, (UINT64) (UINTN) HostAddress);
 
   return gBS->FreePages ((EFI_PHYSICAL_ADDRESS) (UINTN) HostAddress, Pages);
 }

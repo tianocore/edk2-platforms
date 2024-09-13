@@ -39,7 +39,6 @@
 
 [Pcd]
   gHisiTokenSpaceGuid.PcdTrustedFirmwareEnable
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
 
 [FixedPcd.common]
 

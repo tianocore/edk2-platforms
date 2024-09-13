@@ -46,6 +46,7 @@
   MemoryAllocationLib
   PcdLib
   PrintLib
+  TimerLib
   UefiBootManagerLib
   UefiBootServicesTableLib
   UefiLib
@@ -63,6 +64,7 @@
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootDiscoveryPolicy
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut
+  gRaspberryPiTokenSpaceGuid.PcdPlatformResetDelay
   gRaspberryPiTokenSpaceGuid.PcdSdIsArasan
 
 [Guids]
@@ -78,6 +80,7 @@
   gEfiBootManagerPolicyConnectAllGuid
 
 [Protocols]
+  gEdkiiPlatformSpecificResetHandlerProtocolGuid
   gEfiBootManagerPolicyProtocolGuid
   gEfiDevicePathProtocolGuid
   gEfiGraphicsOutputProtocolGuid
@@ -86,3 +89,6 @@
   gEfiSimpleFileSystemProtocolGuid
   gEsrtManagementProtocolGuid
   gEfiUsb2HcProtocolGuid
+
+[Depex]
+  gEdkiiPlatformSpecificResetHandlerProtocolGuid

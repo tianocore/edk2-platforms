@@ -15,19 +15,6 @@
 
 #include <ArmPlatform.h>
 
-/**
-  Return the core per cluster. The method may differ per core type
-
-  This function might be called from assembler before any stack is set.
-
-  @return   Return the core count per cluster
-
-**/
-UINTN
-ArmGetCpuCountPerCluster (
-  VOID
-  );
-
 ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
@@ -139,10 +126,6 @@ ArmPlatformInitialize (
   IN  UINTN                     MpId
   )
 {
-  if (!ArmPlatformIsPrimaryCore (MpId)) {
-    return RETURN_SUCCESS;
-  }
-
   // Disable memory remapping and return to normal mapping
   MmioOr32 (SP810_CTRL_BASE, BIT8);
 
@@ -160,7 +143,7 @@ PrePeiCoreGetMpCoreInfo (
   ProcType = MmioRead32 (ARM_VE_SYS_PROCID0_REG) & ARM_VE_SYS_PROC_ID_MASK;
   if ((ProcType == ARM_VE_SYS_PROC_ID_CORTEX_A9) || (ProcType == ARM_VE_SYS_PROC_ID_CORTEX_A15)) {
     // Only support one cluster on all but ARMv8 FVP platform. FVP still uses CortexA9 ID.
-    *CoreCount    = ArmGetCpuCountPerCluster ();
+    *CoreCount    = FixedPcdGet32 (PcdCoreCount);
     *ArmCoreTable = mVersatileExpressMpCoreInfoTable;
     return EFI_SUCCESS;
   } else {

@@ -39,7 +39,8 @@
   # NOR flash identification support
   NorFlashInfoLib|EmbeddedPkg/Library/NorFlashInfoLib/NorFlashInfoLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
-  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   MmUnblockMemoryLib|MdePkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLibNull.inf
 
@@ -133,10 +134,8 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x01400000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x01400000
 
-  # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x0
 
   # ACPI Table Version
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
@@ -178,8 +177,6 @@
   # ARM OS Loader
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|3
 
-  # ARM Architectural Timer Frequency
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|100000000
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|1000
 
@@ -222,7 +219,7 @@
   #
   ArmPkg/Drivers/CpuPei/CpuPei.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
-  ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore.inf
+  ArmPlatformPkg/Sec/Sec.inf
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   MdeModulePkg/Core/Pei/PeiMain.inf
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf {

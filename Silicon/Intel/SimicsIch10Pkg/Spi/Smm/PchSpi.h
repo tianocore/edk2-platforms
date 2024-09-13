@@ -1,7 +1,7 @@
 /** @file
   Header file for the PCH SPI SMM Driver.
 
-  Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2019 - 2024 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -15,7 +15,7 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <PchAccess.h>
 #include <Protocol/Spi2.h>
 #include <IncludePrivate/Library/PchSpiCommonLib.h>

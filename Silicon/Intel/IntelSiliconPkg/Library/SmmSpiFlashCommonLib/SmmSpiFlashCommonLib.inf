@@ -1,7 +1,7 @@
 ## @file
 # SMM Library instance of Spi Flash Common Library Class
 #
-#  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2024, Intel Corporation. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -11,8 +11,8 @@
   BASE_NAME                      = SmmSpiFlashCommonLib
   FILE_GUID                      = 99721728-C39D-4600-BD38-71E8238FEEF2
   VERSION_STRING                 = 1.0
-  MODULE_TYPE                    = DXE_SMM_DRIVER
-  LIBRARY_CLASS                  = SpiFlashCommonLib|DXE_SMM_DRIVER
+  MODULE_TYPE                    = BASE
+  LIBRARY_CLASS                  = SpiFlashCommonLib|DXE_SMM_DRIVER MM_STANDALONE
   CONSTRUCTOR                    = SmmSpiFlashCommonLibConstructor
 #
 # The following information is for reference only and not required by the build tools.
@@ -26,8 +26,7 @@
   DebugLib
   IoLib
   MemoryAllocationLib
-  SmmServicesTableLib
-  UefiLib
+  MmServicesTableLib
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -48,4 +47,7 @@
   gPchSmmSpi2ProtocolGuid                                 ## CONSUMES
 
 [Depex.X64.DXE_SMM_DRIVER]
+  gPchSmmSpi2ProtocolGuid
+
+[Depex.X64.MM_STANDALONE]
   gPchSmmSpi2ProtocolGuid

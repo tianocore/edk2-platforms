@@ -86,9 +86,9 @@ STATIC CONST SGI_PRODUCT_ID_LOOKUP SgiProductIdLookup[] = {
     0
   },
   {
-    RdFremont,
-    RD_Fremont_PART_NUM,
-    RD_Fremont_CONF_ID,
+    RdV3,
+    RD_V3_PART_NUM,
+    RD_V3_CONF_ID,
     0
   },
 };

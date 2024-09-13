@@ -63,6 +63,7 @@
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   PlatformSocLib|AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
+  SpiHcPlatformLib|AmdPlatformPkg/Universal/Spi/SpiFvb/SpiFvbDxe.inf
 
 [LibraryClasses.common.SMM_CORE]
   SmmCoreAmdSpiHcHookLib|AmdPlatformPkg/Library/SmmCoreAmdSpiHcHookLib/SmmCoreAmdSpiHcHookLib.inf
@@ -71,14 +72,25 @@
 [LibraryClasses.common.DXE_SMM_DRIVER]
   MemoryAllocationLib|MdePkg/Library/SmmMemoryAllocationLib/SmmMemoryAllocationLib.inf
   SmmServicesTableLib|MdePkg/Library/SmmServicesTableLib/SmmServicesTableLib.inf
+  SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
 
 [Components]
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFacsLib/AcpiFacsLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFadtLib/AcpiFadtLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiHpetLib/AcpiHpetLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiMadtLib/AcpiMadtLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiMcfgLib/AcpiMcfgLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSpmiLib/AcpiSpmiLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtCpuTopologyLib/AcpiSsdtCpuTopologyLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtPciLib/AcpiSsdtPciLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiWsmtLib/AcpiWsmtLib.inf
   AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
   AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
   AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
   AmdPlatformPkg/Library/SmmCoreAmdSpiHcHookLib/SmmCoreAmdSpiHcHookLib.inf
   AmdPlatformPkg/Library/SmmCorePlatformHookLib/SmmCorePlatformHookLib.inf
-  AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
+  AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibDxe.inf
+  AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
   AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
   AmdPlatformPkg/Universal/LogoDxe/JpegLogoDxe.inf                                           # Server platform JPEG logo driver
   AmdPlatformPkg/Universal/LogoDxe/LogoDxe.inf                                               # Server platfrom Bitmap logo driver

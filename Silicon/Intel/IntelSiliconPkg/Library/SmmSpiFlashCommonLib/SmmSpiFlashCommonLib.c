@@ -1,13 +1,13 @@
 /** @file
   SMM Library instance of SPI Flash Common Library Class
 
-  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, Intel Corporation. All rights reserved.<BR>
   Copyright (c) Microsoft Corporation.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Protocol/Spi2.h>
 #include <Library/DebugLib.h>
 
@@ -33,8 +33,7 @@ extern UINTN mBiosOffset;
 EFI_STATUS
 EFIAPI
 SmmSpiFlashCommonLibConstructor (
-  IN EFI_HANDLE        ImageHandle,
-  IN EFI_SYSTEM_TABLE  *SystemTable
+  VOID
   )
 {
   EFI_STATUS Status;
@@ -47,7 +46,7 @@ SmmSpiFlashCommonLibConstructor (
   //
   // Locate the SMM SPI2 protocol.
   //
-  Status = gSmst->SmmLocateProtocol (
+  Status = gMmst->MmLocateProtocol (
                     &gPchSmmSpi2ProtocolGuid,
                     NULL,
                     (VOID **) &mSpi2Protocol

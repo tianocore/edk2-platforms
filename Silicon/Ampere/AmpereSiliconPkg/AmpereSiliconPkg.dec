@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -47,6 +47,12 @@
   ## Include/Guid/PlatformManagerHii.h
   gPlatformManagerExitEventGuid  = { 0xE8887242, 0x4EFF, 0x4323, { 0x81, 0xF4, 0xC9, 0x5F, 0xD5, 0x8D, 0x80, 0xD5 } }
 
+  #
+  # BMC Configuration formset UUID
+  #
+  ## Include/Guid/BmcConfigHii.h
+  gBmcConfigFormSetGuid = { 0xC4D6ED50, 0x769D, 0x4319, { 0xEB, 0xB7, 0xCC, 0xDD, 0xC8, 0x9D, 0x3D, 0x2D } }
+
 [Ppis]
 
 [PcdsFixedAtBuild]
@@ -66,8 +72,19 @@
   #
   # SMBIOS Type 0 Pcd
   #
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0|UINT8|0x00000005
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0|UINT8|0x00000006
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0xFF|UINT8|0x00000005
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0xFF|UINT8|0x00000006
+
+  #
+  # I2C PCDs for SMBUS
+  #
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x00|UINT8|0x00000007
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|100000|UINT32|0x00000008 # Hz
+
+  #
+  # GPIO pin to support BMC ready check
+  #
+  gAmpereTokenSpaceGuid.PcdBmcReadyGpio|0x18|UINT8|0x00000009
 
 [PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   #

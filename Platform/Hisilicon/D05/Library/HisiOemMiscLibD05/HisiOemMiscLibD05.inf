@@ -38,7 +38,6 @@
   gEfiPeiReadOnlyVariable2PpiGuid   ## SOMETIMES_CONSUMES
 
 [Pcd]
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
   gHisiTokenSpaceGuid.PcdIsMPBoot
   gHisiTokenSpaceGuid.PcdSocketMask
   gHisiTokenSpaceGuid.PcdTrustedFirmwareEnable

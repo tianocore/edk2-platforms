@@ -1,7 +1,7 @@
 ## @file
 # Component description file for the SPI SMM driver.
 #
-# Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2019 - 2024 Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -14,7 +14,7 @@
   VERSION_STRING              = 1.0
   MODULE_TYPE                 = DXE_SMM_DRIVER
   PI_SPECIFICATION_VERSION    = 1.10
-  ENTRY_POINT                 = InstallPchSpi
+  ENTRY_POINT                 = InstallPchSpiSmm
 
 
   [LibraryClasses]
@@ -23,7 +23,7 @@
   UefiDriverEntryPoint
   UefiBootServicesTableLib
   BaseLib
-  SmmServicesTableLib
+  MmServicesTableLib
   PchSpiCommonLib
 
 [Packages]

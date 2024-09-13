@@ -25,6 +25,7 @@
   Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
 
 [LibraryClasses]
+  BaseMemoryLib
   DebugLib
   FlashLib
   PcdLib
