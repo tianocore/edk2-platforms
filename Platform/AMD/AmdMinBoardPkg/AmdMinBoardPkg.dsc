@@ -13,8 +13,8 @@
   PLATFORM_NAME               = AmdMinBoardPkg
   PLATFORM_VERSION            = 0.1
   OUTPUT_DIRECTORY            = Build/$(PLATFORM_NAME)
-  BUILD_TARGETS               = DEBUG | RELEASE | NOOPT
-  SUPPORTED_ARCHITECTURES     = IA32 | X64
+  BUILD_TARGETS               = DEBUG|RELEASE|NOOPT
+  SUPPORTED_ARCHITECTURES     = IA32|X64
 
 [Packages]
   AmdMinBoardPkg/AmdMinBoardPkg.dec
