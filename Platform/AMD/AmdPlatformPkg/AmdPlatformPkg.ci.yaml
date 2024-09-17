@@ -1,0 +1,139 @@
+## @file
+# CI configuration for AmdPlatformPkg
+#
+# Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+{
+    "PrEval": {
+        "DscPath": "AmdPlatformPkg.dsc",
+    },
+    ## options defined .pytool/Plugin/LicenseCheck
+    "LicenseCheck": {
+        "IgnoreFiles": []
+    },
+    "EccCheck": {
+        ## Exception sample looks like below:
+        ## "ExceptionList": [
+        ##     "<ErrorID>", "<KeyWord>"
+        ## ]
+        "ExceptionList": [
+        ],
+        ## Both file path and directory path are accepted.
+        "IgnoreFiles": [
+        ]
+    },
+    ## options defined ci/Plugin/CompilerPlugin
+    "CompilerPlugin": {
+        "DscPath": "AmdPlatformPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestCompilerPlugin
+    "HostUnitTestCompilerPlugin": {
+        "DscPath": ""
+    },
+
+    ## options defined ci/Plugin/CharEncodingCheck
+    "CharEncodingCheck": {
+        "IgnoreFiles": []
+    },
+
+    ## options defined ci/Plugin/DependencyCheck
+    "DependencyCheck": {
+        "AcceptableDependencies": [
+            "AgesaModulePkg/AgesaCommonModulePkg.dec",
+            "AgesaModulePkg/AgesaEdk2Pkg.dec",
+            "AgesaModulePkg/AgesaModuleFchPkg.dec",
+            "AgesaModulePkg/AgesaModuleNbioPkg.dec",
+            "AgesaModulePkg/AgesaModulePspPkg.dec",
+            "AgesaPkg/AgesaPkg.dec",
+            "AmdCpmPkg/AmdCpmPkg.dec",
+            "AmdMinBoardPkg/AmdMinBoardPkg.dec",
+            "AmdPlatformPkg/AmdPlatformPkg.dec",
+            "BoardModulePkg/BoardModulePkg.dec",
+            "DynamicTablesPkg/DynamicTablesPkg.dec",
+            "IpmiFeaturePkg/IpmiFeaturePkg.dec",
+            "MdeModulePkg/MdeModulePkg.dec",
+            "MdePkg/MdePkg.dec",
+            "MinPlatformPkg/MinPlatformPkg.dec",
+            "PcAtChipsetPkg/PcAtChipsetPkg.dec",
+            "SignedCapsulePkg/SignedCapsulePkg.dec",
+            "SecurityPkg/SecurityPkg.dec",
+            "UefiCpuPkg/UefiCpuPkg.dec",
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
+        # For host based unit tests
+        "AcceptableDependencies-HOST_APPLICATION":[
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
+        # For UEFI shell based apps
+        "AcceptableDependencies-UEFI_APPLICATION":[],
+        "IgnoreInf": []
+    },
+
+    ## options defined ci/Plugin/DscCompleteCheck
+    "DscCompleteCheck": {
+        "IgnoreInf": [
+            ],
+        "DscPath": "AmdPlatformPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestDscCompleteCheck
+    "HostUnitTestDscCompleteCheck": {
+        "IgnoreInf": [""],
+    ##    "DscPath": "Test/AmdPlatformPkgHostTest.dsc"
+    },
+
+    ## options defined ci/Plugin/GuidCheck
+    "GuidCheck": {
+        "IgnoreGuidName": [],
+        "IgnoreGuidValue": [],
+        "IgnoreFoldersAndFiles": [],
+        "IgnoreDuplicates": []
+    },
+
+    ## options defined ci/Plugin/LibraryClassCheck
+    "LibraryClassCheck": {
+        "IgnoreHeaderFile": []
+    },
+
+    ## options defined ci/Plugin/SpellCheck
+    "SpellCheck": {
+        "AuditOnly": False,         # If True, only audit the files, do not fail the build
+        "IgnoreStandardPaths": [     # Standard Plugin defined paths that should be ignore
+        ##    "*.c", "*.asm", "*.h", "*.nasm", "*.s", "*.asl", "*.inf"
+        ],
+        "IgnoreFiles": [             # use gitignore syntax to ignore errors in matching files
+        ],
+        "ExtendWords": [           # words to extend to the dictionary for this package
+            "agesa",
+            "defaultdb",
+            "defaultdbx",
+            "deviceid",
+            "eisaid",
+            "flashid",
+            "iomux",
+            "jedec",
+            "oemid",
+            "pmioa",
+            "ppread",
+            "rdsfdp",
+            "smdbg",
+            "ssdtproc",
+            "eeprom",
+            "gpiox",
+            "agpio",
+            "sgpio",
+            "acpimmio",
+            "glink",
+            "ehci's",
+            "uhci's"
+            ],
+        "AdditionalIncludePaths": [] # Additional paths to spell check relative to package root (wildcards supported)
+    },
+    "DebugMacroCheck": {
+      "StringSubstitutions": {
+          # Reason: Expansion of macro that contains a print specifier.
+          # AMD can write its own print specifier.
+          # "AMD_PRINT": "0x%lx"
+      }
+   }    
+}
