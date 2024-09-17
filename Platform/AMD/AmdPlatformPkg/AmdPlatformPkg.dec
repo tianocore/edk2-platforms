@@ -106,7 +106,7 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.AsyncSurpriseRemoval|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl10Capable|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl20Capable|0
-  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.Reserved|0
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl30Capable|0
 
   #
   # SPI PCDs

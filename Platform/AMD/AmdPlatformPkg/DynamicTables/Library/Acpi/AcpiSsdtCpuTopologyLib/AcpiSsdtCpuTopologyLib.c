@@ -141,7 +141,7 @@ GenerateApicIdToUidMap (
     }
   }
 
-  // Increarement the SocketCount by 1 because socket numbering starts from 0
+  // increment the SocketCount by 1 because socket numbering starts from 0
   SocketCount++;
 
   if (SocketCount > 1) {

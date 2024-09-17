@@ -149,7 +149,7 @@ GenerateLocalNmi (
 
 **/
 EFI_STATUS
-GenerateIntrruptSourceOverride (
+GenerateinterruptSourceOverride (
   IN OUT EFI_ACPI_6_5_INTERRUPT_SOURCE_OVERRIDE_STRUCTURE  **InterruptSourceOverride,
   IN OUT UINTN                                             *InterruptSourceOverrideSize
   )
@@ -343,7 +343,7 @@ GenerateProcessorLocalApicStructure (
     }
   }
 
-  /// Increatement the NumSocket and ThreadsPerCore by 1, as it is 0 based
+  /// increment the NumSocket and ThreadsPerCore by 1, as it is 0 based
   NumSocket++;
   ThreadsPerCore++;
 
@@ -704,7 +704,7 @@ AcpiMadtLibConstructor (
   TableSize += IoApicSize;
 
   /// Generate Interrupt Source Override Structure
-  Status = GenerateIntrruptSourceOverride (&InterruptSourceOverride, &InterruptSourceOverrideSize);
+  Status = GenerateinterruptSourceOverride (&InterruptSourceOverride, &InterruptSourceOverrideSize);
   if (EFI_ERROR (Status)) {
     DEBUG ((
       DEBUG_ERROR,
