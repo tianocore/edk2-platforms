@@ -8,14 +8,14 @@
 
 #include "PlatformManager.h"
 
-PLATFORM_MANAGER_CALLBACK_DATA gPlatformManagerPrivate = {
+PLATFORM_MANAGER_CALLBACK_DATA  gPlatformManagerPrivate = {
   NULL,
   NULL
 };
 
-EFI_GUID mPlatformManagerGuid = FORMSET_GUID;
+EFI_GUID  mPlatformManagerGuid = FORMSET_GUID;
 
-HII_VENDOR_DEVICE_PATH mPlatformManagerHiiVendorDevicePath = {
+HII_VENDOR_DEVICE_PATH  mPlatformManagerHiiVendorDevicePath = {
   {
     {
       HARDWARE_DEVICE_PATH,
@@ -28,7 +28,8 @@ HII_VENDOR_DEVICE_PATH mPlatformManagerHiiVendorDevicePath = {
     //
     // {FC587265-0750-44D1-B68D-D1DDD3F29B0B}
     //
-    { 0xFC587265, 0x0750, 0x44D1, {0xB6, 0x8D, 0xD1, 0xDD, 0xD3, 0xF2, 0x9B, 0x0B} }
+    { 0xFC587265, 0x0750, 0x44D1, { 0xB6, 0x8D, 0xD1, 0xDD, 0xD3, 0xF2, 0x9B, 0x0B }
+    }
   },
   {
     END_DEVICE_PATH_TYPE,
@@ -51,11 +52,11 @@ HII_VENDOR_DEVICE_PATH mPlatformManagerHiiVendorDevicePath = {
 **/
 CHAR16 *
 PmExtractDevicePathFromHiiHandle (
-  IN EFI_HII_HANDLE Handle
+  IN EFI_HII_HANDLE  Handle
   )
 {
-  EFI_STATUS Status;
-  EFI_HANDLE DriverHandle;
+  EFI_STATUS  Status;
+  EFI_HANDLE  DriverHandle;
 
   ASSERT (Handle != NULL);
 
@@ -67,6 +68,7 @@ PmExtractDevicePathFromHiiHandle (
   if (EFI_ERROR (Status)) {
     return NULL;
   }
+
   //
   // Get device path string.
   //
@@ -81,33 +83,33 @@ PmExtractDevicePathFromHiiHandle (
 **/
 VOID
 CreatePlatformManagerForm (
-  IN EFI_FORM_ID NextShowFormId
+  IN EFI_FORM_ID  NextShowFormId
   )
 {
-  UINTN              Index;
-  EFI_STRING         String;
-  EFI_STRING_ID      Token;
-  EFI_STRING_ID      TokenHelp;
-  EFI_HII_HANDLE     *HiiHandles;
-  EFI_HII_HANDLE     HiiHandle;
-  EFI_GUID           FormSetGuid;
-  VOID               *StartOpCodeHandle;
-  VOID               *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL *StartLabel;
-  EFI_IFR_GUID_LABEL *EndLabel;
-  CHAR16             *DevicePathStr;
-  EFI_STRING_ID      DevicePathId;
-  EFI_IFR_FORM_SET   *Buffer;
-  UINTN              BufferSize;
-  UINT8              ClassGuidNum;
-  EFI_GUID           *ClassGuid;
-  UINTN              TempSize;
-  UINT8              *Ptr;
-  EFI_STATUS         Status;
+  UINTN               Index;
+  EFI_STRING          String;
+  EFI_STRING_ID       Token;
+  EFI_STRING_ID       TokenHelp;
+  EFI_HII_HANDLE      *HiiHandles;
+  EFI_HII_HANDLE      HiiHandle;
+  EFI_GUID            FormSetGuid;
+  VOID                *StartOpCodeHandle;
+  VOID                *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *StartLabel;
+  EFI_IFR_GUID_LABEL  *EndLabel;
+  CHAR16              *DevicePathStr;
+  EFI_STRING_ID       DevicePathId;
+  EFI_IFR_FORM_SET    *Buffer;
+  UINTN               BufferSize;
+  UINT8               ClassGuidNum;
+  EFI_GUID            *ClassGuid;
+  UINTN               TempSize;
+  UINT8               *Ptr;
+  EFI_STATUS          Status;
 
-  TempSize = 0;
+  TempSize   = 0;
   BufferSize = 0;
-  Buffer = NULL;
+  Buffer     = NULL;
 
   HiiHandle = gPlatformManagerPrivate.HiiHandle;
 
@@ -134,7 +136,7 @@ CreatePlatformManagerForm (
   //
   // According to the next show Form id(mNextShowFormId) to decide which form need to update.
   //
-  StartLabel->Number       = (UINT16)(LABEL_FORM_ID_OFFSET + NextShowFormId);
+  StartLabel->Number = (UINT16)(LABEL_FORM_ID_OFFSET + NextShowFormId);
 
   //
   // Create Hii Extend Label OpCode as the end opcode
@@ -159,14 +161,14 @@ CreatePlatformManagerForm (
   // Search for formset of each class type
   //
   for (Index = 0; HiiHandles[Index] != NULL; Index++) {
-    Status = HiiGetFormSetFromHiiHandle (HiiHandles[Index], &Buffer,&BufferSize);
+    Status = HiiGetFormSetFromHiiHandle (HiiHandles[Index], &Buffer, &BufferSize);
     if (EFI_ERROR (Status)) {
       continue;
     }
 
     Ptr = (UINT8 *)Buffer;
 
-    while(TempSize < BufferSize) {
+    while (TempSize < BufferSize) {
       TempSize += ((EFI_IFR_OP_HEADER *)Ptr)->Length;
       if (((EFI_IFR_OP_HEADER *)Ptr)->Length <= OFFSET_OF (EFI_IFR_FORM_SET, Flags)) {
         Ptr += ((EFI_IFR_OP_HEADER *)Ptr)->Length;
@@ -174,9 +176,9 @@ CreatePlatformManagerForm (
       }
 
       ClassGuidNum = (UINT8)(((EFI_IFR_FORM_SET *)Ptr)->Flags & 0x3);
-      ClassGuid = (EFI_GUID *)(VOID *)(Ptr + sizeof (EFI_IFR_FORM_SET));
+      ClassGuid    = (EFI_GUID *)(VOID *)(Ptr + sizeof (EFI_IFR_FORM_SET));
       while (ClassGuidNum-- > 0) {
-        if (CompareGuid (&gPlatformManagerFormsetGuid, ClassGuid)== 0) {
+        if (CompareGuid (&gPlatformManagerFormsetGuid, ClassGuid) == 0) {
           ClassGuid++;
           continue;
         }
@@ -186,6 +188,7 @@ CreatePlatformManagerForm (
           String = HiiGetString (HiiHandle, STRING_TOKEN (STR_MISSING_STRING), NULL);
           ASSERT (String != NULL);
         }
+
         Token = HiiSetString (HiiHandle, 0, String, NULL);
         FreePool (String);
 
@@ -194,6 +197,7 @@ CreatePlatformManagerForm (
           String = HiiGetString (HiiHandle, STRING_TOKEN (STR_MISSING_STRING), NULL);
           ASSERT (String != NULL);
         }
+
         TokenHelp = HiiSetString (HiiHandle, 0, String, NULL);
         FreePool (String);
 
@@ -219,6 +223,7 @@ CreatePlatformManagerForm (
             DevicePathId
             );
         }
+
         break;
       }
 
@@ -226,8 +231,8 @@ CreatePlatformManagerForm (
     }
 
     FreePool (Buffer);
-    Buffer = NULL;
-    TempSize = 0;
+    Buffer     = NULL;
+    TempSize   = 0;
     BufferSize = 0;
   }
 
@@ -257,20 +262,20 @@ CreatePlatformManagerForm (
 EFI_STATUS
 EFIAPI
 PlatformManagerUiLibConstructor (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS Status;
-  EFI_EVENT  PlatformUiEntryEvent;
+  EFI_STATUS  Status;
+  EFI_EVENT   PlatformUiEntryEvent;
 
   gPlatformManagerPrivate.DriverHandle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &gPlatformManagerPrivate.DriverHandle,
-                  &gEfiDevicePathProtocolGuid,
-                  &mPlatformManagerHiiVendorDevicePath,
-                  NULL
-                  );
+  Status                               = gBS->InstallMultipleProtocolInterfaces (
+                                                &gPlatformManagerPrivate.DriverHandle,
+                                                &gEfiDevicePathProtocolGuid,
+                                                &mPlatformManagerHiiVendorDevicePath,
+                                                NULL
+                                                );
   ASSERT_EFI_ERROR (Status);
 
   //
@@ -320,12 +325,12 @@ PlatformManagerUiLibConstructor (
 EFI_STATUS
 EFIAPI
 PlatformManagerUiLibDestructor (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS Status;
-  EFI_EVENT  PlatformUiExitEvent;
+  EFI_STATUS  Status;
+  EFI_EVENT   PlatformUiExitEvent;
 
   Status = gBS->UninstallMultipleProtocolInterfaces (
                   gPlatformManagerPrivate.DriverHandle,

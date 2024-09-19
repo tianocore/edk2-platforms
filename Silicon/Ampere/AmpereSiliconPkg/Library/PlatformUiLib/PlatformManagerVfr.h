@@ -17,12 +17,12 @@
 //
 // These are defined as the same with vfr file
 //
-#define LABEL_FORM_ID_OFFSET                 0x0100
-#define ENTRY_KEY_OFFSET                     0x4000
+#define LABEL_FORM_ID_OFFSET  0x0100
+#define ENTRY_KEY_OFFSET      0x4000
 
-#define PLATFORM_MANAGER_FORM_ID             0x1000
+#define PLATFORM_MANAGER_FORM_ID  0x1000
 
-#define LABEL_ENTRY_LIST                     0x1100
-#define LABEL_END                            0xffff
+#define LABEL_ENTRY_LIST  0x1100
+#define LABEL_END         0xffff
 
 #endif /* PLATFORM_MANAGER_VFR_H_ */

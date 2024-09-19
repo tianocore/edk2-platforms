@@ -24,8 +24,8 @@
   0xE8887242, 0x4EFF, 0x4323, { 0x81, 0xF4, 0xC9, 0x5F, 0xD5, 0x8D, 0x80, 0xD5 } \
   }
 
-extern EFI_GUID gPlatformManagerFormsetGuid;
-extern EFI_GUID gPlatformManagerEntryEventGuid;
-extern EFI_GUID gPlatformManagerExitEventGuid;
+extern EFI_GUID  gPlatformManagerFormsetGuid;
+extern EFI_GUID  gPlatformManagerEntryEventGuid;
+extern EFI_GUID  gPlatformManagerExitEventGuid;
 
 #endif

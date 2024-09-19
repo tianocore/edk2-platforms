@@ -28,24 +28,23 @@
 //
 // These are the VFR compiler generated data representing our VFR data.
 //
-extern UINT8 PlatformManagerVfrBin[];
-extern UINT8 PlatformManagerUiLibStrings[];
+extern UINT8  PlatformManagerVfrBin[];
+extern UINT8  PlatformManagerUiLibStrings[];
 
 ///
 /// HII specific Vendor Device Path definition.
 ///
 typedef struct {
-  VENDOR_DEVICE_PATH       VendorDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL End;
+  VENDOR_DEVICE_PATH          VendorDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL    End;
 } HII_VENDOR_DEVICE_PATH;
 
 typedef struct {
   ///
   /// Platform Manager HII relative handles
   ///
-  EFI_HII_HANDLE HiiHandle;
-  EFI_HANDLE     DriverHandle;
-
+  EFI_HII_HANDLE    HiiHandle;
+  EFI_HANDLE        DriverHandle;
 } PLATFORM_MANAGER_CALLBACK_DATA;
 
 #endif
