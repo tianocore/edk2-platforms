@@ -18,39 +18,39 @@
 //   Bit 23:16 - Message control byte
 //   Bit 15:0  - Message data specific
 //
-#define MAILBOX_MESSAGE_TYPE_SHIFT         28
-#define MAILBOX_MESSAGE_SUBTYPE_SHIFT      24
-#define MAILBOX_MESSAGE_CONTROL_BYTE_SHIFT 16
+#define MAILBOX_MESSAGE_TYPE_SHIFT          28
+#define MAILBOX_MESSAGE_SUBTYPE_SHIFT       24
+#define MAILBOX_MESSAGE_CONTROL_BYTE_SHIFT  16
 
-#define COMMON_MESSAGE_ENCODE(Type,Subtype,Control)             \
+#define COMMON_MESSAGE_ENCODE(Type, Subtype, Control)             \
           (                                                     \
             ((Type) << MAILBOX_MESSAGE_TYPE_SHIFT) |            \
             ((Subtype) << MAILBOX_MESSAGE_SUBTYPE_SHIFT) |      \
             ((Control) << MAILBOX_MESSAGE_CONTROL_BYTE_SHIFT)   \
           )
 
-#define MAILBOX_MESSAGE_CONTROL_URGENT    BIT7
-#define MAILBOX_MESSAGE_CONTROL_TYPICAL   0
+#define MAILBOX_MESSAGE_CONTROL_URGENT   BIT7
+#define MAILBOX_MESSAGE_CONTROL_TYPICAL  0
 
 //
 // Mailbox Message Types
 //
-#define MAILBOX_MESSAGE_TYPE_DEBUG        0x00
-#define MAILBOX_MESSAGE_TYPE_ADDRESS      0x05
-#define MAILBOX_MESSAGE_TYPE_USER         0x06
+#define MAILBOX_MESSAGE_TYPE_DEBUG    0x00
+#define MAILBOX_MESSAGE_TYPE_ADDRESS  0x05
+#define MAILBOX_MESSAGE_TYPE_USER     0x06
 
 //
 // Mailbox Message Type 0x00 - Debug message
 //
-#define MAILBOX_DEBUG_MESSAGE_SUBTYPE_REGISTER_READ  0x01
-#define MAILBOX_DEBUG_MESSAGE_SUBTYPE_REGISTER_WRITE 0x02
+#define MAILBOX_DEBUG_MESSAGE_SUBTYPE_REGISTER_READ   0x01
+#define MAILBOX_DEBUG_MESSAGE_SUBTYPE_REGISTER_WRITE  0x02
 
 //
 // Debug message data format
 //   Bit 31:16 - Refer to definition of COMMON_MESSAGE_ENCODE
 //   Bit 15:0  - Store lower 16-bit of the upper 64-bit address
 //
-#define MAILBOX_DEBUG_MESSAGE_ENCODE(Subtype,Address)       \
+#define MAILBOX_DEBUG_MESSAGE_ENCODE(Subtype, Address)       \
           (                                                 \
             (COMMON_MESSAGE_ENCODE (                        \
                MAILBOX_MESSAGE_TYPE_DEBUG,                  \
@@ -62,7 +62,7 @@
 //
 // Mailbox Message Type 0x05 - Address message
 //
-#define MAILBOX_ADDRESS_MESSAGE_SUBTYPE_PCC          0x03
+#define MAILBOX_ADDRESS_MESSAGE_SUBTYPE_PCC  0x03
 
 //
 // Address message data format
@@ -73,7 +73,7 @@
 //               0x0: No alignment
 //   Bit 3:0   - Unused
 //
-#define MAILBOX_ADDRESS_MESSAGE_ENCODE(Subtype,Param,Align) \
+#define MAILBOX_ADDRESS_MESSAGE_ENCODE(Subtype, Param, Align) \
           (                                                 \
             (COMMON_MESSAGE_ENCODE (                        \
                MAILBOX_MESSAGE_TYPE_ADDRESS,                \
@@ -83,7 +83,7 @@
             ((Align) << 4)                                  \
           )
 
-#define MAILBOX_ADDRESS_URGENT_MESSAGE_ENCODE(Subtype,Param,Align) \
+#define MAILBOX_ADDRESS_URGENT_MESSAGE_ENCODE(Subtype, Param, Align) \
           (                                                        \
             (COMMON_MESSAGE_ENCODE (                               \
                MAILBOX_MESSAGE_TYPE_ADDRESS,                       \
@@ -93,10 +93,10 @@
             ((Align) << 4)                                         \
           )
 
-#define MAILBOX_ADDRESS_256_ALIGNMENT      0x4
-#define MAILBOX_ADDRESS_NO_ALIGNMENT       0x0
+#define MAILBOX_ADDRESS_256_ALIGNMENT  0x4
+#define MAILBOX_ADDRESS_NO_ALIGNMENT   0x0
 
-#define MAILBOX_ADDRESS_MESSAGE_PARAM_CPPC 0x01
+#define MAILBOX_ADDRESS_MESSAGE_PARAM_CPPC  0x01
 
 #define MAILBOX_URGENT_CPPC_MESSAGE                 \
           (                                         \
@@ -117,9 +117,9 @@
 //
 // Mailbox Message Type 0x06 - User message
 //
-#define MAILBOX_USER_MESSAGE_SUBTYPE_SET_CONFIGURATION   0x02
-#define MAILBOX_USER_MESSAGE_SUBTYPE_BOOT_PROGRESS       0x06
-#define MAILBOX_USER_MESSAGE_SUBTYPE_TRNG_PROXY          0x07
+#define MAILBOX_USER_MESSAGE_SUBTYPE_SET_CONFIGURATION  0x02
+#define MAILBOX_USER_MESSAGE_SUBTYPE_BOOT_PROGRESS      0x06
+#define MAILBOX_USER_MESSAGE_SUBTYPE_TRNG_PROXY         0x07
 
 //
 // User message data format
@@ -127,7 +127,7 @@
 //   Bit 15:8  - Message Parameter 0
 //   Bit 7:0   - Message Parameter 1
 //
-#define MAILBOX_USER_MESSAGE_ENCODE(Subtype,Param0,Param1) \
+#define MAILBOX_USER_MESSAGE_ENCODE(Subtype, Param0, Param1) \
           (                                                \
             (COMMON_MESSAGE_ENCODE (                       \
                MAILBOX_MESSAGE_TYPE_USER,                  \
@@ -142,7 +142,7 @@
 //   Param0: 1 - Get a random number
 //   Param1: Unused
 //
-#define MAILBOX_TRNG_PROXY_GET_RANDOM_NUMBER 1
+#define MAILBOX_TRNG_PROXY_GET_RANDOM_NUMBER  1
 
 //
 // Parameters for Boot Progress
@@ -151,9 +151,9 @@
 //     0x08: BL33/UEFI Stage
 //     0x09: OS Stage
 //
-#define MAILBOX_BOOT_PROGRESS_COMMAND_SET 1
-#define MAILBOX_BOOT_PROGRESS_STAGE_UEFI  8
-#define MAILBOX_BOOT_PROGRESS_STAGE_OS    9
+#define MAILBOX_BOOT_PROGRESS_COMMAND_SET  1
+#define MAILBOX_BOOT_PROGRESS_STAGE_UEFI   8
+#define MAILBOX_BOOT_PROGRESS_STAGE_OS     9
 
 //
 // Parameters for Set Configuration
@@ -180,9 +180,9 @@
 EFI_STATUS
 EFIAPI
 MailboxMsgRegisterRead (
-  IN  UINT8  Socket,
-  IN  UINTN  Address,
-  OUT UINT32 *Value
+  IN  UINT8   Socket,
+  IN  UINTN   Address,
+  OUT UINT32  *Value
   );
 
 /**
@@ -202,9 +202,9 @@ MailboxMsgRegisterRead (
 EFI_STATUS
 EFIAPI
 MailboxMsgRegisterWrite (
-  IN UINT8  Socket,
-  IN UINTN  Address,
-  IN UINT32 Value
+  IN UINT8   Socket,
+  IN UINTN   Address,
+  IN UINT32  Value
   );
 
 /**
@@ -223,10 +223,10 @@ MailboxMsgRegisterWrite (
 EFI_STATUS
 EFIAPI
 MailboxMsgSetPccSharedMem (
-  IN UINT8     Socket,
-  IN UINT8     Doorbell,
-  IN BOOLEAN   AddressAlign256,
-  IN UINTN     Address
+  IN UINT8    Socket,
+  IN UINT8    Doorbell,
+  IN BOOLEAN  AddressAlign256,
+  IN UINTN    Address
   );
 
 /**
@@ -242,7 +242,7 @@ MailboxMsgSetPccSharedMem (
 EFI_STATUS
 EFIAPI
 MailboxMsgGetRandomNumber64 (
-  OUT UINT8 *Buffer
+  OUT UINT8  *Buffer
   );
 
 /**
@@ -279,7 +279,7 @@ MailboxMsgSetBootProgress (
 EFI_STATUS
 EFIAPI
 MailboxMsgDateConfig (
-  IN EFI_TIME   *Time
+  IN EFI_TIME  *Time
   );
 
 /**

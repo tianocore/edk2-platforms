@@ -37,8 +37,8 @@
 EFI_STATUS
 EFIAPI
 MmCommunicationCommunicate (
-  IN OUT VOID  *CommBuffer,
-  IN OUT UINTN *CommSize OPTIONAL
+  IN OUT VOID   *CommBuffer,
+  IN OUT UINTN  *CommSize OPTIONAL
   );
 
 #endif /* MM_COMMUNICATION_LIB_H_ */

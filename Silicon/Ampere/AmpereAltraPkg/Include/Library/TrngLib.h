@@ -24,8 +24,8 @@
 EFI_STATUS
 EFIAPI
 GenerateRandomNumbers (
-  OUT UINT8 *Buffer,
-  IN  UINTN BufferSize
+  OUT UINT8  *Buffer,
+  IN  UINTN  BufferSize
   );
 
 #endif /* TRNG_LIB_H_ */

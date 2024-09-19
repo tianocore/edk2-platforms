@@ -9,17 +9,17 @@
 #ifndef PCIE_HOT_PLUG_H_
 #define PCIE_HOT_PLUG_H_
 
-#define PCIE_HOT_PLUG_SPCI_CMD_ALERT_IRQ       1  // Alert IRQ
-#define PCIE_HOT_PLUG_SPCI_CMD_START           2  // Stat monitor event
-#define PCIE_HOT_PLUG_SPCI_CMD_CHG             3  // Indicate PCIE port change state explicitly
-#define PCIE_HOT_PLUG_SPCI_CMD_LED             4  // Control LED state
-#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_CLR    5  // Clear all port map
-#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_SET    6  // Set port map
-#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_LOCK   7  // Lock port map
-#define PCIE_HOT_PLUG_SPCI_CMD_GPIO_MAP        8  // Set GPIO reset map
+#define PCIE_HOT_PLUG_SPCI_CMD_ALERT_IRQ      1   // Alert IRQ
+#define PCIE_HOT_PLUG_SPCI_CMD_START          2   // Stat monitor event
+#define PCIE_HOT_PLUG_SPCI_CMD_CHG            3   // Indicate PCIE port change state explicitly
+#define PCIE_HOT_PLUG_SPCI_CMD_LED            4   // Control LED state
+#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_CLR   5   // Clear all port map
+#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_SET   6   // Set port map
+#define PCIE_HOT_PLUG_SPCI_CMD_PORT_MAP_LOCK  7   // Lock port map
+#define PCIE_HOT_PLUG_SPCI_CMD_GPIO_MAP       8   // Set GPIO reset map
 
-#define LED_FAULT      1  // LED_CMD: LED type - Fault
-#define LED_ATT        2  // LED_CMD: LED type - Attention
+#define LED_FAULT  1      // LED_CMD: LED type - Fault
+#define LED_ATT    2      // LED_CMD: LED type - Attention
 
 #define LED_SET_ON     1
 #define LED_SET_OFF    2
@@ -41,11 +41,11 @@
 #define SPCI_NOT_PRESENT        -7
 
 // Bit definitions inside the function id as per the SMC calling convention
-#define FUNCID_CC_SHIFT    30
-#define FUNCID_OEN_SHIFT   24
+#define FUNCID_CC_SHIFT   30
+#define FUNCID_OEN_SHIFT  24
 
-#define SMC_64         1
-#define SMC_32         0
+#define SMC_64  1
+#define SMC_32  0
 
 // Definitions to build the complete SMC ID
 #define SPCI_FID_MISC_FLAG   (0 << 27)
@@ -69,10 +69,10 @@
                                  SPCI_SMC ((tun_fid) << SPCI_FID_TUN_SHIFT))
 
 // SPCI miscellaneous functions
-#define SPCI_FID_SERVICE_HANDLE_OPEN         0x2
-#define SPCI_FID_SERVICE_HANDLE_CLOSE        0x3
-#define SPCI_FID_SERVICE_REQUEST_BLOCKING    0x7
-#define SPCI_FID_SERVICE_REQUEST_START       0x8
+#define SPCI_FID_SERVICE_HANDLE_OPEN       0x2
+#define SPCI_FID_SERVICE_HANDLE_CLOSE      0x3
+#define SPCI_FID_SERVICE_REQUEST_BLOCKING  0x7
+#define SPCI_FID_SERVICE_REQUEST_START     0x8
 
 // SPCI tunneling functions
 #define SPCI_FID_SERVICE_TUN_REQUEST_BLOCKING  0x2

@@ -32,14 +32,14 @@
 
 #include "RootComplexConfigDxe.h"
 
-BOOLEAN    mReadOnlyStrongOrdering;
-CHAR16     mPcieNvparamVarstoreName[] = NVPARAM_VARSTORE_NAME;
-CHAR16     gPcieVarstoreName[]        = ROOT_COMPLEX_CONFIG_VARSTORE_NAME;
-EFI_GUID   gPcieFormSetGuid           = ROOT_COMPLEX_CONFIG_FORMSET_GUID;
+BOOLEAN   mReadOnlyStrongOrdering;
+CHAR16    mPcieNvparamVarstoreName[] = NVPARAM_VARSTORE_NAME;
+CHAR16    gPcieVarstoreName[]        = ROOT_COMPLEX_CONFIG_VARSTORE_NAME;
+EFI_GUID  gPcieFormSetGuid           = ROOT_COMPLEX_CONFIG_FORMSET_GUID;
 
-SCREEN_PRIVATE_DATA *mPrivateData  = NULL;
+SCREEN_PRIVATE_DATA  *mPrivateData = NULL;
 
-HII_VENDOR_DEVICE_PATH mHiiVendorDevicePath = {
+HII_VENDOR_DEVICE_PATH  mHiiVendorDevicePath = {
   {
     {
       HARDWARE_DEVICE_PATH,
@@ -63,10 +63,10 @@ HII_VENDOR_DEVICE_PATH mHiiVendorDevicePath = {
 
 BOOLEAN
 IsEmptyRC (
-  IN AC01_ROOT_COMPLEX *RootComplex
+  IN AC01_ROOT_COMPLEX  *RootComplex
   )
 {
-  UINT8 Idx;
+  UINT8  Idx;
 
   for (Idx = PcieController0; Idx < MaxPcieController; Idx++) {
     if (RootComplex->Pcie[Idx].Active) {
@@ -79,11 +79,11 @@ IsEmptyRC (
 
 AC01_ROOT_COMPLEX *
 GetRootComplex (
-  UINT8 Index
+  UINT8  Index
   )
 {
-  AC01_ROOT_COMPLEX   *RootComplexList;
-  VOID                *Hob;
+  AC01_ROOT_COMPLEX  *RootComplexList;
+  VOID               *Hob;
 
   Hob = GetFirstGuidHob (&gRootComplexInfoHobGuid);
   if (Hob == NULL) {
@@ -121,24 +121,24 @@ GetRootComplex (
 EFI_STATUS
 EFIAPI
 ExtractConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Request,
-  OUT      EFI_STRING                     *Progress,
-  OUT      EFI_STRING                     *Results
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Request,
+  OUT      EFI_STRING                      *Progress,
+  OUT      EFI_STRING                      *Results
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  SCREEN_PRIVATE_DATA             *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  EFI_STRING                      ConfigRequest;
-  UINTN                           Size;
-  CHAR16                          *StrPointer;
-  BOOLEAN                         AllocatedRequest;
-  UINT8                           *VarStoreConfig;
-  UINT32                          Value;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  SCREEN_PRIVATE_DATA              *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
+  EFI_STRING                       ConfigRequest;
+  UINTN                            Size;
+  CHAR16                           *StrPointer;
+  BOOLEAN                          AllocatedRequest;
+  UINT8                            *VarStoreConfig;
+  UINT32                           Value;
 
-  if (Progress == NULL || Results == NULL) {
+  if ((Progress == NULL) || (Results == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -149,12 +149,12 @@ ExtractConfig (
   //
   // Initialize the local variables.
   //
-  ConfigRequest     = NULL;
-  Size              = 0;
-  *Progress         = Request;
-  AllocatedRequest  = FALSE;
+  ConfigRequest    = NULL;
+  Size             = 0;
+  *Progress        = Request;
+  AllocatedRequest = FALSE;
 
-  PrivateData = SCREEN_PRIVATE_FROM_THIS (This);
+  PrivateData      = SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
 
   //
@@ -186,7 +186,6 @@ ExtractConfig (
     }
 
     BufferSize = sizeof (NVPARAM_ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
-
   } else if (HiiIsConfigHdrMatch (Request, &gPcieFormSetGuid, gPcieVarstoreName)) {
     VarStoreConfig = (UINT8 *)&PrivateData->VarStoreConfig;
     ASSERT (VarStoreConfig != NULL);
@@ -196,17 +195,16 @@ ExtractConfig (
     // Try to get the current setting from variable.
     //
     BufferSize = sizeof (ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
-    Status = gRT->GetVariable (
-                    gPcieVarstoreName,
-                    &gPcieFormSetGuid,
-                    NULL,
-                    &BufferSize,
-                    VarStoreConfig
-                    );
+    Status     = gRT->GetVariable (
+                        gPcieVarstoreName,
+                        &gPcieFormSetGuid,
+                        NULL,
+                        &BufferSize,
+                        VarStoreConfig
+                        );
     if (EFI_ERROR (Status)) {
       return EFI_NOT_FOUND;
     }
-
   } else {
     return EFI_NOT_FOUND;
   }
@@ -227,12 +225,13 @@ ExtractConfig (
     if (StrPointer == NULL) {
       return EFI_INVALID_PARAMETER;
     }
+
     if (StrStr (StrPointer, L"&") == NULL) {
       //
       // Allocate and fill a buffer large enough to hold the <ConfigHdr> template
       // followed by "&OFFSET=0&WIDTH=WWWWWWWWWWWWWWWW" followed by a Null-terminator
       //
-      Size = (StrLen (Request) + 32 + 1) * sizeof (CHAR16);
+      Size          = (StrLen (Request) + 32 + 1) * sizeof (CHAR16);
       ConfigRequest = AllocateZeroPool (Size);
       ASSERT (ConfigRequest != NULL);
       AllocatedRequest = TRUE;
@@ -296,33 +295,34 @@ ExtractConfig (
 EFI_STATUS
 EFIAPI
 RouteConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Configuration,
-  OUT      EFI_STRING                     *Progress
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Configuration,
+  OUT      EFI_STRING                      *Progress
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  SCREEN_PRIVATE_DATA             *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  UINT8                           *VarStoreConfig;
-  UINT32                          Value;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  SCREEN_PRIVATE_DATA              *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
+  UINT8                            *VarStoreConfig;
+  UINT32                           Value;
 
-  if (Configuration == NULL || Progress == NULL) {
+  if ((Configuration == NULL) || (Progress == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
-  PrivateData = SCREEN_PRIVATE_FROM_THIS (This);
+  PrivateData      = SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
-  *Progress = Configuration;
+  *Progress        = Configuration;
 
   if (HiiIsConfigHdrMatch (Configuration, &gPcieFormSetGuid, mPcieNvparamVarstoreName)) {
     VarStoreConfig = (UINT8 *)&PrivateData->NVParamVarStoreConfig;
-    BufferSize = sizeof (NVPARAM_ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
+    BufferSize     = sizeof (NVPARAM_ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
   } else if (HiiIsConfigHdrMatch (Configuration, &gPcieFormSetGuid, gPcieVarstoreName)) {
-    BufferSize = sizeof (ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
+    BufferSize     = sizeof (ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
     VarStoreConfig = (UINT8 *)&PrivateData->VarStoreConfig;
   }
+
   ASSERT (VarStoreConfig != NULL);
 
   //
@@ -420,16 +420,16 @@ RouteConfig (
 EFI_STATUS
 EFIAPI
 DriverCallback (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN       EFI_BROWSER_ACTION             Action,
-  IN       EFI_QUESTION_ID                QuestionId,
-  IN       UINT8                          Type,
-  IN       EFI_IFR_TYPE_VALUE             *Value,
-  OUT      EFI_BROWSER_ACTION_REQUEST     *ActionRequest
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN       EFI_BROWSER_ACTION              Action,
+  IN       EFI_QUESTION_ID                 QuestionId,
+  IN       UINT8                           Type,
+  IN       EFI_IFR_TYPE_VALUE              *Value,
+  OUT      EFI_BROWSER_ACTION_REQUEST      *ActionRequest
   )
 {
-  SCREEN_PRIVATE_DATA      *PrivateData;
-  EFI_STATUS               Status;
+  SCREEN_PRIVATE_DATA  *PrivateData;
+  EFI_STATUS           Status;
 
   if (((Value == NULL) &&
        (Action != EFI_BROWSER_ACTION_FORM_OPEN) &&
@@ -444,53 +444,54 @@ DriverCallback (
   Status = EFI_SUCCESS;
 
   switch (Action) {
-  case EFI_BROWSER_ACTION_FORM_OPEN:
-    break;
-
-  case EFI_BROWSER_ACTION_FORM_CLOSE:
-    break;
-
-  case EFI_BROWSER_ACTION_DEFAULT_STANDARD:
-  case EFI_BROWSER_ACTION_DEFAULT_MANUFACTURING:
-    if (QuestionId == SMMU_PMU_ID) {
-      //
-      // SMMU PMU
-      //
-      Value->u32 = 0;
-      break;
-    }
-
-    if (QuestionId == STRONG_ORDERING_ID) {
-      //
-      // Strong Ordering
-      //
-      Value->u8 = STRONG_ORDERING_DEFAULT_OPTION_VALUE;
-      break;
-    }
-
-    switch ((QuestionId - 0x8002) % MAX_EDITABLE_ELEMENTS) {
-    case 0:
-      Value->u8 = PcieRCActiveDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+    case EFI_BROWSER_ACTION_FORM_OPEN:
       break;
 
-    case 1:
-      Value->u8 = PcieRCDevMapLowDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+    case EFI_BROWSER_ACTION_FORM_CLOSE:
       break;
 
-    case 2:
-      Value->u8 = PcieRCDevMapHighDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+    case EFI_BROWSER_ACTION_DEFAULT_STANDARD:
+    case EFI_BROWSER_ACTION_DEFAULT_MANUFACTURING:
+      if (QuestionId == SMMU_PMU_ID) {
+        //
+        // SMMU PMU
+        //
+        Value->u32 = 0;
+        break;
+      }
+
+      if (QuestionId == STRONG_ORDERING_ID) {
+        //
+        // Strong Ordering
+        //
+        Value->u8 = STRONG_ORDERING_DEFAULT_OPTION_VALUE;
+        break;
+      }
+
+      switch ((QuestionId - 0x8002) % MAX_EDITABLE_ELEMENTS) {
+        case 0:
+          Value->u8 = PcieRCActiveDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+          break;
+
+        case 1:
+          Value->u8 = PcieRCDevMapLowDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+          break;
+
+        case 2:
+          Value->u8 = PcieRCDevMapHighDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+          break;
+      }
+
       break;
-    }
-    break;
 
-  case EFI_BROWSER_ACTION_RETRIEVE:
-  case EFI_BROWSER_ACTION_CHANGING:
-  case EFI_BROWSER_ACTION_SUBMITTED:
-    break;
+    case EFI_BROWSER_ACTION_RETRIEVE:
+    case EFI_BROWSER_ACTION_CHANGING:
+    case EFI_BROWSER_ACTION_SUBMITTED:
+      break;
 
-  default:
-    Status = EFI_UNSUPPORTED;
-    break;
+    default:
+      Status = EFI_UNSUPPORTED;
+      break;
   }
 
   return Status;
@@ -506,11 +507,11 @@ DriverCallback (
 **/
 UINT8
 PcieRCDevMapLowDefaultSetting (
-  IN UINTN                    RCIndex,
-  IN SCREEN_PRIVATE_DATA      *PrivateData
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
   )
 {
-  AC01_ROOT_COMPLEX *RootComplex = GetRootComplex (RCIndex);
+  AC01_ROOT_COMPLEX  *RootComplex = GetRootComplex (RCIndex);
 
   return RootComplex->DefaultDevMapLow;
 }
@@ -525,29 +526,29 @@ PcieRCDevMapLowDefaultSetting (
 **/
 UINT8
 PcieRCDevMapHighDefaultSetting (
-  IN UINTN                    RCIndex,
-  IN SCREEN_PRIVATE_DATA      *PrivateData
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
   )
 {
-  AC01_ROOT_COMPLEX *RootComplex = GetRootComplex (RCIndex);
+  AC01_ROOT_COMPLEX  *RootComplex = GetRootComplex (RCIndex);
 
   return RootComplex->DefaultDevMapHigh;
 }
 
 BOOLEAN
 PcieRCActiveDefaultSetting (
-  IN UINTN                    RCIndex,
-  IN SCREEN_PRIVATE_DATA      *PrivateData
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
   )
 {
-  AC01_ROOT_COMPLEX *RootComplex = GetRootComplex (RCIndex);
+  AC01_ROOT_COMPLEX  *RootComplex = GetRootComplex (RCIndex);
 
   return RootComplex->DefaultActive;
 }
 
 VOID *
 CreateDevMapOptions (
-  AC01_ROOT_COMPLEX *RootComplex
+  AC01_ROOT_COMPLEX  *RootComplex
   )
 {
   EFI_STRING_ID  StringId;
@@ -557,8 +558,8 @@ CreateDevMapOptions (
   ASSERT (OptionsOpCodeHandle != NULL);
 
   StringId = RootComplex->Type == RootComplexTypeA ?
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE0) :
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE4);
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE0) :
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE4);
   HiiCreateOneOfOptionOpCode (
     OptionsOpCodeHandle,
     StringId,
@@ -568,8 +569,8 @@ CreateDevMapOptions (
     );
 
   StringId = RootComplex->Type == RootComplexTypeA ?
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE1) :
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE5);
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE1) :
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE5);
   HiiCreateOneOfOptionOpCode (
     OptionsOpCodeHandle,
     StringId,
@@ -579,8 +580,8 @@ CreateDevMapOptions (
     );
 
   StringId = RootComplex->Type == RootComplexTypeA ?
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE2) :
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE6);
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE2) :
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE6);
   HiiCreateOneOfOptionOpCode (
     OptionsOpCodeHandle,
     StringId,
@@ -590,8 +591,8 @@ CreateDevMapOptions (
     );
 
   StringId = RootComplex->Type == RootComplexTypeA ?
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE3) :
-                STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE7);
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE3) :
+             STRING_TOKEN (STR_PCIE_BIFUR_SELECT_VALUE7);
   HiiCreateOneOfOptionOpCode (
     OptionsOpCodeHandle,
     StringId,
@@ -622,21 +623,21 @@ CreateDevMapOptions (
 **/
 EFI_STATUS
 PcieRCScreenSetup (
-  IN UINTN                    RCIndex,
-  IN SCREEN_PRIVATE_DATA      *PrivateData
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
   )
 {
-  AC01_ROOT_COMPLEX  *RootComplex;
-  CHAR16             Str[MAX_STRING_SIZE];
-  EFI_IFR_GUID_LABEL *EndLabel;
-  EFI_IFR_GUID_LABEL *StartLabel;
-  UINT16             BifurHiVarOffset;
-  UINT16             BifurLoVarOffset;
-  UINT16             DisabledStatusVarOffset;
-  UINT8              QuestionFlags, QuestionFlagsSubItem;
-  VOID               *EndOpCodeHandle;
-  VOID               *OptionsOpCodeHandle;
-  VOID               *StartOpCodeHandle;
+  AC01_ROOT_COMPLEX   *RootComplex;
+  CHAR16              Str[MAX_STRING_SIZE];
+  EFI_IFR_GUID_LABEL  *EndLabel;
+  EFI_IFR_GUID_LABEL  *StartLabel;
+  UINT16              BifurHiVarOffset;
+  UINT16              BifurLoVarOffset;
+  UINT16              DisabledStatusVarOffset;
+  UINT8               QuestionFlags, QuestionFlagsSubItem;
+  VOID                *EndOpCodeHandle;
+  VOID                *OptionsOpCodeHandle;
+  VOID                *StartOpCodeHandle;
 
   RootComplex = GetRootComplex (RCIndex);
 
@@ -695,12 +696,12 @@ PcieRCScreenSetup (
   UnicodeSPrint (Str, sizeof (Str), L"Root Complex #%2d", RCIndex);
 
   DisabledStatusVarOffset = (UINT16)RC0_STATUS_OFFSET + sizeof (BOOLEAN) * RCIndex;
-  BifurLoVarOffset = (UINT16)RC0_BIFUR_LO_OFFSET + sizeof (UINT8) * RCIndex;
-  BifurHiVarOffset = (UINT16)RC0_BIFUR_HI_OFFSET + sizeof (UINT8) * RCIndex;
+  BifurLoVarOffset        = (UINT16)RC0_BIFUR_LO_OFFSET + sizeof (UINT8) * RCIndex;
+  BifurHiVarOffset        = (UINT16)RC0_BIFUR_HI_OFFSET + sizeof (UINT8) * RCIndex;
 
   QuestionFlags = EFI_IFR_FLAG_RESET_REQUIRED | EFI_IFR_FLAG_CALLBACK;
-  if (IsEmptyRC (RootComplex)
-      || (GetNumberOfActiveSockets () == 1 && RootComplex->Socket == 1))
+  if (  IsEmptyRC (RootComplex)
+     || ((GetNumberOfActiveSockets () == 1) && (RootComplex->Socket == 1)))
   {
     //
     // Do not allow changing if none of Root Port underneath enabled
@@ -733,8 +734,9 @@ PcieRCScreenSetup (
     //
     OptionsOpCodeHandle = CreateDevMapOptions (RootComplex);
 
-    if ((RootComplex->DefaultDevMapLow != 0)
-        && (RootComplex->DefaultDevMapLow != DevMapModeAuto)) {
+    if (  (RootComplex->DefaultDevMapLow != 0)
+       && (RootComplex->DefaultDevMapLow != DevMapModeAuto))
+    {
       QuestionFlags |= EFI_IFR_FLAG_READ_ONLY;
     }
 
@@ -793,7 +795,7 @@ PcieRCScreenSetup (
       STRING_TOKEN (STR_PCIE_RCB_HI_BIFUR_HELP), // Question help text
       QuestionFlagsSubItem,                      // Question flag
       EFI_IFR_NUMERIC_SIZE_1,                    // Data type of Question Value
-      OptionsOpCodeHandle,                     // Option Opcode list
+      OptionsOpCodeHandle,                       // Option Opcode list
       NULL                                       // Default Opcode is NULl
       );
   }
@@ -821,18 +823,18 @@ PcieRCScreenSetup (
 **/
 EFI_STATUS
 PcieMainScreenSetup (
-  IN SCREEN_PRIVATE_DATA *PrivateData
+  IN SCREEN_PRIVATE_DATA  *PrivateData
   )
 {
-  VOID                 *StartOpCodeHandle;
-  EFI_IFR_GUID_LABEL   *StartLabel;
-  VOID                 *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL   *EndLabel;
-  CHAR16               Str[MAX_STRING_SIZE];
-  UINTN                RootComplex;
-  SETUP_GOTO_DATA      *GotoItem = NULL;
-  EFI_QUESTION_ID      GotoId;
-  UINT8                QuestionFlags;
+  VOID                *StartOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *StartLabel;
+  VOID                *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *EndLabel;
+  CHAR16              Str[MAX_STRING_SIZE];
+  UINTN               RootComplex;
+  SETUP_GOTO_DATA     *GotoItem = NULL;
+  EFI_QUESTION_ID     GotoId;
+  UINT8               QuestionFlags;
 
   // Initialize the container for dynamic opcodes
   StartOpCodeHandle = HiiAllocateOpCodeHandle ();
@@ -902,11 +904,11 @@ PcieMainScreenSetup (
 
   // Create Goto form for each RootComplex
   for (RootComplex = 0; RootComplex < AC01_PCIE_MAX_ROOT_COMPLEX; RootComplex++) {
-
     GotoItem = AllocateZeroPool (sizeof (SETUP_GOTO_DATA));
     if (GotoItem == NULL) {
       return EFI_OUT_OF_RESOURCES;
     }
+
     GotoItem->PciDevIdx = RootComplex;
 
     GotoId = GOTO_ID_BASE + (UINT16)RootComplex;
@@ -920,7 +922,7 @@ PcieMainScreenSetup (
                                NULL
                                );
     GotoItem->GotoHelpStringId = STRING_TOKEN (STR_PCIE_GOTO_HELP);
-    GotoItem->ShowItem = TRUE;
+    GotoItem->ShowItem         = TRUE;
 
     // Add goto control
     HiiCreateGotoOpCode (
@@ -952,22 +954,22 @@ NVParamVarstoreInit (
   VOID
   )
 {
-  BOOLEAN    BoardSettingValid;
-  BOOLEAN    UserSettingValid;
-  BOOLEAN    Update;
-  EFI_STATUS Status;
-  UINT32     UserValue;
-  UINT32     InitValue;
+  BOOLEAN     BoardSettingValid;
+  BOOLEAN     UserSettingValid;
+  BOOLEAN     Update;
+  EFI_STATUS  Status;
+  UINT32      UserValue;
+  UINT32      InitValue;
 
   mReadOnlyStrongOrdering = FALSE;
 
   // S0
   UserSettingValid = FALSE;
-  Status = NVParamGet (
-             NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &UserValue
-             );
+  Status           = NVParamGet (
+                       NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
+                       NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                       &UserValue
+                       );
   if (!EFI_ERROR (Status)) {
     UserSettingValid = TRUE;
   }
@@ -976,21 +978,22 @@ NVParamVarstoreInit (
   // InitValue will be default value or board setting value.
   //
   BoardSettingValid = FALSE;
-  Status = NVParamGet (
-             NV_SI_RO_BOARD_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &InitValue
-             );
-  if (!EFI_ERROR (Status) && InitValue > 0) {
-    BoardSettingValid = TRUE;
+  Status            = NVParamGet (
+                        NV_SI_RO_BOARD_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
+                        NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                        &InitValue
+                        );
+  if (!EFI_ERROR (Status) && (InitValue > 0)) {
+    BoardSettingValid       = TRUE;
     mReadOnlyStrongOrdering = TRUE;
   } else {
     InitValue = STRONG_ORDERING_DEFAULT_NVPARAM_VALUE;
   }
 
   Update = TRUE;
-  if ((UserSettingValid && (UserValue == InitValue))
-      || (!BoardSettingValid && UserSettingValid && (UserValue == 0))) {
+  if (  (UserSettingValid && (UserValue == InitValue))
+     || (!BoardSettingValid && UserSettingValid && (UserValue == 0)))
+  {
     Update = FALSE;
   }
 
@@ -1008,11 +1011,11 @@ NVParamVarstoreInit (
   // No need to check slave present.
   //
   UserSettingValid = FALSE;
-  Status = NVParamGet (
-             NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &UserValue
-             );
+  Status           = NVParamGet (
+                       NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
+                       NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                       &UserValue
+                       );
   if (!EFI_ERROR (Status)) {
     UserSettingValid = TRUE;
   }
@@ -1021,21 +1024,22 @@ NVParamVarstoreInit (
   // InitValue will be default value or board setting value.
   //
   BoardSettingValid = FALSE;
-  Status = NVParamGet (
-             NV_SI_RO_BOARD_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &InitValue
-             );
-  if (!EFI_ERROR (Status) && InitValue > 0) {
-    BoardSettingValid = TRUE;
+  Status            = NVParamGet (
+                        NV_SI_RO_BOARD_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
+                        NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                        &InitValue
+                        );
+  if (!EFI_ERROR (Status) && (InitValue > 0)) {
+    BoardSettingValid       = TRUE;
     mReadOnlyStrongOrdering = TRUE;
   } else {
     InitValue = STRONG_ORDERING_DEFAULT_NVPARAM_VALUE;
   }
 
   Update = TRUE;
-  if ((UserSettingValid && (UserValue == InitValue))
-      || (!BoardSettingValid && UserSettingValid && (UserValue == 0))) {
+  if (  (UserSettingValid && (UserValue == InitValue))
+     || (!BoardSettingValid && UserSettingValid && (UserValue == 0)))
+  {
     Update = FALSE;
   }
 
@@ -1064,18 +1068,18 @@ RootComplexDriverEntry (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  AC01_ROOT_COMPLEX                   *RootComplex;
-  BOOLEAN                             IsUpdated;
-  EFI_CONFIG_KEYWORD_HANDLER_PROTOCOL *HiiKeywordHandler;
-  EFI_HANDLE                          DriverHandle;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL     *HiiConfigRouting;
-  EFI_HII_DATABASE_PROTOCOL           *HiiDatabase;
-  EFI_HII_HANDLE                      HiiHandle;
-  EFI_HII_STRING_PROTOCOL             *HiiString;
-  EFI_STATUS                          Status;
-  ROOT_COMPLEX_CONFIG_VARSTORE_DATA   *VarStoreConfig;
-  UINT8                               RCIndex;
-  UINTN                               BufferSize;
+  AC01_ROOT_COMPLEX                    *RootComplex;
+  BOOLEAN                              IsUpdated;
+  EFI_CONFIG_KEYWORD_HANDLER_PROTOCOL  *HiiKeywordHandler;
+  EFI_HANDLE                           DriverHandle;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL      *HiiConfigRouting;
+  EFI_HII_DATABASE_PROTOCOL            *HiiDatabase;
+  EFI_HII_HANDLE                       HiiHandle;
+  EFI_HII_STRING_PROTOCOL              *HiiString;
+  EFI_STATUS                           Status;
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA    *VarStoreConfig;
+  UINT8                                RCIndex;
+  UINTN                                BufferSize;
 
   //
   // Initialize driver private data
@@ -1085,10 +1089,10 @@ RootComplexDriverEntry (
     return EFI_OUT_OF_RESOURCES;
   }
 
-  mPrivateData->Signature = SCREEN_PRIVATE_DATA_SIGNATURE;
+  mPrivateData->Signature                  = SCREEN_PRIVATE_DATA_SIGNATURE;
   mPrivateData->ConfigAccess.ExtractConfig = ExtractConfig;
-  mPrivateData->ConfigAccess.RouteConfig = RouteConfig;
-  mPrivateData->ConfigAccess.Callback = DriverCallback;
+  mPrivateData->ConfigAccess.RouteConfig   = RouteConfig;
+  mPrivateData->ConfigAccess.Callback      = DriverCallback;
 
   //
   // Locate Hii Database protocol
@@ -1101,6 +1105,7 @@ RootComplexDriverEntry (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiDatabase = HiiDatabase;
 
   //
@@ -1114,6 +1119,7 @@ RootComplexDriverEntry (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiString = HiiString;
 
   //
@@ -1127,6 +1133,7 @@ RootComplexDriverEntry (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiConfigRouting = HiiConfigRouting;
 
   //
@@ -1140,17 +1147,18 @@ RootComplexDriverEntry (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiKeywordHandler = HiiKeywordHandler;
 
   DriverHandle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &DriverHandle,
-                  &gEfiDevicePathProtocolGuid,
-                  &mHiiVendorDevicePath,
-                  &gEfiHiiConfigAccessProtocolGuid,
-                  &mPrivateData->ConfigAccess,
-                  NULL
-                  );
+  Status       = gBS->InstallMultipleProtocolInterfaces (
+                        &DriverHandle,
+                        &gEfiDevicePathProtocolGuid,
+                        &mHiiVendorDevicePath,
+                        &gEfiHiiConfigAccessProtocolGuid,
+                        &mPrivateData->ConfigAccess,
+                        NULL
+                        );
   ASSERT_EFI_ERROR (Status);
 
   mPrivateData->DriverHandle = DriverHandle;
@@ -1184,29 +1192,30 @@ RootComplexDriverEntry (
 
   // Get Buffer Storage data from EFI variable
   BufferSize = sizeof (ROOT_COMPLEX_CONFIG_VARSTORE_DATA);
-  Status = gRT->GetVariable (
-                  gPcieVarstoreName,
-                  &gPcieFormSetGuid,
-                  NULL,
-                  &BufferSize,
-                  VarStoreConfig
-                  );
+  Status     = gRT->GetVariable (
+                      gPcieVarstoreName,
+                      &gPcieFormSetGuid,
+                      NULL,
+                      &BufferSize,
+                      VarStoreConfig
+                      );
 
   IsUpdated = FALSE;
 
   if (EFI_ERROR (Status)) {
     VarStoreConfig->SmmuPmu = 0; /* Disable by default */
-    IsUpdated = TRUE;
+    IsUpdated               = TRUE;
   }
+
   // Update board settings to menu
   for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
     RootComplex = GetRootComplex (RCIndex);
 
     if (EFI_ERROR (Status)) {
-      VarStoreConfig->RCBifurcationLow[RCIndex] = RootComplex->DefaultDevMapLow;
+      VarStoreConfig->RCBifurcationLow[RCIndex]  = RootComplex->DefaultDevMapLow;
       VarStoreConfig->RCBifurcationHigh[RCIndex] = RootComplex->DefaultDevMapHigh;
-      VarStoreConfig->RCStatus[RCIndex] = RootComplex->Active;
-      IsUpdated = TRUE;
+      VarStoreConfig->RCStatus[RCIndex]          = RootComplex->Active;
+      IsUpdated                                  = TRUE;
     }
   }
 
@@ -1225,6 +1234,7 @@ RootComplexDriverEntry (
       return Status;
     }
   }
+
   Status = PcieMainScreenSetup (mPrivateData);
   ASSERT_EFI_ERROR (Status);
 

@@ -28,7 +28,7 @@ typedef enum  {
   BootProgressStateMax
 } BOOT_PROGRESS_STATE;
 
-UINT32 PeiProgressStatusCode[] = {
+UINT32  PeiProgressStatusCode[] = {
   // Regular boot
   (EFI_SOFTWARE_PEI_CORE | EFI_SW_PEI_CORE_PC_ENTRY_POINT),         // PEI Core is started
   (EFI_COMPUTING_UNIT_HOST_PROCESSOR | EFI_CU_HP_PC_POWER_ON_INIT), // Pre-memory CPU initialization is started
@@ -54,7 +54,7 @@ UINT32 PeiProgressStatusCode[] = {
   0                                                         // Must end with 0
 };
 
-UINT32 PeiErrorStatusCode[] = {
+UINT32  PeiErrorStatusCode[] = {
   // Regular boot
   (EFI_COMPUTING_UNIT_MEMORY | EFI_CU_MEMORY_EC_INVALID_TYPE),       // Memory initialization error. Invalid memory type
   (EFI_COMPUTING_UNIT_MEMORY | EFI_CU_MEMORY_EC_INVALID_SPEED),      // Memory initialization error. Incompatible memory speed
@@ -86,21 +86,22 @@ UINT32 PeiErrorStatusCode[] = {
 };
 
 // Should always be BootStart when start
-STATIC UINT8 mBootstate = BootStart;
+STATIC UINT8  mBootstate = BootStart;
 
 STATIC
 BOOLEAN
 StatusCodeFilter (
-  UINT32                *Map,
-  EFI_STATUS_CODE_VALUE Value
+  UINT32                 *Map,
+  EFI_STATUS_CODE_VALUE  Value
   )
 {
-  UINTN Index = 0;
+  UINTN  Index = 0;
 
   while (Map[Index] != 0) {
     if (Map[Index] == Value) {
       return TRUE;
     }
+
     Index++;
   }
 
@@ -130,16 +131,16 @@ StatusCodeFilter (
 EFI_STATUS
 EFIAPI
 BootProgressListenerPei (
-  IN       CONST EFI_PEI_SERVICES **PeiServices,
-  IN       EFI_STATUS_CODE_TYPE   CodeType,
-  IN       EFI_STATUS_CODE_VALUE  Value,
-  IN       UINT32                 Instance,
-  IN CONST EFI_GUID               *CallerId,
-  IN CONST EFI_STATUS_CODE_DATA   *Data
+  IN       CONST EFI_PEI_SERVICES  **PeiServices,
+  IN       EFI_STATUS_CODE_TYPE    CodeType,
+  IN       EFI_STATUS_CODE_VALUE   Value,
+  IN       UINT32                  Instance,
+  IN CONST EFI_GUID                *CallerId,
+  IN CONST EFI_STATUS_CODE_DATA    *Data
   )
 {
-  BOOLEAN IsProgress = FALSE;
-  BOOLEAN IsError = FALSE;
+  BOOLEAN  IsProgress = FALSE;
+  BOOLEAN  IsError    = FALSE;
 
   if ((CodeType & EFI_STATUS_CODE_TYPE_MASK) == EFI_PROGRESS_CODE) {
     IsProgress = StatusCodeFilter (PeiProgressStatusCode, Value);
@@ -187,12 +188,12 @@ BootProgressListenerPei (
 EFI_STATUS
 EFIAPI
 BootProgressPeiEntryPoint (
-  IN       EFI_PEI_FILE_HANDLE FileHandle,
-  IN CONST EFI_PEI_SERVICES    **PeiServices
+  IN       EFI_PEI_FILE_HANDLE  FileHandle,
+  IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  EFI_STATUS              Status;
-  EFI_PEI_RSC_HANDLER_PPI *RscHandler;
+  EFI_STATUS               Status;
+  EFI_PEI_RSC_HANDLER_PPI  *RscHandler;
 
   Status = PeiServicesLocatePpi (
              &gEfiPeiRscHandlerPpiGuid,
@@ -205,6 +206,7 @@ BootProgressPeiEntryPoint (
   if (!EFI_ERROR (Status)) {
     Status = RscHandler->Register (BootProgressListenerPei);
   }
+
   ASSERT_EFI_ERROR (Status);
 
   return EFI_SUCCESS;

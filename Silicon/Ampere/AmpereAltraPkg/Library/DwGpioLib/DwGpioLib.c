@@ -19,32 +19,32 @@
 #include <Platform/Ac01.h>
 
 /* Runtime needs to be 64K alignment */
-#define RUNTIME_ADDRESS_MASK           (~(SIZE_64KB - 1))
-#define RUNTIME_ADDRESS_LENGTH         SIZE_64KB
+#define RUNTIME_ADDRESS_MASK    (~(SIZE_64KB - 1))
+#define RUNTIME_ADDRESS_LENGTH  SIZE_64KB
 
-#define GPIO_MUX_VAL(Gpio)              (0x00000001 << (Gpio))
-#define GPIO_IN                         0
-#define GPIO_OUT                        1
+#define GPIO_MUX_VAL(Gpio)  (0x00000001 << (Gpio))
+#define GPIO_IN   0
+#define GPIO_OUT  1
 
 /* Address GPIO_REG Registers */
-#define GPIO_SWPORTA_DR_ADDR            0x00000000
-#define GPIO_SWPORTA_DDR_ADDR           0x00000004
-#define GPIO_EXT_PORTA_ADDR             0x00000050
+#define GPIO_SWPORTA_DR_ADDR   0x00000000
+#define GPIO_SWPORTA_DDR_ADDR  0x00000004
+#define GPIO_EXT_PORTA_ADDR    0x00000050
 
-STATIC UINT64    GpioBaseAddr[] = { AC01_GPIO_BASE_ADDRESS_LIST };
-STATIC UINT64    GpiBaseAddr[] = { AC01_GPI_BASE_ADDRESS_LIST };
-STATIC BOOLEAN   GpioRuntimeEnableArray[sizeof (GpioBaseAddr) / sizeof (GpioBaseAddr[0])] = { FALSE };
-STATIC EFI_EVENT mVirtualAddressChangeEvent = NULL;
+STATIC UINT64     GpioBaseAddr[]                                                           = { AC01_GPIO_BASE_ADDRESS_LIST };
+STATIC UINT64     GpiBaseAddr[]                                                            = { AC01_GPI_BASE_ADDRESS_LIST };
+STATIC BOOLEAN    GpioRuntimeEnableArray[sizeof (GpioBaseAddr) / sizeof (GpioBaseAddr[0])] = { FALSE };
+STATIC EFI_EVENT  mVirtualAddressChangeEvent                                               = NULL;
 
 UINT64
 GetBaseAddr (
-  IN UINT32 Pin
+  IN UINT32  Pin
   )
 {
-  UINT32 NumberOfControllers = sizeof (GpioBaseAddr) / sizeof (GpioBaseAddr[0]);
-  UINT32 TotalPins = AC01_GPIO_PINS_PER_CONTROLLER * NumberOfControllers;
+  UINT32  NumberOfControllers = sizeof (GpioBaseAddr) / sizeof (GpioBaseAddr[0]);
+  UINT32  TotalPins           = AC01_GPIO_PINS_PER_CONTROLLER * NumberOfControllers;
 
-  if (NumberOfControllers == 0 || Pin >= TotalPins) {
+  if ((NumberOfControllers == 0) || (Pin >= TotalPins)) {
     return 0;
   }
 
@@ -53,8 +53,8 @@ GetBaseAddr (
 
 VOID
 GpioWrite (
-  IN UINT64 Base,
-  IN UINT32 Val
+  IN UINT64  Base,
+  IN UINT32  Val
   )
 {
   MmioWrite32 ((UINTN)Base, Val);
@@ -62,8 +62,8 @@ GpioWrite (
 
 VOID
 GpioRead (
-  IN  UINT64 Base,
-  OUT UINT32 *Val
+  IN  UINT64  Base,
+  OUT UINT32  *Val
   )
 {
   ASSERT (Val != NULL);
@@ -73,13 +73,13 @@ GpioRead (
 VOID
 EFIAPI
 GpioWriteBit (
-  IN UINT32 Pin,
-  IN UINT32 Val
+  IN UINT32  Pin,
+  IN UINT32  Val
   )
 {
-  UINT64 Reg;
-  UINT32 GpioPin;
-  UINT32 ReadVal;
+  UINT64  Reg;
+  UINT32  GpioPin;
+  UINT32  ReadVal;
 
   Reg = GetBaseAddr (Pin);
   if (Reg == 0) {
@@ -101,14 +101,14 @@ GpioWriteBit (
 UINTN
 EFIAPI
 GpioReadBit (
-  IN UINT32 Pin
+  IN UINT32  Pin
   )
 {
-  UINT64 Reg;
-  UINT32 Val;
-  UINT32 GpioPin;
-  UINT8  Index;
-  UINT32 MaxIndex;
+  UINT64  Reg;
+  UINT32  Val;
+  UINT32  GpioPin;
+  UINT8   Index;
+  UINT32  MaxIndex;
 
   Reg = GetBaseAddr (Pin);
   if (Reg == 0) {
@@ -124,6 +124,7 @@ GpioReadBit (
       break;
     }
   }
+
   if (Index == MaxIndex) {
     /* Only GPIO has GPIO_EXT_PORTA register, not for GPI */
     Reg +=  GPIO_EXT_PORTA_ADDR;
@@ -136,13 +137,13 @@ GpioReadBit (
 
 EFI_STATUS
 GpioConfig (
-  IN UINT32 Pin,
-  IN UINT32 InOut
+  IN UINT32  Pin,
+  IN UINT32  InOut
   )
 {
-  INTN   GpioPin;
-  UINT32 Val;
-  UINT64 Reg;
+  INTN    GpioPin;
+  UINT32  Val;
+  UINT64  Reg;
 
   /*
    * Caculate GPIO Pin Number for Direction Register
@@ -155,7 +156,7 @@ GpioConfig (
     return EFI_UNSUPPORTED;
   }
 
-  Reg += GPIO_SWPORTA_DDR_ADDR;
+  Reg    += GPIO_SWPORTA_DDR_ADDR;
   GpioPin = Pin % AC01_GPIO_PINS_PER_CONTROLLER;
   GpioRead (Reg, &Val);
 
@@ -164,6 +165,7 @@ GpioConfig (
   } else {
     Val &= ~GPIO_MUX_VAL (GpioPin);
   }
+
   GpioWrite (Reg, Val);
 
   return EFI_SUCCESS;
@@ -172,58 +174,58 @@ GpioConfig (
 EFI_STATUS
 EFIAPI
 GpioModeConfig (
-  UINT8            Pin,
-  GPIO_CONFIG_MODE Mode
+  UINT8             Pin,
+  GPIO_CONFIG_MODE  Mode
   )
 {
-  UINT32 NumberOfControllers = sizeof (GpioBaseAddr) / sizeof (UINT64);
-  UINT32 NumersOfPins = NumberOfControllers * AC01_GPIO_PINS_PER_CONTROLLER;
-  UINT32 Delay = 10;
+  UINT32  NumberOfControllers = sizeof (GpioBaseAddr) / sizeof (UINT64);
+  UINT32  NumersOfPins        = NumberOfControllers * AC01_GPIO_PINS_PER_CONTROLLER;
+  UINT32  Delay               = 10;
 
-  if (Mode < GpioConfigOutLow
-      || Mode >= MaxGpioConfigMode
-      || Pin > NumersOfPins - 1
-      || Pin < 0)
+  if (  (Mode < GpioConfigOutLow)
+     || (Mode >= MaxGpioConfigMode)
+     || (Pin > NumersOfPins - 1)
+     || (Pin < 0))
   {
     return EFI_INVALID_PARAMETER;
   }
 
   switch (Mode) {
-  case GpioConfigOutLow:
-    GpioConfig (Pin, GPIO_OUT);
-    GpioWriteBit (Pin, 0);
-    DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output low\n", Pin));
-    break;
+    case GpioConfigOutLow:
+      GpioConfig (Pin, GPIO_OUT);
+      GpioWriteBit (Pin, 0);
+      DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output low\n", Pin));
+      break;
 
-  case GpioConfigOutHigh:
-    GpioConfig (Pin, GPIO_OUT);
-    GpioWriteBit (Pin, 1);
-    DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output high\n", Pin));
-    break;
+    case GpioConfigOutHigh:
+      GpioConfig (Pin, GPIO_OUT);
+      GpioWriteBit (Pin, 1);
+      DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output high\n", Pin));
+      break;
 
-  case GpioConfigOutLowToHigh:
-    GpioConfig (Pin, GPIO_OUT);
-    GpioWriteBit (Pin, 0);
-    MicroSecondDelay (1000 * Delay);
-    GpioWriteBit (Pin, 1);
-    DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output low->high\n", Pin));
-    break;
+    case GpioConfigOutLowToHigh:
+      GpioConfig (Pin, GPIO_OUT);
+      GpioWriteBit (Pin, 0);
+      MicroSecondDelay (1000 * Delay);
+      GpioWriteBit (Pin, 1);
+      DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output low->high\n", Pin));
+      break;
 
-  case GpioConfigOutHightToLow:
-    GpioConfig (Pin, GPIO_OUT);
-    GpioWriteBit (Pin, 1);
-    MicroSecondDelay (1000 * Delay);
-    GpioWriteBit (Pin, 0);
-    DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output high->low\n", Pin));
-    break;
+    case GpioConfigOutHightToLow:
+      GpioConfig (Pin, GPIO_OUT);
+      GpioWriteBit (Pin, 1);
+      MicroSecondDelay (1000 * Delay);
+      GpioWriteBit (Pin, 0);
+      DEBUG ((DEBUG_INFO, "GPIO pin %d configured as output high->low\n", Pin));
+      break;
 
-  case GpioConfigIn:
-    GpioConfig (Pin, GPIO_IN);
-    DEBUG ((DEBUG_INFO, "GPIO pin %d configured as input\n", Pin));
-    break;
+    case GpioConfigIn:
+      GpioConfig (Pin, GPIO_IN);
+      DEBUG ((DEBUG_INFO, "GPIO pin %d configured as input\n", Pin));
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 
   return EFI_SUCCESS;
@@ -241,17 +243,18 @@ GpioModeConfig (
 VOID
 EFIAPI
 GpioVirtualAddressChangeEvent (
-  IN EFI_EVENT Event,
-  IN VOID      *Context
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
   )
 {
-  UINTN Count;
+  UINTN  Count;
 
   EfiConvertPointer (0x0, (VOID **)&GpioBaseAddr);
   for (Count = 0; Count < sizeof (GpioBaseAddr) / sizeof (GpioBaseAddr[0]); Count++) {
     if (!GpioRuntimeEnableArray[Count]) {
       continue;
     }
+
     EfiConvertPointer (0x0, (VOID **)&GpioBaseAddr[Count]);
   }
 }
@@ -266,11 +269,11 @@ GpioVirtualAddressChangeEvent (
 EFI_STATUS
 EFIAPI
 GpioSetupRuntime (
-  IN UINT32 Pin
+  IN UINT32  Pin
   )
 {
-  EFI_STATUS                      Status;
-  EFI_GCD_MEMORY_SPACE_DESCRIPTOR Descriptor;
+  EFI_STATUS                       Status;
+  EFI_GCD_MEMORY_SPACE_DESCRIPTOR  Descriptor;
 
   if (GetBaseAddr (Pin) == 0) {
     return EFI_INVALID_PARAMETER;

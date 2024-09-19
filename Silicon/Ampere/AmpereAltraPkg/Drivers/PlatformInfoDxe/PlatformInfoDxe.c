@@ -29,11 +29,11 @@
 //
 // uni string and Vfr Binary data.
 //
-extern UINT8 PlatformInfoVfrBin[];
-extern UINT8 PlatformInfoDxeStrings[];
+extern UINT8  PlatformInfoVfrBin[];
+extern UINT8  PlatformInfoDxeStrings[];
 
-EFI_HANDLE     mDriverHandle = NULL;
-EFI_HII_HANDLE mHiiHandle = NULL;
+EFI_HANDLE      mDriverHandle = NULL;
+EFI_HII_HANDLE  mHiiHandle    = NULL;
 
 #pragma pack(1)
 
@@ -41,16 +41,16 @@ EFI_HII_HANDLE mHiiHandle = NULL;
 // HII specific Vendor Device Path definition.
 //
 typedef struct {
-  VENDOR_DEVICE_PATH       VendorDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL End;
+  VENDOR_DEVICE_PATH          VendorDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL    End;
 } HII_VENDOR_DEVICE_PATH;
 
 #pragma pack()
 
 // PLATFORM_INFO_FORMSET_GUID
-EFI_GUID gPlatformInfoFormSetGuid = PLATFORM_INFO_FORMSET_GUID;
+EFI_GUID  gPlatformInfoFormSetGuid = PLATFORM_INFO_FORMSET_GUID;
 
-HII_VENDOR_DEVICE_PATH mPlatformInfoHiiVendorDevicePath = {
+HII_VENDOR_DEVICE_PATH  mPlatformInfoHiiVendorDevicePath = {
   {
     {
       HARDWARE_DEVICE_PATH,
@@ -72,34 +72,34 @@ HII_VENDOR_DEVICE_PATH mPlatformInfoHiiVendorDevicePath = {
   }
 };
 
-#define MAX_STRING_SIZE     64
-#define MHZ_SCALE_FACTOR    1000000
+#define MAX_STRING_SIZE   64
+#define MHZ_SCALE_FACTOR  1000000
 
 STATIC
 CHAR8 *
 GetCCIXLinkSpeed (
-  IN UINTN Speed
+  IN UINTN  Speed
   )
 {
   switch (Speed) {
-  case 1:
-    return "2.5 GT/s";
+    case 1:
+      return "2.5 GT/s";
 
-  case 2:
-    return "5 GT/s";
+    case 2:
+      return "5 GT/s";
 
-  case 3:
-    return "8 GT/s";
+    case 3:
+      return "8 GT/s";
 
-  case 4:
-  case 6:
-    return "16 GT/s";
+    case 4:
+    case 6:
+      return "16 GT/s";
 
-  case 0xa:
-    return "20 GT/s";
+    case 0xa:
+      return "20 GT/s";
 
-  case 0xf:
-    return "25 GT/s";
+    case 0xf:
+      return "25 GT/s";
   }
 
   return "Unknown";
@@ -108,23 +108,24 @@ GetCCIXLinkSpeed (
 STATIC
 EFI_STATUS
 UpdatePlatformInfoScreen (
-  IN EFI_HII_HANDLE *HiiHandle
+  IN EFI_HII_HANDLE  *HiiHandle
   )
 {
   VOID               *Hob;
   PLATFORM_INFO_HOB  *PlatformHob;
   CHAR16             Str[MAX_STRING_SIZE];
 
-  VOID               *StartOpCodeHandle;
-  EFI_IFR_GUID_LABEL *StartLabel;
-  VOID               *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL *EndLabel;
+  VOID                *StartOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *StartLabel;
+  VOID                *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *EndLabel;
 
   /* Get the Platform HOB */
   Hob = GetFirstGuidHob (&gPlatformInfoHobGuid);
   if (Hob == NULL) {
     return EFI_DEVICE_ERROR;
   }
+
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
   /* SCP Version */
@@ -354,11 +355,11 @@ PlatformInfoUnload (
 EFI_STATUS
 EFIAPI
 PlatformInfoEntryPoint (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS Status;
+  EFI_STATUS  Status;
 
   Status = gBS->InstallMultipleProtocolInterfaces (
                   &mDriverHandle,

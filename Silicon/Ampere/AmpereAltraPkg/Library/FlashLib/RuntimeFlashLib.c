@@ -17,7 +17,7 @@
 
 #include "FlashLibCommon.h"
 
-STATIC EFI_MM_COMMUNICATION2_PROTOCOL *mMmCommunicationProtocol = NULL;
+STATIC EFI_MM_COMMUNICATION2_PROTOCOL  *mMmCommunicationProtocol = NULL;
 
 /**
   This is a notification function registered on EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE
@@ -29,8 +29,8 @@ STATIC EFI_MM_COMMUNICATION2_PROTOCOL *mMmCommunicationProtocol = NULL;
 VOID
 EFIAPI
 FlashLibAddressChangeEvent (
-  IN EFI_EVENT Event,
-  IN VOID      *Context
+  IN EFI_EVENT  Event,
+  IN VOID       *Context
   )
 {
   gRT->ConvertPointer (0x0, (VOID **)&gFlashLibVirtualBuffer);
@@ -49,15 +49,15 @@ FlashLibAddressChangeEvent (
 EFI_STATUS
 EFIAPI
 FlashLibConstructor (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_EVENT  VirtualAddressChangeEvent = NULL;
-  EFI_STATUS Status;
+  EFI_EVENT   VirtualAddressChangeEvent = NULL;
+  EFI_STATUS  Status;
 
   gFlashLibPhysicalBuffer = AllocateRuntimeZeroPool (EFI_MM_MAX_TMP_BUF_SIZE);
-  gFlashLibVirtualBuffer = gFlashLibPhysicalBuffer;
+  gFlashLibVirtualBuffer  = gFlashLibPhysicalBuffer;
   ASSERT (gFlashLibPhysicalBuffer != NULL);
 
   Status = gBS->LocateProtocol (
@@ -94,18 +94,19 @@ FlashLibConstructor (
 **/
 EFI_STATUS
 FlashMmCommunicate (
-  IN  VOID   *Request,
-  IN  UINT32 RequestDataSize,
-  OUT VOID   *Response,
-  IN  UINT32 ResponseDataSize
+  IN  VOID    *Request,
+  IN  UINT32  RequestDataSize,
+  OUT VOID    *Response,
+  IN  UINT32  ResponseDataSize
   )
 {
-  EFI_MM_COMMUNICATE_REQUEST CommBuffer;
-  EFI_STATUS                 Status;
+  EFI_MM_COMMUNICATE_REQUEST  CommBuffer;
+  EFI_STATUS                  Status;
 
-  if (Request == NULL || RequestDataSize == 0
-      || RequestDataSize > EFI_MM_MAX_PAYLOAD_SIZE
-      || (ResponseDataSize == 0 && Response == NULL)) {
+  if (  (Request == NULL) || (RequestDataSize == 0)
+     || (RequestDataSize > EFI_MM_MAX_PAYLOAD_SIZE)
+     || ((ResponseDataSize == 0) && (Response == NULL)))
+  {
     return EFI_INVALID_PARAMETER;
   }
 

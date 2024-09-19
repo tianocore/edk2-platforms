@@ -16,18 +16,18 @@
 #include <Library/MailboxInterfaceLib.h>
 #include <Library/SystemFirmwareInterfaceLib.h>
 
-#define SMPRO_RTC_YEAR_SHIFT    16
-#define SMPRO_RTC_YEAR_MASK     0xFFFF0000
-#define SMPRO_RTC_MONTH_SHIFT   8
-#define SMPRO_RTC_MONTH_MASK    0x0000FF00
-#define SMPRO_RTC_DAY_SHIFT     0
-#define SMPRO_RTC_DAY_MASK      0x000000FF
+#define SMPRO_RTC_YEAR_SHIFT   16
+#define SMPRO_RTC_YEAR_MASK    0xFFFF0000
+#define SMPRO_RTC_MONTH_SHIFT  8
+#define SMPRO_RTC_MONTH_MASK   0x0000FF00
+#define SMPRO_RTC_DAY_SHIFT    0
+#define SMPRO_RTC_DAY_MASK     0x000000FF
 
 #define CONVERT_EFI_TIME_TO_SMPRO_DATE(x) \
           (((x)->Year << SMPRO_RTC_YEAR_SHIFT) & SMPRO_RTC_YEAR_MASK) | \
           (((x)->Month << SMPRO_RTC_MONTH_SHIFT) & SMPRO_RTC_MONTH_MASK) | \
           (((x)->Day << SMPRO_RTC_DAY_SHIFT) & SMPRO_RTC_DAY_MASK)
-#define MAILBOX_TRNG_MESSAGE_PARAM1_MASK 0x000000FF
+#define MAILBOX_TRNG_MESSAGE_PARAM1_MASK  0x000000FF
 
 /**
   Read a register which is not accessible from the non-secure world
@@ -46,15 +46,15 @@
 EFI_STATUS
 EFIAPI
 MailboxMsgRegisterRead (
-  IN  UINT8  Socket,
-  IN  UINTN  Address,
-  OUT UINT32 *Value
+  IN  UINT8   Socket,
+  IN  UINTN   Address,
+  OUT UINT32  *Value
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
-  UINT32               AddressLower32Bit;
-  UINT32               AddressUpper32Bit;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
+  UINT32                AddressLower32Bit;
+  UINT32                AddressUpper32Bit;
 
   if (Socket >= GetNumberOfActiveSockets ()) {
     return EFI_INVALID_PARAMETER;
@@ -111,15 +111,15 @@ MailboxMsgRegisterRead (
 EFI_STATUS
 EFIAPI
 MailboxMsgRegisterWrite (
-  IN UINT8  Socket,
-  IN UINTN  Address,
-  IN UINT32 Value
+  IN UINT8   Socket,
+  IN UINTN   Address,
+  IN UINT32  Value
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
-  UINT32               AddressLower32Bit;
-  UINT32               AddressUpper32Bit;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
+  UINT32                AddressLower32Bit;
+  UINT32                AddressUpper32Bit;
 
   if (Socket >= GetNumberOfActiveSockets ()) {
     return EFI_INVALID_PARAMETER;
@@ -158,26 +158,26 @@ MailboxMsgRegisterWrite (
 EFI_STATUS
 EFIAPI
 MailboxMsgSetPccSharedMem (
-  IN UINT8     Socket,
-  IN UINT8     Doorbell,
-  IN BOOLEAN   AddressAlign256,
-  IN UINTN     Address
+  IN UINT8    Socket,
+  IN UINT8    Doorbell,
+  IN BOOLEAN  AddressAlign256,
+  IN UINTN    Address
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
-  UINT8                AlignBit;
-  UINT8                AlignControl;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
+  UINT8                 AlignBit;
+  UINT8                 AlignControl;
 
-  if (Socket >= GetNumberOfActiveSockets () || Doorbell >= NUMBER_OF_DOORBELLS_PER_SOCKET) {
+  if ((Socket >= GetNumberOfActiveSockets ()) || (Doorbell >= NUMBER_OF_DOORBELLS_PER_SOCKET)) {
     return EFI_INVALID_PARAMETER;
   }
 
   if (AddressAlign256) {
-    AlignBit = 8;
+    AlignBit     = 8;
     AlignControl = MAILBOX_ADDRESS_256_ALIGNMENT;
   } else {
-    AlignBit = 0;
+    AlignBit     = 0;
     AlignControl = MAILBOX_ADDRESS_NO_ALIGNMENT;
   }
 
@@ -209,11 +209,11 @@ MailboxMsgSetPccSharedMem (
 EFI_STATUS
 EFIAPI
 MailboxMsgGetRandomNumber64 (
-  OUT UINT8 *Buffer
+  OUT UINT8  *Buffer
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
 
   if (Buffer == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -270,8 +270,8 @@ MailboxMsgSetBootProgress (
   IN UINT32  Checkpoint
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
 
   if (Socket >= GetNumberOfActiveSockets ()) {
     return EFI_INVALID_PARAMETER;
@@ -316,11 +316,11 @@ MailboxMsgSetBootProgress (
 EFI_STATUS
 EFIAPI
 MailboxMsgDateConfig (
-  IN EFI_TIME   *Time
+  IN EFI_TIME  *Time
   )
 {
-  EFI_STATUS           Status;
-  MAILBOX_MESSAGE_DATA Message;
+  EFI_STATUS            Status;
+  MAILBOX_MESSAGE_DATA  Message;
   UINT32                Date;
 
   if (Time == NULL) {

@@ -23,12 +23,12 @@ BuildMemoryTypeInformationHob (
 STATIC
 VOID
 InitMmu (
-  IN ARM_MEMORY_REGION_DESCRIPTOR *MemoryTable
+  IN ARM_MEMORY_REGION_DESCRIPTOR  *MemoryTable
   )
 {
-  VOID          *TranslationTableBase;
-  UINTN         TranslationTableSize;
-  RETURN_STATUS Status;
+  VOID           *TranslationTableBase;
+  UINTN          TranslationTableSize;
+  RETURN_STATUS  Status;
 
   // Note: Because we called PeiServicesInstallPeiMemory() before to call InitMmu()
   // the MMU Page Table resides in DRAM (even at the top of DRAM as it is the first
@@ -49,12 +49,12 @@ InitMmu (
 EFI_STATUS
 EFIAPI
 MemoryPeim (
-  IN EFI_PHYSICAL_ADDRESS UefiMemoryBase,
-  IN UINT64               UefiMemorySize
+  IN EFI_PHYSICAL_ADDRESS  UefiMemoryBase,
+  IN UINT64                UefiMemorySize
   )
 {
-  ARM_MEMORY_REGION_DESCRIPTOR *MemoryTable;
-  UINTN                        Index;
+  ARM_MEMORY_REGION_DESCRIPTOR  *MemoryTable;
+  UINTN                         Index;
 
   /* Get Virtual Memory Map from the Platform Library */
   ArmPlatformGetVirtualMemoryMap (&MemoryTable);
@@ -83,6 +83,7 @@ MemoryPeim (
         MemoryTable[Index].Length
         );
     }
+
     Index++;
   }
 

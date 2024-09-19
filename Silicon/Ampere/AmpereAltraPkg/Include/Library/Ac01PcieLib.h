@@ -21,9 +21,9 @@
 **/
 RETURN_STATUS
 Ac01PcieCoreSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN BOOLEAN           ReInit,
-  IN UINT8             ReInitPcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN BOOLEAN            ReInit,
+  IN UINT8              ReInitPcieIndex
   );
 
 /**
@@ -33,7 +33,7 @@ Ac01PcieCoreSetupRC (
 **/
 VOID
 Ac01PcieCorePostSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplexList
+  IN AC01_ROOT_COMPLEX  *RootComplexList
   );
 
 /**
@@ -43,7 +43,7 @@ Ac01PcieCorePostSetupRC (
 **/
 VOID
 Ac01PcieCoreEndEnumeration (
-  IN AC01_ROOT_COMPLEX *RootComplex
+  IN AC01_ROOT_COMPLEX  *RootComplex
   );
 
 #endif /* AC01_PCIE_LIB_H_ */

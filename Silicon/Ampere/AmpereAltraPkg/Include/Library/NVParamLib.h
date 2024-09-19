@@ -41,14 +41,14 @@
 #define NV_PARAM_MAX_SIZE   (64 * 1024)
 #define NV_PARAM_ENTRYSIZE  8
 
-#define NV_PERM_ALL     0xFFFF /* Allowed for all */
-#define NV_PERM_ATF     0x0001 /* Allowed for EL3 code */
-#define NV_PERM_OPTEE   0x0004 /* Allowed for secure El1 */
-#define NV_PERM_BIOS    0x0008 /* Allowed for EL2 non-secure */
-#define NV_PERM_MANU    0x0010 /* Allowed for manufactory interface */
-#define NV_PERM_BMC     0x0020 /* Allowed for BMC interface */
+#define NV_PERM_ALL    0xFFFF  /* Allowed for all */
+#define NV_PERM_ATF    0x0001  /* Allowed for EL3 code */
+#define NV_PERM_OPTEE  0x0004  /* Allowed for secure El1 */
+#define NV_PERM_BIOS   0x0008  /* Allowed for EL2 non-secure */
+#define NV_PERM_MANU   0x0010  /* Allowed for manufactory interface */
+#define NV_PERM_BMC    0x0020  /* Allowed for BMC interface */
 
-#define NVPARAM_SIZE    0x8
+#define NVPARAM_SIZE  0x8
 
 /**
   Retrieve a non-volatile parameter.
@@ -68,9 +68,9 @@
 **/
 EFI_STATUS
 NVParamGet (
-  IN  UINT32 Param,
-  IN  UINT16 ACLRd,
-  OUT UINT32 *Val
+  IN  UINT32  Param,
+  IN  UINT16  ACLRd,
+  OUT UINT32  *Val
   );
 
 /**
@@ -93,10 +93,10 @@ NVParamGet (
 **/
 EFI_STATUS
 NVParamSet (
-  IN UINT32 Param,
-  IN UINT16 ACLRd,
-  IN UINT16 ACLWr,
-  IN UINT32 Val
+  IN UINT32  Param,
+  IN UINT16  ACLRd,
+  IN UINT16  ACLWr,
+  IN UINT32  Val
   );
 
 /**
@@ -115,8 +115,8 @@ NVParamSet (
 **/
 EFI_STATUS
 NVParamClr (
-  IN UINT32 Param,
-  IN UINT16 ACLWr
+  IN UINT32  Param,
+  IN UINT16  ACLWr
   );
 
 /**

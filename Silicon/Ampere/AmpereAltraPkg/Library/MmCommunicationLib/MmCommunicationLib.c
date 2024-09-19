@@ -19,7 +19,7 @@
 // Address, Length of the pre-allocated buffer for communication with the secure
 // world.
 //
-STATIC ARM_MEMORY_REGION_DESCRIPTOR mNsCommBuffMemRegion;
+STATIC ARM_MEMORY_REGION_DESCRIPTOR  mNsCommBuffMemRegion;
 
 EFI_STATUS
 EFIAPI
@@ -30,7 +30,7 @@ MmCommunicationLibConstructor (
   mNsCommBuffMemRegion.PhysicalBase = PcdGet64 (PcdMmBufferBase);
   // During UEFI boot, virtual and physical address are the same
   mNsCommBuffMemRegion.VirtualBase = mNsCommBuffMemRegion.PhysicalBase;
-  mNsCommBuffMemRegion.Length = PcdGet64 (PcdMmBufferSize);
+  mNsCommBuffMemRegion.Length      = PcdGet64 (PcdMmBufferSize);
 
   return EFI_SUCCESS;
 }
@@ -63,16 +63,16 @@ MmCommunicationLibConstructor (
 EFI_STATUS
 EFIAPI
 MmCommunicationCommunicate (
-  IN OUT VOID  *CommBuffer,
-  IN OUT UINTN *CommSize OPTIONAL
+  IN OUT VOID   *CommBuffer,
+  IN OUT UINTN  *CommSize OPTIONAL
   )
 {
-  EFI_MM_COMMUNICATE_HEADER *CommunicateHeader;
-  ARM_SMC_ARGS              CommunicateSmcArgs;
-  EFI_STATUS                Status;
-  UINTN                     BufferSize;
+  EFI_MM_COMMUNICATE_HEADER  *CommunicateHeader;
+  ARM_SMC_ARGS               CommunicateSmcArgs;
+  EFI_STATUS                 Status;
+  UINTN                      BufferSize;
 
-  Status = EFI_ACCESS_DENIED;
+  Status     = EFI_ACCESS_DENIED;
   BufferSize = 0;
 
   ZeroMem (&CommunicateSmcArgs, sizeof (ARM_SMC_ARGS));
@@ -103,6 +103,7 @@ MmCommunicationCommunicate (
       *CommSize = mNsCommBuffMemRegion.Length;
       return EFI_BAD_BUFFER_SIZE;
     }
+
     //
     // CommSize must match MessageLength + sizeof (EFI_MM_COMMUNICATE_HEADER);
     //
@@ -143,41 +144,41 @@ MmCommunicationCommunicate (
   ArmCallSmc (&CommunicateSmcArgs);
 
   switch (CommunicateSmcArgs.Arg0) {
-  case ARM_SMC_MM_RET_SUCCESS:
-    ZeroMem (CommBuffer, BufferSize);
-    // On successful return, the size of data being returned is inferred from
-    // MessageLength + Header.
-    CommunicateHeader = (EFI_MM_COMMUNICATE_HEADER *)mNsCommBuffMemRegion.VirtualBase;
-    BufferSize = CommunicateHeader->MessageLength +
-                 sizeof (CommunicateHeader->HeaderGuid) +
-                 sizeof (CommunicateHeader->MessageLength);
+    case ARM_SMC_MM_RET_SUCCESS:
+      ZeroMem (CommBuffer, BufferSize);
+      // On successful return, the size of data being returned is inferred from
+      // MessageLength + Header.
+      CommunicateHeader = (EFI_MM_COMMUNICATE_HEADER *)mNsCommBuffMemRegion.VirtualBase;
+      BufferSize        = CommunicateHeader->MessageLength +
+                          sizeof (CommunicateHeader->HeaderGuid) +
+                          sizeof (CommunicateHeader->MessageLength);
 
-    CopyMem (
-      CommBuffer,
-      (VOID *)mNsCommBuffMemRegion.VirtualBase,
-      BufferSize
-      );
-    Status = EFI_SUCCESS;
-    break;
+      CopyMem (
+        CommBuffer,
+        (VOID *)mNsCommBuffMemRegion.VirtualBase,
+        BufferSize
+        );
+      Status = EFI_SUCCESS;
+      break;
 
-  case ARM_SMC_MM_RET_INVALID_PARAMS:
-    Status = EFI_INVALID_PARAMETER;
-    break;
+    case ARM_SMC_MM_RET_INVALID_PARAMS:
+      Status = EFI_INVALID_PARAMETER;
+      break;
 
-  case ARM_SMC_MM_RET_DENIED:
-    Status = EFI_ACCESS_DENIED;
-    break;
+    case ARM_SMC_MM_RET_DENIED:
+      Status = EFI_ACCESS_DENIED;
+      break;
 
-  case ARM_SMC_MM_RET_NO_MEMORY:
-    // Unexpected error since the CommSize was checked for zero length
-    // prior to issuing the SMC
-    Status = EFI_OUT_OF_RESOURCES;
-    ASSERT (0);
-    break;
+    case ARM_SMC_MM_RET_NO_MEMORY:
+      // Unexpected error since the CommSize was checked for zero length
+      // prior to issuing the SMC
+      Status = EFI_OUT_OF_RESOURCES;
+      ASSERT (0);
+      break;
 
-  default:
-    Status = EFI_ACCESS_DENIED;
-    ASSERT (0);
+    default:
+      Status = EFI_ACCESS_DENIED;
+      ASSERT (0);
   }
 
   return Status;

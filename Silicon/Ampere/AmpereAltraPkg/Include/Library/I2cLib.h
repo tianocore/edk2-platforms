@@ -30,10 +30,10 @@
 EFI_STATUS
 EFIAPI
 I2cWrite (
-  IN     UINT32 Bus,
-  IN     UINT32 SlaveAddr,
-  IN OUT UINT8  *Buf,
-  IN OUT UINT32 *WriteLength
+  IN     UINT32  Bus,
+  IN     UINT32  SlaveAddr,
+  IN OUT UINT8   *Buf,
+  IN OUT UINT32  *WriteLength
   );
 
 /**
@@ -57,12 +57,12 @@ I2cWrite (
 EFI_STATUS
 EFIAPI
 I2cRead (
-  IN     UINT32 Bus,
-  IN     UINT32 SlaveAddr,
-  IN     UINT8  *BufCmd,
-  IN     UINT32 CmdLength,
-  IN OUT UINT8  *Buf,
-  IN OUT UINT32 *ReadLength
+  IN     UINT32  Bus,
+  IN     UINT32  SlaveAddr,
+  IN     UINT8   *BufCmd,
+  IN     UINT32  CmdLength,
+  IN OUT UINT8   *Buf,
+  IN OUT UINT32  *ReadLength
   );
 
 /**
@@ -99,7 +99,7 @@ I2cProbe (
 EFI_STATUS
 EFIAPI
 I2cSetupRuntime (
-  IN UINT32 Bus
+  IN UINT32  Bus
   );
 
 #endif /* I2C_LIB_H_ */

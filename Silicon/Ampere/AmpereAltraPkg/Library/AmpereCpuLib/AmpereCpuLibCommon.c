@@ -19,105 +19,105 @@
 #include <NVParamDef.h>
 #include <Platform/Ac01.h>
 
-UINT32 Ac01CoreOrderMonolithic[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  36, 37, 40, 41, 52, 53, 56, 57, 32, 33,
-  44, 45, 48, 49, 60, 61, 20, 21, 24, 25,
-  68, 69, 72, 73, 16, 17, 28, 29, 64, 65,
-  76, 77,  4,  5,  8,  9,  0,  1, 12, 13,
-  38, 39, 42, 43, 54, 55, 58, 59, 34, 35,
-  46, 47, 50, 51, 62, 63, 22, 23, 26, 27,
-  70, 71, 74, 75, 18, 19, 30, 31, 66, 67,
-  78, 79,  6,  7, 10, 11,  2,  3, 14, 15,
-  80, 81, 82, 83, 84, 85, 86, 87,
-  88, 89, 90, 91, 92, 93, 94, 95,
-  96, 97, 98, 99, 100, 101, 102, 103,
+UINT32  Ac01CoreOrderMonolithic[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  36,  37,  40,  41,  52,  53,  56,  57,  32, 33,
+  44,  45,  48,  49,  60,  61,  20,  21,  24, 25,
+  68,  69,  72,  73,  16,  17,  28,  29,  64, 65,
+  76,  77,  4,   5,   8,   9,   0,   1,   12, 13,
+  38,  39,  42,  43,  54,  55,  58,  59,  34, 35,
+  46,  47,  50,  51,  62,  63,  22,  23,  26, 27,
+  70,  71,  74,  75,  18,  19,  30,  31,  66, 67,
+  78,  79,  6,   7,   10,  11,  2,   3,   14, 15,
+  80,  81,  82,  83,  84,  85,  86,  87,
+  88,  89,  90,  91,  92,  93,  94,  95,
+  96,  97,  98,  99,  100, 101, 102, 103,
   104, 105, 106, 107, 108, 109, 110, 111,
   112, 113, 114, 115, 116, 117, 118, 119,
   120, 121, 122, 123, 124, 125, 126, 127,
 };
 
-UINT32 Ac01CoreOrderHemisphere[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  32, 33, 48, 49, 16, 17, 64, 65, 36, 37,
-  52, 53,  0,  1, 20, 21, 68, 69,  4,  5,
-  34, 35, 50, 51, 18, 19, 66, 67, 38, 39,
-  54, 55,  2,  3, 22, 23, 70, 71,  6,  7,
-  44, 45, 60, 61, 28, 29, 76, 77, 40, 41,
-  56, 57, 12, 13, 24, 25, 72, 73,  8,  9,
-  46, 47, 62, 63, 30, 31, 78, 79, 42, 43,
-  58, 59, 14, 15, 26, 27, 74, 75, 10, 11,
-  80, 81, 82, 83, 84, 85, 86, 87,
-  88, 89, 90, 91, 92, 93, 94, 95,
-  96, 97, 98, 99, 100, 101, 102, 103,
+UINT32  Ac01CoreOrderHemisphere[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  32,  33,  48,  49,  16,  17,  64,  65,  36, 37,
+  52,  53,  0,   1,   20,  21,  68,  69,  4,  5,
+  34,  35,  50,  51,  18,  19,  66,  67,  38, 39,
+  54,  55,  2,   3,   22,  23,  70,  71,  6,  7,
+  44,  45,  60,  61,  28,  29,  76,  77,  40, 41,
+  56,  57,  12,  13,  24,  25,  72,  73,  8,  9,
+  46,  47,  62,  63,  30,  31,  78,  79,  42, 43,
+  58,  59,  14,  15,  26,  27,  74,  75,  10, 11,
+  80,  81,  82,  83,  84,  85,  86,  87,
+  88,  89,  90,  91,  92,  93,  94,  95,
+  96,  97,  98,  99,  100, 101, 102, 103,
   104, 105, 106, 107, 108, 109, 110, 111,
   112, 113, 114, 115, 116, 117, 118, 119,
   120, 121, 122, 123, 124, 125, 126, 127,
 };
 
-UINT32 Ac01CoreOrderQuadrant[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  16, 17, 32, 33,  0,  1, 20, 21,  4,  5,
-  18, 19, 34, 35,  2,  3, 22, 23,  6,  7,
-  48, 49, 64, 65, 52, 53, 68, 69, 36, 37,
-  50, 51, 66, 67, 54, 55, 70, 71, 38, 39,
-  28, 29, 44, 45, 12, 13, 24, 25,  8,  9,
-  30, 31, 46, 47, 14, 15, 26, 27, 10, 11,
-  60, 61, 76, 77, 56, 57, 72, 73, 40, 41,
-  62, 63, 78, 79, 58, 59, 74, 75, 42, 43,
-  80, 81, 82, 83, 84, 85, 86, 87,
-  88, 89, 90, 91, 92, 93, 94, 95,
-  96, 97, 98, 99, 100, 101, 102, 103,
+UINT32  Ac01CoreOrderQuadrant[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  16,  17,  32,  33,  0,   1,   20,  21,  4,  5,
+  18,  19,  34,  35,  2,   3,   22,  23,  6,  7,
+  48,  49,  64,  65,  52,  53,  68,  69,  36, 37,
+  50,  51,  66,  67,  54,  55,  70,  71,  38, 39,
+  28,  29,  44,  45,  12,  13,  24,  25,  8,  9,
+  30,  31,  46,  47,  14,  15,  26,  27,  10, 11,
+  60,  61,  76,  77,  56,  57,  72,  73,  40, 41,
+  62,  63,  78,  79,  58,  59,  74,  75,  42, 43,
+  80,  81,  82,  83,  84,  85,  86,  87,
+  88,  89,  90,  91,  92,  93,  94,  95,
+  96,  97,  98,  99,  100, 101, 102, 103,
   104, 105, 106, 107, 108, 109, 110, 111,
   112, 113, 114, 115, 116, 117, 118, 119,
   120, 121, 122, 123, 124, 125, 126, 127,
 };
 
-UINT32 Ac02CoreOrderMonolithic[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  36, 37, 40, 41, 52, 53, 56, 57, 32, 33,
-  44, 45, 48, 49, 60, 61, 20, 21, 24, 25,
-  68, 69, 72, 73, 16, 17, 28, 29, 64, 65,
-  76, 77,  4,  5,  8,  9, 84, 85, 88, 89,
-  0,  1, 12, 13, 80, 81, 92, 93, 100, 101,
-  104, 105, 96, 97, 108, 109, 116, 117, 120, 121,
-  112, 113, 124, 125, 38, 39, 42, 43, 54, 55,
-  58, 59, 34, 35, 46, 47, 50, 51, 62, 63,
-  22, 23, 26, 27, 70, 71, 74, 75, 18, 19,
-  30, 31, 66, 67, 78, 79,  6,  7, 10, 11,
-  86, 87, 90, 91,  2,  3, 14, 15, 82, 83,
-  94, 95, 102, 103, 106, 107, 98, 99, 110, 111,
+UINT32  Ac02CoreOrderMonolithic[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  36,  37,  40,  41,  52,  53,  56,  57,  32,  33,
+  44,  45,  48,  49,  60,  61,  20,  21,  24,  25,
+  68,  69,  72,  73,  16,  17,  28,  29,  64,  65,
+  76,  77,  4,   5,   8,   9,   84,  85,  88,  89,
+  0,   1,   12,  13,  80,  81,  92,  93,  100, 101,
+  104, 105, 96,  97,  108, 109, 116, 117, 120, 121,
+  112, 113, 124, 125, 38,  39,  42,  43,  54,  55,
+  58,  59,  34,  35,  46,  47,  50,  51,  62,  63,
+  22,  23,  26,  27,  70,  71,  74,  75,  18,  19,
+  30,  31,  66,  67,  78,  79,  6,   7,   10,  11,
+  86,  87,  90,  91,  2,   3,   14,  15,  82,  83,
+  94,  95,  102, 103, 106, 107, 98,  99,  110, 111,
   118, 119, 122, 123, 114, 115, 126, 127,
 };
 
-UINT32 Ac02CoreOrderHemisphere[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  32, 33, 48, 49, 16, 17, 64, 65, 36, 37,
-  52, 53,  0,  1, 20, 21, 68, 69, 80, 81,
-  4,  5, 84, 85, 96, 97, 100, 101, 112, 113,
-  116, 117, 34, 35, 50, 51, 18, 19, 66, 67,
-  38, 39, 54, 55, 2, 3, 22, 23, 70, 71,
-  82, 83, 6, 7, 86, 87, 98, 99, 102, 103,
-  114, 115, 118, 119, 44, 45, 60, 61, 28, 29,
-  76, 77, 40, 41, 56, 57, 12, 13, 24, 25,
-  72, 73, 92, 93, 8, 9, 88, 89, 108, 109,
-  104, 105, 124, 125, 120, 121, 46, 47, 62, 63,
-  30, 31, 78, 79, 42, 43, 58, 59, 14, 15,
-  26, 27, 74, 75, 94, 95, 10, 11, 90, 91,
+UINT32  Ac02CoreOrderHemisphere[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  32,  33,  48,  49,  16,  17,  64,  65,  36,  37,
+  52,  53,  0,   1,   20,  21,  68,  69,  80,  81,
+  4,   5,   84,  85,  96,  97,  100, 101, 112, 113,
+  116, 117, 34,  35,  50,  51,  18,  19,  66,  67,
+  38,  39,  54,  55,  2,   3,   22,  23,  70,  71,
+  82,  83,  6,   7,   86,  87,  98,  99,  102, 103,
+  114, 115, 118, 119, 44,  45,  60,  61,  28,  29,
+  76,  77,  40,  41,  56,  57,  12,  13,  24,  25,
+  72,  73,  92,  93,  8,   9,   88,  89,  108, 109,
+  104, 105, 124, 125, 120, 121, 46,  47,  62,  63,
+  30,  31,  78,  79,  42,  43,  58,  59,  14,  15,
+  26,  27,  74,  75,  94,  95,  10,  11,  90,  91,
   110, 111, 106, 107, 126, 127, 122, 123,
 };
 
-UINT32 Ac02CoreOrderQuadrant[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
-  16, 17, 32, 33,  0,  1, 20, 21,
-  36, 37,  4,  5, 84, 85, 96, 97,
-  18, 19, 34, 35,  2,  3, 22, 23,
-  38, 39,  6,  7, 86, 87, 98, 99,
-  48, 49, 64, 65, 52, 53, 68, 69,
+UINT32  Ac02CoreOrderQuadrant[PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM] = {
+  16, 17, 32,  33,  0,   1,   20,  21,
+  36, 37, 4,   5,   84,  85,  96,  97,
+  18, 19, 34,  35,  2,   3,   22,  23,
+  38, 39, 6,   7,   86,  87,  98,  99,
+  48, 49, 64,  65,  52,  53,  68,  69,
   80, 81, 100, 101, 112, 113, 116, 117,
-  50, 51, 66, 67, 54, 55, 70, 71,
+  50, 51, 66,  67,  54,  55,  70,  71,
   82, 83, 102, 103, 114, 115, 118, 119,
-  28, 29, 44, 45, 12, 13, 24, 25,
-  40, 41,  8,  9, 88, 89, 108, 109,
-  30, 31, 46, 47, 14, 15, 26, 27,
-  42, 43, 10, 11, 90, 91, 110, 111,
-  60, 61, 76, 77, 56, 57, 72, 73,
+  28, 29, 44,  45,  12,  13,  24,  25,
+  40, 41, 8,   9,   88,  89,  108, 109,
+  30, 31, 46,  47,  14,  15,  26,  27,
+  42, 43, 10,  11,  90,  91,  110, 111,
+  60, 61, 76,  77,  56,  57,  72,  73,
   92, 93, 104, 105, 124, 125, 120, 121,
-  62, 63, 78, 79, 58, 59, 74, 75,
+  62, 63, 78,  79,  58,  59,  74,  75,
   94, 95, 106, 107, 126, 127, 122, 123,
 };
 
@@ -136,7 +136,7 @@ GetPlatformHob (
 UINTN
 EFIAPI
 CpuGetCurrentFreq (
-  UINT8 Socket
+  UINT8  Socket
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -157,7 +157,7 @@ CpuGetCurrentFreq (
 UINTN
 EFIAPI
 CpuGetMaxFreq (
-  UINT8 Socket
+  UINT8  Socket
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -182,7 +182,7 @@ CpuGetMaxFreq (
 UINT8
 EFIAPI
 CpuGetVoltage (
-  UINT8 Socket
+  UINT8  Socket
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -206,8 +206,8 @@ CpuGetVoltage (
 VOID
 EFIAPI
 CpuGetEcid (
-  UINT8  SocketId,
-  UINT32 **Ecid
+  UINT8   SocketId,
+  UINT32  **Ecid
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -228,7 +228,7 @@ CpuGetEcid (
 UINT8
 EFIAPI
 GetSkuMaxCore (
-  UINT8 SocketId
+  UINT8  SocketId
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -251,7 +251,7 @@ GetSkuMaxCore (
 UINT8
 EFIAPI
 GetSkuMaxTurbo (
-  UINT8 SocketId
+  UINT8  SocketId
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -275,26 +275,26 @@ CpuGetCoreOrder (
   VOID
   )
 {
-  UINT32             *CoreOrder;
-  UINT8              SubNumaMode;
-  BOOLEAN            IsAc01;
+  UINT32   *CoreOrder;
+  UINT8    SubNumaMode;
+  BOOLEAN  IsAc01;
 
   SubNumaMode = CpuGetSubNumaMode ();
-  IsAc01 = IsAc01Processor ();
+  IsAc01      = IsAc01Processor ();
 
   switch (SubNumaMode) {
-  case SUBNUMA_MODE_MONOLITHIC:
-  default:
-    CoreOrder = IsAc01 ? Ac01CoreOrderMonolithic : Ac02CoreOrderMonolithic;
-    break;
+    case SUBNUMA_MODE_MONOLITHIC:
+    default:
+      CoreOrder = IsAc01 ? Ac01CoreOrderMonolithic : Ac02CoreOrderMonolithic;
+      break;
 
-  case SUBNUMA_MODE_HEMISPHERE:
-    CoreOrder = IsAc01 ? Ac01CoreOrderHemisphere : Ac02CoreOrderHemisphere;
-    break;
+    case SUBNUMA_MODE_HEMISPHERE:
+      CoreOrder = IsAc01 ? Ac01CoreOrderHemisphere : Ac02CoreOrderHemisphere;
+      break;
 
-  case SUBNUMA_MODE_QUADRANT:
-    CoreOrder = IsAc01 ? Ac01CoreOrderQuadrant : Ac02CoreOrderQuadrant;
-    break;
+    case SUBNUMA_MODE_QUADRANT:
+      CoreOrder = IsAc01 ? Ac01CoreOrderQuadrant : Ac02CoreOrderQuadrant;
+      break;
   }
 
   return CoreOrder;
@@ -334,30 +334,30 @@ CpuGetNumberOfSubNumaRegion (
   VOID
   )
 {
-  UINT8 SubNumaMode;
-  UINT8 NumberOfSubNumaRegion;
+  UINT8  SubNumaMode;
+  UINT8  NumberOfSubNumaRegion;
 
   SubNumaMode = CpuGetSubNumaMode ();
   ASSERT (SubNumaMode <= SUBNUMA_MODE_QUADRANT);
 
   switch (SubNumaMode) {
-  case SUBNUMA_MODE_MONOLITHIC:
-    NumberOfSubNumaRegion = MONOLITIC_NUM_OF_REGION;
-    break;
+    case SUBNUMA_MODE_MONOLITHIC:
+      NumberOfSubNumaRegion = MONOLITIC_NUM_OF_REGION;
+      break;
 
-  case SUBNUMA_MODE_HEMISPHERE:
-    NumberOfSubNumaRegion = HEMISPHERE_NUM_OF_REGION;
-    break;
+    case SUBNUMA_MODE_HEMISPHERE:
+      NumberOfSubNumaRegion = HEMISPHERE_NUM_OF_REGION;
+      break;
 
-  case SUBNUMA_MODE_QUADRANT:
-    NumberOfSubNumaRegion = QUADRANT_NUM_OF_REGION;
-    break;
+    case SUBNUMA_MODE_QUADRANT:
+      NumberOfSubNumaRegion = QUADRANT_NUM_OF_REGION;
+      break;
 
-  default:
-    // Should never reach there.
-    NumberOfSubNumaRegion = 0;
-    ASSERT (FALSE);
-    break;
+    default:
+      // Should never reach there.
+      NumberOfSubNumaRegion = 0;
+      ASSERT (FALSE);
+      break;
   }
 
   return NumberOfSubNumaRegion;
@@ -366,14 +366,14 @@ CpuGetNumberOfSubNumaRegion (
 STATIC
 UINT8
 CpuGetLogicCoreId (
-  UINT32 PhyCoreId
+  UINT32  PhyCoreId
   )
 {
-  UINT32             *CoreOrder;
-  UINT8              LogicCoreId;
-  UINT8              SktMaxCoreNum ;
+  UINT32  *CoreOrder;
+  UINT8   LogicCoreId;
+  UINT8   SktMaxCoreNum;
 
-  CoreOrder = CpuGetCoreOrder();
+  CoreOrder     = CpuGetCoreOrder ();
   SktMaxCoreNum = PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM;
 
   for (LogicCoreId = 0; LogicCoreId < SktMaxCoreNum; LogicCoreId++) {
@@ -388,44 +388,46 @@ CpuGetLogicCoreId (
 UINT8
 EFIAPI
 CpuGetSubNumNode (
-  UINT8  SocketId,
-  UINT16 Cpm
+  UINT8   SocketId,
+  UINT16  Cpm
   )
 {
-  UINT8 LogicCoreId;
-  UINT8 MaxFamliyCore;
-  UINT8 MaxNumCorePerNode;
-  UINT8 SubNumaNode;
+  UINT8  LogicCoreId;
+  UINT8  MaxFamliyCore;
+  UINT8  MaxNumCorePerNode;
+  UINT8  SubNumaNode;
 
-  LogicCoreId = CpuGetLogicCoreId (Cpm * PLATFORM_CPU_NUM_CORES_PER_CPM);
+  LogicCoreId   = CpuGetLogicCoreId (Cpm * PLATFORM_CPU_NUM_CORES_PER_CPM);
   MaxFamliyCore = IsAc01Processor () ? MAX_AMPERE_ALTRA_CORES : MAX_AMPERE_ALTRA_MAX_CORES;
 
   switch (CpuGetSubNumaMode ()) {
-  case SUBNUMA_MODE_MONOLITHIC:
-    SubNumaNode = (SocketId == 0) ? 0 : 1;
-    break;
+    case SUBNUMA_MODE_MONOLITHIC:
+      SubNumaNode = (SocketId == 0) ? 0 : 1;
+      break;
 
-  case SUBNUMA_MODE_HEMISPHERE:
-    MaxNumCorePerNode = MaxFamliyCore / HEMISPHERE_NUM_OF_REGION;
-    SubNumaNode = LogicCoreId / MaxNumCorePerNode;
-    if (SocketId == 1) {
-      SubNumaNode += HEMISPHERE_NUM_OF_REGION;
-    }
-    break;
+    case SUBNUMA_MODE_HEMISPHERE:
+      MaxNumCorePerNode = MaxFamliyCore / HEMISPHERE_NUM_OF_REGION;
+      SubNumaNode       = LogicCoreId / MaxNumCorePerNode;
+      if (SocketId == 1) {
+        SubNumaNode += HEMISPHERE_NUM_OF_REGION;
+      }
 
-  case SUBNUMA_MODE_QUADRANT:
-    MaxNumCorePerNode = MaxFamliyCore / QUADRANT_NUM_OF_REGION;
-    SubNumaNode = LogicCoreId / MaxNumCorePerNode;
-    if (SocketId == 1) {
-      SubNumaNode += QUADRANT_NUM_OF_REGION;
-    }
-    break;
+      break;
 
-  default:
-    // Should never reach there.
-    SubNumaNode = (SocketId == 0) ? 0 : 1;
-    ASSERT (FALSE);
-    break;
+    case SUBNUMA_MODE_QUADRANT:
+      MaxNumCorePerNode = MaxFamliyCore / QUADRANT_NUM_OF_REGION;
+      SubNumaNode       = LogicCoreId / MaxNumCorePerNode;
+      if (SocketId == 1) {
+        SubNumaNode += QUADRANT_NUM_OF_REGION;
+      }
+
+      break;
+
+    default:
+      // Should never reach there.
+      SubNumaNode = (SocketId == 0) ? 0 : 1;
+      ASSERT (FALSE);
+      break;
   }
 
   return SubNumaNode;
@@ -468,9 +470,9 @@ GetNumberOfActiveSockets (
   VOID
   )
 {
-  UINT8               NumberOfActiveSockets, Count, Index, Index1;
-  PLATFORM_CLUSTER_EN *Socket;
-  PLATFORM_INFO_HOB   *PlatformHob;
+  UINT8                NumberOfActiveSockets, Count, Index, Index1;
+  PLATFORM_CLUSTER_EN  *Socket;
+  PLATFORM_INFO_HOB    *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob == NULL) {
@@ -484,7 +486,7 @@ GetNumberOfActiveSockets (
 
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     Socket = &PlatformHob->ClusterEn[Index];
-    Count = ARRAY_SIZE (Socket->EnableMask);
+    Count  = ARRAY_SIZE (Socket->EnableMask);
     for (Index1 = 0; Index1 < Count; Index1++) {
       if (Socket->EnableMask[Index1] != 0) {
         NumberOfActiveSockets++;
@@ -506,13 +508,13 @@ GetNumberOfActiveSockets (
 UINT16
 EFIAPI
 GetNumberOfActiveCPMsPerSocket (
-  UINT8 SocketId
+  UINT8  SocketId
   )
 {
-  UINT16              NumberOfCPMs, Count, Index;
-  UINT32              Val32;
-  PLATFORM_CLUSTER_EN *Socket;
-  PLATFORM_INFO_HOB   *PlatformHob;
+  UINT16               NumberOfCPMs, Count, Index;
+  UINT32               Val32;
+  PLATFORM_CLUSTER_EN  *Socket;
+  PLATFORM_INFO_HOB    *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob == NULL) {
@@ -524,14 +526,15 @@ GetNumberOfActiveCPMsPerSocket (
   }
 
   NumberOfCPMs = 0;
-  Socket = &PlatformHob->ClusterEn[SocketId];
-  Count = ARRAY_SIZE (Socket->EnableMask);
+  Socket       = &PlatformHob->ClusterEn[SocketId];
+  Count        = ARRAY_SIZE (Socket->EnableMask);
   for (Index = 0; Index < Count; Index++) {
     Val32 = Socket->EnableMask[Index];
     while (Val32 > 0) {
       if ((Val32 & 0x1) != 0) {
         NumberOfCPMs++;
       }
+
       Val32 >>= 1;
     }
   }
@@ -550,17 +553,17 @@ GetNumberOfActiveCPMsPerSocket (
 UINT16
 EFIAPI
 GetNumberOfConfiguredCPMs (
-  UINT8 SocketId
+  UINT8  SocketId
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value;
-  UINT32     Param, ParamStart, ParamEnd;
-  UINT16     Count;
+  EFI_STATUS  Status;
+  UINT32      Value;
+  UINT32      Param, ParamStart, ParamEnd;
+  UINT16      Count;
 
-  Count = 0;
+  Count      = 0;
   ParamStart = NV_SI_S0_PCP_ACTIVECPM_0_31 + SocketId * NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
-  ParamEnd = ParamStart + NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
+  ParamEnd   = ParamStart + NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
   for (Param = ParamStart; Param < ParamEnd; Param += NV_PARAM_ENTRYSIZE) {
     Status = NVParamGet (
                Param,
@@ -570,10 +573,12 @@ GetNumberOfConfiguredCPMs (
     if (EFI_ERROR (Status)) {
       break;
     }
+
     while (Value != 0) {
       if ((Value & 0x01) != 0) {
         Count++;
       }
+
       Value >>= 1;
     }
   }
@@ -589,10 +594,10 @@ GetNumberOfConfiguredCPMs (
 VOID
 EFIAPI
 GetScpVersion (
-  UINT8 **ScpVer
+  UINT8  **ScpVer
   )
 {
-  PLATFORM_INFO_HOB *PlatformHob;
+  PLATFORM_INFO_HOB  *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob != NULL) {
@@ -610,10 +615,10 @@ GetScpVersion (
 VOID
 EFIAPI
 GetScpBuild (
-  UINT8 **ScpBuild
+  UINT8  **ScpBuild
   )
 {
-  PLATFORM_INFO_HOB *PlatformHob;
+  PLATFORM_INFO_HOB  *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob != NULL) {
@@ -631,10 +636,10 @@ GetScpBuild (
 VOID
 EFIAPI
 GetDimmList (
-  PLATFORM_DIMM_LIST **DimmList
+  PLATFORM_DIMM_LIST  **DimmList
   )
 {
-  PLATFORM_INFO_HOB *PlatformHob;
+  PLATFORM_INFO_HOB  *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob != NULL) {
@@ -652,10 +657,10 @@ GetDimmList (
 VOID
 EFIAPI
 GetDramInfo (
-  PLATFORM_DRAM_INFO **DramInfo
+  PLATFORM_DRAM_INFO  **DramInfo
   )
 {
-  PLATFORM_INFO_HOB *PlatformHob;
+  PLATFORM_INFO_HOB  *PlatformHob;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob != NULL) {
@@ -677,14 +682,14 @@ GetDramInfo (
 EFI_STATUS
 EFIAPI
 SetNumberOfConfiguredCPMs (
-  UINT8  SocketId,
-  UINT16 NumberOfCPMs
+  UINT8   SocketId,
+  UINT16  NumberOfCPMs
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value;
-  UINT32     Param, ParamStart, ParamEnd;
-  BOOLEAN    IsClear;
+  EFI_STATUS  Status;
+  UINT32      Value;
+  UINT32      Param, ParamStart, ParamEnd;
+  BOOLEAN     IsClear;
 
   IsClear = FALSE;
   if (NumberOfCPMs == 0) {
@@ -694,10 +699,10 @@ SetNumberOfConfiguredCPMs (
   Status = EFI_SUCCESS;
 
   ParamStart = NV_SI_S0_PCP_ACTIVECPM_0_31 + SocketId * NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
-  ParamEnd = ParamStart + NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
+  ParamEnd   = ParamStart + NV_PARAM_ENTRYSIZE * (PLATFORM_CPU_MAX_CPM / 32);
   for (Param = ParamStart; Param < ParamEnd; Param += NV_PARAM_ENTRYSIZE) {
     if (NumberOfCPMs >= 32) {
-      Value = 0xffffffff;
+      Value         = 0xffffffff;
       NumberOfCPMs -= 32;
     } else {
       Value = 0;
@@ -705,6 +710,7 @@ SetNumberOfConfiguredCPMs (
         Value |= (1 << (--NumberOfCPMs));
       }
     }
+
     if (IsClear) {
       /* Clear this param */
       Status = NVParamClr (
@@ -756,7 +762,7 @@ GetMaximumNumberOfCores (
 UINT16
 EFIAPI
 GetNumberOfActiveCoresPerSocket (
-  UINT8 SocketId
+  UINT8  SocketId
   )
 {
   return GetNumberOfActiveCPMsPerSocket (SocketId) * PLATFORM_CPU_NUM_CORES_PER_CPM;
@@ -774,8 +780,8 @@ GetNumberOfActiveCores (
   VOID
   )
 {
-  UINT16 NumberOfActiveCores;
-  UINT8  Index;
+  UINT16  NumberOfActiveCores;
+  UINT8   Index;
 
   NumberOfActiveCores = 0;
 
@@ -797,15 +803,15 @@ GetNumberOfActiveCores (
 BOOLEAN
 EFIAPI
 IsCpuEnabled (
-  UINT16 CpuId
+  UINT16  CpuId
   )
 {
-  PLATFORM_CLUSTER_EN *Socket;
-  PLATFORM_INFO_HOB   *PlatformHob;
-  UINT8               SocketId;
-  UINT16              ClusterId;
+  PLATFORM_CLUSTER_EN  *Socket;
+  PLATFORM_INFO_HOB    *PlatformHob;
+  UINT8                SocketId;
+  UINT16               ClusterId;
 
-  SocketId = SOCKET_ID (CpuId);
+  SocketId  = SOCKET_ID (CpuId);
   ClusterId = CLUSTER_ID (CpuId);
 
   PlatformHob = GetPlatformHob ();
@@ -838,7 +844,7 @@ IsSlaveSocketAvailable (
   VOID
   )
 {
-  UINT32 Value;
+  UINT32  Value;
 
   Value = MmioRead32 (SMPRO_EFUSE_SHADOW0 + CFG2P_OFFSET);
 

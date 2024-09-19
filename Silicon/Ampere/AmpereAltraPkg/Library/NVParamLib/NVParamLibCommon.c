@@ -33,14 +33,14 @@
 **/
 EFI_STATUS
 NVParamGet (
-  IN  UINT32 Param,
-  IN  UINT16 ACLRd,
-  OUT UINT32 *Val
+  IN  UINT32  Param,
+  IN  UINT16  ACLRd,
+  OUT UINT32  *Val
   )
 {
-  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE MmNVParamRes;
-  EFI_STATUS                          Status;
-  UINT64                              MmData[5];
+  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE  MmNVParamRes;
+  EFI_STATUS                           Status;
+  UINT64                               MmData[5];
 
   if (Val == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -61,21 +61,21 @@ NVParamGet (
   }
 
   switch (MmNVParamRes.Status) {
-  case MM_NVPARAM_RES_SUCCESS:
-    *Val = (UINT32)MmNVParamRes.Value;
-    return EFI_SUCCESS;
+    case MM_NVPARAM_RES_SUCCESS:
+      *Val = (UINT32)MmNVParamRes.Value;
+      return EFI_SUCCESS;
 
-  case MM_NVPARAM_RES_NOT_SET:
-    return EFI_NOT_FOUND;
+    case MM_NVPARAM_RES_NOT_SET:
+      return EFI_NOT_FOUND;
 
-  case MM_NVPARAM_RES_NO_PERM:
-    return EFI_ACCESS_DENIED;
+    case MM_NVPARAM_RES_NO_PERM:
+      return EFI_ACCESS_DENIED;
 
-  case MM_NVPARAM_RES_FAIL:
-    return EFI_DEVICE_ERROR;
+    case MM_NVPARAM_RES_FAIL:
+      return EFI_DEVICE_ERROR;
 
-  default:
-    return EFI_INVALID_PARAMETER;
+    default:
+      return EFI_INVALID_PARAMETER;
   }
 }
 
@@ -99,15 +99,15 @@ NVParamGet (
 **/
 EFI_STATUS
 NVParamSet (
-  IN UINT32 Param,
-  IN UINT16 ACLRd,
-  IN UINT16 ACLWr,
-  IN UINT32 Val
+  IN UINT32  Param,
+  IN UINT16  ACLRd,
+  IN UINT16  ACLWr,
+  IN UINT32  Val
   )
 {
-  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE MmNVParamRes;
-  EFI_STATUS                          Status;
-  UINT64                              MmData[5];
+  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE  MmNVParamRes;
+  EFI_STATUS                           Status;
+  UINT64                               MmData[5];
 
   MmData[0] = MM_NVPARAM_FUNC_WRITE;
   MmData[1] = Param;
@@ -126,17 +126,17 @@ NVParamSet (
   }
 
   switch (MmNVParamRes.Status) {
-  case MM_NVPARAM_RES_SUCCESS:
-    return EFI_SUCCESS;
+    case MM_NVPARAM_RES_SUCCESS:
+      return EFI_SUCCESS;
 
-  case MM_NVPARAM_RES_NO_PERM:
-    return EFI_ACCESS_DENIED;
+    case MM_NVPARAM_RES_NO_PERM:
+      return EFI_ACCESS_DENIED;
 
-  case MM_NVPARAM_RES_FAIL:
-    return EFI_DEVICE_ERROR;
+    case MM_NVPARAM_RES_FAIL:
+      return EFI_DEVICE_ERROR;
 
-  default:
-    return EFI_INVALID_PARAMETER;
+    default:
+      return EFI_INVALID_PARAMETER;
   }
 }
 
@@ -156,13 +156,13 @@ NVParamSet (
 **/
 EFI_STATUS
 NVParamClr (
-  IN UINT32 Param,
-  IN UINT16 ACLWr
+  IN UINT32  Param,
+  IN UINT16  ACLWr
   )
 {
-  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE MmNVParamRes;
-  EFI_STATUS                          Status;
-  UINT64                              MmData[5];
+  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE  MmNVParamRes;
+  EFI_STATUS                           Status;
+  UINT64                               MmData[5];
 
   MmData[0] = MM_NVPARAM_FUNC_CLEAR;
   MmData[1] = Param;
@@ -180,17 +180,17 @@ NVParamClr (
   }
 
   switch (MmNVParamRes.Status) {
-  case MM_NVPARAM_RES_SUCCESS:
-    return EFI_SUCCESS;
+    case MM_NVPARAM_RES_SUCCESS:
+      return EFI_SUCCESS;
 
-  case MM_NVPARAM_RES_NO_PERM:
-    return EFI_ACCESS_DENIED;
+    case MM_NVPARAM_RES_NO_PERM:
+      return EFI_ACCESS_DENIED;
 
-  case MM_NVPARAM_RES_FAIL:
-    return EFI_DEVICE_ERROR;
+    case MM_NVPARAM_RES_FAIL:
+      return EFI_DEVICE_ERROR;
 
-  default:
-    return EFI_INVALID_PARAMETER;
+    default:
+      return EFI_INVALID_PARAMETER;
   }
 }
 
@@ -206,9 +206,9 @@ NVParamClrAll (
   VOID
   )
 {
-  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE MmNVParamRes;
-  EFI_STATUS                          Status;
-  UINT64                              MmData[5];
+  EFI_MM_COMMUNICATE_NVPARAM_RESPONSE  MmNVParamRes;
+  EFI_STATUS                           Status;
+  UINT64                               MmData[5];
 
   MmData[0] = MM_NVPARAM_FUNC_CLEAR_ALL;
 
@@ -223,13 +223,13 @@ NVParamClrAll (
   }
 
   switch (MmNVParamRes.Status) {
-  case MM_NVPARAM_RES_SUCCESS:
-    return EFI_SUCCESS;
+    case MM_NVPARAM_RES_SUCCESS:
+      return EFI_SUCCESS;
 
-  case MM_NVPARAM_RES_FAIL:
-    return EFI_DEVICE_ERROR;
+    case MM_NVPARAM_RES_FAIL:
+      return EFI_DEVICE_ERROR;
 
-  default:
-    return EFI_INVALID_PARAMETER;
+    default:
+      return EFI_INVALID_PARAMETER;
   }
 }

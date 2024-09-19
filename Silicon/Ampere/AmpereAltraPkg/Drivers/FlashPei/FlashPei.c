@@ -28,24 +28,24 @@
 EFI_STATUS
 EFIAPI
 FlashPeiEntryPoint (
-  IN       EFI_PEI_FILE_HANDLE FileHandle,
-  IN CONST EFI_PEI_SERVICES    **PeiServices
+  IN       EFI_PEI_FILE_HANDLE  FileHandle,
+  IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
-  CHAR8               BuildUuid[PcdGetSize (PcdPlatformConfigUuid)];
-  CHAR8               StoredUuid[PcdGetSize (PcdPlatformConfigUuid)];
-  EFI_STATUS          Status;
-  UINTN               FWNvRamStartOffset;
-  UINT32              FWNvRamSize;
-  UINTN               NvRamAddress;
-  UINT32              NvRamSize;
+  CHAR8       BuildUuid[PcdGetSize (PcdPlatformConfigUuid)];
+  CHAR8       StoredUuid[PcdGetSize (PcdPlatformConfigUuid)];
+  EFI_STATUS  Status;
+  UINTN       FWNvRamStartOffset;
+  UINT32      FWNvRamSize;
+  UINTN       NvRamAddress;
+  UINT32      NvRamSize;
 
   CopyMem ((VOID *)BuildUuid, PcdGetPtr (PcdPlatformConfigUuid), sizeof (BuildUuid));
 
   NvRamAddress = PcdGet64 (PcdFlashNvStorageVariableBase64);
-  NvRamSize = FixedPcdGet32 (PcdFlashNvStorageVariableSize) +
-              FixedPcdGet32 (PcdFlashNvStorageFtwWorkingSize) +
-              FixedPcdGet32 (PcdFlashNvStorageFtwSpareSize);
+  NvRamSize    = FixedPcdGet32 (PcdFlashNvStorageVariableSize) +
+                 FixedPcdGet32 (PcdFlashNvStorageFtwWorkingSize) +
+                 FixedPcdGet32 (PcdFlashNvStorageFtwSpareSize);
 
   DEBUG ((
     DEBUG_INFO,

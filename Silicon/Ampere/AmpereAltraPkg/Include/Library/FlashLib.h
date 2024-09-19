@@ -22,8 +22,8 @@
 EFI_STATUS
 EFIAPI
 FlashGetFailSafeInfo (
-  OUT UINTN  *FailSafeBase,
-  OUT UINT32 *FailSafeSize
+  OUT UINTN   *FailSafeBase,
+  OUT UINT32  *FailSafeSize
   );
 
 /**
@@ -39,8 +39,8 @@ FlashGetFailSafeInfo (
 EFI_STATUS
 EFIAPI
 FlashGetNvRamInfo (
-  OUT UINTN  *NvRamBase,
-  OUT UINT32 *NvRamSize
+  OUT UINTN   *NvRamBase,
+  OUT UINT32  *NvRamSize
   );
 
 /**
@@ -56,8 +56,8 @@ FlashGetNvRamInfo (
 EFI_STATUS
 EFIAPI
 FlashGetNvRam2Info (
-  OUT UINTN  *NvRam2Base,
-  OUT UINT32 *NvRam2Size
+  OUT UINTN   *NvRam2Base,
+  OUT UINT32  *NvRam2Size
   );
 
 /**
@@ -73,8 +73,8 @@ FlashGetNvRam2Info (
 EFI_STATUS
 EFIAPI
 FlashEraseCommand (
-  IN  UINTN  ByteAddress,
-  IN  UINT32 Length
+  IN  UINTN   ByteAddress,
+  IN  UINT32  Length
   );
 
 /**
@@ -91,9 +91,9 @@ FlashEraseCommand (
 EFI_STATUS
 EFIAPI
 FlashWriteCommand (
-  IN  UINTN  ByteAddress,
-  IN  VOID   *Buffer,
-  IN  UINT32 Length
+  IN  UINTN   ByteAddress,
+  IN  VOID    *Buffer,
+  IN  UINT32  Length
   );
 
 /**
@@ -110,9 +110,9 @@ FlashWriteCommand (
 EFI_STATUS
 EFIAPI
 FlashReadCommand (
-  IN  UINTN  ByteAddress,
-  OUT VOID   *Buffer,
-  IN  UINT32 Length
+  IN  UINTN   ByteAddress,
+  OUT VOID    *Buffer,
+  IN  UINT32  Length
   );
 
 #endif /* FLASH_LIB_H_ */

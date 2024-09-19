@@ -9,10 +9,10 @@
 #ifndef RAS_CONFIG_NV_DATA_STRUCT_H_
 #define RAS_CONFIG_NV_DATA_STRUCT_H_
 
-#define RAS_CONFIG_VARSTORE_ID       0x1234
-#define RAS_CONFIG_FORM_ID           0x1235
+#define RAS_CONFIG_VARSTORE_ID  0x1234
+#define RAS_CONFIG_FORM_ID      0x1235
 
-#define RAS_VARSTORE_NAME        L"RasConfigNVData"
+#define RAS_VARSTORE_NAME  L"RasConfigNVData"
 
 #define RAS_CONFIG_FORMSET_GUID \
   { \
@@ -22,8 +22,8 @@
 //
 // Labels definition
 //
-#define LABEL_UPDATE                 0x3234
-#define LABEL_END                    0xffff
+#define LABEL_UPDATE  0x3234
+#define LABEL_END     0xffff
 
 #pragma pack(1)
 
@@ -31,14 +31,14 @@
 // Ras Configuration NV data structure definition
 //
 typedef struct {
-  UINT32 RasHardwareEinj;
-  UINT32 RasPcieAerFwFirstEnabled;
-  UINT32 RasBertEnabled;
-  UINT32 RasSdeiEnabled;
-  UINT32 RasDdrCeThreshold;
-  UINT32 Ras2pCeThreshold;
-  UINT32 RasCpmCeThreshold;
-  UINT32 RasLinkErrThreshold;
+  UINT32    RasHardwareEinj;
+  UINT32    RasPcieAerFwFirstEnabled;
+  UINT32    RasBertEnabled;
+  UINT32    RasSdeiEnabled;
+  UINT32    RasDdrCeThreshold;
+  UINT32    Ras2pCeThreshold;
+  UINT32    RasCpmCeThreshold;
+  UINT32    RasLinkErrThreshold;
 } RAS_CONFIG_VARSTORE_DATA;
 
 #pragma pack()

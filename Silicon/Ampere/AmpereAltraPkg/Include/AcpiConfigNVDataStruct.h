@@ -15,10 +15,10 @@
 // ACPI Configuration NV data structure definition
 //
 typedef struct {
-  UINT32 EnableApeiSupport;
-  UINT32 AcpiCppcEnable;
-  UINT32 AcpiLpiEnable;
-  UINT32 Reserved[6];
+  UINT32    EnableApeiSupport;
+  UINT32    AcpiCppcEnable;
+  UINT32    AcpiLpiEnable;
+  UINT32    Reserved[6];
 } ACPI_CONFIG_VARSTORE_DATA;
 
 #pragma pack()

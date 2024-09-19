@@ -19,13 +19,13 @@
 
 #include "MemInfoScreen.h"
 
-#define MAX_STRING_SIZE     64
-#define GB_SCALE_FACTOR     (1024*1024*1024)
-#define MB_SCALE_FACTOR     (1024*1024)
+#define MAX_STRING_SIZE  64
+#define GB_SCALE_FACTOR  (1024*1024*1024)
+#define MB_SCALE_FACTOR  (1024*1024)
 
-EFI_GUID gMemInfoFormSetGuid = MEM_INFO_FORM_SET_GUID;
+EFI_GUID  gMemInfoFormSetGuid = MEM_INFO_FORM_SET_GUID;
 
-HII_VENDOR_DEVICE_PATH mHiiVendorDevicePath = {
+HII_VENDOR_DEVICE_PATH  mHiiVendorDevicePath = {
   {
     {
       HARDWARE_DEVICE_PATH,
@@ -47,8 +47,8 @@ HII_VENDOR_DEVICE_PATH mHiiVendorDevicePath = {
   }
 };
 
-EFI_HANDLE                   DriverHandle = NULL;
-MEM_INFO_SCREEN_PRIVATE_DATA *mPrivateData = NULL;
+EFI_HANDLE                    DriverHandle  = NULL;
+MEM_INFO_SCREEN_PRIVATE_DATA  *mPrivateData = NULL;
 
 /**
   This function allows a caller to extract the current configuration for one
@@ -75,36 +75,36 @@ MEM_INFO_SCREEN_PRIVATE_DATA *mPrivateData = NULL;
 EFI_STATUS
 EFIAPI
 ExtractConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Request,
-  OUT      EFI_STRING                     *Progress,
-  OUT      EFI_STRING                     *Results
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Request,
+  OUT      EFI_STRING                      *Progress,
+  OUT      EFI_STRING                      *Results
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  MEM_INFO_SCREEN_PRIVATE_DATA    *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  EFI_STRING                      ConfigRequest;
-  EFI_STRING                      ConfigRequestHdr;
-  UINTN                           Size;
-  CHAR16                          *StrPointer;
-  BOOLEAN                         AllocatedRequest;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  MEM_INFO_SCREEN_PRIVATE_DATA     *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
+  EFI_STRING                       ConfigRequest;
+  EFI_STRING                       ConfigRequestHdr;
+  UINTN                            Size;
+  CHAR16                           *StrPointer;
+  BOOLEAN                          AllocatedRequest;
 
-  if (Progress == NULL || Results == NULL) {
+  if ((Progress == NULL) || (Results == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
   //
   // Initialize the local variables.
   //
-  ConfigRequestHdr  = NULL;
-  ConfigRequest     = NULL;
-  Size              = 0;
-  *Progress         = Request;
-  AllocatedRequest  = FALSE;
+  ConfigRequestHdr = NULL;
+  ConfigRequest    = NULL;
+  Size             = 0;
+  *Progress        = Request;
+  AllocatedRequest = FALSE;
 
-  PrivateData = MEM_INFO_SCREEN_PRIVATE_FROM_THIS (This);
+  PrivateData      = MEM_INFO_SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
 
   //
@@ -112,7 +112,7 @@ ExtractConfig (
   // Try to get the current setting from variable.
   //
   BufferSize = sizeof (MEM_INFO_VARSTORE_DATA);
-  Status = MemInfoNvparamGet (&PrivateData->VarStoreConfig);
+  Status     = MemInfoNvparamGet (&PrivateData->VarStoreConfig);
   if (EFI_ERROR (Status)) {
     return EFI_NOT_FOUND;
   }
@@ -127,8 +127,8 @@ ExtractConfig (
     // followed by "&OFFSET=0&WIDTH=WWWWWWWWWWWWWWWW" followed by a Null-terminator
     //
     ConfigRequestHdr = HiiConstructConfigHdr (&gMemInfoFormSetGuid, MEM_INFO_VARSTORE_NAME, PrivateData->DriverHandle);
-    Size = (StrLen (ConfigRequestHdr) + 32 + 1) * sizeof (CHAR16);
-    ConfigRequest = AllocateZeroPool (Size);
+    Size             = (StrLen (ConfigRequestHdr) + 32 + 1) * sizeof (CHAR16);
+    ConfigRequest    = AllocateZeroPool (Size);
     ASSERT (ConfigRequest != NULL);
     AllocatedRequest = TRUE;
     UnicodeSPrint (ConfigRequest, Size, L"%s&OFFSET=0&WIDTH=%016LX", ConfigRequestHdr, (UINT64)BufferSize);
@@ -159,9 +159,10 @@ ExtractConfig (
       if (StrPointer == NULL) {
         return EFI_INVALID_PARAMETER;
       }
+
       if (StrStr (StrPointer, L"&") == NULL) {
-        Size = (StrLen (Request) + 32 + 1) * sizeof (CHAR16);
-        ConfigRequest    = AllocateZeroPool (Size);
+        Size          = (StrLen (Request) + 32 + 1) * sizeof (CHAR16);
+        ConfigRequest = AllocateZeroPool (Size);
         ASSERT (ConfigRequest != NULL);
         AllocatedRequest = TRUE;
         UnicodeSPrint (ConfigRequest, Size, L"%s&OFFSET=0&WIDTH=%016LX", Request, (UINT64)BufferSize);
@@ -201,6 +202,7 @@ ExtractConfig (
   if (ConfigRequestHdr != NULL) {
     FreePool (ConfigRequestHdr);
   }
+
   //
   // Set Progress string to the original request string.
   //
@@ -231,23 +233,23 @@ ExtractConfig (
 EFI_STATUS
 EFIAPI
 RouteConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Configuration,
-  OUT      EFI_STRING                     *Progress
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Configuration,
+  OUT      EFI_STRING                      *Progress
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  MEM_INFO_SCREEN_PRIVATE_DATA    *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  MEM_INFO_SCREEN_PRIVATE_DATA     *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
 
-  if (Configuration == NULL || Progress == NULL) {
+  if ((Configuration == NULL) || (Progress == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
-  PrivateData = MEM_INFO_SCREEN_PRIVATE_FROM_THIS (This);
+  PrivateData      = MEM_INFO_SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
-  *Progress = Configuration;
+  *Progress        = Configuration;
 
   //
   // Check routing data in <ConfigHdr>.
@@ -279,13 +281,13 @@ RouteConfig (
   // Convert <ConfigResp> to buffer data by helper function ConfigToBlock()
   //
   BufferSize = sizeof (MEM_INFO_VARSTORE_DATA);
-  Status = HiiConfigRouting->ConfigToBlock (
-                               HiiConfigRouting,
-                               Configuration,
-                               (UINT8 *)&PrivateData->VarStoreConfig,
-                               &BufferSize,
-                               Progress
-                               );
+  Status     = HiiConfigRouting->ConfigToBlock (
+                                   HiiConfigRouting,
+                                   Configuration,
+                                   (UINT8 *)&PrivateData->VarStoreConfig,
+                                   &BufferSize,
+                                   Progress
+                                   );
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -318,99 +320,100 @@ RouteConfig (
 EFI_STATUS
 EFIAPI
 DriverCallback (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN       EFI_BROWSER_ACTION             Action,
-  IN       EFI_QUESTION_ID                QuestionId,
-  IN       UINT8                          Type,
-  IN       EFI_IFR_TYPE_VALUE             *Value,
-  OUT      EFI_BROWSER_ACTION_REQUEST     *ActionRequest
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN       EFI_BROWSER_ACTION              Action,
+  IN       EFI_QUESTION_ID                 QuestionId,
+  IN       UINT8                           Type,
+  IN       EFI_IFR_TYPE_VALUE              *Value,
+  OUT      EFI_BROWSER_ACTION_REQUEST      *ActionRequest
   )
 {
-  if (((Value == NULL) && (Action != EFI_BROWSER_ACTION_FORM_OPEN)
-       && (Action != EFI_BROWSER_ACTION_FORM_CLOSE))
-      || (ActionRequest == NULL))
+  if (  (  (Value == NULL) && (Action != EFI_BROWSER_ACTION_FORM_OPEN)
+        && (Action != EFI_BROWSER_ACTION_FORM_CLOSE))
+     || (ActionRequest == NULL))
   {
     return EFI_INVALID_PARAMETER;
   }
 
   switch (Action) {
-  case EFI_BROWSER_ACTION_FORM_OPEN:
-  case EFI_BROWSER_ACTION_FORM_CLOSE:
-    break;
-
-  case EFI_BROWSER_ACTION_DEFAULT_STANDARD:
-  case EFI_BROWSER_ACTION_DEFAULT_MANUFACTURING:
-  {
-    switch (QuestionId) {
-    case MEM_INFO_DDR_SPEED_SEL_QUESTION_ID:
-      //
-      // DDR speed selection default to auto
-      //
-      Value->u32 = 0;
+    case EFI_BROWSER_ACTION_FORM_OPEN:
+    case EFI_BROWSER_ACTION_FORM_CLOSE:
       break;
 
-    case MEM_INFO_FORM_PERFORMANCE_ECC_QUESTION_ID:
-      //
-      // ECC mode default to be enabled
-      //
-      Value->u32 = EccAuto;
-      break;
+    case EFI_BROWSER_ACTION_DEFAULT_STANDARD:
+    case EFI_BROWSER_ACTION_DEFAULT_MANUFACTURING:
+    {
+      switch (QuestionId) {
+        case MEM_INFO_DDR_SPEED_SEL_QUESTION_ID:
+          //
+          // DDR speed selection default to auto
+          //
+          Value->u32 = 0;
+          break;
 
-    case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_DE_QUESTION_ID:
-      //
-      // ErrCtrl_DE default to be enabled
-      //
-      Value->u32 = ErrCtlrDeEnable;
-      break;
+        case MEM_INFO_FORM_PERFORMANCE_ECC_QUESTION_ID:
+          //
+          // ECC mode default to be enabled
+          //
+          Value->u32 = EccAuto;
+          break;
 
-    case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_FI_QUESTION_ID:
-      //
-      // ErrCtrl_FI default to be enabled
-      //
-      Value->u32 = ErrCtlrDeEnable;
-      break;
+        case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_DE_QUESTION_ID:
+          //
+          // ErrCtrl_DE default to be enabled
+          //
+          Value->u32 = ErrCtlrDeEnable;
+          break;
 
-    case MEM_INFO_DDR_SLAVE_32BIT_QUESTION_ID:
-      //
-      // Slave's 32bit region to be disabled
-      //
-      Value->u32 = 0;
-      break;
+        case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_FI_QUESTION_ID:
+          //
+          // ErrCtrl_FI default to be enabled
+          //
+          Value->u32 = ErrCtlrDeEnable;
+          break;
 
-    case MEM_INFO_DDR_SCRUB_PATROL_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_SCRUB_PATROL_DURATION;
-      break;
+        case MEM_INFO_DDR_SLAVE_32BIT_QUESTION_ID:
+          //
+          // Slave's 32bit region to be disabled
+          //
+          Value->u32 = 0;
+          break;
 
-    case MEM_INFO_DDR_DEMAND_SCRUB_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_DEMAND_SCRUB;
-      break;
+        case MEM_INFO_DDR_SCRUB_PATROL_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_SCRUB_PATROL_DURATION;
+          break;
 
-    case MEM_INFO_DDR_WRITE_CRC_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_WRITE_CRC;
-      break;
+        case MEM_INFO_DDR_DEMAND_SCRUB_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_DEMAND_SCRUB;
+          break;
 
-    case MEM_INFO_FGR_MODE_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_FGR_MODE;
-      break;
+        case MEM_INFO_DDR_WRITE_CRC_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_WRITE_CRC;
+          break;
 
-    case MEM_INFO_REFRESH2X_MODE_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_REFRESH2X_MODE;
-      break;
+        case MEM_INFO_FGR_MODE_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_FGR_MODE;
+          break;
 
-    case MEM_INFO_FORM_NVDIMM_MODE_SEL_QUESTION_ID:
-      Value->u32 = DDR_DEFAULT_NVDIMM_MODE_SEL;
+        case MEM_INFO_REFRESH2X_MODE_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_REFRESH2X_MODE;
+          break;
+
+        case MEM_INFO_FORM_NVDIMM_MODE_SEL_QUESTION_ID:
+          Value->u32 = DDR_DEFAULT_NVDIMM_MODE_SEL;
+          break;
+      }
+
       break;
     }
-  }
-  break;
 
-  case EFI_BROWSER_ACTION_RETRIEVE:
-  case EFI_BROWSER_ACTION_CHANGING:
-  case EFI_BROWSER_ACTION_SUBMITTED:
-    break;
+    case EFI_BROWSER_ACTION_RETRIEVE:
+    case EFI_BROWSER_ACTION_CHANGING:
+    case EFI_BROWSER_ACTION_SUBMITTED:
+      break;
 
-  default:
-    return EFI_UNSUPPORTED;
+    default:
+      return EFI_UNSUPPORTED;
   }
 
   return EFI_SUCCESS;
@@ -421,10 +424,10 @@ UpdateMemInfo (
   PLATFORM_INFO_HOB  *PlatformHob
   )
 {
-  MEM_INFO_SCREEN_PRIVATE_DATA *PrivateData = mPrivateData;
-  CHAR16                       Str[MAX_STRING_SIZE];
-  EFI_HOB_RESOURCE_DESCRIPTOR  *ResHob;
-  UINT64                       Size;
+  MEM_INFO_SCREEN_PRIVATE_DATA  *PrivateData = mPrivateData;
+  CHAR16                        Str[MAX_STRING_SIZE];
+  EFI_HOB_RESOURCE_DESCRIPTOR   *ResHob;
+  UINT64                        Size;
 
   /* Update Total memory */
   UnicodeSPrint (Str, sizeof (Str), L"%d GB", PlatformHob->DramInfo.TotalSize / GB_SCALE_FACTOR);
@@ -436,14 +439,16 @@ UpdateMemInfo (
     );
 
   /* Update effective memory */
-  Size = 0;
+  Size   = 0;
   ResHob = (EFI_HOB_RESOURCE_DESCRIPTOR *)GetFirstHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR);
   while (ResHob != NULL) {
     if ((ResHob->ResourceType == EFI_RESOURCE_SYSTEM_MEMORY)) {
       Size += ResHob->ResourceLength;
     }
-    ResHob = (EFI_HOB_RESOURCE_DESCRIPTOR *)GetNextHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR,(VOID *)((UINTN)ResHob + ResHob->Header.HobLength));
+
+    ResHob = (EFI_HOB_RESOURCE_DESCRIPTOR *)GetNextHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR, (VOID *)((UINTN)ResHob + ResHob->Header.HobLength));
   }
+
   UnicodeSPrint (Str, sizeof (Str), L"%d GB", Size / GB_SCALE_FACTOR);
   HiiSetString (
     PrivateData->HiiHandle,
@@ -591,7 +596,7 @@ AddFgrModeSelection (
     STRING_TOKEN (STR_MEM_INFO_FGR_MODE_HELP),           // Question help text
     EFI_IFR_FLAG_CALLBACK | EFI_IFR_FLAG_RESET_REQUIRED, // Question flag
     EFI_IFR_NUMERIC_SIZE_4,                              // Data type of Question Value
-    OptionsOpCodeHandle,                                // Option Opcode list
+    OptionsOpCodeHandle,                                 // Option Opcode list
     NULL                                                 // Default Opcode is NULl
     );
 
@@ -606,11 +611,11 @@ AddDimmListInfo (
   VOID               *StartOpCodeHandle
   )
 {
-  MEM_INFO_SCREEN_PRIVATE_DATA *PrivateData = mPrivateData;
-  CHAR16                       Str[MAX_STRING_SIZE], Str1[MAX_STRING_SIZE];
-  UINTN                        Count;
-  PLATFORM_DIMM_INFO           *DimmInfo;
-  EFI_STRING_ID                StringId;
+  MEM_INFO_SCREEN_PRIVATE_DATA  *PrivateData = mPrivateData;
+  CHAR16                        Str[MAX_STRING_SIZE], Str1[MAX_STRING_SIZE];
+  UINTN                         Count;
+  PLATFORM_DIMM_INFO            *DimmInfo;
+  EFI_STRING_ID                 StringId;
 
   //
   // Display DIMM list info
@@ -626,33 +631,34 @@ AddDimmListInfo (
   for (Count = 0; Count < PlatformHob->DimmList.BoardDimmSlots; Count++) {
     DimmInfo = &PlatformHob->DimmList.Dimm[Count].Info;
     switch (DimmInfo->DimmType) {
-    case UDIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"UDIMM");
-      break;
+      case UDIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"UDIMM");
+        break;
 
-    case RDIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"RDIMM");
-      break;
+      case RDIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"RDIMM");
+        break;
 
-    case SODIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"SODIMM");
-      break;
+      case SODIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"SODIMM");
+        break;
 
-    case LRDIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"LRDIMM");
-      break;
+      case LRDIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"LRDIMM");
+        break;
 
-    case RSODIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"RSODIMM");
-      break;
+      case RSODIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"RSODIMM");
+        break;
 
-    case NVRDIMM:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"NV-RDIMM");
-      break;
+      case NVRDIMM:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"NV-RDIMM");
+        break;
 
-    default:
-      UnicodeSPrint (Str, sizeof (Str), L"Unknown Type");
+      default:
+        UnicodeSPrint (Str, sizeof (Str), L"Unknown Type");
     }
+
     if (DimmInfo->DimmStatus == DIMM_INSTALLED_OPERATIONAL) {
       UnicodeSPrint (Str1, sizeof (Str1), L"Slot %2d: %d GB %s Installed&Operational", Count + 1, DimmInfo->DimmSize, Str);
     } else if (DimmInfo->DimmStatus == DIMM_NOT_INSTALLED) {
@@ -714,14 +720,14 @@ MemInfoMainScreen (
   //
   // Create Hii Extend Label OpCode as the start opcode
   //
-  StartLabel = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (StartOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
+  StartLabel               = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (StartOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
   StartLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   StartLabel->Number       = LABEL_UPDATE;
 
   //
   // Create Hii Extend Label OpCode as the end opcode
   //
-  EndLabel = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (EndOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
+  EndLabel               = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (EndOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
   EndLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   EndLabel->Number       = LABEL_END;
 
@@ -824,16 +830,16 @@ MemInfoMainPerformanceScreen (
   PLATFORM_INFO_HOB  *PlatformHob
   )
 {
-  EFI_STATUS                   Status;
-  MEM_INFO_SCREEN_PRIVATE_DATA *PrivateData = mPrivateData;
-  VOID                         *StartOpCodeHandle;
-  VOID                         *OptionsEccOpCodeHandle, *OptionsScrubOpCodeHandle;
-  EFI_IFR_GUID_LABEL           *StartLabel;
-  VOID                         *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL           *EndLabel;
-  EFI_STRING_ID                StringId;
-  CHAR16                       Str[MAX_STRING_SIZE];
-  UINTN                        Idx;
+  EFI_STATUS                    Status;
+  MEM_INFO_SCREEN_PRIVATE_DATA  *PrivateData = mPrivateData;
+  VOID                          *StartOpCodeHandle;
+  VOID                          *OptionsEccOpCodeHandle, *OptionsScrubOpCodeHandle;
+  EFI_IFR_GUID_LABEL            *StartLabel;
+  VOID                          *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL            *EndLabel;
+  EFI_STRING_ID                 StringId;
+  CHAR16                        Str[MAX_STRING_SIZE];
+  UINTN                         Idx;
 
   Status = EFI_SUCCESS;
 
@@ -849,14 +855,14 @@ MemInfoMainPerformanceScreen (
   //
   // Create Hii Extend Label OpCode as the start opcode
   //
-  StartLabel = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (StartOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
+  StartLabel               = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (StartOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
   StartLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   StartLabel->Number       = LABEL_UPDATE;
 
   //
   // Create Hii Extend Label OpCode as the end opcode
   //
-  EndLabel = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (EndOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
+  EndLabel               = (EFI_IFR_GUID_LABEL *)HiiCreateGuidOpCode (EndOpCodeHandle, &gEfiIfrTianoGuid, NULL, sizeof (EFI_IFR_GUID_LABEL));
   EndLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   EndLabel->Number       = LABEL_END;
 
@@ -1048,16 +1054,16 @@ MemInfoMainNvdimmScreen (
   PLATFORM_INFO_HOB  *PlatformHob
   )
 {
-  EFI_STATUS                   Status;
-  MEM_INFO_SCREEN_PRIVATE_DATA *PrivateData;
-  VOID                         *StartOpCodeHandle;
-  VOID                         *OptionsOpCodeHandle;
-  EFI_IFR_GUID_LABEL           *StartLabel;
-  VOID                         *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL           *EndLabel;
-  CHAR16                       Str[MAX_STRING_SIZE];
+  EFI_STATUS                    Status;
+  MEM_INFO_SCREEN_PRIVATE_DATA  *PrivateData;
+  VOID                          *StartOpCodeHandle;
+  VOID                          *OptionsOpCodeHandle;
+  EFI_IFR_GUID_LABEL            *StartLabel;
+  VOID                          *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL            *EndLabel;
+  CHAR16                        Str[MAX_STRING_SIZE];
 
-  Status = EFI_SUCCESS;
+  Status      = EFI_SUCCESS;
   PrivateData = mPrivateData;
 
   if (PlatformHob == NULL) {
@@ -1101,21 +1107,21 @@ MemInfoMainNvdimmScreen (
   // Update Current NVDIMM-N Mode title Socket0
   //
   switch (PlatformHob->DramInfo.NvdimmMode[0]) {
-  case 0:
-    UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-NVDIMM");
-    break;
+    case 0:
+      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-NVDIMM");
+      break;
 
-  case 1:
-    UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-Hashed");
-    break;
+    case 1:
+      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-Hashed");
+      break;
 
-  case 2:
-    UnicodeSPrint (Str, sizeof (Str), L"%s", L"Hashed");
-    break;
+    case 2:
+      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Hashed");
+      break;
 
-  default:
-    UnicodeSPrint (Str, sizeof (Str), L"%s", L"Unknown");
-    break;
+    default:
+      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Unknown");
+      break;
   }
 
   HiiSetString (
@@ -1137,21 +1143,21 @@ MemInfoMainNvdimmScreen (
   //
   if (IsSlaveSocketActive ()) {
     switch (PlatformHob->DramInfo.NvdimmMode[1]) {
-    case 0:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-NVDIMM");
-      break;
+      case 0:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-NVDIMM");
+        break;
 
-    case 1:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-Hashed");
-      break;
+      case 1:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"Non-Hashed");
+        break;
 
-    case 2:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Hashed");
-      break;
+      case 2:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"Hashed");
+        break;
 
-    default:
-      UnicodeSPrint (Str, sizeof (Str), L"%s", L"Unknown");
-      break;
+      default:
+        UnicodeSPrint (Str, sizeof (Str), L"%s", L"Unknown");
+        break;
     }
 
     HiiSetString (
@@ -1168,6 +1174,7 @@ MemInfoMainNvdimmScreen (
       STRING_TOKEN (STR_MEM_INFO_NVDIMM_CUR_MODE_SK1_VALUE)
       );
   }
+
   //
   // Create Option OpCode to NVDIMM-N Mode Selection
   //
@@ -1256,6 +1263,7 @@ MemInfoScreenSetup (
   if (Hob == NULL) {
     return EFI_DEVICE_ERROR;
   }
+
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
   Status = MemInfoMainScreen (PlatformHob);
@@ -1278,15 +1286,15 @@ MemInfoScreenSetup (
 
 EFI_STATUS
 MemInfoScreenInitialize (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                      Status;
-  EFI_HII_HANDLE                  HiiHandle;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  BOOLEAN                         ActionFlag;
-  EFI_STRING                      ConfigRequestHdr;
+  EFI_STATUS                       Status;
+  EFI_HII_HANDLE                   HiiHandle;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
+  BOOLEAN                          ActionFlag;
+  EFI_STRING                       ConfigRequestHdr;
 
   //
   // Initialize driver private data
@@ -1299,8 +1307,8 @@ MemInfoScreenInitialize (
   mPrivateData->Signature = MEM_INFO_SCREEN_PRIVATE_DATA_SIGNATURE;
 
   mPrivateData->ConfigAccess.ExtractConfig = ExtractConfig;
-  mPrivateData->ConfigAccess.RouteConfig = RouteConfig;
-  mPrivateData->ConfigAccess.Callback = DriverCallback;
+  mPrivateData->ConfigAccess.RouteConfig   = RouteConfig;
+  mPrivateData->ConfigAccess.Callback      = DriverCallback;
 
   //
   // Locate ConfigRouting protocol
@@ -1309,6 +1317,7 @@ MemInfoScreenInitialize (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiConfigRouting = HiiConfigRouting;
 
   Status = gBS->InstallMultipleProtocolInterfaces (
@@ -1357,6 +1366,7 @@ MemInfoScreenInitialize (
     MemInfoScreenUnload (ImageHandle);
     return EFI_INVALID_PARAMETER;
   }
+
   FreePool (ConfigRequestHdr);
 
   Status = MemInfoScreenSetup ();
@@ -1367,7 +1377,7 @@ MemInfoScreenInitialize (
 
 EFI_STATUS
 MemInfoScreenUnload (
-  IN EFI_HANDLE ImageHandle
+  IN EFI_HANDLE  ImageHandle
   )
 {
   ASSERT (mPrivateData != NULL);

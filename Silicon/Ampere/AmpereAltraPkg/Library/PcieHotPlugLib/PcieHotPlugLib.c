@@ -20,7 +20,7 @@
 // SPM takes up to 4 arguments as value for SPCI call (Args.SpciParam1->Args.SpciParam4).
 #define MAX_MSG_CMD_ARGS  4
 
-UINT32    HandleId;
+UINT32  HandleId;
 
 STATIC
 EFI_STATUS

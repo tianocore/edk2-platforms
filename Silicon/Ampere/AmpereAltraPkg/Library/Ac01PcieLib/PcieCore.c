@@ -26,9 +26,9 @@
 
 VOID
 EnableDbiAccess (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex,
-  BOOLEAN           EnableDbi
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex,
+  BOOLEAN            EnableDbi
   );
 
 BOOLEAN
@@ -40,7 +40,7 @@ EndpointCfgReady (
 
 BOOLEAN
 PcieLinkUpCheck (
-  IN AC01_PCIE_CONTROLLER *Pcie
+  IN AC01_PCIE_CONTROLLER  *Pcie
   );
 
 /**
@@ -54,20 +54,20 @@ PcieLinkUpCheck (
 **/
 PHYSICAL_ADDRESS
 GetCapabilityBase (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex,
-  IN BOOLEAN           IsRootComplex,
-  IN UINT16            ExtCapabilityId
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN BOOLEAN            IsRootComplex,
+  IN UINT16             ExtCapabilityId
   )
 {
-  BOOLEAN                IsExtCapability = FALSE;
-  PHYSICAL_ADDRESS       CfgBase;
-  PHYSICAL_ADDRESS       Ret = 0;
-  PHYSICAL_ADDRESS       RootComplexCfgBase;
-  UINT32                 CapabilityId;
-  UINT32                 NextCapabilityPtr;
-  UINT32                 Val;
-  UINT32                 RestoreVal;
+  BOOLEAN           IsExtCapability = FALSE;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  Ret = 0;
+  PHYSICAL_ADDRESS  RootComplexCfgBase;
+  UINT32            CapabilityId;
+  UINT32            NextCapabilityPtr;
+  UINT32            Val;
+  UINT32            RestoreVal;
 
   RootComplexCfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
   if (!IsRootComplex) {
@@ -96,7 +96,7 @@ GetCapabilityBase (
     goto _CheckCapEnd;
   }
 
-  Val = MmioRead32 (CfgBase + TYPE1_CAP_PTR_REG);
+  Val               = MmioRead32 (CfgBase + TYPE1_CAP_PTR_REG);
   NextCapabilityPtr = GET_LOW_8_BITS (Val);
 
   // Loop untill desired capability is found else return 0
@@ -126,7 +126,7 @@ GetCapabilityBase (
     }
 
     if ((NextCapabilityPtr == 0) && !IsExtCapability) {
-      IsExtCapability = TRUE;
+      IsExtCapability   = TRUE;
       NextCapabilityPtr = EXT_CAPABILITY_START_BASE;
     }
 
@@ -156,14 +156,14 @@ _CheckCapEnd:
 STATIC
 VOID
 ConfigureEqualization (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  PHYSICAL_ADDRESS     CfgBase;
-  PHYSICAL_ADDRESS     Gen3RelatedAddr;
-  PHYSICAL_ADDRESS     Gen3EqControlAddr;
-  UINT32               Val;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  Gen3RelatedAddr;
+  PHYSICAL_ADDRESS  Gen3EqControlAddr;
+  UINT32            Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
@@ -172,7 +172,7 @@ ConfigureEqualization (
   // GEN3_RELATED_OFF and GEN3_EQ_CONTROL_OFF. Both are shadow registers
   // and controlled by GEN3_RELATED_OFF[25:24].
   //
-  Gen3RelatedAddr = CfgBase + GEN3_RELATED_OFF;
+  Gen3RelatedAddr   = CfgBase + GEN3_RELATED_OFF;
   Gen3EqControlAddr = CfgBase + GEN3_EQ_CONTROL_OFF;
 
   //
@@ -219,15 +219,15 @@ ConfigureEqualization (
 STATIC
 VOID
 ConfigurePresetGen3 (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       LaneEqControlAddr;
-  PHYSICAL_ADDRESS       SpcieCapabilityBase;
-  UINT32                 Idx;
-  UINT32                 LinkWidth;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  LaneEqControlAddr;
+  PHYSICAL_ADDRESS  SpcieCapabilityBase;
+  UINT32            Idx;
+  UINT32            LinkWidth;
+  UINT32            Val;
 
   // Get the Secondary PCI Express Extended capability base address
   SpcieCapabilityBase = GetCapabilityBase (RootComplex, PcieIndex, TRUE, SPCIE_CAPABILITY_ID);
@@ -246,9 +246,9 @@ ConfigurePresetGen3 (
   // Each register holds the Preset for 2 lanes
   for (Idx = 0; Idx < (LinkWidth / 2); Idx++) {
     LaneEqControlAddr = SpcieCapabilityBase + SPCIE_CAP_OFF_0C_REG + Idx * sizeof (UINT32);
-    Val = MmioRead32 (LaneEqControlAddr);
-    Val = DSP_TX_PRESET0_SET (Val, DEFAULT_GEN3_PRESET);
-    Val = DSP_TX_PRESET1_SET (Val, DEFAULT_GEN3_PRESET);
+    Val               = MmioRead32 (LaneEqControlAddr);
+    Val               = DSP_TX_PRESET0_SET (Val, DEFAULT_GEN3_PRESET);
+    Val               = DSP_TX_PRESET1_SET (Val, DEFAULT_GEN3_PRESET);
     MmioWrite32 (LaneEqControlAddr, Val);
   }
 }
@@ -262,16 +262,16 @@ ConfigurePresetGen3 (
 STATIC
 VOID
 ConfigurePresetGen4 (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       LaneEqControlAddr;
-  PHYSICAL_ADDRESS       Pl16gCapabilityBase;
-  UINT32                 Idx;
-  UINT32                 LinkWidth;
-  UINT32                 Val;
-  UINT8                  Preset;
+  PHYSICAL_ADDRESS  LaneEqControlAddr;
+  PHYSICAL_ADDRESS  Pl16gCapabilityBase;
+  UINT32            Idx;
+  UINT32            LinkWidth;
+  UINT32            Val;
+  UINT8             Preset;
 
   // Get the Physical Layer 16.0 GT/s Extended capability base address
   Pl16gCapabilityBase = GetCapabilityBase (RootComplex, PcieIndex, TRUE, PL16G_CAPABILITY_ID);
@@ -295,19 +295,19 @@ ConfigurePresetGen4 (
 
   if (LinkWidth == CAP_MAX_LINK_WIDTH_X2) {
     LaneEqControlAddr = Pl16gCapabilityBase + PL16G_CAP_OFF_20H_REG;
-    Val = MmioRead32 (LaneEqControlAddr);
-    Val = DSP_16G_RXTX_PRESET0_SET (Val, Preset);
-    Val = DSP_16G_RXTX_PRESET1_SET (Val, Preset);
+    Val               = MmioRead32 (LaneEqControlAddr);
+    Val               = DSP_16G_RXTX_PRESET0_SET (Val, Preset);
+    Val               = DSP_16G_RXTX_PRESET1_SET (Val, Preset);
     MmioWrite32 (LaneEqControlAddr, Val);
   } else {
     // Each register holds the Preset for 4 lanes
     for (Idx = 0; Idx < (LinkWidth / 4); Idx++) {
       LaneEqControlAddr = Pl16gCapabilityBase + PL16G_CAP_OFF_20H_REG + Idx * sizeof (UINT32);
-      Val = MmioRead32 (LaneEqControlAddr);
-      Val = DSP_16G_RXTX_PRESET0_SET (Val, Preset);
-      Val = DSP_16G_RXTX_PRESET1_SET (Val, Preset);
-      Val = DSP_16G_RXTX_PRESET2_SET (Val, Preset);
-      Val = DSP_16G_RXTX_PRESET3_SET (Val, Preset);
+      Val               = MmioRead32 (LaneEqControlAddr);
+      Val               = DSP_16G_RXTX_PRESET0_SET (Val, Preset);
+      Val               = DSP_16G_RXTX_PRESET1_SET (Val, Preset);
+      Val               = DSP_16G_RXTX_PRESET2_SET (Val, Preset);
+      Val               = DSP_16G_RXTX_PRESET3_SET (Val, Preset);
       MmioWrite32 (LaneEqControlAddr, Val);
     }
   }
@@ -315,25 +315,25 @@ ConfigurePresetGen4 (
 
 VOID
 ProgramHostBridgeInfo (
-  AC01_ROOT_COMPLEX *RootComplex
+  AC01_ROOT_COMPLEX  *RootComplex
   )
 {
-  EFI_STATUS         Status;
-  PHYSICAL_ADDRESS   TargetAddress;
-  UINT32             Val;
+  EFI_STATUS        Status;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   // Program Root Complex Bifurcation
   if (RootComplex->Active) {
     if (RootComplex->Type == RootComplexTypeA) {
       TargetAddress = RootComplex->HostBridgeBase + AC01_HOST_BRIDGE_RCA_DEV_MAP_REG;
-      Status = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
+      Status        = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
       if (!RETURN_ERROR (Status)) {
         Val = RCA_DEV_MAP_SET (Val, RootComplex->DevMapLow);
         MailboxMsgRegisterWrite (RootComplex->Socket, TargetAddress, Val);
       }
     } else {
       TargetAddress = RootComplex->HostBridgeBase + AC01_HOST_BRIDGE_RCB_DEV_MAP_REG;
-      Status = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
+      Status        = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
       if (!RETURN_ERROR (Status)) {
         Val = RCB_DEV_MAP_LOW_SET (Val, RootComplex->DevMapLow);
         Val = RCB_DEV_MAP_HIGH_SET (Val, RootComplex->DevMapHigh);
@@ -344,7 +344,7 @@ ProgramHostBridgeInfo (
 
   // Program Vendor ID and Device ID
   TargetAddress = RootComplex->HostBridgeBase + AC01_HOST_BRIDGE_VENDOR_DEVICE_ID_REG;
-  Status = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
+  Status        = MailboxMsgRegisterRead (RootComplex->Socket, TargetAddress, &Val);
   if (!RETURN_ERROR (Status)) {
     Val = VENDOR_ID_SET (Val, AMPERE_PCIE_VENDOR_ID);
     if (RootComplexTypeA == RootComplex->Type) {
@@ -352,164 +352,170 @@ ProgramHostBridgeInfo (
     } else {
       Val = DEVICE_ID_SET (Val, AC01_HOST_BRIDGE_DEVICE_ID_RCB);
     }
+
     MailboxMsgRegisterWrite (RootComplex->Socket, TargetAddress, Val);
   }
 }
 
 VOID
 ProgramRootPortInfo (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       CfgBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32             Val;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
   // Program Class Code
   TargetAddress = CfgBase + TYPE1_CLASS_CODE_REV_ID_REG;
-  Val = MmioRead32 (TargetAddress);
-  Val = REVISION_ID_SET (Val, DEFAULT_REVISION_ID);
-  Val = SUB_CLASS_CODE_SET (Val, DEFAULT_SUB_CLASS_CODE);
-  Val = BASE_CLASS_CODE_SET (Val, DEFAULT_BASE_CLASS_CODE);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = REVISION_ID_SET (Val, DEFAULT_REVISION_ID);
+  Val           = SUB_CLASS_CODE_SET (Val, DEFAULT_SUB_CLASS_CODE);
+  Val           = BASE_CLASS_CODE_SET (Val, DEFAULT_BASE_CLASS_CODE);
   MmioWrite32 (TargetAddress, Val);
 
   // Program Vendor ID and Device ID
   TargetAddress = CfgBase + TYPE1_DEV_ID_VEND_ID_REG;
-  Val = MmioRead32 (TargetAddress);
-  Val = VENDOR_ID_SET (Val, AMPERE_PCIE_VENDOR_ID);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = VENDOR_ID_SET (Val, AMPERE_PCIE_VENDOR_ID);
   if (RootComplexTypeA == RootComplex->Type) {
     Val = DEVICE_ID_SET (Val, AC01_PCIE_BRIDGE_DEVICE_ID_RCA + PcieIndex);
   } else {
     Val = DEVICE_ID_SET (Val, AC01_PCIE_BRIDGE_DEVICE_ID_RCB + PcieIndex);
   }
+
   MmioWrite32 (TargetAddress, Val);
 }
 
 VOID
 ProgramLinkCapabilities (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       CfgBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 Val;
-  UINT8                  MaxWidth;
-  UINT8                  MaxGen;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
+  UINT8             MaxWidth;
+  UINT8             MaxGen;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
   MaxWidth = RootComplex->Pcie[PcieIndex].MaxWidth;
-  MaxGen = RootComplex->Pcie[PcieIndex].MaxGen;
+  MaxGen   = RootComplex->Pcie[PcieIndex].MaxGen;
 
   TargetAddress = CfgBase + PORT_LINK_CTRL_OFF;
-  Val = MmioRead32 (TargetAddress);
+  Val           = MmioRead32 (TargetAddress);
   switch (MaxWidth) {
-  case LINK_WIDTH_X2:
-    Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X2);
-    break;
+    case LINK_WIDTH_X2:
+      Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X2);
+      break;
 
-  case LINK_WIDTH_X4:
-    Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X4);
-    break;
+    case LINK_WIDTH_X4:
+      Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X4);
+      break;
 
-  case LINK_WIDTH_X8:
-    Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X8);
-    break;
+    case LINK_WIDTH_X8:
+      Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X8);
+      break;
 
-  case LINK_WIDTH_X16:
-  default:
-    Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X16);
-    break;
+    case LINK_WIDTH_X16:
+    default:
+      Val = LINK_CAPABLE_SET (Val, LINK_CAPABLE_X16);
+      break;
   }
+
   MmioWrite32 (TargetAddress, Val);
 
   TargetAddress = CfgBase + GEN2_CTRL_OFF;
-  Val = MmioRead32 (TargetAddress);
+  Val           = MmioRead32 (TargetAddress);
   switch (MaxWidth) {
-  case LINK_WIDTH_X2:
-    Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X2);
-    break;
+    case LINK_WIDTH_X2:
+      Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X2);
+      break;
 
-  case LINK_WIDTH_X4:
-    Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X4);
-    break;
+    case LINK_WIDTH_X4:
+      Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X4);
+      break;
 
-  case LINK_WIDTH_X8:
-    Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X8);
-    break;
+    case LINK_WIDTH_X8:
+      Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X8);
+      break;
 
-  case LINK_WIDTH_X16:
-  default:
-    Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X16);
-    break;
+    case LINK_WIDTH_X16:
+    default:
+      Val = NUM_OF_LANES_SET (Val, NUM_OF_LANES_X16);
+      break;
   }
+
   MmioWrite32 (TargetAddress, Val);
 
   TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + LINK_CAPABILITIES_REG;
-  Val = MmioRead32 (TargetAddress);
+  Val           = MmioRead32 (TargetAddress);
   switch (MaxWidth) {
-  case LINK_WIDTH_X2:
-    Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X2);
-    break;
+    case LINK_WIDTH_X2:
+      Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X2);
+      break;
 
-  case LINK_WIDTH_X4:
-    Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X4);
-    break;
+    case LINK_WIDTH_X4:
+      Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X4);
+      break;
 
-  case LINK_WIDTH_X8:
-    Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X8);
-    break;
+    case LINK_WIDTH_X8:
+      Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X8);
+      break;
 
-  case LINK_WIDTH_X16:
-  default:
-    Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X16);
-    break;
+    case LINK_WIDTH_X16:
+    default:
+      Val = CAP_MAX_LINK_WIDTH_SET (Val, CAP_MAX_LINK_WIDTH_X16);
+      break;
   }
 
   switch (MaxGen) {
-  case LINK_SPEED_GEN1:
-    Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_25);
-    break;
+    case LINK_SPEED_GEN1:
+      Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_25);
+      break;
 
-  case LINK_SPEED_GEN2:
-    Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_50);
-    break;
+    case LINK_SPEED_GEN2:
+      Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_50);
+      break;
 
-  case LINK_SPEED_GEN3:
-    Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_80);
-    break;
+    case LINK_SPEED_GEN3:
+      Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_80);
+      break;
 
-  default:
-    Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_160);
-    break;
+    default:
+      Val = CAP_MAX_LINK_SPEED_SET (Val, MAX_LINK_SPEED_160);
+      break;
   }
+
   // Enable ASPM Capability
   Val = CAP_ACTIVE_STATE_LINK_PM_SUPPORT_SET (Val, L0S_L1_SUPPORTED);
   MmioWrite32 (TargetAddress, Val);
 
   TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL2_LINK_STATUS2_REG;
-  Val = MmioRead32 (TargetAddress);
+  Val           = MmioRead32 (TargetAddress);
   switch (MaxGen) {
-  case LINK_SPEED_GEN1:
-    Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_25);
-    break;
+    case LINK_SPEED_GEN1:
+      Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_25);
+      break;
 
-  case LINK_SPEED_GEN2:
-    Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_50);
-    break;
+    case LINK_SPEED_GEN2:
+      Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_50);
+      break;
 
-  case LINK_SPEED_GEN3:
-    Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_80);
-    break;
+    case LINK_SPEED_GEN3:
+      Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_80);
+      break;
 
-  default:
-    Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_160);
-    break;
+    default:
+      Val = CAP_TARGET_LINK_SPEED_SET (Val, MAX_LINK_SPEED_160);
+      break;
   }
+
   MmioWrite32 (TargetAddress, Val);
 }
 
@@ -520,35 +526,35 @@ DisableCompletionTimeOut (
   IN BOOLEAN            IsMask
   )
 {
-  PHYSICAL_ADDRESS       CfgBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
   TargetAddress = CfgBase + AER_CAPABILITY_BASE + UNCORR_ERR_MASK_OFF;
-  Val = MmioRead32 (TargetAddress);
-  Val = CMPLT_TIMEOUT_ERR_MASK_SET (Val, IsMask ? 1 : 0);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = CMPLT_TIMEOUT_ERR_MASK_SET (Val, IsMask ? 1 : 0);
   MmioWrite32 (TargetAddress, Val);
 }
 
 BOOLEAN
 EnableItsMemory (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       CsrBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 TimeOut;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  CsrBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            TimeOut;
+  UINT32            Val;
 
   CsrBase = RootComplex->Pcie[PcieIndex].CsrBase;
 
   // Clear memory shutdown
   TargetAddress = CsrBase + AC01_PCIE_CORE_RAM_SHUTDOWN_REG;
-  Val = MmioRead32 (TargetAddress);
-  Val = SD_SET (Val, 0);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = SD_SET (Val, 0);
   MmioWrite32 (TargetAddress, Val);
 
   // Poll till ITS Memory is ready
@@ -568,26 +574,26 @@ EnableItsMemory (
 
 BOOLEAN
 EnableAxiPipeClock (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex
   )
 {
-  PHYSICAL_ADDRESS       CsrBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 TimeOut;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  CsrBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            TimeOut;
+  UINT32            Val;
 
   CsrBase = RootComplex->Pcie[PcieIndex].CsrBase;
 
   // Enable subsystem clock and release reset
   TargetAddress = CsrBase + AC01_PCIE_CORE_CLOCK_REG;
-  Val = MmioRead32 (TargetAddress);
-  Val = AXIPIPE_SET (Val, 1);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = AXIPIPE_SET (Val, 1);
   MmioWrite32 (TargetAddress, Val);
 
   TargetAddress = CsrBase + AC01_PCIE_CORE_RESET_REG;
-  Val = MmioRead32 (TargetAddress);
-  Val = DWC_PCIE_SET (Val, 0);
+  Val           = MmioRead32 (TargetAddress);
+  Val           = DWC_PCIE_SET (Val, 0);
   MmioWrite32 (TargetAddress, Val);
 
   //
@@ -613,13 +619,13 @@ EnableAxiPipeClock (
 
 VOID
 SetLinkTimeout (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex,
-  UINTN             Timeout
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex,
+  UINTN              Timeout
   )
 {
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   TargetAddress = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT)
                   + AMBA_LINK_TIMEOUT_OFF;
@@ -631,13 +637,13 @@ SetLinkTimeout (
 
 VOID
 StartLinkTraining (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex,
-  BOOLEAN           StartLink
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex,
+  BOOLEAN            StartLink
   )
 {
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   TargetAddress = RootComplex->Pcie[PcieIndex].CsrBase + AC01_PCIE_CORE_LINK_CTRL_REG;
 
@@ -648,13 +654,13 @@ StartLinkTraining (
 
 VOID
 EnableDbiAccess (
-  AC01_ROOT_COMPLEX *RootComplex,
-  UINT32            PcieIndex,
-  BOOLEAN           EnableDbi
+  AC01_ROOT_COMPLEX  *RootComplex,
+  UINT32             PcieIndex,
+  BOOLEAN            EnableDbi
   )
 {
-  PHYSICAL_ADDRESS       TargetAddress;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            Val;
 
   TargetAddress = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT)
                   + MISC_CONTROL_1_OFF;
@@ -666,163 +672,163 @@ EnableDbiAccess (
 
 VOID
 Ac01PcieUpdateMaxWidth (
-  IN AC01_ROOT_COMPLEX   *RootComplex
+  IN AC01_ROOT_COMPLEX  *RootComplex
   )
 {
   if (RootComplex->Type == RootComplexTypeA) {
     switch (RootComplex->DevMapLow) {
-    case DevMapMode1:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X16;
-      break;
+      case DevMapMode1:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X16;
+        break;
 
-    case DevMapMode2:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
-      break;
+      case DevMapMode2:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+        break;
 
-    case DevMapMode3:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      break;
+      case DevMapMode3:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        break;
 
-    case DevMapMode4:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      break;
+      case DevMapMode4:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        break;
 
-    default:
-      ASSERT (FALSE);
+      default:
+        ASSERT (FALSE);
     }
   } else {
     switch (RootComplex->DevMapLow) {
-    case DevMapMode1:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
-      break;
+      case DevMapMode1:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+        break;
 
-    case DevMapMode2:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      break;
+      case DevMapMode2:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        break;
 
-    case DevMapMode3:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      break;
+      case DevMapMode3:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        break;
 
-    case DevMapMode4:
-      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      break;
+      case DevMapMode4:
+        RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        break;
 
-    default:
-      ASSERT (FALSE);
+      default:
+        ASSERT (FALSE);
     }
 
     switch (RootComplex->DevMapHigh) {
-    case DevMapMode1:
-      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
-      break;
+      case DevMapMode1:
+        RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+        break;
 
-    case DevMapMode2:
-      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      break;
+      case DevMapMode2:
+        RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        break;
 
-    case DevMapMode3:
-      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
-      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      break;
+      case DevMapMode3:
+        RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+        RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        break;
 
-    case DevMapMode4:
-      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController5].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
-      break;
+      case DevMapMode4:
+        RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController5].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+        break;
 
-    default:
-      ASSERT (FALSE);
+      default:
+        ASSERT (FALSE);
     }
   }
 }
 
 VOID
 Ac01PcieUpdateActive (
-  IN AC01_ROOT_COMPLEX   *RootComplex
+  IN AC01_ROOT_COMPLEX  *RootComplex
   )
 {
   switch (RootComplex->DevMapLow) {
-  case DevMapMode1:
-    RootComplex->Pcie[PcieController0].Active = TRUE;
-    RootComplex->Pcie[PcieController1].Active = FALSE;
-    RootComplex->Pcie[PcieController2].Active = FALSE;
-    RootComplex->Pcie[PcieController3].Active = FALSE;
-    break;
-
-  case DevMapMode2:
-    RootComplex->Pcie[PcieController0].Active = TRUE;
-    RootComplex->Pcie[PcieController1].Active = FALSE;
-    RootComplex->Pcie[PcieController2].Active = TRUE;
-    RootComplex->Pcie[PcieController3].Active = FALSE;
-    break;
-
-  case DevMapMode3:
-    RootComplex->Pcie[PcieController0].Active = TRUE;
-    RootComplex->Pcie[PcieController1].Active = FALSE;
-    RootComplex->Pcie[PcieController2].Active = TRUE;
-    RootComplex->Pcie[PcieController3].Active = TRUE;
-    break;
-
-  case DevMapMode4:
-    RootComplex->Pcie[PcieController0].Active = TRUE;
-    RootComplex->Pcie[PcieController1].Active = TRUE;
-    RootComplex->Pcie[PcieController2].Active = TRUE;
-    RootComplex->Pcie[PcieController3].Active = TRUE;
-    break;
-
-  default:
-    ASSERT (FALSE);
-  }
-
-  if (RootComplex->Type == RootComplexTypeB) {
-    switch (RootComplex->DevMapHigh) {
     case DevMapMode1:
-      RootComplex->Pcie[PcieController4].Active = TRUE;
-      RootComplex->Pcie[PcieController5].Active = FALSE;
-      RootComplex->Pcie[PcieController6].Active = FALSE;
-      RootComplex->Pcie[PcieController7].Active = FALSE;
+      RootComplex->Pcie[PcieController0].Active = TRUE;
+      RootComplex->Pcie[PcieController1].Active = FALSE;
+      RootComplex->Pcie[PcieController2].Active = FALSE;
+      RootComplex->Pcie[PcieController3].Active = FALSE;
       break;
 
     case DevMapMode2:
-      RootComplex->Pcie[PcieController4].Active = TRUE;
-      RootComplex->Pcie[PcieController5].Active = FALSE;
-      RootComplex->Pcie[PcieController6].Active = TRUE;
-      RootComplex->Pcie[PcieController7].Active = FALSE;
+      RootComplex->Pcie[PcieController0].Active = TRUE;
+      RootComplex->Pcie[PcieController1].Active = FALSE;
+      RootComplex->Pcie[PcieController2].Active = TRUE;
+      RootComplex->Pcie[PcieController3].Active = FALSE;
       break;
 
     case DevMapMode3:
-      RootComplex->Pcie[PcieController4].Active = TRUE;
-      RootComplex->Pcie[PcieController5].Active = FALSE;
-      RootComplex->Pcie[PcieController6].Active = TRUE;
-      RootComplex->Pcie[PcieController7].Active = TRUE;
+      RootComplex->Pcie[PcieController0].Active = TRUE;
+      RootComplex->Pcie[PcieController1].Active = FALSE;
+      RootComplex->Pcie[PcieController2].Active = TRUE;
+      RootComplex->Pcie[PcieController3].Active = TRUE;
       break;
 
     case DevMapMode4:
-      RootComplex->Pcie[PcieController4].Active = TRUE;
-      RootComplex->Pcie[PcieController5].Active = TRUE;
-      RootComplex->Pcie[PcieController6].Active = TRUE;
-      RootComplex->Pcie[PcieController7].Active = TRUE;
+      RootComplex->Pcie[PcieController0].Active = TRUE;
+      RootComplex->Pcie[PcieController1].Active = TRUE;
+      RootComplex->Pcie[PcieController2].Active = TRUE;
+      RootComplex->Pcie[PcieController3].Active = TRUE;
       break;
 
     default:
       ASSERT (FALSE);
+  }
+
+  if (RootComplex->Type == RootComplexTypeB) {
+    switch (RootComplex->DevMapHigh) {
+      case DevMapMode1:
+        RootComplex->Pcie[PcieController4].Active = TRUE;
+        RootComplex->Pcie[PcieController5].Active = FALSE;
+        RootComplex->Pcie[PcieController6].Active = FALSE;
+        RootComplex->Pcie[PcieController7].Active = FALSE;
+        break;
+
+      case DevMapMode2:
+        RootComplex->Pcie[PcieController4].Active = TRUE;
+        RootComplex->Pcie[PcieController5].Active = FALSE;
+        RootComplex->Pcie[PcieController6].Active = TRUE;
+        RootComplex->Pcie[PcieController7].Active = FALSE;
+        break;
+
+      case DevMapMode3:
+        RootComplex->Pcie[PcieController4].Active = TRUE;
+        RootComplex->Pcie[PcieController5].Active = FALSE;
+        RootComplex->Pcie[PcieController6].Active = TRUE;
+        RootComplex->Pcie[PcieController7].Active = TRUE;
+        break;
+
+      case DevMapMode4:
+        RootComplex->Pcie[PcieController4].Active = TRUE;
+        RootComplex->Pcie[PcieController5].Active = TRUE;
+        RootComplex->Pcie[PcieController6].Active = TRUE;
+        RootComplex->Pcie[PcieController7].Active = TRUE;
+        break;
+
+      default:
+        ASSERT (FALSE);
     }
   }
 }
@@ -841,7 +847,7 @@ Ac01PcieCorrectBifurcation (
 
   Status = EFI_SUCCESS;
 
-  if (RootComplex == NULL || LinkCap == NULL || Bifur == NULL) {
+  if ((RootComplex == NULL) || (LinkCap == NULL) || (Bifur == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -864,62 +870,67 @@ Ac01PcieCorrectBifurcation (
   }
 
   switch (Count) {
-  case 3:
-    // Bifurcation should be X/0/X/X
-    *Bifur = BIFURCATION_X0XX;
-    break;
+    case 3:
+      // Bifurcation should be X/0/X/X
+      *Bifur = BIFURCATION_X0XX;
+      break;
 
-  case 2:
-    if (LinkCap[PcieController0].Uint32 != 0) {
-      if (LinkCap[PcieController2].Uint32) {
+    case 2:
+      if (LinkCap[PcieController0].Uint32 != 0) {
+        if (LinkCap[PcieController2].Uint32) {
+          *Bifur = BIFURCATION_X0X0;
+        } else {
+          *Bifur = BIFURCATION_X0XX;
+        }
+      } else {
+        *Bifur = BIFURCATION_XXXX;
+      }
+
+      break;
+
+    case 1:
+      if (LinkCap[PcieController0].Uint32 != 0) {
+        *Bifur = BIFURCATION_X000;
+      } else if (LinkCap[PcieController2].Uint32 != 0) {
         *Bifur = BIFURCATION_X0X0;
       } else {
-        *Bifur = BIFURCATION_X0XX;
-      }
-    } else {
-      *Bifur = BIFURCATION_XXXX;
-    }
-    break;
+        // In the lane reverse case, we choose best width
+        switch (LinkCap[PcieController3].Bits.MaxLinkWidth) {
+          /* MAX_SPEED [9:4] */
+          case CAP_MAX_LINK_WIDTH_X1:
+          case CAP_MAX_LINK_WIDTH_X2:
+            *Bifur = BIFURCATION_XXXX;
+            break;
 
-  case 1:
-    if (LinkCap[PcieController0].Uint32 != 0) {
-      *Bifur = BIFURCATION_X000;
-    } else if (LinkCap[PcieController2].Uint32 != 0) {
-      *Bifur = BIFURCATION_X0X0;
-    } else {
-      // In the lane reverse case, we choose best width
-      switch (LinkCap[PcieController3].Bits.MaxLinkWidth) { /* MAX_SPEED [9:4] */
-      case CAP_MAX_LINK_WIDTH_X1:
-      case CAP_MAX_LINK_WIDTH_X2:
-        *Bifur = BIFURCATION_XXXX;
-        break;
+          case CAP_MAX_LINK_WIDTH_X4:
+            if (RootComplex->Type == RootComplexTypeA) {
+              *Bifur = BIFURCATION_XXXX;
+            } else {
+              *Bifur = BIFURCATION_X0X0;
+            }
 
-      case CAP_MAX_LINK_WIDTH_X4:
-        if (RootComplex->Type == RootComplexTypeA) {
-          *Bifur = BIFURCATION_XXXX;
-        } else {
-          *Bifur = BIFURCATION_X0X0;
+            break;
+
+          case CAP_MAX_LINK_WIDTH_X8:
+            if (RootComplex->Type == RootComplexTypeA) {
+              *Bifur = BIFURCATION_X0X0;
+            } else {
+              *Bifur = BIFURCATION_X000;
+            }
+
+            break;
+
+          default:
+            *Bifur = BIFURCATION_X000;
+            break;
         }
-        break;
-
-      case CAP_MAX_LINK_WIDTH_X8:
-        if (RootComplex->Type == RootComplexTypeA) {
-          *Bifur = BIFURCATION_X0X0;
-        } else {
-          *Bifur = BIFURCATION_X000;
-        }
-        break;
-
-      default:
-        *Bifur = BIFURCATION_X000;
-        break;
       }
-    }
-    break;
 
-  default:
-    Status = EFI_NOT_AVAILABLE_YET;
-    break;
+      break;
+
+    default:
+      Status = EFI_NOT_AVAILABLE_YET;
+      break;
   }
 
   return Status;
@@ -937,17 +948,17 @@ Ac01PcieCorrectBifurcation (
 **/
 RETURN_STATUS
 Ac01PcieCoreSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN BOOLEAN           ReInit,
-  IN UINT8             ReInitPcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN BOOLEAN            ReInit,
+  IN UINT8              ReInitPcieIndex
   )
 {
-  PHYSICAL_ADDRESS     CfgBase;
-  PHYSICAL_ADDRESS     CsrBase;
-  PHYSICAL_ADDRESS     TargetAddress;
-  RETURN_STATUS        Status;
-  UINT32               Val;
-  UINT8                PcieIndex;
+  PHYSICAL_ADDRESS              CfgBase;
+  PHYSICAL_ADDRESS              CsrBase;
+  PHYSICAL_ADDRESS              TargetAddress;
+  RETURN_STATUS                 Status;
+  UINT32                        Val;
+  UINT8                         PcieIndex;
   BOOLEAN                       AutoLaneBifurcationEnabled = FALSE;
   PCI_REG_PCIE_LINK_CAPABILITY  LinkCap[MaxPcieController];
   AC01_PCIE_CONTROLLER          *Pcie;
@@ -971,11 +982,13 @@ AutoLaneBifurcationRetry:
         if (!Pcie->Active || !PcieLinkUpCheck (Pcie)) {
           continue;
         }
+
         DEBUG ((DEBUG_INFO, "RootComplex->ID:%d Port:%d link up\n", RootComplex->ID, PcieIndex));
         TargetAddress = GetCapabilityBase (RootComplex, PcieIndex, FALSE, EFI_PCI_CAPABILITY_ID_PCIEXP);
         if (TargetAddress == 0) {
           continue;
         }
+
         LinkCap[PcieIndex].Uint32 = MmioRead32 (TargetAddress + LINK_CAPABILITIES_REG);
       }
 
@@ -1038,7 +1051,6 @@ AutoLaneBifurcationRetry:
 
   // Setup each controller
   for (PcieIndex = 0; PcieIndex < RootComplex->MaxPcieController; PcieIndex++) {
-
     if (ReInit) {
       PcieIndex = ReInitPcieIndex;
     }
@@ -1054,7 +1066,7 @@ AutoLaneBifurcationRetry:
 
     // Put Controller into reset if not in reset already
     TargetAddress = CsrBase + AC01_PCIE_CORE_RESET_REG;
-    Val = MmioRead32 (TargetAddress);
+    Val           = MmioRead32 (TargetAddress);
     if (!(Val & RESET_MASK)) {
       Val = DWC_PCIE_SET (Val, ASSERT_RESET);
       MmioWrite32 (TargetAddress, Val);
@@ -1092,19 +1104,19 @@ AutoLaneBifurcationRetry:
 
     // Program the power limit
     TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + SLOT_CAPABILITIES_REG;
-    Val = MmioRead32 (TargetAddress);
+    Val           = MmioRead32 (TargetAddress);
     // In order to detect the NVMe after OS boots successfully but
     // that NVMe's not present previously. Hot Plug Slot Capable
     // will help PCI Linux driver to initialize its slot iomem resource
     // which is used for detecting the disk when it's inserted.
-    Val = SLOT_HPC_SET(Val, 1);
+    Val = SLOT_HPC_SET (Val, 1);
     Val = SLOT_CAP_SLOT_POWER_LIMIT_VALUE_SET (Val, SLOT_POWER_LIMIT_75W);
     MmioWrite32 (TargetAddress, Val);
 
     // Program DTI for ATS support
     TargetAddress = CfgBase + DTIM_CTRL0_OFF;
-    Val = MmioRead32 (TargetAddress);
-    Val = DTIM_CTRL0_ROOT_PORT_ID_SET (Val, 0);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = DTIM_CTRL0_ROOT_PORT_ID_SET (Val, 0);
     MmioWrite32 (TargetAddress, Val);
 
     //
@@ -1117,15 +1129,15 @@ AutoLaneBifurcationRetry:
 
     // Set Zero byte request handling
     TargetAddress = CfgBase + FILTER_MASK_2_OFF;
-    Val = MmioRead32 (TargetAddress);
-    Val = CX_FLT_MASK_VENMSG0_DROP_SET (Val, 0);
-    Val = CX_FLT_MASK_VENMSG1_DROP_SET (Val, 0);
-    Val = CX_FLT_MASK_DABORT_4UCPL_SET (Val, 0);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = CX_FLT_MASK_VENMSG0_DROP_SET (Val, 0);
+    Val           = CX_FLT_MASK_VENMSG1_DROP_SET (Val, 0);
+    Val           = CX_FLT_MASK_DABORT_4UCPL_SET (Val, 0);
     MmioWrite32 (TargetAddress, Val);
 
     TargetAddress = CfgBase + AMBA_ORDERING_CTRL_OFF;
-    Val = MmioRead32 (TargetAddress);
-    Val = AX_MSTR_ZEROLREAD_FW_SET (Val, 0);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = AX_MSTR_ZEROLREAD_FW_SET (Val, 0);
     MmioWrite32 (TargetAddress, Val);
 
     //
@@ -1133,20 +1145,20 @@ AutoLaneBifurcationRetry:
     // Set Completion with CA/UR handling non-CFG Request
     //
     TargetAddress = CfgBase + AMBA_ERROR_RESPONSE_DEFAULT_OFF;
-    Val = MmioRead32 (TargetAddress);
+    Val           = MmioRead32 (TargetAddress);
     // 0x2: OKAY with FFFF_0001 and FFFF_FFFF
     Val = AMBA_ERROR_RESPONSE_CRS_SET (Val, 0x2);
     MmioWrite32 (TargetAddress, Val);
 
     // Set Legacy PCIE interrupt map to INTA
     TargetAddress = CfgBase + BRIDGE_CTRL_INT_PIN_INT_LINE_REG;
-    Val = MmioRead32 (TargetAddress);
-    Val = INT_PIN_SET (Val, IRQ_INT_A);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = INT_PIN_SET (Val, IRQ_INT_A);
     MmioWrite32 (TargetAddress, Val);
 
     TargetAddress = CsrBase + AC01_PCIE_CORE_IRQ_SEL_REG;
-    Val = MmioRead32 (TargetAddress);
-    Val = INTPIN_SET (Val, IRQ_INT_A);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = INTPIN_SET (Val, IRQ_INT_A);
     MmioWrite32 (TargetAddress, Val);
 
     if (RootComplex->Pcie[PcieIndex].MaxGen >= LINK_SPEED_GEN2) {
@@ -1172,15 +1184,15 @@ AutoLaneBifurcationRetry:
 
     // Enable common clock for downstream
     TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG;
-    Val = MmioRead32 (TargetAddress);
-    Val = CAP_SLOT_CLK_CONFIG_SET (Val, 1);
-    Val = CAP_COMMON_CLK_SET (Val, 1);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = CAP_SLOT_CLK_CONFIG_SET (Val, 1);
+    Val           = CAP_COMMON_CLK_SET (Val, 1);
     MmioWrite32 (TargetAddress, Val);
 
     // Match aux_clk to system
     TargetAddress = CfgBase + AUX_CLK_FREQ_OFF;
-    Val = MmioRead32 (TargetAddress);
-    Val = AUX_CLK_FREQ_SET (Val, AUX_CLK_500MHZ);
+    Val           = MmioRead32 (TargetAddress);
+    Val           = AUX_CLK_FREQ_SET (Val, AUX_CLK_500MHZ);
     MmioWrite32 (TargetAddress, Val);
 
     // Assert PERST low to reset endpoint
@@ -1193,7 +1205,7 @@ AutoLaneBifurcationRetry:
     StartLinkTraining (RootComplex, PcieIndex, TRUE);
 
     // Lock programming of config space
-    EnableDbiAccess  (RootComplex, PcieIndex, FALSE);
+    EnableDbiAccess (RootComplex, PcieIndex, FALSE);
 
     if (ReInit) {
       return RETURN_SUCCESS;
@@ -1209,12 +1221,12 @@ AutoLaneBifurcationRetry:
 
 BOOLEAN
 PcieLinkUpCheck (
-  IN AC01_PCIE_CONTROLLER *Pcie
+  IN AC01_PCIE_CONTROLLER  *Pcie
   )
 {
-  PHYSICAL_ADDRESS       CsrBase;
-  UINT32                 BlockEvent;
-  UINT32                 LinkStat;
+  PHYSICAL_ADDRESS  CsrBase;
+  UINT32            BlockEvent;
+  UINT32            LinkStat;
 
   CsrBase = Pcie->CsrBase;
 
@@ -1231,10 +1243,11 @@ PcieLinkUpCheck (
   }
 
   BlockEvent = MmioRead32 (CsrBase + AC01_PCIE_CORE_BLOCK_EVENT_STAT_REG);
-  LinkStat = MmioRead32 (CsrBase + AC01_PCIE_CORE_LINK_STAT_REG);
+  LinkStat   = MmioRead32 (CsrBase + AC01_PCIE_CORE_LINK_STAT_REG);
 
-  if (((BlockEvent & LINKUP_MASK) != 0)
-      && (SMLH_LTSSM_STATE_GET(LinkStat) == LTSSM_STATE_L0)) {
+  if (  ((BlockEvent & LINKUP_MASK) != 0)
+     && (SMLH_LTSSM_STATE_GET (LinkStat) == LTSSM_STATE_L0))
+  {
     return TRUE;
   }
 
@@ -1248,15 +1261,14 @@ PcieLinkUpCheck (
 **/
 VOID
 Ac01PcieCoreEndEnumeration (
-  IN AC01_ROOT_COMPLEX *RootComplex
+  IN AC01_ROOT_COMPLEX  *RootComplex
   )
 {
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            PcieIndex;
+  UINT32            Val;
 
-  PHYSICAL_ADDRESS                TargetAddress;
-  UINT32                          PcieIndex;
-  UINT32                          Val;
-
-  if (RootComplex == NULL || !RootComplex->Active) {
+  if ((RootComplex == NULL) || !RootComplex->Active) {
     return;
   }
 
@@ -1266,7 +1278,7 @@ Ac01PcieCoreEndEnumeration (
       continue;
     }
 
-    if (!PcieLinkUpCheck(&RootComplex->Pcie[PcieIndex])) {
+    if (!PcieLinkUpCheck (&RootComplex->Pcie[PcieIndex])) {
       // If link down/disabled after enumeration, disable completed time out
       DisableCompletionTimeOut (RootComplex, PcieIndex, TRUE);
     }
@@ -1302,16 +1314,17 @@ Ac01PcieCoreLinkCheck (
   IN UINT8              EpMaxGen
   )
 {
-  PHYSICAL_ADDRESS      CsrBase, CfgBase;
-  UINT32                Val, LinkStat;
-  UINT32                MaxWidth, MaxGen;
+  PHYSICAL_ADDRESS  CsrBase, CfgBase;
+  UINT32            Val, LinkStat;
+  UINT32            MaxWidth, MaxGen;
 
   CsrBase = RootComplex->Pcie[PcieIndex].CsrBase;
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
   Val = MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CAPABILITIES_REG);
   if ((CAP_MAX_LINK_WIDTH_GET (Val) == 0) ||
-      (CAP_MAX_LINK_SPEED_GET (Val) == 0)) {
+      (CAP_MAX_LINK_SPEED_GET (Val) == 0))
+  {
     DEBUG ((DEBUG_INFO, "\tPCIE%d.%d: Wrong RootComplex capabilities\n", RootComplex->ID, PcieIndex));
     return LINK_CHECK_WRONG_PARAMETER;
   }
@@ -1336,7 +1349,7 @@ Ac01PcieCoreLinkCheck (
   }
 
   LinkStat = MmioRead32 (CsrBase + AC01_PCIE_CORE_LINK_STAT_REG);
-  Val = MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
+  Val      = MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
   DEBUG ((
     DEBUG_INFO,
     "PCIE%d.%d: Link MaxWidth %d MaxGen %d, AC01_PCIE_CORE_LINK_STAT_REG 0x%x",
@@ -1363,21 +1376,21 @@ Ac01PcieCoreLinkCheck (
 
 INT32
 PFACounterRead (
-  IN AC01_ROOT_COMPLEX   *RootComplex,
-  IN UINT8               PcieIndex,
-  IN UINT64              RasDesCapabilityBase
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN UINT64             RasDesCapabilityBase
   )
 {
-  INT32                  Ret = LINK_CHECK_SUCCESS;
-  UINT32                 Val;
-  UINT8                  ErrCode, ErrGrpNum;
+  INT32   Ret = LINK_CHECK_SUCCESS;
+  UINT32  Val;
+  UINT8   ErrCode, ErrGrpNum;
 
-  UINT32 ErrCtrlCfg[] = {
+  UINT32  ErrCtrlCfg[] = {
     0x000, 0x001, 0x002, 0x003, 0x004, 0x005, 0x006, 0x007, 0x008, 0x009, 0x00A, // Per Lane
     0x105, 0x106, 0x107, 0x108, 0x109, 0x10A,
     0x200, 0x201, 0x202, 0x203, 0x204, 0x205, 0x206, 0x207,
     0x300, 0x301, 0x302, 0x303, 0x304, 0x305,
-    0x400, 0x401,                                                                // Per Lane
+    0x400, 0x401, // Per Lane
     0x500, 0x501, 0x502, 0x503, 0x504, 0x505, 0x506, 0x507, 0x508, 0x509, 0x50A, 0x50B, 0x50C, 0x50D
   };
 
@@ -1394,6 +1407,7 @@ PFACounterRead (
         // RootComplexTypeB - 8 PCIe controller per port, 1 controller in charge of 2 lanes
         Val = ECCR_LANE_SEL_SET (Val, PcieIndex * 2);
       }
+
       Val = ECCR_GROUP_EVENT_SEL_SET (Val, ErrCtrlCfg[ErrCode]);
       MmioWrite32 (RasDesCapabilityBase + EVENT_COUNTER_CONTROL_REG, Val);
 
@@ -1431,15 +1445,15 @@ PFACounterRead (
 **/
 INT32
 Ac01PFACommand (
-  IN AC01_ROOT_COMPLEX   *RootComplex,
-  IN UINT8               PcieIndex,
-  IN UINT8               PFAMode
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN UINT8              PFAMode
   )
 {
-  PHYSICAL_ADDRESS       RasDesCapabilityBase;
-  PHYSICAL_ADDRESS       TargetAddress;
-  INT32                  Ret = LINK_CHECK_SUCCESS;
-  UINT32                 Val;
+  PHYSICAL_ADDRESS  RasDesCapabilityBase;
+  PHYSICAL_ADDRESS  TargetAddress;
+  INT32             Ret = LINK_CHECK_SUCCESS;
+  UINT32            Val;
 
   // Allow programming to config space
   EnableDbiAccess (RootComplex, PcieIndex, TRUE);
@@ -1454,26 +1468,26 @@ Ac01PFACommand (
   TargetAddress = RasDesCapabilityBase + EVENT_COUNTER_CONTROL_REG;
 
   switch (PFAMode) {
-  case PFA_MODE_ENABLE:
-    Val = MmioRead32 (TargetAddress);
-    Val = ECCR_EVENT_COUNTER_ENABLE_SET (Val, EVENT_COUNTER_ENABLE_ALL_ON);
-    Val = ECCR_EVENT_COUNTER_CLEAR_SET (Val, EVENT_COUNTER_CLEAR_NO_CHANGE);
-    MmioWrite32 (TargetAddress, Val);
-    break;
+    case PFA_MODE_ENABLE:
+      Val = MmioRead32 (TargetAddress);
+      Val = ECCR_EVENT_COUNTER_ENABLE_SET (Val, EVENT_COUNTER_ENABLE_ALL_ON);
+      Val = ECCR_EVENT_COUNTER_CLEAR_SET (Val, EVENT_COUNTER_CLEAR_NO_CHANGE);
+      MmioWrite32 (TargetAddress, Val);
+      break;
 
-  case PFA_MODE_CLEAR:
-    Val = MmioRead32 (TargetAddress);
-    Val = ECCR_EVENT_COUNTER_ENABLE_SET (Val, EVENT_COUNTER_ENABLE_NO_CHANGE);
-    Val = ECCR_EVENT_COUNTER_CLEAR_SET (Val, EVENT_COUNTER_CLEAR_ALL_CLEAR);
-    MmioWrite32 (TargetAddress, Val);
-    break;
+    case PFA_MODE_CLEAR:
+      Val = MmioRead32 (TargetAddress);
+      Val = ECCR_EVENT_COUNTER_ENABLE_SET (Val, EVENT_COUNTER_ENABLE_NO_CHANGE);
+      Val = ECCR_EVENT_COUNTER_CLEAR_SET (Val, EVENT_COUNTER_CLEAR_ALL_CLEAR);
+      MmioWrite32 (TargetAddress, Val);
+      break;
 
-  case PFA_MODE_READ:
-    Ret = PFACounterRead (RootComplex, PcieIndex, RasDesCapabilityBase);
-    break;
+    case PFA_MODE_READ:
+      Ret = PFACounterRead (RootComplex, PcieIndex, RasDesCapabilityBase);
+      break;
 
-  default:
-    DEBUG ((DEBUG_ERROR, "%a: Invalid PFA mode\n"));
+    default:
+      DEBUG ((DEBUG_ERROR, "%a: Invalid PFA mode\n"));
   }
 
   // Disable programming to config space
@@ -1484,13 +1498,13 @@ Ac01PFACommand (
 
 BOOLEAN
 EndpointCfgReady (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex,
-  IN UINT32            TimeOut
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN UINT32             TimeOut
   )
 {
-  PHYSICAL_ADDRESS      CfgBase;
-  UINT32                Val;
+  PHYSICAL_ADDRESS  CfgBase;
+  UINT32            Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << BUS_SHIFT);
 
@@ -1498,7 +1512,7 @@ EndpointCfgReady (
   // reach to Timeout (or more depend on card)
   do {
     Val = MmioRead32 (CfgBase);
-    if (Val != 0xFFFF0001 && Val != 0xFFFFFFFF) {
+    if ((Val != 0xFFFF0001) && (Val != 0xFFFFFFFF)) {
       return TRUE;
     }
 
@@ -1525,28 +1539,28 @@ Ac01PcieCoreGetEndpointInfo (
   OUT UINT8              *EpMaxGen
   )
 {
-  PHYSICAL_ADDRESS      CfgBase;
-  PHYSICAL_ADDRESS      EpCfgAddr;
-  PHYSICAL_ADDRESS      PcieCapBase;
-  PHYSICAL_ADDRESS      SecLatTimerAddr;
-  PHYSICAL_ADDRESS      TargetAddress;
-  UINT32                RestoreVal;
-  UINT32                Val;
+  PHYSICAL_ADDRESS  CfgBase;
+  PHYSICAL_ADDRESS  EpCfgAddr;
+  PHYSICAL_ADDRESS  PcieCapBase;
+  PHYSICAL_ADDRESS  SecLatTimerAddr;
+  PHYSICAL_ADDRESS  TargetAddress;
+  UINT32            RestoreVal;
+  UINT32            Val;
 
-  CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
-  SecLatTimerAddr  = CfgBase + SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG;
+  CfgBase         = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
+  SecLatTimerAddr = CfgBase + SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG;
 
   *EpMaxWidth = 0;
-  *EpMaxGen = 0;
+  *EpMaxGen   = 0;
 
   // Allow programming to config space
   EnableDbiAccess (RootComplex, PcieIndex, TRUE);
 
-  Val = MmioRead32 (SecLatTimerAddr);
+  Val        = MmioRead32 (SecLatTimerAddr);
   RestoreVal = Val;
-  Val = SUB_BUS_SET (Val, DEFAULT_SUB_BUS);
-  Val = SEC_BUS_SET (Val, RootComplex->Pcie[PcieIndex].DevNum);
-  Val = PRIM_BUS_SET (Val, DEFAULT_PRIM_BUS);
+  Val        = SUB_BUS_SET (Val, DEFAULT_SUB_BUS);
+  Val        = SEC_BUS_SET (Val, RootComplex->Pcie[PcieIndex].DevNum);
+  Val        = PRIM_BUS_SET (Val, DEFAULT_PRIM_BUS);
   MmioWrite32 (SecLatTimerAddr, Val);
   EpCfgAddr = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << BUS_SHIFT);
 
@@ -1574,12 +1588,13 @@ Ac01PcieCoreGetEndpointInfo (
         PcieIndex
         ));
     } else {
-      Val = MmioRead32 (PcieCapBase + LINK_CAPABILITIES_REG);
+      Val         = MmioRead32 (PcieCapBase + LINK_CAPABILITIES_REG);
       *EpMaxWidth = CAP_MAX_LINK_WIDTH_GET (Val);
-      *EpMaxGen = CAP_MAX_LINK_SPEED_GET (Val);
+      *EpMaxGen   = CAP_MAX_LINK_SPEED_GET (Val);
       DEBUG ((
         DEBUG_INFO,
-        "PCIE%d.%d EP MaxWidth %d EP MaxGen %d \n", RootComplex->ID,
+        "PCIE%d.%d EP MaxWidth %d EP MaxGen %d \n",
+        RootComplex->ID,
         PcieIndex,
         *EpMaxWidth,
         *EpMaxGen
@@ -1587,9 +1602,9 @@ Ac01PcieCoreGetEndpointInfo (
 
       // From EP, enabling common clock for upstream
       TargetAddress = PcieCapBase + LINK_CONTROL_LINK_STATUS_REG;
-      Val = MmioRead32 (TargetAddress);
-      Val = CAP_SLOT_CLK_CONFIG_SET (Val, 1);
-      Val = CAP_COMMON_CLK_SET (Val, 1);
+      Val           = MmioRead32 (TargetAddress);
+      Val           = CAP_SLOT_CLK_CONFIG_SET (Val, 1);
+      Val           = CAP_COMMON_CLK_SET (Val, 1);
       MmioWrite32 (TargetAddress, Val);
     }
   }
@@ -1604,11 +1619,11 @@ Exit:
 
 VOID
 PollLinkUp (
-  IN AC01_ROOT_COMPLEX   *RootComplex,
-  IN UINT8               PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  UINT32        TimeOut;
+  UINT32  TimeOut;
 
   // Poll until link up
   // This checking for linkup status and
@@ -1652,13 +1667,13 @@ PollLinkUp (
 **/
 INT32
 Ac01PcieCoreQoSLinkCheckRecovery (
-  IN AC01_ROOT_COMPLEX   *RootComplex,
-  IN UINT8               PcieIndex
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex
   )
 {
-  INT32       LinkStatusCheck, RasdesChecking;
-  INT32       NumberOfReset = MAX_REINIT;
-  UINT8       EpMaxWidth, EpMaxGen;
+  INT32  LinkStatusCheck, RasdesChecking;
+  INT32  NumberOfReset = MAX_REINIT;
+  UINT8  EpMaxWidth, EpMaxGen;
 
   // PCIe controller is not active or Link is not up
   // Nothing to be done
@@ -1689,8 +1704,8 @@ Ac01PcieCoreQoSLinkCheckRecovery (
 
       // If link check functions return passed, then breaking out
       // else go to soft reset
-      if (LinkStatusCheck != LINK_CHECK_FAILED &&
-          RasdesChecking != LINK_CHECK_FAILED &&
+      if ((LinkStatusCheck != LINK_CHECK_FAILED) &&
+          (RasdesChecking != LINK_CHECK_FAILED) &&
           PcieLinkUpCheck (&RootComplex->Pcie[PcieIndex]))
       {
         return LINK_CHECK_SUCCESS;
@@ -1713,7 +1728,7 @@ Ac01PcieCoreQoSLinkCheckRecovery (
 
 BOOLEAN
 Ac01PcieCoreCheckCardPresent (
-  IN AC01_PCIE_CONTROLLER *PcieController
+  IN AC01_PCIE_CONTROLLER  *PcieController
   )
 {
   EFI_PHYSICAL_ADDRESS  TargetAddress;
@@ -1737,15 +1752,15 @@ Ac01PcieCoreCheckCardPresent (
 
 VOID
 Ac01PcieCoreUpdateLink (
-  IN  AC01_ROOT_COMPLEX *RootComplex,
-  OUT BOOLEAN           *IsNextRoundNeeded,
-  OUT INT8              *FailedPciePtr,
-  OUT INT8              *FailedPcieCount
+  IN  AC01_ROOT_COMPLEX  *RootComplex,
+  OUT BOOLEAN            *IsNextRoundNeeded,
+  OUT INT8               *FailedPciePtr,
+  OUT INT8               *FailedPcieCount
   )
 {
-  AC01_PCIE_CONTROLLER      *Pcie;
-  UINT8                     PcieIndex;
-  UINT32                    Index;
+  AC01_PCIE_CONTROLLER  *Pcie;
+  UINT8                 PcieIndex;
+  UINT32                Index;
 
   *IsNextRoundNeeded = FALSE;
   *FailedPcieCount   = 0;
@@ -1770,10 +1785,9 @@ Ac01PcieCoreUpdateLink (
 
         // Un-mask Completion Timeout
         DisableCompletionTimeOut (RootComplex, PcieIndex, FALSE);
-
       } else {
         FailedPciePtr[*FailedPcieCount] = PcieIndex;
-        *FailedPcieCount += 1;
+        *FailedPcieCount               += 1;
 
         if (Ac01PcieCoreCheckCardPresent (Pcie)) {
           *IsNextRoundNeeded = TRUE;
@@ -1791,16 +1805,16 @@ Ac01PcieCoreUpdateLink (
 **/
 VOID
 Ac01PcieCorePostSetupRC (
-  IN AC01_ROOT_COMPLEX *RootComplexList
+  IN AC01_ROOT_COMPLEX  *RootComplexList
   )
 {
-  UINT8   RCIndex, Idx;
-  BOOLEAN IsNextRoundNeeded, NextRoundNeeded;
-  UINT64  PrevTick, CurrTick, ElapsedCycle;
-  UINT64  TimerTicks64;
-  UINT8   ReInit;
-  INT8    FailedPciePtr[MaxPcieControllerOfRootComplexB];
-  INT8    FailedPcieCount;
+  UINT8    RCIndex, Idx;
+  BOOLEAN  IsNextRoundNeeded, NextRoundNeeded;
+  UINT64   PrevTick, CurrTick, ElapsedCycle;
+  UINT64   TimerTicks64;
+  UINT8    ReInit;
+  INT8     FailedPciePtr[MaxPcieControllerOfRootComplexB];
+  INT8     FailedPcieCount;
 
   ReInit = 0;
 
@@ -1811,17 +1825,18 @@ _link_polling:
   // Calculate system ticks for link training.
   //
   TimerTicks64 = ArmGenericTimerGetTimerFreq (); /* 1 Second */
-  PrevTick = ArmGenericTimerGetSystemCount ();
+  PrevTick     = ArmGenericTimerGetSystemCount ();
   ElapsedCycle = 0;
 
   do {
     CurrTick = ArmGenericTimerGetSystemCount ();
     if (CurrTick < PrevTick) {
       ElapsedCycle += MAX_UINT64 - PrevTick;
-      PrevTick = 0;
+      PrevTick      = 0;
     }
+
     ElapsedCycle += (CurrTick - PrevTick);
-    PrevTick = CurrTick;
+    PrevTick      = CurrTick;
   } while (ElapsedCycle < TimerTicks64);
 
   for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
@@ -1831,7 +1846,7 @@ _link_polling:
     }
   }
 
-  if (NextRoundNeeded && ReInit < MAX_REINIT) {
+  if (NextRoundNeeded && (ReInit < MAX_REINIT)) {
     //
     // Timer is up. Give another chance to re-program controller
     //

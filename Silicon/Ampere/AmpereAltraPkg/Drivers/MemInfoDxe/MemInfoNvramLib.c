@@ -13,11 +13,11 @@
 #include "MemInfoScreen.h"
 #include "NVParamDef.h"
 
-#define DDR_NVPARAM_ERRCTRL_DE_FIELD_SHIFT    0
-#define DDR_NVPARAM_ERRCTRL_DE_FIELD_MASK     0x1
+#define DDR_NVPARAM_ERRCTRL_DE_FIELD_SHIFT  0
+#define DDR_NVPARAM_ERRCTRL_DE_FIELD_MASK   0x1
 
-#define DDR_NVPARAM_ERRCTRL_FI_FIELD_SHIFT    1
-#define DDR_NVPARAM_ERRCTRL_FI_FIELD_MASK     0x2
+#define DDR_NVPARAM_ERRCTRL_FI_FIELD_SHIFT  1
+#define DDR_NVPARAM_ERRCTRL_FI_FIELD_MASK   0x2
 
 /**
   This is function collects meminfo from NVParam
@@ -29,11 +29,11 @@
 **/
 EFI_STATUS
 MemInfoNvparamGet (
-  OUT MEM_INFO_VARSTORE_DATA *VarStoreConfig
+  OUT MEM_INFO_VARSTORE_DATA  *VarStoreConfig
   )
 {
-  UINT32     Value;
-  EFI_STATUS Status;
+  UINT32      Value;
+  EFI_STATUS  Status;
 
   ASSERT (VarStoreConfig != NULL);
 
@@ -122,10 +122,10 @@ MemInfoNvparamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    VarStoreConfig->FGRMode = DDR_DEFAULT_FGR_MODE;
+    VarStoreConfig->FGRMode   = DDR_DEFAULT_FGR_MODE;
     VarStoreConfig->Refresh2x = DDR_DEFAULT_REFRESH2X_MODE;
   } else {
-    VarStoreConfig->FGRMode = DDR_FGR_MODE_GET (Value);
+    VarStoreConfig->FGRMode   = DDR_FGR_MODE_GET (Value);
     VarStoreConfig->Refresh2x = DDR_REFRESH_2X_GET (Value);
   }
 
@@ -154,11 +154,11 @@ MemInfoNvparamGet (
 **/
 EFI_STATUS
 MemInfoNvparamSet (
-  IN MEM_INFO_VARSTORE_DATA *VarStoreConfig
+  IN MEM_INFO_VARSTORE_DATA  *VarStoreConfig
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value, TmpValue, Value2, Update;
+  EFI_STATUS  Status;
+  UINT32      Value, TmpValue, Value2, Update;
 
   ASSERT (VarStoreConfig != NULL);
 
@@ -168,7 +168,7 @@ MemInfoNvparamSet (
              NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
              &Value
              );
-  if (EFI_ERROR (Status) || Value != VarStoreConfig->DDRSpeedSel) {
+  if (EFI_ERROR (Status) || (Value != VarStoreConfig->DDRSpeedSel)) {
     Status = NVParamSet (
                NV_SI_DDR_SPEED,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
@@ -215,7 +215,7 @@ MemInfoNvparamSet (
              NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
              &Value
              );
-  if (EFI_ERROR (Status) || Value != TmpValue ) {
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
     Status = NVParamSet (
                NV_SI_DDR_ERRCTRL,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
@@ -229,12 +229,12 @@ MemInfoNvparamSet (
 
   /* Set slave's 32bit region */
   TmpValue = VarStoreConfig->Slave32bit;
-  Status = NVParamGet (
-             NV_SI_DDR_SLAVE_32BIT_MEM_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
-             &Value
-             );
-  if (EFI_ERROR (Status) || Value != TmpValue ) {
+  Status   = NVParamGet (
+               NV_SI_DDR_SLAVE_32BIT_MEM_EN,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
+               &Value
+               );
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
     if (TmpValue == 0) {
       /* Default is disabled so just clear nvparam */
       Status = NVParamClr (
@@ -249,6 +249,7 @@ MemInfoNvparamSet (
                  TmpValue
                  );
     }
+
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -256,12 +257,12 @@ MemInfoNvparamSet (
 
   /* Set Scrub patrol */
   TmpValue = VarStoreConfig->ScrubPatrol;
-  Status = NVParamGet (
-             NV_SI_DDR_SCRUB_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
-             &Value
-             );
-  if (EFI_ERROR (Status) || Value != TmpValue ) {
+  Status   = NVParamGet (
+               NV_SI_DDR_SCRUB_EN,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
+               &Value
+               );
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
     if (TmpValue == DDR_DEFAULT_SCRUB_PATROL_DURATION) {
       Status = NVParamClr (
                  NV_SI_DDR_SCRUB_EN,
@@ -275,6 +276,7 @@ MemInfoNvparamSet (
                  TmpValue
                  );
     }
+
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -282,12 +284,12 @@ MemInfoNvparamSet (
 
   /* Demand Scrub */
   TmpValue = VarStoreConfig->DemandScrub;
-  Status = NVParamGet (
-             NV_SI_DDR_WR_BACK_EN,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
-             &Value
-             );
-  if (EFI_ERROR (Status) || Value != TmpValue ) {
+  Status   = NVParamGet (
+               NV_SI_DDR_WR_BACK_EN,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU |NV_PERM_BMC,
+               &Value
+               );
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
     if (TmpValue == DDR_DEFAULT_DEMAND_SCRUB) {
       Status = NVParamClr (
                  NV_SI_DDR_WR_BACK_EN,
@@ -301,6 +303,7 @@ MemInfoNvparamSet (
                  TmpValue
                  );
     }
+
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -308,12 +311,12 @@ MemInfoNvparamSet (
 
   /* Write CRC */
   TmpValue = VarStoreConfig->WriteCrc;
-  Status = NVParamGet (
-             NV_SI_DDR_CRC_MODE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &Value
-             );
-  if (EFI_ERROR (Status) || Value != TmpValue ) {
+  Status   = NVParamGet (
+               NV_SI_DDR_CRC_MODE,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               &Value
+               );
+  if (EFI_ERROR (Status) || (Value != TmpValue)) {
     if (TmpValue == DDR_DEFAULT_WRITE_CRC) {
       Status = NVParamClr (
                  NV_SI_DDR_CRC_MODE,
@@ -327,32 +330,33 @@ MemInfoNvparamSet (
                  TmpValue
                  );
     }
+
     if (EFI_ERROR (Status)) {
       return Status;
     }
   }
 
   /* Write FGR/Refresh2X */
-  Value = 0;
-  Update = 0;
+  Value    = 0;
+  Update   = 0;
   TmpValue = VarStoreConfig->FGRMode;
-  Status = NVParamGet (
-             NV_SI_DDR_REFRESH_GRANULARITY,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &Value
-             );
+  Status   = NVParamGet (
+               NV_SI_DDR_REFRESH_GRANULARITY,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               &Value
+               );
   Value2 = DDR_FGR_MODE_GET (Value);
-  if ((EFI_ERROR (Status) && TmpValue != DDR_DEFAULT_FGR_MODE)
-      || Value2 != TmpValue)
+  if (  (EFI_ERROR (Status) && (TmpValue != DDR_DEFAULT_FGR_MODE))
+     || (Value2 != TmpValue))
   {
     DDR_FGR_MODE_SET (Value, TmpValue);
     Update = 1;
   }
 
-  Value2 = DDR_REFRESH_2X_GET (Value);
+  Value2   = DDR_REFRESH_2X_GET (Value);
   TmpValue = VarStoreConfig->Refresh2x;
-  if ((EFI_ERROR (Status) && TmpValue != DDR_DEFAULT_REFRESH2X_MODE)
-      || Value2 != TmpValue)
+  if (  (EFI_ERROR (Status) && (TmpValue != DDR_DEFAULT_REFRESH2X_MODE))
+     || (Value2 != TmpValue))
   {
     DDR_REFRESH_2X_SET (Value, TmpValue);
     Update = 1;
@@ -371,22 +375,22 @@ MemInfoNvparamSet (
   }
 
   /* Write NVDIMM-N Mode selection */
-  Value = 0;
+  Value    = 0;
   TmpValue = VarStoreConfig->NvdimmModeSel;
-  Status = NVParamGet (
-             NV_SI_NVDIMM_MODE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
-             &Value
-             );
+  Status   = NVParamGet (
+               NV_SI_NVDIMM_MODE,
+               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               &Value
+               );
   Value2 = Value & DDR_NVDIMM_MODE_SEL_MASK; /* Mask out valid bit */
-  if (EFI_ERROR (Status) || Value2 != TmpValue ) {
+  if (EFI_ERROR (Status) || (Value2 != TmpValue)) {
     if (TmpValue == DDR_DEFAULT_NVDIMM_MODE_SEL) {
       Status = NVParamClr (
                  NV_SI_NVDIMM_MODE,
                  NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC
                  );
     } else {
-      Value = TmpValue | DDR_NVDIMM_MODE_SEL_VALID_BIT; /* Add valid bit */
+      Value  = TmpValue | DDR_NVDIMM_MODE_SEL_VALID_BIT; /* Add valid bit */
       Status = NVParamSet (
                  NV_SI_NVDIMM_MODE,
                  NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -394,6 +398,7 @@ MemInfoNvparamSet (
                  Value
                  );
     }
+
     if (EFI_ERROR (Status)) {
       return Status;
     }

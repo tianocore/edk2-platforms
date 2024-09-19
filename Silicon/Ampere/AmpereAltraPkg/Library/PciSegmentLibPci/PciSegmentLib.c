@@ -17,23 +17,23 @@
 
 #include <Platform/Ac01.h>
 
-#define GET_SEG_NUM(Address)    (((Address) >> 32) & 0xFFFF)
-#define GET_BUS_NUM(Address)    (((Address) >> 20) & 0x7F)
-#define GET_DEV_NUM(Address)    (((Address) >> 15) & 0x1F)
-#define GET_FUNC_NUM(Address)   (((Address) >> 12) & 0x07)
-#define GET_REG_NUM(Address)    ((Address) & 0xFFF)
+#define GET_SEG_NUM(Address)   (((Address) >> 32) & 0xFFFF)
+#define GET_BUS_NUM(Address)   (((Address) >> 20) & 0x7F)
+#define GET_DEV_NUM(Address)   (((Address) >> 15) & 0x1F)
+#define GET_FUNC_NUM(Address)  (((Address) >> 12) & 0x07)
+#define GET_REG_NUM(Address)   ((Address) & 0xFFF)
 
-#define WORD_ALIGN_MASK                                 0x3
-#define WORD_GET_BYTE(Word, ByteOffset)                 (((Word) >> ((ByteOffset) * 8)) & 0xFF)
+#define WORD_ALIGN_MASK  0x3
+#define WORD_GET_BYTE(Word, ByteOffset)  (((Word) >> ((ByteOffset) * 8)) & 0xFF)
 #define WORD_SET_BYTE(Word, Byte, ByteOffset) \
   (((Word) & ~(0xFF << ((ByteOffset) * 8))) | ((UINT32)(Byte) << ((ByteOffset) * 8)))
 
-#define WORD_GET_HALF_WORD(Word, ByteOffset)            (((Word) >> ((ByteOffset) * 8)) & 0xFFFF)
+#define WORD_GET_HALF_WORD(Word, ByteOffset)  (((Word) >> ((ByteOffset) * 8)) & 0xFFFF)
 #define WORD_SET_HALF_WORD(Word, HalfWord, ByteOffset) \
   (((Word) & ~(0xFFFF << ((ByteOffset) * 8))) | ((UINT32)(HalfWord) << ((ByteOffset) * 8)))
 
-#define HEADER_TYPE_REG         0x0C
-#define   GET_HEADER_TYPE(x)    (((x) >> 16) & 0x7F)
+#define HEADER_TYPE_REG  0x0C
+#define   GET_HEADER_TYPE(x)  (((x) >> 16) & 0x7F)
 #define PRIMARY_BUS_NUMBER_REG  0x18
 
 /**
@@ -44,7 +44,7 @@
   @param  M Additional bits to assert to be zero.
 
 **/
-#define ASSERT_INVALID_PCI_SEGMENT_ADDRESS(A,M) \
+#define ASSERT_INVALID_PCI_SEGMENT_ADDRESS(A, M) \
   ASSERT (((A) & (0xffff0000f0000000ULL | (M))) == 0)
 
 /**
@@ -52,7 +52,7 @@
 
   @param A The address to convert.
 **/
-#define PCI_SEGMENT_TO_PCI_ADDRESS(A) ((UINTN)(UINT32)A)
+#define PCI_SEGMENT_TO_PCI_ADDRESS(A)  ((UINTN)(UINT32)A)
 
 /**
   Get the MCFG Base address from the segment number.
@@ -62,9 +62,9 @@ GetMmcfgBase (
   IN UINT16  SegmentNumber
   )
 {
-  AC01_ROOT_COMPLEX     *RootComplexList;
-  UINTN                 Idx;
-  VOID                  *Hob;
+  AC01_ROOT_COMPLEX  *RootComplexList;
+  UINTN              Idx;
+  VOID               *Hob;
 
   Hob = GetFirstGuidHob (&gRootComplexInfoHobGuid);
   if (Hob == NULL) {
@@ -126,17 +126,17 @@ PciSegmentRegisterForRuntimeAccess (
 UINT8
 EFIAPI
 PciSegmentRead8 (
-  IN UINT64                    Address
+  IN UINT64  Address
   )
 {
-  UINT32 Val32;
-  UINT64 AlignedAddr;
-  UINT8  Value;
-  UINTN  CfgBase;
+  UINT32  Val32;
+  UINT64  AlignedAddr;
+  UINT8   Value;
+  UINTN   CfgBase;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (Address, 0);
 
-  CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFF);
+  CfgBase     = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFF);
   AlignedAddr = CfgBase & ~WORD_ALIGN_MASK;
 
   Val32 = MmioRead32 (AlignedAddr);
@@ -171,17 +171,17 @@ PciSegmentRead8 (
 UINT8
 EFIAPI
 PciSegmentWrite8 (
-  IN UINT64                    Address,
-  IN UINT8                     Value
+  IN UINT64  Address,
+  IN UINT8   Value
   )
 {
-  UINT32 Val32;
-  UINT64 AlignedAddr;
-  UINTN  CfgBase;
+  UINT32  Val32;
+  UINT64  AlignedAddr;
+  UINTN   CfgBase;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (Address, 0);
 
-  CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFF);
+  CfgBase     = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFF);
   AlignedAddr = CfgBase & ~WORD_ALIGN_MASK;
 
   Val32 = MmioRead32 (AlignedAddr);
@@ -221,8 +221,8 @@ PciSegmentWrite8 (
 UINT8
 EFIAPI
 PciSegmentOr8 (
-  IN UINT64                    Address,
-  IN UINT8                     OrData
+  IN UINT64  Address,
+  IN UINT8   OrData
   )
 {
   return PciSegmentWrite8 (PCI_SEGMENT_TO_PCI_ADDRESS (Address), (UINT8)(PciSegmentRead8 (Address) | OrData));
@@ -247,8 +247,8 @@ PciSegmentOr8 (
 UINT8
 EFIAPI
 PciSegmentAnd8 (
-  IN UINT64                    Address,
-  IN UINT8                     AndData
+  IN UINT64  Address,
+  IN UINT8   AndData
   )
 {
   return PciSegmentWrite8 (Address, (UINT8)(PciSegmentRead8 (Address) & AndData));
@@ -277,9 +277,9 @@ PciSegmentAnd8 (
 UINT8
 EFIAPI
 PciSegmentAndThenOr8 (
-  IN UINT64                    Address,
-  IN UINT8                     AndData,
-  IN UINT8                     OrData
+  IN UINT64  Address,
+  IN UINT8   AndData,
+  IN UINT8   OrData
   )
 {
   return PciSegmentWrite8 (Address, (UINT8)((PciSegmentRead8 (Address) & AndData) | OrData));
@@ -309,9 +309,9 @@ PciSegmentAndThenOr8 (
 UINT8
 EFIAPI
 PciSegmentBitFieldRead8 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit
   )
 {
   return BitFieldRead8 (PciSegmentRead8 (Address), StartBit, EndBit);
@@ -344,10 +344,10 @@ PciSegmentBitFieldRead8 (
 UINT8
 EFIAPI
 PciSegmentBitFieldWrite8 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT8                     Value
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT8   Value
   )
 {
   return PciSegmentWrite8 (
@@ -386,10 +386,10 @@ PciSegmentBitFieldWrite8 (
 UINT8
 EFIAPI
 PciSegmentBitFieldOr8 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT8                     OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT8   OrData
   )
 {
   return PciSegmentWrite8 (
@@ -428,10 +428,10 @@ PciSegmentBitFieldOr8 (
 UINT8
 EFIAPI
 PciSegmentBitFieldAnd8 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT8                     AndData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT8   AndData
   )
 {
   return PciSegmentWrite8 (
@@ -473,11 +473,11 @@ PciSegmentBitFieldAnd8 (
 UINT8
 EFIAPI
 PciSegmentBitFieldAndThenOr8 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT8                     AndData,
-  IN UINT8                     OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT8   AndData,
+  IN UINT8   OrData
   )
 {
   return PciSegmentWrite8 (
@@ -503,20 +503,20 @@ PciSegmentBitFieldAndThenOr8 (
 UINT16
 EFIAPI
 PciSegmentRead16 (
-  IN UINT64                    Address
+  IN UINT64  Address
   )
 {
-  UINT16 Value;
-  UINT32 Val32;
-  UINT64 AlignedAddr;
-  UINT8  HeaderType;
-  UINT8  PrimaryBus;
-  UINTN  CfgBase;
+  UINT16  Value;
+  UINT32  Val32;
+  UINT64  AlignedAddr;
+  UINT8   HeaderType;
+  UINT8   PrimaryBus;
+  UINTN   CfgBase;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (Address, 1);
 
-  PrimaryBus = 0;
-  CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFE);
+  PrimaryBus  = 0;
+  CfgBase     = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFE);
   AlignedAddr = CfgBase & ~WORD_ALIGN_MASK;
 
   if ((GET_BUS_NUM (CfgBase) > 0) && (GET_DEV_NUM (CfgBase) > 0) && (GET_REG_NUM (CfgBase) == 0)) {
@@ -568,7 +568,7 @@ PciSegmentRead16 (
     Val32
     ));
 
-  if (GET_REG_NUM (Address) == 0xAE && Value == 0xFFFF) {
+  if ((GET_REG_NUM (Address) == 0xAE) && (Value == 0xFFFF)) {
     DEBUG ((DEBUG_ERROR, "PANIC due to PCIe link issue - Addr 0x%llx\n", Address));
     // Loop forever waiting for failsafe/watch dog time out
     CpuDeadLoop ();
@@ -595,17 +595,17 @@ PciSegmentRead16 (
 UINT16
 EFIAPI
 PciSegmentWrite16 (
-  IN UINT64                    Address,
-  IN UINT16                    Value
+  IN UINT64  Address,
+  IN UINT16  Value
   )
 {
-  UINT32 Val32;
-  UINT64 AlignedAddr;
-  UINTN  CfgBase;
+  UINT32  Val32;
+  UINT64  AlignedAddr;
+  UINTN   CfgBase;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (Address, 1);
 
-  CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFE);
+  CfgBase     = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFE);
   AlignedAddr = CfgBase & ~WORD_ALIGN_MASK;
 
   Val32 = MmioRead32 (AlignedAddr);
@@ -648,11 +648,11 @@ PciSegmentWrite16 (
 UINT16
 EFIAPI
 PciSegmentOr16 (
-  IN UINT64                    Address,
-  IN UINT16                    OrData
+  IN UINT64  Address,
+  IN UINT16  OrData
   )
 {
-  return PciSegmentWrite16 (Address, (UINT16) (PciSegmentRead16 (Address) | OrData));
+  return PciSegmentWrite16 (Address, (UINT16)(PciSegmentRead16 (Address) | OrData));
 }
 
 /**
@@ -676,11 +676,11 @@ PciSegmentOr16 (
 UINT16
 EFIAPI
 PciSegmentAnd16 (
-  IN UINT64                    Address,
-  IN UINT16                    AndData
+  IN UINT64  Address,
+  IN UINT16  AndData
   )
 {
-  return PciSegmentWrite16 (Address, (UINT16) (PciSegmentRead16 (Address) & AndData));
+  return PciSegmentWrite16 (Address, (UINT16)(PciSegmentRead16 (Address) & AndData));
 }
 
 /**
@@ -707,12 +707,12 @@ PciSegmentAnd16 (
 UINT16
 EFIAPI
 PciSegmentAndThenOr16 (
-  IN UINT64                    Address,
-  IN UINT16                    AndData,
-  IN UINT16                    OrData
+  IN UINT64  Address,
+  IN UINT16  AndData,
+  IN UINT16  OrData
   )
 {
-  return PciSegmentWrite16 (Address, (UINT16) ((PciSegmentRead16 (Address) & AndData) | OrData));
+  return PciSegmentWrite16 (Address, (UINT16)((PciSegmentRead16 (Address) & AndData) | OrData));
 }
 
 /**
@@ -740,9 +740,9 @@ PciSegmentAndThenOr16 (
 UINT16
 EFIAPI
 PciSegmentBitFieldRead16 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit
   )
 {
   return BitFieldRead16 (PciSegmentRead16 (Address), StartBit, EndBit);
@@ -776,10 +776,10 @@ PciSegmentBitFieldRead16 (
 UINT16
 EFIAPI
 PciSegmentBitFieldWrite16 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT16                    Value
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT16  Value
   )
 {
   return PciSegmentWrite16 (
@@ -819,10 +819,10 @@ PciSegmentBitFieldWrite16 (
 UINT16
 EFIAPI
 PciSegmentBitFieldOr16 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT16                    OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT16  OrData
   )
 {
   return PciSegmentWrite16 (
@@ -862,10 +862,10 @@ PciSegmentBitFieldOr16 (
 UINT16
 EFIAPI
 PciSegmentBitFieldAnd16 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT16                    AndData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT16  AndData
   )
 {
   return PciSegmentWrite16 (
@@ -908,11 +908,11 @@ PciSegmentBitFieldAnd16 (
 UINT16
 EFIAPI
 PciSegmentBitFieldAndThenOr16 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT16                    AndData,
-  IN UINT16                    OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT16  AndData,
+  IN UINT16  OrData
   )
 {
   return PciSegmentWrite16 (
@@ -938,19 +938,19 @@ PciSegmentBitFieldAndThenOr16 (
 UINT32
 EFIAPI
 PciSegmentRead32 (
-  IN UINT64                    Address
+  IN UINT64  Address
   )
 {
-  UINT32 Val32;
-  UINT32 Value;
-  UINT8  HeaderType;
-  UINT8  PrimaryBus;
-  UINTN  CfgBase;
+  UINT32  Val32;
+  UINT32  Value;
+  UINT8   HeaderType;
+  UINT8   PrimaryBus;
+  UINTN   CfgBase;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (Address, 3);
 
   PrimaryBus = 0;
-  CfgBase = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFC);
+  CfgBase    = GetMmcfgBase (GET_SEG_NUM (Address)) + (Address & 0x0FFFFFFC);
 
   if ((GET_BUS_NUM (CfgBase) > 0) && (GET_DEV_NUM (CfgBase) > 0) && (GET_REG_NUM (CfgBase) == 0)) {
     Value = MmioRead32 (CfgBase);
@@ -1014,8 +1014,8 @@ PciSegmentRead32 (
 UINT32
 EFIAPI
 PciSegmentWrite32 (
-  IN UINT64                    Address,
-  IN UINT32                    Value
+  IN UINT64  Address,
+  IN UINT32  Value
   )
 {
   UINTN  CfgBase;
@@ -1056,8 +1056,8 @@ PciSegmentWrite32 (
 UINT32
 EFIAPI
 PciSegmentOr32 (
-  IN UINT64                    Address,
-  IN UINT32                    OrData
+  IN UINT64  Address,
+  IN UINT32  OrData
   )
 {
   return PciSegmentWrite32 (Address, PciSegmentRead32 (Address) | OrData);
@@ -1084,8 +1084,8 @@ PciSegmentOr32 (
 UINT32
 EFIAPI
 PciSegmentAnd32 (
-  IN UINT64                    Address,
-  IN UINT32                    AndData
+  IN UINT64  Address,
+  IN UINT32  AndData
   )
 {
   return PciSegmentWrite32 (Address, PciSegmentRead32 (Address) & AndData);
@@ -1115,9 +1115,9 @@ PciSegmentAnd32 (
 UINT32
 EFIAPI
 PciSegmentAndThenOr32 (
-  IN UINT64                    Address,
-  IN UINT32                    AndData,
-  IN UINT32                    OrData
+  IN UINT64  Address,
+  IN UINT32  AndData,
+  IN UINT32  OrData
   )
 {
   return PciSegmentWrite32 (Address, (PciSegmentRead32 (Address) & AndData) | OrData);
@@ -1148,9 +1148,9 @@ PciSegmentAndThenOr32 (
 UINT32
 EFIAPI
 PciSegmentBitFieldRead32 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit
   )
 {
   return BitFieldRead32 (PciSegmentRead32 (Address), StartBit, EndBit);
@@ -1184,10 +1184,10 @@ PciSegmentBitFieldRead32 (
 UINT32
 EFIAPI
 PciSegmentBitFieldWrite32 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT32                    Value
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT32  Value
   )
 {
   return PciSegmentWrite32 (
@@ -1226,10 +1226,10 @@ PciSegmentBitFieldWrite32 (
 UINT32
 EFIAPI
 PciSegmentBitFieldOr32 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT32                    OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT32  OrData
   )
 {
   return PciSegmentWrite32 (
@@ -1268,10 +1268,10 @@ PciSegmentBitFieldOr32 (
 UINT32
 EFIAPI
 PciSegmentBitFieldAnd32 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT32                    AndData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT32  AndData
   )
 {
   return PciSegmentWrite32 (
@@ -1314,11 +1314,11 @@ PciSegmentBitFieldAnd32 (
 UINT32
 EFIAPI
 PciSegmentBitFieldAndThenOr32 (
-  IN UINT64                    Address,
-  IN UINTN                     StartBit,
-  IN UINTN                     EndBit,
-  IN UINT32                    AndData,
-  IN UINT32                    OrData
+  IN UINT64  Address,
+  IN UINTN   StartBit,
+  IN UINTN   EndBit,
+  IN UINT32  AndData,
+  IN UINT32  OrData
   )
 {
   return PciSegmentWrite32 (
@@ -1353,12 +1353,12 @@ PciSegmentBitFieldAndThenOr32 (
 UINTN
 EFIAPI
 PciSegmentReadBuffer (
-  IN  UINT64                   StartAddress,
-  IN  UINTN                    Size,
-  OUT VOID                     *Buffer
+  IN  UINT64  StartAddress,
+  IN  UINTN   Size,
+  OUT VOID    *Buffer
   )
 {
-  UINTN                                ReturnValue;
+  UINTN  ReturnValue;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (StartAddress, 0);
   ASSERT (((StartAddress & 0xFFF) + Size) <= SIZE_4KB);
@@ -1379,19 +1379,19 @@ PciSegmentReadBuffer (
     // Read a byte if StartAddress is byte aligned
     //
     *(volatile UINT8 *)Buffer = PciSegmentRead8 (StartAddress);
-    StartAddress += sizeof (UINT8);
-    Size -= sizeof (UINT8);
-    Buffer = (UINT8 *)Buffer + 1;
+    StartAddress             += sizeof (UINT8);
+    Size                     -= sizeof (UINT8);
+    Buffer                    = (UINT8 *)Buffer + 1;
   }
 
-  if (Size >= sizeof (UINT16) && (StartAddress & BIT1) != 0) {
+  if ((Size >= sizeof (UINT16)) && ((StartAddress & BIT1) != 0)) {
     //
     // Read a word if StartAddress is word aligned
     //
     WriteUnaligned16 (Buffer, PciSegmentRead16 (StartAddress));
     StartAddress += sizeof (UINT16);
-    Size -= sizeof (UINT16);
-    Buffer = (UINT16 *)Buffer + 1;
+    Size         -= sizeof (UINT16);
+    Buffer        = (UINT16 *)Buffer + 1;
   }
 
   while (Size >= sizeof (UINT32)) {
@@ -1400,8 +1400,8 @@ PciSegmentReadBuffer (
     //
     WriteUnaligned32 (Buffer, PciSegmentRead32 (StartAddress));
     StartAddress += sizeof (UINT32);
-    Size -= sizeof (UINT32);
-    Buffer = (UINT32 *)Buffer + 1;
+    Size         -= sizeof (UINT32);
+    Buffer        = (UINT32 *)Buffer + 1;
   }
 
   if (Size >= sizeof (UINT16)) {
@@ -1410,8 +1410,8 @@ PciSegmentReadBuffer (
     //
     WriteUnaligned16 (Buffer, PciSegmentRead16 (StartAddress));
     StartAddress += sizeof (UINT16);
-    Size -= sizeof (UINT16);
-    Buffer = (UINT16 *)Buffer + 1;
+    Size         -= sizeof (UINT16);
+    Buffer        = (UINT16 *)Buffer + 1;
   }
 
   if (Size >= sizeof (UINT8)) {
@@ -1451,12 +1451,12 @@ PciSegmentReadBuffer (
 UINTN
 EFIAPI
 PciSegmentWriteBuffer (
-  IN UINT64                    StartAddress,
-  IN UINTN                     Size,
-  IN VOID                      *Buffer
+  IN UINT64  StartAddress,
+  IN UINTN   Size,
+  IN VOID    *Buffer
   )
 {
-  UINTN                                ReturnValue;
+  UINTN  ReturnValue;
 
   ASSERT_INVALID_PCI_SEGMENT_ADDRESS (StartAddress, 0);
   ASSERT (((StartAddress & 0xFFF) + Size) <= SIZE_4KB);
@@ -1478,18 +1478,18 @@ PciSegmentWriteBuffer (
     //
     PciSegmentWrite8 (StartAddress, *(UINT8 *)Buffer);
     StartAddress += sizeof (UINT8);
-    Size -= sizeof (UINT8);
-    Buffer = (UINT8 *)Buffer + 1;
+    Size         -= sizeof (UINT8);
+    Buffer        = (UINT8 *)Buffer + 1;
   }
 
-  if (Size >= sizeof (UINT16) && (StartAddress & BIT1) != 0) {
+  if ((Size >= sizeof (UINT16)) && ((StartAddress & BIT1) != 0)) {
     //
     // Write a word if StartAddress is word aligned
     //
     PciSegmentWrite16 (StartAddress, ReadUnaligned16 (Buffer));
     StartAddress += sizeof (UINT16);
-    Size -= sizeof (UINT16);
-    Buffer = (UINT16 *)Buffer + 1;
+    Size         -= sizeof (UINT16);
+    Buffer        = (UINT16 *)Buffer + 1;
   }
 
   while (Size >= sizeof (UINT32)) {
@@ -1498,8 +1498,8 @@ PciSegmentWriteBuffer (
     //
     PciSegmentWrite32 (StartAddress, ReadUnaligned32 (Buffer));
     StartAddress += sizeof (UINT32);
-    Size -= sizeof (UINT32);
-    Buffer = (UINT32 *)Buffer + 1;
+    Size         -= sizeof (UINT32);
+    Buffer        = (UINT32 *)Buffer + 1;
   }
 
   if (Size >= sizeof (UINT16)) {
@@ -1508,8 +1508,8 @@ PciSegmentWriteBuffer (
     //
     PciSegmentWrite16 (StartAddress, ReadUnaligned16 (Buffer));
     StartAddress += sizeof (UINT16);
-    Size -= sizeof (UINT16);
-    Buffer = (UINT16 *)Buffer + 1;
+    Size         -= sizeof (UINT16);
+    Buffer        = (UINT16 *)Buffer + 1;
   }
 
   if (Size >= sizeof (UINT8)) {

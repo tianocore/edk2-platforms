@@ -29,18 +29,19 @@
 **/
 EFI_STATUS
 NVParamMmCommunicate (
-  IN  VOID   *Request,
-  IN  UINT32 RequestDataSize,
-  OUT VOID   *Response,
-  IN  UINT32 ResponseDataSize
+  IN  VOID    *Request,
+  IN  UINT32  RequestDataSize,
+  OUT VOID    *Response,
+  IN  UINT32  ResponseDataSize
   )
 {
-  EFI_MM_COMMUNICATE_REQUEST CommBuffer;
-  EFI_STATUS                 Status;
+  EFI_MM_COMMUNICATE_REQUEST  CommBuffer;
+  EFI_STATUS                  Status;
 
-  if (Request == NULL || RequestDataSize == 0
-      || RequestDataSize > EFI_MM_MAX_PAYLOAD_SIZE
-      || (ResponseDataSize == 0 && Response == NULL)) {
+  if (  (Request == NULL) || (RequestDataSize == 0)
+     || (RequestDataSize > EFI_MM_MAX_PAYLOAD_SIZE)
+     || ((ResponseDataSize == 0) && (Response == NULL)))
+  {
     return EFI_INVALID_PARAMETER;
   }
 

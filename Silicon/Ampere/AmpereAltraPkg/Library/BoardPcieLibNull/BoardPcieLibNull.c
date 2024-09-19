@@ -22,9 +22,9 @@
 RETURN_STATUS
 EFIAPI
 BoardPcieAssertPerst (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex,
-  IN BOOLEAN           IsPullToHigh
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN BOOLEAN            IsPullToHigh
   )
 {
   return RETURN_SUCCESS;
@@ -40,7 +40,7 @@ BoardPcieAssertPerst (
 **/
 UINT16
 BoardPcieGetSegmentNumber (
-  IN  AC01_ROOT_COMPLEX *RootComplex
+  IN  AC01_ROOT_COMPLEX  *RootComplex
   )
 {
   return 0x0F;

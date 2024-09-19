@@ -29,12 +29,12 @@
 
 #include "RasConfigDxe.h"
 
-CHAR16 RasConfigVarstoreDataName[] = L"RasConfigNVData";
+CHAR16  RasConfigVarstoreDataName[] = L"RasConfigNVData";
 
-EFI_HANDLE              mDriverHandle = NULL;
-RAS_CONFIG_PRIVATE_DATA *mPrivateData = NULL;
+EFI_HANDLE               mDriverHandle = NULL;
+RAS_CONFIG_PRIVATE_DATA  *mPrivateData = NULL;
 
-EFI_GUID mRasConfigFormSetGuid = RAS_CONFIG_FORMSET_GUID;
+EFI_GUID  mRasConfigFormSetGuid = RAS_CONFIG_FORMSET_GUID;
 
 //
 // Default RAS Settings
@@ -48,8 +48,7 @@ EFI_GUID mRasConfigFormSetGuid = RAS_CONFIG_FORMSET_GUID;
 #define RAS_DEFAULT_PROCESSOR_CE_THRESHOLD    1
 #define RAS_DEFAULT_DDR_LINK_ERROR_THRESHOLD  1
 
-
-HII_VENDOR_DEVICE_PATH mRasConfigHiiVendorDevicePath = {
+HII_VENDOR_DEVICE_PATH  mRasConfigHiiVendorDevicePath = {
   {
     {
       HARDWARE_DEVICE_PATH,
@@ -103,11 +102,11 @@ IsDdrCeWindowEnabled (
 
 EFI_STATUS
 RasConfigNvParamGet (
-  OUT RAS_CONFIG_VARSTORE_DATA *Configuration
+  OUT RAS_CONFIG_VARSTORE_DATA  *Configuration
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value;
+  EFI_STATUS  Status;
+  UINT32      Value;
 
   Status = NVParamGet (
              NV_SI_HARDWARE_EINJ,
@@ -115,7 +114,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_HARDWARE_EINJ_SUPPORT;
+    Value  = RAS_DEFAULT_HARDWARE_EINJ_SUPPORT;
     Status = NVParamSet (
                NV_SI_HARDWARE_EINJ,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -128,6 +127,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasHardwareEinj = Value;
 
   Status = NVParamGet (
@@ -136,7 +136,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_PCIE_AER_FW_FIRST;
+    Value  = RAS_DEFAULT_PCIE_AER_FW_FIRST;
     Status = NVParamSet (
                NV_SI_RAS_PCIE_AER_FW_FIRST,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -149,6 +149,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasPcieAerFwFirstEnabled = Value;
 
   Status = NVParamGet (
@@ -157,7 +158,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_BERT_SUPPORT;
+    Value  = RAS_DEFAULT_BERT_SUPPORT;
     Status = NVParamSet (
                NV_SI_RAS_BERT_ENABLED,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -170,6 +171,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasBertEnabled = Value;
 
   Status = NVParamGet (
@@ -178,7 +180,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_SDEI_SUPPORT;
+    Value  = RAS_DEFAULT_SDEI_SUPPORT;
     Status = NVParamSet (
                NV_SI_RAS_SDEI_ENABLED,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -191,6 +193,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasSdeiEnabled = Value;
 
   Status = NVParamGet (
@@ -199,7 +202,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_DDR_CE_THRESHOLD;
+    Value  = RAS_DEFAULT_DDR_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_DDR_CE_RAS_THRESHOLD,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -212,6 +215,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasDdrCeThreshold = Value;
 
   Status = NVParamGet (
@@ -220,7 +224,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_2P_CE_THRESHOLD;
+    Value  = RAS_DEFAULT_2P_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_2P_CE_RAS_THRESHOLD,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -233,6 +237,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->Ras2pCeThreshold = Value;
 
   Status = NVParamGet (
@@ -241,7 +246,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_PROCESSOR_CE_THRESHOLD;
+    Value  = RAS_DEFAULT_PROCESSOR_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_CPM_CE_RAS_THRESHOLD,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -254,6 +259,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasCpmCeThreshold = Value;
 
   Status = NVParamGet (
@@ -262,7 +268,7 @@ RasConfigNvParamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    Value = RAS_DEFAULT_DDR_LINK_ERROR_THRESHOLD;
+    Value  = RAS_DEFAULT_DDR_LINK_ERROR_THRESHOLD;
     Status = NVParamSet (
                NV_SI_LINK_ERR_THRESHOLD,
                NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
@@ -275,6 +281,7 @@ RasConfigNvParamGet (
       Value = 0;
     }
   }
+
   Configuration->RasLinkErrThreshold = Value;
 
   return EFI_SUCCESS;
@@ -282,10 +289,10 @@ RasConfigNvParamGet (
 
 EFI_STATUS
 RasConfigNvParamSet (
-  IN RAS_CONFIG_VARSTORE_DATA *Configuration
+  IN RAS_CONFIG_VARSTORE_DATA  *Configuration
   )
 {
-  EFI_STATUS Status;
+  EFI_STATUS  Status;
 
   Status = NVParamSet (
              NV_SI_HARDWARE_EINJ,
@@ -383,38 +390,39 @@ RasConfigNvParamSet (
 EFI_STATUS
 EFIAPI
 RasConfigExtractConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Request,
-  OUT      EFI_STRING                     *Progress,
-  OUT      EFI_STRING                     *Results
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Request,
+  OUT      EFI_STRING                      *Progress,
+  OUT      EFI_STRING                      *Results
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  RAS_CONFIG_PRIVATE_DATA         *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
-  EFI_STRING                      ConfigRequest;
-  EFI_STRING                      ConfigRequestHdr;
-  UINTN                           Size;
-  BOOLEAN                         AllocatedRequest;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  RAS_CONFIG_PRIVATE_DATA          *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
+  EFI_STRING                       ConfigRequest;
+  EFI_STRING                       ConfigRequestHdr;
+  UINTN                            Size;
+  BOOLEAN                          AllocatedRequest;
 
-  if (Progress == NULL || Results == NULL) {
+  if ((Progress == NULL) || (Results == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
+
   //
   // Initialize the local variables.
   //
-  ConfigRequestHdr  = NULL;
-  ConfigRequest     = NULL;
-  Size              = 0;
-  *Progress         = Request;
-  AllocatedRequest  = FALSE;
+  ConfigRequestHdr = NULL;
+  ConfigRequest    = NULL;
+  Size             = 0;
+  *Progress        = Request;
+  AllocatedRequest = FALSE;
 
   if ((Request != NULL) && !HiiIsConfigHdrMatch (Request, &mRasConfigFormSetGuid, RasConfigVarstoreDataName)) {
     return EFI_NOT_FOUND;
   }
 
-  PrivateData = RAS_CONFIG_PRIVATE_FROM_THIS (This);
+  PrivateData      = RAS_CONFIG_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
 
   //
@@ -428,7 +436,7 @@ RasConfigExtractConfig (
   //
   // Convert buffer data to <ConfigResp> by helper function BlockToConfig()
   //
-  BufferSize = sizeof (RAS_CONFIG_VARSTORE_DATA);
+  BufferSize    = sizeof (RAS_CONFIG_VARSTORE_DATA);
   ConfigRequest = Request;
   if ((Request == NULL) || (StrStr (Request, L"OFFSET") == NULL)) {
     //
@@ -437,12 +445,13 @@ RasConfigExtractConfig (
     // followed by "&OFFSET=0&WIDTH=WWWWWWWWWWWWWWWW" followed by a Null-terminator
     //
     ConfigRequestHdr = HiiConstructConfigHdr (&mRasConfigFormSetGuid, RasConfigVarstoreDataName, PrivateData->DriverHandle);
-    Size = (StrLen (ConfigRequestHdr) + 32 + 1) * sizeof (CHAR16);
-    ConfigRequest = AllocateZeroPool (Size);
+    Size             = (StrLen (ConfigRequestHdr) + 32 + 1) * sizeof (CHAR16);
+    ConfigRequest    = AllocateZeroPool (Size);
     ASSERT (ConfigRequest != NULL);
     if (ConfigRequest == NULL) {
       return EFI_OUT_OF_RESOURCES;
     }
+
     AllocatedRequest = TRUE;
     UnicodeSPrint (ConfigRequest, Size, L"%s&OFFSET=0&WIDTH=%016LX", ConfigRequestHdr, (UINT64)BufferSize);
     FreePool (ConfigRequestHdr);
@@ -501,23 +510,23 @@ RasConfigExtractConfig (
 EFI_STATUS
 EFIAPI
 RasConfigRouteConfig (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN CONST EFI_STRING                     Configuration,
-  OUT      EFI_STRING                     *Progress
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN CONST EFI_STRING                      Configuration,
+  OUT      EFI_STRING                      *Progress
   )
 {
-  EFI_STATUS                      Status;
-  UINTN                           BufferSize;
-  RAS_CONFIG_PRIVATE_DATA         *PrivateData;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
+  EFI_STATUS                       Status;
+  UINTN                            BufferSize;
+  RAS_CONFIG_PRIVATE_DATA          *PrivateData;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
 
-  if (Configuration == NULL || Progress == NULL) {
+  if ((Configuration == NULL) || (Progress == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
 
-  PrivateData = RAS_CONFIG_PRIVATE_FROM_THIS (This);
+  PrivateData      = RAS_CONFIG_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
-  *Progress = Configuration;
+  *Progress        = Configuration;
 
   //
   // Check routing data in <ConfigHdr>.
@@ -539,13 +548,13 @@ RasConfigRouteConfig (
   // Convert <ConfigResp> to buffer data by helper function ConfigToBlock()
   //
   BufferSize = sizeof (RAS_CONFIG_VARSTORE_DATA);
-  Status = HiiConfigRouting->ConfigToBlock (
-                               HiiConfigRouting,
-                               Configuration,
-                               (UINT8 *)&PrivateData->Configuration,
-                               &BufferSize,
-                               Progress
-                               );
+  Status     = HiiConfigRouting->ConfigToBlock (
+                                   HiiConfigRouting,
+                                   Configuration,
+                                   (UINT8 *)&PrivateData->Configuration,
+                                   &BufferSize,
+                                   Progress
+                                   );
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -582,12 +591,12 @@ RasConfigRouteConfig (
 EFI_STATUS
 EFIAPI
 RasConfigCallback (
-  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL *This,
-  IN       EFI_BROWSER_ACTION             Action,
-  IN       EFI_QUESTION_ID                QuestionId,
-  IN       UINT8                          Type,
-  IN       EFI_IFR_TYPE_VALUE             *Value,
-  OUT      EFI_BROWSER_ACTION_REQUEST     *ActionRequest
+  IN CONST EFI_HII_CONFIG_ACCESS_PROTOCOL  *This,
+  IN       EFI_BROWSER_ACTION              Action,
+  IN       EFI_QUESTION_ID                 QuestionId,
+  IN       UINT8                           Type,
+  IN       EFI_IFR_TYPE_VALUE              *Value,
+  OUT      EFI_BROWSER_ACTION_REQUEST      *ActionRequest
   )
 {
   if (Action != EFI_BROWSER_ACTION_CHANGING) {
@@ -596,10 +605,11 @@ RasConfigCallback (
     //
     return EFI_UNSUPPORTED;
   }
-  if (((Value == NULL)
-       && (Action != EFI_BROWSER_ACTION_FORM_OPEN)
-       && (Action != EFI_BROWSER_ACTION_FORM_CLOSE))
-      || (ActionRequest == NULL))
+
+  if (  (  (Value == NULL)
+        && (Action != EFI_BROWSER_ACTION_FORM_OPEN)
+        && (Action != EFI_BROWSER_ACTION_FORM_CLOSE))
+     || (ActionRequest == NULL))
   {
     return EFI_INVALID_PARAMETER;
   }
@@ -609,14 +619,14 @@ RasConfigCallback (
 
 EFI_STATUS
 UpdateRasConfigScreen (
-  IN RAS_CONFIG_PRIVATE_DATA *PrivateData
+  IN RAS_CONFIG_PRIVATE_DATA  *PrivateData
   )
 {
-  EFI_STATUS         Status;
-  VOID               *StartOpCodeHandle;
-  EFI_IFR_GUID_LABEL *StartLabel;
-  VOID               *EndOpCodeHandle;
-  EFI_IFR_GUID_LABEL *EndLabel;
+  EFI_STATUS          Status;
+  VOID                *StartOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *StartLabel;
+  VOID                *EndOpCodeHandle;
+  EFI_IFR_GUID_LABEL  *EndLabel;
 
   //
   // Initialize the container for dynamic opcodes
@@ -640,6 +650,7 @@ UpdateRasConfigScreen (
     Status = EFI_OUT_OF_RESOURCES;
     goto FreeOpCodeBuffer;
   }
+
   StartLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   StartLabel->Number       = LABEL_UPDATE;
 
@@ -656,6 +667,7 @@ UpdateRasConfigScreen (
     Status = EFI_OUT_OF_RESOURCES;
     goto FreeOpCodeBuffer;
   }
+
   EndLabel->ExtendOpCode = EFI_IFR_EXTEND_OP_LABEL;
   EndLabel->Number       = LABEL_END;
 
@@ -747,13 +759,13 @@ RasConfigUnload (
 EFI_STATUS
 EFIAPI
 RasConfigEntryPoint (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                      Status;
-  EFI_HII_HANDLE                  HiiHandle;
-  EFI_HII_CONFIG_ROUTING_PROTOCOL *HiiConfigRouting;
+  EFI_STATUS                       Status;
+  EFI_HII_HANDLE                   HiiHandle;
+  EFI_HII_CONFIG_ROUTING_PROTOCOL  *HiiConfigRouting;
 
   //
   // Initialize driver private data
@@ -766,8 +778,8 @@ RasConfigEntryPoint (
   mPrivateData->Signature = RAS_CONFIG_PRIVATE_SIGNATURE;
 
   mPrivateData->ConfigAccess.ExtractConfig = RasConfigExtractConfig;
-  mPrivateData->ConfigAccess.RouteConfig = RasConfigRouteConfig;
-  mPrivateData->ConfigAccess.Callback = RasConfigCallback;
+  mPrivateData->ConfigAccess.RouteConfig   = RasConfigRouteConfig;
+  mPrivateData->ConfigAccess.Callback      = RasConfigCallback;
 
   //
   // Locate ConfigRouting protocol
@@ -776,6 +788,7 @@ RasConfigEntryPoint (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+
   mPrivateData->HiiConfigRouting = HiiConfigRouting;
 
   Status = gBS->InstallMultipleProtocolInterfaces (

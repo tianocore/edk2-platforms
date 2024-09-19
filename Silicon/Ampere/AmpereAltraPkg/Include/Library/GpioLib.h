@@ -28,8 +28,8 @@ typedef enum {
 VOID
 EFIAPI
 GpioWriteBit (
-  IN UINT32 Pin,
-  IN UINT32 Val
+  IN UINT32  Pin,
+  IN UINT32  Val
   );
 
 /*
@@ -43,7 +43,7 @@ GpioWriteBit (
 UINTN
 EFIAPI
 GpioReadBit (
-  IN UINT32 Pin
+  IN UINT32  Pin
   );
 
 /*
@@ -56,8 +56,8 @@ GpioReadBit (
 EFI_STATUS
 EFIAPI
 GpioModeConfig (
-  UINT8            Pin,
-  GPIO_CONFIG_MODE Mode
+  UINT8             Pin,
+  GPIO_CONFIG_MODE  Mode
   );
 
 /*
@@ -70,7 +70,7 @@ GpioModeConfig (
 EFI_STATUS
 EFIAPI
 GpioSetupRuntime (
-  IN UINT32 Pin
+  IN UINT32  Pin
   );
 
 #endif /* GPIO_LIB_H_ */

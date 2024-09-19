@@ -27,14 +27,14 @@
 EFI_STATUS
 EFIAPI
 GenerateRandomNumbers (
-  OUT UINT8 *Buffer,
-  IN  UINTN BufferSize
+  OUT UINT8  *Buffer,
+  IN  UINTN  BufferSize
   )
 {
-  UINTN      Count;
-  UINTN      RandSize;
-  UINT64     Value;
-  EFI_STATUS Status;
+  UINTN       Count;
+  UINTN       RandSize;
+  UINT64      Value;
+  EFI_STATUS  Status;
 
   if ((BufferSize == 0) || (Buffer == NULL)) {
     return EFI_INVALID_PARAMETER;
@@ -55,6 +55,7 @@ GenerateRandomNumbers (
         DEBUG ((DEBUG_ERROR, "%a: Failed to get random number!\n", __func__));
         return EFI_DEVICE_ERROR;
       }
+
       CopyMem (Buffer + Count * sizeof (UINT64), &Value, RandSize);
     }
   }

@@ -14,6 +14,6 @@
     0x43FAA144, 0xA2DF, 0x4050, { 0xA7, 0xFD, 0xEE, 0x17, 0xC9, 0xB8, 0x88, 0x8E } \
   }
 
-extern EFI_GUID gCpuConfigFormSetGuid;
+extern EFI_GUID  gCpuConfigFormSetGuid;
 
 #endif /* CPU_CONFIG_HII_H_ */

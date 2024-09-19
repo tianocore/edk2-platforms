@@ -22,7 +22,7 @@ BuildPlatformInformationHob (
   VOID
   )
 {
-  VOID *Hob;
+  VOID  *Hob;
 
   /* The ATF HOB handoff base is at PcdSystemMemoryBase */
   Hob = GetNextGuidHob (
@@ -41,8 +41,8 @@ BuildPlatformInformationHob (
 EFI_STATUS
 EFIAPI
 InitializeATFHobPeim (
-  IN       EFI_PEI_FILE_HANDLE FileHandle,
-  IN CONST EFI_PEI_SERVICES    **PeiServices
+  IN       EFI_PEI_FILE_HANDLE  FileHandle,
+  IN CONST EFI_PEI_SERVICES     **PeiServices
   )
 {
   BuildPlatformInformationHob ();
