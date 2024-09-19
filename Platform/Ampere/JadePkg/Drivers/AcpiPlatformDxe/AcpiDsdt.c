@@ -14,43 +14,43 @@
 #include "AcpiNfit.h"
 #include "AcpiPlatform.h"
 
-#define PCIE_DEVICE_CONTROL_OFFSET                      0x078
-#define PCIE_DEVICE_CONTROL_UNSUPPORT_REQ_REP_EN        0x08
-#define PCIE_DEVICE_CONTROL_FATAL_ERR_REPORT_EN         0x04
-#define PCIE_DEVICE_CONTROL_NON_FATAL_ERR_REPORT_EN     0x02
-#define PCIE_DEVICE_CONTROL_CORR_ERR_REPORT_EN          0x01
+#define PCIE_DEVICE_CONTROL_OFFSET                   0x078
+#define PCIE_DEVICE_CONTROL_UNSUPPORT_REQ_REP_EN     0x08
+#define PCIE_DEVICE_CONTROL_FATAL_ERR_REPORT_EN      0x04
+#define PCIE_DEVICE_CONTROL_NON_FATAL_ERR_REPORT_EN  0x02
+#define PCIE_DEVICE_CONTROL_CORR_ERR_REPORT_EN       0x01
 
-#define PCIE_ROOT_ERR_CMD_OFFSET                        0x12C
-#define PCIE_ROOT_ERR_CMD_FATAL_ERR_REPORTING_EN        0x4
-#define PCIE_ROOT_ERR_CMD_NON_FATAL_ERR_REPORTING_EN    0x2
-#define PCIE_ROOT_ERR_CMD_CORR_ERR_REPORTING_EN         0x1
+#define PCIE_ROOT_ERR_CMD_OFFSET                      0x12C
+#define PCIE_ROOT_ERR_CMD_FATAL_ERR_REPORTING_EN      0x4
+#define PCIE_ROOT_ERR_CMD_NON_FATAL_ERR_REPORTING_EN  0x2
+#define PCIE_ROOT_ERR_CMD_CORR_ERR_REPORTING_EN       0x1
 
-#define PCIE_MAX_DEVICE_PER_ROOT_PORT 8
+#define PCIE_MAX_DEVICE_PER_ROOT_PORT  8
 
 #pragma pack(1)
 typedef struct {
-  UINT8   DWordPrefix;
-  UINT32  DWordData;
+  UINT8     DWordPrefix;
+  UINT32    DWordData;
 } OP_REGION_DWORD_DATA;
 
 typedef struct {
-  UINT8                 ExtOpPrefix;
-  UINT8                 ExtOpCode;
-  UINT8                 NameString[4];
-  UINT8                 RegionSpace;
-  OP_REGION_DWORD_DATA  RegionBase;
-  OP_REGION_DWORD_DATA  RegionLen;
+  UINT8                   ExtOpPrefix;
+  UINT8                   ExtOpCode;
+  UINT8                   NameString[4];
+  UINT8                   RegionSpace;
+  OP_REGION_DWORD_DATA    RegionBase;
+  OP_REGION_DWORD_DATA    RegionLen;
 } AML_OP_REGION;
 
 typedef struct {
-  UINT64 AddressGranularity;
-  UINT64 AddressMin;
-  UINT64 AddressMax;
-  UINT64 AddressTranslation;
-  UINT64 RangeLength;
+  UINT64    AddressGranularity;
+  UINT64    AddressMin;
+  UINT64    AddressMax;
+  UINT64    AddressTranslation;
+  UINT64    RangeLength;
 } QWORD_MEMORY;
 
-STATIC QWORD_MEMORY mQMemList[] = {
+STATIC QWORD_MEMORY  mQMemList[] = {
   { AC01_PCIE_RCA2_QMEM_LIST },
   { AC01_PCIE_RCA3_QMEM_LIST },
   { AC01_PCIE_RCB0_QMEM_LIST },
@@ -63,26 +63,27 @@ STATIC QWORD_MEMORY mQMemList[] = {
 
 EFI_STATUS
 UpdateStatusMethodObject (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle,
-  CHAR8                   *AsciiObjectPath,
-  CHAR8                   ReturnValue
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle,
+  CHAR8                  *AsciiObjectPath,
+  CHAR8                  ReturnValue
   )
 {
-  EFI_STATUS            Status;
-  EFI_ACPI_HANDLE       ObjectHandle;
-  EFI_ACPI_DATA_TYPE    DataType;
-  CHAR8                 *Buffer;
-  UINTN                 DataSize;
+  EFI_STATUS          Status;
+  EFI_ACPI_HANDLE     ObjectHandle;
+  EFI_ACPI_DATA_TYPE  DataType;
+  CHAR8               *Buffer;
+  UINTN               DataSize;
 
   Status = AcpiSdtProtocol->FindPath (TableHandle, AsciiObjectPath, &ObjectHandle);
-  if (EFI_ERROR (Status) || ObjectHandle == NULL) {
+  if (EFI_ERROR (Status) || (ObjectHandle == NULL)) {
     return EFI_SUCCESS;
   }
+
   ASSERT (ObjectHandle != NULL);
 
   Status = AcpiSdtProtocol->GetOption (ObjectHandle, 2, &DataType, (VOID *)&Buffer, &DataSize);
-  if (!EFI_ERROR (Status) && Buffer[2] == AML_BYTE_PREFIX) {
+  if (!EFI_ERROR (Status) && (Buffer[2] == AML_BYTE_PREFIX)) {
     //
     // Only patch when the initial value is byte object.
     //
@@ -95,18 +96,18 @@ UpdateStatusMethodObject (
 
 EFI_STATUS
 GetOpRegionBase (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle,
-  CHAR8                   *AsciiObjectPath,
-  UINT32                  *Value
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle,
+  CHAR8                  *AsciiObjectPath,
+  UINT32                 *Value
   )
 {
-  EFI_STATUS              Status;
-  EFI_ACPI_HANDLE         ObjectHandle;
-  EFI_ACPI_DATA_TYPE      DataType;
-  CHAR8                   *Buffer;
-  UINTN                   DataSize;
-  AML_OP_REGION           *OpRegion;
+  EFI_STATUS          Status;
+  EFI_ACPI_HANDLE     ObjectHandle;
+  EFI_ACPI_DATA_TYPE  DataType;
+  CHAR8               *Buffer;
+  UINTN               DataSize;
+  AML_OP_REGION       *OpRegion;
 
   Status = AcpiSdtProtocol->FindPath (TableHandle, AsciiObjectPath, &ObjectHandle);
   if (EFI_ERROR (Status)) {
@@ -115,11 +116,11 @@ GetOpRegionBase (
   }
 
   Status = AcpiSdtProtocol->GetOption (ObjectHandle, 0, &DataType, (VOID *)&Buffer, &DataSize);
-  if (!EFI_ERROR (Status) && Buffer != NULL) {
+  if (!EFI_ERROR (Status) && (Buffer != NULL)) {
     OpRegion = (AML_OP_REGION *)Buffer;
 
-    if (OpRegion->ExtOpCode != AML_EXT_REGION_OP
-        || OpRegion->RegionBase.DWordPrefix != AML_DWORD_PREFIX)
+    if (  (OpRegion->ExtOpCode != AML_EXT_REGION_OP)
+       || (OpRegion->RegionBase.DWordPrefix != AML_DWORD_PREFIX))
     {
       AcpiSdtProtocol->Close (TableHandle);
       Status = EFI_NOT_FOUND;
@@ -136,18 +137,18 @@ Exit:
 
 EFI_STATUS
 SetOpRegionBase (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle,
-  CHAR8                   *AsciiObjectPath,
-  UINT32                  Value
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle,
+  CHAR8                  *AsciiObjectPath,
+  UINT32                 Value
   )
 {
-  EFI_STATUS              Status;
-  EFI_ACPI_HANDLE         ObjectHandle;
-  EFI_ACPI_DATA_TYPE      DataType;
-  CHAR8                   *Buffer;
-  UINTN                   DataSize;
-  AML_OP_REGION           *OpRegion;
+  EFI_STATUS          Status;
+  EFI_ACPI_HANDLE     ObjectHandle;
+  EFI_ACPI_DATA_TYPE  DataType;
+  CHAR8               *Buffer;
+  UINTN               DataSize;
+  AML_OP_REGION       *OpRegion;
 
   Status = AcpiSdtProtocol->FindPath (TableHandle, AsciiObjectPath, &ObjectHandle);
   if (EFI_ERROR (Status)) {
@@ -156,11 +157,11 @@ SetOpRegionBase (
   }
 
   Status = AcpiSdtProtocol->GetOption (ObjectHandle, 0, &DataType, (VOID *)&Buffer, &DataSize);
-  if (!EFI_ERROR (Status) && Buffer != NULL) {
+  if (!EFI_ERROR (Status) && (Buffer != NULL)) {
     OpRegion = (AML_OP_REGION *)Buffer;
 
-    if (OpRegion->ExtOpCode != AML_EXT_REGION_OP
-        || OpRegion->RegionBase.DWordPrefix != AML_DWORD_PREFIX)
+    if (  (OpRegion->ExtOpCode != AML_EXT_REGION_OP)
+       || (OpRegion->RegionBase.DWordPrefix != AML_DWORD_PREFIX))
     {
       AcpiSdtProtocol->Close (TableHandle);
       Status = EFI_NOT_FOUND;
@@ -177,12 +178,12 @@ Exit:
 
 STATIC VOID
 AcpiPatchCmn600 (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
-  CHAR8 NodePath[256];
-  UINTN Index;
+  CHAR8  NodePath[256];
+  UINTN  Index;
 
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     AsciiSPrint (NodePath, sizeof (NodePath), "\\_SB.CMN%1X._STA", Index);
@@ -196,8 +197,8 @@ AcpiPatchCmn600 (
 
 STATIC VOID
 AcpiPatchDmc620 (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
   CHAR8              NodePath[256];
@@ -228,21 +229,22 @@ AcpiPatchDmc620 (
 
 STATIC VOID
 AcpiPatchNvdimm (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
   CHAR8              NodePath[256];
   UINTN              NvdRegionNumSK0, NvdRegionNumSK1, NvdRegionNum, Count;
   PLATFORM_INFO_HOB  *PlatformHob;
   VOID               *Hob;
-  UINT32             OpRegionBase;;
+  UINT32             OpRegionBase;
   EFI_STATUS         Status;
 
   Hob = GetFirstGuidHob (&gPlatformInfoHobGuid);
   if (Hob == NULL) {
     return;
   }
+
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
   NvdRegionNumSK0 = 0;
@@ -256,6 +258,7 @@ AcpiPatchNvdimm (
       }
     }
   }
+
   NvdRegionNum = NvdRegionNumSK0 + NvdRegionNumSK1;
 
   /* Disable NVDIMM Root Device */
@@ -263,6 +266,7 @@ AcpiPatchNvdimm (
     AsciiSPrint (NodePath, sizeof (NodePath), "\\_SB.NVDR._STA");
     UpdateStatusMethodObject (AcpiSdtProtocol, TableHandle, NodePath, 0x0);
   }
+
   /* Update NVDIMM Device _STA for SK0 */
   if (NvdRegionNumSK0 == 0) {
     /* Disable NVD1/2 */
@@ -273,8 +277,8 @@ AcpiPatchNvdimm (
   } else if (NvdRegionNumSK0 == 1) {
     if (PlatformHob->DramInfo.NvdimmMode[NVDIMM_SK0] == NvdimmNonHashed) {
       for (Count = 0; Count < PlatformHob->DramInfo.NumRegion; Count++) {
-        if (PlatformHob->DramInfo.NvdRegion[Count] > 0 &&
-            PlatformHob->DramInfo.Socket[Count] == 0)
+        if ((PlatformHob->DramInfo.NvdRegion[Count] > 0) &&
+            (PlatformHob->DramInfo.Socket[Count] == 0))
         {
           if (PlatformHob->DramInfo.Base[Count] ==
               AC01_NVDIMM_SK0_NHASHED_REGION0_BASE)
@@ -293,6 +297,7 @@ AcpiPatchNvdimm (
       }
     }
   }
+
   /* Update NVDIMM Device _STA and OpRegions for SK1 */
   if (NvdRegionNumSK1 == 0) {
     /* Use NVD1 OpRegion base for NVD3 */
@@ -321,8 +326,8 @@ AcpiPatchNvdimm (
   } else if (NvdRegionNumSK1 == 1) {
     if (PlatformHob->DramInfo.NvdimmMode[NVDIMM_SK1] == NvdimmNonHashed) {
       for (Count = 0; Count < PlatformHob->DramInfo.NumRegion; Count++) {
-        if (PlatformHob->DramInfo.NvdRegion[Count] > 0 &&
-            PlatformHob->DramInfo.Socket[Count] == 1)
+        if ((PlatformHob->DramInfo.NvdRegion[Count] > 0) &&
+            (PlatformHob->DramInfo.Socket[Count] == 1))
         {
           if (PlatformHob->DramInfo.Base[Count] ==
               AC01_NVDIMM_SK1_NHASHED_REGION0_BASE)
@@ -345,12 +350,12 @@ AcpiPatchNvdimm (
 
 STATIC VOID
 AcpiPatchHwmon (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
-  CHAR8 NodePath[256];
-  UINT8 Index;
+  CHAR8  NodePath[256];
+  UINT8  Index;
 
   // PCC Hardware Monitor Devices
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
@@ -375,12 +380,12 @@ AcpiPatchHwmon (
 
 STATIC VOID
 AcpiPatchDsu (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
-  CHAR8 NodePath[256];
-  UINTN Index;
+  CHAR8  NodePath[256];
+  UINTN  Index;
 
   for (Index = 0; Index < PLATFORM_CPU_MAX_NUM_CORES; Index += PLATFORM_CPU_NUM_CORES_PER_CPM) {
     AsciiSPrint (
@@ -400,15 +405,15 @@ AcpiPatchDsu (
 
 VOID
 AcpiPatchPcieNuma (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
-  CHAR8 NodePath[256];
-  UINTN Index;
-  UINTN NumaIdx;
-  UINTN NumPciePort;
-  UINTN NumaAssignment[3][16] = {
+  CHAR8  NodePath[256];
+  UINTN  Index;
+  UINTN  NumaIdx;
+  UINTN  NumPciePort;
+  UINTN  NumaAssignment[3][16] = {
     { 0, 0, 0, 0, 0, 0, 0, 0,   // Monolithic Node 0 (S0)
       1, 1, 1, 1, 1, 1, 1, 1 }, // Monolithic Node 1 (S1)
     { 0, 1, 0, 1, 0, 0, 1, 1,   // Hemisphere Node 0, 1 (S0)
@@ -418,21 +423,21 @@ AcpiPatchPcieNuma (
   };
 
   switch (CpuGetSubNumaMode ()) {
-  case SUBNUMA_MODE_MONOLITHIC:
-    NumaIdx = 0;
-    break;
+    case SUBNUMA_MODE_MONOLITHIC:
+      NumaIdx = 0;
+      break;
 
-  case SUBNUMA_MODE_HEMISPHERE:
-    NumaIdx = 1;
-    break;
+    case SUBNUMA_MODE_HEMISPHERE:
+      NumaIdx = 1;
+      break;
 
-  case SUBNUMA_MODE_QUADRANT:
-    NumaIdx = 2;
-    break;
+    case SUBNUMA_MODE_QUADRANT:
+      NumaIdx = 2;
+      break;
 
-  default:
-    NumaIdx = 0;
-    break;
+    default:
+      NumaIdx = 0;
+      break;
   }
 
   if (IsSlaveSocketActive ()) {
@@ -449,20 +454,20 @@ AcpiPatchPcieNuma (
 
 EFI_STATUS
 AcpiPatchPcieAerFwFirst (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
-  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS Address;
-  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL             *PciRootBridgeIo;
-  EFI_HANDLE                                  *HandleBuffer;
-  UINTN                                       HandleCount;
-  CHAR8                                       ObjectPath[8];
-  EFI_STATUS                                  Status;
-  UINT32                                      AerFwFirstConfigValue;
-  UINT32                                      RegData;
-  UINT16                                      Device;
-  UINT32                                      Index;
+  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS  Address;
+  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL              *PciRootBridgeIo;
+  EFI_HANDLE                                   *HandleBuffer;
+  UINTN                                        HandleCount;
+  CHAR8                                        ObjectPath[8];
+  EFI_STATUS                                   Status;
+  UINT32                                       AerFwFirstConfigValue;
+  UINT32                                       RegData;
+  UINT16                                       Device;
+  UINT32                                       Index;
 
   //
   // Check if PCIe AER Firmware First should be enabled
@@ -502,8 +507,8 @@ AcpiPatchPcieAerFwFirst (
   // to be updated to allow Firmware to detect AER errors.
   //
 
-  HandleCount = 0;
-  HandleBuffer = NULL;
+  HandleCount     = 0;
+  HandleBuffer    = NULL;
   PciRootBridgeIo = NULL;
 
   Status = gBS->LocateHandleBuffer (
@@ -534,8 +539,8 @@ AcpiPatchPcieAerFwFirst (
     // Loop through each root port
     //
     for (Device = 1; Device <= PCIE_MAX_DEVICE_PER_ROOT_PORT; Device++) {
-      Address.Bus = 0;
-      Address.Device = Device;
+      Address.Bus      = 0;
+      Address.Device   = Device;
       Address.Function = 0;
       Address.Register = 0;
 
@@ -553,7 +558,7 @@ AcpiPatchPcieAerFwFirst (
 
       PciRootBridgeIo->Pci.Write (PciRootBridgeIo, EfiPciWidthUint32, *((UINT64 *)&Address), 1, &RegData);
 
-      RegData = 0;
+      RegData                  = 0;
       Address.ExtendedRegister = PCIE_ROOT_ERR_CMD_OFFSET;
       PciRootBridgeIo->Pci.Read (PciRootBridgeIo, EfiPciWidthUint32, *((UINT64 *)&Address), 1, &RegData);
 
@@ -570,8 +575,8 @@ AcpiPatchPcieAerFwFirst (
 
 VOID
 AcpiPatchPcieMmio32 (
-  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
-  EFI_ACPI_HANDLE         TableHandle
+  EFI_ACPI_SDT_PROTOCOL  *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE        TableHandle
   )
 {
   AC01_ROOT_COMPLEX                  *RootComplexList;
@@ -602,7 +607,7 @@ AcpiPatchPcieMmio32 (
       continue;
     }
 
-    if (!IsSlaveSocketAvailable () && Idx <= SOCKET0_LAST_RC && Idx >= SOCKET0_FIRST_RC) {
+    if (!IsSlaveSocketAvailable () && (Idx <= SOCKET0_LAST_RC) && (Idx >= SOCKET0_FIRST_RC)) {
       //
       // Patch MMIO32 resource in 1P system
       //
@@ -625,11 +630,13 @@ AcpiPatchPcieMmio32 (
       NextDescriptor = Buffer + 5; // Point to first address space descriptor
       while ((NextDescriptor - Buffer) < DataSize) {
         Descriptor = (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *)NextDescriptor;
-        if (Descriptor->Desc == ACPI_QWORD_ADDRESS_SPACE_DESCRIPTOR
-            && Descriptor->ResType == ACPI_ADDRESS_SPACE_TYPE_MEM) {
+        if (  (Descriptor->Desc == ACPI_QWORD_ADDRESS_SPACE_DESCRIPTOR)
+           && (Descriptor->ResType == ACPI_ADDRESS_SPACE_TYPE_MEM))
+        {
           CopyMem (&Descriptor->AddrSpaceGranularity, &mQMemList[Idx - 2], sizeof (QWORD_MEMORY));
           break;
         }
+
         NextDescriptor += (Descriptor->Len + sizeof (ACPI_LARGE_RESOURCE_HEADER));
       }
 
@@ -643,12 +650,12 @@ AcpiPatchDsdtTable (
   VOID
   )
 {
-  EFI_STATUS                                  Status;
-  EFI_ACPI_SDT_PROTOCOL                       *AcpiSdtProtocol;
-  EFI_ACPI_DESCRIPTION_HEADER                 *Table;
-  UINTN                                       TableKey;
-  UINTN                                       TableIndex;
-  EFI_ACPI_HANDLE                             TableHandle;
+  EFI_STATUS                   Status;
+  EFI_ACPI_SDT_PROTOCOL        *AcpiSdtProtocol;
+  EFI_ACPI_DESCRIPTION_HEADER  *Table;
+  UINTN                        TableKey;
+  UINTN                        TableIndex;
+  EFI_ACPI_HANDLE              TableHandle;
 
   Status = gBS->LocateProtocol (
                   &gEfiAcpiSdtProtocolGuid,
@@ -661,13 +668,13 @@ AcpiPatchDsdtTable (
   }
 
   TableIndex = 0;
-  Status = AcpiLocateTableBySignature (
-             AcpiSdtProtocol,
-             EFI_ACPI_6_3_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-             &TableIndex,
-             &Table,
-             &TableKey
-             );
+  Status     = AcpiLocateTableBySignature (
+                 AcpiSdtProtocol,
+                 EFI_ACPI_6_3_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+                 &TableIndex,
+                 &Table,
+                 &TableKey
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "ACPI DSDT table not found!\n"));
     ASSERT_EFI_ERROR (Status);

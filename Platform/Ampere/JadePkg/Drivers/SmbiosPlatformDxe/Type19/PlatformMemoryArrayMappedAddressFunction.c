@@ -25,22 +25,22 @@
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
-  UINT8               Index;
-  UINT8               SlotIndex;
-  UINT8               MemRegionIndex;
-  UINTN               HandleCount;
-  UINTN               MemorySize;
-  UINT16              *HandleArray;
-  EFI_STATUS          Status;
-  PLATFORM_DIMM       *Dimm;
-  STR_TOKEN_INFO      *InputStrToken;
-  PLATFORM_DIMM_LIST  *DimmList;
-  PLATFORM_DRAM_INFO  *DramInfo;
-  SMBIOS_TABLE_TYPE19 *InputData;
-  SMBIOS_TABLE_TYPE19 *Type19Record;
+  UINT8                Index;
+  UINT8                SlotIndex;
+  UINT8                MemRegionIndex;
+  UINTN                HandleCount;
+  UINTN                MemorySize;
+  UINT16               *HandleArray;
+  EFI_STATUS           Status;
+  PLATFORM_DIMM        *Dimm;
+  STR_TOKEN_INFO       *InputStrToken;
+  PLATFORM_DIMM_LIST   *DimmList;
+  PLATFORM_DRAM_INFO   *DramInfo;
+  SMBIOS_TABLE_TYPE19  *InputData;
+  SMBIOS_TABLE_TYPE19  *Type19Record;
 
-  HandleCount   = 0;
-  HandleArray   = NULL;
+  HandleCount = 0;
+  HandleArray = NULL;
 
   GetDimmList (&DimmList);
   if (DimmList == NULL) {
@@ -72,6 +72,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
   if (HandleArray == NULL) {
     return EFI_OUT_OF_RESOURCES;
   }
+
   if (HandleCount != GetNumberOfSupportedSockets ()) {
     DEBUG ((
       DEBUG_ERROR,
@@ -84,7 +85,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
   }
 
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
-    InputData = (SMBIOS_TABLE_TYPE19 *)RecordData;
+    InputData     = (SMBIOS_TABLE_TYPE19 *)RecordData;
     InputStrToken = (STR_TOKEN_INFO *)StrToken;
     while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {
       //
@@ -116,8 +117,8 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
           return EFI_OUT_OF_RESOURCES;
         }
 
-        if (DramInfo->NvdRegion[MemRegionIndex] > 0
-            || DramInfo->Socket[MemRegionIndex] != Index)
+        if (  (DramInfo->NvdRegion[MemRegionIndex] > 0)
+           || (DramInfo->Socket[MemRegionIndex] != Index))
         {
           continue;
         }
@@ -128,6 +129,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
         if (MemorySize != 0) {
           Type19Record->PartitionWidth = (DramInfo->Size[MemRegionIndex] - 1) / MemorySize + 1;
         }
+
         Type19Record->MemoryArrayHandle = HandleArray[Index];
 
         Status = SmbiosPlatformDxeAddRecord ((UINT8 *)Type19Record, NULL);
@@ -144,6 +146,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
       InputStrToken++;
     }
   }
+
   FreePool (HandleArray);
 
   return Status;

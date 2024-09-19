@@ -23,9 +23,9 @@
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformPhysicalMemoryArray) {
-  UINT8               Index;
-  EFI_STATUS          Status;
-  SMBIOS_TABLE_TYPE16 *InputData;
+  UINT8                Index;
+  EFI_STATUS           Status;
+  SMBIOS_TABLE_TYPE16  *InputData;
 
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     InputData = (SMBIOS_TABLE_TYPE16 *)RecordData;

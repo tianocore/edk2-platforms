@@ -17,22 +17,22 @@
 //
 // I2C bus address that RTC connected to
 //
-#define I2C_RTC_BUS_ADDRESS        1
+#define I2C_RTC_BUS_ADDRESS  1
 
 //
 // I2C RTC bus speed
 //
-#define I2C_RTC_BUS_SPEED          100000
+#define I2C_RTC_BUS_SPEED  100000
 
 //
 // I2C chip address that RTC connected to
 //
-#define I2C_RTC_CHIP_ADDRESS       0x51
+#define I2C_RTC_CHIP_ADDRESS  0x51
 
 //
 // The GPI PIN that tell if RTC can be access
 //
-#define I2C_RTC_ACCESS_GPIO_PIN    28
+#define I2C_RTC_ACCESS_GPIO_PIN  28
 
 /**
  * Returns the current time and date information of the hardware platform.
@@ -47,7 +47,7 @@
 EFI_STATUS
 EFIAPI
 PlatformGetTime (
-  OUT EFI_TIME *Time
+  OUT EFI_TIME  *Time
   );
 
 /**
@@ -63,7 +63,7 @@ PlatformGetTime (
 EFI_STATUS
 EFIAPI
 PlatformSetTime (
-  IN EFI_TIME *Time
+  IN EFI_TIME  *Time
   );
 
 /**

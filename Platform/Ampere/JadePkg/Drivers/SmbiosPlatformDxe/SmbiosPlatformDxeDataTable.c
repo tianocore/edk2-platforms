@@ -59,46 +59,46 @@ SMBIOS_PLATFORM_DXE_DATA_TABLE mSmbiosPlatformDxeDataTable[] = {
   // Type7
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformCache
-  ),
+    ),
   // Type8
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformPortConnector
-  ),
+    ),
   // Type9
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformSystemSlot
-  ),
+    ),
   // Type11
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformOemString
-  ),
-  //Type16
+    ),
+  // Type16
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformPhysicalMemoryArray
-  ),
-  //Type17
+    ),
+  // Type17
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformMemoryDevice
-  ),
-  //Type19
+    ),
+  // Type19
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformMemoryArrayMappedAddress
-  ),
+    ),
   // Type24
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformHardwareSecurity
-  ),
+    ),
   // Type38
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformIpmiDevice
-  ),
+    ),
   // Type41
   SMBIOS_PLATFORM_DXE_TABLE_ENTRY_DATA_AND_FUNCTION (
     PlatformOnboardDevicesExtended
-  )
+    )
 };
 
 //
 // Number of Data Table entries.
 //
-UINTN mSmbiosPlatformDxeDataTableEntries = ARRAY_SIZE (mSmbiosPlatformDxeDataTable);
+UINTN  mSmbiosPlatformDxeDataTableEntries = ARRAY_SIZE (mSmbiosPlatformDxeDataTable);

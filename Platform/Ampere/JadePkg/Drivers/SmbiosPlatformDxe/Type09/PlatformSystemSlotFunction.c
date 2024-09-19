@@ -316,14 +316,14 @@ UpdateSmbiosType9 (
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformSystemSlot) {
-  EFI_STATUS         Status;
-  SLOT_INDEX         SlotIndex;
-  STR_TOKEN_INFO     *InputStrToken;
-  SMBIOS_TABLE_TYPE9 *InputData;
-  SMBIOS_TABLE_TYPE9 *Type9Record;
+  EFI_STATUS          Status;
+  SLOT_INDEX          SlotIndex;
+  STR_TOKEN_INFO      *InputStrToken;
+  SMBIOS_TABLE_TYPE9  *InputData;
+  SMBIOS_TABLE_TYPE9  *Type9Record;
 
-  SlotIndex = S0_RISERX32_SLOT1_INDEX;
-  InputData = (SMBIOS_TABLE_TYPE9 *)RecordData;
+  SlotIndex     = S0_RISERX32_SLOT1_INDEX;
+  InputData     = (SMBIOS_TABLE_TYPE9 *)RecordData;
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {

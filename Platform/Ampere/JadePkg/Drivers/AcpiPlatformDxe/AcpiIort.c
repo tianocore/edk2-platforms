@@ -31,71 +31,71 @@
     Flags                                              \
   }
 
-#define TCU_TO_SMMU_OFFSET      0x2000
-#define PAGE1_TO_PMCG_OFFSET    0x10000
+#define TCU_TO_SMMU_OFFSET    0x2000
+#define PAGE1_TO_PMCG_OFFSET  0x10000
 
-STATIC AC01_ROOT_COMPLEX *mRootComplexList;
+STATIC AC01_ROOT_COMPLEX  *mRootComplexList;
 
-STATIC UINT32 mTbuPmuIrqArray[] = { AC01_SMMU_TBU_PMU_IRQS_LIST };
-STATIC UINT32 mTcuPmuIrqArray[] = { AC01_SMMU_TCU_PMU_IRQS_LIST };
-STATIC UINT64 mRcaTbuPmuOffset[] = { AC01_RCA_TBU_PMU_OFFSET_LIST };
-STATIC UINT64 mRcbTbuPmuOffset[] = { AC01_RCB_TBU_PMU_OFFSET_LIST };
+STATIC UINT32  mTbuPmuIrqArray[]  = { AC01_SMMU_TBU_PMU_IRQS_LIST };
+STATIC UINT32  mTcuPmuIrqArray[]  = { AC01_SMMU_TCU_PMU_IRQS_LIST };
+STATIC UINT64  mRcaTbuPmuOffset[] = { AC01_RCA_TBU_PMU_OFFSET_LIST };
+STATIC UINT64  mRcbTbuPmuOffset[] = { AC01_RCB_TBU_PMU_OFFSET_LIST };
 
 #pragma pack(1)
 
 typedef struct {
-  EFI_ACPI_6_0_IO_REMAPPING_NODE Node;
-  UINT64                         Base;
-  UINT32                         Flags;
-  UINT32                         Reserved;
-  UINT64                         VatosAddress;
-  UINT32                         Model;
-  UINT32                         Event;
-  UINT32                         Pri;
-  UINT32                         Gerr;
-  UINT32                         Sync;
-  UINT32                         ProximityDomain;
-  UINT32                         DeviceIdMapping;
+  EFI_ACPI_6_0_IO_REMAPPING_NODE    Node;
+  UINT64                            Base;
+  UINT32                            Flags;
+  UINT32                            Reserved;
+  UINT64                            VatosAddress;
+  UINT32                            Model;
+  UINT32                            Event;
+  UINT32                            Pri;
+  UINT32                            Gerr;
+  UINT32                            Sync;
+  UINT32                            ProximityDomain;
+  UINT32                            DeviceIdMapping;
 } EFI_ACPI_6_2_IO_REMAPPING_SMMU3_NODE;
 
 typedef struct {
-  EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE Node;
-  UINT32                             ItsIdentifier;
+  EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE    Node;
+  UINT32                                ItsIdentifier;
 } AC01_ITS_NODE;
 
 typedef struct {
-  EFI_ACPI_6_0_IO_REMAPPING_RC_NODE  Node;
-  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE RcIdMapping;
+  EFI_ACPI_6_0_IO_REMAPPING_RC_NODE     Node;
+  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE    RcIdMapping;
 } AC01_RC_NODE;
 
 typedef struct {
-  EFI_ACPI_6_2_IO_REMAPPING_SMMU3_NODE Node;
-  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE   InterruptMsiMapping;
-  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE   InterruptMsiMappingSingle;
+  EFI_ACPI_6_2_IO_REMAPPING_SMMU3_NODE    Node;
+  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE      InterruptMsiMapping;
+  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE      InterruptMsiMappingSingle;
 } AC01_SMMU_NODE;
 
 typedef struct {
-  EFI_ACPI_6_0_IO_REMAPPING_TABLE Iort;
-  AC01_ITS_NODE                   ItsNode[2];
-  AC01_RC_NODE                    RcNode[2];
-  AC01_SMMU_NODE                  SmmuNode[2];
+  EFI_ACPI_6_0_IO_REMAPPING_TABLE    Iort;
+  AC01_ITS_NODE                      ItsNode[2];
+  AC01_RC_NODE                       RcNode[2];
+  AC01_SMMU_NODE                     SmmuNode[2];
 } AC01_IO_REMAPPING_STRUCTURE;
 
 #pragma pack()
 
-EFI_ACPI_6_0_IO_REMAPPING_TABLE mIortHeader = {
-  .Header = __ACPI_HEADER (
-              EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
-              AC01_IO_REMAPPING_STRUCTURE,
-              EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00
-              ),
-  .NumNodes = 0,  // To be filled
+EFI_ACPI_6_0_IO_REMAPPING_TABLE  mIortHeader = {
+  .Header     = __ACPI_HEADER (
+                  EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
+                  AC01_IO_REMAPPING_STRUCTURE,
+                  EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00
+                  ),
+  .NumNodes   = 0, // To be filled
   .NodeOffset = sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE),
   0
 };
 
-AC01_ITS_NODE mItsNodeTemplate = {
-  .Node = {
+AC01_ITS_NODE  mItsNodeTemplate = {
+  .Node                = {
     {
       EFI_ACPI_IORT_TYPE_ITS_GROUP,
       sizeof (EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE) + 4,
@@ -106,10 +106,10 @@ AC01_ITS_NODE mItsNodeTemplate = {
     },
     .NumItsIdentifiers = 1,
   },
-  .ItsIdentifier = 1,
+  .ItsIdentifier       = 1,
 };
 
-AC01_RC_NODE mRcNodeTemplate = {
+AC01_RC_NODE  mRcNodeTemplate = {
   {
     {
       EFI_ACPI_IORT_TYPE_ROOT_COMPLEX,
@@ -125,13 +125,13 @@ AC01_RC_NODE mRcNodeTemplate = {
     EFI_ACPI_IORT_MEM_ACCESS_FLAGS_CPM |
     EFI_ACPI_IORT_MEM_ACCESS_FLAGS_DACS,
     EFI_ACPI_IORT_ROOT_COMPLEX_ATS_SUPPORTED,
-    .PciSegmentNumber = 0,
+    .PciSegmentNumber  = 0,
     .MemoryAddressSize = 64,
   },
   __AC01_ID_MAPPING (0x0, 0xffff, 0x0, SmmuNode, 0),
 };
 
-AC01_SMMU_NODE mSmmuNodeTemplate = {
+AC01_SMMU_NODE  mSmmuNodeTemplate = {
   {
     {
       EFI_ACPI_IORT_TYPE_SMMUv3,
@@ -157,7 +157,7 @@ AC01_SMMU_NODE mSmmuNodeTemplate = {
   __AC01_ID_MAPPING (0x0, 0x1, 0, SmmuNode, 1),
 };
 
-EFI_ACPI_6_0_IO_REMAPPING_PMCG_NODE mPmcgNodeTemplate = {
+EFI_ACPI_6_0_IO_REMAPPING_PMCG_NODE  mPmcgNodeTemplate = {
   {
     EFI_ACPI_IORT_TYPE_PMCG,
     sizeof (EFI_ACPI_6_0_IO_REMAPPING_PMCG_NODE),
@@ -175,29 +175,29 @@ EFI_ACPI_6_0_IO_REMAPPING_PMCG_NODE mPmcgNodeTemplate = {
 STATIC
 VOID
 ConstructIort (
-  VOID   *IortBuffer,
-  UINT32 RcCount,
-  UINT32 SmmuPmuAgentCount,
-  UINT32 HeaderCount,
-  INT32  *EnabledRCs
+  VOID    *IortBuffer,
+  UINT32  RcCount,
+  UINT32  SmmuPmuAgentCount,
+  UINT32  HeaderCount,
+  INT32   *EnabledRCs
   )
 {
-  AC01_ROOT_COMPLEX *RootComplex;
-  UINT32            Idx, Idx1;
-  UINT32            ItsOffset[AC01_PCIE_MAX_ROOT_COMPLEX];
-  UINT32            SmmuNodeOffset[AC01_PCIE_MAX_ROOT_COMPLEX];
-  UINT64            *TbuPmuOffset;
-  UINTN             MaxTbuPmu;
-  VOID              *IortIter, *SmmuIter, *PmcgIter;
+  AC01_ROOT_COMPLEX  *RootComplex;
+  UINT32             Idx, Idx1;
+  UINT32             ItsOffset[AC01_PCIE_MAX_ROOT_COMPLEX];
+  UINT32             SmmuNodeOffset[AC01_PCIE_MAX_ROOT_COMPLEX];
+  UINT64             *TbuPmuOffset;
+  UINTN              MaxTbuPmu;
+  VOID               *IortIter, *SmmuIter, *PmcgIter;
 
-  IortIter = IortBuffer;
+  IortIter                  = IortBuffer;
   mIortHeader.Header.Length = HeaderCount;
-  mIortHeader.NumNodes = (3 * RcCount) + SmmuPmuAgentCount,
+  mIortHeader.NumNodes      = (3 * RcCount) + SmmuPmuAgentCount,
   CopyMem (IortIter, &mIortHeader, sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE));
 
   IortIter += sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE);
   for (Idx = 0; Idx < RcCount; Idx++) {
-    ItsOffset[Idx] = IortIter - IortBuffer;
+    ItsOffset[Idx]                 = IortIter - IortBuffer;
     mItsNodeTemplate.ItsIdentifier = EnabledRCs[Idx];
     CopyMem (IortIter, &mItsNodeTemplate, sizeof (AC01_ITS_NODE));
     IortIter += sizeof (AC01_ITS_NODE);
@@ -206,29 +206,30 @@ ConstructIort (
   SmmuIter = IortIter + RcCount * sizeof (AC01_RC_NODE);
   PmcgIter = SmmuIter + RcCount * sizeof (AC01_SMMU_NODE);
   for (Idx = 0; Idx < RcCount; Idx++) {
-    SmmuNodeOffset[Idx] = SmmuIter - IortBuffer;
-    RootComplex = &mRootComplexList[EnabledRCs[Idx]];
-    mSmmuNodeTemplate.Node.Base = RootComplex->TcuBase;
-    mSmmuNodeTemplate.InterruptMsiMapping.OutputBase = EnabledRCs[Idx] << 16;
-    mSmmuNodeTemplate.InterruptMsiMapping.OutputReference = ItsOffset[Idx];
-    mSmmuNodeTemplate.InterruptMsiMappingSingle.OutputBase = EnabledRCs[Idx] << 16;
+    SmmuNodeOffset[Idx]                                         = SmmuIter - IortBuffer;
+    RootComplex                                                 = &mRootComplexList[EnabledRCs[Idx]];
+    mSmmuNodeTemplate.Node.Base                                 = RootComplex->TcuBase;
+    mSmmuNodeTemplate.InterruptMsiMapping.OutputBase            = EnabledRCs[Idx] << 16;
+    mSmmuNodeTemplate.InterruptMsiMapping.OutputReference       = ItsOffset[Idx];
+    mSmmuNodeTemplate.InterruptMsiMappingSingle.OutputBase      = EnabledRCs[Idx] << 16;
     mSmmuNodeTemplate.InterruptMsiMappingSingle.OutputReference = ItsOffset[Idx];
     /* All RCs on master be assigned to node 0, while remote RCs will be assigned to first remote node */
     mSmmuNodeTemplate.Node.ProximityDomain = 0;
     if ((RootComplex->TcuBase & SLAVE_SOCKET_BASE_ADDRESS_OFFSET) != 0) {
       // RootComplex on remote socket
       switch (CpuGetSubNumaMode ()) {
-      case SUBNUMA_MODE_MONOLITHIC:
-        mSmmuNodeTemplate.Node.ProximityDomain += MONOLITIC_NUM_OF_REGION;
-        break;
-      case SUBNUMA_MODE_HEMISPHERE:
-        mSmmuNodeTemplate.Node.ProximityDomain += HEMISPHERE_NUM_OF_REGION;
-        break;
-      case SUBNUMA_MODE_QUADRANT:
-        mSmmuNodeTemplate.Node.ProximityDomain += QUADRANT_NUM_OF_REGION;
-        break;
+        case SUBNUMA_MODE_MONOLITHIC:
+          mSmmuNodeTemplate.Node.ProximityDomain += MONOLITIC_NUM_OF_REGION;
+          break;
+        case SUBNUMA_MODE_HEMISPHERE:
+          mSmmuNodeTemplate.Node.ProximityDomain += HEMISPHERE_NUM_OF_REGION;
+          break;
+        case SUBNUMA_MODE_QUADRANT:
+          mSmmuNodeTemplate.Node.ProximityDomain += QUADRANT_NUM_OF_REGION;
+          break;
       }
     }
+
     CopyMem (SmmuIter, &mSmmuNodeTemplate, sizeof (AC01_SMMU_NODE));
     SmmuIter += sizeof (AC01_SMMU_NODE);
 
@@ -240,17 +241,17 @@ ConstructIort (
     // Add TBU PMCG nodes
     //
     if (RootComplex->Type == RootComplexTypeA) {
-      MaxTbuPmu = AC01_RCA_MAX_TBU_PMU;
+      MaxTbuPmu    = AC01_RCA_MAX_TBU_PMU;
       TbuPmuOffset = mRcaTbuPmuOffset;
     } else {
-      MaxTbuPmu = AC01_RCB_MAX_TBU_PMU;
+      MaxTbuPmu    = AC01_RCB_MAX_TBU_PMU;
       TbuPmuOffset = mRcbTbuPmuOffset;
     }
 
     for (Idx1 = 0; Idx1 < MaxTbuPmu; Idx1++) {
-      mPmcgNodeTemplate.Base = RootComplex->TcuBase + TCU_TO_SMMU_OFFSET + TbuPmuOffset[Idx1];
-      mPmcgNodeTemplate.Page1Base = mPmcgNodeTemplate.Base + PAGE1_TO_PMCG_OFFSET;
-      mPmcgNodeTemplate.NodeReference = SmmuNodeOffset[Idx];
+      mPmcgNodeTemplate.Base                  = RootComplex->TcuBase + TCU_TO_SMMU_OFFSET + TbuPmuOffset[Idx1];
+      mPmcgNodeTemplate.Page1Base             = mPmcgNodeTemplate.Base + PAGE1_TO_PMCG_OFFSET;
+      mPmcgNodeTemplate.NodeReference         = SmmuNodeOffset[Idx];
       mPmcgNodeTemplate.OverflowInterruptGsiv = mTbuPmuIrqArray[EnabledRCs[Idx]] + Idx1;
       CopyMem (PmcgIter, &mPmcgNodeTemplate, sizeof (mPmcgNodeTemplate));
       PmcgIter += sizeof (mPmcgNodeTemplate);
@@ -259,16 +260,16 @@ ConstructIort (
     //
     // Add TCU PMCG node
     //
-    mPmcgNodeTemplate.Base = RootComplex->TcuBase + TCU_TO_SMMU_OFFSET;
-    mPmcgNodeTemplate.Page1Base = mPmcgNodeTemplate.Base + PAGE1_TO_PMCG_OFFSET;
-    mPmcgNodeTemplate.NodeReference = SmmuNodeOffset[Idx];
+    mPmcgNodeTemplate.Base                  = RootComplex->TcuBase + TCU_TO_SMMU_OFFSET;
+    mPmcgNodeTemplate.Page1Base             = mPmcgNodeTemplate.Base + PAGE1_TO_PMCG_OFFSET;
+    mPmcgNodeTemplate.NodeReference         = SmmuNodeOffset[Idx];
     mPmcgNodeTemplate.OverflowInterruptGsiv = mTcuPmuIrqArray[EnabledRCs[Idx]];
     CopyMem (PmcgIter, &mPmcgNodeTemplate, sizeof (mPmcgNodeTemplate));
     PmcgIter += sizeof (mPmcgNodeTemplate);
   }
 
   for (Idx = 0; Idx < RcCount; Idx++) {
-    mRcNodeTemplate.Node.PciSegmentNumber = mRootComplexList[EnabledRCs[Idx]].Logical;
+    mRcNodeTemplate.Node.PciSegmentNumber       = mRootComplexList[EnabledRCs[Idx]].Logical;
     mRcNodeTemplate.RcIdMapping.OutputReference = SmmuNodeOffset[Idx];
     CopyMem (IortIter, &mRcNodeTemplate, sizeof (AC01_RC_NODE));
     IortIter += sizeof (AC01_RC_NODE);
@@ -281,16 +282,16 @@ AcpiInstallIort (
   VOID
   )
 {
-  EFI_ACPI_TABLE_PROTOCOL           *AcpiTableProtocol;
-  EFI_STATUS                        Status;
-  INT32                             EnabledRCs[AC01_PCIE_MAX_ROOT_COMPLEX];
-  ROOT_COMPLEX_CONFIG_VARSTORE_DATA VarStoreConfig;
-  UINT32                            RcCount, SmmuPmuAgentCount, TotalCount;
-  UINT8                             Idx;
-  UINTN                             BufferSize;
-  UINTN                             TableKey;
-  VOID                              *Hob;
-  VOID                              *IortBuffer;
+  EFI_ACPI_TABLE_PROTOCOL            *AcpiTableProtocol;
+  EFI_STATUS                         Status;
+  INT32                              EnabledRCs[AC01_PCIE_MAX_ROOT_COMPLEX];
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA  VarStoreConfig;
+  UINT32                             RcCount, SmmuPmuAgentCount, TotalCount;
+  UINT8                              Idx;
+  UINTN                              BufferSize;
+  UINTN                              TableKey;
+  VOID                               *Hob;
+  VOID                               *IortBuffer;
 
   Hob = GetFirstGuidHob (&gRootComplexInfoHobGuid);
   if (Hob == NULL) {
@@ -304,6 +305,7 @@ AcpiInstallIort (
       EnabledRCs[RcCount++] = Idx;
     }
   }
+
   EnabledRCs[RcCount] = -1;
 
   Status = gBS->LocateProtocol (
@@ -322,13 +324,13 @@ AcpiInstallIort (
   // Check SMMU setting
   //
   BufferSize = sizeof (VarStoreConfig);
-  Status = gRT->GetVariable (
-                  ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
-                  &gRootComplexConfigFormSetGuid,
-                  NULL,
-                  &BufferSize,
-                  &VarStoreConfig
-                  );
+  Status     = gRT->GetVariable (
+                      ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
+                      &gRootComplexConfigFormSetGuid,
+                      NULL,
+                      &BufferSize,
+                      &VarStoreConfig
+                      );
   if (!EFI_ERROR (Status) && VarStoreConfig.SmmuPmu) {
     for (Idx = 0; Idx < RcCount; Idx++) {
       if (mRootComplexList[EnabledRCs[Idx]].Type == RootComplexTypeA) {
@@ -336,6 +338,7 @@ AcpiInstallIort (
       } else {
         SmmuPmuAgentCount += AC01_RCB_MAX_TBU_PMU;
       }
+
       // Plus 1 TCU
       SmmuPmuAgentCount += 1;
     }

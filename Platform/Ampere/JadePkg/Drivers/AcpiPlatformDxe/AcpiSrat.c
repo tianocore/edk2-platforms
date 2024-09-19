@@ -11,7 +11,7 @@
 #include <Library/ArmLib.h>
 #include "AcpiPlatform.h"
 
-EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_HEADER SRATTableHeaderTemplate = {
+EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_HEADER  SRATTableHeaderTemplate = {
   __ACPI_HEADER (
     EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_SIGNATURE,
     0, /* need fill in */
@@ -21,12 +21,12 @@ EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_HEADER SRATTableHeaderTemplate = {
   0x0000000000000000,
 };
 
-EFI_ACPI_6_3_GIC_ITS_AFFINITY_STRUCTURE GicItsAffinityTemplate = {
-  .Type = EFI_ACPI_6_3_GIC_ITS_AFFINITY,
+EFI_ACPI_6_3_GIC_ITS_AFFINITY_STRUCTURE  GicItsAffinityTemplate = {
+  .Type            = EFI_ACPI_6_3_GIC_ITS_AFFINITY,
   sizeof (EFI_ACPI_6_3_GIC_ITS_AFFINITY_STRUCTURE),
   .ProximityDomain = 0, /* ProximityDomain */
   { EFI_ACPI_RESERVED_BYTE, EFI_ACPI_RESERVED_BYTE },
-  .ItsId = 0,
+  .ItsId           = 0,
 };
 
 STATIC
@@ -46,6 +46,7 @@ SratCalculateNumMemoryRegion (
   if (Hob == NULL) {
     return 0;
   }
+
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
   Result = 0;
@@ -62,7 +63,7 @@ SratCalculateNumMemoryRegion (
 STATIC
 EFI_STATUS
 SratAddMemAffinity (
-  EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE *SratMemAffinity
+  EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE  *SratMemAffinity
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
@@ -76,13 +77,14 @@ SratAddMemAffinity (
   if (Hob == NULL) {
     return EFI_INVALID_PARAMETER;
   }
+
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
   NumRegion = 0;
 
   for (Count = 0; Count < PlatformHob->DramInfo.NumRegion; Count++) {
-    RegionSize = PlatformHob->DramInfo.Size[Count];
-    RegionBase = PlatformHob->DramInfo.Base[Count];
+    RegionSize      = PlatformHob->DramInfo.Size[Count];
+    RegionBase      = PlatformHob->DramInfo.Base[Count];
     ProximityDomain = PlatformHob->DramInfo.Node[Count];
     if (RegionSize > 0) {
       ZeroMem ((VOID *)&SratMemAffinity[NumRegion], sizeof (SratMemAffinity[NumRegion]));
@@ -92,6 +94,7 @@ SratAddMemAffinity (
         SratMemAffinity[NumRegion].Flags |= EFI_ACPI_6_3_MEMORY_HOT_PLUGGABLE |
                                             EFI_ACPI_6_3_MEMORY_NONVOLATILE;
       }
+
       SratMemAffinity[NumRegion].LengthLow =
         (UINT32)(RegionSize & 0xFFFFFFFF);
       SratMemAffinity[NumRegion].LengthHigh =
@@ -101,8 +104,8 @@ SratAddMemAffinity (
       SratMemAffinity[NumRegion].AddressBaseHigh =
         (UINT32)((RegionBase & 0xFFFFFFFF00000000ULL) >> 32);
       SratMemAffinity[NumRegion].ProximityDomain = (UINT32)(ProximityDomain);
-      SratMemAffinity[NumRegion].Type = EFI_ACPI_6_3_MEMORY_AFFINITY;
-      SratMemAffinity[NumRegion].Length = sizeof (EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE);
+      SratMemAffinity[NumRegion].Type            = EFI_ACPI_6_3_MEMORY_AFFINITY;
+      SratMemAffinity[NumRegion].Length          = sizeof (EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE);
       NumRegion++;
     }
   }
@@ -113,16 +116,16 @@ SratAddMemAffinity (
 STATIC
 EFI_STATUS
 SratAddGiccAffinity (
-  EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE *SratGiccAffinity
+  EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE  *SratGiccAffinity
   )
 {
-  VOID                *Hob;
-  UINTN               NumberOfEntries;
-  ARM_CORE_INFO       *ArmCoreInfoTable;
-  UINTN               Count, NumNode, Idx;
-  UINT32              AcpiProcessorUid;
-  UINT8               Socket;
-  UINT8               Cpm;
+  VOID           *Hob;
+  UINTN          NumberOfEntries;
+  ARM_CORE_INFO  *ArmCoreInfoTable;
+  UINTN          Count, NumNode, Idx;
+  UINT32         AcpiProcessorUid;
+  UINT8          Socket;
+  UINT8          Cpm;
 
   Hob = GetFirstGuidHob (&gArmMpCoreInfoGuid);
   if (Hob == NULL) {
@@ -130,13 +133,13 @@ SratAddGiccAffinity (
   }
 
   ArmCoreInfoTable = (ARM_CORE_INFO *)GET_GUID_HOB_DATA (Hob);
-  NumberOfEntries = GET_GUID_HOB_DATA_SIZE (Hob) / sizeof (ARM_CORE_INFO);
+  NumberOfEntries  = GET_GUID_HOB_DATA_SIZE (Hob) / sizeof (ARM_CORE_INFO);
 
   if (NumberOfEntries == 0) {
     return EFI_INVALID_PARAMETER;
   }
 
-  Count = 0;
+  Count   = 0;
   NumNode = 0;
   while (Count != NumberOfEntries) {
     for (Idx = 0; Idx < NumberOfEntries; Idx++ ) {
@@ -153,12 +156,13 @@ SratAddGiccAffinity (
         +  AC01_GET_CORE_ID (ArmCoreInfoTable[Idx].Mpidr);
       ZeroMem ((VOID *)&SratGiccAffinity[Count], sizeof (SratGiccAffinity[Count]));
       SratGiccAffinity[Count].AcpiProcessorUid = AcpiProcessorUid;
-      SratGiccAffinity[Count].Flags = 1;
-      SratGiccAffinity[Count].Length = sizeof (EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE);
-      SratGiccAffinity[Count].Type = EFI_ACPI_6_3_GICC_AFFINITY;
-      SratGiccAffinity[Count].ProximityDomain = CpuGetSubNumNode (Socket, Cpm);
+      SratGiccAffinity[Count].Flags            = 1;
+      SratGiccAffinity[Count].Length           = sizeof (EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE);
+      SratGiccAffinity[Count].Type             = EFI_ACPI_6_3_GICC_AFFINITY;
+      SratGiccAffinity[Count].ProximityDomain  = CpuGetSubNumNode (Socket, Cpm);
       Count++;
     }
+
     NumNode++;
   }
 
@@ -167,12 +171,12 @@ SratAddGiccAffinity (
 
 STATIC UINT32
 InstallGicItsAffinity (
-  VOID   *EntryPointer,
-  UINT32 Index
+  VOID    *EntryPointer,
+  UINT32  Index
   )
 {
-  EFI_ACPI_6_3_GIC_ITS_AFFINITY_STRUCTURE *ItsAffinityEntryPointer = EntryPointer;
-  UINTN                                   Size;
+  EFI_ACPI_6_3_GIC_ITS_AFFINITY_STRUCTURE  *ItsAffinityEntryPointer = EntryPointer;
+  UINTN                                    Size;
 
   Size = sizeof (GicItsAffinityTemplate);
   CopyMem (ItsAffinityEntryPointer, &GicItsAffinityTemplate, Size);
@@ -182,32 +186,33 @@ InstallGicItsAffinity (
 STATIC
 EFI_STATUS
 SratAddGicItsAffinity (
-  VOID *TmpPtr
+  VOID  *TmpPtr
   )
 {
-  UINTN Size = 0;
-  UINTN Index;
+  UINTN  Size = 0;
+  UINTN  Index;
 
   /* Install Gic ITSAffinity */
   if (!IsSlaveSocketAvailable ()) {
-    for (Index = 0; Index <= 1; Index++) { /* RCA0/1 */
-      GicItsAffinityTemplate.ItsId = Index;
+    for (Index = 0; Index <= 1; Index++) {
+      /* RCA0/1 */
+      GicItsAffinityTemplate.ItsId           = Index;
       GicItsAffinityTemplate.ProximityDomain = 0;
-      Size += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
+      Size                                  += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
     }
   }
 
   for (Index = SOCKET0_FIRST_RC; Index <= SOCKET0_LAST_RC; Index++) {
-    GicItsAffinityTemplate.ItsId = Index;
+    GicItsAffinityTemplate.ItsId           = Index;
     GicItsAffinityTemplate.ProximityDomain = 0;
-    Size += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
+    Size                                  += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
   }
 
   if (IsSlaveSocketActive ()) {
     for (Index = SOCKET1_FIRST_RC; Index <= SOCKET1_LAST_RC; Index++) {
-      GicItsAffinityTemplate.ItsId = Index;
+      GicItsAffinityTemplate.ItsId           = Index;
       GicItsAffinityTemplate.ProximityDomain = 1;
-      Size += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
+      Size                                  += InstallGicItsAffinity ((VOID *)((UINT64)TmpPtr + Size), Index);
     }
   }
 
@@ -219,12 +224,12 @@ AcpiInstallSratTable (
   VOID
   )
 {
-  EFI_ACPI_TABLE_PROTOCOL                            *AcpiTableProtocol;
-  EFI_STATUS                                         Status;
-  EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_HEADER *SratTablePointer;
-  UINT8                                              *TmpPtr;
-  UINTN                                              SratTableKey;
-  UINTN                                              Size;
+  EFI_ACPI_TABLE_PROTOCOL                             *AcpiTableProtocol;
+  EFI_STATUS                                          Status;
+  EFI_ACPI_6_3_SYSTEM_RESOURCE_AFFINITY_TABLE_HEADER  *SratTablePointer;
+  UINT8                                               *TmpPtr;
+  UINTN                                               SratTableKey;
+  UINTN                                               Size;
 
   Status = gBS->LocateProtocol (
                   &gEfiAcpiTableProtocolGuid,
@@ -249,6 +254,7 @@ AcpiInstallSratTable (
   if (SratTablePointer == NULL) {
     return EFI_OUT_OF_RESOURCES;
   }
+
   CopyMem ((VOID *)SratTablePointer, (VOID *)&SRATTableHeaderTemplate, sizeof (SRATTableHeaderTemplate));
 
   TmpPtr = (UINT8 *)SratTablePointer + sizeof (SRATTableHeaderTemplate);
@@ -256,7 +262,7 @@ AcpiInstallSratTable (
   ASSERT_EFI_ERROR (Status);
 
   TmpPtr += SratCalculateNumMemoryRegion () * sizeof (EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE);
-  Status = SratAddGiccAffinity ((EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE *)TmpPtr);
+  Status  = SratAddGiccAffinity ((EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE *)TmpPtr);
   ASSERT_EFI_ERROR (Status);
 
   TmpPtr += GetNumberOfActiveCores () * sizeof (EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE);

@@ -14,9 +14,9 @@
 SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE24, PlatformHardwareSecurity) = {
   {                                        // Table 1
     {                                      // SMBIOS_STRUCTURE Hdr
-        EFI_SMBIOS_TYPE_HARDWARE_SECURITY, // UINT8 Type
-        sizeof (SMBIOS_TABLE_TYPE24),      // UINT8 Length
-        SMBIOS_HANDLE_PI_RESERVED,
+      EFI_SMBIOS_TYPE_HARDWARE_SECURITY,   // UINT8 Type
+      sizeof (SMBIOS_TABLE_TYPE24),        // UINT8 Length
+      SMBIOS_HANDLE_PI_RESERVED,
     },
     0
   },

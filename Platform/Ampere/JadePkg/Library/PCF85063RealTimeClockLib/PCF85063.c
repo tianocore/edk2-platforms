@@ -23,49 +23,49 @@
 
 #include "PCF85063.h"
 
-#define RTC_TIMEOUT_WAIT_ACCESS        100000 /* 100 miliseconds */
-#define RTC_DEFAULT_MIN_YEAR           2000
-#define RTC_DEFAULT_MAX_YEAR           2099
+#define RTC_TIMEOUT_WAIT_ACCESS  100000       /* 100 miliseconds */
+#define RTC_DEFAULT_MIN_YEAR     2000
+#define RTC_DEFAULT_MAX_YEAR     2099
 
-#define RTC_ADDR                       0x4
-#define RTC_DATA_BUF_LEN               8
+#define RTC_ADDR          0x4
+#define RTC_DATA_BUF_LEN  8
 
 /**
  * PCF85063 register offsets
  */
-#define PCF85063_OFFSET_SEC            0x0
-#define PCF85063_OFFSET_MIN            0x1
-#define PCF85063_OFFSET_HR             0x2
-#define PCF85063_OFFSET_DAY            0x3
-#define PCF85063_OFFSET_WKD            0x4
-#define PCF85063_OFFSET_MON            0x5
-#define PCF85063_OFFSET_YEA            0x6
+#define PCF85063_OFFSET_SEC  0x0
+#define PCF85063_OFFSET_MIN  0x1
+#define PCF85063_OFFSET_HR   0x2
+#define PCF85063_OFFSET_DAY  0x3
+#define PCF85063_OFFSET_WKD  0x4
+#define PCF85063_OFFSET_MON  0x5
+#define PCF85063_OFFSET_YEA  0x6
 
 /**
  * PCF85063 encoding macros
  */
-#define PCF85063_SEC_ENC(s) (((((s) / 10) & 0x7) << 4) | (((s) % 10) & 0xf))
-#define PCF85063_MIN_ENC(m) (((((m) / 10) & 0x7) << 4) | (((m) % 10) & 0xf))
-#define PCF85063_HR_ENC(h)  (((((h) / 10) & 0x3) << 4) | (((h) % 10) & 0xf))
-#define PCF85063_DAY_ENC(d) (((((d) / 10) & 0x3) << 4) | (((d) % 10) & 0xf))
-#define PCF85063_WKD_ENC(w) ((w) & 0x7)
-#define PCF85063_MON_ENC(m) (((((m) / 10) & 0x1) << 4) | (((m) % 10) & 0xf))
-#define PCF85063_YEA_ENC(y) (((((y) / 10) & 0xf) << 4) | (((y) % 10) & 0xf))
+#define PCF85063_SEC_ENC(s)  (((((s) / 10) & 0x7) << 4) | (((s) % 10) & 0xf))
+#define PCF85063_MIN_ENC(m)  (((((m) / 10) & 0x7) << 4) | (((m) % 10) & 0xf))
+#define PCF85063_HR_ENC(h)   (((((h) / 10) & 0x3) << 4) | (((h) % 10) & 0xf))
+#define PCF85063_DAY_ENC(d)  (((((d) / 10) & 0x3) << 4) | (((d) % 10) & 0xf))
+#define PCF85063_WKD_ENC(w)  ((w) & 0x7)
+#define PCF85063_MON_ENC(m)  (((((m) / 10) & 0x1) << 4) | (((m) % 10) & 0xf))
+#define PCF85063_YEA_ENC(y)  (((((y) / 10) & 0xf) << 4) | (((y) % 10) & 0xf))
 
 /**
  * PCF85063 decoding macros
  */
-#define PCF85063_SEC_DEC(s) (((((s) & 0x70) >> 4) * 10) + ((s) & 0xf))
-#define PCF85063_MIN_DEC(m) (((((m) & 0x70) >> 4) * 10) + ((m) & 0xf))
-#define PCF85063_HR_DEC(h)  (((((h) & 0x30) >> 4) * 10) + ((h) & 0xf))
-#define PCF85063_DAY_DEC(d) (((((d) & 0x30) >> 4) * 10) + ((d) & 0xf))
-#define PCF85063_WKD_DEC(w) ((w) & 0x7)
-#define PCF85063_MON_DEC(m) (((((m) & 0x10) >> 4) * 10) + ((m) & 0xf))
-#define PCF85063_YEA_DEC(y) (((((y) & 0xf0) >> 4) * 10) + ((y) & 0xf))
+#define PCF85063_SEC_DEC(s)  (((((s) & 0x70) >> 4) * 10) + ((s) & 0xf))
+#define PCF85063_MIN_DEC(m)  (((((m) & 0x70) >> 4) * 10) + ((m) & 0xf))
+#define PCF85063_HR_DEC(h)   (((((h) & 0x30) >> 4) * 10) + ((h) & 0xf))
+#define PCF85063_DAY_DEC(d)  (((((d) & 0x30) >> 4) * 10) + ((d) & 0xf))
+#define PCF85063_WKD_DEC(w)  ((w) & 0x7)
+#define PCF85063_MON_DEC(m)  (((((m) & 0x10) >> 4) * 10) + ((m) & 0xf))
+#define PCF85063_YEA_DEC(y)  (((((y) & 0xf0) >> 4) * 10) + ((y) & 0xf))
 
 /* Buffer pointers to convert Vir2Phys and Phy2Vir */
-STATIC volatile UINT64 RtcBufVir;
-STATIC volatile UINT64 RtcBufPhy;
+STATIC volatile UINT64  RtcBufVir;
+STATIC volatile UINT64  RtcBufPhy;
 
 STATIC
 EFI_STATUS
@@ -73,7 +73,7 @@ RtcI2cWaitAccess (
   VOID
   )
 {
-  INTN Timeout;
+  INTN  Timeout;
 
   Timeout = RTC_TIMEOUT_WAIT_ACCESS;
   while ((GpioReadBit (I2C_RTC_ACCESS_GPIO_PIN) != 0) && (Timeout > 0)) {
@@ -92,13 +92,13 @@ RtcI2cWaitAccess (
 STATIC
 EFI_STATUS
 RtcI2cRead (
-  IN     UINT8  Addr,
-  IN OUT UINT64 Data,
-  IN     UINT32 DataLen
+  IN     UINT8   Addr,
+  IN OUT UINT64  Data,
+  IN     UINT32  DataLen
   )
 {
-  EFI_STATUS Status;
-  UINT32     TmpLen;
+  EFI_STATUS  Status;
+  UINT32      TmpLen;
 
   if (EFI_ERROR (RtcI2cWaitAccess ())) {
     return EFI_DEVICE_ERROR;
@@ -131,14 +131,14 @@ RtcI2cRead (
 
 EFI_STATUS
 RtcI2cWrite (
-  IN UINT8  Addr,
-  IN UINT64 Data,
-  IN UINT32 DataLen
+  IN UINT8   Addr,
+  IN UINT64  Data,
+  IN UINT32  DataLen
   )
 {
-  EFI_STATUS Status;
-  UINT8      TmpBuf[RTC_DATA_BUF_LEN + 1];
-  UINT32     TmpLen;
+  EFI_STATUS  Status;
+  UINT8       TmpBuf[RTC_DATA_BUF_LEN + 1];
+  UINT32      TmpLen;
 
   if (EFI_ERROR (RtcI2cWaitAccess ())) {
     return EFI_DEVICE_ERROR;
@@ -157,7 +157,7 @@ RtcI2cWrite (
   // The first byte is the address
   //
   TmpBuf[0] = Addr;
-  TmpLen = DataLen + 1;
+  TmpLen    = DataLen + 1;
   CopyMem ((VOID *)(TmpBuf + 1), (VOID *)Data, DataLen);
 
   Status = I2cWrite (I2C_RTC_BUS_ADDRESS, I2C_RTC_CHIP_ADDRESS, TmpBuf, &TmpLen);
@@ -181,11 +181,11 @@ RtcI2cWrite (
 EFI_STATUS
 EFIAPI
 PlatformGetTime (
-  OUT EFI_TIME *Time
+  OUT EFI_TIME  *Time
   )
 {
-  EFI_STATUS Status;
-  UINT8      *Data;
+  EFI_STATUS  Status;
+  UINT8       *Data;
 
   if (Time == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -205,6 +205,7 @@ PlatformGetTime (
     if (Time->Year > RTC_DEFAULT_MAX_YEAR) {
       Time->Year = RTC_DEFAULT_MAX_YEAR;
     }
+
     if (Time->Year < RTC_DEFAULT_MIN_YEAR) {
       Time->Year = RTC_DEFAULT_MIN_YEAR;
     }
@@ -226,22 +227,22 @@ PlatformGetTime (
 EFI_STATUS
 EFIAPI
 PlatformSetTime (
-  IN EFI_TIME *Time
+  IN EFI_TIME  *Time
   )
 {
-  UINT8 *Data;
+  UINT8  *Data;
 
   if (Time == NULL) {
     return EFI_INVALID_PARAMETER;
   }
 
-  if (Time->Year < RTC_DEFAULT_MIN_YEAR ||
-      Time->Year > RTC_DEFAULT_MAX_YEAR)
+  if ((Time->Year < RTC_DEFAULT_MIN_YEAR) ||
+      (Time->Year > RTC_DEFAULT_MAX_YEAR))
   {
     return EFI_INVALID_PARAMETER;
   }
 
-  Data = (UINT8 *)RtcBufVir;
+  Data                      = (UINT8 *)RtcBufVir;
   Data[PCF85063_OFFSET_SEC] = PCF85063_SEC_ENC (Time->Second);
   Data[PCF85063_OFFSET_MIN] = PCF85063_MIN_ENC (Time->Minute);
   Data[PCF85063_OFFSET_HR]  = PCF85063_HR_ENC (Time->Hour);
@@ -277,7 +278,7 @@ PlatformInitialize (
   VOID
   )
 {
-  EFI_STATUS Status;
+  EFI_STATUS  Status;
 
   /*
    * Allocate the buffer for RTC data

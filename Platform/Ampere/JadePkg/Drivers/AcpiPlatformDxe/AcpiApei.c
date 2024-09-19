@@ -14,12 +14,12 @@
 
 #include "AcpiApei.h"
 
-UINT8 AMPERE_GUID[16] = {0x8d, 0x89, 0xed, 0xe8, 0x16, 0xdf, 0xcc, 0x43, 0x8e, 0xcc, 0x54, 0xf0, 0x60, 0xef, 0x15, 0x7f};
-CHAR8 DEFAULT_BERT_REBOOT_MSG[BERT_MSG_SIZE] = "Unknown reboot reason";
+UINT8  AMPERE_GUID[16]                        = { 0x8d, 0x89, 0xed, 0xe8, 0x16, 0xdf, 0xcc, 0x43, 0x8e, 0xcc, 0x54, 0xf0, 0x60, 0xef, 0x15, 0x7f };
+CHAR8  DEFAULT_BERT_REBOOT_MSG[BERT_MSG_SIZE] = "Unknown reboot reason";
 
 BOOLEAN
 IsBertStatusValid (
-  BERT_ERROR_STATUS *BertStatus
+  BERT_ERROR_STATUS  *BertStatus
   )
 {
   if (CompareMem (BertStatus->Guid, AMPERE_GUID, sizeof (AMPERE_GUID)) == 0) {
@@ -39,15 +39,15 @@ CreateDefaultBertStatus (
   VOID
   )
 {
-  UINTN Length = sizeof (BERT_ERROR_STATUS);
-  BERT_ERROR_STATUS BertStatus = { 0 };
+  UINTN              Length     = sizeof (BERT_ERROR_STATUS);
+  BERT_ERROR_STATUS  BertStatus = { 0 };
 
   CopyMem (BertStatus.Guid, AMPERE_GUID, sizeof (AMPERE_GUID));
-  BertStatus.BertRev = CURRENT_BERT_VERSION;
+  BertStatus.BertRev     = CURRENT_BERT_VERSION;
   BertStatus.DefaultBert = 1;
-  BertStatus.Overflow = 0;
+  BertStatus.Overflow    = 0;
   BertStatus.PendingUefi = 0;
-  BertStatus.PendingBmc = 0;
+  BertStatus.PendingBmc  = 0;
 
   FlashEraseCommand (BERT_SPI_ADDRESS_STATUS, Length);
   FlashWriteCommand (
@@ -62,10 +62,10 @@ CreateDefaultBertStatus (
  */
 VOID
 UpdateBertStatus (
-  BERT_ERROR_STATUS *BertStatus
+  BERT_ERROR_STATUS  *BertStatus
   )
 {
-  UINTN Length = sizeof (BERT_ERROR_STATUS);
+  UINTN  Length = sizeof (BERT_ERROR_STATUS);
 
   BertStatus->DefaultBert = 1;
   BertStatus->PendingUefi = 0;
@@ -83,15 +83,15 @@ UpdateBertStatus (
 
 STATIC VOID
 AcpiApeiUninstallTable (
-  UINT32 Signature
+  UINT32  Signature
   )
 {
-  EFI_STATUS              Status;
-  EFI_ACPI_TABLE_PROTOCOL *AcpiTableProtocol;
-  EFI_ACPI_SDT_PROTOCOL   *AcpiTableSdtProtocol;
-  EFI_ACPI_SDT_HEADER     *Table;
-  UINTN                   TableKey;
-  UINTN                   TableIndex;
+  EFI_STATUS               Status;
+  EFI_ACPI_TABLE_PROTOCOL  *AcpiTableProtocol;
+  EFI_ACPI_SDT_PROTOCOL    *AcpiTableSdtProtocol;
+  EFI_ACPI_SDT_HEADER      *Table;
+  UINTN                    TableKey;
+  UINTN                    TableIndex;
 
   /*
    * Get access to ACPI tables
@@ -112,13 +112,13 @@ AcpiApeiUninstallTable (
    * Search for ACPI Table Signature
    */
   TableIndex = 0;
-  Status = AcpiLocateTableBySignature (
-             AcpiTableSdtProtocol,
-             Signature,
-             &TableIndex,
-             (EFI_ACPI_DESCRIPTION_HEADER **)&Table,
-             &TableKey
-             );
+  Status     = AcpiLocateTableBySignature (
+                 AcpiTableSdtProtocol,
+                 Signature,
+                 &TableIndex,
+                 (EFI_ACPI_DESCRIPTION_HEADER **)&Table,
+                 &TableKey
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI table\n", __func__, __LINE__));
     return;
@@ -135,14 +135,14 @@ AcpiApeiUninstallTable (
 
 VOID
 AdjustBERTRegionLen (
-  UINT32 Len
+  UINT32  Len
   )
 {
-  EFI_STATUS                                  Status;
-  EFI_ACPI_SDT_PROTOCOL                       *AcpiTableSdtProtocol;
-  UINTN                                       TableKey;
-  UINTN                                       TableIndex;
-  EFI_ACPI_6_3_BOOT_ERROR_RECORD_TABLE_HEADER *Table;
+  EFI_STATUS                                   Status;
+  EFI_ACPI_SDT_PROTOCOL                        *AcpiTableSdtProtocol;
+  UINTN                                        TableKey;
+  UINTN                                        TableIndex;
+  EFI_ACPI_6_3_BOOT_ERROR_RECORD_TABLE_HEADER  *Table;
 
   Status = gBS->LocateProtocol (
                   &gEfiAcpiSdtProtocolGuid,
@@ -158,13 +158,13 @@ AdjustBERTRegionLen (
    * Search for ACPI Table Signature
    */
   TableIndex = 0;
-  Status = AcpiLocateTableBySignature (
-             AcpiTableSdtProtocol,
-             EFI_ACPI_6_3_BOOT_ERROR_RECORD_TABLE_SIGNATURE,
-             &TableIndex,
-             (EFI_ACPI_DESCRIPTION_HEADER **)&Table,
-             &TableKey
-             );
+  Status     = AcpiLocateTableBySignature (
+                 AcpiTableSdtProtocol,
+                 EFI_ACPI_6_3_BOOT_ERROR_RECORD_TABLE_SIGNATURE,
+                 &TableIndex,
+                 (EFI_ACPI_DESCRIPTION_HEADER **)&Table,
+                 &TableKey
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI BERT table\n", __func__, __LINE__));
     return;
@@ -184,9 +184,9 @@ AdjustBERTRegionLen (
 VOID
 EFIAPI
 PullBertSpinorData (
-  UINT8 *BertData,
-  UINT64 BertSpiAddress,
-  UINTN Length
+  UINT8   *BertData,
+  UINT64  BertSpiAddress,
+  UINTN   Length
   )
 {
   FlashReadCommand (
@@ -204,12 +204,12 @@ PullBertSpinorData (
  */
 VOID
 WrapBertErrorData (
-  APEI_CRASH_DUMP_BERT_ERROR *WrappedError
+  APEI_CRASH_DUMP_BERT_ERROR  *WrappedError
   )
 {
-  UINT32 CrashSize;
-  UINT8  CrashType;
-  UINT8  CrashSubType;
+  UINT32  CrashSize;
+  UINT8   CrashType;
+  UINT8   CrashSubType;
 
   CrashSize = PLAT_CRASH_ITERATOR_SIZE *
               GetNumberOfSupportedSockets () *
@@ -217,16 +217,17 @@ WrapBertErrorData (
   CrashSize += 2 * (SMPRO_CRASH_SIZE + PMPRO_CRASH_SIZE + RASIP_CRASH_SIZE);
   CrashSize += sizeof (WrappedError->Bed.Vendor) + sizeof (WrappedError->Bed.BertRev);
 
-  CrashType = WrappedError->Bed.Vendor.Type & RAS_TYPE_ERROR_MASK;
+  CrashType    = WrappedError->Bed.Vendor.Type & RAS_TYPE_ERROR_MASK;
   CrashSubType = WrappedError->Bed.Vendor.SubType;
 
-  WrappedError->Ges.BlockStatus.ErrorDataEntryCount = 1;
+  WrappedError->Ges.BlockStatus.ErrorDataEntryCount     = 1;
   WrappedError->Ges.BlockStatus.UncorrectableErrorValid = 1;
-  WrappedError->Ged.ErrorSeverity = BERT_DEFAULT_ERROR_SEVERITY;
-  WrappedError->Ged.Revision = GENERIC_ERROR_DATA_REVISION;
+  WrappedError->Ged.ErrorSeverity                       = BERT_DEFAULT_ERROR_SEVERITY;
+  WrappedError->Ged.Revision                            = GENERIC_ERROR_DATA_REVISION;
 
-  if ((CrashType == RAS_TYPE_BERT && (CrashSubType == 0 || CrashSubType == BERT_UEFI_FAILURE))
-    || (CrashType == RAS_TYPE_2P)) {
+  if (  ((CrashType == RAS_TYPE_BERT) && ((CrashSubType == 0) || (CrashSubType == BERT_UEFI_FAILURE)))
+     || (CrashType == RAS_TYPE_2P))
+  {
     WrappedError->Ged.ErrorDataLength = sizeof (WrappedError->Bed.Vendor) +
                                         sizeof (WrappedError->Bed.BertRev);
     WrappedError->Ges.DataLength = sizeof (WrappedError->Bed.Vendor) +
@@ -240,13 +241,14 @@ WrapBertErrorData (
       );
   } else {
     WrappedError->Ged.ErrorDataLength = CrashSize;
-    WrappedError->Ges.DataLength = CrashSize + sizeof (WrappedError->Ged);
+    WrappedError->Ges.DataLength      = CrashSize + sizeof (WrappedError->Ged);
     AdjustBERTRegionLen (
       CrashSize +
       sizeof (WrappedError->Ged) +
       sizeof (WrappedError->Ges)
       );
   }
+
   CopyMem (
     WrappedError->Ged.SectionType,
     AMPERE_GUID,
@@ -254,18 +256,17 @@ WrapBertErrorData (
     );
 }
 
-
 /*
  * create default bert error
  * Msg: Unknown reboot reason
  */
 VOID
 CreateDefaultBertData (
-  APEI_CRASH_DUMP_DATA *Data
+  APEI_CRASH_DUMP_DATA  *Data
   )
 {
   Data->Vendor.Type = RAS_TYPE_BERT_PAYLOAD3;
-  Data->BertRev = CURRENT_BERT_VERSION;
+  Data->BertRev     = CURRENT_BERT_VERSION;
   AsciiStrCpyS (
     Data->Vendor.Msg,
     BERT_MSG_SIZE,
@@ -282,8 +283,8 @@ IsBertEnabled (
   VOID
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value;
+  EFI_STATUS  Status;
+  UINT32      Value;
 
   Status = NVParamGet (
              NV_SI_RAS_BERT_ENABLED,
@@ -303,10 +304,10 @@ IsBertEnabled (
  */
 VOID
 WriteDDRBertTable (
-  APEI_CRASH_DUMP_BERT_ERROR *Data
+  APEI_CRASH_DUMP_BERT_ERROR  *Data
   )
 {
-  VOID *Blk = (VOID *)BERT_DDR_OFFSET;
+  VOID  *Blk = (VOID *)BERT_DDR_OFFSET;
 
   CopyMem (Blk, Data, BERT_DDR_LENGTH);
 }
@@ -319,8 +320,8 @@ AcpiPopulateBert (
   VOID
   )
 {
-  APEI_CRASH_DUMP_BERT_ERROR *DDRError;
-  BERT_ERROR_STATUS          BertStatus;
+  APEI_CRASH_DUMP_BERT_ERROR  *DDRError;
+  BERT_ERROR_STATUS           BertStatus;
 
   DDRError = (APEI_CRASH_DUMP_BERT_ERROR *)AllocateZeroPool (BERT_DDR_LENGTH);
 
@@ -347,6 +348,7 @@ AcpiPopulateBert (
         WrapBertErrorData (DDRError);
         WriteDDRBertTable (DDRError);
       }
+
       UpdateBertStatus (&BertStatus);
     } else {
       FlashEraseCommand (BERT_FLASH_OFFSET, 0x1000);
@@ -368,8 +370,8 @@ IsSdeiEnabled (
   VOID
   )
 {
-  EFI_STATUS Status;
-  UINT32     Value;
+  EFI_STATUS  Status;
+  UINT32      Value;
 
   Status = NVParamGet (
              NV_SI_RAS_SDEI_ENABLED,
@@ -390,11 +392,11 @@ AcpiApeiHestUpdateTable1P (
   VOID
   )
 {
-  EFI_STATUS                                      Status;
-  EFI_ACPI_SDT_PROTOCOL                           *AcpiTableSdtProtocol;
-  EFI_ACPI_6_3_HARDWARE_ERROR_SOURCE_TABLE_HEADER *HestTablePointer;
-  UINTN                                           TableKey;
-  UINTN                                           TableIndex;
+  EFI_STATUS                                       Status;
+  EFI_ACPI_SDT_PROTOCOL                            *AcpiTableSdtProtocol;
+  EFI_ACPI_6_3_HARDWARE_ERROR_SOURCE_TABLE_HEADER  *HestTablePointer;
+  UINTN                                            TableKey;
+  UINTN                                            TableIndex;
 
   Status = gBS->LocateProtocol (&gEfiAcpiSdtProtocolGuid, NULL, (VOID **)&AcpiTableSdtProtocol);
   if (EFI_ERROR (Status)) {
@@ -406,20 +408,20 @@ AcpiApeiHestUpdateTable1P (
    * Search for ACPI Table Signature
    */
   TableIndex = 0;
-  Status = AcpiLocateTableBySignature (
-             AcpiTableSdtProtocol,
-             EFI_ACPI_6_3_HARDWARE_ERROR_SOURCE_TABLE_SIGNATURE,
-             &TableIndex,
-             (EFI_ACPI_DESCRIPTION_HEADER **)&HestTablePointer,
-             &TableKey
-             );
+  Status     = AcpiLocateTableBySignature (
+                 AcpiTableSdtProtocol,
+                 EFI_ACPI_6_3_HARDWARE_ERROR_SOURCE_TABLE_SIGNATURE,
+                 &TableIndex,
+                 (EFI_ACPI_DESCRIPTION_HEADER **)&HestTablePointer,
+                 &TableKey
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a:%d Unable to get ACPI HEST table\n", __func__, __LINE__));
     return;
   }
 
   HestTablePointer->ErrorSourceCount -= HEST_NUM_ENTRIES_PER_SOC;
-  HestTablePointer->Header.Length -=
+  HestTablePointer->Header.Length    -=
     (HEST_NUM_ENTRIES_PER_SOC *
      sizeof (EFI_ACPI_6_3_GENERIC_HARDWARE_ERROR_SOURCE_VERSION_2_STRUCTURE));
 
@@ -436,18 +438,18 @@ AcpiApeiUpdate (
   VOID
   )
 {
-  EFI_STATUS                Status;
-  ACPI_CONFIG_VARSTORE_DATA AcpiConfigData;
-  UINTN                     BufferSize;
+  EFI_STATUS                 Status;
+  ACPI_CONFIG_VARSTORE_DATA  AcpiConfigData;
+  UINTN                      BufferSize;
 
   BufferSize = sizeof (ACPI_CONFIG_VARSTORE_DATA);
-  Status = gRT->GetVariable (
-                  L"AcpiConfigNVData",
-                  &gAcpiConfigFormSetGuid,
-                  NULL,
-                  &BufferSize,
-                  &AcpiConfigData
-                  );
+  Status     = gRT->GetVariable (
+                      L"AcpiConfigNVData",
+                      &gAcpiConfigFormSetGuid,
+                      NULL,
+                      &BufferSize,
+                      &AcpiConfigData
+                      );
   if (!EFI_ERROR (Status) && (AcpiConfigData.EnableApeiSupport == 0)) {
     AcpiApeiUninstallTable (EFI_ACPI_6_3_BOOT_ERROR_RECORD_TABLE_SIGNATURE);
     AcpiApeiUninstallTable (EFI_ACPI_6_3_HARDWARE_ERROR_SOURCE_TABLE_SIGNATURE);

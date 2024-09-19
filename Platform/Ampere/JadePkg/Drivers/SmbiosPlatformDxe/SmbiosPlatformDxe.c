@@ -26,11 +26,11 @@
 #define SIZE_OF_HII_DATABASE_DEFAULT_STRINGS \
 ADDITIONAL_STR_INDEX_MAX * SMBIOS_UNICODE_STRING_MAX_LENGTH
 
-STATIC EFI_HANDLE          mSmbiosPlatformDxeImageHandle;
-STATIC EFI_STRING          mDefaultHiiDatabaseStr;
-STATIC EFI_SMBIOS_PROTOCOL *mPlatformDxeSmbios = NULL;
+STATIC EFI_HANDLE           mSmbiosPlatformDxeImageHandle;
+STATIC EFI_STRING           mDefaultHiiDatabaseStr;
+STATIC EFI_SMBIOS_PROTOCOL  *mPlatformDxeSmbios = NULL;
 
-EFI_HII_HANDLE      mSmbiosPlatformDxeHiiHandle;
+EFI_HII_HANDLE  mSmbiosPlatformDxeHiiHandle;
 
 /**
   Standard EFI driver point. This driver parses the mSmbiosPlatformDataTable
@@ -45,12 +45,12 @@ EFI_HII_HANDLE      mSmbiosPlatformDxeHiiHandle;
 EFI_STATUS
 EFIAPI
 SmbiosPlatformDxeEntry (
-  IN EFI_HANDLE       ImageHandle,
-  IN EFI_SYSTEM_TABLE *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  UINTN      Index;
-  EFI_STATUS Status;
+  UINTN       Index;
+  EFI_STATUS  Status;
 
   mSmbiosPlatformDxeImageHandle = ImageHandle;
 
@@ -103,9 +103,9 @@ SmbiosPlatformDxeEntry (
   //
   for (Index = 0; Index < mSmbiosPlatformDxeDataTableEntries; Index++) {
     Status = (*mSmbiosPlatformDxeDataTable[Index].Function)(
-                mSmbiosPlatformDxeDataTable[Index].RecordData,
-                mSmbiosPlatformDxeDataTable[Index].StrToken
-                );
+  mSmbiosPlatformDxeDataTable[Index].RecordData,
+  mSmbiosPlatformDxeDataTable[Index].StrToken
+  );
     if (EFI_ERROR (Status)) {
       DEBUG ((
         DEBUG_ERROR,
@@ -145,12 +145,12 @@ SmbiosPlatformDxeEntry (
 **/
 EFI_STATUS
 SmbiosPlatformDxeAddRecord (
-  IN UINT8                 *Buffer,
-  IN OUT EFI_SMBIOS_HANDLE *SmbiosHandle OPTIONAL
+  IN UINT8                  *Buffer,
+  IN OUT EFI_SMBIOS_HANDLE  *SmbiosHandle OPTIONAL
   )
 {
-  EFI_STATUS        Status;
-  EFI_SMBIOS_HANDLE Handle;
+  EFI_STATUS         Status;
+  EFI_SMBIOS_HANDLE  Handle;
 
   if (Buffer == NULL) {
     DEBUG ((
@@ -183,6 +183,7 @@ SmbiosPlatformDxeAddRecord (
       Status
       ));
   }
+
   if (SmbiosHandle != NULL) {
     *SmbiosHandle = Handle;
   }
@@ -200,15 +201,15 @@ SmbiosPlatformDxeAddRecord (
 STATIC
 UINTN
 GetHandleCount (
-  IN UINT8 SmbiosType
+  IN UINT8  SmbiosType
   )
 {
-  UINTN                   HandleCount;
-  EFI_STATUS              Status;
-  EFI_SMBIOS_HANDLE       SmbiosHandle;
-  EFI_SMBIOS_TABLE_HEADER *Record;
+  UINTN                    HandleCount;
+  EFI_STATUS               Status;
+  EFI_SMBIOS_HANDLE        SmbiosHandle;
+  EFI_SMBIOS_TABLE_HEADER  *Record;
 
-  HandleCount = 0;
+  HandleCount  = 0;
   SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
   // Iterate through entries to get the number
   do {
@@ -237,15 +238,15 @@ GetHandleCount (
 **/
 VOID
 SmbiosPlatformDxeGetLinkTypeHandle (
-  IN  UINT8         SmbiosType,
-  OUT SMBIOS_HANDLE **HandleArray,
-  OUT UINTN         *HandleCount
+  IN  UINT8          SmbiosType,
+  OUT SMBIOS_HANDLE  **HandleArray,
+  OUT UINTN          *HandleCount
   )
 {
-  UINTN                   Index;
-  EFI_STATUS              Status;
-  EFI_SMBIOS_HANDLE       SmbiosHandle;
-  EFI_SMBIOS_TABLE_HEADER *Record;
+  UINTN                    Index;
+  EFI_STATUS               Status;
+  EFI_SMBIOS_HANDLE        SmbiosHandle;
+  EFI_SMBIOS_TABLE_HEADER  *Record;
 
   if (SmbiosType > END_OF_SMBIOS_TABLE_TYPE) {
     DEBUG ((
@@ -300,21 +301,21 @@ SmbiosPlatformDxeGetLinkTypeHandle (
 **/
 VOID
 SmbiosPlatformDxeCreateTable (
-  OUT VOID           **TableRecord,
-  IN  VOID           **InputData,
-  IN  UINT8          TableTypeSize,
-  IN  STR_TOKEN_INFO *StrToken
+  OUT VOID            **TableRecord,
+  IN  VOID            **InputData,
+  IN  UINT8           TableTypeSize,
+  IN  STR_TOKEN_INFO  *StrToken
   )
 {
-  CHAR8      *StrStart;
-  UINT8      TableSize;
-  UINT8      SmbiosAdditionalStrLen;
-  UINT8      Index;
-  EFI_STRING SmbiosAdditionalStr;
+  CHAR8       *StrStart;
+  UINT8       TableSize;
+  UINT8       SmbiosAdditionalStrLen;
+  UINT8       Index;
+  EFI_STRING  SmbiosAdditionalStr;
 
-  if (*InputData == NULL ||
-      StrToken == NULL ||
-      TableTypeSize < sizeof (EFI_SMBIOS_TABLE_HEADER)
+  if ((*InputData == NULL) ||
+      (StrToken == NULL) ||
+      (TableTypeSize < sizeof (EFI_SMBIOS_TABLE_HEADER))
       )
   {
     DEBUG ((
@@ -352,6 +353,7 @@ SmbiosPlatformDxeCreateTable (
   if (*TableRecord == NULL) {
     return;
   }
+
   CopyMem (*TableRecord, *InputData, TableTypeSize);
   StrStart = (CHAR8 *)(*TableRecord + TableTypeSize);
   for (Index = 0; Index < StrToken->TokenLen; Index++) {
@@ -365,7 +367,7 @@ SmbiosPlatformDxeCreateTable (
       SmbiosAdditionalStr,
       StrStart,
       SmbiosAdditionalStrLen
-    );
+      );
     FreePool (SmbiosAdditionalStr);
     StrStart += SmbiosAdditionalStrLen;
   }
@@ -387,12 +389,12 @@ SmbiosPlatformDxeCreateTable (
 **/
 EFI_STATUS
 SmbiosPlatformDxeSaveHiiDefaultString (
-  IN STR_TOKEN_INFO *StrToken
+  IN STR_TOKEN_INFO  *StrToken
   )
 {
-  UINT8      Index;
-  UINT8      HiiDatabaseStrLen;
-  EFI_STRING HiiDatabaseStr;
+  UINT8       Index;
+  UINT8       HiiDatabaseStrLen;
+  EFI_STRING  HiiDatabaseStr;
 
   if (StrToken == NULL) {
     DEBUG ((
@@ -437,11 +439,11 @@ SmbiosPlatformDxeSaveHiiDefaultString (
 **/
 EFI_STATUS
 SmbiosPlatformDxeRestoreHiiDefaultString (
-  IN STR_TOKEN_INFO *StrToken
+  IN STR_TOKEN_INFO  *StrToken
   )
 {
-  UINT8      Index;
-  EFI_STATUS Status;
+  UINT8       Index;
+  EFI_STATUS  Status;
 
   if (StrToken == NULL) {
     DEBUG ((
@@ -479,6 +481,7 @@ SmbiosPlatformDxeRestoreHiiDefaultString (
         ));
       return Status;
     }
+
     ZeroMem ((VOID *)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH], SMBIOS_UNICODE_STRING_MAX_LENGTH - 1);
   }
 

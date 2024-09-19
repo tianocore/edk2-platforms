@@ -30,50 +30,50 @@
 #define BERT_DEFAULT_ERROR_SEVERITY  0x1
 #define GENERIC_ERROR_DATA_REVISION  0x300
 
-#define RAS_TYPE_2P                  0x03
-#define RAS_TYPE_BERT                0x3F
-#define RAS_TYPE_ERROR_MASK          0x3F
-#define RAS_TYPE_PAYLOAD_MASK        0xC0
-#define RAS_TYPE_PAYLOAD0            0x00
-#define RAS_TYPE_PAYLOAD1            0x40
-#define RAS_TYPE_PAYLOAD2            0x80
-#define RAS_TYPE_PAYLOAD3            0xC0
-#define RAS_TYPE_BERT_PAYLOAD3       (RAS_TYPE_BERT | RAS_TYPE_PAYLOAD3)
+#define RAS_TYPE_2P             0x03
+#define RAS_TYPE_BERT           0x3F
+#define RAS_TYPE_ERROR_MASK     0x3F
+#define RAS_TYPE_PAYLOAD_MASK   0xC0
+#define RAS_TYPE_PAYLOAD0       0x00
+#define RAS_TYPE_PAYLOAD1       0x40
+#define RAS_TYPE_PAYLOAD2       0x80
+#define RAS_TYPE_PAYLOAD3       0xC0
+#define RAS_TYPE_BERT_PAYLOAD3  (RAS_TYPE_BERT | RAS_TYPE_PAYLOAD3)
 
-#define PLAT_CRASH_ITERATOR_SIZE     0x398
-#define SMPRO_CRASH_SIZE             0x800
-#define PMPRO_CRASH_SIZE             0x800
-#define RASIP_CRASH_SIZE             0x1000
-#define HEST_NUM_ENTRIES_PER_SOC     3
+#define PLAT_CRASH_ITERATOR_SIZE  0x398
+#define SMPRO_CRASH_SIZE          0x800
+#define PMPRO_CRASH_SIZE          0x800
+#define RASIP_CRASH_SIZE          0x1000
+#define HEST_NUM_ENTRIES_PER_SOC  3
 
-#define CURRENT_BERT_VERSION         0x12
-#define BERT_FLASH_OFFSET            0x91B30000ULL
-#define BERT_DDR_OFFSET              0x88230000ULL
-#define BERT_DDR_LENGTH              0x50000
+#define CURRENT_BERT_VERSION  0x12
+#define BERT_FLASH_OFFSET     0x91B30000ULL
+#define BERT_DDR_OFFSET       0x88230000ULL
+#define BERT_DDR_LENGTH       0x50000
 
 typedef struct {
-  UINT8  Type;
-  UINT8  SubType;
-  UINT16 Instance;
-  CHAR8  Msg[BERT_MSG_SIZE];
+  UINT8     Type;
+  UINT8     SubType;
+  UINT16    Instance;
+  CHAR8     Msg[BERT_MSG_SIZE];
 } APEI_BERT_ERROR_DATA;
 
 typedef struct {
-  APEI_BERT_ERROR_DATA Vendor;
-  UINT8                BertRev;
-  UINT8                S0PmproRegisters[PMPRO_CRASH_SIZE];
-  UINT8                S0SmproRegisters[SMPRO_CRASH_SIZE];
-  UINT8                S0RasIpRegisters[RASIP_CRASH_SIZE];
-  UINT8                S1PmproRegisters[PMPRO_CRASH_SIZE];
-  UINT8                S1SmproRegisters[SMPRO_CRASH_SIZE];
-  UINT8                S1RasIpRegisters[RASIP_CRASH_SIZE];
-  UINT8                AtfDump[PLATFORM_CPU_MAX_NUM_CORES * PLAT_CRASH_ITERATOR_SIZE];
+  APEI_BERT_ERROR_DATA    Vendor;
+  UINT8                   BertRev;
+  UINT8                   S0PmproRegisters[PMPRO_CRASH_SIZE];
+  UINT8                   S0SmproRegisters[SMPRO_CRASH_SIZE];
+  UINT8                   S0RasIpRegisters[RASIP_CRASH_SIZE];
+  UINT8                   S1PmproRegisters[PMPRO_CRASH_SIZE];
+  UINT8                   S1SmproRegisters[SMPRO_CRASH_SIZE];
+  UINT8                   S1RasIpRegisters[RASIP_CRASH_SIZE];
+  UINT8                   AtfDump[PLATFORM_CPU_MAX_NUM_CORES * PLAT_CRASH_ITERATOR_SIZE];
 } APEI_CRASH_DUMP_DATA;
 
 typedef struct {
-  EFI_ACPI_6_3_GENERIC_ERROR_STATUS_STRUCTURE     Ges;
-  EFI_ACPI_6_3_GENERIC_ERROR_DATA_ENTRY_STRUCTURE Ged;
-  APEI_CRASH_DUMP_DATA                            Bed;
+  EFI_ACPI_6_3_GENERIC_ERROR_STATUS_STRUCTURE        Ges;
+  EFI_ACPI_6_3_GENERIC_ERROR_DATA_ENTRY_STRUCTURE    Ged;
+  APEI_CRASH_DUMP_DATA                               Bed;
 } APEI_CRASH_DUMP_BERT_ERROR;
 
 /*
@@ -118,44 +118,44 @@ typedef struct {
  */
 
 typedef struct {
-  UINT8  Guid[16];             /* [0x00] set to AMPERE_GUID */
-  UINT8  BertRev;              /* [0x10] set to BERT revision */
-  UINT8  Reserved0[7];         /* [----] Reserved */
-  UINT8  DefaultBert;          /* [0x18] Indicate Default Bert Present */
-  UINT8  Overflow;             /* [----] Indicate Full Crash Capture overflow detected */
-  UINT8  PendingUefi;          /* [----] Indicate Pending UEFI detection */
-  UINT8  PendingBmc;           /* [----] Indicate Pending BMC detection */
-  UINT8  Reserved1[4];         /* [----] Reserved */
+  UINT8    Guid[16];           /* [0x00] set to AMPERE_GUID */
+  UINT8    BertRev;            /* [0x10] set to BERT revision */
+  UINT8    Reserved0[7];       /* [----] Reserved */
+  UINT8    DefaultBert;        /* [0x18] Indicate Default Bert Present */
+  UINT8    Overflow;           /* [----] Indicate Full Crash Capture overflow detected */
+  UINT8    PendingUefi;        /* [----] Indicate Pending UEFI detection */
+  UINT8    PendingBmc;         /* [----] Indicate Pending BMC detection */
+  UINT8    Reserved1[4];       /* [----] Reserved */
 } BERT_ERROR_STATUS;
 
-#define BERT_SPI_ADDRESS_STATUS      (BERT_FLASH_OFFSET + 0x4F000)
+#define BERT_SPI_ADDRESS_STATUS  (BERT_FLASH_OFFSET + 0x4F000)
 
 #pragma pack()
 
 VOID
 EFIAPI
 CreateDefaultBertData (
-  APEI_CRASH_DUMP_DATA *Data
+  APEI_CRASH_DUMP_DATA  *Data
   );
 
 VOID
 EFIAPI
 WrapBertErrorData (
-  APEI_CRASH_DUMP_BERT_ERROR *WrappedError
+  APEI_CRASH_DUMP_BERT_ERROR  *WrappedError
   );
 
 VOID
 EFIAPI
 PullBertSpinorData (
-  UINT8 *BertData,
-  UINT64 BertSpiAddress,
-  UINTN Length
+  UINT8   *BertData,
+  UINT64  BertSpiAddress,
+  UINTN   Length
   );
 
 VOID
 EFIAPI
 AdjustBERTRegionLen (
-  UINT32 Len
+  UINT32  Len
   );
 
 BOOLEAN
@@ -167,12 +167,12 @@ IsBertEnabled (
 VOID
 EFIAPI
 WriteDDRBertTable (
-  APEI_CRASH_DUMP_BERT_ERROR *Data
+  APEI_CRASH_DUMP_BERT_ERROR  *Data
   );
 
 VOID
 WriteSpinorDefaultBertTable (
-  APEI_CRASH_DUMP_DATA *SpiRefrenceData
+  APEI_CRASH_DUMP_DATA  *SpiRefrenceData
   );
 
 EFI_STATUS

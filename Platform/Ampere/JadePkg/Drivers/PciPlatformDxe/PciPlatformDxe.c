@@ -20,8 +20,8 @@
 
 #pragma pack(1)
 typedef struct {
-  ACPI_HID_DEVICE_PATH     AcpiDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL EndDevicePath;
+  ACPI_HID_DEVICE_PATH        AcpiDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL    EndDevicePath;
 } EFI_PCI_ROOT_BRIDGE_DEVICE_PATH;
 #pragma pack ()
 
@@ -33,12 +33,12 @@ typedef struct {
 **/
 VOID
 NotifyPhaseCallBack (
-  IN UINTN                                         RootBridgeIndex,
-  IN EFI_PCI_HOST_BRIDGE_RESOURCE_ALLOCATION_PHASE Phase
+  IN UINTN                                          RootBridgeIndex,
+  IN EFI_PCI_HOST_BRIDGE_RESOURCE_ALLOCATION_PHASE  Phase
   )
 {
-  AC01_ROOT_COMPLEX *RootComplexList;
-  VOID              *Hob;
+  AC01_ROOT_COMPLEX  *RootComplexList;
+  VOID               *Hob;
 
   Hob = GetFirstGuidHob (&gRootComplexInfoHobGuid);
   if (Hob == NULL) {
@@ -48,24 +48,24 @@ NotifyPhaseCallBack (
   RootComplexList = (AC01_ROOT_COMPLEX *)GET_GUID_HOB_DATA (Hob);
 
   switch (Phase) {
-  case EfiPciHostBridgeEndEnumeration:
-    Ac01PcieCoreEndEnumeration (&RootComplexList[RootBridgeIndex]);
-    break;
+    case EfiPciHostBridgeEndEnumeration:
+      Ac01PcieCoreEndEnumeration (&RootComplexList[RootBridgeIndex]);
+      break;
 
-  case EfiPciHostBridgeBeginEnumeration:
-    // 100ms that help fixing completion timeout issue
-    MicroSecondDelay (100000);
-    break;
+    case EfiPciHostBridgeBeginEnumeration:
+      // 100ms that help fixing completion timeout issue
+      MicroSecondDelay (100000);
+      break;
 
-  case EfiPciHostBridgeBeginBusAllocation:
-  case EfiPciHostBridgeEndBusAllocation:
-  case EfiPciHostBridgeBeginResourceAllocation:
-  case EfiPciHostBridgeAllocateResources:
-  case EfiPciHostBridgeSetResources:
-  case EfiPciHostBridgeFreeResources:
-  case EfiPciHostBridgeEndResourceAllocation:
-  case EfiMaxPciHostBridgeEnumerationPhase:
-    break;
+    case EfiPciHostBridgeBeginBusAllocation:
+    case EfiPciHostBridgeEndBusAllocation:
+    case EfiPciHostBridgeBeginResourceAllocation:
+    case EfiPciHostBridgeAllocateResources:
+    case EfiPciHostBridgeSetResources:
+    case EfiPciHostBridgeFreeResources:
+    case EfiPciHostBridgeEndResourceAllocation:
+    case EfiMaxPciHostBridgeEnumerationPhase:
+      break;
   }
 }
 
@@ -92,7 +92,7 @@ PhaseNotify (
 {
   EFI_PCI_ROOT_BRIDGE_DEVICE_PATH                   *RootBridgeDevPath;
   EFI_HANDLE                                        RootBridgeHandle = NULL;
-  EFI_PCI_HOST_BRIDGE_RESOURCE_ALLOCATION_PROTOCOL  *ResAlloc = NULL;
+  EFI_PCI_HOST_BRIDGE_RESOURCE_ALLOCATION_PROTOCOL  *ResAlloc        = NULL;
   EFI_STATUS                                        Status;
 
   if (ChipsetPhase != ChipsetExit) {
@@ -158,12 +158,12 @@ PhaseNotify (
 EFI_STATUS
 EFIAPI
 PlatformPrepController (
-  IN  EFI_PCI_PLATFORM_PROTOCOL                      *This,
-  IN  EFI_HANDLE                                     HostBridge,
-  IN  EFI_HANDLE                                     RootBridge,
-  IN  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS    PciAddress,
-  IN  EFI_PCI_CONTROLLER_RESOURCE_ALLOCATION_PHASE   Phase,
-  IN  EFI_PCI_CHIPSET_EXECUTION_PHASE                ChipsetPhase
+  IN  EFI_PCI_PLATFORM_PROTOCOL                     *This,
+  IN  EFI_HANDLE                                    HostBridge,
+  IN  EFI_HANDLE                                    RootBridge,
+  IN  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS   PciAddress,
+  IN  EFI_PCI_CONTROLLER_RESOURCE_ALLOCATION_PHASE  Phase,
+  IN  EFI_PCI_CHIPSET_EXECUTION_PHASE               ChipsetPhase
   )
 {
   return EFI_UNSUPPORTED;
@@ -182,8 +182,8 @@ PlatformPrepController (
 EFI_STATUS
 EFIAPI
 GetPlatformPolicy (
-  IN  CONST EFI_PCI_PLATFORM_PROTOCOL   *This,
-  OUT EFI_PCI_PLATFORM_POLICY           *PciPolicy
+  IN  CONST EFI_PCI_PLATFORM_PROTOCOL  *This,
+  OUT EFI_PCI_PLATFORM_POLICY          *PciPolicy
   )
 {
   return EFI_UNSUPPORTED;
@@ -205,10 +205,10 @@ GetPlatformPolicy (
 EFI_STATUS
 EFIAPI
 GetPciRom (
-  IN  CONST EFI_PCI_PLATFORM_PROTOCOL   *This,
-  IN  EFI_HANDLE                        PciHandle,
-  OUT VOID                              **RomImage,
-  OUT UINTN                             *RomSize
+  IN  CONST EFI_PCI_PLATFORM_PROTOCOL  *This,
+  IN  EFI_HANDLE                       PciHandle,
+  OUT VOID                             **RomImage,
+  OUT UINTN                            *RomSize
   )
 {
   return EFI_NOT_FOUND;
@@ -217,11 +217,11 @@ GetPciRom (
 //
 // Interface defintion of PCI Platform protocol.
 //
-EFI_PCI_PLATFORM_PROTOCOL mPciPlatformProtocol = {
-  .PlatformNotify             = PhaseNotify,
-  .PlatformPrepController     = PlatformPrepController,
-  .GetPlatformPolicy          = GetPlatformPolicy,
-  .GetPciRom                  = GetPciRom
+EFI_PCI_PLATFORM_PROTOCOL  mPciPlatformProtocol = {
+  .PlatformNotify         = PhaseNotify,
+  .PlatformPrepController = PlatformPrepController,
+  .GetPlatformPolicy      = GetPlatformPolicy,
+  .GetPciRom              = GetPciRom
 };
 
 /**
@@ -236,23 +236,23 @@ EFI_PCI_PLATFORM_PROTOCOL mPciPlatformProtocol = {
 **/
 EFI_STATUS
 PciPlatformDriverEntry (
-  IN EFI_HANDLE                         ImageHandle,
-  IN EFI_SYSTEM_TABLE                   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                Status;
-  EFI_HANDLE                PciPlatformHandle;
+  EFI_STATUS  Status;
+  EFI_HANDLE  PciPlatformHandle;
 
   //
   // Install on a new handle
   //
   PciPlatformHandle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &PciPlatformHandle,
-                  &gEfiPciPlatformProtocolGuid,
-                  &mPciPlatformProtocol,
-                  NULL
-                  );
+  Status            = gBS->InstallMultipleProtocolInterfaces (
+                             &PciPlatformHandle,
+                             &gEfiPciPlatformProtocolGuid,
+                             &mPciPlatformProtocol,
+                             NULL
+                             );
 
   return Status;
 }

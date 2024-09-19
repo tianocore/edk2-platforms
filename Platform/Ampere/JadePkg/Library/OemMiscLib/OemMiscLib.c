@@ -27,30 +27,30 @@
 
 #include "IpmiFruInfo.h"
 
-#define PROCESSOR_VERSION_ALTRA       L"Ampere(R) Altra(R) Processor"
-#define PROCESSOR_VERSION_ALTRA_MAX   L"Ampere(R) Altra(R) Max Processor"
+#define PROCESSOR_VERSION_ALTRA      L"Ampere(R) Altra(R) Processor"
+#define PROCESSOR_VERSION_ALTRA_MAX  L"Ampere(R) Altra(R) Max Processor"
 
-#define SCP_VERSION_STRING_MAX_LENGTH 32
+#define SCP_VERSION_STRING_MAX_LENGTH  32
 
-UINTN mProcessorIndex = 0xFF;
+UINTN  mProcessorIndex = 0xFF;
 
 UINT32
 GetCacheConfig (
-  IN UINT32  CacheLevel,
-  IN BOOLEAN DataCache,
-  IN BOOLEAN UnifiedCache
+  IN UINT32   CacheLevel,
+  IN BOOLEAN  DataCache,
+  IN BOOLEAN  UnifiedCache
   )
 {
-  CSSELR_DATA Csselr;
-  UINT64      Ccsidr;
-  BOOLEAN     SupportWB;
-  BOOLEAN     SupportWT;
+  CSSELR_DATA  Csselr;
+  UINT64       Ccsidr;
+  BOOLEAN      SupportWB;
+  BOOLEAN      SupportWT;
 
-  Csselr.Data = 0;
+  Csselr.Data       = 0;
   Csselr.Bits.Level = CacheLevel - 1;
-  Csselr.Bits.InD = (!DataCache && !UnifiedCache);
+  Csselr.Bits.InD   = (!DataCache && !UnifiedCache);
 
-  Ccsidr = ReadCCSIDR (Csselr.Data);
+  Ccsidr    = ReadCCSIDR (Csselr.Data);
   SupportWT = (Ccsidr & (1 << 31)) ? TRUE : FALSE;
   SupportWB = (Ccsidr & (1 << 30)) ? TRUE : FALSE;
 
@@ -78,7 +78,7 @@ GetCacheConfig (
 UINTN
 EFIAPI
 OemGetCpuFreq (
-  IN UINT8 ProcessorIndex
+  IN UINT8  ProcessorIndex
   )
 {
   return CpuGetCurrentFreq (ProcessorIndex);
@@ -97,13 +97,13 @@ OemGetCpuFreq (
 BOOLEAN
 EFIAPI
 OemGetProcessorInformation (
-  IN UINTN ProcessorIndex,
-  IN OUT PROCESSOR_STATUS_DATA *ProcessorStatus,
-  IN OUT PROCESSOR_CHARACTERISTIC_FLAGS *ProcessorCharacteristics,
-  IN OUT OEM_MISC_PROCESSOR_DATA *MiscProcessorData
+  IN UINTN                               ProcessorIndex,
+  IN OUT PROCESSOR_STATUS_DATA           *ProcessorStatus,
+  IN OUT PROCESSOR_CHARACTERISTIC_FLAGS  *ProcessorCharacteristics,
+  IN OUT OEM_MISC_PROCESSOR_DATA         *MiscProcessorData
   )
 {
-  UINT16 ProcessorCount;
+  UINT16  ProcessorCount;
 
   ProcessorCount = GetNumberOfActiveSockets ();
 
@@ -119,16 +119,16 @@ OemGetProcessorInformation (
     ProcessorStatus->Bits.Reserved2       = 0;
   }
 
-  ProcessorCharacteristics->ProcessorReserved1      = 0;
-  ProcessorCharacteristics->ProcessorUnknown        = 0;
-  ProcessorCharacteristics->Processor64BitCapable   = 1;
-  ProcessorCharacteristics->ProcessorMultiCore      = 1;
-  ProcessorCharacteristics->ProcessorHardwareThread = 0;
+  ProcessorCharacteristics->ProcessorReserved1              = 0;
+  ProcessorCharacteristics->ProcessorUnknown                = 0;
+  ProcessorCharacteristics->Processor64BitCapable           = 1;
+  ProcessorCharacteristics->ProcessorMultiCore              = 1;
+  ProcessorCharacteristics->ProcessorHardwareThread         = 0;
   ProcessorCharacteristics->ProcessorExecuteProtection      = 1;
   ProcessorCharacteristics->ProcessorEnhancedVirtualization = 1;
   ProcessorCharacteristics->ProcessorPowerPerformanceCtrl   = 1;
-  ProcessorCharacteristics->Processor128BitCapable = 0;
-  ProcessorCharacteristics->ProcessorReserved2  = 0;
+  ProcessorCharacteristics->Processor128BitCapable          = 0;
+  ProcessorCharacteristics->ProcessorReserved2              = 0;
 
   MiscProcessorData->Voltage      = CpuGetVoltage (ProcessorIndex);
   MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex);
@@ -153,26 +153,26 @@ OemGetProcessorInformation (
 BOOLEAN
 EFIAPI
 OemGetCacheInformation (
-  IN UINT8   ProcessorIndex,
-  IN UINT8   CacheLevel,
-  IN BOOLEAN DataCache,
-  IN BOOLEAN UnifiedCache,
-  IN OUT SMBIOS_TABLE_TYPE7 *SmbiosCacheTable
+  IN UINT8                   ProcessorIndex,
+  IN UINT8                   CacheLevel,
+  IN BOOLEAN                 DataCache,
+  IN BOOLEAN                 UnifiedCache,
+  IN OUT SMBIOS_TABLE_TYPE7  *SmbiosCacheTable
   )
 {
-  UINT16       CacheSize16;
-  UINT32       CacheSize32;
-  UINT64       CacheSize64;
-  UINT8        Granularity32;
+  UINT16  CacheSize16;
+  UINT32  CacheSize32;
+  UINT64  CacheSize64;
+  UINT8   Granularity32;
 
-  SmbiosCacheTable->CacheConfiguration = CacheLevel - 1;
+  SmbiosCacheTable->CacheConfiguration  = CacheLevel - 1;
   SmbiosCacheTable->CacheConfiguration |= (1 << 7); // Enable
   SmbiosCacheTable->CacheConfiguration |= (GetCacheConfig (CacheLevel, DataCache, UnifiedCache) << 8);
 
-  SmbiosCacheTable->SupportedSRAMType.Unknown = 0;
+  SmbiosCacheTable->SupportedSRAMType.Unknown     = 0;
   SmbiosCacheTable->SupportedSRAMType.Synchronous = 1;
-  SmbiosCacheTable->CurrentSRAMType.Unknown = 0;
-  SmbiosCacheTable->CurrentSRAMType.Synchronous = 1;
+  SmbiosCacheTable->CurrentSRAMType.Unknown       = 0;
+  SmbiosCacheTable->CurrentSRAMType.Synchronous   = 1;
 
   if (CacheLevel == CpuCacheL1) {
     SmbiosCacheTable->ErrorCorrectionType = CacheErrorParity;
@@ -251,7 +251,7 @@ OemGetChassisType (
 BOOLEAN
 EFIAPI
 OemIsProcessorPresent (
-  IN UINTN ProcessorIndex
+  IN UINTN  ProcessorIndex
   )
 {
   //
@@ -351,24 +351,25 @@ UpdateFirmwareVersionString (
 VOID
 EFIAPI
 OemUpdateSmbiosInfo (
-  IN EFI_HII_HANDLE HiiHandle,
-  IN EFI_STRING_ID TokenToUpdate,
-  IN OEM_MISC_SMBIOS_HII_STRING_FIELD Field
+  IN EFI_HII_HANDLE                    HiiHandle,
+  IN EFI_STRING_ID                     TokenToUpdate,
+  IN OEM_MISC_SMBIOS_HII_STRING_FIELD  Field
   )
 {
-  EFI_STRING UnicodeString;
-  UINT8      StringLength;
-  CHAR8      *AsciiString;
-  UINT32     *Ecid;
+  EFI_STRING  UnicodeString;
+  UINT8       StringLength;
+  CHAR8       *AsciiString;
+  UINT32      *Ecid;
 
-  StringLength = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
+  StringLength  = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
   UnicodeString = AllocatePool (StringLength);
   if (UnicodeString == NULL) {
     DEBUG ((
       DEBUG_ERROR,
       "%a:%d: There is not enough memory remaining to satisfy the request\n",
       __func__,
-      __LINE__));
+      __LINE__
+      ));
 
     goto Exit;
   }
@@ -528,12 +529,12 @@ OemUpdateSmbiosInfo (
       break;
 
     case ProcessorVersionType04:
-      if (IsAc01Processor ()){
+      if (IsAc01Processor ()) {
         UnicodeSPrint (
           UnicodeString,
           StringLength,
           PROCESSOR_VERSION_ALTRA
-        );
+          );
       } else {
         UnicodeSPrint (
           UnicodeString,
@@ -699,7 +700,7 @@ OemGetBiosRelease (
   VOID
   )
 {
-  UINT16 BiosRelease;
+  UINT16  BiosRelease;
 
   BiosRelease = (UINT16)(((PcdGet8 (PcdSmbiosTables0MajorVersion)) << 8)
                          | PcdGet8 (PcdSmbiosTables0MinorVersion));
@@ -718,10 +719,10 @@ OemGetEmbeddedControllerFirmwareRelease (
   VOID
   )
 {
-  CHAR8  AsciiScpVer[SCP_VERSION_STRING_MAX_LENGTH];
-  UINT8  *ScpVer = NULL;
-  UINT8  Index;
-  UINT16 FirmwareRelease;
+  CHAR8   AsciiScpVer[SCP_VERSION_STRING_MAX_LENGTH];
+  UINT8   *ScpVer = NULL;
+  UINT8   Index;
+  UINT16  FirmwareRelease;
 
   GetScpVersion (&ScpVer);
   if (ScpVer == NULL) {
@@ -729,9 +730,10 @@ OemGetEmbeddedControllerFirmwareRelease (
       DEBUG_ERROR,
       "%a:%d: Fail to get SMpro/PMpro information\n",
       __func__,
-      __LINE__));
+      __LINE__
+      ));
 
-      return 0xFFFF;
+    return 0xFFFF;
   }
 
   CopyMem ((VOID *)AsciiScpVer, (VOID *)ScpVer, AsciiStrLen ((CHAR8 *)ScpVer));
@@ -751,11 +753,11 @@ OemGetEmbeddedControllerFirmwareRelease (
 
 VOID
 ConvertIpmiGuidToSmbiosGuid (
-  IN OUT UINT8 *SmbiosGuid,
-  IN     UINT8 *IpmiGuid
+  IN OUT UINT8  *SmbiosGuid,
+  IN     UINT8  *IpmiGuid
   )
 {
-  UINT8 Index;
+  UINT8  Index;
 
   //
   // Node and clock seq field within the GUID
@@ -766,6 +768,7 @@ ConvertIpmiGuidToSmbiosGuid (
   for (Index = 0; Index < 8; Index++) {
     *(SmbiosGuid + 15 - Index) = *(IpmiGuid + Index);
   }
+
   //
   // Time high, time mid and time low field
   // are stored LSB first in both IPMI spec

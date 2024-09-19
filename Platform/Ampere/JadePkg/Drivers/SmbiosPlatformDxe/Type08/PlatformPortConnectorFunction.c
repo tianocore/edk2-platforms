@@ -23,12 +23,12 @@
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformPortConnector) {
-  EFI_STATUS         Status;
-  STR_TOKEN_INFO     *InputStrToken;
-  SMBIOS_TABLE_TYPE8 *InputData;
-  SMBIOS_TABLE_TYPE8 *Type8Record;
+  EFI_STATUS          Status;
+  STR_TOKEN_INFO      *InputStrToken;
+  SMBIOS_TABLE_TYPE8  *InputData;
+  SMBIOS_TABLE_TYPE8  *Type8Record;
 
-  InputData = (SMBIOS_TABLE_TYPE8 *)RecordData;
+  InputData     = (SMBIOS_TABLE_TYPE8 *)RecordData;
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {

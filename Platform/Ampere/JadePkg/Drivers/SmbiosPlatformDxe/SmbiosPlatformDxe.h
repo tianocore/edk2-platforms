@@ -18,11 +18,11 @@
 #include <Protocol/Smbios.h>
 #include <IndustryStandard/SmBios.h>
 
-#define NULL_TERMINATED_TYPE             0xFF
-#define NULL_TERMINATED_TOKEN            0xFFFF
+#define NULL_TERMINATED_TYPE   0xFF
+#define NULL_TERMINATED_TOKEN  0xFFFF
 
-#define END_OF_SMBIOS_TABLE_TYPE         127
-#define SMBIOS_UNICODE_STRING_MAX_LENGTH (SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16))
+#define END_OF_SMBIOS_TABLE_TYPE          127
+#define SMBIOS_UNICODE_STRING_MAX_LENGTH  (SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16))
 
 typedef enum {
   ADDITIONAL_STR_INDEX_1 = 1,
@@ -43,7 +43,7 @@ typedef enum {
 typedef EFI_STATUS (EFIAPI SMBIOS_PLATFORM_DXE_DATA_FUNCTION)(
   IN VOID *RecordData,
   IN VOID *StrToken
-);
+  );
 
 #pragma pack(1)
 //
@@ -53,14 +53,14 @@ typedef struct {
   //
   // Intermediate input data for SMBIOS record
   //
-  VOID                              *RecordData;
-  VOID                              *StrToken;
-  SMBIOS_PLATFORM_DXE_DATA_FUNCTION *Function;
+  VOID                                 *RecordData;
+  VOID                                 *StrToken;
+  SMBIOS_PLATFORM_DXE_DATA_FUNCTION    *Function;
 } SMBIOS_PLATFORM_DXE_DATA_TABLE;
 
 typedef struct {
-  UINT16 TokenArray[ADDITIONAL_STR_INDEX_MAX];
-  UINT8  TokenLen;
+  UINT16    TokenArray[ADDITIONAL_STR_INDEX_MAX];
+  UINT8     TokenLen;
 } STR_TOKEN_INFO;
 #pragma pack()
 
@@ -119,8 +119,8 @@ extern SMBIOS_PLATFORM_DXE_DATA_FUNCTION BASE_NAME ## Function;
 **/
 EFI_STATUS
 SmbiosPlatformDxeAddRecord (
-  IN     UINT8             *Buffer,
-  IN OUT EFI_SMBIOS_HANDLE *SmbiosHandle OPTIONAL
+  IN     UINT8              *Buffer,
+  IN OUT EFI_SMBIOS_HANDLE  *SmbiosHandle OPTIONAL
   );
 
 /**
@@ -132,9 +132,9 @@ SmbiosPlatformDxeAddRecord (
 **/
 VOID
 SmbiosPlatformDxeGetLinkTypeHandle (
-  IN  UINT8         SmbiosType,
-  OUT SMBIOS_HANDLE **HandleArray,
-  OUT UINTN         *HandleCount
+  IN  UINT8          SmbiosType,
+  OUT SMBIOS_HANDLE  **HandleArray,
+  OUT UINTN          *HandleCount
   );
 
 /**
@@ -147,10 +147,10 @@ SmbiosPlatformDxeGetLinkTypeHandle (
 **/
 VOID
 SmbiosPlatformDxeCreateTable (
-  OUT VOID           **TableRecord,
-  IN  VOID           **InputData,
-  IN  UINT8          TableTypeSize,
-  IN  STR_TOKEN_INFO *StrToken
+  OUT VOID            **TableRecord,
+  IN  VOID            **InputData,
+  IN  UINT8           TableTypeSize,
+  IN  STR_TOKEN_INFO  *StrToken
   );
 
 /**
@@ -165,7 +165,7 @@ SmbiosPlatformDxeCreateTable (
 **/
 EFI_STATUS
 SmbiosPlatformDxeSaveHiiDefaultString (
-  IN STR_TOKEN_INFO *StrToken
+  IN STR_TOKEN_INFO  *StrToken
   );
 
 /**
@@ -178,23 +178,23 @@ SmbiosPlatformDxeSaveHiiDefaultString (
 **/
 EFI_STATUS
 SmbiosPlatformDxeRestoreHiiDefaultString (
-  IN STR_TOKEN_INFO *StrToken
+  IN STR_TOKEN_INFO  *StrToken
   );
 
 //
 // Data Table Array
 //
-extern SMBIOS_PLATFORM_DXE_DATA_TABLE mSmbiosPlatformDxeDataTable[];
+extern SMBIOS_PLATFORM_DXE_DATA_TABLE  mSmbiosPlatformDxeDataTable[];
 
 //
 // Data Table Array Entries
 //
-extern UINTN mSmbiosPlatformDxeDataTableEntries;
+extern UINTN  mSmbiosPlatformDxeDataTableEntries;
 
 //
 // HII Database Handle
 //
-extern EFI_HII_HANDLE mSmbiosPlatformDxeHiiHandle;
+extern EFI_HII_HANDLE  mSmbiosPlatformDxeHiiHandle;
 
 extern UINT8  SmbiosPlatformDxeStrings[];
 

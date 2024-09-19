@@ -23,12 +23,12 @@
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformOemString) {
-  EFI_STATUS          Status;
-  STR_TOKEN_INFO      *InputStrToken;
-  SMBIOS_TABLE_TYPE11 *InputData;
-  SMBIOS_TABLE_TYPE11 *Type11Record;
+  EFI_STATUS           Status;
+  STR_TOKEN_INFO       *InputStrToken;
+  SMBIOS_TABLE_TYPE11  *InputData;
+  SMBIOS_TABLE_TYPE11  *Type11Record;
 
-  InputData = (SMBIOS_TABLE_TYPE11 *)RecordData;
+  InputData     = (SMBIOS_TABLE_TYPE11 *)RecordData;
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {

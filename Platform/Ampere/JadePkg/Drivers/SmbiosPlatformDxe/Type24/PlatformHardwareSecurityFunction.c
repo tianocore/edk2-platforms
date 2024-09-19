@@ -23,12 +23,12 @@
 
 **/
 SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformHardwareSecurity) {
-  EFI_STATUS          Status;
-  STR_TOKEN_INFO      *InputStrToken;
-  SMBIOS_TABLE_TYPE24 *InputData;
-  SMBIOS_TABLE_TYPE24 *Type24Record;
+  EFI_STATUS           Status;
+  STR_TOKEN_INFO       *InputStrToken;
+  SMBIOS_TABLE_TYPE24  *InputData;
+  SMBIOS_TABLE_TYPE24  *Type24Record;
 
-  InputData = (SMBIOS_TABLE_TYPE24 *)RecordData;
+  InputData     = (SMBIOS_TABLE_TYPE24 *)RecordData;
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {

@@ -16,18 +16,18 @@
 #include <Library/TimerLib.h>
 #include <Platform/Ac01.h>
 
-#define RCA_MAX_PERST_GROUPVAL          62
-#define RCB_MAX_PERST_GROUPVAL          46
-#define DEFAULT_SEGMENT_NUMBER          0x0F
+#define RCA_MAX_PERST_GROUPVAL  62
+#define RCB_MAX_PERST_GROUPVAL  46
+#define DEFAULT_SEGMENT_NUMBER  0x0F
 
 #define PCIE_PERST_DELAY  (100 * 1000)               // 100ms
 
 VOID
 BoardPcieReleaseAllPerst (
-  IN UINT8 SocketId
+  IN UINT8  SocketId
   )
 {
-  UINT32 GpioIndex, GpioPin;
+  UINT32  GpioIndex, GpioPin;
 
   // Write 1 to all GPIO[16..21] to release all PERST
   GpioPin = AC01_GPIO_PINS_PER_SOCKET * SocketId + 16;
@@ -40,9 +40,9 @@ BoardPcieReleaseAllPerst (
 
 EFI_STATUS
 GetGpioGroup (
-  IN  UINT8 RootComplexId,
-  IN  UINT8 PcieIndex,
-  OUT UINT32 *GpioGroupVal
+  IN  UINT8   RootComplexId,
+  IN  UINT8   PcieIndex,
+  OUT UINT32  *GpioGroupVal
   )
 {
   /* Ampere Altra Max RootComplex->ID: 4:7 */
@@ -99,16 +99,16 @@ GetGpioGroup (
 RETURN_STATUS
 EFIAPI
 BoardPcieAssertPerst (
-  IN AC01_ROOT_COMPLEX *RootComplex,
-  IN UINT8             PcieIndex,
-  IN BOOLEAN           IsPullToHigh
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN BOOLEAN            IsPullToHigh
   )
 {
-  UINT32     GpioGroupVal;
-  UINT32     Val;
-  UINT32     GpioIndex;
-  UINT32     GpioPin;
-  EFI_STATUS Status;
+  UINT32      GpioGroupVal;
+  UINT32      Val;
+  UINT32      GpioIndex;
+  UINT32      GpioPin;
+  EFI_STATUS  Status;
 
   if (!IsPullToHigh) {
     if (RootComplex->Type == RootComplexTypeA) {
@@ -164,17 +164,18 @@ BoardPcieAssertPerst (
 **/
 UINT16
 BoardPcieGetSegmentNumber (
-  IN  AC01_ROOT_COMPLEX *RootComplex
+  IN  AC01_ROOT_COMPLEX  *RootComplex
   )
 {
-  UINT8 Ac01BoardSegment[PLATFORM_CPU_MAX_SOCKET][AC01_PCIE_MAX_ROOT_COMPLEX] =
-                          {
-                            { 0x0C, 0x0D, 0x01, 0x00, 0x02, 0x03, 0x04, 0x05 },
-                            { 0x10, 0x11, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B }
-                          };
+  UINT8  Ac01BoardSegment[PLATFORM_CPU_MAX_SOCKET][AC01_PCIE_MAX_ROOT_COMPLEX] =
+  {
+    { 0x0C, 0x0D, 0x01, 0x00, 0x02, 0x03, 0x04, 0x05 },
+    { 0x10, 0x11, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B }
+  };
 
-  if (RootComplex->Socket < PLATFORM_CPU_MAX_SOCKET
-      && RootComplex->ID < AC01_PCIE_MAX_ROOT_COMPLEX) {
+  if (  (RootComplex->Socket < PLATFORM_CPU_MAX_SOCKET)
+     && (RootComplex->ID < AC01_PCIE_MAX_ROOT_COMPLEX))
+  {
     return Ac01BoardSegment[RootComplex->Socket][RootComplex->ID];
   }
 
