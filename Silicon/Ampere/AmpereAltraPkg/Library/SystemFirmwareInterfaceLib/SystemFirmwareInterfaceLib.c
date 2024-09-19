@@ -27,6 +27,7 @@
           (((x)->Year << SMPRO_RTC_YEAR_SHIFT) & SMPRO_RTC_YEAR_MASK) | \
           (((x)->Month << SMPRO_RTC_MONTH_SHIFT) & SMPRO_RTC_MONTH_MASK) | \
           (((x)->Day << SMPRO_RTC_DAY_SHIFT) & SMPRO_RTC_DAY_MASK)
+#define MAILBOX_TRNG_MESSAGE_PARAM1_MASK 0x000000FF
 
 /**
   Read a register which is not accessible from the non-secure world
@@ -236,6 +237,10 @@ MailboxMsgGetRandomNumber64 (
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {
     return Status;
+  }
+
+  if ((Message.Data & MAILBOX_TRNG_MESSAGE_PARAM1_MASK) != 0) {
+    return EFI_DEVICE_ERROR;
   }
 
   CopyMem (Buffer, &Message.ExtendedData[0], sizeof (UINT32));
