@@ -166,6 +166,11 @@ APRIORI DXE {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
 
   #
+  # In-band NVPARAM Access
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf
+
+  #
   # LinuxBoot
 !ifdef $(LINUXBOOT_FILE)
   FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {

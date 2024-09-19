@@ -107,3 +107,8 @@
   # SystemFirmwareUpdateDxe
   #
   Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
+  #
+  # In-band NVPARAM Access
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf
