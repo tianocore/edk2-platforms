@@ -7,7 +7,7 @@
 # A board can enable a feature by configuring the PCD in the board DSC file
 # after this file has been included.
 #
-# Copyright (C) 2022 Intel Corporation
+# Copyright (C) 2022 - 2024 Intel Corporation
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -23,3 +23,5 @@
  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable                    |FALSE
 
  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable             |FALSE
+
+ gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable            |FALSE
