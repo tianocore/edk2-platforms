@@ -162,9 +162,9 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // Sub System Peripherals - Timer Base0
-  VirtualMemoryTable[++Index].PhysicalBase  = FixedPcdGet32 (PcdTimerBase0Base);
-  VirtualMemoryTable[Index].VirtualBase     = FixedPcdGet32 (PcdTimerBase0Base);
-  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdTimerBase0Size);
+  VirtualMemoryTable[++Index].PhysicalBase  = FixedPcdGet32 (PcdTimerFrame0Base);
+  VirtualMemoryTable[Index].VirtualBase     = FixedPcdGet32 (PcdTimerFrame0Base);
+  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdTimerFrame0Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // Sub System Peripherals - SMMU

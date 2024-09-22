@@ -60,13 +60,16 @@
   gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip3
   gArmSgiTokenSpaceGuid.PcdDramBlock2Base
   gArmSgiTokenSpaceGuid.PcdDramBlock2Size
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
   gArmSgiTokenSpaceGuid.PcdOscLpiEnable
   gArmSgiTokenSpaceGuid.PcdOscCppcEnable
+  gArmSgiTokenSpaceGuid.PcdTimerControlBase
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv
   gArmSgiTokenSpaceGuid.PcdVirtioBlkBaseAddress
   gArmSgiTokenSpaceGuid.PcdVirtioBlkSize
   gArmSgiTokenSpaceGuid.PcdVirtioBlkInterrupt

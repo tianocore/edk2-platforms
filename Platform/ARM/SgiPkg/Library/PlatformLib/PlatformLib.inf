@@ -81,8 +81,8 @@
   gArmSgiTokenSpaceGuid.PcdSmmuBase
   gArmSgiTokenSpaceGuid.PcdSmmuSize
   gArmSgiTokenSpaceGuid.PcdSysPeriphBase
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Base
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Size
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Size
   gArmSgiTokenSpaceGuid.PcdTimerControlBase
   gArmSgiTokenSpaceGuid.PcdTimerControlSize
   gArmSgiTokenSpaceGuid.PcdTimerCounterReadBase

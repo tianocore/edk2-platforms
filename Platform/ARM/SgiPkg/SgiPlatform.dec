@@ -69,10 +69,12 @@
   gArmSgiTokenSpaceGuid.PcdSysPeriphSysRegBase|0x0|UINT64|0x0000000F
 
   # Counter, Timer and Watchdog
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv|0|UINT32|0x00000011
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv|0|UINT32|0x00000012
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Base|0|UINT32|0x00000015
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Size|0|UINT32|0x00000016
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv|0|UINT32|0x00000011
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv|0|UINT32|0x00000012
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base|0|UINT32|0x00000015
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Size|0|UINT32|0x00000016
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base|0|UINT32|0x00000035
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Size|0|UINT32|0x00000036
   gArmSgiTokenSpaceGuid.PcdTimerControlBase|0|UINT32|0x00000017
   gArmSgiTokenSpaceGuid.PcdTimerControlSize|0|UINT32|0x00000018
   gArmSgiTokenSpaceGuid.PcdTimerCounterReadBase|0|UINT32|0x00000019

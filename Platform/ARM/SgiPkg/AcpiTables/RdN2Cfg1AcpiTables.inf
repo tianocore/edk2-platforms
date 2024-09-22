@@ -61,8 +61,6 @@
   gArmSgiTokenSpaceGuid.PcdGpioController0BaseAddress
   gArmSgiTokenSpaceGuid.PcdGpioController0Size
   gArmSgiTokenSpaceGuid.PcdGpioController0Interrupt
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
@@ -72,6 +70,11 @@
   gArmSgiTokenSpaceGuid.PcdSp804DualTimerBaseAddress
   gArmSgiTokenSpaceGuid.PcdSp804DualTimerSize
   gArmSgiTokenSpaceGuid.PcdSp804DualTimerInterrupt
+  gArmSgiTokenSpaceGuid.PcdTimerControlBase
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv
   gArmSgiTokenSpaceGuid.PcdVirtioBlkBaseAddress
   gArmSgiTokenSpaceGuid.PcdVirtioBlkSize
   gArmSgiTokenSpaceGuid.PcdVirtioBlkInterrupt
