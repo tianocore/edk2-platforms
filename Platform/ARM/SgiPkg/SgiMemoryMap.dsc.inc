@@ -49,10 +49,15 @@
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|42
 
   # Timer & Watchdog interrupts
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv|92
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv|91
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv|92
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv|91
   gArmSgiTokenSpaceGuid.PcdWdogWS0Gsiv|93
   gArmSgiTokenSpaceGuid.PcdWdogWS1Gsiv|94
+
+  # Generic Timer
+  gArmSgiTokenSpaceGuid.PcdTimerControlBase|0x2A810000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base|0x2A830000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base|0x2A820000
 
   # SP804 dual timer
   gArmSgiTokenSpaceGuid.PcdSp804DualTimerBaseAddress|0x1C110000
