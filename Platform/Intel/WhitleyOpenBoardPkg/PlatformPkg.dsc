@@ -685,7 +685,10 @@
   PeiLib|MinPlatformPkg/Library/PeiLib/PeiLib.inf
 
 [Components.IA32]
-  UefiCpuPkg/SecCore/SecCore.inf
+  UefiCpuPkg/SecCore/SecCore.inf {
+    <LibraryClasses>
+      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
+  }
 
   !include MinPlatformPkg/Include/Dsc/CorePeiInclude.dsc
 

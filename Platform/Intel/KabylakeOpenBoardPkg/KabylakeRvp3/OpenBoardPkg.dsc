@@ -301,6 +301,7 @@
   UefiCpuPkg/SecCore/SecCore.inf {
     <LibraryClasses>
       PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
+      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
 !if gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection == 1

@@ -511,6 +511,7 @@
         DebugAgentLib|SourceLevelDebugPkg/Library/DebugAgent/SecPeiDebugAgentLib.inf
         ResetSystemLib|QuarkSocPkg/QuarkNorthCluster/Library/ResetSystemLib/ResetSystemLib.inf
     !endif
+    NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
   #
