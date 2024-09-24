@@ -69,7 +69,6 @@ UpdatePeiSaPolicyPreMem (
   UINT64                                          PlatformMemorySize;
   VOID                                            *MemorySavedData;
   VOID                                            *NullSpdPtr;
-  UINT32                                          RpEnabledMask;
   SI_PREMEM_POLICY_PPI                            *SiPreMemPolicyPpi;
   MEMORY_CONFIGURATION                            *MemConfig;
   SA_MISC_PEI_PREMEM_CONFIG                       *MiscPeiPreMemConfig;
@@ -77,9 +76,7 @@ UpdatePeiSaPolicyPreMem (
   EFI_PEI_PPI_DESCRIPTOR                          *FspmArchConfigPpiDesc;
   FSPM_ARCH_CONFIG_PPI                            *FspmArchConfigPpi;
   HOST_BRIDGE_PREMEM_CONFIG                       *HostBridgePreMemConfig;
-  UINT16                                          AdjustedMmioSize;
   UINT8                                           SaDisplayConfigTable[16];
-  EFI_BOOT_MODE                                   SysBootMode;
   UINT32                                          ProcessorTraceTotalMemSize;
   CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_EBX     Ebx;
   UINT32                                          CapsuleSupportMemSize;
@@ -87,10 +84,8 @@ UpdatePeiSaPolicyPreMem (
   DEBUG ((DEBUG_INFO, "Update PeiSaPolicyUpdate Pre-Mem Start\n"));
   ZeroMem ((VOID*) SaDisplayConfigTable, sizeof (SaDisplayConfigTable));
   WdtTimeout           = 0;
-  SysBootMode          = 0;
   RcompData            = NULL;
   PlatformMemorySize   = 0;
-  RpEnabledMask        = 0;
   SiPreMemPolicyPpi    = NULL;
   MemConfig            = NULL;
   MemConfigNoCrc       = NULL;
@@ -102,8 +97,6 @@ UpdatePeiSaPolicyPreMem (
 
   ProcessorTraceTotalMemSize = 0;
   CapsuleSupportMemSize = 0;
-
-  AdjustedMmioSize = PcdGet16 (PcdSaMiscMmioSizeAdjustment);
 
   Status = PeiServicesLocatePpi (&gSiPreMemPolicyPpiGuid, 0, NULL, (VOID **) &SiPreMemPolicyPpi);
   ASSERT_EFI_ERROR (Status);

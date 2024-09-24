@@ -188,17 +188,11 @@ UpdatePeiPchPolicy (
   EFI_STATUS                      Status;
   VOID                            *FspsUpd;
   SI_POLICY_PPI                   *SiPolicy;
-  VOID                            *FspmUpd;
-  SI_PREMEM_POLICY_PPI            *SiPreMemPolicyPpi;
-  CPU_SECURITY_PREMEM_CONFIG      *CpuSecurityPreMemConfig;
 
   DEBUG ((DEBUG_INFO, "Update PeiPchPolicyUpdate Pos-Mem Start\n"));
 
   FspsUpd                 = NULL;
-  FspmUpd                 = NULL;
   SiPolicy                = NULL;
-  CpuSecurityPreMemConfig = NULL;
-  SiPreMemPolicyPpi       = NULL;
 
   Status = PeiServicesLocatePpi (&gSiPolicyPpiGuid, 0, NULL, (VOID **) &SiPolicy);
   ASSERT_EFI_ERROR (Status);

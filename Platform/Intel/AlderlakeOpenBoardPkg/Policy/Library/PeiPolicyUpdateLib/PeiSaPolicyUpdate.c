@@ -102,7 +102,6 @@ UpdatePeiSaPolicy (
   VOID                            *VmdVariablePtr;
   GRAPHICS_PEI_CONFIG             *GtConfig;
   SI_POLICY_PPI                   *SiPolicyPpi;
-  CPU_PCIE_CONFIG                 *CpuPcieRpConfig;
   VMD_PEI_CONFIG                  *VmdPeiConfig;
   EFI_PEI_PPI_DESCRIPTOR          *ReadyForGopConfigPpiDesc;
   VOID                            *VbtPtr;
@@ -119,7 +118,6 @@ UpdatePeiSaPolicy (
 
   GtConfig              = NULL;
   SiPolicyPpi           = NULL;
-  CpuPcieRpConfig       = NULL;
   VmdVariablePtr        = NULL;
   Buffer     = NULL;
 

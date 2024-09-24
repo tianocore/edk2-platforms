@@ -146,8 +146,6 @@ AdlPBoardInitBeforeMemoryInit (
   VOID
   )
 {
-  EFI_STATUS        Status;
-
   DEBUG ((DEBUG_INFO, "AdlPBoardInitBeforeMemoryInit\n"));
 
   AdlPInitPreMem ();
@@ -156,7 +154,7 @@ AdlPBoardInitBeforeMemoryInit (
 
   AdlPMrcConfigInit ();
   AdlPSaMiscConfigInit ();
-  Status = AdlPRootPortClkInfoInit ();
+  AdlPRootPortClkInfoInit ();
   AdlPSaDisplayConfigInit ();
   if (PcdGetPtr (PcdBoardGpioTableEarlyPreMem) != 0) {
     GpioInit (PcdGetPtr (PcdBoardGpioTableEarlyPreMem));
