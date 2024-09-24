@@ -74,7 +74,7 @@ SaPolicyInitDxe (
   // Call CreateSaDxeConfigBlocks to create & initialize platform policy structure
   // and get all Intel default policy settings.
   //
-  Status = CreateSaDxeConfigBlocks (&SaPolicy);
+  Status = CreateSaDxeConfigBlocks ((VOID **) &SaPolicy);
   DEBUG ((DEBUG_INFO, "SaPolicy->TableHeader.NumberOfBlocks = 0x%x\n ", SaPolicy->TableHeader.NumberOfBlocks));
   ASSERT_EFI_ERROR (Status);
 
