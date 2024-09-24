@@ -46,10 +46,7 @@ GLOBAL_REMOVE_IF_UNREFERENCED CONST FSPT_UPD FsptUpdDataPtr = {
     FixedPcdGet8 (PcdSerialIoUartMode),
     0,
     FixedPcdGet32 (PcdSerialIoUartBaudRate),
-    FixedPcdGet64 (PcdPciExpressBaseAddress),
-    {
-      0x00
-    }
+    FixedPcdGet64 (PcdPciExpressBaseAddress)
   },
   { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
   },
