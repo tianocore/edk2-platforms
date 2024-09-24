@@ -193,17 +193,3 @@ IsSpiFlashWriteGranted (
 {
   return TRUE;
 }
-
-/**
-  Check if a save and restore of the SPI controller state is necessary
-
-  @retval TRUE    It's necessary to save and restore SPI controller state
-  @retval FALSE   It's not necessary to save and restore SPI controller state
-**/
-BOOLEAN
-IsSpiControllerSaveRestoreEnabled (
-  VOID
-  )
-{
-  return FALSE;
-}

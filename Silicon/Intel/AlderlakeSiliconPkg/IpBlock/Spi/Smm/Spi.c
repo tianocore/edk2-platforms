@@ -50,28 +50,6 @@ GLOBAL_REMOVE_IF_UNREFERENCED UINT32                mPchSpiBar0RefCount;
 // state after finishing commands to the SPI controller.
 //
 GLOBAL_REMOVE_IF_UNREFERENCED UINT8                 mPchSpiSavedPciCmdReg;
-GLOBAL_REMOVE_IF_UNREFERENCED BOOLEAN               mBootServiceExited;
-
-/**
-  This function is invoked at ExitBootServices()
-
-  @param[in] Protocol        Protocol unique ID.
-  @param[in] Interface       Interface instance.
-  @param[in] Handle          The handle on which the interface is installed..
-
-  @retval    Status.
-**/
-EFI_STATUS
-EFIAPI
-SpiExitBootServicesCallback (
-  IN      CONST EFI_GUID   *Protocol,
-  IN      VOID             *Interface,
-  IN      EFI_HANDLE        Handle
-  )
-{
-  mBootServiceExited = TRUE;
-  return EFI_SUCCESS;
-}
 
 /**
   <b>SPI Runtime SMM Module Entry Point</b>\n
@@ -115,7 +93,6 @@ InstallPchSpi (
   )
 {
   EFI_STATUS  Status;
-  VOID        *Registration;
 
   //
   // Init PCH spi reserved MMIO address.
@@ -124,7 +101,6 @@ InstallPchSpi (
   mSpiSavedMmioAddr     = 0;
   mPchSpiBar0RefCount   = 0;
   mPchSpiSavedPciCmdReg = 0;
-  mBootServiceExited    = FALSE;
 
   ///
   /// Allocate pool for SPI protocol instance
@@ -147,18 +123,6 @@ InstallPchSpi (
   /// Initialize the SPI protocol instance
   ///
   Status = SpiProtocolConstructor (mSpiInstance);
-  if (EFI_ERROR (Status)) {
-    return Status;
-  }
-
-  //
-  // Register ExitBootServices callback
-  //
-  Status = gSmst->SmmRegisterProtocolNotify (
-                    &gEdkiiSmmExitBootServicesProtocolGuid,
-                    SpiExitBootServicesCallback,
-                    &Registration
-                    );
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -390,18 +354,4 @@ IsSpiFlashWriteGranted (
   }
 
   return TRUE;
-}
-
-/**
-  Check if a save and restore of the SPI controller state is necessary
-
-  @retval TRUE    It's necessary to save and restore SPI controller state
-  @retval FALSE   It's not necessary to save and restore SPI controller state
-**/
-BOOLEAN
-IsSpiControllerSaveRestoreEnabled (
-  VOID
-  )
-{
-  return mBootServiceExited;
 }

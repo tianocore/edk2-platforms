@@ -42,3 +42,6 @@ GpioLib.c
 GpioNativeLib.c
 GpioInit.c
 GpioLibrary.h
+
+[BuildOptions]
+  GCC:*_*_*_CC_FLAGS = -Wno-unused-function

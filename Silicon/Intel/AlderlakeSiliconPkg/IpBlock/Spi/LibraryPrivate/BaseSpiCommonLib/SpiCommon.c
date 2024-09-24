@@ -434,45 +434,6 @@ WaitForSpiCycleComplete (
 }
 
 /**
-  This function waits for a pending SPI transaction to complete without clearing
-  status fields
-
-  @param[in] This                 Pointer to the PCH_SPI2_PROTOCOL instance.
-  @param[in] PchSpiBar0           SPI MMIO address
-
-  @retval TRUE                    SPI cycle completed on the interface.
-  @retval FALSE                   Time out while waiting the SPI cycle to complete.
-                                  It's not safe to program the next command on the SPI interface.
-**/
-BOOLEAN
-STATIC
-WaitForScipNoClear (
-  IN      PCH_SPI2_PROTOCOL   *This,
-  IN      UINTN               PchSpiBar0
-  )
-{
-  UINT64        WaitTicks;
-  UINT64        WaitCount;
-  SPI_INSTANCE  *SpiInstance;
-  UINT32        Data32;
-
-  SpiInstance = SPI_INSTANCE_FROM_SPIPROTOCOL (This);
-
-  //
-  // Wait for the SPI cycle to complete.
-  //
-  WaitCount = SPI_WAIT_TIME / SPI_WAIT_PERIOD;
-  for (WaitTicks = 0; WaitTicks < WaitCount; WaitTicks++) {
-    Data32 = MmioRead32 (PchSpiBar0 + R_SPI_MEM_HSFSC);
-    if ((Data32 & B_SPI_MEM_HSFSC_SCIP) == 0) {
-      return TRUE;
-    }
-    PchPmTimerStallRuntimeSafe (SpiInstance->PchAcpiBase, SPI_WAIT_PERIOD);
-  }
-  return FALSE;
-}
-
-/**
   This function sends the programmed SPI command to the device.
 
   @param[in] This                 Pointer to the PCH_SPI2_PROTOCOL instance.
@@ -498,7 +459,6 @@ SendSpiCmd (
   IN OUT UINT8              *Buffer
   )
 {
-  UINT32          FdataSave[16];
   EFI_STATUS      Status;
   UINT32          Index;
   SPI_INSTANCE    *SpiInstance;
@@ -512,11 +472,6 @@ SendSpiCmd (
   UINT32          SmiEnSave;
   UINT16          ABase;
   UINT32          HsfstsCtl;
-  UINT32          FaddrSave;
-  UINT32          HsfscSave;
-  BOOLEAN         HsfscFdoneSave;
-  BOOLEAN         HsfscFcerrSave;
-  BOOLEAN         RestoreState;
 
   //
   // For flash write, there is a requirement that all CPU threads are in SMM
@@ -532,7 +487,6 @@ SendSpiCmd (
   SpiInstance       = SPI_INSTANCE_FROM_SPIPROTOCOL (This);
   SpiBaseAddress    = SpiInstance->PchSpiBase;
   ABase             = SpiInstance->PchAcpiBase;
-  RestoreState      = FALSE;
 
   //
   // Disable SMIs to make sure normal mode flash access is not interrupted by an SMI
@@ -568,25 +522,6 @@ SendSpiCmd (
       (UINT8) (~B_SPI_CFG_BC_SRC),
       (UINT8) (V_SPI_CFG_BC_SRC_PREF_DIS_CACHE_DIS <<  N_SPI_CFG_BC_SRC)
       );
-  }
-
-  //
-  // Save current SPI controller state
-  //
-  if (IsSpiControllerSaveRestoreEnabled ()) {
-    if (!WaitForScipNoClear (This, PchSpiBar0)) {
-      Status = EFI_DEVICE_ERROR;
-      goto SendSpiCmdEnd;
-    }
-    HsfscSave       = MmioRead32 (PchSpiBar0 + R_SPI_MEM_HSFSC);
-    HsfscFdoneSave  = ((HsfscSave & B_SPI_MEM_HSFSC_FDONE) != 0) ? TRUE : FALSE;
-    HsfscFcerrSave  = ((HsfscSave & B_SPI_MEM_HSFSC_FCERR) != 0) ? TRUE : FALSE;
-    HsfscSave      &= B_SPI_MEM_HSFSC_SAVE_MASK;
-    FaddrSave       = MmioRead32 (PchSpiBar0 + R_SPI_MEM_FADDR);
-    for (Index = 0; Index < 64; Index += sizeof (UINT32)) {
-      FdataSave[Index >> 2] = MmioRead32 (PchSpiBar0 + R_SPI_MEM_FDATA00 + Index);
-    }
-    RestoreState = TRUE;
   }
 
   //

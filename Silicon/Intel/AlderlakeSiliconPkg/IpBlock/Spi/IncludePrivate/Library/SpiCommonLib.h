@@ -144,17 +144,6 @@ IsSpiFlashWriteGranted (
   );
 
 /**
-  Check if a save and restore of the SPI controller state is necessary
-
-  @retval TRUE    It's necessary to save and restore SPI controller state
-  @retval FALSE   It's not necessary to save and restore SPI controller state
-**/
-BOOLEAN
-IsSpiControllerSaveRestoreEnabled (
-  VOID
-  );
-
-/**
   Read data from the flash part.
 
   @param[in] This                 Pointer to the PCH_SPI2_PROTOCOL instance.
