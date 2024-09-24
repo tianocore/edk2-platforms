@@ -39,7 +39,6 @@ Spi.c
 [Protocols]
 gPchSmmSpi2ProtocolGuid                ## PRODUCES
 gEfiSmmCpuProtocolGuid                ## CONSUMES
-gEdkiiSmmExitBootServicesProtocolGuid ## CONSUMES
 
 
 [Depex]
