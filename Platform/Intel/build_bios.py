@@ -924,9 +924,15 @@ def get_config():
         :returns: The config defined in the the Build.cfg file
         :rtype: Dictionary
     """
+    path = 'build.cfg'
+    if not os.path.isfile(path):
+        path = os.path.dirname(__file__)
+        path = os.path.join(path, 'build.cfg')
+        if not os.path.isfile(path):
+            raise IOError("Config file {} not found".format())
     config_file = configparser.RawConfigParser()
     config_file.optionxform = str
-    config_file.read('build.cfg')
+    config_file.read(path)
     config_dictionary = {}
     for section in config_file.sections():
         dictionary = dict(config_file.items(section))
@@ -949,6 +955,11 @@ def get_platform_config(platform_name, config_data):
 
     platform_data = config_data.get("PLATFORMS")
     path = platform_data.get(platform_name)
+    if not os.path.isfile(path):
+        path = os.path.dirname(__file__)
+        path = os.path.join(path, platform_data.get(platform_name))
+        if not os.path.isfile(path):
+            raise IOError("Config file {} not found".format())
     config_file = configparser.RawConfigParser()
     config_file.optionxform = str
     config_file.read(path)
