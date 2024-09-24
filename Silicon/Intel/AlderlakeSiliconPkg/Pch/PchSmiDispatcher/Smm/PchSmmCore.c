@@ -690,7 +690,6 @@ PchSmmCoreDispatcher (
 
   BOOLEAN             ContextsMatch;
   BOOLEAN             EosSet;
-  BOOLEAN             SxChildWasDispatched;
 
   DATABASE_RECORD     *RecordInDb;
   LIST_ENTRY          *LinkInDb;
@@ -718,7 +717,6 @@ PchSmmCoreDispatcher (
   EscapeCount           = 3;
   ContextsMatch         = FALSE;
   EosSet                = FALSE;
-  SxChildWasDispatched  = FALSE;
   Status                = EFI_SUCCESS;
 
   //
@@ -769,13 +767,6 @@ PchSmmCoreDispatcher (
             EosSet = PchSmmSetAndCheckEos ();
           }
         } else {
-          //
-          // We found a source. If this is a sleep type, we have to go to
-          // appropriate sleep state anyway.No matter there is sleep child or not
-          //
-          if (RecordInDb->ProtocolType == SxType) {
-            SxChildWasDispatched = TRUE;
-          }
           //
           // "cache" the source description and don't query I/O anymore
           //
@@ -855,9 +846,6 @@ PchSmmCoreDispatcher (
                     PERF_START_EX (NULL, "SmmFunction", NULL, AsmReadTsc (), RecordToExhaust->ProtocolType);
                     RecordToExhaust->Callback ((EFI_HANDLE) & RecordToExhaust->Link, &Context, CommBuffer, &CommBufferSize);
                     PERF_END_EX (NULL, "SmmFunction", NULL, AsmReadTsc (), RecordToExhaust->ProtocolType);
-                    if (RecordToExhaust->ProtocolType == SxType) {
-                      SxChildWasDispatched = TRUE;
-                    }
                   } else {
                     ASSERT (FALSE);
                   }

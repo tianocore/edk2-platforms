@@ -19,8 +19,6 @@
 #include <IndustryStandard/Pci22.h>
 #include <Register/IgdRegs.h>
 
-
-STATIC CONST CHAR8 mAdlCpuFamilyString[] = "AlderLake";
 typedef struct {
   UINT32  CPUID;
   UINT8   CpuSku;

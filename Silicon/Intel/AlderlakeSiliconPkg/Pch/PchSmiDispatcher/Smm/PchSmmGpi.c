@@ -171,7 +171,6 @@ PchGpiSmiUnRegister (
   UINT32          GpiHostSwOwnRegAddress;
   UINT32          GpiSmiStsRegAddress;
   UINT32          Data32Or;
-  UINT32          Data32And;
   BOOLEAN         DisableGpiSmiSource;
 
 
@@ -232,7 +231,6 @@ PchGpiSmiUnRegister (
       );
 
     Data32Or = 1u << GpiSmiBitOffset;
-    Data32And = 0xFFFFFFFF;
     MmioOr32 (GpiHostSwOwnRegAddress, Data32Or);
   }
 
