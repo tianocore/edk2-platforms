@@ -297,7 +297,7 @@ gBoardModuleTokenSpaceGuid.PcdDisableVpdGpioTable|FALSE|BOOLEAN|0x50000015
   <Packages>
     MdePkg/MdePkg.dec
     AlderlakeSiliconPkg/SiPkg.dec
-    AlderLakeOpenBoardPkg/OpenBoardPkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
 }
 [PcdsDynamic, PcdsDynamicEx]
 
