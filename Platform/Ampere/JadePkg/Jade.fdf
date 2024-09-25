@@ -396,6 +396,11 @@ APRIORI DXE {
       SECTION UI = "Pkcs7TestRoot"
       }
 
+  #
+  # System Firmware Update
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
 [FV.SystemFirmwareDescriptor]
 FvAlignment        = 8
 ERASE_POLARITY     = 1

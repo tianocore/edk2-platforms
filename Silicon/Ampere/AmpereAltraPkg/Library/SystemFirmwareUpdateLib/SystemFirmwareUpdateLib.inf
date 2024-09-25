@@ -1,0 +1,33 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                   = 0x0001001B
+  BASE_NAME                     = SystemFirmwareUpdateLib
+  FILE_GUID                     = EE9C136C-A9C1-454B-90E4-E57FA9D37189
+  MODULE_TYPE                   = BASE
+  VERSION_STRING                = 0.1
+  LIBRARY_CLASS                 = FirmwareUpdateLib
+
+[Sources.common]
+  SystemFirmwareUpdateLib.c
+  SystemFirmwareUpdateLibCommon.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  MmCommunicationLib
+
+[Guids]
+  gFwUpdateMmGuid
