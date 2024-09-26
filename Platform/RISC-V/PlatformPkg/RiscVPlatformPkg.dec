@@ -84,6 +84,25 @@
 
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdDeviceTreeAddress|0|UINT32|0x00001106
 
+  #
+  # PCI configuration info
+  #
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigBase|0x0|UINT64|0x00001200
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigSize|0x0|UINT64|0x00001201
+
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoBase|0x0|UINT64|0x00001202
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoSize|0x0|UINT64|0x00001203
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Base|0x0|UINT32|0x00001204
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Size|0x0|UINT32|0x00001205
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Base|0x0|UINT64|0x00001206
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Size|0x0|UINT64|0x00001207
+
+  #
+  # Inclusive range of allowed PCI buses.
+  #
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMin|0x0|UINT32|0x0000120a
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMax|0x0|UINT32|0x0000120b
+
 [PcdsPatchableInModule]
 
 [PcdsFeatureFlag]
