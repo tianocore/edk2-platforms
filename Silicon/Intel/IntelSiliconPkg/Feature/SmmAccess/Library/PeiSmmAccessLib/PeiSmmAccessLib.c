@@ -108,7 +108,7 @@ Close (
 {
   SMM_ACCESS_PRIVATE_DATA *SmmAccess;
   BOOLEAN                 OpenState;
-  UINT8                   Index;
+  UINTN                   Index;
 
   SmmAccess = SMM_ACCESS_PRIVATE_DATA_FROM_THIS (This);
   if (DescriptorIndex >= SmmAccess->NumberRegions) {
