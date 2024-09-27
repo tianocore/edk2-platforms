@@ -190,6 +190,11 @@ APRIORI PEI {
     }
   }
 
+!if $(TPM2_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/ResetSystemPei/ResetSystemPei.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Pei/Tcg2Pei.inf
+!endif
+
 [FV.FvMain]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
@@ -338,6 +343,13 @@ APRIORI DXE {
   INF ShellPkg/Application/Shell/Shell.inf
 !if $(INCLUDE_TFTP_COMMAND) == TRUE
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+!endif
+
+!if $(TPM2_ENABLE) == TRUE
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Dxe/Tcg2Dxe.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2AcpiDxe/Tcg2AcpiDxe.inf
+  INF MdeModulePkg/Universal/SmbiosMeasurementDxe/SmbiosMeasurementDxe.inf
 !endif
 
   #

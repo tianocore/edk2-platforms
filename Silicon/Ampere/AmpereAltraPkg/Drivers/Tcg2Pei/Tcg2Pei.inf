@@ -1,0 +1,88 @@
+## @file
+#  Initializes TPM 2.0 device and measure FVs in PEI phase
+#
+#  Spec Compliance Info:
+#    "TCG PC Client Platform Firmware Profile Specification for TPM Family 2.0 Level 00 Revision 1.03 v51"
+#      along with
+#    "Errata for PC Client Specific Platform Firmware Profile Specification Version 1.0 Revision 1.03"
+#
+#  This module will initialize TPM device, measure reported FVs and BIOS version.
+#
+# Copyright (c) 2015 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017, Microsoft Corporation.  All rights reserved. <BR>
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001E
+  BASE_NAME                      = Tcg2Pei
+  MODULE_UNI_FILE                = Tcg2Pei.uni
+  FILE_GUID                      = 55E3774A-EB45-4FD2-AAAE-B7DEEB504A0E
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PeimEntryMA
+
+[Sources]
+  Tcg2Pei.c
+
+[Packages]
+  CryptoPkg/CryptoPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  SecurityPkg/SecurityPkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseCryptLib
+  BaseMemoryLib
+  DebugLib
+  HashLib
+  HobLib
+  HobLib
+  MemoryAllocationLib
+  PeimEntryPoint
+  PeiServicesLib
+  PeiServicesTablePointerLib
+  PerformanceLib
+  PrintLib
+  ReportStatusCodeLib
+  ResetSystemLib
+  Tpm2CommandLib
+  Tpm2DeviceLib
+
+[Guids]
+  gTcgEventEntryHobGuid                                                ## PRODUCES               ## HOB
+  gTpmErrorHobGuid                                                     ## SOMETIMES_PRODUCES     ## HOB
+  gMeasuredFvHobGuid                                                   ## PRODUCES               ## HOB
+  gTcgEvent2EntryHobGuid                                               ## PRODUCES               ## HOB
+  gEfiTpmDeviceInstanceTpm20DtpmGuid                                   ## SOMETIMES_PRODUCES     ## GUID       # TPM device identifier
+  gEdkiiMigratedFvInfoGuid                                             ## SOMETIMES_CONSUMES     ## HOB
+  gPlatformInfoHobGuid                                                 ## CONSUMES               ## GUID
+
+[Ppis]
+  gEfiPeiFirmwareVolumeInfoPpiGuid                                     ## SOMETIMES_CONSUMES     ## NOTIFY
+  gEfiPeiFirmwareVolumeInfo2PpiGuid                                    ## SOMETIMES_CONSUMES     ## NOTIFY
+  gEfiPeiFirmwareVolumeInfoMeasurementExcludedPpiGuid                  ## SOMETIMES_CONSUMES
+  gPeiTpmInitializedPpiGuid                                            ## SOMETIMES_PRODUCES
+  gPeiTpmInitializationDonePpiGuid                                     ## PRODUCES
+  gEfiEndOfPeiSignalPpiGuid                                            ## SOMETIMES_CONSUMES     ## NOTIFY
+  gEdkiiPeiFirmwareVolumeInfoPrehashedFvPpiGuid                        ## SOMETIMES_CONSUMES
+  gEdkiiTcgPpiGuid                                                     ## PRODUCES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString              ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdTcgPfpMeasurementRevision          ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid                     ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2ScrtmPolicy                     ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdStatusCodeSubClassTpmDevice         ## SOMETIMES_CONSUMES
+  ## SOMETIMES_CONSUMES
+  ## SOMETIMES_PRODUCES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2HashMask
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  Tcg2PeiExtra.uni

@@ -365,6 +365,14 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   /*
+   * TPM CRB address - Attribute has to be Uncached
+   */
+  VirtualMemoryTable[++Index].PhysicalBase = 0x88500000ULL;
+  VirtualMemoryTable[Index].VirtualBase    = 0x88500000ULL;
+  VirtualMemoryTable[Index].Length         = 0x100000ULL;
+  VirtualMemoryTable[Index].Attributes     = DDR_ATTRIBUTES_UNCACHED;
+
+  /*
    *  - DDR memory region
    */
   NumRegion = PlatformHob->DramInfo.NumRegion;

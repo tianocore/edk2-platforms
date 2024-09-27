@@ -185,6 +185,15 @@
 
   ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
 
+!if $(TPM2_ENABLE) == TRUE
+  Tpm2DeviceLib|Silicon/Ampere/AmpereAltraPkg/Library/Tpm2DeviceLibArmCrb/Tpm2DeviceLibArmCrb.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+!else
+  TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
+!endif
+
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   DebugAgentLib|ArmPkg/Library/DebugAgentSymbolsBaseLib/DebugAgentSymbolsBaseLib.inf
@@ -225,6 +234,10 @@
   PeiResourcePublicationLib|MdePkg/Library/PeiResourcePublicationLib/PeiResourcePublicationLib.inf
   ExtractGuidedSectionLib|MdePkg/Library/PeiExtractGuidedSectionLib/PeiExtractGuidedSectionLib.inf
   PeiServicesTablePointerLib|ArmPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
+
+!if $(TPM2_ENABLE) == TRUE
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/PeiCryptLib.inf
+!endif
 
   SmbusLib|MdePkg/Library/PeiSmbusLibSmbus2Ppi/PeiSmbusLibSmbus2Ppi.inf
   IpmiLib|MdeModulePkg/Library/PeiIpmiLibIpmiPpi/PeiIpmiLibIpmiPpi.inf
@@ -537,10 +550,25 @@
   #  2: Connect All Devices
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootDiscoveryPolicy|L"BootDiscoveryPolicy"|gBootDiscoveryPolicyMgrFormsetGuid|0x0|0
 
+!if $(TPM2_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|4|NV,BS
+!endif
+
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|0x0
+
+[PcdsDynamicExDefault.common.DEFAULT]
+!if $(TPM2_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdActiveTpmInterfaceType|0x02
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x5a, 0xf2, 0x6b, 0x28, 0xc3, 0xc2, 0x8c, 0x40, 0xb3, 0xb4, 0x25, 0xe6, 0x75, 0x8b, 0x73, 0x17}
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2InitializationPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2ScrtmPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInitializationPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2HashMask|3
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|3
+!endif
 
 ################################################################################
 #
@@ -585,6 +613,21 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
   ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
 
+!if $(TPM2_ENABLE) == TRUE
+  MdeModulePkg/Universal/ResetSystemPei/ResetSystemPei.inf
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Pei/Tcg2Pei.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterPei.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha512/HashInstanceLibSha512.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSm3/HashInstanceLibSm3.inf
+  }
+
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+!endif
+
   #
   # DXE Phase modules
   #
@@ -613,6 +656,9 @@
     <LibraryClasses>
 !if $(SECURE_BOOT_ENABLE) == TRUE
       NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+!endif
+!if $(TPM2_ENABLE) == TRUE
+      NULL|SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.inf
 !endif
   }
 
@@ -760,6 +806,20 @@
   # Networking stack
   #
 !include NetworkPkg/Network.dsc.inc
+
+!if $(TPM2_ENABLE) == TRUE
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha512/HashInstanceLibSha512.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSm3/HashInstanceLibSm3.inf
+  }
+  Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2AcpiDxe/Tcg2AcpiDxe.inf
+  MdeModulePkg/Universal/SmbiosMeasurementDxe/SmbiosMeasurementDxe.inf
+!endif
 
   #
   # UEFI application (Shell Embedded Boot Loader)
