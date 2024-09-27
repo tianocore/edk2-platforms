@@ -18,6 +18,7 @@
 #include <Library/NVParamLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PeimEntryPoint.h>
+#include <Library/ResetSystemLib.h>
 #include <IndustryStandard/Ipmi.h>
 
 /**
@@ -189,6 +190,14 @@ FlashPeiEntryPoint (
                );
     if (EFI_ERROR (Status)) {
       return Status;
+    }
+
+    Status = NVParamClrAll ();
+    if (!EFI_ERROR (Status)) {
+      //
+      // Trigger reset to use default NVPARAM
+      //
+      ResetCold ();
     }
   } else {
     DEBUG ((DEBUG_INFO, "Identical UUID, copy stored NVRAM to RAM\n"));
