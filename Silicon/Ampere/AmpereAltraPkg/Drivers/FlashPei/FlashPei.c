@@ -177,6 +177,11 @@ FlashPeiEntryPoint (
     //
     // Write new BUILD UUID to the Flash
     //
+    Status = FlashEraseCommand (FWNvRamStartOffset + (NvRamSize * 2), sizeof (BuildUuid));
+    if (EFI_ERROR (Status)) {
+      return Status;
+    }
+
     Status = FlashWriteCommand (
                FWNvRamStartOffset + NvRamSize * 2,
                (UINT8 *)BuildUuid,
