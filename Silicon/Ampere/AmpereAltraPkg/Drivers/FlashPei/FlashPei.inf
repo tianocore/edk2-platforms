@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -29,9 +29,13 @@
   BaseMemoryLib
   DebugLib
   FlashLib
+  IpmiCommandLib
+  MemoryAllocationLib
   MmCommunicationLib
+  NVParamLib
   PcdLib
   PeimEntryPoint
+  ResetSystemLib
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
