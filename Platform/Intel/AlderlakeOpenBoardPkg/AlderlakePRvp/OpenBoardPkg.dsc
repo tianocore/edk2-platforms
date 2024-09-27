@@ -415,6 +415,8 @@ ResetSystemLib|$(PLATFORM_SI_PACKAGE)/Pch/Library/BaseResetSystemLib/BaseResetSy
 #
   ShellPkg/Application/Shell/Shell.inf {
     <LibraryClasses>
+      ShellProtocolInteractivityLib|ShellPkg/Library/UefiShellProtocolInteractivityLib/ShellProtocolInteractivityLib.inf
+      ShellProtocolsLib|ShellPkg/Library/UefiShellProtocolsLib/ShellProtocolsLib.inf
       NULL|ShellPkg/Library/UefiShellLevel2CommandsLib/UefiShellLevel2CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellLevel1CommandsLib/UefiShellLevel1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellLevel3CommandsLib/UefiShellLevel3CommandsLib.inf
