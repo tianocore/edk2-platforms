@@ -84,7 +84,7 @@
   # I2C PCDs for SMBUS
   #
   gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x02|UINT8|0x00000007
-  gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|100000|UINT32|0x00000008 # Hz
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|400000|UINT32|0x00000008 # Hz
 
   #
   # GPIO pin to support BMC ready check
