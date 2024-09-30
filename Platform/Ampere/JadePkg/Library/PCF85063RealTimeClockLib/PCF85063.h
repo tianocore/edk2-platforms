@@ -12,12 +12,13 @@
 #include <Uefi.h>
 
 #include <Library/BaseLib.h>
+#include <Library/PcdLib.h>
 #include <Library/RealTimeClockLib.h>
 
 //
 // I2C bus address that RTC connected to
 //
-#define I2C_RTC_BUS_ADDRESS  1
+#define I2C_RTC_BUS_ADDRESS  (FixedPcdGet8 (PcdRtcBusNumber))
 
 //
 // I2C RTC bus speed

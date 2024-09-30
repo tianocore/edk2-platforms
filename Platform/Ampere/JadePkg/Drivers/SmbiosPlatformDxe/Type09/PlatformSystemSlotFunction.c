@@ -38,9 +38,9 @@
 //
 // CPU I2C Bus for IO Expander
 //
-#define S0_RISER_I2C_BUS  0x02
-#define S0_OCP_I2C_BUS    0x02
-#define S1_RISER_I2C_BUS  0x03
+#define S0_RISER_I2C_BUS  0x06
+#define S0_OCP_I2C_BUS    0x06
+#define S1_RISER_I2C_BUS  0x0F
 
 //
 // I2C address of IO Expander devices

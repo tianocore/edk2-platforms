@@ -35,6 +35,7 @@
   GpioLib
   DxeServicesTableLib
   I2cLib
+  PcdLib
   TimeBaseLib
   TimerLib
   UefiLib
@@ -44,3 +45,6 @@
 
 [Guids]
   gEfiEventVirtualAddressChangeGuid
+
+[Pcd]
+  gAmpereTokenSpaceGuid.PcdRtcBusNumber

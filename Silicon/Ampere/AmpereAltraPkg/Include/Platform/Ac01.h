@@ -65,12 +65,29 @@
 //
 // The maximum number of I2C bus
 //
-#define AC01_I2C_MAX_BUS_NUM  4
+#define AC01_I2C_MAX_BUS_NUM  18
 
 //
 // The base address of DW I2C
 //
-#define AC01_I2C_BASE_ADDRESS_LIST  0x1000026B0000ULL, 0x100002750000ULL, 0x100002770000ULL, 0x500002770000ULL
+#define AC01_I2C_BASE_ADDRESS_LIST  0x100002690000, /* Socket 0 IIC 2 */ \
+                                    0x1000026A0000, /* IIC 3 */ \
+                                    0x1000026B0000, /* IIC 4 */ \
+                                    0x1000026C0000, /* IIC 5 */ \
+                                    0x100002750000, /* IIC 6 */ \
+                                    0x100002760000, /* IIC 7 */ \
+                                    0x100002770000, /* IIC 8 */ \
+                                    0x100002780000, /* IIC 9 */ \
+                                    0x100002790000, /* IIC 10 */ \
+                                    0x500002690000, /* Socket 1 IIC 2 */ \
+                                    0x5000026A0000, /* IIC 3 */ \
+                                    0x5000026B0000, /* IIC 4 */ \
+                                    0x5000026C0000, /* IIC 5 */ \
+                                    0x500002750000, /* IIC 6 */ \
+                                    0x500002760000, /* IIC 7 */ \
+                                    0x500002770000, /* IIC 8 */ \
+                                    0x500002780000, /* IIC 9 */ \
+                                    0x500002790000  /* IIC 10 */
 
 //
 // The Array of Soc Gpio Base Address

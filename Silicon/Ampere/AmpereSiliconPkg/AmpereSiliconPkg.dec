@@ -62,6 +62,11 @@
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"C416535D-970B-41B9-859A-3CAF0FAF198C"|VOID*|0x00000010
 
   #
+  # RTC
+  #
+  gAmpereTokenSpaceGuid.PcdRtcBusNumber|0x4|UINT8|0x00000011
+
+  #
   # SMpro PMpro Pcds
   #
   gAmpereTokenSpaceGuid.PcdSmproDbBaseReg|0x100000540000|UINT64|0x00000001
@@ -78,7 +83,7 @@
   #
   # I2C PCDs for SMBUS
   #
-  gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x00|UINT8|0x00000007
+  gAmpereTokenSpaceGuid.PcdSmbusI2cBusNumber|0x02|UINT8|0x00000007
   gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|100000|UINT32|0x00000008 # Hz
 
   #
