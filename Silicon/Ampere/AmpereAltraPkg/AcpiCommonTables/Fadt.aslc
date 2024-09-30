@@ -14,7 +14,8 @@
 // This macro defines the FADT flag options.
 //
 #define FADT_FLAGS  (EFI_ACPI_6_3_HW_REDUCED_ACPI | \
-                     EFI_ACPI_6_3_PWR_BUTTON)
+                     EFI_ACPI_6_3_PWR_BUTTON | \
+                     EFI_ACPI_6_3_LOW_POWER_S0_IDLE_CAPABLE)
 
 
 EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE Fadt = {
