@@ -2,6 +2,7 @@
 # IPMI Protocol SMM Driver.
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -47,6 +48,7 @@
 
 [FixedPcd]
   gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress   # Used as default KCS I/O base adddress
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiSsifSmbusSlaveAddr
 
 [Depex]
   TRUE

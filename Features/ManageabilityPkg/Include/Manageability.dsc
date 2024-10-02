@@ -36,6 +36,10 @@
   ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 !endif
 
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSmbiosTransferEnable == TRUE
+  ManageabilityPkg/Universal/IpmiSmbiosTransferDxe/IpmiSmbiosTransferDxe.inf
+!endif
+
 [Components.X64]
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilitySmmIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
