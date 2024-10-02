@@ -31,6 +31,231 @@
 //
 #define NUM_PAGES   1
 
+#pragma pack(1)
+typedef struct {
+  UINT32    BufferSize;
+  UINT32    Response;
+} RPI_FW_BUFFER_HEAD;
+
+typedef struct {
+  UINT32    TagId;
+  UINT32    TagSize;
+  UINT32    TagValueSize;
+} RPI_FW_TAG_HEAD;
+
+typedef struct {
+  UINT32                    DeviceId;
+  UINT32                    PowerState;
+} RPI_FW_POWER_STATE_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_POWER_STATE_TAG    TagBody;
+  UINT32                    EndTag;
+} RPI_FW_SET_POWER_STATE_CMD;
+
+typedef struct {
+  UINT32                    Base;
+  UINT32                    Size;
+} RPI_FW_ARM_MEMORY_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_ARM_MEMORY_TAG     TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_ARM_MEMORY_CMD;
+
+typedef struct {
+  UINT8                     MacAddress[6];
+  UINT32                    Padding;
+} RPI_FW_MAC_ADDR_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_MAC_ADDR_TAG       TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_MAC_ADDR_CMD;
+
+typedef struct {
+  UINT64                    Serial;
+} RPI_FW_SERIAL_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_SERIAL_TAG         TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_SERIAL_CMD;
+
+typedef struct {
+  UINT32                    Model;
+} RPI_FW_MODEL_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_MODEL_TAG          TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_MODEL_CMD;
+
+typedef struct {
+  UINT32                    Revision;
+} RPI_FW_MODEL_REVISION_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_MODEL_REVISION_TAG TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_REVISION_CMD;
+
+typedef struct {
+  UINT32 Width;
+  UINT32 Height;
+} RPI_FW_FB_SIZE_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_FB_SIZE_TAG        TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_FB_SIZE_CMD;
+
+typedef struct {
+  UINT32 Depth;
+} RPI_FW_FB_DEPTH_TAG;
+
+typedef struct {
+  UINT32 Pitch;
+} RPI_FW_FB_PITCH_TAG;
+
+typedef struct {
+  UINT32 AlignmentBase;
+  UINT32 Size;
+} RPI_FW_FB_ALLOC_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           FreeFbTag;
+  UINT32                    EndTag;
+} RPI_FW_FREE_FB_CMD;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           PhysSizeTag;
+  RPI_FW_FB_SIZE_TAG        PhysSize;
+  RPI_FW_TAG_HEAD           VirtSizeTag;
+  RPI_FW_FB_SIZE_TAG        VirtSize;
+  RPI_FW_TAG_HEAD           DepthTag;
+  RPI_FW_FB_DEPTH_TAG       Depth;
+  RPI_FW_TAG_HEAD           AllocFbTag;
+  RPI_FW_FB_ALLOC_TAG       AllocFb;
+  RPI_FW_TAG_HEAD           PitchTag;
+  RPI_FW_FB_PITCH_TAG       Pitch;
+  UINT32                    EndTag;
+} RPI_FW_INIT_FB_CMD;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  UINT8                     CommandLine[0];
+} RPI_FW_GET_COMMAND_LINE_CMD;
+
+typedef struct {
+  UINT32                    ClockId;
+  UINT32                    ClockRate;
+  UINT32                    SkipTurbo;
+} RPI_FW_SET_CLOCK_RATE_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_SET_CLOCK_RATE_TAG TagBody;
+  UINT32                    EndTag;
+} RPI_FW_SET_CLOCK_RATE_CMD;
+
+typedef struct {
+  UINT32                    ClockId;
+  UINT32                    ClockRate;
+} RPI_FW_CLOCK_RATE_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_CLOCK_RATE_TAG     TagBody;
+  UINT32                    EndTag;
+} RPI_FW_GET_CLOCK_RATE_CMD;
+
+typedef struct {
+  UINT32                    ClockId;
+  UINT32                    ClockState;
+} RPI_FW_GET_CLOCK_STATE_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD         BufferHead;
+  RPI_FW_TAG_HEAD            TagHead;
+  RPI_FW_GET_CLOCK_STATE_TAG TagBody;
+  UINT32                     EndTag;
+} RPI_FW_SET_CLOCK_STATE_CMD;
+
+typedef struct {
+  UINT32 Pin;
+  UINT32 State;
+} RPI_FW_SET_GPIO_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_SET_GPIO_TAG       TagBody;
+  UINT32                    EndTag;
+} RPI_FW_SET_GPIO_CMD;
+
+typedef struct {
+  UINT32                       DeviceAddress;
+} RPI_FW_NOTIFY_XHCI_RESET_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD           BufferHead;
+  RPI_FW_TAG_HEAD              TagHead;
+  RPI_FW_NOTIFY_XHCI_RESET_TAG TagBody;
+  UINT32                       EndTag;
+} RPI_FW_NOTIFY_XHCI_RESET_CMD;
+
+typedef struct {
+  UINT32                       Gpio;
+  UINT32                       Direction;
+  UINT32                       Polarity;
+  UINT32                       TermEn;
+  UINT32                       TermPullUp;
+} RPI_FW_GPIO_GET_CFG_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD           BufferHead;
+  RPI_FW_TAG_HEAD              TagHead;
+  RPI_FW_GPIO_GET_CFG_TAG      TagBody;
+  UINT32                       EndTag;
+} RPI_FW_NOTIFY_GPIO_GET_CFG_CMD;
+
+typedef struct {
+  UINT32                       Gpio;
+  UINT32                       Direction;
+  UINT32                       Polarity;
+  UINT32                       TermEn;
+  UINT32                       TermPullUp;
+  UINT32                       State;
+} RPI_FW_GPIO_SET_CFG_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD           BufferHead;
+  RPI_FW_TAG_HEAD              TagHead;
+  RPI_FW_GPIO_SET_CFG_TAG      TagBody;
+  UINT32                       EndTag;
+} RPI_FW_NOTIFY_GPIO_SET_CFG_CMD;
+#pragma pack()
+
 STATIC VOID  *mDmaBuffer;
 STATIC VOID  *mDmaBufferMapping;
 STATIC UINTN mDmaBufferBusAddress;
@@ -145,31 +370,6 @@ MailboxTransaction (
   return EFI_SUCCESS;
 }
 
-#pragma pack(1)
-typedef struct {
-  UINT32    BufferSize;
-  UINT32    Response;
-} RPI_FW_BUFFER_HEAD;
-
-typedef struct {
-  UINT32    TagId;
-  UINT32    TagSize;
-  UINT32    TagValueSize;
-} RPI_FW_TAG_HEAD;
-
-typedef struct {
-  UINT32                    DeviceId;
-  UINT32                    PowerState;
-} RPI_FW_POWER_STATE_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_POWER_STATE_TAG    TagBody;
-  UINT32                    EndTag;
-} RPI_FW_SET_POWER_STATE_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -223,20 +423,6 @@ RpiFirmwareSetPowerState (
   return Status;
 }
 
-#pragma pack()
-typedef struct {
-  UINT32                    Base;
-  UINT32                    Size;
-} RPI_FW_ARM_MEMORY_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_ARM_MEMORY_TAG     TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_ARM_MEMORY_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -283,20 +469,6 @@ RpiFirmwareGetArmMemory (
   return EFI_SUCCESS;
 }
 
-#pragma pack()
-typedef struct {
-  UINT8                     MacAddress[6];
-  UINT32                    Padding;
-} RPI_FW_MAC_ADDR_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_MAC_ADDR_TAG       TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_MAC_ADDR_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -339,19 +511,6 @@ RpiFirmwareGetMacAddress (
 
   return EFI_SUCCESS;
 }
-
-#pragma pack()
-typedef struct {
-  UINT64                    Serial;
-} RPI_FW_SERIAL_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_SERIAL_TAG         TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_SERIAL_CMD;
-#pragma pack()
 
 STATIC
 EFI_STATUS
@@ -403,19 +562,6 @@ RpiFirmwareGetSerial (
   return Status;
 }
 
-#pragma pack()
-typedef struct {
-  UINT32                    Model;
-} RPI_FW_MODEL_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_MODEL_TAG          TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_MODEL_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -458,19 +604,6 @@ RpiFirmwareGetModel (
 
   return EFI_SUCCESS;
 }
-
-#pragma pack()
-typedef struct {
-  UINT32                    Revision;
-} RPI_FW_MODEL_REVISION_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_MODEL_REVISION_TAG TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_REVISION_CMD;
-#pragma pack()
 
 STATIC
 EFI_STATUS
@@ -760,54 +893,6 @@ RpiFirmwareGetCpuName (
   }
 }
 
-#pragma pack()
-typedef struct {
-  UINT32 Width;
-  UINT32 Height;
-} RPI_FW_FB_SIZE_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_FB_SIZE_TAG        TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_FB_SIZE_CMD;
-
-typedef struct {
-  UINT32 Depth;
-} RPI_FW_FB_DEPTH_TAG;
-
-typedef struct {
-  UINT32 Pitch;
-} RPI_FW_FB_PITCH_TAG;
-
-typedef struct {
-  UINT32 AlignmentBase;
-  UINT32 Size;
-} RPI_FW_FB_ALLOC_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           FreeFbTag;
-  UINT32                    EndTag;
-} RPI_FW_FREE_FB_CMD;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           PhysSizeTag;
-  RPI_FW_FB_SIZE_TAG        PhysSize;
-  RPI_FW_TAG_HEAD           VirtSizeTag;
-  RPI_FW_FB_SIZE_TAG        VirtSize;
-  RPI_FW_TAG_HEAD           DepthTag;
-  RPI_FW_FB_DEPTH_TAG       Depth;
-  RPI_FW_TAG_HEAD           AllocFbTag;
-  RPI_FW_FB_ALLOC_TAG       AllocFb;
-  RPI_FW_TAG_HEAD           PitchTag;
-  RPI_FW_FB_PITCH_TAG       Pitch;
-  UINT32                    EndTag;
-} RPI_FW_INIT_FB_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -961,14 +1046,6 @@ RpiFirmwareAllocFb (
   return EFI_SUCCESS;
 }
 
-#pragma pack()
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  UINT8                     CommandLine[0];
-} RPI_FW_GET_COMMAND_LINE_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -1040,21 +1117,6 @@ RpiFirmwareGetCommmandLine (
   return EFI_SUCCESS;
 }
 
-#pragma pack()
-typedef struct {
-  UINT32                    ClockId;
-  UINT32                    ClockRate;
-  UINT32                    SkipTurbo;
-} RPI_FW_SET_CLOCK_RATE_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_SET_CLOCK_RATE_TAG TagBody;
-  UINT32                    EndTag;
-} RPI_FW_SET_CLOCK_RATE_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -1102,20 +1164,6 @@ RpiFirmwareSetClockRate (
 
   return EFI_SUCCESS;
 }
-
-#pragma pack()
-typedef struct {
-  UINT32                    ClockId;
-  UINT32                    ClockRate;
-} RPI_FW_CLOCK_RATE_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_CLOCK_RATE_TAG     TagBody;
-  UINT32                    EndTag;
-} RPI_FW_GET_CLOCK_RATE_CMD;
-#pragma pack()
 
 STATIC
 EFI_STATUS
@@ -1208,20 +1256,6 @@ RpiFirmwareGetMinClockRate (
   return RpiFirmwareGetClockRate (ClockId, RPI_MBOX_GET_MIN_CLOCK_RATE, ClockRate);
 }
 
-#pragma pack()
-typedef struct {
-  UINT32                    ClockId;
-  UINT32                    ClockState;
-} RPI_FW_GET_CLOCK_STATE_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD         BufferHead;
-  RPI_FW_TAG_HEAD            TagHead;
-  RPI_FW_GET_CLOCK_STATE_TAG TagBody;
-  UINT32                     EndTag;
-} RPI_FW_SET_CLOCK_STATE_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 RpiFirmwareSetClockState (
@@ -1265,20 +1299,6 @@ RpiFirmwareSetClockState (
 
   return EFI_SUCCESS;
 }
-
-#pragma pack()
-typedef struct {
-  UINT32 Pin;
-  UINT32 State;
-} RPI_FW_SET_GPIO_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD        BufferHead;
-  RPI_FW_TAG_HEAD           TagHead;
-  RPI_FW_SET_GPIO_TAG       TagBody;
-  UINT32                    EndTag;
-} RPI_FW_SET_GPIO_CMD;
-#pragma pack()
 
 STATIC
 VOID
@@ -1333,19 +1353,6 @@ RpiFirmwareSetLed (
   RpiFirmwareSetGpio (RPI_EXP_GPIO_LED, On);
 }
 
-#pragma pack()
-typedef struct {
-  UINT32                       DeviceAddress;
-} RPI_FW_NOTIFY_XHCI_RESET_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD           BufferHead;
-  RPI_FW_TAG_HEAD              TagHead;
-  RPI_FW_NOTIFY_XHCI_RESET_TAG TagBody;
-  UINT32                       EndTag;
-} RPI_FW_NOTIFY_XHCI_RESET_CMD;
-#pragma pack()
-
 STATIC
 EFI_STATUS
 EFIAPI
@@ -1388,24 +1395,6 @@ RpiFirmwareNotifyXhciReset (
 
   return Status;
 }
-
-#pragma pack()
-typedef struct {
-  UINT32                       Gpio;
-  UINT32                       Direction;
-  UINT32                       Polarity;
-  UINT32                       TermEn;
-  UINT32                       TermPullUp;
-} RPI_FW_GPIO_GET_CFG_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD           BufferHead;
-  RPI_FW_TAG_HEAD              TagHead;
-  RPI_FW_GPIO_GET_CFG_TAG      TagBody;
-  UINT32                       EndTag;
-} RPI_FW_NOTIFY_GPIO_GET_CFG_CMD;
-#pragma pack()
-
 
 STATIC
 EFI_STATUS
@@ -1451,26 +1440,6 @@ RpiFirmwareNotifyGpioGetCfg (
 
   return Status;
 }
-
-
-#pragma pack()
-typedef struct {
-  UINT32                       Gpio;
-  UINT32                       Direction;
-  UINT32                       Polarity;
-  UINT32                       TermEn;
-  UINT32                       TermPullUp;
-  UINT32                       State;
-} RPI_FW_GPIO_SET_CFG_TAG;
-
-typedef struct {
-  RPI_FW_BUFFER_HEAD           BufferHead;
-  RPI_FW_TAG_HEAD              TagHead;
-  RPI_FW_GPIO_SET_CFG_TAG      TagBody;
-  UINT32                       EndTag;
-} RPI_FW_NOTIFY_GPIO_SET_CFG_CMD;
-#pragma pack()
-
 
 STATIC
 EFI_STATUS
