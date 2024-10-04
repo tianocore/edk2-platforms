@@ -121,6 +121,10 @@
   PlatformCmosAccessLib|BoardModulePkg/Library/PlatformCmosAccessLibNull/PlatformCmosAccessLibNull.inf
   CmosAccessLib|BoardModulePkg/Library/CmosAccessLib/CmosAccessLib.inf
 
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE && gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmProfileEnable == TRUE
+  BaseMemoryLib|MdePkg/Library/BaseMemoryLibSse2/BaseMemoryLibSse2.inf
+!endif
+
 [LibraryClasses.common.SEC]
   #######################################
   # Edk2 Packages
