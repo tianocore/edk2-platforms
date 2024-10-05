@@ -61,6 +61,7 @@
   DEFINE NETWORK_HTTP_BOOT_ENABLE            = TRUE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = FALSE
+  DEFINE REDFISH_ENABLE                      = TRUE
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -87,6 +88,14 @@
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
+
+  #
+  # EFI Redfish drivers
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  RedfishContentCodingLib|RedfishPkg/Library/RedfishContentCodingLibNull/RedfishContentCodingLibNull.inf
+  RedfishPlatformHostInterfaceLib|RedfishPkg/Library/PlatformHostInterfaceBmcUsbNicLib/PlatformHostInterfaceBmcUsbNicLib.inf
+!endif
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   #
@@ -268,3 +277,12 @@
   # System Firmware Update
   #
   Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
+  #
+  # Redfish
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  MdeModulePkg/Bus/Usb/UsbNetwork/NetworkCommon/NetworkCommon.inf
+  MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
+!include RedfishPkg/Redfish.dsc.inc
+!endif
