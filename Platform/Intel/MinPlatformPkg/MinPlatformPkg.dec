@@ -268,6 +268,9 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUBase|0x00000000|UINT32|0x2000002A
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize|0x00000000|UINT32|0x2000002B
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset|0x00000000|UINT32|0x2000002C
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspIBase|0x00000000|UINT32|0x20000036
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspISize|0x00000000|UINT32|0x20000037
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspIOffset|0x00000000|UINT32|0x20000038
 
   # GUID of Shell file to be loaded, default value is gUefiShellFileGuid define in ShellPkg.dec
   gMinPlatformPkgTokenSpaceGuid.PcdShellFile|{GUID({0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}})}|VOID*|0x20000230
