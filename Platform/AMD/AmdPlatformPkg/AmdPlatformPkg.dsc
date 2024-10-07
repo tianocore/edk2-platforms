@@ -75,6 +75,7 @@
   SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
 
 [Components]
+  AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFacsLib/AcpiFacsLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFadtLib/AcpiFadtLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiHpetLib/AcpiHpetLib.inf
