@@ -76,7 +76,7 @@ AddIortTable (
     SBSAQEMU_ACPI_HEADER (
       EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
       SBSA_IO_REMAPPING_STRUCTURE,
-      EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00
+      EFI_ACPI_IO_REMAPPING_TABLE_REVISION_06
       ),
     3,
     sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE),        // NodeOffset
@@ -89,8 +89,8 @@ AddIortTable (
       {
         EFI_ACPI_IORT_TYPE_SMMUv3,
         sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE),
-        2,                                                               // Revision
-        0,                                                               // Reserved
+        5,                                                               // Revision
+        0,                                                               // Identifier
         1,                                                               // NumIdMapping
         OFFSET_OF (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE, SmmuIdMap) // IdReference
       },
@@ -115,24 +115,26 @@ AddIortTable (
     }
   };
 
-  // NOTE(hrw): update to IORT E.e?
   SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE  Rc = {
     {
       {
         EFI_ACPI_IORT_TYPE_ROOT_COMPLEX,                            // Type
         sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE),            // Length
         0,                                                          // Revision
-        0,                                                          // Reserved
+        0,                                                          // Identifier
         1,                                                          // NumIdMappings
         OFFSET_OF (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE, RcIdMap) // IdReference
       },
-      1,                                          // CacheCoherent
+      1,                                          // CacheCoherentAttribute
       0,                                          // AllocationHints
       0,                                          // Reserved
       1,                                          // MemoryAccessFlags
       EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED, // AtsAttribute
       0x0,                                        // PciSegmentNumber
-      // 0,       //MemoryAddressSizeLimit
+      0,                                          // MemoryAddressSize
+      0,                                          // PasidCapabilities
+      { 0 },                                      // Reserved1[1]
+      0,                                          // Flags
     },
     {
       0x0000,                                            // InputBase
