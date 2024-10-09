@@ -518,7 +518,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   #
   # SMBIOS entry point version
   #
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0304
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0307
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
 
   gArmTokenSpaceGuid.PcdSystemBiosRelease|0x0100
