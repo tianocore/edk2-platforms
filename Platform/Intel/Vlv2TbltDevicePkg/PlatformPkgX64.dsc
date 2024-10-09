@@ -1164,6 +1164,8 @@
   FatPkg/EnhancedFatDxe/Fat.inf
   ShellPkg/Application/Shell/Shell.inf {
     <LibraryClasses>
+      ShellProtocolInteractivityLib|ShellPkg/Library/UefiShellProtocolInteractivityLib/ShellProtocolInteractivityLib.inf
+      ShellProtocolsLib|ShellPkg/Library/UefiShellProtocolsLib/ShellProtocolsLib.inf
       ShellCommandLib|ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.inf
       NULL|ShellPkg/Library/UefiShellLevel2CommandsLib/UefiShellLevel2CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellLevel1CommandsLib/UefiShellLevel1CommandsLib.inf
