@@ -129,7 +129,7 @@ AddIortTable (
       1,                                          // CacheCoherent
       0,                                          // AllocationHints
       0,                                          // Reserved
-      0,                                          // MemoryAccessFlags
+      1,                                          // MemoryAccessFlags
       EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED, // AtsAttribute
       0x0,                                        // PciSegmentNumber
       // 0,       //MemoryAddressSizeLimit
