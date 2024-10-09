@@ -1,0 +1,49 @@
+#/** @file
+#  PCI Host Bridge Library instance for Bosc SOC.
+#
+#  Copyright (c) 2024, Bosc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001b
+  BASE_NAME                      = PciHostBridgeLib
+  FILE_GUID                      = 7F418E45-0127-454E-9CBB-F5FCF237E383
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+#
+# The following information is for reference only and not required by the build
+# tools.
+#
+#  VALID_ARCHITECTURES           = RISCV64
+#
+
+[Sources]
+  PciHostBridgeLib.h
+  PciHostBridgeLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+
+[Guids]
+
+[FixedPcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMin
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciBusMax
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciIoSize
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Base
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio32Size
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Base
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciMmio64Size

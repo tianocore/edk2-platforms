@@ -1,0 +1,32 @@
+#/** @file
+#  PCI Segment Library for Bosc NanHuDev platform with Xilinx XDMA RCs.
+#
+#  Copyright (C) 2020, Phytium Technology Co, Ltd. All rights reser
+#  Copyright (c) 2024, Bosc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001b
+  BASE_NAME                      = PciSegmentLib
+  FILE_GUID                      = B0DD53D5-30C6-48CB-849D-BEB935B57D78
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciSegmentLib
+
+[Sources]
+  PciSegmentLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IoLib
+
+[FixedPcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPciConfigBase

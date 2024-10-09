@@ -20,6 +20,7 @@
 [Protocols]
 
 [Guids]
+  gBoscNanHuDdevPlatformPkgTokenSpaceGuid  = { 0x245C5C80, 0x7945, 0x43BE, { 0xB4, 0x01, 0xC9, 0x92, 0x8A, 0x13, 0xDD, 0x0A }}
 
 [PcdsFixedAtBuild]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00001004
