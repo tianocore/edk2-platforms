@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -50,6 +50,7 @@
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000000F
   DEFINE FIRMWARE_VER            = 0.01.001
   DEFINE SECURE_BOOT_ENABLE      = FALSE
+  DEFINE TPM2_ENABLE             = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
   DEFINE PLATFORM_CONFIG_UUID    = 84BC921F-9D4A-4D1D-A1A1-1AE13EDD07E5
 
@@ -60,6 +61,7 @@
   DEFINE NETWORK_HTTP_BOOT_ENABLE            = TRUE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = FALSE
+  DEFINE REDFISH_ENABLE                      = TRUE
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -86,6 +88,14 @@
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
+
+  #
+  # EFI Redfish drivers
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  RedfishContentCodingLib|RedfishPkg/Library/RedfishContentCodingLibNull/RedfishContentCodingLibNull.inf
+  RedfishPlatformHostInterfaceLib|RedfishPkg/Library/PlatformHostInterfaceBmcUsbNicLib/PlatformHostInterfaceBmcUsbNicLib.inf
+!endif
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   #
@@ -195,6 +205,11 @@
 
 [PcdsDynamicDefault.common.DEFAULT]
 
+[PcdsDynamicExDefault.common.DEFAULT]
+  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{0x31, 0xca, 0x8b, 0xf0, 0x2e, 0x54, 0xea, 0x4c, 0x8b, 0x48, 0x8e, 0x54, 0xf9, 0x42, 0x25, 0x94}
+  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0xed, 0x06, 0x1c, 0x43, 0xe2, 0x4f, 0x8f, 0x43, 0x98, 0xa3, 0xa9, 0xb1, 0xfd, 0x92, 0x30, 0x19}
+
 [PcdsPatchableInModule]
   #
   # Console Resolution (HD mode)
@@ -248,3 +263,26 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/AcpiConfigDxe/AcpiConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
   Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
+
+  #
+  # Firmware Capsule Update
+  #
+  Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf
+
+  #
+  # System Firmware Update
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
+  #
+  # Redfish
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  MdeModulePkg/Bus/Usb/UsbNetwork/NetworkCommon/NetworkCommon.inf
+  MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
+!include RedfishPkg/Redfish.dsc.inc
+!endif

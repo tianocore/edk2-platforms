@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -13,8 +13,80 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/FlashLib.h>
+#include <Library/IpmiCommandLib.h>
+#include <Library/MemoryAllocationLib.h>
+#include <Library/NVParamLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PeimEntryPoint.h>
+#include <Library/ResetSystemLib.h>
+#include <IndustryStandard/Ipmi.h>
+
+/**
+  Check if the IPMI clear cmos flag is set or not.
+
+  @retval TRUE    The clear cmos is set.
+  @retval FALSE   The clear cmos is not set.
+
+**/
+STATIC
+BOOLEAN
+IsIpmiClearCmosSet (
+  VOID
+  )
+{
+  EFI_STATUS                              Status;
+  IPMI_GET_BOOT_OPTIONS_REQUEST           BootOptionsRequest;
+  IPMI_GET_BOOT_OPTIONS_RESPONSE          *BootOptionsResponse;
+  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5  *BootOptionsParameterData;
+  IPMI_SET_BOOT_OPTIONS_REQUEST           *SetBootOptionsRequest;
+  IPMI_SET_BOOT_OPTIONS_RESPONSE          SetBootOptionsResponse;
+  BOOLEAN                                 IsClearCmosSet;
+
+  ZeroMem (&BootOptionsRequest, sizeof (IPMI_GET_BOOT_OPTIONS_REQUEST));
+  ZeroMem (&SetBootOptionsResponse, sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE));
+
+  IsClearCmosSet = FALSE;
+
+  BootOptionsResponse = AllocateZeroPool (sizeof (BootOptionsRequest) + sizeof (BootOptionsParameterData));
+  if (BootOptionsResponse == NULL) {
+    return FALSE;
+  }
+
+  BootOptionsRequest.ParameterSelector.Bits.ParameterSelector = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
+
+  Status = IpmiGetSystemBootOptions (&BootOptionsRequest, BootOptionsResponse);
+  if (EFI_ERROR (Status)) {
+    FreePool (BootOptionsResponse);
+    return FALSE;
+  }
+
+  BootOptionsParameterData = (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5 *)BootOptionsResponse->ParameterData;
+  if (BootOptionsParameterData->Data2.Bits.CmosClear != 0) {
+    IsClearCmosSet = TRUE;
+  }
+
+  SetBootOptionsRequest = AllocateZeroPool (sizeof (SetBootOptionsRequest) + sizeof (BootOptionsParameterData));
+  if (EFI_ERROR (Status)) {
+    FreePool (BootOptionsResponse);
+    return FALSE;
+  }
+
+  SetBootOptionsRequest->ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
+  SetBootOptionsRequest->ParameterValid.Bits.MarkParameterInvalid = 0x0;
+
+  BootOptionsParameterData->Data2.Bits.CmosClear = 0;
+  CopyMem (&SetBootOptionsRequest->ParameterData, BootOptionsParameterData, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
+
+  Status = IpmiSetSystemBootOptions (SetBootOptionsRequest, &SetBootOptionsResponse);
+  if (EFI_ERROR (Status)) {
+    IsClearCmosSet = FALSE;
+  }
+
+  FreePool (BootOptionsResponse);
+  FreePool (SetBootOptionsRequest);
+
+  return IsClearCmosSet;
+}
 
 /**
   Entry point function for the PEIM
@@ -39,6 +111,7 @@ FlashPeiEntryPoint (
   UINT32      FWNvRamSize;
   UINTN       NvRamAddress;
   UINT32      NvRamSize;
+  BOOLEAN     ClearUserConfig;
 
   CopyMem ((VOID *)BuildUuid, PcdGetPtr (PcdPlatformConfigUuid), sizeof (BuildUuid));
 
@@ -80,9 +153,14 @@ FlashPeiEntryPoint (
     return Status;
   }
 
+  ClearUserConfig = IsIpmiClearCmosSet ();
+
   if (CompareMem ((VOID *)StoredUuid, (VOID *)BuildUuid, sizeof (BuildUuid)) != 0) {
     DEBUG ((DEBUG_INFO, "BUILD UUID Changed, Update Storage with NVRAM FV\n"));
+    ClearUserConfig = TRUE;
+  }
 
+  if (ClearUserConfig) {
     Status = FlashEraseCommand (FWNvRamStartOffset, NvRamSize * 2 + sizeof (BuildUuid));
     if (EFI_ERROR (Status)) {
       return Status;
@@ -100,6 +178,11 @@ FlashPeiEntryPoint (
     //
     // Write new BUILD UUID to the Flash
     //
+    Status = FlashEraseCommand (FWNvRamStartOffset + (NvRamSize * 2), sizeof (BuildUuid));
+    if (EFI_ERROR (Status)) {
+      return Status;
+    }
+
     Status = FlashWriteCommand (
                FWNvRamStartOffset + NvRamSize * 2,
                (UINT8 *)BuildUuid,
@@ -107,6 +190,14 @@ FlashPeiEntryPoint (
                );
     if (EFI_ERROR (Status)) {
       return Status;
+    }
+
+    Status = NVParamClrAll ();
+    if (!EFI_ERROR (Status)) {
+      //
+      // Trigger reset to use default NVPARAM
+      //
+      ResetCold ();
     }
   } else {
     DEBUG ((DEBUG_INFO, "Identical UUID, copy stored NVRAM to RAM\n"));

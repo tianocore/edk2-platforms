@@ -1,0 +1,38 @@
+## @file
+#  Platform flash device access library.
+#
+#  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PlatformFlashAccessLib
+  FILE_GUID                      = C2821AC7-331A-48FC-90C2-6660ED40EB25
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformFlashAccessLib|DXE_DRIVER
+
+[Sources]
+  PlatformFlashAccessLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  SignedCapsulePkg/SignedCapsulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiMmCommunication2ProtocolGuid
+  gEfiMmCommunicationProtocolGuid
+
+[Depex]
+  gEfiMmCommunication2ProtocolGuid OR
+  gEfiMmCommunicationProtocolGuid

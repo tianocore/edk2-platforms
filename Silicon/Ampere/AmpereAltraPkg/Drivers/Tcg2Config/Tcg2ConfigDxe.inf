@@ -1,0 +1,83 @@
+## @file
+#  TPM device configuration for TPM 2.0
+#
+#  By this module, user may select TPM device, clear TPM state, etc.
+#
+# Copyright (c) 2015 - 2018, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = Tcg2ConfigDxe
+  MODULE_UNI_FILE                = Tcg2ConfigDxe.uni
+  FILE_GUID                      = 92E087AE-6834-4E13-8734-D917E119DF5A
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Tcg2ConfigDriverEntryPoint
+
+[Sources]
+  Tcg2Config.vfr
+  Tcg2ConfigDriver.c
+  Tcg2ConfigImpl.c
+  Tcg2ConfigImpl.h
+  Tcg2ConfigNvData.h
+  Tcg2ConfigStrings.uni
+  Tcg2Internal.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  SecurityPkg/SecurityPkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  HobLib
+  IoLib
+  MailboxInterfaceLib
+  MemoryAllocationLib
+  PcdLib
+  PrintLib
+  Tpm2CommandLib
+  Tpm2DeviceLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiHiiServicesLib
+  UefiLib
+  UefiRuntimeServicesTableLib
+
+[Guids]
+  ## PRODUCES           ## HII
+  ## SOMETIMES_PRODUCES ## Variable:L"TCG2_CONFIGURATION"
+  ## SOMETIMES_CONSUMES ## Variable:L"TCG2_CONFIGURATION"
+  gTcg2ConfigFormSetGuid
+  gPlatformInfoHobGuid
+
+[Protocols]
+  gEfiHiiConfigAccessProtocolGuid               ## PRODUCES
+  gEfiDevicePathProtocolGuid                    ## PRODUCES
+  gEfiTcg2ProtocolGuid                          ## CONSUMES
+
+[Pcd]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid            ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap    ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress             ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcgPhysicalPresenceInterfaceVer  ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev           ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdActiveTpmInterfaceType     ## CONSUMES
+
+[Depex]
+  gEfiTcg2ProtocolGuid              AND
+  gEfiHiiConfigRoutingProtocolGuid  AND
+  gEfiHiiDatabaseProtocolGuid       AND
+  gEfiVariableArchProtocolGuid      AND
+  gEfiVariableWriteArchProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  Tcg2ConfigDxeExtra.uni

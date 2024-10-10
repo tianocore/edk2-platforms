@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -76,9 +76,9 @@ DATA = {
   # Signature "_FVH"       # Attributes
   0x5f, 0x46, 0x56, 0x48, 0xff, 0xfe, 0x04, 0x00,
   # HeaderLength # CheckSum # ExtHeaderOffset #Reserved #Revision
-  0x48, 0x00, 0x2D, 0x09, 0x00, 0x00, 0x00, 0x02,
-  # Blockmap[0]: 0x2 Blocks * 0x40000 Bytes / Block
-  0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00,
+  0x48, 0x00, 0x2A, 0x09, 0x00, 0x00, 0x00, 0x02,
+  # Blockmap[0]: 0x8 Blocks * 0x10000 Bytes / Block
+  0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
   # Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
@@ -182,11 +182,18 @@ APRIORI PEI {
 
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
+  INF RuleOverride = FMP_IMAGE_DESC Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
       SECTION FV_IMAGE = FVMAIN
     }
   }
+
+!if $(TPM2_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/ResetSystemPei/ResetSystemPei.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Pei/Tcg2Pei.inf
+!endif
 
 [FV.FvMain]
 FvAlignment        = 16
@@ -338,6 +345,13 @@ APRIORI DXE {
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 !endif
 
+!if $(TPM2_ENABLE) == TRUE
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Dxe/Tcg2Dxe.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/Tcg2AcpiDxe/Tcg2AcpiDxe.inf
+  INF MdeModulePkg/Universal/SmbiosMeasurementDxe/SmbiosMeasurementDxe.inf
+!endif
+
   #
   # Bds
   #
@@ -382,5 +396,70 @@ APRIORI DXE {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
   INF Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
   INF EmbeddedPkg/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf
+
+  #
+  # Firmware Capsule Update
+  #
+  INF  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+
+  FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
+      SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
+      SECTION UI = "Pkcs7TestRoot"
+      }
+
+  #
+  # System Firmware Update
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
+  #
+  # Redfish
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  INF MdeModulePkg/Bus/Usb/UsbNetwork/NetworkCommon/NetworkCommon.inf
+  INF MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
+!include RedfishPkg/Redfish.fdf.inc
+!endif
+
+[FV.SystemFirmwareDescriptor]
+FvAlignment        = 8
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF RuleOverride = FMP_IMAGE_DESC Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+
+[FV.CapsuleDispatchFv]
+FvAlignment        = 8
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc

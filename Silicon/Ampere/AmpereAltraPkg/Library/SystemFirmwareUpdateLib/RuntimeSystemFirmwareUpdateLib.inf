@@ -1,0 +1,39 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                   = 0x0001001B
+  BASE_NAME                     = RuntimeSystemFirmwareUpdateLib
+  FILE_GUID                     = 10E1E09F-CCBB-41A1-81F3-ABC077DEB295
+  MODULE_TYPE                   = DXE_RUNTIME_DRIVER
+  VERSION_STRING                = 0.1
+  LIBRARY_CLASS                 = FirmwareUpdateLib
+  CONSTRUCTOR                   = FirmwareUpdateConstructor
+
+[Sources.common]
+  RuntimeSystemFirmwareUpdateLib.c
+  SystemFirmwareUpdateLibCommon.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+
+[Guids]
+  gFwUpdateMmGuid
+
+[Protocols]
+  gEfiMmCommunication2ProtocolGuid
+
+[Depex]
+  TRUE

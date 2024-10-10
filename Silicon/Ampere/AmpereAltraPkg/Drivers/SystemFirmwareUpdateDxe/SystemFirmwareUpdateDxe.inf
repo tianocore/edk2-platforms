@@ -1,0 +1,47 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = SystemFirmwareUpdateDxe
+  FILE_GUID                      = 1151E10C-76B9-4A22-83DC-660A5FD1E9A6
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SystemFirmwareUpdateDxeInitialize
+
+[Sources]
+  SystemFirmwareUpdateDxe.h
+  SystemFirmwareUpdateDxe.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseLib
+  FirmwareUpdateLib
+  PrintLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+  UefiRuntimeLib
+
+[Protocols]
+  gEfiMmCommunication2ProtocolGuid        ## CONSUMES
+
+[Guids]
+  gAmpereFWUpgradeGuid
+  gEfiEventVirtualAddressChangeGuid
+
+[Depex]
+  TRUE
