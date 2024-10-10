@@ -19,7 +19,8 @@
 typedef enum {
   InstanceTypeVariable,
   InstanceTypeFwu,
-  InstanceTypeUnknown,
+  InstanceTypeTpm,
+  InstanceTypeMax,
 } INSTANCE_TYPE;
 
 //
@@ -167,6 +168,37 @@ IsFirmwareUpdateStorageRegion (
   }
 
   return ContainFwuStorage;
+}
+
+/**
+  Check region is belonged to TPM storage.
+
+  @param [in]   NorFlashRegionBase        Start address of one single region.
+  @param [in]   NorFlashSize              Size of Device.
+
+  @return TRUE                            Firmware update storage region.
+  @return FALSE                           Other region.
+**/
+STATIC
+BOOLEAN
+EFIAPI
+IsTpmStorageRegion (
+  IN UINTN                RegionBaseAddress,
+  IN UINTN                Size
+  )
+{
+  BOOLEAN ContainTpmStorage;
+
+  if (!FixedPcdGetBool (PcdTpmEmuNvMemory) && FixedPcdGet64 (PcdTpmNvMemoryBase) != 0) {
+    ContainTpmStorage =
+      (RegionBaseAddress <= FixedPcdGet64 (PcdTpmNvMemoryBase)) &&
+      (FixedPcdGet64 (PcdTpmNvMemoryBase) + FixedPcdGet64 (PcdTpmNvMemorySize) <=
+       RegionBaseAddress + Size);
+  } else {
+    ContainTpmStorage = FALSE;
+  }
+
+  return ContainTpmStorage;
 }
 
 /**
@@ -320,7 +352,7 @@ NorFlashCreateInstanceType (
 
   ASSERT (NorFlashInstance != NULL);
 
-  if (InstanceType >= InstanceTypeUnknown) {
+  if (InstanceType >= InstanceTypeMax) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -357,12 +389,17 @@ NorFlashCreateInstanceType (
     ProtocolGuid = &gEfiSmmFirmwareVolumeBlockProtocolGuid;
     Interface = &Instance->FvbProtocol;
     NorFlashFvbInitialize (Instance);
-
   } else if (InstanceType == InstanceTypeFwu) {
     /**
      * For firmware update stoarge.
      */
     ProtocolGuid = &gEfiBlockIoProtocolGuid;
+    Interface = &Instance->BlockIoProtocol;
+  } else if (InstanceType == InstanceTypeTpm) {
+    /**
+     * For TPM stoarge.
+     */
+    ProtocolGuid = &gEdkiiTpmBlockIoProtocolGuid;
     Interface = &Instance->BlockIoProtocol;
   }
 
@@ -423,7 +460,7 @@ NorFlashInitialise (
   }
 
   for (Index = 0; Index < mNorFlashDeviceCount; Index++) {
-    InstanceType = InstanceTypeUnknown;
+    InstanceType = InstanceTypeMax;
 
     // Check if this NOR Flash device contain the variable storage region
     if (IsVariableStorageRegion (
@@ -436,9 +473,15 @@ NorFlashInitialise (
                 NorFlashDevices[Index].RegionBaseAddress,
                 NorFlashDevices[Index].Size)) {
       InstanceType = InstanceTypeFwu;
+
+    // Check if this NOR Flash device contain the TPM storage region
+    } else if (IsTpmStorageRegion (
+                NorFlashDevices[Index].RegionBaseAddress,
+                NorFlashDevices[Index].Size)) {
+      InstanceType = InstanceTypeTpm;
     }
 
-    if (InstanceType == InstanceTypeUnknown) {
+    if (InstanceType == InstanceTypeMax) {
       DEBUG ((DEBUG_ERROR, "NorFlashInitialise: Not supported NorFlash[%d]... Skip\n", Index));
       continue;
     }
