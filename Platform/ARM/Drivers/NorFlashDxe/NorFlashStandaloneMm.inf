@@ -50,6 +50,7 @@
 [Protocols]
   gEfiSmmFirmwareVolumeBlockProtocolGuid
   gEfiBlockIoProtocolGuid
+  gEdkiiTpmBlockIoProtocolGuid
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64
@@ -65,6 +66,9 @@
   gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize
   gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase64
   gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize64
+  gPlatformArmTokenSpaceGuid.PcdTpmEmuNvMemory
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemorySize
 
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress
 
