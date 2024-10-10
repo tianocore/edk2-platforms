@@ -31,10 +31,11 @@
   # To allow firmware update using capsule update framwork.
   DEFINE ENABLE_FIRMWARE_UPDATE                  = FALSE
 
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  # Enable TPM2 service
+  DEFINE ENABLE_TPM              = FALSE
+
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE || $(ENABLE_TPM) == TRUE
   DEFINE ENABLE_STMM             = TRUE
-!else
-  DEFINE ENABLE_STMM             = FALSE
 !endif
 
 !ifndef ARM_FVP_RUN_NORFLASH
@@ -43,7 +44,6 @@
   DEFINE EDK2_SKIP_PEICORE=FALSE
 !endif
 
-  DT_SUPPORT                     = FALSE
 
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE && $(ENABLE_UEFI_SECURE_VARIABLE) == FALSE
   !error "ENABLE_UEFI_SECURE_VARIABLE should be on when ENABLE_FIRMWARE_UPDATE is on."
@@ -83,11 +83,23 @@
 
   SmbiosSmcLib|DynamicTablesPkg/Library/Smbios/Arm/SmbiosSmcLib/SmbiosSmcLib.inf
 
+!if $(ENABLE_TPM) == TRUE
+  HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+  Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterDxe.inf
+  TpmCommLib|SecurityPkg/Library/TpmCommLib/TpmCommLib.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+!endif
+
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   ArmPlatformSysConfigLib|Platform/ARM/VExpressPkg/Library/ArmVExpressSysConfigRuntimeLib/ArmVExpressSysConfigRuntimeLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
+
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
 
   PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
@@ -99,6 +111,9 @@
   GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/RTSM
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   GCC:*_*_*_CC_FLAGS = -DENABLE_UEFI_SECURE_VARIABLE
+!endif
+!if $(ENABLE_TPM) == TRUE
+  GCC:*_*_*_CC_FLAGS = -DENABLE_TPM
 !endif
 
 ################################################################################
@@ -252,10 +267,29 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
+!if $(ENABLE_TPM) == TRUE
+  #
+  # Normal pseudo crbs which locality from 0 to 3 are allocated
+  # at the start of System Memory.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13fff
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+  gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc|FALSE
+  gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdGenTpm2DeviceTable|TRUE
+!endif
+
 [PcdsDynamicDefault.common]
   # ARM Generic Watchdog Interrupt number for GIC pre-v5
   # This will be overwritten when GICv5 is in use
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|59
+
+[PcdsDynamicExDefault.common.DEFAULT]
+  #
+  # TPM2 Device Instance for Tpm2DeviceRouterLib
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{GUID("17b862a4-1806-4faf-86b3-089a58353861")}|VOID*|0x10
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|0x00000006
 
 ################################################################################
 #
@@ -316,12 +350,21 @@
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(SECURE_BOOT_ENABLE) == TRUE || $(ENABLE_TPM) == TRUE
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
     <LibraryClasses>
+      !if $(SECURE_BOOT_ENABLE) == TRUE
       NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+      !endif
+      !if $(ENABLE_TPM) == TRUE
+      NULL|SecurityPkg/Library/DxeImageAuthenticationStatusLib/DxeImageAuthenticationStatusLib.inf
+      NULL|SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.inf
+      !endif
   }
+
+  !if $(SECURE_BOOT_ENABLE) == TRUE
   SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
+  !endif
 !else
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
 !endif
@@ -473,4 +516,18 @@
     <LibraryClasses>
       NULL|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
   }
+!endif
+
+  #
+  # Trust Platform Module
+  #
+!if $(ENABLE_TPM) == TRUE
+  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
+  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
 !endif
