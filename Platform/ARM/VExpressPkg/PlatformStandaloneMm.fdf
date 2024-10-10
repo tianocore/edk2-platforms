@@ -81,6 +81,10 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   INF Platform/ARM/Drivers/FwuSmm/FwuSmm.inf
 !endif
 
+!if $(ENABLE_TPM) == TRUE
+  INF Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf
+!endif
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
