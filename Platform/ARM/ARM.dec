@@ -56,3 +56,7 @@
 
   gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0x00|UINT64|0x0000000d
   gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbSize|0x1000|UINT64|0x0000000e
+
+[PcdsPatchableInModule.common]
+  # An unique value of fTPM.
+  gPlatformArmTokenSpaceGuid.PcdTpmUniqueValue|0x00|UINT64|0x0000000f
