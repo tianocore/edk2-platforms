@@ -1,0 +1,56 @@
+## @file
+#
+# Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = FtpmSmm
+  FILE_GUID                      = 169ce49e-2257-11ef-ba88-17e102c1214a
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  ENTRY_POINT                    = FtpmDriverEntryPoint
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = ARM AARCH64
+#
+
+[Sources]
+  FtpmSmm.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+  SecurityPkg/SecurityPkg.dec
+  TcgTpmPkg/TcgTpmPkg.dec
+  Platform/ARM/ARM.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  StandaloneMmDriverEntryPoint
+  TpmLib
+  PlatformTpmLib
+  HobLib
+
+[Guids]
+  gEfiStandaloneMmNonSecureBufferGuid
+  gTpm2ServiceFfaGuid
+  gEdkiiTpmEventLogDescHobGuid
+
+[FixedPcd]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase
+
+[Depex]
+  TRUE
