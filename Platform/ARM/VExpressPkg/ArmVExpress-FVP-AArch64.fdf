@@ -230,6 +230,10 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   !include Platform/ARM/Features/Fwu/FmpSystemFipImage.fdf.inc
 !endif
 
+!if $(ENABLE_TPM) == TRUE
+  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+!endif
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
