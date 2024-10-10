@@ -19,6 +19,9 @@
   # LzmaF86
   DEFINE COMPRESSION_TOOL_GUID   = D42AE6BD-1352-4bfb-909A-CA72A6EAE889
 
+  # TPM
+  DEFINE ENABLE_TPM = FALSE
+
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this Platform.
@@ -67,10 +70,13 @@
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
 
-  # Secure Variable Service
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+!if $(ENABLE_TPM) == TRUE || $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   # NOR flash identification support
   NorFlashInfoLib|EmbeddedPkg/Library/NorFlashInfoLib/NorFlashInfoLib.inf
+!endif
+
+  # Secure Variable Service
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
   VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
   AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
@@ -97,6 +103,11 @@
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
 
+!if $(ENABLE_TPM) == TRUE
+  # Tpm Library.
+  PlatformTpmLib|Platform/ARM/VExpressPkg/Library/PlatformTpmArmVExpressLib/PlatformTpmArmVExpressLib.inf
+  TpmLib|TcgTpmPkg/Library/TpmLib/TpmLib.inf
+!endif
 
 ###################################################################################################
 #
@@ -135,8 +146,11 @@
   ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
   StandaloneMmPkg/Library/StandaloneMmPeCoffExtraActionLib/StandaloneMmPeCoffExtraActionLib.inf
 
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+!if $(ENABLE_TPM) == TRUE || $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
+!endif
+
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
     <LibraryClasses>
       DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
@@ -147,4 +161,11 @@
       VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
   }
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
+!endif
+
+!if $(ENABLE_TPM) == TRUE
+  Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf {
+    <LibraryClasses>
+      OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibFull.inf
+  }
 !endif

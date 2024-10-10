@@ -45,7 +45,7 @@
 
 [LibraryClasses]
   # STMM for Variable runtime service.
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_FIRMWARE_UPDATE) == TRUE || $(ENABLE_TPM) == TRUE
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/VExpressPkg/Library/NorFlashArmVExpressLib/NorFlashStMmLib.inf
 !endif
@@ -93,6 +93,38 @@
 !endif
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
+
+!if $(ENABLE_TPM) == TRUE
+  #
+  # fTPM uses a significant amount of stack memory when handling TPM commands,
+  # for example during cryptographic operations.
+  # Therefore, the stack size should be increased when fTPM is enabled.
+  #
+  gArmTokenSpaceGuid.PcdStMmStackSize|0x4000
+
+  #
+  # Normal pseudo crbs which locality from 0 to 3 are allocated
+  # at the start of System Memory.
+  # These regions are reserved by TF-A.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13fff
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+
+  #
+  # Secure pseudo crb is allocated at the end of StandaloneMm's memory area
+  # as much as PcdTpmSecureCrbSize which default is 0x1000.
+  # This region is reserved by TF-A.
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0xffdfe000
+
+  #
+  # The second last 256KB block is used for TPM storage in norflash1.
+  # The end of norflash1 device address is 0x10000000.
+  # Therefore 0x10000000 - 0x400000 (512KB) = 0xFF800000
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase|0x0FF80000
+!endif
 
   #
   # The BFV is not located in the Flash area but is loaded in the RAM
