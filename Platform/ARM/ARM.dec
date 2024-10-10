@@ -24,8 +24,18 @@
   gPlatformArmTokenSpaceGuid  = { 0x7a5e0def, 0xd3c3, 0x44f3, { 0x8d, 0x69, 0x70, 0xfc, 0x8f, 0xd6, 0x4f, 0xdf } }
   gArmBootMonFsFileInfoGuid   = { 0x41e26b9c, 0xada6, 0x45b3, { 0x80, 0x8e, 0x23, 0x57, 0xa3, 0x5b, 0x60, 0xd6 } }
 
+[Protocols]
+  gEdkiiTpmBlockIoProtocolGuid = { 0x46b98886, 0x1f22, 0x11ef, {0x89, 0x3e, 0x47, 0x11, 0xff, 0x02, 0x8e, 0x4b } }
+
 [PcdsFeatureFlag.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashCheckBlockLocked|FALSE|BOOLEAN|0x0000001
 
 [PcdsFixedAtBuild.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress|0x0|UINT32|0x00000002
+
+  # When NV storage uses memory based one.
+  gPlatformArmTokenSpaceGuid.PcdTpmEmuNvMemory|FALSE|BOOLEAN|0x00000003
+
+  # Nv storage memory base address and size for TPM
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase|0x00|UINT64|0x00000004
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemorySize|0x4000|UINT64|0x00000005
