@@ -164,5 +164,5 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformCache) {
     }
   }
 
-  return Status;
+  return EFI_SUCCESS;
 }
