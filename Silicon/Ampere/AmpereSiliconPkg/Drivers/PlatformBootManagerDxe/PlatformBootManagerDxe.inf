@@ -1,0 +1,41 @@
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PlatformBootManagerDxe
+  FILE_GUID                      = 6D37777E-F9CF-4FFE-8743-6666FB321B05
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformBootManagerInitialize
+
+[Sources]
+  PlatformBootManagerDxe.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PrintLib
+  UefiBootManagerLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gEdkiiPlatformBootManagerProtocolGuid
+  gEfiBlockIoProtocolGuid
+  gEfiSimpleFileSystemProtocolGuid
+  gEfiUsbIoProtocolGuid
+
+[Depex]
+  TRUE
