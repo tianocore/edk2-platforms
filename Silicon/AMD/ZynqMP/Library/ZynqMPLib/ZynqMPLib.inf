@@ -1,0 +1,59 @@
+#  @file
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ZynqMPLib
+  FILE_GUID                      = A9583765-54BA-48CC-9EE6-B3317CD4269A
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/AMD/ZynqMP/ZynqMP.dec
+
+[LibraryClasses]
+  ArmLib
+  DebugLib
+
+[Sources.common]
+  ZynqMPLib.c
+  ZynqMPLibMem.c
+
+[Sources.Arm]
+  Arm/ArmPlatformHelper.S    | GCC
+
+[Sources.AArch64]
+  AArch64/ArmPlatformHelper.S
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdFdBaseAddress
+  gArmTokenSpaceGuid.PcdFdSize
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gZynqMPTokenSpaceGuid.PcdTfaInDram
+  gZynqMPTokenSpaceGuid.PcdTfaMemoryBase
+  gZynqMPTokenSpaceGuid.PcdTfaMemorySize
+  gZynqMPTokenSpaceGuid.PcdEnableOptee
+  gZynqMPTokenSpaceGuid.PcdOpteeMemoryBase
+  gZynqMPTokenSpaceGuid.PcdOpteeMemorySize
+  gZynqMPTokenSpaceGuid.PcdSdhciBase
+  gZynqMPTokenSpaceGuid.PcdSerialRegisterBase
+  gZynqMPTokenSpaceGuid.PcdUseExtraMemory
+  gZynqMPTokenSpaceGuid.PcdExtraMemoryBase
+  gZynqMPTokenSpaceGuid.PcdExtraMemorySize
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
