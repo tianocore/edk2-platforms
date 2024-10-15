@@ -848,3 +848,4 @@
 !endif #$(INCLUDE_TFTP_COMMAND)
 
   EmbeddedPkg/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf
+  Silicon/Ampere/AmpereSiliconPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
