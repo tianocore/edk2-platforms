@@ -125,7 +125,7 @@
   # BDS Libraries
   #
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
-  PlatformBootManagerLib|ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  PlatformBootManagerLib|Silicon/Ampere/AmpereSiliconPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
 
   #
