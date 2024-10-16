@@ -29,6 +29,7 @@
 #include <Protocol/PciIo.h>
 #include <Protocol/PciRootBridgeIo.h>
 #include <Protocol/PlatformBootManager.h>
+#include <Guid/AmpereEventAfterConsole.h>
 #include <Guid/BootDiscoveryPolicy.h>
 #include <Guid/EventGroup.h>
 #include <Guid/NonDiscoverableDevice.h>
@@ -1002,6 +1003,7 @@ PlatformBootManagerAfterConsole (
   UINTN                         PosX;
   UINTN                         PosY;
   EFI_INPUT_KEY                 Key;
+  EFI_EVENT                     AfterConsoleEvent;
 
   FirmwareVerLength = StrLen (PcdGetPtr (PcdFirmwareVersionString));
 
@@ -1062,6 +1064,22 @@ PlatformBootManagerAfterConsole (
   Key.ScanCode    = SCAN_NULL;
   Key.UnicodeChar = L's';
   PlatformRegisterFvBootOption (&gUefiShellFileGuid, L"UEFI Shell", 0, &Key);
+
+  //
+  // Signal After Console event
+  //
+  Status = gBS->CreateEventEx (
+                  EVT_NOTIFY_SIGNAL,
+                  TPL_CALLBACK,
+                  EfiEventEmptyFunction,
+                  NULL,
+                  &gAmpereEventAfterConsoleGuid,
+                  &AfterConsoleEvent
+                  );
+  if (!EFI_ERROR (Status)) {
+    gBS->SignalEvent (AfterConsoleEvent);
+    gBS->CloseEvent (AfterConsoleEvent);
+  }
 }
 
 /**
