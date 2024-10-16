@@ -1,0 +1,44 @@
+
+## @file
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = IpmiBootDxe
+  FILE_GUID                      = 8FFC6750-110D-49F0-872F-B580B77926AB
+  MODULE_TYPE                    = DXE_DRIVER
+  ENTRY_POINT                    = IpmiBootEntry
+
+[Sources]
+  IpmiBootDxe.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DevicePathLib
+  IpmiCommandLib
+  MemoryAllocationLib
+  UefiBootManagerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile
+
+[Guids]
+  gAmpereEventAfterConsoleGuid
+  gAmpereVariableGuid
+  gEfiGlobalVariableGuid
+  gEfiEventReadyToBootGuid
+
+[Depex]
+  TRUE
