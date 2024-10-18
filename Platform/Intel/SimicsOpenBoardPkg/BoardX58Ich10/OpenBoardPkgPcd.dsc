@@ -50,7 +50,6 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
 
   ######################################
   # Platform Configuration
@@ -62,6 +61,8 @@
   # Optional MinPlatformPkg features should be enabled after this
   #
   !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+
+  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
 
   #
   # Commonly used MinPlatform feature configuration logic that maps functionity to stage
