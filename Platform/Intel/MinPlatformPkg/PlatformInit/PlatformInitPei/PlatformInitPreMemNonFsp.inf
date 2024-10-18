@@ -9,8 +9,8 @@
 
 [Defines]
   INF_VERSION                    = 0x00010017
-  BASE_NAME                      = PlatformInitPreMem
-  FILE_GUID                      = EEEE611D-F78F-4FB9-B868-55907F169280
+  BASE_NAME                      = PlatformInitPreMemNonFsp
+  FILE_GUID                      = BEB6F1A6-F6BC-4C34-AB32-F0390A428479
   VERSION_STRING                 = 1.0
   MODULE_TYPE                    = PEIM
   ENTRY_POINT                    = PlatformInitPreMemEntryPoint
@@ -33,14 +33,11 @@
   MinPlatformPkg/MinPlatformPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  IntelSiliconPkg/IntelSiliconPkg.dec
-  IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
 
 [Pcd]
   gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode          ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit          ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit            ## CONSUMES
-  gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection          ## CONSUMES
 
 [FixedPcd]
   gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiAcpiReclaimMemorySize  ## CONSUMES
@@ -51,7 +48,7 @@
 
 [Sources]
   PlatformInitPreMem.c
-  FspSupport.c
+  FspSupportNull.c
 
 [Ppis]
   gEfiPeiMemoryDiscoveredPpiGuid

@@ -47,6 +47,12 @@ GetPlatformMemorySize (
   IN OUT  UINT64                                 *MemorySize
   );
 
+UINT8
+EFIAPI
+FspGetModeSelection (
+  VOID
+);
+
 /**
 
   This function checks the memory range in PEI.
@@ -505,7 +511,7 @@ PlatformInitPreMem (
 
   BuildMemoryTypeInformation ();
 
-  if ((!PcdGetBool (PcdFspWrapperBootMode)) || (PcdGet8 (PcdFspModeSelection) == 0)) {
+  if ((!PcdGetBool (PcdFspWrapperBootMode)) || (FspGetModeSelection() == 0)) {
     //
     // Install memory relating PPIs for EDKII native build and FSP dispatch mode
     //
