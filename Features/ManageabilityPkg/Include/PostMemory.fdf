@@ -3,6 +3,7 @@
 # volume description.
 #
 # Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -17,6 +18,10 @@
 
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmEnable == TRUE
   INF ManageabilityPkg/Universal/PldmProtocol/Dxe/PldmProtocolDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSmbiosTransferEnable == TRUE
+  INF ManageabilityPkg/Universal/IpmiSmbiosTransferDxe/IpmiSmbiosTransferDxe.inf
 !endif
 
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable == TRUE
