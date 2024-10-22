@@ -30,6 +30,9 @@
 [Guids]
   gOptionRomPkgTokenSpaceGuid = { 0x1e43298f, 0x3478, 0x41a7, { 0xb5, 0x77, 0x86, 0x6, 0x46, 0x35, 0xc7, 0x28 } }
 
+  ## GUID for RenesasFirmwarePD720202 firmware image
+  gRenesasFirmwarePD720202ImageId = {0xA059EBC4, 0xD73D, 0x4279, {0x81,0xBF,0xE4,0xA8,0x93,0x08,0xB9,0x23}}
+
 [PcdsFeatureFlag]
   gOptionRomPkgTokenSpaceGuid.PcdSupportScsiPassThru|TRUE|BOOLEAN|0x00010001
   gOptionRomPkgTokenSpaceGuid.PcdSupportExtScsiPassThru|TRUE|BOOLEAN|0x00010002

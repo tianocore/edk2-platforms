@@ -1,0 +1,37 @@
+##  @file
+# Component description file for Reneses PD720202 firmware download driver
+#
+# Copyright (c) 2016 - 2017, Linaro Ltd. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001E
+  BASE_NAME                      = RenesasFirmwarePD720202
+  FILE_GUID                      = 5979ebfe-d53c-4150-a972-568231583969
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeRenesasPD720202Driver
+
+[Sources]
+  RenesasFirmwarePD720202.c
+
+[Packages]
+  Drivers/OptionRomPkg/OptionRomPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DxeServicesLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gEfiPciIoProtocolGuid
+
+[Guids]
+  gRenesasFirmwarePD720202ImageId
