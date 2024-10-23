@@ -1,0 +1,21 @@
+set ARG  [lindex $argv 0]
+set DIR  [lindex $argv 1]
+set FILE [lindex $argv 2]
+
+set timeout -1
+
+spawn scp $DIR/$FILE $::env(BMC_USER)@$::env(BMC_HOST):/tmp
+match_max 100000
+expect "*?assword:*"
+send -- "$::env(BMC_PASS)\r"
+expect eof
+spawn ssh $::env(BMC_USER)@$::env(BMC_HOST)
+expect "*?assword:*"
+send -- "$::env(BMC_PASS)\r"
+expect "root@*~#"
+send -- "ampere_flash_bios.sh $ARG /tmp/$FILE\r"
+expect "root@*~#"
+send -- "rm -fv /tmp/$FILE\r"
+expect "root@*~#"
+send -- "logout\r"
+expect eof
