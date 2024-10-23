@@ -349,7 +349,6 @@ DlGopSendScreenUpdate (
  * @param videoMode
  * @return
  */
-#ifndef MDEPKG_NDEBUG
 STATIC inline UINT16
 CalculateRefreshRate (
     IN CONST struct VideoMode *VideoMode)
@@ -367,7 +366,7 @@ CalculateRefreshRate (
   }
   return Rate10Hz;
 }
-#endif // MDEPKG_NDEBUG
+
 /* ***************************************************************************************************** */
 /* ***************************************************************************************************** */
 /* ******************        START OF FUNCTIONS WHICH IMPLEMENT GOP INTERFACE         ****************** */

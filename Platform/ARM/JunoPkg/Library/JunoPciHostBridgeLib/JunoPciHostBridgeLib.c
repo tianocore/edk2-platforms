@@ -131,12 +131,9 @@ PciHostBridgeFreeRootBridges (
 {
 }
 
-
-#ifndef MDEPKG_NDEBUG
 STATIC CONST CHAR16 mPciHostBridgeLibAcpiAddressSpaceTypeStr[][4] = {
   L"Mem", L"I/O", L"Bus"
 };
-#endif
 
 /**
   Inform the platform that the resource conflict happens.

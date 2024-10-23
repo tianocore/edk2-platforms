@@ -35,7 +35,6 @@ STATIC MV_GPIO_DEVICE_PATH mDevicePathTemplate = {
   }
 };
 
-#if !defined(MDEPKG_NDEBUG)
 /**
 
 Routine Description:
@@ -79,7 +78,6 @@ MvGpioValidate (
 
   return EFI_SUCCESS;
 }
-#endif
 
 /**
 
