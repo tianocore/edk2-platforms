@@ -1,0 +1,58 @@
+#/** @file
+#    OemMiscLib.inf
+#
+#    Copyright (c) 2022, Ampere Computing LLC. All rights reserved.
+#    Copyright (c) 2021, NUVIA Inc. All rights reserved.
+#    Copyright (c) 2018, Hisilicon Limited. All rights reserved.
+#    Copyright (c) 2018, Linaro Limited. All rights reserved.
+#
+#    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = OemMiscLib
+  FILE_GUID                      = f04e0735-286d-406d-81bd-d53a09506138
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = OemMiscLib
+
+[Sources.common]
+  IpmiFruInfo.h
+  IpmiFruInfo.c
+  OemMiscLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  OutOfBandManagement/IpmiFeaturePkg/IpmiFeaturePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  ArmLib
+  AmpereCpuLib
+  DebugLib
+  HobLib
+  IpmiCommandLib
+  IpmiLib
+  UefiLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                     ## CONSUMED
+  gIpmiProtocolGuid                          ## CONSUMED
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+
+[Guids]
+  gCpuConfigFormSetGuid
+  gPlatformInfoHobGuid
+
+[Depex]
+  TRUE

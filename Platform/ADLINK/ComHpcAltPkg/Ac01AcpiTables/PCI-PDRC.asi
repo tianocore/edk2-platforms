@@ -1,0 +1,134 @@
+/** @file
+
+  Copyright (c) 2020, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+  // Motherboard resource consumption for PCIE resource reservation
+  // as upstream discussion "ACPI namespace details for ARM64"
+  // https://lists.linaro.org/archives/list/linaro-acpi@lists.linaro.org/thread/Q4XMW2PPCH2JH2KZHRGX27X7BSF6AY3U/
+  // Also in https://docs.kernel.org/PCI/acpi-info.html
+  Device (PDRC) {
+    Name (_HID, EISAID("PNP0C02"))
+    Name (_UID, 1)
+    Name (PDRS, ResourceTemplate() {
+      QWordMemory (           // PCIE0 (RcA0) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000033FFF0000000,   // AddressMinimum - MIN
+        0x000033FFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE1 (RcA1) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000037FFF0000000,   // AddressMinimum - MIN
+        0x000037FFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE2 (RcA2) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00003BFFF0000000,   // AddressMinimum - MIN
+        0x00003BFFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE3 (RcA3) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00003FFFF0000000,   // AddressMinimum - MIN
+        0x00003FFFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE4 (RcB0) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000023FFF0000000,   // AddressMinimum - MIN
+        0x000023FFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE5 (RcB1) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x000027FFF0000000,   // AddressMinimum - MIN
+        0x000027FFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE6 (RcB2) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00002BFFF0000000,   // AddressMinimum - MIN
+        0x00002BFFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // PCIE7 (RcB3) 256M CFG region for ECAM
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00002FFFF0000000,   // AddressMinimum - MIN
+        0x00002FFFFFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+    })
+
+    // Current Resource Settings
+    Method (_CRS, 0, Serialized) {
+      Return (PDRS)
+    }
+  }

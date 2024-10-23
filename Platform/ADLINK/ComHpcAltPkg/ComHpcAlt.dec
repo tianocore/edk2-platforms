@@ -1,0 +1,23 @@
+## @file  Adlink.dec
+#
+##
+
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = ComHpcAlt
+  PACKAGE_GUID                   = 338A437E-AD8D-48BB-977E-49EAB530039D
+  PACKAGE_VERSION                = 1.08
+
+
+[Includes]
+  Include
+
+[LibraryClasses]
+  ##  @libraryclass
+  ##
+  NVLib|Include/Library/NVLib.h
+
+[Guids]
+  # {338A437E-AD8D-48BB-977E-49EAB530039D}
+  gComHpcAltTokenSpaceGuid = { 0x338a437e, 0xad8d, 0x48bb, { 0x97, 0x7e, 0x49, 0xea, 0xb5, 0x30, 0x3, 0x9d } }

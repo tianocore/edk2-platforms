@@ -1,0 +1,32 @@
+## @file
+#  This is the shell application to enter Firmware setup next boot
+#
+#  Copyright (c) 2020, . All rights reserved.<BR>
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = FwUi
+  FILE_GUID                      = a6f3623b-28a2-4b79-a467-8920ceca368d
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ShellCEntryLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC AARCH64
+#
+
+[Sources]
+  FwUi.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+
+[LibraryClasses]
+  ShellCEntryLib
+  UefiLib
+  UefiRuntimeServicesTableLib

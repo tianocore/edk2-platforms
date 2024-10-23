@@ -1,0 +1,126 @@
+/** @file
+
+  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#include "PlatformInfoHii.h"
+
+formset
+  guid      = PLATFORM_INFO_FORMSET_GUID,
+  title     = STRING_TOKEN(STR_PLATFORM_INFO_FORM),
+  help      = STRING_TOKEN(STR_PLATFORM_INFO_FORM_HELP),
+  classguid = gPlatformManagerFormsetGuid,
+
+  form
+    formid = PLATFORM_INFO_FORM_ID,
+    title  = STRING_TOKEN(STR_PLATFORM_INFO_FORM);
+    subtitle text = STRING_TOKEN(STR_PLATFORM_INFO_FORM_HELP);
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_BOARD),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_BOARD),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_BOARD_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_SCPVER),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SCPVER),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SCPVER_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_SCPBUILD),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SCPBUILD),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SCPBUILD_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_MMC_FIRMWARE_REV_LABEL),
+      text   = STRING_TOKEN(STR_MMC_FIRMWARE_REV_LABEL),
+      text   = STRING_TOKEN(STR_MMC_FIRMWARE_REV_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_LANMCUVER_HELP),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_LANMCUVER),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_LANMCUVER_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_CPUINFO),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_CPUINFO),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_CPUINFO_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_CPUCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_CPUCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_CPUCLK_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_PCPCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_PCPCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_PCPCLK_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_L1ICACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L1ICACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L1ICACHE_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_L1DCACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L1DCACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L1DCACHE_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_L2CACHE_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_SOCCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SOCCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SOCCLK_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_SYSCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SYSCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_SYSCLK_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_PLATFORM_INFO_AHBCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_AHBCLK),
+      text   = STRING_TOKEN(STR_PLATFORM_INFO_AHBCLK_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    label LABEL_UPDATE;
+    // dynamic content here
+    label LABEL_END;
+
+  endform;
+
+endformset;

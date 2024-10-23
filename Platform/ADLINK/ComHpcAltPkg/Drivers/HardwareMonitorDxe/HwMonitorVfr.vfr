@@ -1,0 +1,106 @@
+/** @file
+
+  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#include "HwMonitorHii.h"
+
+formset
+  guid      = HW_MONITOR_FORMSET_GUID,
+  title     = STRING_TOKEN(STR_HARDWARE_MONITOR_FORM),
+  help      = STRING_TOKEN(STR_HARDWARE_MONITOR_FORM_HELP),
+  classguid = gPlatformManagerFormsetGuid,
+
+  form
+    formid = HW_MONITOR_FORM_ID,
+    title  = STRING_TOKEN(STR_HARDWARE_MONITOR_FORM);
+    subtitle text = STRING_TOKEN(STR_HARDWARE_MONITOR_FORM_HELP);
+    subtitle text = STRING_TOKEN(STR_EMPTY_STRING);
+
+    text
+      help   = STRING_TOKEN(STR_CPU_CORE_TEMP),
+      text   = STRING_TOKEN(STR_CPU_CORE_TEMP),
+      text   = STRING_TOKEN(STR_CPU_CORE_TEMP_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_IPMI_P3V3),
+      text   = STRING_TOKEN(STR_IPMI_P3V3),
+      text   = STRING_TOKEN(STR_IPMI_P3V3_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_IPMI_P12V),
+      text   = STRING_TOKEN(STR_IPMI_P12V),
+      text   = STRING_TOKEN(STR_IPMI_P12V_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_IPMI_P5V),
+      text   = STRING_TOKEN(STR_IPMI_P5V),
+      text   = STRING_TOKEN(STR_IPMI_P5V_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P1V5_VDDH),
+      text   = STRING_TOKEN(STR_P1V5_VDDH),
+      text   = STRING_TOKEN(STR_P1V5_VDDH_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P0V75_PCP),
+      text   = STRING_TOKEN(STR_P0V75_PCP),
+      text   = STRING_TOKEN(STR_P0V75_PCP_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P0V9_VDDC_RCA),
+      text   = STRING_TOKEN(STR_P0V9_VDDC_RCA),
+      text   = STRING_TOKEN(STR_P0V9_VDDC_RCA_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P0V75_VDDC_SOC),
+      text   = STRING_TOKEN(STR_P0V75_VDDC_SOC),
+      text   = STRING_TOKEN(STR_P0V75_VDDC_SOC_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P1V2_VDDQ_AB),
+      text   = STRING_TOKEN(STR_P1V2_VDDQ_AB),
+      text   = STRING_TOKEN(STR_P1V2_VDDQ_AB_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P1V2_VDDQ_CD),
+      text   = STRING_TOKEN(STR_P1V2_VDDQ_CD),
+      text   = STRING_TOKEN(STR_P1V2_VDDQ_CD_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    text
+      help   = STRING_TOKEN(STR_P1V8_PCP),
+      text   = STRING_TOKEN(STR_P1V8_PCP),
+      text   = STRING_TOKEN(STR_P1V8_PCP_VALUE),
+      flags  = 0,
+      key    = 0;
+
+    label LABEL_UPDATE;
+    // dynamic content here
+    label LABEL_END;
+
+  endform;
+
+endformset;
