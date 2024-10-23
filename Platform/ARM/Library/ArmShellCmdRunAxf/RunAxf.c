@@ -147,6 +147,7 @@ ShellDynCmdRunAxfHandler (
   ShellStatus = SHELL_SUCCESS;
   FileHandle = NULL;
   FileData = NULL;
+  FileSize = 0;
   InitializeListHead (&LoadList);
 
   // Only install if they are not there yet? First time or every time?
