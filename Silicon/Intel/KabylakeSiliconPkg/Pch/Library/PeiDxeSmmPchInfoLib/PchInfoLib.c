@@ -44,9 +44,7 @@ PchStepping (
   UINT8         RevId;
   UINT16        LpcDeviceId;
   UINTN         LpcBaseAddress;
-#ifndef MDEPKG_NDEBUG
   static CHAR8  *UnsupportedPchMsg = "Unsupported PCH. Supported stepping starting from";
-#endif
 
   if (mPchStepping != PchSteppingMax) {
     return mPchStepping;

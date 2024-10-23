@@ -434,9 +434,7 @@ PchPrintSerialIoConfig (
   )
 {
   UINTN Index;
-#ifndef MDEPKG_NDEBUG
   static CHAR16  DeviceName[11][5] = {L"I2C0",L"I2C1",L"I2C2",L"I2C3",L"I2C4",L"I2C5",L"SPI0",L"SPI1",L"UA00",L"UA01",L"UA02"};
-#endif
 
   DEBUG ((DEBUG_INFO, "------------------ PCH Serial IO Config ------------------\n"));
   DEBUG_CODE_BEGIN ();

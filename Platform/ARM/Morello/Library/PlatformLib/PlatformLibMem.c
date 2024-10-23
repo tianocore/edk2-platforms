@@ -14,7 +14,6 @@
 // The total number of descriptors, including the final "end-of-table" descriptor.
 #define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  12
 
-#if !defined(MDEPKG_NDEBUG)
 STATIC CONST CHAR8 *gTblAttrDesc[] = {
   "UNCACHED_UNBUFFERED          ",
   "NONSECURE_UNCACHED_UNBUFFERED",
@@ -27,7 +26,6 @@ STATIC CONST CHAR8 *gTblAttrDesc[] = {
   "DEVICE                       ",
   "NONSECURE_DEVICE             "
 };
-#endif
 
 #define LOG_MEM(desc) DEBUG ((                                              \
                         DEBUG_ERROR,                                        \
