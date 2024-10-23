@@ -247,7 +247,6 @@ LcdPlatformGetMaxMode (VOID)
   return  mMaxMode;
 }
 
-#if !defined(MDEPKG_NDEBUG)
 /** Probe Clock device ID of the HDLCD clock and current pixel clock frequency.
   NOTE: We will probe information only in DEBUG build.
 
@@ -380,7 +379,6 @@ ProbeHdLcdClock (
 
   return EFI_SUCCESS;
 }
-#endif
 
 /** Set the requested display mode.
 
@@ -426,17 +424,17 @@ LcdPlatformSetMode (
     return Status;
   }
 
-#if !defined(MDEPKG_NDEBUG)
   /* Avoid probing clock device ID in RELEASE build */
+  DEBUG_CODE_BEGIN ();
   Status = ProbeHdLcdClock (ClockProtocol, &ClockId);
   if (EFI_ERROR (Status)) {
     return Status;
   }
 
   ASSERT (ClockId == ARM_JUNO_CSS_CLKID_HDLCD_0);
-#else
+  DEBUG_CODE_END ();
+
   ClockId = ARM_JUNO_CSS_CLKID_HDLCD_0;
-#endif
 
   // Set HDLCD clock required for the requested mode
   Status = ClockProtocol->RateSet (
@@ -449,7 +447,7 @@ LcdPlatformSetMode (
     return Status;
   }
 
-#if !defined(MDEPKG_NDEBUG)
+  DEBUG_CODE_BEGIN ();
   UINT64  CurrentHdLcdFreq;
   // Actual value set can differ from requested frequency so verify.
   Status = ClockProtocol->RateGet (
@@ -465,7 +463,7 @@ LcdPlatformSetMode (
       CurrentHdLcdFreq
       ));
   }
-#endif
+  DEBUG_CODE_END ();
 
   return Status;
 }
