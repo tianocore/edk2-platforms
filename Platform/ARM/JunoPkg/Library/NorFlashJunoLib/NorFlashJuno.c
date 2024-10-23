@@ -1,6 +1,6 @@
 /** @file
 
- Copyright (c) 2011-2014, ARM Ltd. All rights reserved.<BR>
+ Copyright (c) 2011-2024, Arm Ltd. All rights reserved.<BR>
 
  SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -12,20 +12,8 @@
 #include <Library/NorFlashPlatformLib.h>
 #include <ArmPlatform.h>
 
-NOR_FLASH_DESCRIPTION mNorFlashDevices[] = {
-  {
-    ARM_VE_SMB_NOR0_BASE,
-    ARM_VE_SMB_NOR0_BASE,
-    SIZE_256KB * 255,
-    SIZE_256KB,
-  },
-  {
-    ARM_VE_SMB_NOR0_BASE,
-    ARM_VE_SMB_NOR0_BASE + SIZE_256KB * 255,
-    SIZE_64KB * 4,
-    SIZE_64KB,
-  },
-};
+extern NOR_FLASH_DESCRIPTION mNorFlashDevices[];
+extern UINT32                mNorFlashCount;
 
 EFI_STATUS
 NorFlashPlatformInitialization (
@@ -54,7 +42,7 @@ NorFlashPlatformGetDevices (
   }
 
   *NorFlashDevices = mNorFlashDevices;
-  *Count = sizeof (mNorFlashDevices) / sizeof (NOR_FLASH_DESCRIPTION);
+  *Count = mNorFlashCount;
 
   return EFI_SUCCESS;
 }
