@@ -82,7 +82,7 @@ The following tools must be installed on the development PC.
 | 3         | uuid-dev            | Required for including uuid/uuid.h                           | $ sudo apt install uuid-dev                              |
 | 4         | build-essential     | Installs make, gcc, g++, etc                                 | $ sudo apt install build-essential <br> $ make -v <br> GNU Make 4.2.1 <br> gcc --version <br> gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0 <br> $ g++ --version <br> g++ (Ubuntu 9.4.0-1ubuntu1\~20.04.1) 9.4.0 |
 | 5         | bison               | A parser generator required by acpica tools.                 | $ sudo apt install bison                                 |
-| 6         | flex                | A fast lexical analyzer generator required by acpica tools   | $ sudp apt get install flex                              |
+| 6         | flex                | A fast lexical analyzer generator required by acpica tools   | $ sudo apt get install flex                              |
 
 ### Setting up the development tools
 
@@ -129,7 +129,7 @@ $ make -C $WORKSPACE/acpica
 2. Set up the environment variables.
 
 ```
-$ export GCC5_AARCH64_PREFIX=$WORKSPACE/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+$ export GCC_AARCH64_PREFIX=$WORKSPACE/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 $ export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/edk2-platforms
 $ export IASL_PREFIX=$WORKSPACE/acpica/generate/unix/bin/
 $ export PYTHON_COMMAND=/usr/bin/python3
@@ -149,12 +149,12 @@ $ make -C edk2/BaseTools
 
 Run the following command to build the firmware for FVP Base platform.
 ```
-$ build -a AARCH64 -t GCC5 -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
+$ build -a AARCH64 -t GCC -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
 ```
 
 The firmware binaries can be found at the following location:
 ```
-$WORKSPACE/Build/ArmVExpress-FVP-AArch64/<DEBUG|RELEASE>_GCC5/FV/FVP_AARCH64_EFI.fd
+$WORKSPACE/Build/ArmVExpress-FVP-AArch64/<DEBUG|RELEASE>_GCC/FV/FVP_AARCH64_EFI.fd
 ```
 
 Note: The same firmware binary can be used with Arm FVP Base AEMvA-AEMvA and
@@ -164,12 +164,12 @@ Armv-A Base RevC AEM FVP models.
 
 Run the following command to build the firmware for Arm Juno platform.
 ```
-$ build -a AARCH64 -t GCC5 -p Platform/ARM/JunoPkg/ArmJuno.dsc -b < DEBUG | RELEASE >
+$ build -a AARCH64 -t GCC -p Platform/ARM/JunoPkg/ArmJuno.dsc -b < DEBUG | RELEASE >
 ```
 
 The firmware binaries can be found at the following location:
 ```
-$WORKSPACE/Build/ArmJuno/<DEBUG|RELEASE>_GCC5/FV/BL33_AP_UEFI.fd
+$WORKSPACE/Build/ArmJuno/<DEBUG|RELEASE>_GCC/FV/BL33_AP_UEFI.fd
 ```
 
 # Building firmware on a Windows host using Windows Subsystem for Linux (WSL)
@@ -268,7 +268,7 @@ rem And CMD.EXE fails to find the DOS echo command because of the quotes
 2. Set up the environment variables.
 
 ```
- set GCC5_AARCH64_PREFIX=%WORKSPACE%\toolchain\arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-aarch64-none-elf\bin\aarch64-none-elf-
+ set GCC_AARCH64_PREFIX=%WORKSPACE%\toolchain\arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-aarch64-none-elf\bin\aarch64-none-elf-
  set PACKAGES_PATH=%WORKSPACE%\edk2;%WORKSPACE%\edk2-platforms
  set EDK_TOOLS_PATH=%WORKSPACE%\edk2\BaseTools
  set GCC_HOST_BIN=n
@@ -296,12 +296,12 @@ The ForceRebuild option can be used to do a clean build of the Base tools.
 Run the following command to build the firmware for FVP Base platform.
 
 ```
-> build -a AARCH64 -t GCC5 -p Platform\ARM\VExpressPkg\ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
+> build -a AARCH64 -t GCC -p Platform\ARM\VExpressPkg\ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
 ```
 
 The firmware binaries can be found at the following location:
 ```
-%WORKSPACE%\Build\ArmVExpress-FVP-AArch64\<DEBUG|RELEASE>_GCC5\FV\FVP_AARCH64_EFI.fd
+%WORKSPACE%\Build\ArmVExpress-FVP-AArch64\<DEBUG|RELEASE>_GCC\FV\FVP_AARCH64_EFI.fd
 ```
 Note: The same firmware binary can be used with Arm FVP Base AEMvA-AEMvA and
 Armv-A Base RevC AEM FVP models.
@@ -311,10 +311,110 @@ Armv-A Base RevC AEM FVP models.
 Run the following command to build the firmware for Arm Juno platform.
 
 ```
-> build -a AARCH64 -t GCC5 -p Platform\ARM\JunoPkg\ArmJuno.dsc -b < DEBUG | RELEASE >
+> build -a AARCH64 -t GCC -p Platform\ARM\JunoPkg\ArmJuno.dsc -b < DEBUG | RELEASE >
 ```
 The firmware binaries are at the following location:
 
 ```
-%WORKSPACE%\Build\ArmJuno\<DEBUG|RELEASE>_GCC5\FV\BL33_AP_UEFI.fd
+%WORKSPACE%\Build\ArmJuno\<DEBUG|RELEASE>_GCC\FV\BL33_AP_UEFI.fd
+```
+
+## Standalone MM support
+
+Arm FVP Base Model Platform support Standalone MM. To integrate Standalone MM
+setup, the TF-A build must include the options to specify the SPMC to be used
+as well as the Standalone MM binary.
+
+Standalone MM can host multiple services that the EDKII firmware can utilise:
+e.g. Secure Variable Service can be hosted by Standalone MM and is enabled
+by the ENABLE_UEFI_SECURE_VARIABLE build option.
+
+Note: The ENABLE_UEFI_SECURE_VARIABLE build option must be specified when
+building both the Standalone MM and EDKII firmware binary.
+
+### Building Standalone MM for Arm FVP Base Model platform
+To build Standalone MM binary, run following command:
+
+```
+> build -a AARCH64 -t GCC -p Platform\ARM\VExpressPkg\PlatformStandaloneMm.dsc -b < DEBUG | RELEASE > { -D option1, -D option2, ... }
+```
+
+e.g. to enable Secure Variable Service pass the following option to the build
+command line.
+
+   '-D ENABLE_UEFI_SECURE_VARIABLE=1'
+
+The Standalone MM binary is generated at the following location:
+```
+%WORKSPACE%\Build\ArmVExpress-FVP-AArch64\<DEBUG|RELEASE>_GCC\FV\BL32_AP_MM.fd
+```
+
+### Building TF-A for Standalone MM
+
+TF-A supports the following ABIs to communicate with Standalone MM:
+
+   - SPM_MM
+   - FF-A (>= v1.2)
+
+#### Building TF-A with SPM_MM as the communication ABI
+TF-A should be built with the following additional build flags:
+```
+   BL32={StandaloneMm Binary} SPM_MM=1 CTX_INCLUDE_FPREGS=1 TRANSFER_LIST=1 HOB_LIST=1
+```
+
+e.g.
+```
+cd tf-a
+make all PLAT=fvp CROSS_COMPILE={cross_compile_prefix} DEBUG=1 V=1 CSS_NON_SECURE_UART=1 EXTRA_EL2_INIT=1 \
+     EL3_EXCEPTION_HANDLING=1 ENABLE_SME2_FOR_NS=0 ENABLE_SME_FOR_NS=0 ENABLE_SVE_FOR_NS=0 CTX_INCLUDE_AARCH32_REGS=0 \
+     BL32={StandaloneMm Binary} SPM_MM=1 CTX_INCLUDE_FPREGS=1 TRANSFER_LIST=1 HOB_LIST=1
+```
+
+#### Building TF-A with FF-A as the communication ABI
+TF-A should be built with the following additional build flags:
+```
+    SPD=spmd SPMD_SPM_AT_SEL2=0 SPMC_AT_EL3=1 SPMC_AT_EL3_SEL0_SP=1 CTX_INCLUDE_EL2_REGS=0 NS_TIMER_SWITCH=1 HOB_LIST=1 \
+    FVP_TRUSTED_SRAM_SIZE=512 ARM_SPMC_MANIFEST_DTS=${TF_A_DIR}/plat/arm/board/fvp/fdts/fvp_stmm_manifest.dts \
+    BL32={StandaloneMm Binary}
+```
+e.g.
+```
+cd tf-a
+make all PLAT=fvp CROSS_COMPILE={cross_compile_prefix} DEBUG=1 V=1 CSS_NON_SECURE_UART=1 EXTRA_EL2_INIT=1 \
+     EL3_EXCEPTION_HANDLING=1 ENABLE_SME2_FOR_NS=0 ENABLE_SME_FOR_NS=0 ENABLE_SVE_FOR_NS=0 CTX_INCLUDE_AARCH32_REGS=0 \
+     SPD=spmd SPMD_SPM_AT_SEL2=0 SPMC_AT_EL3=1 SPMC_AT_EL3_SEL0_SP=1 CTX_INCLUDE_EL2_REGS=0 NS_TIMER_SWITCH=1 HOB_LIST=1 \
+     FVP_TRUSTED_SRAM_SIZE=512 ARM_SPMC_MANIFEST_DTS=${TF_A_DIR}/plat/arm/board/fvp/fdts/fvp_stmm_manifest.dts \
+     BL32={StandaloneMm Binary}
+```
+
+#### Building the FIP image
+The FIP image should be generated with the following additional option with FF-A:
+```
+   --tos-fw-config  $TF_A_DIR/build/fvp/<debug|release>/fdts/fvp_stmm_manifest.dtb"
+```
+
+SPM_MM doesn't need to add --tos-fw-config option.
+
+e.g.
+```
+cd tf-a
+./tools/fiptool/fiptool --verbose update \
+   --tb-fw $TF_A_DIR/build/fvp/debug/bl2.bin \
+   --soc-fw $TF_A_DIR/build/fvp/debug/bl31.bin \
+   --tos-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/BL32_AP_MM.fd \
+   --nt-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/FVP_AARCH64_EFI.fd \
+   --hw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp-base-gicv3-psci.dtb \
+   --tos-fw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp_stmm_manifest.dtb \
+   fip_fvp.bin
+```
+
+
+### Running the FVP RevC model with Standalone MM support
+
+The following additional command line options should be specified to run the
+FVP RevC model with Standalone MM.
+
+```
+  -C bp.secure_memory=1
+  -C bp.secure_only_flash1=1
 ```
