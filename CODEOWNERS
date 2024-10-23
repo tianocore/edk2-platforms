@@ -25,8 +25,8 @@
 /Platform/AMD/VanGoghBoard/** @abdattar @changab @exinghr @pbgrimes
 
 # Ampere Computing
-/Platform/Ampere/** @nhivp @bcran @chuongtranle
-/Silicon/Ampere/** @nhivp @bcran @chuongtranle
+/Platform/Ampere/** @nhivp @bexcran @chuongtranle
+/Silicon/Ampere/** @nhivp @bexcran @chuongtranle
 
 # ARM
 /Platform/ARM/** @samimujawar

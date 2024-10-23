@@ -53,7 +53,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Peng Xie               | xiepeng@phytium.com.cn           |                                                      |
 | Ran Wang               | wangran@bosc.ac.cn               |                                                      |
 | Ray Ni                 | ray.ni@intel.com                 | [@niruiyu](https://github.com/niruiyu)               |
-| Rebecca Cran           | rebecca@os.amperecomputing.com   | [@bcran](https://github.com/bcran)                   |
+| Rebecca Cran           | rebecca@os.amperecomputing.com   | [@bexcran](https://github.com/bexcran)               |
 | Rosen Chuang           | rosen.chuang@intel.com           | [@rbitw](https://github.com/rbitw)                   |
 | Sai Chaganty           | rangasai.v.chaganty@intel.com    | [@SaiChaganty](https://github.com/SaiChaganty)       |
 | Saloni Kasbekar        | saloni.kasbekar@intel.com        | [@SaloniKasbekar](https://github.com/SaloniKasbekar) |
