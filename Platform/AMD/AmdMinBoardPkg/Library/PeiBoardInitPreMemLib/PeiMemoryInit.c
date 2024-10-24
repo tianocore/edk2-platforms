@@ -89,7 +89,22 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
             FixedPcdGet32 (PcdAmdSmramAreaSize)
             ));
 
-          AmdMemoryInfoRange->Size -= FixedPcdGet32 (PcdAmdSmramAreaSize);
+          if (AmdMemoryInfoRange->Size) {
+          BuildResourceDescriptorHob (
+            EFI_RESOURCE_SYSTEM_MEMORY,
+            SYSTEM_MEMORY_ATTRIBUTES,
+            AmdMemoryInfoRange->Base,
+            AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+            );
+
+          DEBUG ((
+            DEBUG_INFO,
+            "SYSTEM_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+            AmdMemoryInfoRange->Base,
+            AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+            ));
+          }
+          break;
         }
 
         if (AmdMemoryInfoRange->Size) {
