@@ -74,14 +74,15 @@ CalculateCrc16Ccitt (
 /**
   This function does blob transfer over IPMI command.
 
-  @param[in]  SubCommand        The specific sub-command to be executed as part of
-                                the blob transfer operation.
-  @param[in]  SendData          A pointer to the data buffer that contains the data to be sent.
-                                When SendDataSize is zero, SendData is not used.
-  @param[in]  SendDataSize      The size of the data to be sent, in bytes. This is optional.
-  @param[out] ResponseData      A pointer to the buffer where the response data will be stored.
-  @param[out] ResponseDataSize  A pointer to a variable that will hold the size of the response
-                                data received.
+  @param[in]      SubCommand        The specific sub-command to be executed as part of
+                                    the blob transfer operation.
+  @param[in]      SendData          A pointer to the data buffer that contains the data to be sent.
+                                    When SendDataSize is zero, SendData is not used.
+  @param[in]      SendDataSize      The size of the data to be sent, in bytes. This is optional.
+  @param[out]     ResponseData      A pointer to the buffer where the response data will be stored.
+  @param[in,out]  ResponseDataSize  A pointer to a variable that will hold the size of the response
+                                    data received. When ResponseDataSize is zero, ResponseData is
+                                    not used.
 
   @retval EFI_SUCCESS            Successfully sends blob data.
   @retval EFI_OUT_OF_RESOURCES   Memory allocation fails.
@@ -92,11 +93,11 @@ CalculateCrc16Ccitt (
 **/
 EFI_STATUS
 IpmiBlobTransferSendIpmi (
-  IN  UINT8   SubCommand,
-  IN  UINT8   *SendData OPTIONAL,
-  IN  UINT32  SendDataSize OPTIONAL,
-  OUT UINT8   *ResponseData,
-  OUT UINT32  *ResponseDataSize
+  IN      UINT8   SubCommand,
+  IN      UINT8   *SendData OPTIONAL,
+  IN      UINT32  SendDataSize OPTIONAL,
+  OUT     UINT8   *ResponseData OPTIONAL,
+  IN OUT  UINT32  *ResponseDataSize
   )
 {
   EFI_STATUS                 Status;
@@ -110,7 +111,7 @@ IpmiBlobTransferSendIpmi (
   UINT32                     IpmiResponseDataSize;
   IPMI_BLOB_TRANSFER_HEADER  Header;
 
-  if (((SendDataSize > 0) && (SendData == NULL)) || (ResponseData == NULL) || (ResponseDataSize == NULL)) {
+  if (((SendDataSize > 0) && (SendData == NULL)) || ((ResponseData == NULL) && (((ResponseDataSize != NULL) && (*ResponseDataSize > 0))))) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -161,12 +162,12 @@ IpmiBlobTransferSendIpmi (
   DEBUG ((BLOB_TRANSFER_DEBUG, "\n"));
   DEBUG_CODE_END ();
 
-  IpmiResponseDataSize = (*ResponseDataSize + PROTOCOL_RESPONSE_OVERHEAD);
+  IpmiResponseDataSize = PROTOCOL_RESPONSE_OVERHEAD;
   //
   // If expecting data to be returned, we have to also account for the 16 bit CRC
   //
-  if (*ResponseDataSize) {
-    IpmiResponseDataSize += sizeof (Crc);
+  if ((ResponseDataSize != NULL) && (*ResponseDataSize > 0)) {
+    IpmiResponseDataSize += (*ResponseDataSize + sizeof (Crc));
   }
 
   IpmiResponseData = AllocateZeroPool (IpmiResponseDataSize);
@@ -225,7 +226,10 @@ IpmiBlobTransferSendIpmi (
     // In this case, there was no response data sent. This is not an error.
     // Some messages do not require a response.
     //
-    *ResponseDataSize = 0;
+    if (ResponseDataSize != NULL) {
+      *ResponseDataSize = 0;
+    }
+
     FreePool (IpmiResponseData);
     return Status;
     // Now we need to validate the CRC then send the Response body back
@@ -239,8 +243,11 @@ IpmiBlobTransferSendIpmi (
     IpmiResponseDataSize -= sizeof (Crc);
 
     if (Crc == CalculateCrc16Ccitt (ModifiedResponseData, IpmiResponseDataSize)) {
-      CopyMem (ResponseData, ModifiedResponseData, IpmiResponseDataSize);
-      CopyMem (ResponseDataSize, &IpmiResponseDataSize, sizeof (IpmiResponseDataSize));
+      if ((ResponseData != NULL) && (ResponseDataSize != NULL)) {
+        CopyMem (ResponseData, ModifiedResponseData, IpmiResponseDataSize);
+        CopyMem (ResponseDataSize, &IpmiResponseDataSize, sizeof (IpmiResponseDataSize));
+      }
+
       FreePool (IpmiResponseData);
       return EFI_SUCCESS;
     } else {
