@@ -1,0 +1,17 @@
+/** @file
+
+  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+/=#
+
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_1   #language en-US  "PCIe x4 Slot PCI0_3"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_2   #language en-US  "PCIe x4 Slot PCI4_7"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_3   #language en-US  "NVMe M.2 Socket M2_0"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_4   #language en-US  "NVMe M.2 Socket M2_1"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_5   #language en-US  "PCIe x16 Slot PCI16_31"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_6   #language en-US  "PCIe x16 Slot PCI32_47"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_7   #language en-US  "PCIe x16 Slot PCI48_63"

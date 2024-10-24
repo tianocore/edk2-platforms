@@ -1,0 +1,52 @@
+## @file
+#
+# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = HwMonitorDxe
+  FILE_GUID                      = 5CE6A7C8-3421-40B7-9624-54A579D7BF56
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformInfoEntryPoint
+
+[Sources.common]
+  HwMonitorDxe.c
+  HwMonitorHii.h
+  HwMonitorVfr.vfr
+  HwMonitorStrings.uni
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+  AdlinkAmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  HiiLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  MmcLib
+
+[Guids]
+  gPlatformManagerFormsetGuid
+  gEfiIfrTianoGuid
+  gPlatformInfoHobGuid
+
+[Protocols]
+
+[Pcd]
+
+[Depex]
+  TRUE

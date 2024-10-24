@@ -1,0 +1,67 @@
+## @file
+#
+# Copyright (c) 2020 - 2022, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = SmbiosPlatformDxe
+  FILE_GUID                      = 8a836f33-26e0-48cd-974b-be0bfd0daf54
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmbiosPlatformDxeEntry
+
+[Sources]
+  SmbiosPlatformDxe.h
+  SmbiosPlatformDxe.c
+  SmbiosPlatformDxeDataTable.c
+  SmbiosPlatformDxeStrings.uni
+  Type07/PlatformCacheData.c
+  Type07/PlatformCacheFunction.c
+  Type08/PlatformPortConnectorData.c
+  Type08/PlatformPortConnectorFunction.c
+  Type09/PlatformSystemSlotData.c
+  Type09/PlatformSystemSlotFunction.c
+  Type11/PlatformOemStringData.c
+  Type11/PlatformOemStringFunction.c
+  Type16/PlatformPhysicalMemoryArrayData.c
+  Type16/PlatformPhysicalMemoryArrayFunction.c
+  Type17/PlatformMemoryDeviceData.c
+  Type17/PlatformMemoryDeviceFunction.c
+  Type19/PlatformMemoryArrayMappedAddressData.c
+  Type19/PlatformMemoryArrayMappedAddressFunction.c
+  Type38/PlatformIpmiDeviceData.c
+  Type38/PlatformIpmiDeviceFunction.c
+  Type41/PlatformOnboardDevicesExtendedData.c
+  Type41/PlatformOnboardDevicesExtendedFunction.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  AmpereCpuLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  MemoryAllocationLib
+  NVParamLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                            ## CONSUMED
+
+[Guids]
+  gCpuConfigFormSetGuid
+
+[Depex]
+  TRUE

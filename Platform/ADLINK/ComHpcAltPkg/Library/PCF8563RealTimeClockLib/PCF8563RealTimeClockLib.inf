@@ -1,0 +1,44 @@
+## @file
+#
+# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                      = 0x0001001B
+  MODULE_TYPE                      = BASE
+  BASE_NAME                        = PCF8563RealTimeClockLib
+  FILE_GUID                        = 271569F6-5522-4006-9FF5-F07A59473AAC
+  LIBRARY_CLASS                    = RealTimeClockLib
+  VERSION_STRING                   = 1.0
+
+[Sources.common]
+  PCF8563.c
+  PCF8563.h
+  PCF8563RealTimeClockLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  ArmGenericTimerCounterLib
+  ArmLib
+  BaseLib
+  DebugLib
+  GpioLib
+  DxeServicesTableLib
+  I2cLib
+  TimeBaseLib
+  TimerLib
+  UefiLib
+  UefiRuntimeLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid

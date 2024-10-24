@@ -1,0 +1,29 @@
+## @file
+#
+# Copyright (c) 2022, ADLink. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = GpioInitDxe
+  FILE_GUID                      = 38F55181-2740-4235-91D2-EBB94C313A9C
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = GpioInitDxeEntryPoint
+
+[Sources]
+  GpioInitDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  GpioLib
+
+[Depex]
+  TRUE

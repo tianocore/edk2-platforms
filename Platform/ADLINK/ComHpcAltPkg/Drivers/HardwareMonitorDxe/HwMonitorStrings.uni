@@ -1,0 +1,45 @@
+//
+// Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+
+#langdef en-US  "English"
+
+#string STR_HARDWARE_MONITOR_FORM                   #language en-US "Hardware Monitor"
+#string STR_HARDWARE_MONITOR_FORM_HELP              #language en-US "Hardware Monitor"
+
+#string STR_EMPTY_STRING                            #language en-US  ""
+
+#string STR_IPMI_P3V3                               #language en-US "IPMI_P3V3"
+#string STR_IPMI_P3V3_VALUE                         #language en-US "NA"
+
+#string STR_IPMI_P12V                               #language en-US "IPMI_P12V"
+#string STR_IPMI_P12V_VALUE                         #language en-US "NA"
+
+#string STR_IPMI_P5V                                #language en-US "IPMI_P5V"
+#string STR_IPMI_P5V_VALUE                          #language en-US "NA"
+
+#string STR_P1V5_VDDH                               #language en-US "P1V5_VDDH"
+#string STR_P1V5_VDDH_VALUE                         #language en-US "NA"
+
+#string STR_P0V75_PCP                               #language en-US "P0V75_PCP"
+#string STR_P0V75_PCP_VALUE                         #language en-US "NA"
+
+#string STR_P0V9_VDDC_RCA                           #language en-US "P0V9_VDDC_RCA"
+#string STR_P0V9_VDDC_RCA_VALUE                     #language en-US "NA"
+
+#string STR_P0V75_VDDC_SOC                          #language en-US "P0V75_VDDC_SOC"
+#string STR_P0V75_VDDC_SOC_VALUE                    #language en-US "NA"
+
+#string STR_P1V2_VDDQ_AB                            #language en-US "P1V2_VDDQ_AB"
+#string STR_P1V2_VDDQ_AB_VALUE                      #language en-US "NA"
+
+#string STR_P1V2_VDDQ_CD                            #language en-US "P1V2_VDDQ_CD"
+#string STR_P1V2_VDDQ_CD_VALUE                      #language en-US "NA"
+
+#string STR_P1V8_PCP                                #language en-US "P1V8_PCP"
+#string STR_P1V8_PCP_VALUE                          #language en-US "NA"
+
+#string STR_CPU_CORE_TEMP                           #language en-US "CPU Core Temperature"
+#string STR_CPU_CORE_TEMP_VALUE                     #language en-US "NA"

@@ -1,0 +1,35 @@
+## @file  Adlink.dec
+#
+##
+
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = Adlink
+  PACKAGE_UNI_FILE               = Adlink.uni
+  PACKAGE_GUID                   = 1096F9A2-A9B1-4096-90DC-7CFC06D73A21
+  PACKAGE_VERSION                = 1.08
+
+
+[Includes]
+  Include
+
+[LibraryClasses]
+  ##  @libraryclass
+  ##
+  MmcLib|Include/Library/MmcLib.h
+  NVLib|Include/Library/NVLib.h
+  ##  @libraryclass
+  PostCodeLib|Include/Library/PostLib.h
+
+[Guids]
+  # {392C3278-26B2-4CC8-A7B0-BAD4E068F226}
+  gAdlinkTokenSpaceGuid = { 0x392c3278, 0x26b2, 0x4cc8, { 0xa7, 0xb0, 0xba, 0xd4, 0xe0, 0x68, 0xf2, 0x26 } }
+
+[PcdsFixedAtBuild]
+  #
+  # NIC I2CBus
+  #
+  gAdlinkTokenSpaceGuid.PcdNicI2cBusAddress|0x04|UINT8|0x00000001 #I2C6
+  gAdlinkTokenSpaceGuid.PcdNicI2cBusSpeed|400000|UINT32|0x00000002 # Hz
+  gAdlinkTokenSpaceGuid.PcdNicI2cDeviceAddress|0x70|UINT8|0x00000003
