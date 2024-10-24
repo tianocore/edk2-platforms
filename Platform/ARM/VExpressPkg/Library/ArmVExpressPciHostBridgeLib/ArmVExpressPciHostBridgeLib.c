@@ -95,11 +95,9 @@ STATIC PCI_ROOT_BRIDGE mRootBridge = {
   (EFI_DEVICE_PATH_PROTOCOL *)&mEfiPciRootBridgeDevicePath
 };
 
-#ifndef MDEPKG_NDEBUG
 STATIC CONST CHAR16 mAcpiAddrSpaceTypeStr[][4] = {
   L"Mem", L"I/O", L"Bus"
 };
-#endif
 
 /**
   Return all the root bridge instances in an array.

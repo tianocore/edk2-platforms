@@ -16,7 +16,6 @@
 #include <Library/PchPcrLib.h>
 #include <Register/PchRegsPcr.h>
 
-#ifndef MDEPKG_NDEBUG
 /**
   Checks if the offset is valid for a given memory access width
 
@@ -40,7 +39,6 @@ PchIsPcrOffsetValid (
     return TRUE;
   }
 }
-#endif
 
 /**
   Read PCR register.
@@ -58,9 +56,7 @@ PchPcrRead32 (
   IN  UINT32                            Offset
   )
 {
-#ifndef MDEPKG_NDEBUG
   ASSERT (PchIsPcrOffsetValid (Offset, 4));
-#endif
   return MmioRead32 (PCH_PCR_ADDRESS (Pid, Offset));
 }
 
@@ -80,9 +76,7 @@ PchPcrRead16 (
   IN  UINT32                            Offset
   )
 {
-#ifndef MDEPKG_NDEBUG
   ASSERT (PchIsPcrOffsetValid (Offset, 2));
-#endif
   return MmioRead16 (PCH_PCR_ADDRESS (Pid, Offset));
 }
 
@@ -123,9 +117,7 @@ PchPcrWrite32 (
   IN  UINT32                            Data
   )
 {
-#ifndef MDEPKG_NDEBUG
   ASSERT (PchIsPcrOffsetValid (Offset, 4));
-#endif
   MmioWrite32 (PCH_PCR_ADDRESS (Pid, Offset), Data);
 
   return Data;
@@ -149,9 +141,7 @@ PchPcrWrite16 (
   IN  UINT16                            Data
   )
 {
-#ifndef MDEPKG_NDEBUG
   ASSERT (PchIsPcrOffsetValid (Offset, 2));
-#endif
   MmioWrite16 (PCH_PCR_ADDRESS (Pid, Offset), Data);
 
   return Data;

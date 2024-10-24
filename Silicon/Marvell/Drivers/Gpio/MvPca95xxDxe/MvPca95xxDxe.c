@@ -53,7 +53,6 @@ STATIC PCA95XX_PIN_COUNT mPca95xxPinCount[PCA95XX_MAX_ID] = {
   PCA9557_PIN_COUNT,
 };
 
-#if !defined(MDEPKG_NDEBUG)
 /**
 
 Routine Description:
@@ -101,7 +100,6 @@ MvPca95xxValidate (
 
   return EFI_SUCCESS;
 }
-#endif
 
 EFI_STATUS
 EFIAPI
