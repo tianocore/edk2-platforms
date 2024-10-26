@@ -72,15 +72,11 @@
 #######################################
 # Component Includes
 #######################################
-# @todo: Change below line to [Components.$(PEI_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed
-[Components.IA32]
+[Components.$(PEI_ARCH)]
 !include $(PLATFORM_PACKAGE)/Include/Dsc/CorePeiInclude.dsc
 !include $(PLATFORM_SI_PACKAGE)/SiPkgPei.dsc
 
-# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed
-[Components.X64]
+[Components.$(DXE_ARCH)]
 !include $(PLATFORM_PACKAGE)/Include/Dsc/CoreDxeInclude.dsc
 !include $(PLATFORM_SI_PACKAGE)/SiPkgDxe.dsc
 
@@ -269,9 +265,7 @@
 #######################################
 # PEI Components
 #######################################
-# @todo: Change below line to [Components.$(PEI_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed
-[Components.IA32]
+[Components.$(PEI_ARCH)]
   #######################################
   # Edk2 Packages
   #######################################
@@ -337,9 +331,7 @@
 #######################################
 # DXE Components
 #######################################
-# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed
-[Components.X64]
+[Components.$(DXE_ARCH)]
   #######################################
   # Edk2 Packages
   #######################################

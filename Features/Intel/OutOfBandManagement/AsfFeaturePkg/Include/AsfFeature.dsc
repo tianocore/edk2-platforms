@@ -36,17 +36,11 @@
 #
 # Feature PEI Components
 #
-
-# @todo: Change below line to [Components.$(PEI_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed.
-[Components.IA32]
+[Components.$(PEI_ARCH)]
   AsfFeaturePkg/AsfPei/AsfPei.inf
 
 #
 # Feature DXE Components
 #
-
-# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed.
-[Components.X64]
+[Components.$(DXE_ARCH)]
   AsfFeaturePkg/AsfDxe/AsfDxe.inf

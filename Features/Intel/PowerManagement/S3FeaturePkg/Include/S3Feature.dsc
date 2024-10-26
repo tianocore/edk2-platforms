@@ -63,10 +63,7 @@
 #
 # Feature PEI Components
 #
-
-# @todo: Change below line to [Components.$(PEI_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed.
-[Components.IA32]
+[Components.$(PEI_ARCH)]
   #####################################
   # S3 Feature Package
   #####################################
@@ -79,10 +76,7 @@
 #
 # Feature DXE Components
 #
-
-# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed.
-[Components.X64]
+[Components.$(DXE_ARCH)]
   #####################################
   # S3 Feature Package
   #####################################

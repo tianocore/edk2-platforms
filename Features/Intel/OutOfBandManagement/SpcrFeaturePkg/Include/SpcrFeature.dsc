@@ -42,8 +42,5 @@
 #       generated for it, but the binary will not be put into any firmware volume.
 #
 ################################################################################
-
-# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
-#        is completed.
-[Components.X64]
+[Components.$(DXE_ARCH)]
   SpcrFeaturePkg/SpcrAcpiDxe/SpcrAcpiDxe.inf
