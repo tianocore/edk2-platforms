@@ -2,6 +2,7 @@
 # Component information file for the Platform Init Pre-Memory PEI module.
 #
 # Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) Microsoft Corporation.
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
