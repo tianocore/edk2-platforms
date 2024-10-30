@@ -6,7 +6,12 @@
 #
 ##
 
-MAKEROOT = $(EDK_TOOLS_PATH)/Source/C
+ifeq (Windows, $(findstring Windows,$(MAKE_HOST)))
+SEP:=$(shell echo \)
+MAKEROOT ?= $(EDK_TOOLS_PATH)$(SEP)Source$(SEP)C
+else
+MAKEROOT ?= $(EDK_TOOLS_PATH)/Source/C
+endif
 
 APPLICATIONS = \
   FitGen \
