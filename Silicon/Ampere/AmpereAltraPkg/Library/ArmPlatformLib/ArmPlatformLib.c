@@ -99,7 +99,6 @@ PrePeiCoreGetMpCoreInfo (
 
   ASSERT (CoreCount != NULL);
   ASSERT (ArmCoreTable != NULL);
-  ASSERT (*ArmCoreTable != NULL);
 
   mArmPlatformCoreCount = 0;
   for (Index = 0; Index < PLATFORM_CPU_MAX_NUM_CORES; Index++) {
