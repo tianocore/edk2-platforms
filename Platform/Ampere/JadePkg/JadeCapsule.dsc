@@ -26,5 +26,5 @@
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
   #
-  DEFINE UEFI_ATF_IMAGE          = Build/Jade/jade_tianocore_atf.img
-  DEFINE SCP_IMAGE               = Build/Jade/jade_scp.slim
+  DEFINE UEFI_ATF_IMAGE          = Build/Jade/jade_tfa_uefi.bin
+  DEFINE SCP_IMAGE               = Build/Jade/altra_scp.slim
