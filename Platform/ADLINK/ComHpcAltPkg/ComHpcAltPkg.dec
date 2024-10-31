@@ -1,0 +1,34 @@
+## @file
+#
+# Copyright (c) 2022, ADLink. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = ComHpcAlt
+  PACKAGE_GUID                   = 338A437E-AD8D-48BB-977E-49EAB530039D
+  PACKAGE_VERSION                = 1.08
+
+[Includes]
+  Include
+
+[LibraryClasses]
+  ##  @libraryclass
+  ##
+  MmcLib|Include/Library/MmcLib.h
+
+[Guids]
+  # {338A437E-AD8D-48BB-977E-49EAB530039D}
+  gComHpcAltTokenSpaceGuid = { 0x338a437e, 0xad8d, 0x48bb, { 0x97, 0x7e, 0x49, 0xea, 0xb5, 0x30, 0x3, 0x9d } }
+  # {392C3278-26B2-4CC8-A7B0-BAD4E068F226}
+  gAdlinkTokenSpaceGuid = { 0x392c3278, 0x26b2, 0x4cc8, { 0xa7, 0xb0, 0xba, 0xd4, 0xe0, 0x68, 0xf2, 0x26 } }
+
+[PcdsFixedAtBuild]
+  #
+  # NIC I2CBus
+  #
+  gAdlinkTokenSpaceGuid.PcdNicI2cBusAddress|0x04|UINT8|0x00000001 #I2C6
+  gAdlinkTokenSpaceGuid.PcdNicI2cBusSpeed|400000|UINT32|0x00000002 # Hz
+  gAdlinkTokenSpaceGuid.PcdNicI2cDeviceAddress|0x70|UINT8|0x00000003

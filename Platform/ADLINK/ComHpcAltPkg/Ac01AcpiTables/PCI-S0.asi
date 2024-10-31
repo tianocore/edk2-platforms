@@ -1,0 +1,2928 @@
+/** @file
+
+  Copyright (c) 2020, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+  // @DoorBellNS1 0x1000.0054.1000. Out-Offset: 0x10
+  OperationRegion(DNS1, SystemMemory, 0x100000541010 , 8)
+
+  Field (DNS1, DWordAcc, NoLock, Preserve) {
+    OUTV, 32,
+    DIN0, 32,
+  }
+
+  // PCI0 RCA0
+  Device (PCI0) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)                      // The default value is 0x0. Unfortunately, it breaks
+                                        // run-time patching as the representation of 0 is special
+                                        // encoding and cannot be patched to expand with extra bytes
+                                        // easily. As such, we default to 0xF and patch this based
+                                        // on whether the port was enabled or not by the BIOS.
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID, "PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 12)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI0")
+    Name (_STR, Unicode("PCIe 0 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 128/129/130/131 respectively. PCI0 RCA0
+      //
+      Package() {0x0001FFFF, 0, 0, 128},
+      Package() {0x0001FFFF, 1, 0, 129},
+      Package() {0x0001FFFF, 2, 0, 130},
+      Package() {0x0001FFFF, 3, 0, 131},
+      Package() {0x0002FFFF, 0, 0, 128},
+      Package() {0x0002FFFF, 1, 0, 129},
+      Package() {0x0002FFFF, 2, 0, 130},
+      Package() {0x0002FFFF, 3, 0, 131},
+      Package() {0x0003FFFF, 0, 0, 128},
+      Package() {0x0003FFFF, 1, 0, 129},
+      Package() {0x0003FFFF, 2, 0, 130},
+      Package() {0x0003FFFF, 3, 0, 131},
+      Package() {0x0004FFFF, 0, 0, 128},
+      Package() {0x0004FFFF, 1, 0, 129},
+      Package() {0x0004FFFF, 2, 0, 130},
+      Package() {0x0004FFFF, 3, 0, 131},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x33FFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FE40000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000040000000,   // AddressMinimum - MIN
+        0x000000004FFFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000300000000000,   // AddressMinimum - MIN
+        0x000033FFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP,0) // PCI _OSC Support Field value
+    Name (CTRL,0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3, 0, CDW1)
+      If (LEqual (Arg0, ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+          Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+          Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI0 RCA0
+
+  // PCI1 RCA1
+  Device (PCI1) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)                      // The default value is 0x0. Unfortunately, it breaks
+                                        // run-time patching as the representation of 0 is special
+                                        // encoding and cannot be patched to expand with extra bytes
+                                        // easily. As such, we default to 0xF and patch this based
+                                        // on whether the port was enabled or not by the BIOS.
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID, "PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 13)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI1")
+    Name (_STR, Unicode("PCIe 1 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 132/133/134/135 respectively. PCI1 RCA1
+      //
+      Package() {0x0001FFFF, 0, 0, 132},
+      Package() {0x0001FFFF, 1, 0, 133},
+      Package() {0x0001FFFF, 2, 0, 134},
+      Package() {0x0001FFFF, 3, 0, 135},
+      Package() {0x0002FFFF, 0, 0, 132},
+      Package() {0x0002FFFF, 1, 0, 133},
+      Package() {0x0002FFFF, 2, 0, 134},
+      Package() {0x0002FFFF, 3, 0, 135},
+      Package() {0x0003FFFF, 0, 0, 132},
+      Package() {0x0003FFFF, 1, 0, 133},
+      Package() {0x0003FFFF, 2, 0, 134},
+      Package() {0x0003FFFF, 3, 0, 135},
+      Package() {0x0004FFFF, 0, 0, 132},
+      Package() {0x0004FFFF, 1, 0, 133},
+      Package() {0x0004FFFF, 2, 0, 134},
+      Package() {0x0004FFFF, 3, 0, 135},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x37FFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FE40000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000050000000,   // AddressMinimum - MIN
+        0x000000005FFFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000010000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        Cacheable,            // Cacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000340000000000,   // AddressMinimum - MIN
+        0x000037FFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP,0) // PCI _OSC Support Field value
+    Name (CTRL,0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3, 0, CDW1)
+      If (LEqual (Arg0, ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+          Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+          Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI1 RCA1
+
+  // PCI2 RCA2
+  Device (PCI2) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID, "PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 1)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI2")
+    Name (_STR, Unicode("PCIe 2 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 136/137/138/139 respectively. PCI2 RCA2
+      //
+      Package() {0x0001FFFF, 0, 0, 136},
+      Package() {0x0001FFFF, 1, 0, 137},
+      Package() {0x0001FFFF, 2, 0, 138},
+      Package() {0x0001FFFF, 3, 0, 139},
+      Package() {0x0002FFFF, 0, 0, 136},
+      Package() {0x0002FFFF, 1, 0, 137},
+      Package() {0x0002FFFF, 2, 0, 138},
+      Package() {0x0002FFFF, 3, 0, 139},
+      Package() {0x0003FFFF, 0, 0, 136},
+      Package() {0x0003FFFF, 1, 0, 137},
+      Package() {0x0003FFFF, 2, 0, 138},
+      Package() {0x0003FFFF, 3, 0, 139},
+      Package() {0x0004FFFF, 0, 0, 136},
+      Package() {0x0004FFFF, 1, 0, 137},
+      Package() {0x0004FFFF, 2, 0, 138},
+      Package() {0x0004FFFF, 3, 0, 139},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x3BFFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FE80000, 0x10000, )
+
+      QWordMemory (           // RcA2 32-bit MMIO
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000030000000,   // AddressMinimum - MIN
+        0x0000000037FFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000008000000    // RangeLength - LEN
+      )
+
+      QWordMemory (           // RcA2 MMIO
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000380000000000,   // AddressMinimum - MIN
+        0x00003BFFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP, 0) // PCI _OSC Support Field value
+    Name (CTRL, 0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3,0,CDW1)
+      If (LEqual (Arg0, ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+          Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+          Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI2 RCA2
+
+  // PCI3 RCA3
+  Device (PCI3) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID, "PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 0)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI3")
+    Name (_STR, Unicode("PCIe 3 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 140/141/142/143 respectively. PCI3 RCA3
+      //
+      Package() {0x0001FFFF, 0, 0, 140},
+      Package() {0x0001FFFF, 1, 0, 141},
+      Package() {0x0001FFFF, 2, 0, 142},
+      Package() {0x0001FFFF, 3, 0, 143},
+      Package() {0x0002FFFF, 0, 0, 140},
+      Package() {0x0002FFFF, 1, 0, 141},
+      Package() {0x0002FFFF, 2, 0, 142},
+      Package() {0x0002FFFF, 3, 0, 143},
+      Package() {0x0003FFFF, 0, 0, 140},
+      Package() {0x0003FFFF, 1, 0, 141},
+      Package() {0x0003FFFF, 2, 0, 142},
+      Package() {0x0003FFFF, 3, 0, 143},
+      Package() {0x0004FFFF, 0, 0, 140},
+      Package() {0x0004FFFF, 1, 0, 141},
+      Package() {0x0004FFFF, 2, 0, 142},
+      Package() {0x0004FFFF, 3, 0, 143},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x3FFFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to Return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FE00000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000038000000,   // AddressMinimum - MIN
+        0x000000003FFFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000008000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00003C0000000000,   // AddressMinimum - MIN
+        0x00003FFFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP, 0) // PCI _OSC Support Field value
+    Name (CTRL, 0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3, 0, CDW1)
+      If (LEqual (Arg0, ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+          Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+          Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI3 RCA3
+
+  // PCI4 RCB0
+  Device (PCI4) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)                      // The default value is 0x0. Unfortunately, it breaks
+                                        // run-time patching as the representation of 0 is special
+                                        // encoding and cannot be patched to expand with extra bytes
+                                        // easily. As such, we default to 0xF and patch this based
+                                        // on whether the port was enabled or not by the BIOS.
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID, "PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 2)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI4")
+    Name (_STR, Unicode("PCIe 4 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 144/145/146/147 respectively. PCI4 RCB0
+      //
+      Package() {0x0001FFFF, 0, 0, 144},
+      Package() {0x0001FFFF, 1, 0, 145},
+      Package() {0x0001FFFF, 2, 0, 146},
+      Package() {0x0001FFFF, 3, 0, 147},
+      Package() {0x0002FFFF, 0, 0, 144},
+      Package() {0x0002FFFF, 1, 0, 145},
+      Package() {0x0002FFFF, 2, 0, 146},
+      Package() {0x0002FFFF, 3, 0, 147},
+      Package() {0x0003FFFF, 0, 0, 144},
+      Package() {0x0003FFFF, 1, 0, 145},
+      Package() {0x0003FFFF, 2, 0, 146},
+      Package() {0x0003FFFF, 3, 0, 147},
+      Package() {0x0004FFFF, 0, 0, 144},
+      Package() {0x0004FFFF, 1, 0, 145},
+      Package() {0x0004FFFF, 2, 0, 146},
+      Package() {0x0004FFFF, 3, 0, 147},
+      Package() {0x0005FFFF, 0, 0, 144},
+      Package() {0x0005FFFF, 1, 0, 145},
+      Package() {0x0005FFFF, 2, 0, 146},
+      Package() {0x0005FFFF, 3, 0, 147},
+      Package() {0x0006FFFF, 0, 0, 144},
+      Package() {0x0006FFFF, 1, 0, 145},
+      Package() {0x0006FFFF, 2, 0, 146},
+      Package() {0x0006FFFF, 3, 0, 147},
+      Package() {0x0007FFFF, 0, 0, 144},
+      Package() {0x0007FFFF, 1, 0, 145},
+      Package() {0x0007FFFF, 2, 0, 146},
+      Package() {0x0007FFFF, 3, 0, 147},
+      Package() {0x0008FFFF, 0, 0, 144},
+      Package() {0x0008FFFF, 1, 0, 145},
+      Package() {0x0008FFFF, 2, 0, 146},
+      Package() {0x0008FFFF, 3, 0, 147},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x23FFF0000000)
+    }
+
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FEC0000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000004000000,   // AddressMinimum - MIN
+        0x0000000007FFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000004000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000200000000000,   // AddressMinimum - MIN
+        0x000023FFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP,0) // PCI _OSC Support Field value
+    Name (CTRL,0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3, 0, CDW1)
+      If (LEqual (Arg0,ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+          Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+          Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2))
+        {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    //
+    // Root Port 1
+    //
+    Device (P2P1) {
+      //
+      // Device 1, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00010000)
+
+      Device (S0F0) {
+        //
+        // On Bus 1 ([01])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000001)
+      }
+    }
+
+    //
+    // Root Port 3
+    //
+    Device (P2P3) {
+      //
+      // Device 3, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00030000)
+
+      Device (S0F0) {
+        //
+        // On Bus 2 ([02])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000002)
+      }
+    }
+
+    //
+    // Root Port 5
+    //
+    Device (P2P5) {
+      //
+      // Device 5, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00050000)
+
+      Device (S0F0) {
+        //
+        // On Bus 3 [03])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000003)
+      }
+    }
+
+    //
+    // Root Port 7
+    //
+    Device (P2P7) {
+      //
+      // Device 7, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00070000)
+
+      Device (S0F0) {
+        //
+        // On Bus 4 ([04])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000004)
+      }
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI4 RCB0
+
+  // PCI5 RCB1
+  Device (PCI5) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID, "PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID,"PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 3)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI5")
+    Name (_STR, Unicode("PCIe 5 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 148/149/150/151 respectively. PCI5 RCB1
+      //
+      Package() {0x0001FFFF, 0, 0, 148},
+      Package() {0x0001FFFF, 1, 0, 149},
+      Package() {0x0001FFFF, 2, 0, 150},
+      Package() {0x0001FFFF, 3, 0, 151},
+      Package() {0x0002FFFF, 0, 0, 148},
+      Package() {0x0002FFFF, 1, 0, 149},
+      Package() {0x0002FFFF, 2, 0, 150},
+      Package() {0x0002FFFF, 3, 0, 151},
+      Package() {0x0003FFFF, 0, 0, 148},
+      Package() {0x0003FFFF, 1, 0, 149},
+      Package() {0x0003FFFF, 2, 0, 150},
+      Package() {0x0003FFFF, 3, 0, 151},
+      Package() {0x0004FFFF, 0, 0, 148},
+      Package() {0x0004FFFF, 1, 0, 149},
+      Package() {0x0004FFFF, 2, 0, 150},
+      Package() {0x0004FFFF, 3, 0, 151},
+      Package() {0x0005FFFF, 0, 0, 148},
+      Package() {0x0005FFFF, 1, 0, 149},
+      Package() {0x0005FFFF, 2, 0, 150},
+      Package() {0x0005FFFF, 3, 0, 151},
+      Package() {0x0006FFFF, 0, 0, 148},
+      Package() {0x0006FFFF, 1, 0, 149},
+      Package() {0x0006FFFF, 2, 0, 150},
+      Package() {0x0006FFFF, 3, 0, 151},
+      Package() {0x0007FFFF, 0, 0, 148},
+      Package() {0x0007FFFF, 1, 0, 149},
+      Package() {0x0007FFFF, 2, 0, 150},
+      Package() {0x0007FFFF, 3, 0, 151},
+      Package() {0x0008FFFF, 0, 0, 148},
+      Package() {0x0008FFFF, 1, 0, 149},
+      Package() {0x0008FFFF, 2, 0, 150},
+      Package() {0x0008FFFF, 3, 0, 151},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x27FFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FF00000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000008000000,   // AddressMinimum - MIN
+        0x000000000FFFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000008000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000240000000000,   // AddressMinimum - MIN
+        0x000027FFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP, 0) // PCI _OSC Support Field value
+    Name (CTRL, 0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3, 0, CDW1)
+      If (LEqual (Arg0,ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3, 4, CDW2)
+        CreateDWordField (Arg3, 8, CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2, SUPP)
+        Store (CDW3, CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL, 0x1E, CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1, One)) {
+            Or (CDW1, 0x08, CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3, CTRL)) {
+            Or (CDW1, 0x10, CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL, CDW3)
+        Return (Arg3)
+
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1, 4, CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0, ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2))
+        {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    //
+    // Root Port 1
+    //
+    Device (P2P1) {
+      //
+      // Device 1, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00010000)
+
+      Device (S0F0) {
+        //
+        // On Bus 1 ([01])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000001)
+      }
+    }
+
+    //
+    // Root Port 3
+    //
+    Device (P2P3) {
+      //
+      // Device 3, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00030000)
+
+      Device (S0F0) {
+        //
+        // On Bus 2 ([02])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000002)
+      }
+    }
+
+    //
+    // Root Port 5
+    //
+    Device (P2P5) {
+      //
+      // Device 5, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00050000)
+
+      Device (S0F0) {
+        //
+        // On Bus 3 [03])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000003)
+      }
+    }
+
+    //
+    // Root Port 7
+    //
+    Device (P2P7) {
+      //
+      // Device 7, Function 0 (Bus 0).
+      //
+
+      Name (_ADR, 0x00070000)
+
+      Device (S0F0) {
+        //
+        // On Bus 4 ([04])
+        // Slot 0 (Device 0), Function 0
+        //
+
+        Name (_ADR, 0x00000000)
+        Name(_SUN, 0x00000004)
+      }
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI5 RCB1
+
+
+  // PCI6 RCB2
+  Device (PCI6) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID,"PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)                      // The default value is 0x0. Unfortunately, it breaks
+                                        // run-time patching as the representation of 0 is special
+                                        // encoding and cannot be patched to expand with extra bytes
+                                        // easily. As such, we default to 0xF and patch this based
+                                        // on whether the port was enabled or not by the BIOS.
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID,"PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 4)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI6")
+    Name (_STR, Unicode("PCIe 6 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 152/153/154/155 respectively. PCI6 RCB2
+      //
+      Package() {0x0001FFFF, 0, 0, 152},
+      Package() {0x0001FFFF, 1, 0, 153},
+      Package() {0x0001FFFF, 2, 0, 154},
+      Package() {0x0001FFFF, 3, 0, 155},
+      Package() {0x0002FFFF, 0, 0, 152},
+      Package() {0x0002FFFF, 1, 0, 153},
+      Package() {0x0002FFFF, 2, 0, 154},
+      Package() {0x0002FFFF, 3, 0, 155},
+      Package() {0x0003FFFF, 0, 0, 152},
+      Package() {0x0003FFFF, 1, 0, 153},
+      Package() {0x0003FFFF, 2, 0, 154},
+      Package() {0x0003FFFF, 3, 0, 155},
+      Package() {0x0004FFFF, 0, 0, 152},
+      Package() {0x0004FFFF, 1, 0, 153},
+      Package() {0x0004FFFF, 2, 0, 154},
+      Package() {0x0004FFFF, 3, 0, 155},
+      Package() {0x0005FFFF, 0, 0, 152},
+      Package() {0x0005FFFF, 1, 0, 153},
+      Package() {0x0005FFFF, 2, 0, 154},
+      Package() {0x0005FFFF, 3, 0, 155},
+      Package() {0x0006FFFF, 0, 0, 152},
+      Package() {0x0006FFFF, 1, 0, 153},
+      Package() {0x0006FFFF, 2, 0, 154},
+      Package() {0x0006FFFF, 3, 0, 155},
+      Package() {0x0007FFFF, 0, 0, 152},
+      Package() {0x0007FFFF, 1, 0, 153},
+      Package() {0x0007FFFF, 2, 0, 154},
+      Package() {0x0007FFFF, 3, 0, 155},
+      Package() {0x0008FFFF, 0, 0, 152},
+      Package() {0x0008FFFF, 1, 0, 153},
+      Package() {0x0008FFFF, 2, 0, 154},
+      Package() {0x0008FFFF, 3, 0, 155},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x2BFFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FF40000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000010000000,   // AddressMinimum - MIN
+        0x0000000017FFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000008000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000280000000000,   // AddressMinimum - MIN
+        0x00002BFFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP,0) // PCI _OSC Support Field value
+    Name (CTRL,0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3,0,CDW1)
+      If (LEqual (Arg0,ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3,4,CDW2)
+        CreateDWordField (Arg3,8,CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2,SUPP)
+        Store (CDW3,CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL,0x1E,CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1,One)) {
+          Or (CDW1,0x08,CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3,CTRL)) {
+          Or (CDW1,0x10,CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL,CDW3)
+        Return (Arg3)
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1,4,CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0,ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI6 RCB2
+
+  // PCI7 RCB3
+  Device (PCI7) {
+    //
+    // Hardware ID must be PNP0A08, which maps to a PCIe root complex.
+    // Section 6.1.5
+    //
+
+    Name (_HID,"PNP0A08")
+    Name (_CCA, ONE)
+
+    Method (_STA, 0, NotSerialized) {
+      Return (0xF)                      // The default value is 0x0. Unfortunately, it breaks
+                                        // run-time patching as the representation of 0 is special
+                                        // encoding and cannot be patched to expand with extra bytes
+                                        // easily. As such, we default to 0xF and patch this based
+                                        // on whether the port was enabled or not by the BIOS.
+    }
+
+    //
+    // Optionally, include a compatible ID of PNP0A03, which maps to a PCI
+    // root complex for use with pre-PCIe operating systems.
+    // Section 6.1.2
+    //
+
+    Name (_CID,"PNP0A03")
+
+    //
+    // Declare the segment number of this root complex. Most systems only
+    // have one segment, which is numbered 0.
+    // Section 6.5.6
+    //
+
+    Name (_SEG, 5)
+
+    //
+    // Declare the base bus number, which is the bus number of the root
+    // bus in this root complex. This is usually 0, but need not be.
+    // For root complexes supporting multiple root busses, this should
+    // be the lowest numbered root bus.
+    // Section 6.5.5
+    //
+
+    Name (_BBN, 0)
+
+    //
+    // The _UID value provides a way of uniquely identifying a device
+    // in the case where more than one instance of a specific device
+    // is implemented with the same _HID/_CID. For systems with a
+    // single root complex, this is usually just 0. For systems with
+    // multiple root complexes, this should be different for each
+    // root complex.
+    // Section 6.1.12
+    //
+
+    Name (_UID, "PCI7")
+    Name (_STR, Unicode("PCIe 7 Device"))
+
+    //
+    // Declare the PCI Routing Table.
+    // This defines SPI mappings of the four line-based interrupts
+    // associated with the root complex and hierarchy below it.
+    // Section 6.2.12
+    //
+
+    Name (_PRT, Package() {
+
+      //
+      // Routing for device 0, all functions.
+      // Note: ARM doesn't support LNK nodes, so the third param
+      // is 0 and the fourth param is the SPI number of the interrupt
+      // line. In this example, the A/B/C/D interrupts are wired to
+      // SPI lines 156/157/158/159 respectively. PCI7 RCB3
+      //
+      Package() {0x0001FFFF, 0, 0, 156},
+      Package() {0x0001FFFF, 1, 0, 157},
+      Package() {0x0001FFFF, 2, 0, 158},
+      Package() {0x0001FFFF, 3, 0, 159},
+      Package() {0x0002FFFF, 0, 0, 156},
+      Package() {0x0002FFFF, 1, 0, 157},
+      Package() {0x0002FFFF, 2, 0, 158},
+      Package() {0x0002FFFF, 3, 0, 159},
+      Package() {0x0003FFFF, 0, 0, 156},
+      Package() {0x0003FFFF, 1, 0, 157},
+      Package() {0x0003FFFF, 2, 0, 158},
+      Package() {0x0003FFFF, 3, 0, 159},
+      Package() {0x0004FFFF, 0, 0, 156},
+      Package() {0x0004FFFF, 1, 0, 157},
+      Package() {0x0004FFFF, 2, 0, 158},
+      Package() {0x0004FFFF, 3, 0, 159},
+      Package() {0x0005FFFF, 0, 0, 156},
+      Package() {0x0005FFFF, 1, 0, 157},
+      Package() {0x0005FFFF, 2, 0, 158},
+      Package() {0x0005FFFF, 3, 0, 159},
+      Package() {0x0006FFFF, 0, 0, 156},
+      Package() {0x0006FFFF, 1, 0, 157},
+      Package() {0x0006FFFF, 2, 0, 158},
+      Package() {0x0006FFFF, 3, 0, 159},
+      Package() {0x0007FFFF, 0, 0, 156},
+      Package() {0x0007FFFF, 1, 0, 157},
+      Package() {0x0007FFFF, 2, 0, 158},
+      Package() {0x0007FFFF, 3, 0, 159},
+      Package() {0x0008FFFF, 0, 0, 156},
+      Package() {0x0008FFFF, 1, 0, 157},
+      Package() {0x0008FFFF, 2, 0, 158},
+      Package() {0x0008FFFF, 3, 0, 159},
+    })
+
+    //
+    // Declare the resources assigned to this root complex.
+    // Section 6.2.2
+    //
+    Method (_CBA, 0, Serialized) {
+      Return (0x2FFFF0000000)
+    }
+
+    //
+    // Declare a ResourceTemplate buffer to return the resource
+    // requirements from _CRS.
+    // Section 19.5.109
+    //
+
+    Name (RBUF, ResourceTemplate () {
+
+      //
+      // Declare the range of bus numbers assigned to this root
+      // complex. In this example, the minimum bus number will be
+      // 0, the maximum bus number will be 0xFF, supporting
+      // 256 busses total.
+      // Section 19.5.141
+      //
+
+      WordBusNumber (
+        ResourceProducer,
+        MinFixed,   // IsMinFixed
+        MaxFixed,   // IsMaxFixed
+        PosDecode,  // Decode
+        0,          // AddressGranularity
+        0,          // AddressMinimum - Minimum Bus Number
+        255,        // AddressMaximum - Maximum Bus Number
+        0,          // AddressTranslation - Set to 0
+        256)        // RangeLength - Number of Busses
+
+      //
+      // Declare the memory range to be used for BAR memory
+      // windows. This declares a 4GB region starting at
+      // 0x4000000000.
+      // Section 19.5.80
+      //
+      // Memory32Fixed (ReadWrite, 0x1FF40000, 0x10000, )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x0000000018000000,   // AddressMinimum - MIN
+        0x000000001FFFFFFF,   // AddressMinimum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x0000000008000000    // RangeLength - LEN
+      )
+
+      QWordMemory (
+        ResourceProducer,     // ResourceUsage
+        PosDecode,            // Decode
+        MinFixed,             // IsMinFixed
+        MaxFixed,             // IsMaxFixed
+        NonCacheable,         // NonCacheable
+        ReadWrite,            // ReadAndWrite
+        0x0000000000000000,   // AddressGranularity - GRA
+        0x00002C0000000000,   // AddressMinimum - MIN
+        0x00002FFFDFFFFFFF,   // AddressMaximum - MAX
+        0x0000000000000000,   // AddressTranslation - TRA
+        0x000003FFE0000000    // RangeLength - LEN
+      )
+    })
+
+    Method (_CRS, 0, Serialized) {
+      Return (RBUF)
+    }
+
+    //
+    // Declare an _OSC (OS Control Handoff) method which takes 4 arguments.
+    //
+    // Argments:
+    //   Arg0  A Buffer containing a UUID
+    //   Arg1  An Integer containing a Revision ID of the buffer format
+    //   Arg2  An Integer containing a count of entries in Arg3
+    //   Arg3  A Buffer containing a list of DWORD capabilities
+    // Return Value:
+    //   A Buffer containing a list of capabilities
+    // See the APCI spec, Section 6.2.10,
+    // and the PCI FW spec, Section 4.5.
+    //
+    // The following is an example, and may need modification for
+    // specific implementations.
+    //
+
+    Name (SUPP,0) // PCI _OSC Support Field value
+    Name (CTRL,0) // PCI _OSC Control Field value
+
+    Method (_OSC, 4) {
+
+      //
+      // Look for the PCI Host Bridge Interface UUID.
+      // Section 6.2.10.3
+      //
+
+      //
+      // Create DWord-adressable fields from the Capabilities Buffer
+      // Create CDW1 outside the test as it's used in the else clause.
+      //
+
+      CreateDWordField (Arg3,0,CDW1)
+      If (LEqual (Arg0,ToUUID("33DB4D5B-1FF7-401C-9657-7441C03DD766"))) {
+
+        CreateDWordField (Arg3,4,CDW2)
+        CreateDWordField (Arg3,8,CDW3)
+
+        //
+        // Save Capabilities DWord 2 & 3
+        //
+
+        Store (CDW2,SUPP)
+        Store (CDW3,CTRL)
+
+        //
+        // Only allow native hot plug control if OS supports:
+        //  ASPM
+        //  Clock PM
+        //  MSI/MSI-X
+        //
+
+        If (LNotEqual (And (SUPP, 0x16), 0x16)) {
+
+          //
+          // Mask bit 0 (and undefined bits)
+          //
+
+          And (CTRL,0x1E,CTRL)
+        }
+
+        //
+        // Never allow native Hot plug, PME.
+        // Never allow SHPC (no SHPC controller in this system).
+        // Only allow PCIe AER control if PCIe AER Firmware-First is disabled
+        // Allows PCI Express Capability Structure control
+        //
+
+        If (AERF) {
+          And (CTRL, 0x10, CTRL)
+        } Else {
+          And (CTRL, 0x18, CTRL)
+        }
+
+        //
+        // Check for unknown revision.
+        //
+
+        If (LNotEqual (Arg1,One)) {
+          Or (CDW1,0x08,CDW1)
+        }
+
+        //
+        // Check if capabilities bits were masked.
+        //
+
+        If (LNotEqual (CDW3,CTRL)) {
+          Or (CDW1,0x10,CDW1)
+        }
+
+        //
+        // Update DWORD3 in the buffer.
+        //
+
+        Store (CTRL,CDW3)
+        Return (Arg3)
+      } Else {
+
+        //
+        // Unrecognized UUID
+        //
+
+        Or (CDW1,4,CDW1)
+        Return (Arg3)
+      }
+    } // End _OSC
+
+    //
+    // Declare a _DSM method for various functions called by the OS.
+    // See the APCI spec, Section 9.14.1,
+    // and the PCI FW spec, Section 4.6.
+    // See also:
+    // http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/PCI-rsc.doc
+    //
+
+    Method (_DSM, 0x4, Serialized) {
+
+      //
+      // Match against the _DSM PCI GUID.
+      //
+
+      If (LEqual (Arg0,ToUUID("E5C937D0-3553-4d7a-9117-EA4D19C3434D"))) {
+
+        Switch (ToInteger(Arg2)) {
+          //
+          // Function 0: Return supported functions as a bitfield
+          // with one bit for each supported function.
+          // Bit 0 must always be set, as that represents
+          // function 0 (which is what is being called here).
+          // Support for different functions may depend on
+          // the revision ID of the interface, passed as Arg1.
+          //
+
+          Case (0) {
+
+              //
+              // Functions 0-7 are supported.
+              //
+
+              Return (Buffer() {0x01})
+          }
+        }
+      }
+
+      //
+      // If not one of the function identifiers we recognize, then return a buffer
+      // with bit 0 set to 0 indicating no functions supported.
+      //
+
+      Return (Buffer() {0})
+    }
+
+    //
+    // Root Port 0 Device within the Root Complex.
+    //
+    Device (RP0) {
+      //
+      // Device 0, Function 0.
+      //
+
+      Name (_ADR, 0x00000000)
+    }
+
+    Method (_PXM, 0, NotSerialized) {
+      // Patch by code
+      Return(0xFF)
+    }
+  } // PCI7 RCB3

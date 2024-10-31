@@ -1,0 +1,11 @@
+/** @file
+
+  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+/=#
+
+#string STR_PLATFORM_DXE_STRING_1  #language en-US  "www.adlinktech.com"

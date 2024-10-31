@@ -1,0 +1,42 @@
+#/** @file
+#
+#  PEIM MMC set power off type driver
+#
+#  Copyright (c) 2022, ADLink. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MmcSetPowerOffTypePei
+  FILE_GUID                      = FEC58211-6025-45B7-9DCF-DB21A433BB78
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = MmcSetPowerOffTypePeim
+
+#
+# The following is for reference only and not required by
+# build tools
+#
+# VALID_ARCHITECTURES            = AARCH64
+#
+
+[Sources]
+  MmcSetPowerOffTypePei.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ADLINK/ComHpcAltPkg/ComHpcAltPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  MmcLib
+  PeimEntryPoint
+
+[depex]
+  gArmMpCoreInfoPpiGuid
+

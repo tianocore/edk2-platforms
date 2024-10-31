@@ -139,7 +139,7 @@ BOARD_SETTINGS_CFG=edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BO
 OUTPUT_BIN_DIR=$PWD/Build/${BOARD_NAME}
 OUTPUT_BOARD_SETTINGS_BIN=${OUTPUT_BIN_DIR}/$(basename ${BOARD_SETTINGS_CFG}).bin
 
-export PACKAGES_PATH=$PWD:$PWD/edk2:$PWD/edk2-non-osi:$PWD/edk2-platforms:$PWD/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg:$PWD/edk2-platforms/Features/Intel/Debugging:$PWD/edk2-platforms/Features:$PWD/edk2-platforms/Features/Intel
+export PACKAGES_PATH=$PWD:$PWD/edk2:$PWD/edk2-non-osi:$PWD/edk2-platforms:$PWD/edk2-platforms/Features/Intel/Debugging:$PWD/edk2-platforms/Features:$PWD/edk2-platforms/Features/Intel
 
 case $(uname -m) in
   "x86_64")

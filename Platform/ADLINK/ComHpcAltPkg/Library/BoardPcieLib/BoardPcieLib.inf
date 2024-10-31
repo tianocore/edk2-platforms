@@ -1,0 +1,27 @@
+## @file
+#
+# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = BoardPcieLib
+  FILE_GUID                      = 062191A6-E113-4FD6-84C7-E400B4B34759
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardPcieLib
+
+[Sources]
+  BoardPcieLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  GpioLib
+  TimerLib

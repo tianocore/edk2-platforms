@@ -1,0 +1,151 @@
+/** @file
+
+  Copyright (c) 2021 - 2022, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+Scope(\_SB) {
+  Name (CPCE, 1)                       // CPPC Enable
+  Name (LPIE, 0)                       // LPI Enable
+
+  Method (_OSC, 4, Serialized) {         // _OSC: Operating System Capabilities
+    CreateDWordField (Arg3, 0x00, STS0)
+    CreateDWordField (Arg3, 0x04, CAP0)
+    If (LEqual(Arg0, ToUUID ("0811b06e-4a27-44f9-8d60-3cbbc22e7b48")) /* Platform-wide Capabilities */) {
+      If (LNotEqual(Arg1, One)) {
+        And(STS0, 0xFFFFFFE0, STS0)
+        Or(STS0, 0x0A, STS0)          // Unrecognized Revision, OSC failure
+      } Else {
+        If (LEqual(And(CAP0, 0x100), 0x100)) {
+          And(CAP0, 0xFFFFFEFF, CAP0) // No support for OS Initiated LPI
+          And(STS0, 0xFFFFFFE0, STS0)
+          Or(STS0, 0x12, STS0)
+        }
+        If (LEqual(LPIE, 0x1)) {
+          Or(CAP0, 0x80, CAP0)        // Support for LPI
+        } Else {
+          And(CAP0, 0xFFFFFF7F, CAP0) // No support for LPI
+        }
+        If (LEqual(CPCE, 0x1)) {
+          Or(CAP0, 0x40, CAP0)        // Support for CPPCv2
+        } Else {
+          And(CAP0, 0xFFFFFFBF, CAP0) // No support for CPPCv2
+        }
+      }
+    } Else {
+      And(STS0, 0xFFFFFFE0, STS0)
+      Or(STS0, 0x06, STS0)            // Unrecognized Revision, Unrecognized UUID
+    }
+    Return (Arg3)
+  }
+
+  Name(CLPI, Package() {
+    0,                     // Version
+    1,                     // Level Index
+    1,                     // Count
+    Package() {
+      1,                   // Min residency (uS)
+      1,                   // Wake latency (uS)
+      1,                   // Flags
+      0,                   // Arch Context Flags
+      0,                   // Residency Counter Frequency
+      1,                   // No parent state
+      0x01000000,          // Integer Entry method
+      ResourceTemplate() { // Null Residency Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      ResourceTemplate() { // Null Usage Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      "Standby",
+    },
+  })
+
+  Name(PLPI, Package() {
+    0,                     // Version
+    2,                     // Level Index
+    2,                     // Count
+    // WFI for CPU (NS-WFI)
+    Package() {
+      1,                   // Min residency (uS)
+      1,                   // Wake latency (uS)
+      1,                   // Flags
+      0,                   // Arch Context Flags
+      0,                   // Residency Counter Frequency
+      0,                   // No parent state
+      ResourceTemplate () {
+        // Register Entry method
+        Register (FFixedHW,
+          0x20,            // Bit Width
+          0x00,            // Bit Offset
+          0xFFFFFFFF,      // Address
+          0x03,            // Access Size
+        )
+      },
+      ResourceTemplate() { // Null Residency Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      ResourceTemplate() { // Null Usage Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      "WFI",
+    },
+
+    // WFI for CPU (S-WFI)
+    Package() {
+      1,                   // Min residency (uS)
+      2900,                // Wake latency (uS)
+      1,                   // Flags
+      0,                   // Arch Context Flags
+      0,                   // Residency Counter Frequency
+      1,                   // No parent state
+      ResourceTemplate () {
+        // Register Entry method
+        Register (FFixedHW,
+          0x20,            // Bit Width
+          0x00,            // Bit Offset
+          0x01,            // Address
+          0x03,            // Access Size
+        )
+      },
+      ResourceTemplate() { // Null Residency Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      ResourceTemplate() { // Null Usage Counter
+        Register (SystemMemory, 0, 0, 0, 0)
+      },
+      "Standby",
+    },
+  })
+
+  Device (SYST) {            // System state
+    Name(_HID, "ACPI0010")
+    Name(_UID, 0)
+    Name (_LPI, Package() {
+      0,                     // Version
+      0,                     // Level Index
+      1,                     // Count
+      // Retention state for Cluster
+      Package() {
+        100,                 // Min residency (uS)
+        99,                  // Wake latency (uS)
+        1,                   // Flags
+        0,                   // Arch Context Flags
+        100,                 // Residency Counter Frequency
+        0,                   // No Parent State
+        0x01000100,          // Integer Entry method
+        ResourceTemplate() { // Null Residency Counter
+          Register (SystemMemory, 0, 0, 0, 0)
+        },
+        ResourceTemplate() { // Null Usage Counter
+          Register (SystemMemory, 0, 0, 0, 0)
+        },
+        "System Standby"
+      },
+    })
+  }
+}
+
+Include ("CPU-S0.asi")

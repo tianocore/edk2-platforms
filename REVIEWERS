@@ -11,6 +11,7 @@
 # Ampere
 /Platform/Ampere/** @leiflindholm
 /Silicon/Ampere/** @leiflindholm
+/Platform/ADLINK/** @nhivp
 
 # ARM
 # Add Thomas Abraham

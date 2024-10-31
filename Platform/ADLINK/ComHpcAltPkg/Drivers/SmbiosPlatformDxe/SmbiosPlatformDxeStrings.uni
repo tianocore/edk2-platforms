@@ -1,0 +1,23 @@
+/** @file
+ *  Based on files under Nt32Pkg/MiscSubClassPlatformDxe/
+ *
+ *  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+ *  Copyright (c) 2021, NUVIA Inc. All rights reserved.<BR>
+ *  Copyright (c) 2006 - 2010, Intel Corporation. All rights reserved.<BR>
+ *  Copyright (c) 2015, Hisilicon Limited. All rights reserved.<BR>
+ *  Copyright (c) 2015, Linaro Limited. All rights reserved.<BR>
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+**/
+
+
+/=#
+
+#langdef en-US "English"
+
+#include "Type07/PlatformCache.uni"
+#include "Type08/PlatformPortConnector.uni"
+#include "Type09/PlatformSystemSlot.uni"
+#include "Type11/PlatformOemString.uni"
+#include "Type17/PlatformMemoryDevice.uni"
+#include "Type41/PlatformOnboardDevicesExtended.uni"

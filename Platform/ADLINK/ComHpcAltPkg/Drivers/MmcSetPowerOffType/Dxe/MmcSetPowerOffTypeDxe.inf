@@ -1,0 +1,43 @@
+#/** @file
+#  DXE MMC set power off type driver
+#
+#  Copyright (c) 2022, ADLink. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = MmcSetPowerOffTypeDxe
+  FILE_GUID                      = E4F90DA8-092B-4D9C-B927-68CDCF3DB26E
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = MmcSetPowerOffTypeDxeInitialize
+
+#
+# The following is for reference only and not required by
+# build tools
+#
+# VALID_ARCHITECTURES            = AARCH64
+#
+
+[Sources.AARCH64]
+  MmcSetPowerOffTypeDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/ADLINK/ComHpcAltPkg/ComHpcAltPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  MmcLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gEfiEventReadyToBootGuid
+
+[Depex]
+  gEfiAcpiTableProtocolGuid

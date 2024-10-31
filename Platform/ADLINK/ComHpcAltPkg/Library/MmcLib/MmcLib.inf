@@ -1,0 +1,38 @@
+## @file
+# MMC Library.
+#
+# Copyright (c) 2022, ADLink. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MmcLib
+  MODULE_UNI_FILE                = MmcLib.uni
+  FILE_GUID                      = BF841D2E-F8CF-4FB3-AC12-30ACB32661DC
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = MmcLib
+
+
+[Sources]
+  MmcLib.c
+
+
+[Packages]
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ADLINK/ComHpcAltPkg/ComHpcAltPkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  PL011UartLib
+  PrintLib
+
+[Pcd]
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
+

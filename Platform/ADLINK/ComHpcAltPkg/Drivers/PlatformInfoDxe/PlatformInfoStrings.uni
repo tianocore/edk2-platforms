@@ -1,0 +1,63 @@
+//
+// Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+
+#langdef en-US  "English"
+
+#string STR_PLATFORM_INFO_FORM                      #language en-US "Platform Board Information"
+#string STR_PLATFORM_INFO_FORM_HELP                 #language en-US "Platform Board Information"
+
+#string STR_PLATFORM_INFO_SEPERATE_LINE             #language en-US ""
+
+#string STR_PLATFORM_INFO_BOARD                     #language en-US "Board"
+#string STR_PLATFORM_INFO_BOARD_VALUE               #language en-US "Ampere Altra Developer Platform"
+
+#string STR_PLATFORM_INFO_SCPVER                    #language en-US "SCP FW Version"
+#string STR_PLATFORM_INFO_SCPVER_VALUE              #language en-US "0"
+
+#string STR_PLATFORM_INFO_RCVER                     #language en-US "Reference Code version"
+#string STR_PLATFORM_INFO_RCVER_VALUE               #language en-US "0"
+
+#string STR_PLATFORM_INFO_SCPBUILD                  #language en-US "SCP FW Build"
+#string STR_PLATFORM_INFO_SCPBUILD_VALUE            #language en-US "0"
+
+#string STR_MMC_FIRMWARE_REV_LABEL                  #language en-US "MMC FW Version"
+#string STR_MMC_FIRMWARE_REV_VALUE                  #language en-US "NA"
+
+#string STR_PLATFORM_INFO_LANMCUVER_HELP            #language en-US "10G LAN MCU FW Version"
+#string STR_PLATFORM_INFO_LANMCUVER                 #language en-US "MCU FW Version"
+#string STR_PLATFORM_INFO_LANMCUVER_VALUE           #language en-US "NA"
+
+#string STR_PLATFORM_INFO_CPUINFO                   #language en-US "CPU"
+#string STR_PLATFORM_INFO_CPUINFO_VALUE             #language en-US " "
+
+#string STR_PLATFORM_INFO_CPUCLK                    #language en-US "CPU Clock"
+#string STR_PLATFORM_INFO_CPUCLK_VALUE              #language en-US "0MHz"
+
+#string STR_PLATFORM_INFO_PCPCLK                    #language en-US "PCP Clock"
+#string STR_PLATFORM_INFO_PCPCLK_VALUE              #language en-US "0MHz"
+
+#string STR_PLATFORM_INFO_L1ICACHE                  #language en-US "L1I Cache"
+#string STR_PLATFORM_INFO_L1ICACHE_VALUE            #language en-US "0KB"
+
+#string STR_PLATFORM_INFO_L1DCACHE                  #language en-US "L1D Cache"
+#string STR_PLATFORM_INFO_L1DCACHE_VALUE            #language en-US "0KB"
+
+#string STR_PLATFORM_INFO_L2CACHE                   #language en-US "L2 Cache"
+#string STR_PLATFORM_INFO_L2CACHE_VALUE             #language en-US "0KB"
+
+#string STR_PLATFORM_INFO_SOCCLK                    #language en-US "SOC Clock"
+#string STR_PLATFORM_INFO_SOCCLK_VALUE              #language en-US "0MHz"
+
+#string STR_PLATFORM_INFO_SYSCLK                    #language en-US "Sys Clock"
+#string STR_PLATFORM_INFO_SYSCLK_VALUE              #language en-US "0MHz"
+
+#string STR_PLATFORM_INFO_AHBCLK                    #language en-US "AHB Clock"
+#string STR_PLATFORM_INFO_AHBCLK_VALUE              #language en-US "0MHz"
+
+#string STR_CPU_FORM_INTER_SOCKET_LINK0             #language en-US "Inter Socket Connection: Link 0"
+#string STR_CPU_FORM_INTER_SOCKET_LINK0_VALUE       #language en-US ""
+#string STR_CPU_FORM_INTER_SOCKET_LINK1             #language en-US "Inter Socket Connection: Link 1"
+#string STR_CPU_FORM_INTER_SOCKET_LINK1_VALUE       #language en-US ""

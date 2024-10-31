@@ -27,6 +27,7 @@
 # Ampere Computing
 /Platform/Ampere/** @nhivp @bexcran @chuongtranle
 /Silicon/Ampere/** @nhivp @bexcran @chuongtranle
+/Platform/ADLINK/** @bexcran
 
 # ARM
 /Platform/ARM/** @samimujawar
