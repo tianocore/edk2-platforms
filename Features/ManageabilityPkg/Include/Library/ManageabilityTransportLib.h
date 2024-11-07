@@ -60,10 +60,21 @@ typedef struct {
   UINT32    BmcSlaveAddress;
 } MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO;
 
+///
+/// Manageability Serial protocol interface hardware information.
+///
+typedef struct {
+  UINT8    IpmiRequesterAddress;
+  UINT8    IpmiResponderAddress;
+  UINT8    IpmiRequesterLUN;
+  UINT8    IpmiResponderLUN;
+} MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO;
+
 typedef union {
-  VOID                                          *Pointer;
-  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO     *Kcs;
-  MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO    *Ssif;
+  VOID                                            *Pointer;
+  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO       *Kcs;
+  MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO      *Ssif;
+  MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO    *Serial;
 } MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION;
 
 ///
