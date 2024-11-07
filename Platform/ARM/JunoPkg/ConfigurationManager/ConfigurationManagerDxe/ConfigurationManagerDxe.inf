@@ -31,9 +31,12 @@
   DynamicTablesPkg/DynamicTablesPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
+  SecurityPkg/SecurityPkg.dec
   Platform/ARM/JunoPkg/ArmJuno.dec
 
 [LibraryClasses]
+  ArmLib
+  ArmFfaLib
   ArmPlatformLib
   DynamicTablesScmiInfoLib
   PrintLib
@@ -41,8 +44,12 @@
   UefiDriverEntryPoint
   UefiRuntimeServicesTableLib
 
+[Guids]
+  gTpm2ServiceFfaGuid
+
 [Protocols]
   gEdkiiConfigurationManagerProtocolGuid
+  gEfiMmCommunication2ProtocolGuid
 
 [FixedPcd]
   # PCI Root complex specific PCDs
@@ -78,6 +85,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
 
   gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdDevelopmentPlatformRelaxations
+
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize
 
 [Pcd]
 
