@@ -19,6 +19,7 @@ MANAGEABILITY_SPECIFICATION_NAME  ManageabilitySpecNameTable[] = {
   { &gManageabilityTransportKcsGuid,         L"KCS"      },
   { &gManageabilityTransportSmbusI2cGuid,    L"SMBUS I2C"},
   { &gManageabilityTransportPciVdmGuid,      L"PCI VDM"  },
+  { &gManageabilityTransportSerialGuid,      L"SERIAL"   },
   { &gManageabilityTransportMctpGuid,        L"MCTP"     },
   { &gManageabilityProtocolIpmiGuid,         L"IPMI"     },
   { &gManageabilityProtocolMctpGuid,         L"MCTP"     },
