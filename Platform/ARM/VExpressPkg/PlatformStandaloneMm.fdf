@@ -69,7 +69,7 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
 
-  INF StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+  INF ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
 
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   INF Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
