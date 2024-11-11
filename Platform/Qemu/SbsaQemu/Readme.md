@@ -97,6 +97,10 @@ Create a directory $WORKSPACE that would hold source code of the components.
   cd $WORKSPACE
   build -b RELEASE -a AARCH64 -t GCC5 -p edk2-platforms/Platform/Qemu/SbsaQemu/SbsaQemu.dsc
   ```
+  An RME aware SBSA system can be compiled by adding `-D ENABLE_RME` to the
+  command line above.  In that case `bl1.bin` and `fip.bin` also have to be RME
+  aware.  Please refer to TF-A instructions to generate RME enabled binaries.
+
   Copy SBSA_FLASH0.fd and SBSA_FLASH1.fd to top $WORKSPACE directory.
   Then extend the file size to match the machine flash size.
   ```

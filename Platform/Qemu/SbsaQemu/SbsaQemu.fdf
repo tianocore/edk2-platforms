@@ -21,10 +21,10 @@
 
 [FD.SBSA_FLASH0]
 BaseAddress   = 0x00000000
-Size          = 0x00200000
+Size          = 0x00800000
 ErasePolarity = 1
 BlockSize     = 0x00001000
-NumBlocks     = 0x200
+NumBlocks     = 0x800
 
 ################################################################################
 #
@@ -46,8 +46,8 @@ NumBlocks     = 0x200
 0x00000000|0x00012000
 FILE = Platform/Qemu/Sbsa/bl1.bin
 
-# and FIP (BL2 + BL31)
-0x00012000|0x00020000
+# and FIP (BL2 + BL31 + RMM (if present))
+0x00012000|0x007EE000
 FILE = Platform/Qemu/Sbsa/fip.bin
 
 ################################################################################

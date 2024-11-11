@@ -11,11 +11,15 @@
 #
 ################################################################################
 [Defines]
+!if $(ENABLE_RME)
+  PLATFORM_NAME                  = SbsaQemuRme
+!else
   PLATFORM_NAME                  = SbsaQemu
+!endif
   PLATFORM_GUID                  = feb0325c-b93d-4e47-8844-b832adeb9e0c
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010005
-  OUTPUT_DIRECTORY               = Build/SbsaQemu
+  OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
@@ -392,10 +396,18 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmTokenSpaceGuid.PcdVFPEnabled|1
 
   # System Memory Base -- fixed
-  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x10000000000
+  !if $(ENABLE_RME)
+    #
+    # When RME is enabled the RMM is installed at 0x10000000000
+    # and the system base memory bumped by 1072MB.
+    #
+    gArmTokenSpaceGuid.PcdSystemMemoryBase|0x10043000000
+  !else
+    gArmTokenSpaceGuid.PcdSystemMemoryBase|0x10000000000
+  !endif
 
   # Space for 32 stacks
-  gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x1000007c000
+  gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|gArmTokenSpaceGuid.PcdSystemMemoryBase + 0x7c000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
