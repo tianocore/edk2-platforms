@@ -189,9 +189,6 @@
   MemoryAllocationLib              | MdePkg/Library/PeiMemoryAllocationLib/PeiMemoryAllocationLib.inf
   SerialPortLib                    | Platform/Loongson/LoongArchQemuPkg/Library/SerialPortLib/EarlySerialPortLib16550.inf
 
-  # Loongson platforms have SEC modules with standard entry points, so we can generically link StackCheckLib
-  NULL                             | MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
-
 [LibraryClasses.common.PEI_CORE]
   PcdLib                           | MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
   HobLib                           | MdePkg/Library/PeiHobLib/PeiHobLib.inf

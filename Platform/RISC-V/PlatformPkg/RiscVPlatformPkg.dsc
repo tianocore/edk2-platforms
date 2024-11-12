@@ -75,9 +75,6 @@
   Edk2OpensbiPlatformWrapperLib|Platform/RISC-V/PlatformPkg/Library/Edk2OpensbiPlatformWrapperLib/Edk2OpensbiPlatformWrapperLib.inf
   RiscVSpecialPlatformLib|Platform/RISC-V/PlatformPkg/Library/RiscVSpecialPlatformLibNull/RiscVSpecialPlatformLibNull.inf
 
-  # RISCV platforms have SEC modules with standard entry points, so we can generically link StackCheckLib
-  NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
-
 [LibraryClasses.common.DXE_DRIVER]
   PlatformBootManagerLib|Platform/RISC-V/PlatformPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
 

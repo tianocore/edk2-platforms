@@ -172,9 +172,6 @@ DEFINE X64EMU_ENABLE  = FALSE
 
   ArmGicArchLib|ArmPkg/Library/ArmGicArchSecLib/ArmGicArchSecLib.inf
 
-  # ARM platforms have SEC modules with standard entry points, so we can generically link StackCheckLib
-  NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
-
 [LibraryClasses.common.PEIM, LibraryClasses.common.SEC]
   MemoryInitPeiLib|Silicon/AMD/Styx/Library/MemoryInitPei/MemoryInitPeiLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf

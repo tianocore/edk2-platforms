@@ -506,13 +506,11 @@
   #
   UefiCpuPkg/SecCore/SecCore.inf {
     <LibraryClasses>
-      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
     !if $(SOURCE_DEBUG_ENABLE)
         PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
         DebugAgentLib|SourceLevelDebugPkg/Library/DebugAgent/SecPeiDebugAgentLib.inf
         ResetSystemLib|QuarkSocPkg/QuarkNorthCluster/Library/ResetSystemLib/ResetSystemLib.inf
     !endif
-    NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
   #
