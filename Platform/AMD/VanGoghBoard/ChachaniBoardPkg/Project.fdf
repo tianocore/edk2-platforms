@@ -629,7 +629,7 @@ NumBlocks     = 0x100
 # content of the FFS file.
 #
 ##
-[Rule.Common.SEC.RESET_VECTOR]
+[Rule.Common.USER_DEFINED.RESET_VECTOR]
   FILE RAW = $(NAMED_GUID) {
     RAW BIN   Align = 16   |.bin
   }
