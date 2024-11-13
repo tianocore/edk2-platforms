@@ -89,8 +89,7 @@ AddSerialTerminal (
       (int) mSerialDevicePath.Uart.StopBits,
       (int) DefaultTerminalType));
 
-  if (DefaultTerminalType >= 0 &&
-      DefaultTerminalType < (sizeof (mTerminalType) / sizeof (mTerminalType[0]))) {
+  if (DefaultTerminalType < (sizeof (mTerminalType) / sizeof (mTerminalType[0]))) {
     CopyMem (
       (VOID *) &(mSerialDevicePath.TerminalType.Guid),
       (VOID *) mTerminalType[DefaultTerminalType],
