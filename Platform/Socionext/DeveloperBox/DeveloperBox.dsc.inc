@@ -111,6 +111,9 @@
   VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
   VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
 
+[LibraryClasses.common.SEC, LibraryClasses.common.PEI_CORE, LibraryClasses.common.PEIM]
+  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuSecLib.inf
+
 [LibraryClasses.common.SEC]
   # ARM platforms have SEC modules with standard entry points, so we can generically link StackCheckLib
   NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf

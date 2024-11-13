@@ -201,6 +201,9 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   # ARM platforms have SEC modules with standard entry points, so we can generically link StackCheckLib
   NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
 
+[LibraryClasses.common.SEC, LibraryClasses.common.PEI_CORE, LibraryClasses.common.PEIM]
+  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuSecLib.inf
+
 [LibraryClasses.common.PEI_CORE]
   PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
