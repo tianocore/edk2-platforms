@@ -175,7 +175,6 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
 /** A structure describing the configuration manager protocol interface.
 */
 STATIC
-CONST
 EDKII_CONFIGURATION_MANAGER_PROTOCOL  mAmdPlatformConfigManagerProtocol = {
   CREATE_REVISION (1,   0),
   AmdPlatformGetObject,

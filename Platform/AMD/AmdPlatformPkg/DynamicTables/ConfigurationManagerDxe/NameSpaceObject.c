@@ -32,6 +32,10 @@ HandleCmObject (
   IN  OUT   CM_OBJ_DESCRIPTOR   *CONST  CmObjectDesc
   )
 {
+  if ((ObjectSize > MAX_UINT32) || (ObjectCount > MAX_UINT32)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   CmObjectDesc->ObjectId = CmObjectId;
   CmObjectDesc->Size     = (UINT32)ObjectSize;
   CmObjectDesc->Data     = (VOID *)Object;
