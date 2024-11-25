@@ -883,23 +883,49 @@ VkApiStart (
 
   KeyData.KeyState.KeyToggleState = 0;
   KeyData.KeyState.KeyShiftState  = 0;
-  KeyData.Key.ScanCode            = SCAN_ESC;
-  KeyData.Key.UnicodeChar         = CHAR_NULL;
+  KeyData.Key.ScanCode            = SCAN_NULL;
   NotifyHandle                    = NULL;
-  Status = SimpleEx->RegisterKeyNotify (
-                       SimpleEx,
-                       &KeyData,
-                       VkNotifyKeyCallback,
-                       &NotifyHandle
-                       );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_VK_ROUTINE_ENTRY_EXIT | DEBUG_ERROR, "ERROR - Failed to register 'Esc', Status: %r\n", Status));
-    goto Error;
+
+  for (KeyData.Key.ScanCode = SCAN_UP; KeyData.Key.ScanCode <= SCAN_ESC; KeyData.Key.ScanCode++) {
+    Status = SimpleEx->RegisterKeyNotify (
+                         SimpleEx,
+                         &KeyData,
+                         VkNotifyKeyCallback,
+                         &NotifyHandle
+                         );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_VK_ROUTINE_ENTRY_EXIT | DEBUG_ERROR,
+        "ERROR - Failed to register '%c', Status: %r\n",
+        KeyData.Key.ScanCode,
+        Status
+        ));
+      break;
+    }
   }
 
   KeyData.KeyState.KeyToggleState = 0;
   KeyData.KeyState.KeyShiftState  = 0;
   KeyData.Key.ScanCode            = SCAN_NULL;
+
+  for (KeyData.Key.UnicodeChar = CHAR_BACKSPACE; KeyData.Key.UnicodeChar <= CHAR_LINEFEED; KeyData.Key.UnicodeChar++) {
+    Status = SimpleEx->RegisterKeyNotify (
+                         SimpleEx,
+                         &KeyData,
+                         VkNotifyKeyCallback,
+                         &NotifyHandle
+                         );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_VK_ROUTINE_ENTRY_EXIT | DEBUG_ERROR,
+        "ERROR - Failed to register '%c', Status: %r\n",
+        KeyData.Key.UnicodeChar,
+        Status
+        ));
+      break;
+    }
+  }
+
   KeyData.Key.UnicodeChar         = CHAR_CARRIAGE_RETURN;
   Status = SimpleEx->RegisterKeyNotify (
                        SimpleEx,
