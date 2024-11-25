@@ -15,10 +15,11 @@
 #include <StandardNameSpaceObjects.h>
 #include <X64NameSpaceObjects.h>
 #include <ArchCommonNameSpaceObjects.h>
+#include <ConfigurationManagerObject.h>
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT  5
+#define PLAT_ACPI_TABLE_COUNT  6
 
 /** The configuration manager version.
 */
@@ -27,6 +28,13 @@
 /** The OEM ID
 */
 #define CFG_MGR_OEM_ID  { 'A', 'M', 'D', 'I', 'N', 'C' }
+
+/** Wrapper structure for PCI Config Space Info
+*/
+typedef struct CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER {
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO    *PciConfigSpace;
+  UINTN                                   PciConfigSpaceCount;
+} CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER;
 
 /** A structure describing the platform configuration
     manager repository information
@@ -52,6 +60,7 @@ typedef struct PlatformRepositoryInfo {
   CM_X64_HPET_INFO                                HpetInfo;
   CM_X64_WSMT_FLAGS_INFO                          WsmtFlagsInfo;
   CM_ARCH_COMMON_SPMI_INTERFACE_INFO              SpmiInterfaceInfo;
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER    PciConfigSpaceInfo;
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
 /** The SetObject function defines the interface implemented by the
@@ -98,6 +107,20 @@ AmdPlatformGetObject (
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
   IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
+  );
+
+/** Updates ACPI MCFG table information in the platform repository.
+
+  @param [in]  PlatformRepo  Pointer to the platform repository.
+
+  @retval EFI_SUCCESS        The ACPI MCFG table information is updated.
+  @retval EFI_INVALID_PARAMETER  The input parameter is invalid.
+  @retval EFI_UNSUPPORTED    The operation is not supported.
+**/
+EFI_STATUS
+EFIAPI
+UpdateMcfgTableInfo (
+  IN  EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
   );
 
 #endif // CONFIGURATION_MANAGER_H_

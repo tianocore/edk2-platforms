@@ -9,7 +9,6 @@
 #include <AcpiTableGenerator.h>
 #include <Library/BaseMemoryLib.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
-#include <ConfigurationManagerObject.h>
 #include "ConfigurationManager.h"
 
 /** A helper function for returning the Configuration Manager Objects.
@@ -233,6 +232,20 @@ GetArchNameSpaceObject (
                  CmObject
                  );
       break;
+    case EArchCommonObjPciConfigSpaceInfo:
+      if (PlatformRepo->PciConfigSpaceInfo.PciConfigSpace == NULL) {
+        Status = EFI_INVALID_PARAMETER;
+        break;
+      }
+
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpace,
+                 sizeof (*(PlatformRepo->PciConfigSpaceInfo.PciConfigSpace)) * PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
+                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
+                 CmObject
+                 );
+      break;
     default:
     {
       Status = EFI_NOT_FOUND;
@@ -310,6 +323,15 @@ SetArchNameSpaceObject (
                  &PlatformRepo->FixedFeatureFlags,
                  sizeof (PlatformRepo->FixedFeatureFlags),
                  1,
+                 CmObject
+                 );
+      break;
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpace,
+                 sizeof (*(PlatformRepo->PciConfigSpaceInfo.PciConfigSpace)) * PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
+                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
                  CmObject
                  );
       break;

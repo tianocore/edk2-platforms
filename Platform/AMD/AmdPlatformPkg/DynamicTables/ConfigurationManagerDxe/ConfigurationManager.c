@@ -15,7 +15,7 @@
 #include <IndustryStandard/HighPrecisionEventTimerTable.h>
 #include <IndustryStandard/WindowsSmmSecurityMitigationTable.h>
 #include <IndustryStandard/ServiceProcessorManagementInterfaceTable.h>
-#include <Library/BaseMemoryLib.h>
+#include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
 #include "ConfigurationManager.h"
 
 /** The platform configuration repository information.
@@ -62,6 +62,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
       EFI_ACPI_6_5_SERVER_PLATFORM_MANAGEMENT_INTERFACE_TABLE_SIGNATURE,
       EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_5_TABLE_REVISION,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSpmi),
+      NULL
+    },
+    /// MCFG Table
+    {
+      EFI_ACPI_6_5_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMcfg),
       NULL
     },
   },
@@ -169,6 +176,11 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
   {
     0x01,
     { EFI_ACPI_6_5_SYSTEM_IO, 0x8,  0,   0,                      0x0000000000000CA2 }
+  },
+  /// McfgInfo
+  {
+    NULL,
+    0
   }
 };
 
@@ -201,6 +213,12 @@ ConfigurationManagerDxeInitialize (
 {
   EFI_STATUS  Status;
   UINTN       Index;
+
+  Status = UpdateMcfgTableInfo (&mAmdPlatformRepositoryInfo);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "ERROR: Failed to update MCFG table info. Status = %r\n", Status));
+    return Status;
+  }
 
   /// set the OemTableId and OemRevision for the CmACpiTableList
   for (Index = 0; Index < ARRAY_SIZE (mAmdPlatformRepositoryInfo.CmAcpiTableList); Index++) {

@@ -22,6 +22,7 @@
 #
 
 [Sources]
+  Acpi/Mcfg.c
   ConfigurationManager.c
   NameSpaceObject.c
   ConfigurationManager.h
@@ -36,6 +37,8 @@
 
 [LibraryClasses]
   DebugLib
+  MemoryAllocationLib
+  PciSegmentInfoLib
   PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
