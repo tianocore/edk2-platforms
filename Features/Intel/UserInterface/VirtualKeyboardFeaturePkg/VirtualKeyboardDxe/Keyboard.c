@@ -883,7 +883,7 @@ VkApiStart (
 
   KeyData.KeyState.KeyToggleState = 0;
   KeyData.KeyState.KeyShiftState  = 0;
-  KeyData.Key.ScanCode            = SCAN_NULL;
+  KeyData.Key.UnicodeChar         = CHAR_NULL;
   NotifyHandle                    = NULL;
 
   for (KeyData.Key.ScanCode = SCAN_UP; KeyData.Key.ScanCode <= SCAN_ESC; KeyData.Key.ScanCode++) {
