@@ -139,7 +139,7 @@ Device (PCI0) {
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
-      Cacheable,            // Cacheable
+      NonCacheable,         // NonCacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
       0x0000000040000000,   // AddressMinimum - MIN
@@ -153,7 +153,7 @@ Device (PCI0) {
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
-      Cacheable,            // Cacheable
+      NonCacheable,         // NonCacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
       0x0000300000000000,   // AddressMinimum - MIN
@@ -470,7 +470,7 @@ Device (PCI1) {
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
-      Cacheable,            // Cacheable
+      NonCacheable,         // NonCacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
       0x0000000050000000,   // AddressMinimum - MIN
@@ -484,7 +484,7 @@ Device (PCI1) {
       PosDecode,            // Decode
       MinFixed,             // IsMinFixed
       MaxFixed,             // IsMaxFixed
-      Cacheable,            // Cacheable
+      NonCacheable,         // NonCacheable
       ReadWrite,            // ReadAndWrite
       0x0000000000000000,   // AddressGranularity - GRA
       0x0000340000000000,   // AddressMinimum - MIN
