@@ -485,6 +485,71 @@ GetX64NameSpaceObject (
                  CmObject
                  );
       break;
+    case EX64ObjMadtInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->MadtInfo,
+                 sizeof (PlatformRepo->MadtInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+    case EX64ObjLocalApicX2ApicInfo:
+      if (PlatformRepo->LocalApicX2ApicInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->LocalApicX2ApicInfo,
+                 sizeof (*(PlatformRepo->LocalApicX2ApicInfo)) * PlatformRepo->LocalApicX2ApicInfoCount,
+                 PlatformRepo->LocalApicX2ApicInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjIoApicInfo:
+      if (PlatformRepo->IoApicInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->IoApicInfo,
+                 sizeof (*(PlatformRepo->IoApicInfo)) * PlatformRepo->IoApicInfoCount,
+                 PlatformRepo->IoApicInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjIntrSourceOverrideInfo:
+      if (PlatformRepo->IntrSourceOverrideInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->IntrSourceOverrideInfo,
+                 sizeof (*(PlatformRepo->IntrSourceOverrideInfo)) * PlatformRepo->IntrSourceOverrideInfoCount,
+                 PlatformRepo->IntrSourceOverrideInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjLocalApicX2ApicNmiInfo:
+      if (PlatformRepo->LocalApicX2ApicNmiInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->LocalApicX2ApicNmiInfo,
+                 sizeof (*(PlatformRepo->LocalApicX2ApicNmiInfo)) * PlatformRepo->LocalApicX2ApicNmiInfoCount,
+                 PlatformRepo->LocalApicX2ApicNmiInfoCount,
+                 CmObject
+                 );
+      break;
     default:
     {
       Status = EFI_NOT_FOUND;
@@ -628,6 +693,71 @@ SetX64NameSpaceObject (
                  &PlatformRepo->WsmtFlagsInfo,
                  sizeof (PlatformRepo->WsmtFlagsInfo),
                  1,
+                 CmObject
+                 );
+      break;
+    case EX64ObjMadtInfo:
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->MadtInfo,
+                 sizeof (PlatformRepo->MadtInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+    case EX64ObjLocalApicX2ApicInfo:
+      if (PlatformRepo->LocalApicX2ApicInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->LocalApicX2ApicInfo,
+                 sizeof (*(PlatformRepo->LocalApicX2ApicInfo)) * PlatformRepo->LocalApicX2ApicInfoCount,
+                 PlatformRepo->LocalApicX2ApicInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjIoApicInfo:
+      if (PlatformRepo->IoApicInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->IoApicInfo,
+                 sizeof (*(PlatformRepo->IoApicInfo)) * PlatformRepo->IoApicInfoCount,
+                 PlatformRepo->IoApicInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjIntrSourceOverrideInfo:
+      if (PlatformRepo->IntrSourceOverrideInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->IntrSourceOverrideInfo,
+                 sizeof (*(PlatformRepo->IntrSourceOverrideInfo)) * PlatformRepo->IntrSourceOverrideInfoCount,
+                 PlatformRepo->IntrSourceOverrideInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjLocalApicX2ApicNmiInfo:
+      if (PlatformRepo->LocalApicX2ApicNmiInfo == NULL) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->LocalApicX2ApicNmiInfo,
+                 sizeof (*(PlatformRepo->LocalApicX2ApicNmiInfo)) * PlatformRepo->LocalApicX2ApicNmiInfoCount,
+                 PlatformRepo->LocalApicX2ApicNmiInfoCount,
                  CmObject
                  );
       break;

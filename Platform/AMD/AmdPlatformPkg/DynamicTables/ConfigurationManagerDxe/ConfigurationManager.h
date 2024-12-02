@@ -12,6 +12,7 @@
 #ifndef CONFIGURATION_MANAGER_H_
 #define CONFIGURATION_MANAGER_H_
 
+#include <ConfigurationManagerObject.h>
 #include <StandardNameSpaceObjects.h>
 #include <X64NameSpaceObjects.h>
 #include <ArchCommonNameSpaceObjects.h>
@@ -19,7 +20,7 @@
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT  6
+#define PLAT_ACPI_TABLE_COUNT  7
 
 /** The configuration manager version.
 */
@@ -61,6 +62,15 @@ typedef struct PlatformRepositoryInfo {
   CM_X64_WSMT_FLAGS_INFO                          WsmtFlagsInfo;
   CM_ARCH_COMMON_SPMI_INTERFACE_INFO              SpmiInterfaceInfo;
   CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER    PciConfigSpaceInfo;
+  CM_X64_MADT_INFO                                MadtInfo;
+  CM_X64_LOCAL_APIC_X2APIC_INFO                   *LocalApicX2ApicInfo;
+  UINTN                                           LocalApicX2ApicInfoCount;
+  CM_X64_IO_APIC_INFO                             *IoApicInfo;
+  UINTN                                           IoApicInfoCount;
+  CM_X64_INTR_SOURCE_OVERRIDE_INFO                *IntrSourceOverrideInfo;
+  UINTN                                           IntrSourceOverrideInfoCount;
+  CM_X64_LOCAL_APIC_X2APIC_NMI_INFO               *LocalApicX2ApicNmiInfo;
+  UINTN                                           LocalApicX2ApicNmiInfoCount;
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
 /** The SetObject function defines the interface implemented by the
@@ -121,6 +131,19 @@ EFI_STATUS
 EFIAPI
 UpdateMcfgTableInfo (
   IN  EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  );
+
+/** The UpdateMadtTable function updates the MADT table.
+
+    @param [in, out]  PlatformRepo  Pointer to the platform repository information.
+
+    @retval EFI_SUCCESS            The MADT table is updated successfully.
+    @retval EFI_INVALID_PARAMETER  The input parameter is invalid.
+**/
+EFI_STATUS
+EFIAPI
+UpdateMadtTable (
+  IN OUT EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
   );
 
 #endif // CONFIGURATION_MANAGER_H_

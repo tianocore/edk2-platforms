@@ -71,6 +71,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMcfg),
       NULL
     },
+    /// MADT Table
+    {
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMadt),
+      NULL
+    }
   },
   /// PmProfile
   {
@@ -226,6 +233,7 @@ ConfigurationManagerDxeInitialize (
     mAmdPlatformRepositoryInfo.CmAcpiTableList[Index].OemRevision = PcdGet32 (PcdAcpiDefaultOemRevision);
   }
 
+  UpdateMadtTable (&mAmdPlatformRepositoryInfo);
   Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
                   &gEdkiiConfigurationManagerProtocolGuid,

@@ -22,10 +22,11 @@
 #
 
 [Sources]
+  Acpi/Madt.c
   Acpi/Mcfg.c
   ConfigurationManager.c
-  NameSpaceObject.c
   ConfigurationManager.h
+  NameSpaceObject.c
 
 [Packages]
   AmdPlatformPkg/AmdPlatformPkg.dec
@@ -36,21 +37,27 @@
   PcAtChipsetPkg/PcAtChipsetPkg.dec
 
 [LibraryClasses]
+  BaseMemoryLib
   DebugLib
+  LocalApicLib
   MemoryAllocationLib
   PciSegmentInfoLib
+  PlatformSocLib
   PrintLib
+  SortLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiRuntimeServicesTableLib
 
 [Protocols]
   gEdkiiConfigurationManagerProtocolGuid
+  gEfiMpServiceProtocolGuid
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
   gPcAtChipsetPkgTokenSpaceGuid.PcdHpetBaseAddress
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuLocalApicBaseAddress
 
 [Depex]
   TRUE
