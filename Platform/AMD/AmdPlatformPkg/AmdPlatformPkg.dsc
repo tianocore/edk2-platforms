@@ -79,7 +79,6 @@
 [Components]
   AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiFacsLib/AcpiFacsLib.inf
-  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiMadtLib/AcpiMadtLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtCpuTopologyLib/AcpiSsdtCpuTopologyLib.inf
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtPciLib/AcpiSsdtPciLib.inf
   AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
