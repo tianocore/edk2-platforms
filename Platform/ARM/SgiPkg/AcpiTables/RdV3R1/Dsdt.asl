@@ -11,6 +11,10 @@
 *   - ACPI 6.5, Chapter 8, Section 8.4.3, Lower Power Idle States
 *   - Arm Functional Fixed Hardware Specification v1.2, Chapter 3, Section 3.1,
 *     Idle management and Low Power Idle states
+*   - ACPI 6.5, Chapter 8, Section 8.4.6, Collaborative Processor Performance
+*     Control
+*   - Arm Functional Fixed Hardware Specification v1.2, Chapter 3, Section 3.2,
+*     Performance management and Collaborative Processor Performance Control
 *
 **/
 
@@ -43,6 +47,20 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
               Or (STS0, OSC_STS_CAPABILITY_MASKED, STS0)
             }
           }
+
+          If (And (CAP0, OSC_CAP_CPPC_SUPPORT)) {
+            /* CPPC revision 1 and below not supported */
+            And (CAP0, Not (OSC_CAP_CPPC_SUPPORT), CAP0)
+            Or (STS0, OSC_STS_CAPABILITY_MASKED, STS0)
+          }
+
+          If (And (CAP0, OSC_CAP_CPPC2_SUPPORT)) {
+            if (LEqual (FixedPcdGet32 (PcdOscCppcEnable), Zero)) {
+              And (CAP0, Not (OSC_CAP_CPPC2_SUPPORT), CAP0)
+              Or (STS0, OSC_STS_CAPABILITY_MASKED, STS0)
+            }
+          }
+
         } Else {
           And (STS0, Not (OSC_STS_MASK), STS0)
           Or (STS0, Or (OSC_STS_FAILURE, OSC_STS_UNRECOGNIZED_REV), STS0)
@@ -116,6 +134,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 0)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160073000, 0x160073004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (0)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -130,6 +157,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 1)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160073000, 0x160073004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+          PSD_INIT (1)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -146,6 +182,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 2)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160273000, 0x160273004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+          PSD_INIT (2)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -160,6 +205,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 3)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160273000, 0x160273004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (3)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -176,6 +230,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 4)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160473000, 0x160473004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (4)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -190,6 +253,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 5)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160473000, 0x160473004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+         Package ()
+            PSD_INIT (5)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -206,6 +278,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 6)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160673000, 0x160673004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (6)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -220,6 +301,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 7)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160673000, 0x160673004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (7)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -236,6 +326,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 8)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160873000, 0x160873004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (8)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -250,6 +349,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 9)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160873000, 0x160873004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (9)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -266,6 +374,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 10)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160a73000, 0x160a73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (10)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -280,6 +397,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 11)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160a73000, 0x160a73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (11)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -296,6 +422,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 12)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160c73000, 0x160c73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (12)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -310,6 +445,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 13)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x160c73000, 0x160c73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (13)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -326,6 +470,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 14)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160073000, 0x1160073004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (14)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -340,6 +493,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 15)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160073000, 0x1160073004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (15)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -356,6 +518,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 16)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160273000, 0x1160273004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (16)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -370,6 +541,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 17)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160273000, 0x1160273004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (17)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -386,6 +566,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 18)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160473000, 0x1160473004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (18)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -400,6 +589,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 19)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160473000, 0x1160473004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (19)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -416,6 +614,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 20)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160673000, 0x1160673004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (20)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -430,6 +637,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 21)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160673000, 0x1160673004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (21)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -446,6 +662,16 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 22)
         Name (_STA, 0xF)
 
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160873000, 0x1160873004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (22)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -460,6 +686,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 23)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160873000, 0x1160873004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (23)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -476,6 +711,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 24)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160a73000, 0x1160a73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (24)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -490,6 +734,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_HID, "ACPI0007")
         Name (_UID, 25)
         Name (_STA, 0xF)
+
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160a73000, 0x1160a73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (25)
+        })
 
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
@@ -506,6 +759,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 26)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160c73000, 0x1160c73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (26)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -521,6 +783,15 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         Name (_UID, 27)
         Name (_STA, 0xF)
 
+        Name (_CPC, Package()
+          CPPC_PACKAGE_INIT (0x1160c73000, 0x1160c73004, 20, 160, 160, 85, 85, 5)
+        )
+
+        Name (_PSD, Package () {
+          Package ()
+            PSD_INIT (27)
+        })
+
         Method (_LPI, 0, NotSerialized) {
           Return (\_SB.PLPI)
         }
@@ -528,3 +799,4 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
     }
   } // Scope(_SB)
 }
+
