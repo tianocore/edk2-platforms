@@ -59,6 +59,7 @@
   gArmSgiTokenSpaceGuid.PcdDramBlock2Size
   gArmSgiTokenSpaceGuid.PcdIoVirtBlkCountPerChip
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
+  gArmSgiTokenSpaceGuid.PcdOscLpiEnable
   gArmSgiTokenSpaceGuid.PcdSmmuBase
   gArmSgiTokenSpaceGuid.PcdTimerControlBase
   gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
