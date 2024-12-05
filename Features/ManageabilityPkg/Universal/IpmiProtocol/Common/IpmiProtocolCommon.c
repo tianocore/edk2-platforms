@@ -37,8 +37,9 @@ SetupIpmiTransportHardwareInformation (
   OUT  MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION  *HardwareInformation
   )
 {
-  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO   *KcsHardwareInfo;
-  MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO  *SsifHardwareInfo;
+  MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO     *KcsHardwareInfo;
+  MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO    *SsifHardwareInfo;
+  MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO  *SerialHardwareInfo;
 
   if (CompareGuid (&gManageabilityTransportKcsGuid, TransportToken->Transport->ManageabilityTransportSpecification)) {
     // This is KCS transport interface.
@@ -66,6 +67,20 @@ SetupIpmiTransportHardwareInformation (
 
     SsifHardwareInfo->BmcSlaveAddress = IPMI_SSIF_BMC_SLAVE_ADDRESS;
     HardwareInformation->Ssif         = SsifHardwareInfo;
+    return EFI_SUCCESS;
+  } else if (CompareGuid (&gManageabilityTransportSerialGuid, TransportToken->Transport->ManageabilityTransportSpecification)) {
+    // This is Serial transport interface.
+    SerialHardwareInfo = AllocatePool (sizeof (MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO));
+    if (SerialHardwareInfo == NULL) {
+      DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO.\n", __func__));
+      return EFI_OUT_OF_RESOURCES;
+    }
+
+    SerialHardwareInfo->IpmiRequesterAddress = IPMI_SERIAL_REQUESTER_ADDRESS;
+    SerialHardwareInfo->IpmiResponderAddress = IPMI_SERIAL_RESPONDER_ADDRESS;
+    SerialHardwareInfo->IpmiRequesterLUN     = IPMI_SERIAL_REQUESTER_LUN;
+    SerialHardwareInfo->IpmiResponderLUN     = IPMI_SERIAL_RESPONDER_LUN;
+    HardwareInformation->Serial              = SerialHardwareInfo;
     return EFI_SUCCESS;
   } else {
     DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __func__));
@@ -117,7 +132,8 @@ SetupIpmiRequestTransportPacket (
   MANAGEABILITY_IPMI_TRANSPORT_HEADER  *IpmiHeader;
 
   if (  CompareGuid (&gManageabilityTransportKcsGuid, TransportToken->Transport->ManageabilityTransportSpecification)
-     || CompareGuid (&gManageabilityTransportSmbusI2cGuid, TransportToken->Transport->ManageabilityTransportSpecification))
+     || CompareGuid (&gManageabilityTransportSmbusI2cGuid, TransportToken->Transport->ManageabilityTransportSpecification)
+     || CompareGuid (&gManageabilityTransportSerialGuid, TransportToken->Transport->ManageabilityTransportSpecification))
   {
     IpmiHeader = AllocateZeroPool (sizeof (MANAGEABILITY_IPMI_TRANSPORT_HEADER));
     if (IpmiHeader == NULL) {
