@@ -68,7 +68,7 @@ READ_LOCK_STATUS   = TRUE
   INF Drivers/OpTee/OpteeRpmbPkg/OpTeeRpmbFv.inf
   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
-  INF StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+  INF ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
 
 ################################################################################
 #

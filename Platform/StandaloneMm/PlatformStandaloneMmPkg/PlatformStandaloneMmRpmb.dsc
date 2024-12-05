@@ -58,7 +58,7 @@
   #
   # Entry point
   #
-  StandaloneMmCoreEntryPoint|StandaloneMmPkg/Library/StandaloneMmCoreEntryPoint/StandaloneMmCoreEntryPoint.inf
+  StandaloneMmCoreEntryPoint|ArmPkg/Library/ArmStandaloneMmCoreEntryPoint/ArmStandaloneMmCoreEntryPoint.inf
   StandaloneMmDriverEntryPoint|MdePkg/Library/StandaloneMmDriverEntryPoint/StandaloneMmDriverEntryPoint.inf
 
   StandaloneMmMmuLib|ArmPkg/Library/StandaloneMmMmuLib/ArmMmuStandaloneMmLib.inf
@@ -143,7 +143,7 @@
   #
   Drivers/OpTee/OpteeRpmbPkg/OpTeeRpmbFv.inf
   StandaloneMmPkg/Core/StandaloneMmCore.inf
-  StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+  ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf {
     <LibraryClasses>
       NULL|Drivers/OpTee/OpteeRpmbPkg/FixupPcd.inf
