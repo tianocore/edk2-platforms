@@ -8,6 +8,7 @@
 #include <Library/DebugLib.h>
 #include <AcpiTableGenerator.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/MemoryAllocationLib.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
 #include "ConfigurationManager.h"
 
@@ -32,6 +33,10 @@ HandleCmObject (
   )
 {
   if ((ObjectSize > MAX_UINT32) || (ObjectCount > MAX_UINT32)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (Object == NULL) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -85,6 +90,66 @@ SetHandleCmObject (
   CopyMem (Object, CmObjectDesc->Data, (ObjectSize * ObjectCount));
 
   return EFI_SUCCESS;
+}
+
+/** A helper function for setting the Configuration Manager Objects.
+  @param [in]       CmObjectId     The Configuration Manager Object ID.
+  @param [out]      Object         Pointer to the Object(s).
+  @param [in]       ObjectSize     Total size of the Object(s).
+  @param [in]       ObjectCount    Number of Objects.
+  @param [in]       CmObjectDesc   Pointer to the Configuration Manager Object
+                                   descriptor describing the requested Object.
+  @retval EFI_SUCCESS              Success.
+  @retval EFI_INVALID_PARAMETER    A parameter is invalid.
+  @retval EFI_BAD_BUFFER_SIZE      The buffer size is invalid.
+  @retval EFI_OUT_OF_RESOURCES     The buffer allocation failed.
+  @retval EFI_BUFFER_TOO_SMALL     The buffer is too small.
+**/
+STATIC
+EFI_STATUS
+EFIAPI
+SetHandleCmObjectBuffer (
+  IN        CM_OBJECT_ID                CmObjectId,
+  OUT       VOID                        **Object,
+  IN  CONST UINTN                       ObjectSize,
+  IN        UINTN                       *ObjectCount,
+  IN        CM_OBJ_DESCRIPTOR   *CONST  CmObjectDesc
+  )
+{
+  EFI_STATUS  Status;
+  VOID        *Buffer;
+
+  if ((Object == NULL) ||
+      (*Object == NULL) ||
+      (ObjectCount == NULL) ||
+      (CmObjectDesc == NULL)
+      )
+  {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (*ObjectCount == 0) {
+    return EFI_BUFFER_TOO_SMALL;
+  }
+
+  if (CmObjectDesc->Count != *ObjectCount) {
+    Buffer = AllocateZeroPool (CmObjectDesc->Size * CmObjectDesc->Count);
+    if (Buffer == NULL) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
+    *ObjectCount = CmObjectDesc->Count;
+  } else {
+    Buffer = *Object;
+  }
+
+  Status = SetHandleCmObject (CmObjectId, Buffer, CmObjectDesc->Size, *ObjectCount, CmObjectDesc);
+  if ((!EFI_ERROR (Status)) && (Buffer != *Object)) {
+    FreePool (*Object);
+    *Object = Buffer;
+  }
+
+  return Status;
 }
 
 /** Return a standard namespace object.
@@ -233,11 +298,6 @@ GetArchNameSpaceObject (
                  );
       break;
     case EArchCommonObjPciConfigSpaceInfo:
-      if (PlatformRepo->PciConfigSpaceInfo == NULL) {
-        Status = EFI_INVALID_PARAMETER;
-        break;
-      }
-
       Status = HandleCmObject (
                  CmObjectId,
                  PlatformRepo->PciConfigSpaceInfo,
@@ -327,11 +387,11 @@ SetArchNameSpaceObject (
                  );
       break;
     case EArchCommonObjPciConfigSpaceInfo:
-      Status = SetHandleCmObject (
+      Status = SetHandleCmObjectBuffer (
                  CmObjectId,
-                 PlatformRepo->PciConfigSpaceInfo,
+                 (VOID **)&PlatformRepo->PciConfigSpaceInfo,
                  sizeof (*(PlatformRepo->PciConfigSpaceInfo)) * PlatformRepo->PciConfigSpaceInfoCount,
-                 PlatformRepo->PciConfigSpaceInfoCount,
+                 (VOID *)&PlatformRepo->PciConfigSpaceInfoCount,
                  CmObject
                  );
       break;
@@ -495,11 +555,6 @@ GetX64NameSpaceObject (
                  );
       break;
     case EX64ObjLocalApicX2ApicInfo:
-      if (PlatformRepo->LocalApicX2ApicInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
       Status = HandleCmObject (
                  CmObjectId,
                  PlatformRepo->LocalApicX2ApicInfo,
@@ -509,11 +564,6 @@ GetX64NameSpaceObject (
                  );
       break;
     case EX64ObjIoApicInfo:
-      if (PlatformRepo->IoApicInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
       Status = HandleCmObject (
                  CmObjectId,
                  PlatformRepo->IoApicInfo,
@@ -523,11 +573,6 @@ GetX64NameSpaceObject (
                  );
       break;
     case EX64ObjIntrSourceOverrideInfo:
-      if (PlatformRepo->IntrSourceOverrideInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
       Status = HandleCmObject (
                  CmObjectId,
                  PlatformRepo->IntrSourceOverrideInfo,
@@ -537,11 +582,6 @@ GetX64NameSpaceObject (
                  );
       break;
     case EX64ObjLocalApicX2ApicNmiInfo:
-      if (PlatformRepo->LocalApicX2ApicNmiInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
       Status = HandleCmObject (
                  CmObjectId,
                  PlatformRepo->LocalApicX2ApicNmiInfo,
@@ -706,58 +746,38 @@ SetX64NameSpaceObject (
                  );
       break;
     case EX64ObjLocalApicX2ApicInfo:
-      if (PlatformRepo->LocalApicX2ApicInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
-      Status = SetHandleCmObject (
+      Status = SetHandleCmObjectBuffer (
                  CmObjectId,
-                 PlatformRepo->LocalApicX2ApicInfo,
+                 (VOID **)&PlatformRepo->LocalApicX2ApicInfo,
                  sizeof (*(PlatformRepo->LocalApicX2ApicInfo)) * PlatformRepo->LocalApicX2ApicInfoCount,
-                 PlatformRepo->LocalApicX2ApicInfoCount,
+                 (VOID *)&PlatformRepo->LocalApicX2ApicInfoCount,
                  CmObject
                  );
       break;
     case EX64ObjIoApicInfo:
-      if (PlatformRepo->IoApicInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
-      Status = SetHandleCmObject (
+      Status = SetHandleCmObjectBuffer (
                  CmObjectId,
-                 PlatformRepo->IoApicInfo,
+                 (VOID **)&PlatformRepo->IoApicInfo,
                  sizeof (*(PlatformRepo->IoApicInfo)) * PlatformRepo->IoApicInfoCount,
-                 PlatformRepo->IoApicInfoCount,
+                 (VOID *)&PlatformRepo->IoApicInfoCount,
                  CmObject
                  );
       break;
     case EX64ObjIntrSourceOverrideInfo:
-      if (PlatformRepo->IntrSourceOverrideInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
-      Status = SetHandleCmObject (
+      Status = SetHandleCmObjectBuffer (
                  CmObjectId,
-                 PlatformRepo->IntrSourceOverrideInfo,
+                 (VOID **)&PlatformRepo->IntrSourceOverrideInfo,
                  sizeof (*(PlatformRepo->IntrSourceOverrideInfo)) * PlatformRepo->IntrSourceOverrideInfoCount,
-                 PlatformRepo->IntrSourceOverrideInfoCount,
+                 (VOID *)&PlatformRepo->IntrSourceOverrideInfoCount,
                  CmObject
                  );
       break;
     case EX64ObjLocalApicX2ApicNmiInfo:
-      if (PlatformRepo->LocalApicX2ApicNmiInfo == NULL) {
-        Status = EFI_NOT_FOUND;
-        break;
-      }
-
-      Status = SetHandleCmObject (
+      Status = SetHandleCmObjectBuffer (
                  CmObjectId,
-                 PlatformRepo->LocalApicX2ApicNmiInfo,
+                 (VOID **)&PlatformRepo->LocalApicX2ApicNmiInfo,
                  sizeof (*(PlatformRepo->LocalApicX2ApicNmiInfo)) * PlatformRepo->LocalApicX2ApicNmiInfoCount,
-                 PlatformRepo->LocalApicX2ApicNmiInfoCount,
+                 (VOID *)&PlatformRepo->LocalApicX2ApicNmiInfoCount,
                  CmObject
                  );
       break;
