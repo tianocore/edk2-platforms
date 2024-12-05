@@ -30,13 +30,6 @@
 */
 #define CFG_MGR_OEM_ID  { 'A', 'M', 'D', 'I', 'N', 'C' }
 
-/** Wrapper structure for PCI Config Space Info
-*/
-typedef struct CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER {
-  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO    *PciConfigSpace;
-  UINTN                                   PciConfigSpaceCount;
-} CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER;
-
 /** A structure describing the platform configuration
     manager repository information
 */
@@ -61,7 +54,8 @@ typedef struct PlatformRepositoryInfo {
   CM_X64_HPET_INFO                                HpetInfo;
   CM_X64_WSMT_FLAGS_INFO                          WsmtFlagsInfo;
   CM_ARCH_COMMON_SPMI_INTERFACE_INFO              SpmiInterfaceInfo;
-  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO_WRAPPER    PciConfigSpaceInfo;
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO            *PciConfigSpaceInfo;
+  UINTN                                           PciConfigSpaceInfoCount;
   CM_X64_MADT_INFO                                MadtInfo;
   CM_X64_LOCAL_APIC_X2APIC_INFO                   *LocalApicX2ApicInfo;
   UINTN                                           LocalApicX2ApicInfoCount;

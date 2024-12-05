@@ -183,11 +183,6 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
   {
     0x01,
     { EFI_ACPI_6_5_SYSTEM_IO, 0x8,  0,   0,                      0x0000000000000CA2 }
-  },
-  /// McfgInfo
-  {
-    NULL,
-    0
   }
 };
 

@@ -53,8 +53,8 @@ UpdateMcfgTableInfo (
     PciConfigSpaceInfo[Index].EndBusNumber          = PciSegmentInfo[Index].EndBusNumber;
   }
 
-  PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount = PciSegmentCount;
-  PlatformRepo->PciConfigSpaceInfo.PciConfigSpace      = PciConfigSpaceInfo;
+  PlatformRepo->PciConfigSpaceInfoCount = PciSegmentCount;
+  PlatformRepo->PciConfigSpaceInfo      = PciConfigSpaceInfo;
 
   return EFI_SUCCESS;
 }

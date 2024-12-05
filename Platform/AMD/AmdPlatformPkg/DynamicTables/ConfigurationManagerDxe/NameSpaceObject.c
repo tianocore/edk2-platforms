@@ -233,16 +233,16 @@ GetArchNameSpaceObject (
                  );
       break;
     case EArchCommonObjPciConfigSpaceInfo:
-      if (PlatformRepo->PciConfigSpaceInfo.PciConfigSpace == NULL) {
+      if (PlatformRepo->PciConfigSpaceInfo == NULL) {
         Status = EFI_INVALID_PARAMETER;
         break;
       }
 
       Status = HandleCmObject (
                  CmObjectId,
-                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpace,
-                 sizeof (*(PlatformRepo->PciConfigSpaceInfo.PciConfigSpace)) * PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
-                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
+                 PlatformRepo->PciConfigSpaceInfo,
+                 sizeof (*(PlatformRepo->PciConfigSpaceInfo)) * PlatformRepo->PciConfigSpaceInfoCount,
+                 PlatformRepo->PciConfigSpaceInfoCount,
                  CmObject
                  );
       break;
@@ -329,9 +329,9 @@ SetArchNameSpaceObject (
     case EArchCommonObjPciConfigSpaceInfo:
       Status = SetHandleCmObject (
                  CmObjectId,
-                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpace,
-                 sizeof (*(PlatformRepo->PciConfigSpaceInfo.PciConfigSpace)) * PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
-                 PlatformRepo->PciConfigSpaceInfo.PciConfigSpaceCount,
+                 PlatformRepo->PciConfigSpaceInfo,
+                 sizeof (*(PlatformRepo->PciConfigSpaceInfo)) * PlatformRepo->PciConfigSpaceInfoCount,
+                 PlatformRepo->PciConfigSpaceInfoCount,
                  CmObject
                  );
       break;
