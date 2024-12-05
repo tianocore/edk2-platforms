@@ -1,0 +1,11 @@
+## @file
+#  UNI file of AMD Turin Platform SoC library
+#
+#  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+#
+##
+
+#string STR_MODULE_ABSTRACT             #language en-US "AMD DXE Turin SoC library instance."
+
+#string STR_MODULE_DESCRIPTION          #language en-US "AMD DXE Turin SoC library instance."
+

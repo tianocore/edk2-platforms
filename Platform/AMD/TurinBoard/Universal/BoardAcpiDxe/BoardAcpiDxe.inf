@@ -1,0 +1,54 @@
+## @file
+# BoardAcpiDxe friver to install common ACPI tables.
+#
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = BoardAcpiDxe
+  FILE_GUID                      = D62E99B5-42F1-4A98-8D21-7B4F6F739C16
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InstallAcpiBoard
+
+[Sources.common]
+  BoardAcpiDxe.c
+  Dsdt/Dsdt.asl
+  Dsdt/PciSsdt.asl
+  Dsdt/AmdPci.asi
+
+[Packages]
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  BoardAcpiTableLib
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                     ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart0Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart1Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart2Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart3Irq
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiFirmwareVolume2ProtocolGuid
