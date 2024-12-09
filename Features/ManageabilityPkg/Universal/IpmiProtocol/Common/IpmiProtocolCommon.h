@@ -27,6 +27,14 @@
 ///
 #define IPMI_SSIF_BMC_SLAVE_ADDRESS FixedPcdGet8 (PcdIpmiSsifSmbusSlaveAddr)
 
+///
+/// IPMI Serial hardware information.
+///
+#define IPMI_SERIAL_REQUESTER_ADDRESS  FixedPcdGet8 (PcdIpmiSerialRequesterAddress)
+#define IPMI_SERIAL_RESPONDER_ADDRESS  FixedPcdGet8 (PcdIpmiSerialResponderAddress)
+#define IPMI_SERIAL_REQUESTER_LUN      FixedPcdGet8 (PcdIpmiSerialRequesterLun)
+#define IPMI_SERIAL_RESPONDER_LUN      FixedPcdGet8 (PcdIpmiSerialResponderLun)
+
 /**
   This functions setup the IPMI transport hardware information according
   to the specification of transport token acquired from transport library.
