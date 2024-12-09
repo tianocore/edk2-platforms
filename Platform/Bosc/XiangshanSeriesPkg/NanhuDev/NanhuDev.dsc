@@ -145,6 +145,7 @@
 
   # RISC-V Architectural Libraries
   RiscVSbiLib|MdePkg/Library/BaseRiscVSbiLib/BaseRiscVSbiLib.inf
+  RiscVFpuLib|UefiCpuPkg/Library/BaseRiscVFpuLib/BaseRiscVFpuLib.inf
   RiscVMmuLib|UefiCpuPkg/Library/BaseRiscVMmuLib/BaseRiscVMmuLib.inf
   CpuExceptionHandlerLib|UefiCpuPkg/Library/BaseRiscV64CpuExceptionHandlerLib/BaseRiscV64CpuExceptionHandlerLib.inf
 
