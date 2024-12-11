@@ -16,8 +16,8 @@
 
 #define TYPE0_STRINGS                                   \
   "ARM LTD\0"                   /* Vendor */            \
-  "EDK II\0"                    /* BiosVersion */       \
-  __DATE__"\0"                  /* BiosReleaseDate */   \
+  EDK2_PLAT_FW_REL_VERSION      /* BiosVersion */       \
+  "\0"__DATE__"\0"              /* BiosReleaseDate */   \
   "\0"
 
 typedef enum {

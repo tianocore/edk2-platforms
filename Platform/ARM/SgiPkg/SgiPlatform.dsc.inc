@@ -23,7 +23,9 @@
   DEFINE CPPC_EN                            = FALSE
 
 [BuildOptions]
-  *_*_*_CC_FLAGS = -D DISABLE_NEW_DEPRECATED_INTERFACES
+  # EDK2_PLAT_FW_REL_VERSION macro resolve to value like RD-INFRA-2024.09.30.
+  # This value is set in build-uefi.sh
+  *_*_*_CC_FLAGS = -DDISABLE_NEW_DEPRECATED_INTERFACES -DEDK2_PLAT_FW_REL_VERSION=\"$(EDK2_PLAT_FW_REL_VERSION)\"
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
