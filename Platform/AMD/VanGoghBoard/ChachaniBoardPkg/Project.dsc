@@ -828,6 +828,8 @@
   #
   ShellPkg/Application/Shell/Shell.inf {
     <LibraryClasses>
+      ShellProtocolInteractivityLib|ShellPkg/Library/UefiShellProtocolInteractivityLib/ShellProtocolInteractivityLib.inf
+      ShellProtocolsLib|ShellPkg/Library/UefiShellProtocolsLib/ShellProtocolsLib.inf
       OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
       UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
       ShellCommandLib|ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.inf
