@@ -34,7 +34,7 @@ except ImportError:
     import configparser
 
 
-def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
+def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, skip_tools=False):
     """Sets the environment variables that shall be used for the build
 
         :param build_config: The build configuration as defined in the JSON
@@ -229,24 +229,25 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
         shell = False
         command = ["make", "-C", os.path.join(config["BASE_TOOLS_PATH"])]
 
-    _, _, result, return_code = execute_script(command, config, shell=shell)
-    if return_code != 0:
-        #
-        # If the BaseTools build fails, then run a clean build and retry
-        #
-        clean_command = ["nmake", "-f",
-                         os.path.join(config["BASE_TOOLS_PATH"], "Makefile"),
-                         "clean"]
-        if os.name == "posix":
-            clean_command = ["make", "-C",
-                             os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
-        _, _, result, return_code = execute_script(clean_command, config,
-                                                   shell=shell)
-        if return_code != 0:
-            build_failed(config)
+    if not skip_tools:
         _, _, result, return_code = execute_script(command, config, shell=shell)
         if return_code != 0:
-            build_failed(config)
+            #
+            # If the BaseTools build fails, then run a clean build and retry
+            #
+            clean_command = ["nmake", "-f",
+                            os.path.join(config["BASE_TOOLS_PATH"], "Makefile"),
+                            "clean"]
+            if os.name == "posix":
+                clean_command = ["make", "-C",
+                                os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
+            _, _, result, return_code = execute_script(clean_command, config,
+                                                    shell=shell)
+            if return_code != 0:
+                build_failed(config)
+            _, _, result, return_code = execute_script(command, config, shell=shell)
+            if return_code != 0:
+                build_failed(config)
 
     #
     # build platform silicon tools
@@ -1056,6 +1057,9 @@ def get_cmd_arguments(build_config):
     parser.add_argument('--list', '-l', action=PrintPlatforms,
                         help='lists available platforms', nargs=0)
 
+    parser.add_argument('--skiptools', '-s', dest='skip_tools',
+                        help='skips rebuilding base tools', action='store_true')
+
     parser.add_argument('--cleanall', dest='clean_all',
                         help='cleans all', action='store_true')
 
@@ -1140,7 +1144,8 @@ def main():
     config = pre_build(config,
                        build_type=arguments.target,
                        toolchain=arguments.toolchain,
-                       silent=arguments.silent)
+                       silent=arguments.silent,
+                       skip_tools=arguments.skip_tools)
 
     # build selected platform
     config = build(config)
