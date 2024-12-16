@@ -258,8 +258,20 @@ if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
           -D SECURE_BOOT_ENABLE     \
           -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
 
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}UEFIATFFIRMWAREUPDATECAPSULEFMPPKCS7.Cap" "${OUTPUT_BASENAME}.cap"
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}SCPFIRMWAREUPDATECAPSULEFMPPKCS7.Cap" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_scp_${SCP_VERSION}.cap"
+  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
+  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "Build/${BOARD_NAME}/"
+  mkdir Build/${BOARD_NAME}/Cab || true
+  rm -f Build/${BOARD_NAME}/Cab/*
+  METAINFO_FILE="Build/${BOARD_NAME}/Cab/firmware.metainfo.xml"
+  cp -vf "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/firmware.metainfo.xml" "${METAINFO_FILE}"
+  cp -vf "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "Build/${BOARD_NAME}/Cab/firmware.bin"
+  sed -i "s/{URGENCY}/high/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_VERSION}/$(printf '%d' ${VER_HEX})/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
+  sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
+  pushd "Build/${BOARD_NAME}/Cab"
+  lcab -q ./* "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab"
+  popd
 fi
 
 if [ "${BOARD_NAME}" = "ComHpcAlt" ] && [ ! -e "${WORKSPACE}/${UPD720202_ROM_FILE}" ]; then

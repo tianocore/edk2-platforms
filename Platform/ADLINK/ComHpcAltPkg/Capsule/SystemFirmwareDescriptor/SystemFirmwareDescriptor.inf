@@ -32,8 +32,6 @@
   PeiServicesLib
   PeimEntryPoint
 
-[FixedPcd]
-
 [Pcd]
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor
 

@@ -55,7 +55,10 @@
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
 !endif
 
-  DEFINE FIRMWARE_VER            = 2024.01.01-01
+  DEFINE FIRMWARE_VER            = 00.01.01-00
+  DEFINE FIRMWARE_VER_HEX        = 0x00010100
+  DEFINE CAPSULE_ENABLE          = TRUE
+  DEFINE INCLUDE_TFA_FW          = TRUE
   DEFINE SECURE_BOOT_ENABLE      = TRUE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
@@ -74,31 +77,10 @@
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
   DEFINE HEAP_GUARD_ENABLE                   = FALSE
 
-# How to enable Secure Boot support
-# From https://github.com/edk2-porting/edk2-rk3588/issues/69
-
-# In case you haven't seen how we do it on the Pi, this is relatively
-# easy to add during the EDK2 build process.
-#
-# Basically you want to first get all the needed Secure Boot certificates
-# and dbx, most of which can be downloaded directly:
-# https://github.com/pftf/RPi4/blob/master/.github/workflows/linux_edk2.yml#L50-L58
-#
-# Note that, because we sure don't want any third party (including
-# ourselves) to have control over somebody else's machine when it comes
-# to Secure Boot, we always generate a new PK as part of the build process and then discard the private key altogether.
-#
-# Then, at EDK2 build time, you just need to feed the
-# -D SECURE_BOOT_ENABLE=TRUE option along with something like
-# -D DEFAULT_KEYS=TRUE -D PK_DEFAULT_FILE=$WORKSPACE/keys/pk.cer
-# -D KEK_DEFAULT_FILE1=$WORKSPACE/keys/ms_kek.cer
-# -D DB_DEFAULT_FILE1=$WORKSPACE/keys/ms_db1.cer
-# -D DB_DEFAULT_FILE2=$WORKSPACE/keys/ms_db2.cer
-# -D DBX_DEFAULT_FILE1=$WORKSPACE/keys/arm64_dbx.bin:
-# https://github.com/pftf/RPi4/blob/master/.github/workflows/linux_edk2.yml#L64-L65
-#
-# And with this, you should have a UEFI firmware that both Windows and
-# Linux are happy with when it comes to Secure Boot.
+!if $(CAPSULE_ENABLE) == TRUE
+  DEFINE UEFI_IMAGE              = Build/ComHpcAlt/comhpcalt_uefi.bin
+  DEFINE TFA_UEFI_IMAGE          = Build/ComHpcAlt/comhpcalt_tfa_uefi.bin
+!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -171,6 +153,8 @@
   #
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.UseDefaultConfig|FALSE
 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportUpdateCapsuleReset|TRUE
+
 [PcdsFixedAtBuild]
 
   gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x3F
@@ -199,6 +183,17 @@
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[0]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
 
   gAmpereTokenSpaceGuid.PcdSmbusI2cBusSpeed|100000
+
+  # We should support CoD in future, since it provides a nicer
+  # upgrade experience (e.g. a progress bar).
+  gEfiMdeModulePkgTokenSpaceGuid.PcdCapsuleOnDiskSupport|FALSE
+
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdRsa2048Sha256PublicKeyBuffer|{0}
+  !include Platform/ADLINK/ComHpcAltPkg/root.cer.gEfiSecurityPkgTokenSpaceGuid.PcdPkcs7CertBuffer.inc
+!endif
+
+  gAmpereTokenSpaceGuid.PcdFirmwareVersionNumber|$(FIRMWARE_VER_HEX)
 
   gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode|TRUE
 
@@ -291,8 +286,8 @@
 
 [PcdsDynamicExDefault.common.DEFAULT]
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{0xf6, 0xc8, 0x4a, 0x70, 0x39, 0xcb, 0xb7, 0x47, 0x8f, 0x26, 0x39, 0x6c, 0xe9, 0xdb, 0x69, 0x71}
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0x79, 0x00, 0x7b, 0xc0, 0xa2, 0xb3, 0x8d, 0x44, 0x8c, 0x9c, 0x46, 0xba, 0x3c, 0x42, 0xb3, 0x3e}
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("cdcdd0b7-8afb-4883-853a-ae9398077a0e")}|VOID*|0x10
+  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("074c21e5-7d17-48e9-808d-f0c85e52a7db")}|VOID*|0x10
 
 [PcdsPatchableInModule]
   #
@@ -360,15 +355,6 @@
   Features/ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf 
 
   #
-  # Firmware Capsule Update
-  #
-  Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
-  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf
-
-  #
   # HII
   #
   Platform/ADLINK/ComHpcAltPkg/Drivers/PlatformInfoDxe/PlatformInfoDxe.inf
@@ -378,6 +364,32 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/RootComplexConfigDxe/RootComplexConfigDxe.inf
   Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
+
+  #
+  # Firmware Capsule Update
+  #
+!if $(CAPSULE_ENABLE) == TRUE
+  Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  }
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  }
+  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  }
+
+  #
+  # System Firmware Update
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+!endif
 
   # Redfish
   #
