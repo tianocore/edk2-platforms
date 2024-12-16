@@ -5,7 +5,7 @@
 
 set -e
 
-BMC_ENV_FILE=bmc.sh
+BMC_ENV_FILE=bmc.conf
 
 usage () {
 	echo "Copies firmware to the BMC (running OpenBMC) and runs ampere_flash_bios.sh to flash the host."
