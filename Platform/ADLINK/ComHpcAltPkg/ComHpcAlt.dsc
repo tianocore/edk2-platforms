@@ -113,6 +113,7 @@
 [LibraryClasses]
 
   OemMiscLib|Platform/ADLINK/ComHpcAltPkg/Library/OemMiscLib/OemMiscLib.inf
+  JedecJep106Lib|MdePkg/Library/JedecJep106Lib/JedecJep106Lib.inf
 
   #
   # ACPI Libraries
