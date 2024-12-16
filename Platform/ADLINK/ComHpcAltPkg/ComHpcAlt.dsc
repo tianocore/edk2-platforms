@@ -289,6 +289,17 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("cdcdd0b7-8afb-4883-853a-ae9398077a0e")}|VOID*|0x10
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("074c21e5-7d17-48e9-808d-f0c85e52a7db")}|VOID*|0x10
 
+  # Default Video Resolution
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|0    # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0  # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0     # 0 - Maximum
+  # Setup Video Resolution
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|0  # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|0    # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|0  # 0 - Maximum
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|0     # 0 - Maximum
+
 [PcdsPatchableInModule]
   #
   # Console Resolution (HD mode)
