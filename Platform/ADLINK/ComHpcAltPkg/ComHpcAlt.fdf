@@ -398,6 +398,9 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
+  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/IpmiBootDxe/IpmiBootDxe.inf
 
   #
   # Networking stack
