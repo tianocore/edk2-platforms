@@ -445,7 +445,9 @@ APRIORI DXE {
   #
   # Emulator for x64 OpRoms, etc.
   #
+!if $(X86_EMULATOR_ENABLE) == TRUE
   INF Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+!endif
 
   #
   # set MMC power off type
