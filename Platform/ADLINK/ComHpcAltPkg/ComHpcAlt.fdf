@@ -409,6 +409,7 @@ APRIORI DXE {
   #
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
   INF RuleOverride=ACPITABLE Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
   INF RuleOverride=ACPITABLE Platform/ADLINK/ComHpcAltPkg/Ac01AcpiTables/Ac01AcpiTables.inf
   INF RuleOverride=ACPITABLE Platform/ADLINK/ComHpcAltPkg/Ac02AcpiTables/Ac02AcpiTables.inf
