@@ -533,7 +533,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxSizeNonPopulateCapsule|0xE00000
 
 [PcdsDynamicHii.common.DEFAULT]
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|10
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|5
   # Possible values are:
   #  0: Connect Minimal Devices
   #  1: Connect Network Devices
