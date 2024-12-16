@@ -58,6 +58,7 @@
   DEFINE FIRMWARE_VER            = 2024.01.01-01
   DEFINE SECURE_BOOT_ENABLE      = TRUE
   DEFINE TPM2_ENABLE             = TRUE
+  DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
   DEFINE PLATFORM_CONFIG_UUID    = 0690C53C-01B5-40AD-A65B-5399AC0B1E9B
 
@@ -416,7 +417,12 @@
 !if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
-  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
+!if $(SHELL_ENABLE) == TRUE
+  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf {
+    <PcdsFixedAtBuild>
+      gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
+  }
+!endif
 !endif
 
   #
