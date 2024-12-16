@@ -407,8 +407,8 @@
 
   gArmTokenSpaceGuid.PcdArmPrimaryCore|0x0
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x5000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x5000
 
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x91100000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x20000
