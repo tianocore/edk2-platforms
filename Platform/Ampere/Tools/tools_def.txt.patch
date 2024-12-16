@@ -1,0 +1,10 @@
+--- BaseTools/Conf/tools_def.template	2024-11-26 08:55:42.209038055 -0700
++++ Conf/tools_def.txt	2024-11-26 08:56:30.666355277 -0700
+@@ -2414,6 +2414,7 @@
+ ##################
+ *_*_*_PKCS7SIGN_PATH       = Pkcs7Sign
+ *_*_*_PKCS7SIGN_GUID       = 4AAFD29D-68DF-49EE-8AA9-347D375665A7
++*_*_*_PKCS7SIGN_FLAGS      = --signer-private-cert ENV(SECUREBOOT_DIR)/certs/user.pem --other-public-cert ENV(SECUREBOOT_DIR)/certs/intermediate.pub.pem --trusted-public-cert ENV(SECUREBOOT_DIR)/certs/root.pub.pem
+ 
+ ##################
+ # NASM tool definitions

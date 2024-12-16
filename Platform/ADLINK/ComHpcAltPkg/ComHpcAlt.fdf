@@ -160,6 +160,10 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 }
 
+!if $(CAPSULE_ENABLE) == TRUE
+  INF RuleOverride = FMP_IMAGE_DESC Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+!endif
+
   INF ArmPlatformPkg/Sec/Sec.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF UefiCpuPkg/CpuIoPei/CpuIoPei.inf
@@ -175,6 +179,8 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+  INF MdeModulePkg/Universal/CapsuleOnDiskLoadPei/CapsuleOnDiskLoadPei.inf
+  INF MdeModulePkg/Universal/CapsulePei/CapsulePei.inf
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
@@ -191,8 +197,6 @@ APRIORI PEI {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/DebugInfoPei/DebugInfoPei.inf
 
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
-
-  INF RuleOverride = FMP_IMAGE_DESC Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
@@ -414,21 +418,19 @@ APRIORI DXE {
   # SMBIOS
   #
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
+  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/ADLINK/ComHpcAltPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 
   #
   # Firmware Capsule Update
   #
-  INF  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-
-  FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
-      SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
-      SECTION UI = "Pkcs7TestRoot"
-      }
+!if $(CAPSULE_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  INF MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+!endif
 
   #
   # HII
