@@ -367,12 +367,14 @@ APRIORI DXE {
   #
   # UEFI application (Shell Embedded Boot Loader)
   #
+!if $(SHELL_ENABLE) == TRUE
   INF ShellPkg/Application/Shell/Shell.inf
 !if $(INCLUDE_TFTP_COMMAND) == TRUE
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 !endif
 !if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
   INF ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
+!endif
 !endif
 
 !if $(TPM2_ENABLE) == TRUE
