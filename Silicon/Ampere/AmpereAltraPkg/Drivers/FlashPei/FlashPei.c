@@ -111,6 +111,7 @@ FlashPeiEntryPoint (
   UINT32      FWNvRamSize;
   UINTN       NvRamAddress;
   UINT32      NvRamSize;
+  UINT32      UuidOffset;
   BOOLEAN     ClearUserConfig;
 
   CopyMem ((VOID *)BuildUuid, PcdGetPtr (PcdPlatformConfigUuid), sizeof (BuildUuid));
@@ -134,35 +135,31 @@ FlashPeiEntryPoint (
     return Status;
   }
 
-  if (FWNvRamSize < (NvRamSize * 2 + sizeof (BuildUuid))) {
-    //
-    // NVRAM size provided by FW is not enough
-    //
-    return EFI_INVALID_PARAMETER;
-  }
-
   //
-  // We stored BUILD UUID build at the offset NVRAM_SIZE * 2
+  // We stored BUILD UUID build just after the NVRAM
   //
+  UuidOffset = FWNvRamStartOffset + NvRamSize;
   Status = FlashReadCommand (
-             FWNvRamStartOffset + NvRamSize * 2,
+             UuidOffset,
              (UINT8 *)StoredUuid,
              sizeof (StoredUuid)
              );
   if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to read UUID from flash: %r\n", __func__, Status));
     return Status;
   }
 
   ClearUserConfig = IsIpmiClearCmosSet ();
 
   if (CompareMem ((VOID *)StoredUuid, (VOID *)BuildUuid, sizeof (BuildUuid)) != 0) {
-    DEBUG ((DEBUG_INFO, "BUILD UUID Changed, Update Storage with NVRAM FV\n"));
+    DEBUG ((DEBUG_INFO, "BUILD UUID changed: resetting NVRAM region.\n"));
     ClearUserConfig = TRUE;
   }
 
   if (ClearUserConfig) {
-    Status = FlashEraseCommand (FWNvRamStartOffset, NvRamSize * 2 + sizeof (BuildUuid));
+    Status = FlashEraseCommand (FWNvRamStartOffset, NvRamSize);
     if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to erase NVRAM area: %r\n", __func__, Status));
       return Status;
     }
 
@@ -172,23 +169,26 @@ FlashPeiEntryPoint (
                NvRamSize
                );
     if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to write NVRAM area: %r\n", __func__, Status));
       return Status;
     }
 
     //
     // Write new BUILD UUID to the Flash
     //
-    Status = FlashEraseCommand (FWNvRamStartOffset + (NvRamSize * 2), sizeof (BuildUuid));
+    Status = FlashEraseCommand (UuidOffset, sizeof (BuildUuid));
     if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to erase UUID area: %r\n", __func__, Status));
       return Status;
     }
 
     Status = FlashWriteCommand (
-               FWNvRamStartOffset + NvRamSize * 2,
+               UuidOffset,
                (UINT8 *)BuildUuid,
                sizeof (BuildUuid)
                );
     if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to write UUID: %r\n", __func__, Status));
       return Status;
     }
 
@@ -200,7 +200,7 @@ FlashPeiEntryPoint (
       ResetCold ();
     }
   } else {
-    DEBUG ((DEBUG_INFO, "Identical UUID, copy stored NVRAM to RAM\n"));
+    DEBUG ((DEBUG_INFO, "Identical UUID: copying stored NVRAM to RAM\n"));
 
     Status = FlashReadCommand (
                FWNvRamStartOffset,
@@ -208,6 +208,7 @@ FlashPeiEntryPoint (
                NvRamSize
                );
     if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "%a: Failed to read NVRAM from flash: %r\n", __func__, Status));
       return Status;
     }
   }
