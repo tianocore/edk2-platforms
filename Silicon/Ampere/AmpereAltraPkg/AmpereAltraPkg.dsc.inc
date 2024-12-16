@@ -356,6 +356,10 @@
   gEfiMdePkgTokenSpaceGuid.PcdPostCodePropertyMask|0
   gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|320
 
+  # With PcdPerformanceLibraryPropertyMask set to 1, we need to
+  # increase the memory allocated for the FPDT boot records.
+  gEfiMdeModulePkgTokenSpaceGuid.PcdExtFpdtBootRecordPadSize|0x300000
+
   # DEBUG_ASSERT_ENABLED       0x01
   # DEBUG_PRINT_ENABLED        0x02
   # DEBUG_CODE_ENABLED         0x04
