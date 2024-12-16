@@ -441,4 +441,6 @@
   #
   # OpRom emulator
   #
+!if $(X86_EMULATOR_ENABLE) == TRUE
   Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+!endif
