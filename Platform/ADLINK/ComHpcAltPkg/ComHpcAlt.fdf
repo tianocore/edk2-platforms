@@ -442,6 +442,8 @@ APRIORI DXE {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/RootComplexConfigDxe/RootComplexConfigDxe.inf
   INF Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
 
+  INF MdeModulePkg/Logo/LogoDxe.inf
+
   #
   # Emulator for x64 OpRoms, etc.
   #
