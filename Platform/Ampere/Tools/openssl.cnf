@@ -1,0 +1,122 @@
+HOME			= .
+openssl_conf = openssl_init
+config_diagnostics = 1
+oid_section = new_oids
+
+[ new_oids ]
+tsa_policy1 = 1.2.3.4.1
+tsa_policy2 = 1.2.3.4.5.6
+tsa_policy3 = 1.2.3.4.5.7
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+
+[default_sect]
+activate = 1
+
+[ ca ]
+default_ca	= CA_default		# The default ca section
+
+[ CA_default ]
+
+dir		= .			# Where everything is kept
+certs		= $dir/certs		# Where the issued certs are kept
+crl_dir		= $dir/crl		# Where the issued crl are kept
+database	= $dir/index.txt	# database index file.
+unique_subject	= no			# Set to 'no' to allow creation of
+					# several certs with same subject.
+new_certs_dir	= $dir/certs		# default place for new certs.
+
+certificate	= $dir/cacert.pem 	# The CA certificate
+serial		= $dir/serial 		# The current serial number
+crlnumber	= $dir/crlnumber	# the current crl number
+					# must be commented out to leave a V1 CRL
+crl		= $dir/crl.pem 		# The current CRL
+private_key	= $dir/private/cakey.pem # The private key
+
+x509_extensions	= codesign_reqext       # The extensions to add to the cert
+
+name_opt 	= ca_default		# Subject Name options
+cert_opt 	= ca_default		# Certificate field options
+
+default_days	= 365			# how long to certify for
+default_crl_days= 30			# how long before next CRL
+default_md	= default		# use public key default MD
+preserve	= no			# keep passed DN ordering
+
+policy		= policy_match
+
+[ policy_match ]
+countryName		= match
+stateOrProvinceName	= match
+organizationName	= match
+organizationalUnitName	= optional
+commonName		= supplied
+emailAddress		= optional
+
+[ policy_anything ]
+countryName		= optional
+stateOrProvinceName	= optional
+localityName		= optional
+organizationName	= optional
+organizationalUnitName	= optional
+commonName		= supplied
+emailAddress		= optional
+
+[ req ]
+default_bits		= 2048
+default_md              = sha256
+utf8                    = yes
+string_mask             = utf8only
+default_keyfile 	= privkey.pem
+distinguished_name	= codesign_dn
+x509_extensions	        = v3_ca # The extensions to add to the self signed cert
+req_extensions          = codesign_reqext
+attributes              = req_attributes
+
+# Passwords for private keys if not present they will be prompted for
+input_password = secret
+output_password = secret
+
+[ codesign_dn ]
+countryName			= Country Name (2 letter code)
+countryName_default		= US
+countryName_min			= 2
+countryName_max			= 2
+
+stateOrProvinceName		= State or Province Name (full name)
+stateOrProvinceName_default	= California
+
+localityName			= San Jose
+
+0.organizationName		= Organization Name (eg, company)
+0.organizationName_default	= Example Corp
+
+organizationalUnitName		= Organizational Unit Name (eg, section)
+
+commonName			= Common Name (e.g. server FQDN or YOUR name)
+commonName_default              = example.com
+commonName_max			= 64
+
+emailAddress			= Email Address
+emailAddress_max		= 64
+
+[ req_attributes ]
+challengePassword		= A challenge password
+challengePassword_min		= 4
+challengePassword_max		= 20
+
+unstructuredName		= An optional company name
+
+[ codesign_reqext ]
+keyUsage             = critical,digitalSignature
+extendedKeyUsage     = critical,codeSigning
+subjectKeyIdentifier = hash
+
+[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer
+basicConstraints = critical,CA:true
