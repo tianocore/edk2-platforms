@@ -525,6 +525,7 @@
   gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Ampere(R)"
   gArmTokenSpaceGuid.PcdProcessorAssetTag|L"Not Set"
+  gArmTokenSpaceGuid.PcdFdSize|0x2000000
 
   #
   # Increasing the maximum size of capsule is to cover ARM Trusted Firmware binaries
