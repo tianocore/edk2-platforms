@@ -37,7 +37,8 @@
   "RdV2\0"                                              \
   "RdV3\0"                                              \
   "RdV3Cfg1\0"                                          \
-  "RdV3Cfg2\0"
+  "RdV3Cfg2\0"                                          \
+  "RdV3R1\0"
 
 typedef enum {
   ManufacturerName = 1,
@@ -83,6 +84,8 @@ STATIC GUID mSmbiosUid[] = {
   {0xa92eb8a5, 0x36eb, 0x4ac5, {0x8a, 0x25, 0xce, 0x10, 0xed, 0xb5, 0x0e, 0x3d}},
   /* Rd-V3-Cfg2    */
   {0xeb6b5709, 0xf310, 0x408b, {0x9a, 0xea, 0x98, 0x56, 0x8c, 0xe4, 0xfe, 0x68}},
+  /*Rd-V3-R1       */
+  {0x043ca598, 0x79cd, 0x4e53, {0xaf, 0xc2, 0x9a, 0x68, 0xb8, 0xd6, 0xe5, 0x91}}
 };
 
 /* System information */
