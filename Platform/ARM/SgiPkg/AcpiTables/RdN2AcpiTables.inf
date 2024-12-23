@@ -1,7 +1,7 @@
 ## @file
 #  ACPI table data and ASL sources required to boot the platform.
 #
-#  Copyright (c) 2020 - 2024, Arm Ltd. All rights reserved.
+#  Copyright (c) 2020 - 2025, Arm Ltd. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -57,6 +57,7 @@
   gArmTokenSpaceGuid.PcdPciBusMax
 
   gArmSgiTokenSpaceGuid.PcdChipCount
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0
   gArmSgiTokenSpaceGuid.PcdGpioController0BaseAddress
   gArmSgiTokenSpaceGuid.PcdGpioController0Size
   gArmSgiTokenSpaceGuid.PcdGpioController0Interrupt
