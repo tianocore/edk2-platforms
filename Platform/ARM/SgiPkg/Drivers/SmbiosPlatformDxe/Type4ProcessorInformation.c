@@ -57,7 +57,8 @@
   "7B7-1\0"                                             \
   "7F2-1\0"                                             \
   "7EE-1\0"                                             \
-  "7F9-0\0"
+  "7F9-0\0"                                             \
+  "7EE-2\0"
 
 
 typedef enum {
@@ -200,6 +201,7 @@ InstallType4ProcessorInformation (
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     break;
   case RdN2Cfg2:
+  case RdV3Cfg2:
     mArmRdSmbiosType4.Base.CoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
