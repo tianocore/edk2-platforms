@@ -74,9 +74,9 @@
 #define SYSTEM_MEMORY_BASE_REMOTE(ChipId) \
           (SGI_REMOTE_CHIP_MEM_OFFSET (ChipId) + FixedPcdGet64 (PcdSystemMemoryBase))
 
-// Base address of the DRAM2 block in a remote chip
-#define DRAM_BLOCK2_BASE_REMOTE(ChipId) \
-          (SGI_REMOTE_CHIP_MEM_OFFSET (ChipId) + FixedPcdGet64 (PcdDramBlock2Base))
+// Base address of the DRAM2 block in a chip
+#define DRAM_BLOCK2_BASE(ChipId) \
+          (FixedPcdGet64(PcdDramBlock2AddrChip##ChipId))
 
 // ARM platform description data.
 typedef struct {
