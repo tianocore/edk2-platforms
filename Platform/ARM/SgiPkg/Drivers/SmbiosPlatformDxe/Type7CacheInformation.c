@@ -336,6 +336,7 @@ InstallType7CacheInformation (
     break;
   case RdV2:
   case RdV3:
+  case RdV3Cfg2:
     /* L1 instruction cache */
     mArmRdSmbiosType7[0].Base.MaximumCacheSize2 = 64;    // 64KB
     mArmRdSmbiosType7[0].Base.InstalledSize2 = 64;       // 64KB
