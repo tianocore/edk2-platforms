@@ -106,6 +106,7 @@
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|0x0|UINT64|0x00000027
 
   # IO virtualization block
+  gArmSgiTokenSpaceGuid.PcdIoVirtBlkCountPerChip|0|UINT32|0x00000037
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base|0|UINT64|0x0000002B
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable|0|UINT32|0x0000002C
 
