@@ -46,6 +46,9 @@
   gArmVExpressTokenSpaceGuid.PcdHdLcdVideoModeOscId|0|UINT32|0x00000005
   gArmVExpressTokenSpaceGuid.PcdArmMaliDpMaxMode|0|UINT32|0x00000008
 
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000|UINT64|0x00000011
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x4FFFFFFF|UINT64|0x00000012
+
   #
   # Device path of block device on which Fastboot will flash partitions
   #

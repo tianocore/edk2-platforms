@@ -149,6 +149,19 @@ DefinitionBlock ("SsdtPci.aml", "SSDT", 2, "ARMLTD", "FVP-REVC", 1) {
         Return (RBUF)
       } // Method(_CRS)
 
+      Device (RES0) {
+        Name (_HID, "PNP0C02" /* PNP Motherboard Resources */)  // _HID: Hardware ID
+        Name (_CRS, ResourceTemplate () {                       // _CRS: Current Resource Settings
+           QWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, NonCacheable, ReadWrite,
+           0x0000000000000000,                                  // Granularity
+           FixedPcdGet64 (PcdPciExpressBaseAddress),            // Range Minimum
+           FixedPcdGet64 (PcdPciConfigurationSpaceLimit),       // Range Maximum
+           0x0000000000000000,                                  // Translation Offset
+           FixedPcdGet64 (PcdPciConfigurationSpaceSize),        // Length
+           ,, , AddressRangeMemory, TypeStatic)
+        })
+      }
+
       //
       // OS Control Handoff
       //
