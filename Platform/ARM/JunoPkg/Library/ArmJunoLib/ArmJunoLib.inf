@@ -46,7 +46,7 @@
 
   gArmJunoTokenSpaceGuid.PcdPcieControlBaseAddress
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
-  gArmJunoTokenSpaceGuid.PcdPciConfigurationSpaceSize
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize
 
   # Framebuffer Memory
   gArmPlatformTokenSpaceGuid.PcdArmLcdDdrFrameBufferBase
