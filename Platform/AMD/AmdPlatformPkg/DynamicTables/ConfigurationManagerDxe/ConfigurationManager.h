@@ -12,47 +12,12 @@
 #ifndef CONFIGURATION_MANAGER_H_
 #define CONFIGURATION_MANAGER_H_
 
+#include <ConfigurationManagerObject.h>
 #include <StandardNameSpaceObjects.h>
 #include <X64NameSpaceObjects.h>
 #include <ArchCommonNameSpaceObjects.h>
-
-/** The number of ACPI tables to install
-*/
-#define PLAT_ACPI_TABLE_COUNT  5
-
-/** The configuration manager version.
-*/
-#define CONFIGURATION_MANAGER_REVISION  CREATE_REVISION (1, 0)
-
-/** The OEM ID
-*/
-#define CFG_MGR_OEM_ID  { 'A', 'M', 'D', 'I', 'N', 'C' }
-
-/** A structure describing the platform configuration
-    manager repository information
-*/
-typedef struct PlatformRepositoryInfo {
-  /// Configuration Manager Information
-  CM_STD_OBJ_CONFIGURATION_MANAGER_INFO           CmInfo;
-
-  /// List of ACPI tables
-  CM_STD_OBJ_ACPI_TABLE_INFO                      CmAcpiTableList[PLAT_ACPI_TABLE_COUNT];
-  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO    PowerManagementProfile;
-  CM_ARCH_COMMON_HYPERVISOR_VENDOR_ID             HypervisorVendorId;
-  CM_ARCH_COMMON_FIXED_FEATURE_FLAGS              FixedFeatureFlags;
-  CM_X64_FADT_SCI_INTERRUPT                       SciInterrupt;
-  CM_X64_FADT_SCI_CMD_INFO                        SciCmdinfo;
-  CM_X64_FADT_PM_BLOCK_INFO                       PmBlockInfo;
-  CM_X64_FADT_GPE_BLOCK_INFO                      GpeBlockInfo;
-  CM_X64_FADT_X_PM_BLOCK_INFO                     XpmBlockInfo;
-  CM_X64_FADT_X_GPE_BLOCK_INFO                    XgpeBlockInfo;
-  CM_X64_FADT_SLEEP_BLOCK_INFO                    SleepBlockInfo;
-  CM_X64_FADT_RESET_BLOCK_INFO                    ResetBlockInfo;
-  CM_X64_FADT_MISC_INFO                           FadtMiscInfo;
-  CM_X64_HPET_INFO                                HpetInfo;
-  CM_X64_WSMT_FLAGS_INFO                          WsmtFlagsInfo;
-  CM_ARCH_COMMON_SPMI_INTERFACE_INFO              SpmiInterfaceInfo;
-} EDKII_PLATFORM_REPOSITORY_INFO;
+#include <ConfigurationManagerObject.h>
+#include <AmdConfigurationManager.h>
 
 /** The SetObject function defines the interface implemented by the
     Configuration Manager Protocol for updating the Configuration
@@ -98,6 +63,33 @@ AmdPlatformGetObject (
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
   IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
+  );
+
+/** Updates ACPI MCFG table information in the platform repository.
+
+  @param [in]  PlatformRepo  Pointer to the platform repository.
+
+  @retval EFI_SUCCESS        The ACPI MCFG table information is updated.
+  @retval EFI_INVALID_PARAMETER  The input parameter is invalid.
+  @retval EFI_UNSUPPORTED    The operation is not supported.
+**/
+EFI_STATUS
+EFIAPI
+UpdateMcfgTableInfo (
+  IN  EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  );
+
+/** The UpdateMadtTable function updates the MADT table.
+
+    @param [in, out]  PlatformRepo  Pointer to the platform repository information.
+
+    @retval EFI_SUCCESS            The MADT table is updated successfully.
+    @retval EFI_INVALID_PARAMETER  The input parameter is invalid.
+**/
+EFI_STATUS
+EFIAPI
+UpdateMadtTable (
+  IN OUT EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
   );
 
 #endif // CONFIGURATION_MANAGER_H_

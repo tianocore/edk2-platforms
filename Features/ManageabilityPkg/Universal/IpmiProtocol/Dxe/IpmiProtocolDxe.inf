@@ -44,10 +44,15 @@
   gManageabilityProtocolIpmiGuid
   gManageabilityTransportKcsGuid
   gManageabilityTransportSmbusI2cGuid
+  gManageabilityTransportSerialGuid
 
 [FixedPcd]
   gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress   # Used as default KCS I/O base adddress
   gEfiMdePkgTokenSpaceGuid.PcdIpmiSsifSmbusSlaveAddr
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiSerialRequesterAddress
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiSerialResponderAddress
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiSerialRequesterLun
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiSerialResponderLun
 
 [Depex]
   TRUE

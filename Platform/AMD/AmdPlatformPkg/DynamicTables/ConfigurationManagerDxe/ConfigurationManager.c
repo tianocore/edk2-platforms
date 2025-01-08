@@ -15,7 +15,7 @@
 #include <IndustryStandard/HighPrecisionEventTimerTable.h>
 #include <IndustryStandard/WindowsSmmSecurityMitigationTable.h>
 #include <IndustryStandard/ServiceProcessorManagementInterfaceTable.h>
-#include <Library/BaseMemoryLib.h>
+#include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
 #include "ConfigurationManager.h"
 
 /** The platform configuration repository information.
@@ -64,6 +64,20 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSpmi),
       NULL
     },
+    /// MCFG Table
+    {
+      EFI_ACPI_6_5_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMcfg),
+      NULL
+    },
+    /// MADT Table
+    {
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMadt),
+      NULL
+    }
   },
   /// PmProfile
   {
@@ -175,7 +189,6 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
 /** A structure describing the configuration manager protocol interface.
 */
 STATIC
-CONST
 EDKII_CONFIGURATION_MANAGER_PROTOCOL  mAmdPlatformConfigManagerProtocol = {
   CREATE_REVISION (1,   0),
   AmdPlatformGetObject,
@@ -203,12 +216,19 @@ ConfigurationManagerDxeInitialize (
   EFI_STATUS  Status;
   UINTN       Index;
 
+  Status = UpdateMcfgTableInfo (&mAmdPlatformRepositoryInfo);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "ERROR: Failed to update MCFG table info. Status = %r\n", Status));
+    return Status;
+  }
+
   /// set the OemTableId and OemRevision for the CmACpiTableList
   for (Index = 0; Index < ARRAY_SIZE (mAmdPlatformRepositoryInfo.CmAcpiTableList); Index++) {
     mAmdPlatformRepositoryInfo.CmAcpiTableList[Index].OemTableId  = PcdGet64 (PcdAcpiDefaultOemTableId);
     mAmdPlatformRepositoryInfo.CmAcpiTableList[Index].OemRevision = PcdGet32 (PcdAcpiDefaultOemRevision);
   }
 
+  UpdateMadtTable (&mAmdPlatformRepositoryInfo);
   Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
                   &gEdkiiConfigurationManagerProtocolGuid,
