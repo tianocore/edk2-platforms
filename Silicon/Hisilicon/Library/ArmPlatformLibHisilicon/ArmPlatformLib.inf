@@ -54,8 +54,8 @@
 
   gHisiTokenSpaceGuid.PcdNORFlashBase
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
   gHisiTokenSpaceGuid.PcdSysControlBaseAddress
   gHisiTokenSpaceGuid.PcdPeriSubctrlAddress
 

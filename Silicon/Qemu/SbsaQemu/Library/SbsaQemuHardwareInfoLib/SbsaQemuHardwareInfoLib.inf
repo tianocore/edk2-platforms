@@ -28,6 +28,6 @@
   ResetSystemLib
 
 [Pcd]
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase

@@ -364,8 +364,8 @@ DEFINE X64EMU_ENABLE  = FALSE
   #
   # ARM General Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0xE1110000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xE112F000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0xE1110000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xE112F000
 
   # SATA Ports
   gAmdStyxTokenSpaceGuid.PcdSata0PortCount|8

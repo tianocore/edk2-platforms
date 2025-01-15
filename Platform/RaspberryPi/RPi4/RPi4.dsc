@@ -433,8 +433,8 @@
   #
   # ARM General Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0xFF841000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFF842000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0xFF841000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFF842000
   gRaspberryPiTokenSpaceGuid.PcdGicInterruptInterfaceHBase|0xFF844000
   gRaspberryPiTokenSpaceGuid.PcdGicInterruptInterfaceVBase|0xFF846000
   gRaspberryPiTokenSpaceGuid.PcdGicGsivId|0x19

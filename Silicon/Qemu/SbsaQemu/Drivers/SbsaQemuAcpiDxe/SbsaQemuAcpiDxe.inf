@@ -45,8 +45,8 @@
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile
 
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor

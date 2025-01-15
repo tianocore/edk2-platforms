@@ -161,9 +161,9 @@
 
   # TA
   gHisiTokenSpaceGuid.PcdArmPrimaryCoreTemp|0x80010000
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0xAE000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0xAE100000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x9B000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0xAE000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0xAE100000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x9B000000
 
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|10000
 

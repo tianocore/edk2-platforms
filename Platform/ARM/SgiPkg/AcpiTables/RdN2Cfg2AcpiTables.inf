@@ -46,8 +46,8 @@
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
   gArmTokenSpaceGuid.PcdSystemMemoryBase

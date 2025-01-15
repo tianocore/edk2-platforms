@@ -47,8 +47,8 @@
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
 
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase

@@ -387,8 +387,8 @@
   #
   # ARM Generic Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x100100000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x100100140000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x100100000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x100100140000
 
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
 
