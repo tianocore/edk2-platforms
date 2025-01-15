@@ -4,7 +4,7 @@
   The Configuration Manager Protocol is used to provide the Configuration
   Objects to the Configuration Manager.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -79,6 +79,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
       NULL
     }
   },
+  /// Current ACPI Table Count
+  PLAT_ACPI_TABLE_COUNT,
   /// PmProfile
   {
     EFI_ACPI_6_5_PM_PROFILE_ENTERPRISE_SERVER
@@ -223,7 +225,7 @@ ConfigurationManagerDxeInitialize (
   }
 
   /// set the OemTableId and OemRevision for the CmACpiTableList
-  for (Index = 0; Index < ARRAY_SIZE (mAmdPlatformRepositoryInfo.CmAcpiTableList); Index++) {
+  for (Index = 0; Index < mAmdPlatformRepositoryInfo.CurrentAcpiTableCount; Index++) {
     mAmdPlatformRepositoryInfo.CmAcpiTableList[Index].OemTableId  = PcdGet64 (PcdAcpiDefaultOemTableId);
     mAmdPlatformRepositoryInfo.CmAcpiTableList[Index].OemRevision = PcdGet32 (PcdAcpiDefaultOemRevision);
   }

@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -21,6 +21,10 @@
 */
 #define PLAT_ACPI_TABLE_COUNT  7
 
+/** The maximum number of ACPI tables to install
+*/
+#define MAX_PLAT_ACPI_TABLE_COUNT  16
+
 /** The configuration manager version.
 */
 #define CONFIGURATION_MANAGER_REVISION  CREATE_REVISION (1, 0)
@@ -39,7 +43,8 @@ typedef struct PlatformRepositoryInfo {
   CM_STD_OBJ_CONFIGURATION_MANAGER_INFO           CmInfo;
 
   /// List of ACPI tables
-  CM_STD_OBJ_ACPI_TABLE_INFO                      CmAcpiTableList[PLAT_ACPI_TABLE_COUNT];
+  CM_STD_OBJ_ACPI_TABLE_INFO                      CmAcpiTableList[MAX_PLAT_ACPI_TABLE_COUNT];
+  UINTN                                           CurrentAcpiTableCount;
   CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO    PowerManagementProfile;
   CM_ARCH_COMMON_HYPERVISOR_VENDOR_ID             HypervisorVendorId;
   CM_ARCH_COMMON_FIXED_FEATURE_FLAGS              FixedFeatureFlags;
