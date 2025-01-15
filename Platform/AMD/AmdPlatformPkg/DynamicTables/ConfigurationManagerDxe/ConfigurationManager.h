@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -90,6 +90,20 @@ EFI_STATUS
 EFIAPI
 UpdateMadtTable (
   IN OUT EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  );
+
+/**
+  Update HPET table information in Platform Repository.
+
+  @param[in]  PlatformRepo  The pointer to the Platform Repository.
+
+  @retval EFI_SUCCESS  The HPET table information is updated successfully.
+  @retval EFI_INVALID_PARAMETER  The input parameter is NULL.
+**/
+EFI_STATUS
+EFIAPI
+UpdateHpetTableInfo (
+  IN  EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
   );
 
 #endif // CONFIGURATION_MANAGER_H_

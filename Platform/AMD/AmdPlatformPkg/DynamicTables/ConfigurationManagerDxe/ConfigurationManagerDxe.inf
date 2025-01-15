@@ -1,7 +1,7 @@
 ## @file
 #  AMD platform configuration manager Dxe driver.
 #
-#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -22,6 +22,7 @@
 #
 
 [Sources]
+  Acpi/Hpet.c
   Acpi/Madt.c
   Acpi/Mcfg.c
   ConfigurationManager.c
@@ -41,6 +42,7 @@
   DebugLib
   LocalApicLib
   MemoryAllocationLib
+  IoLib
   PciSegmentInfoLib
   PlatformSocLib
   PrintLib

@@ -231,6 +231,12 @@ ConfigurationManagerDxeInitialize (
   }
 
   UpdateMadtTable (&mAmdPlatformRepositoryInfo);
+  Status = UpdateHpetTableInfo (&mAmdPlatformRepositoryInfo);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "ERROR: Failed to update HPET table info. Status = %r\n", Status));
+    return Status;
+  }
+
   Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
                   &gEdkiiConfigurationManagerProtocolGuid,
