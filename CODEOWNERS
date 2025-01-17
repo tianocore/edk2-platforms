@@ -117,8 +117,8 @@
 /Platform/Qemu/QemuOpenBoardPkg/** @heatd
 
 # QEMU sbsa-ref platform
-/Platform/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
-/Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
+/Platform/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
+/Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
 
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm
