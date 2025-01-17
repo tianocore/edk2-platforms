@@ -185,7 +185,7 @@ READ_LOCK_STATUS   = TRUE
 
   # Simple TextIn/TextOut for UEFI Terminal
 
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
