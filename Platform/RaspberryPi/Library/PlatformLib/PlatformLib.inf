@@ -55,10 +55,8 @@
   gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
+  gRaspberryPiTokenSpaceGuid.PcdNvStorageVariableBase
   gRaspberryPiTokenSpaceGuid.PcdNvStorageEventLogSize
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate     # RPi3 only

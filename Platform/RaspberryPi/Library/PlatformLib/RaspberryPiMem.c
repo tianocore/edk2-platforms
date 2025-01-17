@@ -30,14 +30,7 @@ UINT32 mBoardRevision;
 STATIC BOOLEAN                  VirtualMemoryInfoInitialized = FALSE;
 STATIC RPI_MEMORY_REGION_INFO   VirtualMemoryInfo[MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS];
 
-#define VariablesSize (FixedPcdGet32(PcdFlashNvStorageVariableSize) +   \
-                       FixedPcdGet32(PcdFlashNvStorageFtwWorkingSize) + \
-                       FixedPcdGet32(PcdFlashNvStorageFtwSpareSize) +  \
-                       FixedPcdGet32(PcdNvStorageEventLogSize))
-
-#define VariablesBase (FixedPcdGet64(PcdFdBaseAddress) + \
-                       FixedPcdGet32(PcdFdSize) - \
-                       VariablesSize)
+#define VariablesBase (FixedPcdGet32(PcdNvStorageVariableBase))
 
 /**
   Return the Virtual Memory Map of your platform
@@ -116,7 +109,7 @@ ArmPlatformGetVirtualMemoryMap (
   // Firmware Volume
   VirtualMemoryTable[Index].PhysicalBase    = FixedPcdGet64 (PcdFdBaseAddress);
   VirtualMemoryTable[Index].VirtualBase     = VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdFdSize) - VariablesSize;
+  VirtualMemoryTable[Index].Length          = VariablesBase - VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
   VirtualMemoryInfo[Index].Type             = RPI_MEM_RESERVED_REGION;
   VirtualMemoryInfo[Index++].Name           = L"FD";
@@ -124,7 +117,7 @@ ArmPlatformGetVirtualMemoryMap (
   // Variable Volume
   VirtualMemoryTable[Index].PhysicalBase    = VariablesBase;
   VirtualMemoryTable[Index].VirtualBase     = VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index].Length          = VariablesSize;
+  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdFdtBaseAddress) - VariablesBase;
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
   VirtualMemoryInfo[Index].Type             = RPI_MEM_RUNTIME_REGION;
   VirtualMemoryInfo[Index++].Name           = L"FD Variables";
