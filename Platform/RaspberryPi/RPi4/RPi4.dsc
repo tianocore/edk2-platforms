@@ -110,8 +110,6 @@
   DefaultExceptionHandlerLib|ArmPkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLib.inf
   CpuExceptionHandlerLib|ArmPkg/Library/ArmExceptionLib/ArmExceptionLib.inf
   ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
-  ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
-  ArmGicArchLib|ArmPkg/Library/ArmGicArchLib/ArmGicArchLib.inf
   DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
@@ -664,7 +662,7 @@
 
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV2Dxe.inf
   Platform/RaspberryPi/Drivers/RpiFirmwareDxe/RpiFirmwareDxe.inf
   Platform/RaspberryPi/Drivers/FdtDxe/FdtDxe.inf
   Platform/RaspberryPi/Drivers/ConfigDxe/ConfigDxe.inf

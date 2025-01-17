@@ -215,7 +215,7 @@ READ_LOCK_STATUS   = TRUE
   INF Platform/RaspberryPi/Drivers/DisplayDxe/DisplayDxe.inf
   INF EmbeddedPkg/Drivers/ConsolePrefDxe/ConsolePrefDxe.inf
 
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV2Dxe.inf
   INF Platform/RaspberryPi/Drivers/RpiFirmwareDxe/RpiFirmwareDxe.inf
   INF Platform/RaspberryPi/Drivers/FdtDxe/FdtDxe.inf
   INF Platform/RaspberryPi/Drivers/ConfigDxe/ConfigDxe.inf
