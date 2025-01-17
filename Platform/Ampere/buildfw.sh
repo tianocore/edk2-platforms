@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+##
+# @file
+#  Build script for platforms with an Altra(R) CPU from Ampere(R).
+#
+# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
 set -o errexit
 
 tfa_usage () {
@@ -41,7 +51,15 @@ usage () {
   echo "  Available platforms:"
   echo "    ADLINK     -> ComHpcAlt"
   echo "    Ampere     -> Jade"
-  echo "    ASRockRack -> Altrad8ud2"
+  echo "    ASRockRack -> Altra1L2Q"
+  echo "    ASRockRack -> Altra1L2T"
+  echo ""
+  echo "Environment Variables:"
+  echo "  SECUREBOOT_DIR       - directory to store SecureBoot keys, certs etc."
+  echo "  USE_EXISTING_SB_KEYS - use existing Secure Boot Platform and Update keys"
+  echo "  DOWNLOAD_MS_SB_KEYS  - force re-download of Microsoft Secure Boot KEK and DB certificates"
+  echo "  CERT_PASSWORD        - password to use when generating Platform and Update Keys and certificates"
+  echo "                         defaults to \"password\" if not specified."
 
   exit 1
 }
@@ -75,6 +93,11 @@ BUILD_THREADS=$(getconf _NPROCESSORS_ONLN)
 export PYTHON_COMMAND=python3
 export WORKSPACE=$PWD
 
+if [ -z "${SECUREBOOT_DIR}" ]; then
+  SECUREBOOT_DIR="${WORKSPACE}/secureboot_objects/"
+  export SECUREBOOT_DIR
+fi
+
 if [ "$(uname -o)" = "FreeBSD" ]; then
   MAKE_COMMAND=gmake
   GETOPT_COMMAND=/usr/local/bin/getopt
@@ -89,6 +112,13 @@ if [ "$(uname -o)" = "FreeBSD" ]; then
   mkdir bin || true
   ln -sfv /usr/local/bin/gmake bin/make
   export PATH=$PWD/bin:$PATH
+elif [ "$(uname -o)" = "Darwin" ]; then
+  MAKE_COMMAND=gmake
+  GETOPT_COMMAND=/opt/homebrew/opt/gnu-getopt/bin/getopt
+  if ! command -v ${GETOPT_COMMAND} >/dev/null 2>&1; then
+    echo "GNU getopt is required. Please install the gnu-getopt homebrew package."
+    exit 1
+  fi
 else
   MAKE_COMMAND=make
   GETOPT_COMMAND=getopt
@@ -173,6 +203,15 @@ ${MAKE_COMMAND} -C edk2/BaseTools -j ${BUILD_THREADS}
 . "${WORKSPACE}/edk2-platforms/Platform/Ampere/Tools/fw_ver.sh" UPDATE
 . edk2/edksetup.sh
 
+if [ -e "${WORKSPACE}/build.conf" ]; then
+  . "${WORKSPACE}/build.conf"
+fi
+
+pushd edk2
+cp -vf BaseTools/Conf/tools_def.template Conf/tools_def.txt
+patch -p0 < "${WORKSPACE}/edk2-platforms/Platform/Ampere/Tools/tools_def.txt.patch"
+popd
+
 EDK2_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE:-TRUE}
 EDK2_NETWORK_ENABLE=${EDK2_NETWORK_ENABLE:-TRUE}
 EDK2_INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND:-TRUE}
@@ -180,13 +219,38 @@ EDK2_NETWORK_IP6_ENABLE=${EDK2_NETWORK_IP6_ENABLE:-TRUE}
 EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS:-TRUE}
 EDK2_NETWORK_TLS_ENABLE=${EDK2_NETWORK_TLS_ENABLE:-TRUE}
 EDK2_REDFISH_ENABLE=${EDK2_REDFISH_ENABLE:-TRUE}
-EDK2_PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE:-TRUE}
+EDK2_PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE:-FALSE}
 EDK2_TPM2_ENABLE=${EDK2_TPM2_ENABLE:-TRUE}
+EDK2_HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE:-FALSE}
+EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-TRUE}
+EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-TRUE}
 
 if [ "${BLDTYPE}" = "RELEASE" ]; then
-  EDK2_HEAP_GUARD_ENABLE=FALSE
+  EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-FALSE}
 else
-  EDK2_HEAP_GUARD_ENABLE=TRUE
+  EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-TRUE}
+fi
+
+if [ "${EDK2_HEAP_GUARD_ENABLE}" = "TRUE" ] && [ "${EDK2_X86_EMULATOR_ENABLE}" = "TRUE" ]; then
+  echo "Error: HeapGuard and X86 emulator are incompatible. Only one may be enabled at a time."
+  exit 1
+fi
+
+if [ "${EDK2_SECURE_BOOT_ENABLE}" = "TRUE" ]; then
+  export MANUFACTURER
+  export BOARD_NAME
+  "${WORKSPACE}/edk2-platforms/Platform/Ampere/Tools/GenerateSecureBootKeys.sh"
+
+  EXTRA_BUILD_FLAGS+=" -D DEFAULT_KEYS=TRUE"
+  EXTRA_BUILD_FLAGS+=" -D PK_DEFAULT_FILE=${SECUREBOOT_DIR}/certs/platform_key.der"
+  EXTRA_BUILD_FLAGS+=" -D KEK_DEFAULT_FILE1=${SECUREBOOT_DIR}/certs/ms_kek1.der"
+  EXTRA_BUILD_FLAGS+=" -D KEK_DEFAULT_FILE2=${SECUREBOOT_DIR}/certs/ms_kek2.der"
+  EXTRA_BUILD_FLAGS+=" -D DB_DEFAULT_FILE1=${SECUREBOOT_DIR}/certs/ms_db1.der"
+  EXTRA_BUILD_FLAGS+=" -D DB_DEFAULT_FILE2=${SECUREBOOT_DIR}/certs/ms_db2.der"
+  EXTRA_BUILD_FLAGS+=" -D DB_DEFAULT_FILE3=${SECUREBOOT_DIR}/certs/ms_db3.der"
+  EXTRA_BUILD_FLAGS+=" -D DB_DEFAULT_FILE4=${SECUREBOOT_DIR}/certs/ms_db4.der"
+  EXTRA_BUILD_FLAGS+=" -D DB_DEFAULT_FILE5=${SECUREBOOT_DIR}/certs/ms_db5.der"
+  EXTRA_BUILD_FLAGS+=" -D DBX_DEFAULT_FILE1=${SECUREBOOT_DIR}/certs/dummy_dbx.der"
 fi
 
 UPD720202_ROM_FILE="K2026090.mem"
@@ -198,9 +262,25 @@ if [ -e "${WORKSPACE}/IntelUndiBin/Release/AARCH64/GigUndiDxe.efi" ]; then
   EXTRA_BUILD_FLAGS+=" -D INTEL_UNDI_BIN=TRUE"
 fi
 
+echo "EXTRA_BUILD_FLAGS=${EXTRA_BUILD_FLAGS}"
+
+# YearMonthDayBuild (0xYYMMDDBB)
+echo "#define CURRENT_FIRMWARE_VERSION ${VER_HEX}" > "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
+echo "#define CURRENT_FIRMWARE_VERSION_STRING L\"${FW_STR}\"" >> "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
+echo "#define LOWEST_SUPPORTED_FIRMWARE_VERSION 0x00000000" >> "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
+
+if [ -f "${SCP_SLIM}" ]; then
+  cp -vf "${SCP_SLIM}" "Build/${BOARD_NAME}/altra_scp.slim"
+fi
+if [ -f "${TFA_SLIM}" ]; then
+  cp -vf "${TFA_SLIM}" "Build/${BOARD_NAME}/altra_atf.slim"
+fi
+
 build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
-        -D FIRMWARE_VER="${VER}-${BUILD} TF-A ${TFA_VERSION}"      \
-        -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}        \
+        -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"   \
+        -D FIRMWARE_VER="${VER}"                          \
+        -D FIRMWARE_VER_HEX="${VER_HEX}"                      \
+        -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}   \
         -D SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE}      \
         -D NETWORK_ENABLE=${EDK2_NETWORK_ENABLE}              \
         -D INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND}  \
@@ -211,17 +291,20 @@ build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
         -D PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE} \
         -D TPM2_ENABLE=${EDK2_TPM2_ENABLE}                    \
         -D HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE}        \
-        -Y COMPILE_INFO -y BuildReport.log                         \
+        -D X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE}    \
+        -D SHELL_ENABLE=${EDK2_SHELL_ENABLE}                  \
+        -Y COMPILE_INFO -y BuildReport.log                    \
         -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}${LINUXBOOT}.dsc \
         ${EXTRA_BUILD_FLAGS}
 
-OUTPUT_BASENAME=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}-${BUILD}
+OUTPUT_BASENAME=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}
 
-OUTPUT_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_uefi_${BLDTYPE,,}_${VER}-${BUILD}.bin
-OUTPUT_TFA_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}-${BUILD}.bin
-OUTPUT_SPINOR_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_rom_${BLDTYPE,,}_${VER}-${BUILD}.bin
+OUTPUT_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_uefi_${BLDTYPE,,}_${VER}.bin
+OUTPUT_TFA_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}.bin
+OUTPUT_SPINOR_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_rom_${BLDTYPE,,}_${VER}.bin
 
 cp -v "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/BL33_${BOARD_NAME^^}_UEFI.fd" "${OUTPUT_UEFI_IMAGE}"
+cp -vf "${OUTPUT_UEFI_IMAGE}" "Build/${BOARD_NAME}/${BOARD_NAME,,}_uefi.bin"
 
 if [ -f "${TFA_SLIM}" ]; then
   # Create a 2MB file with 0xff
@@ -245,21 +328,39 @@ if [ -f "${TFA_SLIM}" ]; then
   cp -vf "${OUTPUT_TFA_UEFI_IMAGE}" "Build/${BOARD_NAME}/${BOARD_NAME,,}_tfa_uefi.bin"
 fi
 
+if [ -f "${TFA_SLIM}" ]; then
+  INCLUDE_TFA_FW=TRUE
+else
+  INCLUDE_TFA_FW=FALSE
+fi
+
 # LinuxBoot doesn't support capsule updates
 if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
-  cp -vf "${SCP_SLIM}" "Build/${BOARD_NAME}/altra_scp.slim"
-  cp -vf "${TFA_SLIM}" "Build/${BOARD_NAME}/altra_atf.slim"
 
   # Build the capsule (for upgrading from the UEFI Shell or Linux)
   build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
-          -D FIRMWARE_VER="${VER}-${BUILD} TF-A ${TFA_VERSION}" \
-          -D MAJOR_VER=${MAJOR_VER} \
-          -D MINOR_VER=${MINOR_VER} \
-          -D SECURE_BOOT_ENABLE     \
-          -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
+      -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"        \
+      -D FIRMWARE_VER="${VER}" \
+      -D FIRMWARE_VER_HEX="${VER_HEX}" \
+      -D MAJOR_VER=${MAJOR_VER}  \
+      -D MINOR_VER=${MINOR_VER}  \
+      -D INCLUDE_TFA_FW=${INCLUDE_TFA_FW} \
+      -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
 
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}UEFIATFFIRMWAREUPDATECAPSULEFMPPKCS7.Cap" "${OUTPUT_BASENAME}.cap"
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}SCPFIRMWAREUPDATECAPSULEFMPPKCS7.Cap" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_scp_${SCP_VERSION}.cap"
+  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
+  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "Build/${BOARD_NAME}/"
+  mkdir Build/${BOARD_NAME}/Cab || true
+  rm -f Build/${BOARD_NAME}/Cab/*
+  METAINFO_FILE="Build/${BOARD_NAME}/Cab/firmware.metainfo.xml"
+  cp -vf "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/firmware.metainfo.xml" "${METAINFO_FILE}"
+  cp -vf "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "Build/${BOARD_NAME}/Cab/firmware.bin"
+  sed -i "s/{URGENCY}/high/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_VERSION}/$(printf '%d' ${VER_HEX})/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
+  sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
+  pushd "Build/${BOARD_NAME}/Cab"
+  lcab -q ./* "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab"
+  popd
 fi
 
 if [ "${BOARD_NAME}" = "ComHpcAlt" ] && [ ! -e "${WORKSPACE}/${UPD720202_ROM_FILE}" ]; then

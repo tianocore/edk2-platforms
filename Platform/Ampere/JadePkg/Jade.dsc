@@ -52,9 +52,13 @@
   !else
     DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000000F
   !endif
-  DEFINE FIRMWARE_VER            = 0.01.001
+  DEFINE FIRMWARE_VER            = 00.01.01-01
+  DEFINE FIRMWARE_VER_HEX        = 0x00010100
+  DEFINE CAPSULE_ENABLE          = TRUE
+  DEFINE INCLUDE_TFA_FW          = TRUE
   DEFINE SECURE_BOOT_ENABLE      = TRUE
   DEFINE TPM2_ENABLE             = TRUE
+  DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
   DEFINE PLATFORM_CONFIG_UUID    = 84BC921F-9D4A-4D1D-A1A1-1AE13EDD07E5
 
@@ -66,6 +70,11 @@
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
+
+!if $(CAPSULE_ENABLE) == TRUE
+  DEFINE UEFI_IMAGE                          = Build/Jade/jade_uefi.bin
+  DEFINE TFA_UEFI_IMAGE                      = BUild/Jade/jade_tfa_uefi.bin
+!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -122,6 +131,8 @@
   # Flag to indicate option of using default or specific platform Port Map table
   #
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.UseDefaultConfig|TRUE
+
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportUpdateCapsuleReset|TRUE
 
 [PcdsFixedAtBuild]
   gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x3F
@@ -185,6 +196,17 @@
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[35]|{ 35, 1, 7, 6, 0, 0x24, 0x70, 0x4, 0, 11, 8 }   # S1 RCB3.6 - SSD8
   gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[36]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
 
+  # We should support CoD in future, since it provides a nicer
+  # upgrade experience (e.g. a progress bar).
+  gEfiMdeModulePkgTokenSpaceGuid.PcdCapsuleOnDiskSupport|FALSE
+
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdRsa2048Sha256PublicKeyBuffer|{0}
+  !include Platform/Ampere/JadePkg/root.cer.gEfiSecurityPkgTokenSpaceGuid.PcdPkcs7CertBuffer.inc
+!endif
+
+  gAmpereTokenSpaceGuid.PcdFirmwareVersionNumber|$(FIRMWARE_VER_HEX)
+
 [PcdsFixedAtBuild.common]
   #
   # Platform config UUID
@@ -211,8 +233,8 @@
 
 [PcdsDynamicExDefault.common.DEFAULT]
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{0x31, 0xca, 0x8b, 0xf0, 0x2e, 0x54, 0xea, 0x4c, 0x8b, 0x48, 0x8e, 0x54, 0xf9, 0x42, 0x25, 0x94}
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0xed, 0x06, 0x1c, 0x43, 0xe2, 0x4f, 0x8f, 0x43, 0x98, 0xa3, 0xa9, 0xb1, 0xfd, 0x92, 0x30, 0x19}
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("f08bca31-542e-4cea-8b48-8e54f9422594")}|VOID*|0x10
+  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("431c06ed-4fe2-438f-98a3-a9b1fd923019")}|VOID*|0x10
 
 [PcdsPatchableInModule]
   #
@@ -274,16 +296,28 @@
   #
   # Firmware Capsule Update
   #
+!if $(CAPSULE_ENABLE) == TRUE
   Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
   MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
-  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf
+  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  }
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  }
+  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  }
 
   #
   # System Firmware Update
   #
   Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+!endif
 
   #
   # In-band NVPARAM Access
