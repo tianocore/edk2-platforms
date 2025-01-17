@@ -130,7 +130,7 @@ APRIORI DXE {
   #
   # ARM GIC Dxe
   #
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
 
   #
   # IPMI SSIF
