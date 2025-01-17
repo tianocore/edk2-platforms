@@ -46,6 +46,7 @@
 #
 ################################################################################
 [Components.common]
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV2Dxe.inf
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
 ##

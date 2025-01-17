@@ -62,6 +62,7 @@
 #
 ################################################################################
 [Components.common]
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 
   #
