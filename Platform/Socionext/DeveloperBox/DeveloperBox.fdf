@@ -115,7 +115,7 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   INF Platform/Socionext/DeveloperBox/Logo/LogoDxe.inf
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
 
   #
   # Variable services
