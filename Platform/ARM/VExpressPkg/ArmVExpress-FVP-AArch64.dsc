@@ -321,7 +321,7 @@
       gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x25
   }
 
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 !ifdef EDK2_ENABLE_PL111

@@ -116,7 +116,7 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
 !ifdef EDK2_ENABLE_PL111
