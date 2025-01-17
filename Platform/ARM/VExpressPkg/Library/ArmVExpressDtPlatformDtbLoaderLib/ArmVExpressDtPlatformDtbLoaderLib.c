@@ -8,7 +8,7 @@
 
 #include <PiDxe.h>
 
-#include <Library/ArmGicLib.h>
+#include <Library/ArmLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DxeServicesLib.h>
@@ -35,7 +35,6 @@ GetPlatformId (
   UINT32                SysId;
   UINT32                FvpSysId;
   UINT32                VariantSysId;
-  ARM_GIC_ARCH_REVISION GicRevision;
 
   SysId = MmioRead32 (ARM_VE_SYS_ID_REG);
 
@@ -49,31 +48,23 @@ GetPlatformId (
     if (VariantSysId == ARM_FVP_GIC_VE_MMAP) {
       // FVP Base Model with legacy GIC memory map -- no longer supported
       return ARM_FVP_BASE_AEMv8x4_AEMv8x4_GICV2_LEGACY;
+    } else if (!ArmHasGicSystemRegisters ()) {
+      // FVP Base Model with GICv2 support
+      return ARM_FVP_BASE_AEMv8x4_AEMv8x4_GICV2;
     } else {
-      GicRevision = ArmGicGetSupportedArchRevision ();
-
-      if (GicRevision == ARM_GIC_ARCH_REVISION_2) {
-        // FVP Base Model with GICv2 support
-        return ARM_FVP_BASE_AEMv8x4_AEMv8x4_GICV2;
-      } else {
-        // FVP Base Model with GICv3 support
-        return ARM_FVP_BASE_AEMv8x4_AEMv8x4_GICV3;
-      }
+      // FVP Base Model with GICv3 support
+      return ARM_FVP_BASE_AEMv8x4_AEMv8x4_GICV3;
     }
   } else if (FvpSysId == ARM_FVP_FOUNDATION_BOARD_SYS_ID) {
     if (VariantSysId == ARM_FVP_GIC_VE_MMAP) {
       // FVP Foundation Model with legacy GIC memory map -- no longer supported
       return ARM_FVP_FOUNDATION_GICV2_LEGACY;
+    } else if (!ArmHasGicSystemRegisters ()) {
+      // FVP Foundation Model with GICv2
+      return ARM_FVP_FOUNDATION_GICV2;
     } else {
-      GicRevision = ArmGicGetSupportedArchRevision ();
-
-      if (GicRevision == ARM_GIC_ARCH_REVISION_2) {
-        // FVP Foundation Model with GICv2
-        return ARM_FVP_FOUNDATION_GICV2;
-      } else {
-        // FVP Foundation Model with GICv3
-        return ARM_FVP_FOUNDATION_GICV3;
-      }
+      // FVP Foundation Model with GICv3
+      return ARM_FVP_FOUNDATION_GICV3;
     }
   }
   return ARM_FVP_UNKNOWN;
