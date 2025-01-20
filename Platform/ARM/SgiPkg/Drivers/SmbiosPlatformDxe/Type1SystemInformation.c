@@ -5,7 +5,7 @@
   Reference Design platforms. Type 1 table defines attributes of the
   overall system such as manufacturer, product name, UUID etc.
 
-  Copyright (c) 2021 - 2024, Arm Limited. All rights reserved.
+  Copyright (c) 2021 - 2025, Arm Limited. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
@@ -35,7 +35,11 @@
   "RdN2Cfg1\0"                                          \
   "RdN2Cfg2\0"                                          \
   "RdV2\0"                                              \
-  "RdV3\0"
+  "RdV3\0"                                              \
+  "RdV3Cfg1\0"                                          \
+  "RdV3Cfg2\0"                                          \
+  "RdV3R1\0"                                            \
+  "RdV3R1Cfg1\0"
 
 typedef enum {
   ManufacturerName = 1,
@@ -77,6 +81,14 @@ STATIC GUID mSmbiosUid[] = {
   {0x3b1180a3, 0x0744, 0x4194, {0xae, 0x2e, 0xed, 0xa5, 0xbc, 0x2e, 0x43, 0x45}},
   /* Rd-V3         */
   {0x904b28d6, 0x0662, 0x11ed, {0xb9, 0x39, 0x02, 0x42, 0xac, 0x12, 0x00, 0x02}},
+  /* Rd-V3-Cfg1    */
+  {0xa92eb8a5, 0x36eb, 0x4ac5, {0x8a, 0x25, 0xce, 0x10, 0xed, 0xb5, 0x0e, 0x3d}},
+  /* Rd-V3-Cfg2    */
+  {0xeb6b5709, 0xf310, 0x408b, {0x9a, 0xea, 0x98, 0x56, 0x8c, 0xe4, 0xfe, 0x68}},
+  /*Rd-V3-R1       */
+  {0x043ca598, 0x79cd, 0x4e53, {0xaf, 0xc2, 0x9a, 0x68, 0xb8, 0xd6, 0xe5, 0x91}},
+  /*Rd-V3-R1-Cfg1  */
+  {0xe9b1c0f2, 0x4a3d, 0x49f5, {0xa6, 0xc2, 0x8d, 0x1e, 0x45, 0xb7, 0xf0, 0x19}}
 };
 
 /* System information */
