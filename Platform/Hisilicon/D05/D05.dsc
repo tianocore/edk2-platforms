@@ -192,9 +192,9 @@
   gHisiTokenSpaceGuid.PcdCPUInfo|L"Hi1616"
 
 
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x4D000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x4D100000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFE000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x4D000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x4D100000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xFE000000
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 

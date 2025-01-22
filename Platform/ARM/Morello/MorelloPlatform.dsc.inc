@@ -86,9 +86,9 @@
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base|0x8080000000
 
   # GIC Base Addresses
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x30000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x30000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
 
   # PL011 - Serial Terminal
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x2A400000

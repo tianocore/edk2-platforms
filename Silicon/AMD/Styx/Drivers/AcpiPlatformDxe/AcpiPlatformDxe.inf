@@ -83,8 +83,8 @@
   gAmdStyxTokenSpaceGuid.PcdSbsaWatchDogGSIV
   gAmdStyxTokenSpaceGuid.PcdSerialDbgRegisterBase
   gArmPlatformTokenSpaceGuid.PcdCoreCount
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
 
 [Protocols]

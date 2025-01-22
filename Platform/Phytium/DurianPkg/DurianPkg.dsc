@@ -81,9 +81,9 @@
   #
   # ARM General Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x29900000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x29980000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x29c00000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x29900000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x29980000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x29c00000
 
   # System IO space
   gPhytiumPlatformTokenSpaceGuid.PcdSystemIoBase|0x0

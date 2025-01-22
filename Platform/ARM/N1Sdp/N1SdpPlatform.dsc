@@ -118,9 +118,9 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace|0x40000000000
 
   # GIC Base Addresses
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x30000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x30000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
 
   # PCIe
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24

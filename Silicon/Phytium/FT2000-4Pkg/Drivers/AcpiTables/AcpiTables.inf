@@ -35,9 +35,9 @@
   Silicon/Phytium/PhytiumCommonPkg/PhytiumCommonPkg.dec
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
 
   gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum

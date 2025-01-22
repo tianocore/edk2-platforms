@@ -106,9 +106,9 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x87e028000000
 
   # ARM General Interrupt Controller
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x801000000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x801000080000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x801000020000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x801000000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x801000080000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x801000020000
 
   # Hardcoded terminal: TTYTERM, NOT defined in UEFI SPEC
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4

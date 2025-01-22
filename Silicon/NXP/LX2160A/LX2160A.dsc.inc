@@ -26,9 +26,9 @@
 [PcdsDynamicDefault.common]
   #
   # ARM General Interrupt Controller
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x6000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x6200000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xC0C0000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x6000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x6200000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xC0C0000
 
 [PcdsFixedAtBuild.common]
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase|0x23A0000

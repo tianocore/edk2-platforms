@@ -45,7 +45,7 @@
   gHisiTokenSpaceGuid.PcdPcieRootBridgeMask
   gHisiTokenSpaceGuid.PcdPcieRootBridgeMask2P
   gHisiTokenSpaceGuid.Pcdsoctype
-  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
 
 [FeaturePcd]
   gHisiTokenSpaceGuid.PcdIsItsSupported

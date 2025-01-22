@@ -172,8 +172,8 @@
   #
   # ARM Generic Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x2C010000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C02F000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x2C010000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C02F000
 
 !ifndef HEADLESS_PLATFORM
   # ARM Juno HDLCD Base

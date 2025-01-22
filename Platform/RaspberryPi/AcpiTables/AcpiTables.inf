@@ -57,8 +57,8 @@
   gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciCpuMmioAdr
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioAdr
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioLen

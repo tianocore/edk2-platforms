@@ -505,8 +505,8 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   #
   # ARM General Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x40060000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x40080000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x40060000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x40080000
 
   # GIC ITS
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase|0

@@ -47,7 +47,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile    ## CONSUMES
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
 
 [Depex]
   gEfiAcpiTableProtocolGuid

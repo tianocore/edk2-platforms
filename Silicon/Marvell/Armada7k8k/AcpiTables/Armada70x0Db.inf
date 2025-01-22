@@ -35,8 +35,8 @@
   Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
 
   gArmPlatformTokenSpaceGuid.PcdCoreCount
 

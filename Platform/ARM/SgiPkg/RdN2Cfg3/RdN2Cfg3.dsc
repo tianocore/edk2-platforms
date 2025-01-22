@@ -37,8 +37,8 @@
 
 [PcdsFixedAtBuild.common]
   # GIC configurations
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x30000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x30300000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x30000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x30300000
   gArmSgiTokenSpaceGuid.PcdGicSize|0x400000
 
   # ARM Cores and Clusters

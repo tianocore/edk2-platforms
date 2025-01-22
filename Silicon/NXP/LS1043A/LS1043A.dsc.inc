@@ -23,8 +23,8 @@
 
   #
   # ARM General Interrupt Controller
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x01401000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x01402000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x01401000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x01402000
 
 [PcdsFixedAtBuild.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x021c0500

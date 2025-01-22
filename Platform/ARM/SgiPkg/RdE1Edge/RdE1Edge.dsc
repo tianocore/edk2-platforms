@@ -43,8 +43,8 @@
   gArmPlatformTokenSpaceGuid.PcdClusterCount|2
 
   # GIC Base Addresses
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x30000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x30000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
   gArmSgiTokenSpaceGuid.PcdGicSize|0x100000
 
 ################################################################################

@@ -41,8 +41,8 @@
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor
 
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase
 
 

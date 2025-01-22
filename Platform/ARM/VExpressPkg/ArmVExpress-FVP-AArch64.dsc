@@ -193,9 +193,9 @@
   #
   # ARM Generic Interrupt Controller
   #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x2f000000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x2f100000
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase|0x2f000000
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase|0x2f100000
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
 
   #
   # PCI Root Complex

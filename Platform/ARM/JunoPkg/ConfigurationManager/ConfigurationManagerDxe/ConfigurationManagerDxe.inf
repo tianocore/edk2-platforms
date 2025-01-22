@@ -67,9 +67,9 @@
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
 
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicDistributorBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gEfiMdePkgTokenSpaceGuid.PcdGicRedistributorsBase
 
   gArmTokenSpaceGuid.PcdPciBusMax
   gArmTokenSpaceGuid.PcdPciBusMin
