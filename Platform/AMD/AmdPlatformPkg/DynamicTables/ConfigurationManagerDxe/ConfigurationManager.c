@@ -29,6 +29,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
   },
   /// ACPI Table List
   {
+    /// FACS Table
+    {
+      EFI_ACPI_6_5_FIRMWARE_ACPI_CONTROL_STRUCTURE_SIGNATURE,
+      EFI_ACPI_6_5_FIRMWARE_ACPI_CONTROL_STRUCTURE_VERSION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdFacs),
+      NULL
+    },
     /// FADT Table
     {
       EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
@@ -81,6 +88,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  mAmdPlatformRepositoryInfo = {
   },
   /// Current ACPI Table Count
   PLAT_ACPI_TABLE_COUNT,
+  /// FACS info
+  {
+    0,
+    0,
+    0,
+    0
+  },
   /// PmProfile
   {
     EFI_ACPI_6_5_PM_PROFILE_ENTERPRISE_SERVER

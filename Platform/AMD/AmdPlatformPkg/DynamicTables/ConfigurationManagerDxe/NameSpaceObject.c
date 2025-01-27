@@ -648,6 +648,15 @@ GetX64NameSpaceObject (
                  CmObject
                  );
       break;
+    case EX64ObjFacsInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->FacsInfo,
+                 sizeof (PlatformRepo->FacsInfo),
+                 1,
+                 CmObject
+                 );
+      break;
     default:
     {
       Status = EFI_NOT_FOUND;
@@ -695,6 +704,15 @@ SetX64NameSpaceObject (
   PlatformRepo = This->PlatRepoInfo;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
+    case EX64ObjFacsInfo:
+      Status = SetHandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->FacsInfo,
+                 sizeof (PlatformRepo->FacsInfo),
+                 1,
+                 CmObject
+                 );
+      break;
     case EX64ObjFadtSciInterrupt:
       Status = SetHandleCmObject (
                  CmObjectId,

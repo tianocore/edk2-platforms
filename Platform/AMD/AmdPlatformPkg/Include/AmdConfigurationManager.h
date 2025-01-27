@@ -19,7 +19,7 @@
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT  7
+#define PLAT_ACPI_TABLE_COUNT  8
 
 /** The maximum number of ACPI tables to install
 */
@@ -45,6 +45,7 @@ typedef struct PlatformRepositoryInfo {
   /// List of ACPI tables
   CM_STD_OBJ_ACPI_TABLE_INFO                      CmAcpiTableList[MAX_PLAT_ACPI_TABLE_COUNT];
   UINTN                                           CurrentAcpiTableCount;
+  CM_X64_FACS_INFO                                FacsInfo;
   CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO    PowerManagementProfile;
   CM_ARCH_COMMON_HYPERVISOR_VENDOR_ID             HypervisorVendorId;
   CM_ARCH_COMMON_FIXED_FEATURE_FLAGS              FixedFeatureFlags;
