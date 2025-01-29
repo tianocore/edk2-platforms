@@ -1,0 +1,41 @@
+#  @file
+#
+#  ZynqMP-specific PCDs and Protocols
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = ZynqMpPkg
+  PACKAGE_GUID                   = 7ae8c490-e680-4dcc-b6db-82ea7a547aa2
+  PACKAGE_VERSION                = 1.0
+
+[Guids]
+  gZynqMpTokenSpaceGuid = {0xcae6c58f, 0x3d14, 0x4fb8, {0xb2, 0x1a, 0xf5, 0x98, 0xd1, 0xe1, 0x61, 0xfd}}
+
+[Protocols]
+
+[PcdsFixedAtBuild]
+  # UART (By default, this is UART0 address)
+  # Possible values:
+  #   0xFF000000 for UART0
+  #   0xFF010000 for UART1
+  gZynqMpTokenSpaceGuid.PcdSerialRegisterBase|0xFF000000|UINT64|0x00000001
+
+  # Trusted-Firmware-A (By default, TF-A is not DRAM)
+  gZynqMpTokenSpaceGuid.PcdTfaInDram|FALSE|BOOLEAN|0x00000002
+  gZynqMpTokenSpaceGuid.PcdTfaMemoryBase|0x00000000|UINT64|0x00000003
+  gZynqMpTokenSpaceGuid.PcdTfaMemorySize|0x00000000|UINT64|0x00000004
+
+  # OP-TEE (By default, OP-TEE is not used)
+  gZynqMpTokenSpaceGuid.PcdEnableOptee|FALSE|BOOLEAN|0x00000005
+  gZynqMpTokenSpaceGuid.PcdOpteeMemoryBase|0x00000000|UINT64|0x00000006
+  gZynqMpTokenSpaceGuid.PcdOpteeMemorySize|0x00000000|UINT64|0x00000007
+
+  # Extra DRAM
+  gZynqMpTokenSpaceGuid.PcdUseExtraMemory|TRUE|BOOLEAN|0x00000010
+  gZynqMpTokenSpaceGuid.PcdExtraMemoryBase|0x800000000|UINT64|0x00000011
+  gZynqMpTokenSpaceGuid.PcdExtraMemorySize|0x80000000|UINT64|0x00000012
