@@ -72,7 +72,6 @@
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
   CpuLib|MdePkg/Library/BaseCpuLib/BaseCpuLib.inf
-  ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
   DebugAgentLib|MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
   DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
