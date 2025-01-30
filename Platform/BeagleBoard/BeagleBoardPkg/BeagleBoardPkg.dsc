@@ -301,7 +301,6 @@
   # Size of the region used by UEFI in permanent memory (Reserved 16MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x01000000
 
-  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x80008000
   gArmTokenSpaceGuid.PcdCpuResetAddress|0x80008000
 
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000
