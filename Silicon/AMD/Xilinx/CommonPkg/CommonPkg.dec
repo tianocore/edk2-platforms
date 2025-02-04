@@ -1,0 +1,37 @@
+#  @file
+#
+#  Common Xilinx PCDs and Protocols
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = XilinxCommonPkg
+  PACKAGE_GUID                   = feed3b68-cf18-4936-b35e-d382e24dc73d
+  PACKAGE_VERSION                = 1.0
+
+[Guids]
+  gXilinxTokenSpaceGuid = {0xbf16253d, 0x4101, 0x4088, {0x80, 0xb0, 0x7e, 0xda, 0x9c, 0x97, 0xd2, 0x10}}
+
+[Protocols]
+
+[PcdsFixedAtBuild]
+  # SDHCI
+  # Write Protection Detection (By default, this is disabled)
+  gXilinxTokenSpaceGuid.PcdEnableMmcWPDetection|FALSE|BOOLEAN|0x00000008
+
+  # Delay configurations (in micro seconds)
+  # The user can override these values. However, smaller delays
+  # might cause Mmc transfer errors
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterCmdSend|200|UINT64|0x00000009
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterResponseReceive|50|UINT64|0x0000000A
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataWrite|200|UINT64|0x0000000B
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataRead|50|UINT64|0x0000000C
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterRegisterWrite|20|UINT64|0x0000000D
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterRetry|10|UINT64|0x0000000E
+
+  # Base address (By default, this is SD controller address, as eMMC is not supported yet)
+  gXilinxTokenSpaceGuid.PcdSdhciBase|0xFF170000|UINT64|0x0000000F

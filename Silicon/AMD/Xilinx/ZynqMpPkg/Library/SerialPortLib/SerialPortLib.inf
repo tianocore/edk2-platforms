@@ -1,0 +1,38 @@
+#  @file
+#
+#  ZynqMP Serial Port Library.
+#  This implementation assumes intializations are already done
+#  by Xilinx FSBL. Moreover, only one serial port instance can be used.
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  Derived from edk2/MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ZynqMpSerialPortLib
+  FILE_GUID                      = B45E9E82-47D0-44D5-BB11-4DB359D9E8FA
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SerialPortLib
+
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[LibraryClasses]
+  IoLib
+  PcdLib
+
+[Sources]
+  SerialPortLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/AMD/Xilinx/ZynqMpPkg/ZynqMpPkg.dec
+
+[FixedPcd]
+  gZynqMpTokenSpaceGuid.PcdSerialRegisterBase

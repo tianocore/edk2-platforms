@@ -1,0 +1,21 @@
+#  @file
+#
+#  Example Devicetree for ZynqMP-based platform
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION    = 0x0001001A
+  BASE_NAME      = ZynqMpDeviceTree
+  FILE_GUID      = 25462CDA-221F-47DF-AC1D-259CFAA4E326 # Same value for gDtPlatformDefaultDtbFileGuid
+  MODULE_TYPE    = USER_DEFINED
+  VERSION_STRING = 1.0
+
+[Sources]
+  System.dts
+
+[Packages]
+  MdePkg/MdePkg.dec

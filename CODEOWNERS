@@ -24,6 +24,10 @@
 # AMD VanGoghBoard
 /Platform/AMD/VanGoghBoard/** @abdattar @changab @exinghr @pbgrimes
 
+# Xilinx
+/Silicon/AMD/Xilinx/** @michalsimek
+/Platform/AMD/XilinxBoard/** @michalsimek
+
 # Ampere Computing
 /Platform/Ampere/** @nhivp @bexcran @chuongtranle
 /Silicon/Ampere/** @nhivp @bexcran @chuongtranle
