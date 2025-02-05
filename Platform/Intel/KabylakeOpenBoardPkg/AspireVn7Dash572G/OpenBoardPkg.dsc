@@ -373,7 +373,6 @@
   UefiCpuPkg/SecCore/SecCore.inf {
     <LibraryClasses>
       PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
-      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
   MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf {

@@ -37,6 +37,7 @@
   PeCoffLib
   PeCoffGetEntryPointLib
   PeCoffExtraActionLib
+  StackCheckLib
 
 [Ppis]
   gEfiTemporaryRamSupportPpiGuid                # PPI ALWAYS_PRODUCED
