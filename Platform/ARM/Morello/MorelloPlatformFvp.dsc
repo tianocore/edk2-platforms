@@ -39,6 +39,9 @@
 !include Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerFvp.dsc.inc
 
 [LibraryClasses.common]
+  # Platform Library
+  ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLibFvp.inf
+
   # Virtio Support
   VirtioLib|OvmfPkg/Library/VirtioLib/VirtioLib.inf
   VirtioMmioDeviceLib|OvmfPkg/Library/VirtioMmioDeviceLib/VirtioMmioDeviceLib.inf
