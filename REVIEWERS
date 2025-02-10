@@ -42,7 +42,7 @@
 /Platform/Intel/CometlakeOpenBoardPkg/** @dkethire @kesakkit
 # Add Heng Luo
 # /Platform/Intel/TigerlakeOpenBoardPkg/**
-/Platform/Intel/AlderlakeOpenBoardPkg/** @rbitw @SaloniKasbekar
+/Platform/Intel/AlderlakeOpenBoardPkg/** @SaloniKasbekar
 /Platform/Intel/Tools/** @YuweiChen1110
 
 /Silicon/Intel/IntelSiliconPkg/** @AshrafAliS
@@ -52,7 +52,7 @@
 # Add Heng Luo
 # /Silicon/Intel/TigerlakeSiliconPkg/**
 
-/Silicon/Intel/AlderlakeSiliconPkg/** @rbitw @SaloniKasbekar
+/Silicon/Intel/AlderlakeSiliconPkg/** @SaloniKasbekar
 
 /Silicon/Intel/Tools/** @YuweiChen1110
 
