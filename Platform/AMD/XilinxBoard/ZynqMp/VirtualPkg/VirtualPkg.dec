@@ -1,0 +1,17 @@
+#  @file
+#
+#  ZynqMp Virtual Pkg PCDs and Protocols
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = ZynqMpVirtualPkg
+  PACKAGE_GUID                   = 5d204e6b-a613-43a0-bda8-7876c5ea706e
+  PACKAGE_VERSION                = 1.0
+
+[Guids]
+  gZynqMpVirtualTokenSpaceGuid = {0x42c1226f, 0x5eef, 0x47be, {0x8f, 0xbc, 0x1a, 0x11, 0x07, 0x16, 0xb3, 0x35}}

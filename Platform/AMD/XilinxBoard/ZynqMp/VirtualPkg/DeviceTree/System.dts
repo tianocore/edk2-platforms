@@ -1,0 +1,17 @@
+/*  @file
+ *
+ *  Empty dts file that's only used as an example to build a ZynqMP-based platform.
+ *  You need to add the devicetree description for your board.
+ *
+ *  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ */
+
+/dts-v1/;
+
+/ {
+    compatible = "xlnx,zynqmp";
+    model = "ZynqMP Example Platform";
+};
