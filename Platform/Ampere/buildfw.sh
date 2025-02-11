@@ -107,6 +107,13 @@ if [ "$(uname -o)" = "FreeBSD" ]; then
   mkdir bin || true
   ln -sfv /usr/local/bin/gmake bin/make
   export PATH=$PWD/bin:$PATH
+elif [ "$(uname -o)" = "Darwin" ]; then
+  MAKE_COMMAND=gmake
+  GETOPT_COMMAND=/opt/homebrew/opt/gnu-getopt/bin/getopt
+  if ! command -v ${GETOPT_COMMAND} >/dev/null 2>&1; then
+    echo "GNU getopt is required. Please install the gnu-getopt homebrew package."
+    exit 1
+  fi
 else
   MAKE_COMMAND=make
   GETOPT_COMMAND=getopt
