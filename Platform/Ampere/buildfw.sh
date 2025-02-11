@@ -60,6 +60,19 @@ usage () {
   echo "  DOWNLOAD_MS_SB_KEYS  - force re-download of Microsoft Secure Boot KEK and DB certificates"
   echo "  CERT_PASSWORD        - password to use when generating Platform and Update Keys and certificates"
   echo "                         defaults to \"password\" if not specified."
+  echo ""
+  echo "  EDK2_SECURE_BOOT_ENABLE             (TRUE)"
+  echo "  EDK2_NETWORK_ENABLE                 (TRUE)"
+  echo "  EDK2_INCLUDE_TFTP_COMMAND           (TRUE)"
+  echo "  EDK2_NETWORK_IP6_ENABLE             (TRUE)"
+  echo "  EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS (TRUE)"
+  echo "  EDK2_NETWORK_TLS_ENABLE             (TRUE)"
+  echo "  EDK2_REDFISH_ENABLE                 (TRUE)"
+  echo "  EDK2_PERFORMANCE_MEASUREMENT_ENABLE (FALSE)"
+  echo "  EDK2_TPM2_ENABLE                    (TRUE)"
+  echo "  EDK2_HEAP_GUARD_ENABLE              (FALSE)"
+  echo "  EDK2_X86_EMULATOR_ENABLE            (TRUE)"
+  echo "  EDK2_SHELL_ENABLE                   (TRUE)"
 
   exit 1
 }
