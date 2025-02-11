@@ -1,0 +1,11 @@
+/** @file
+
+  Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+/=#
+
+#string STR_PLATFORM_DXE_STRING_1  #language en-US  "BMC_DIS: 1-2 BMC Enabled (default); 2-3 BMC Disabled"
