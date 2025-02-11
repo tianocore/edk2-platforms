@@ -88,7 +88,7 @@ DATA = {
   # Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
-  # It is compatible with SECURE_BOOT_ENABLE == FALSE as well.
+  # It is compatible with UEFI_SECURE_BOOT_ENABLE == FALSE as well.
   # Signature: gEfiAuthenticatedVariableGuid =
   #   { 0xaaf32c78, 0x947b, 0x439a,
   #     { 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92 }}
@@ -250,7 +250,7 @@ APRIORI DXE {
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   INF SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   INF SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
 

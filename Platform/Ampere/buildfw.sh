@@ -281,24 +281,25 @@ if [ -f "${TFA_SLIM}" ]; then
   cp -vf "${TFA_SLIM}" "Build/${BOARD_NAME}/altra_atf.slim"
 fi
 
-build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
-        -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"   \
-        -D FIRMWARE_VER="${VER}"                          \
-        -D FIRMWARE_VER_HEX="${VER_HEX}"                      \
-        -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}   \
-        -D SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE}      \
-        -D NETWORK_ENABLE=${EDK2_NETWORK_ENABLE}              \
-        -D INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND}  \
-        -D NETWORK_IP6_ENABLE=${EDK2_NETWORK_IP6_ENABLE}      \
-        -D NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS} \
-        -D NETWORK_TLS_ENABLE=${EDK2_NETWORK_TLS_ENABLE}      \
-        -D REDFISH_ENABLE=${EDK2_REDFISH_ENABLE}              \
-        -D PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE} \
-        -D TPM2_ENABLE=${EDK2_TPM2_ENABLE}                    \
-        -D HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE}        \
-        -D X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE}    \
-        -D SHELL_ENABLE=${EDK2_SHELL_ENABLE}                  \
-        -Y COMPILE_INFO -y BuildReport.log                    \
+# shellcheck disable=SC2086
+build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS}                 \
+        -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"                          \
+        -D FIRMWARE_VER="${VER}"                                                   \
+        -D FIRMWARE_VER_HEX="${VER_HEX}"                                           \
+        -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}                        \
+        -D UEFI_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE}                      \
+        -D NETWORK_ENABLE=${EDK2_NETWORK_ENABLE}                                   \
+        -D INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND}                       \
+        -D NETWORK_IP6_ENABLE=${EDK2_NETWORK_IP6_ENABLE}                           \
+        -D NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS}   \
+        -D NETWORK_TLS_ENABLE=${EDK2_NETWORK_TLS_ENABLE}                           \
+        -D REDFISH_ENABLE=${EDK2_REDFISH_ENABLE}                                   \
+        -D PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE}   \
+        -D TPM2_ENABLE=${EDK2_TPM2_ENABLE}                                         \
+        -D HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE}                             \
+        -D X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE}                         \
+        -D SHELL_ENABLE=${EDK2_SHELL_ENABLE}                                       \
+        -Y COMPILE_INFO -y BuildReport.log                                         \
         -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}${LINUXBOOT}.dsc \
         ${EXTRA_BUILD_FLAGS}
 

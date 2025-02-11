@@ -59,7 +59,7 @@
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
   DEFINE CAPSULE_ENABLE          = TRUE
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE SECURE_BOOT_ENABLE      = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -186,7 +186,7 @@
   # upgrade experience (e.g. a progress bar).
   gEfiMdeModulePkgTokenSpaceGuid.PcdCapsuleOnDiskSupport|FALSE
 
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   gEfiSecurityPkgTokenSpaceGuid.PcdRsa2048Sha256PublicKeyBuffer|{0}
   !include Platform/ASRockRack/Altra1L2QPkg/root.cer.gEfiSecurityPkgTokenSpaceGuid.PcdPkcs7CertBuffer.inc
 !endif
@@ -209,7 +209,7 @@
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   # Override the default values from SecurityPkg to ensure images
   # from all sources are verified in secure boot
   gEfiSecurityPkgTokenSpaceGuid.PcdOptionRomImageVerificationPolicy|0x04
@@ -230,7 +230,7 @@
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|600
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|400
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1500
