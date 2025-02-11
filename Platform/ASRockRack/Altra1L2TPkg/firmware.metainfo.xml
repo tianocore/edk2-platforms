@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="firmware">
+  <id>com.asrockrack.altrad8ud-1l2t.firmware</id>
+  <categories>
+    <category>X-System</category>
+  </categories>
+  <name>ALTRAD8UD-1L2T</name>
+  <summary>Firmware for ASRock Rack ALTRAD8UD-1L2T</summary>
+  <description>
+    <p>
+      Updating the firmware on your ALTRAD8UD-1L2T
+      improves performance and adds new features.
+    </p>
+  </description>
+  <provides>
+    <firmware type="flashed">731cbc77-cce1-4ec2-b79a-265470b332f1</firmware>
+  </provides>
+  <url type="homepage">https://www.asrockrack.com</url>
+  <metadata_license>BSD-2-Clause-Patent</metadata_license>
+  <project_license>BSD-2-Clause-Patent</project_license>
+  <releases>
+    <release urgency="{URGENCY}" version="{FW_VERSION}" date="{FW_DATE}" install_duration="300">
+      <checksum filename="firmware.bin" target="content"/>
+      <url type="source">https://github.com/tianocore/edk2-platforms</url>
+      <description>
+        {RELEASE_NOTES}
+      </description>
+      <issues>
+      </issues>
+    </release>
+  </releases>
+  <!-- we can optionally restrict this update to specific fwupd versions,
+  or even previous firmware or bootloader versions -->
+  <requires>
+    <id compare="ge" version="0.8.0">org.freedesktop.fwupd</id>
+    <firmware compare="ge" version="0"/>
+  </requires>
+  <custom>
+    <value key="LVFS::VersionFormat">number</value>
+    <value key="LVFS::UpdateProtocol">org.uefi.capsule</value>
+    <value key="LVFS::DeviceIntegrity">signed</value>
+  </custom>
+  <!-- these keywords are optional and are used for searching -->
+  <keywords>
+    <keyword>bios</keyword>
+  </keywords>
+</component>

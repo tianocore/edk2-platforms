@@ -1,0 +1,46 @@
+## @file
+#
+# Copyright (c) 2020 - 2022, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                      = 0x0001001B
+  MODULE_TYPE                      = DXE_RUNTIME_DRIVER
+  BASE_NAME                        = ISL1208RealTimeClockLib
+  FILE_GUID                        = ba313aaa-33a8-49ec-a6fc-18cb93590143
+  LIBRARY_CLASS                    = RealTimeClockLib|DXE_RUNTIME_DRIVER
+  VERSION_STRING                   = 1.0
+
+[Sources.common]
+  ISL1208.c
+  ISL1208.h
+  ISL1208RealTimeClockLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  ArmGenericTimerCounterLib
+  ArmLib
+  BaseLib
+  DebugLib
+  GpioLib
+  DxeServicesTableLib
+  I2cLib
+  TimeBaseLib
+  TimerLib
+  UefiLib
+  UefiRuntimeLib
+  SystemFirmwareInterfaceLib
+  MailboxInterfaceLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid

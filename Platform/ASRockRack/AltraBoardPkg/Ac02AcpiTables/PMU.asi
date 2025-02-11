@@ -1,0 +1,9 @@
+/** @file
+
+  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+Include ("PMU-S0.asi")

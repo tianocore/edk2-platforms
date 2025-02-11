@@ -1,0 +1,13 @@
+/** @file
+
+  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+/=#
+
+#string STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE1  #language en-US  "Onboard VGA"
+#string STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE2  #language en-US  "1G LAN"
+#string STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE3  #language en-US  "25G SFP28 LAN"
+#string STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE4  #language en-US  "25G SFP28 Shared BMC/Host LAN"

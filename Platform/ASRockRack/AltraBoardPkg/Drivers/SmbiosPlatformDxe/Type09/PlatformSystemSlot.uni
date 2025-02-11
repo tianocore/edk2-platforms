@@ -1,0 +1,21 @@
+/** @file
+
+  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+/=#
+
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_1   #language en-US  "PCIE4 - x16 PCIe Slot"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_2   #language en-US  "PCIE5 - x16 PCIe Slot"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_3   #language en-US  "PCIE6 - x16 PCIe Slot"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_4   #language en-US  "PCIE7 - x16 PCIe Slot"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_5   #language en-US  "M2_1 - M-key M.2 Socket (Type 2230/2280)"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_6   #language en-US  "OCU1 - PCIe x4 OCuLink Connector"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_7   #language en-US  "OCU2 - PCIe x4 OCuLink Connector"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_8   #language en-US  "SLIMLINE1 - PCIe x8 Slimline Connector"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_9   #language en-US  "SLIMLINE2 - PCIe x8 Slimline Connector"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_10  #language en-US  "SLIMLINE3 - PCIe x8 Slimline Connector"
+#string STR_PLATFORM_DXE_SYSTEM_SLOT_DESIGNATION_11  #language en-US  "SLIMLINE4 - PCIe x8 Slimline Connector"
