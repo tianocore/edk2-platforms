@@ -47,6 +47,7 @@
   UefiDriverEntryPoint
   UefiLib
   PlatformSocLib
+  PciSegmentLib
 
 [Protocols]
   gEfiSmbiosProtocolGuid                       ## PROTOCOL ALWAYS_CONSUMED

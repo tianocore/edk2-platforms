@@ -55,6 +55,7 @@
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
   UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
+  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
 
   !if $(TARGET) == RELEASE
     DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf

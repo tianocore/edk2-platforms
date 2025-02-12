@@ -11,11 +11,8 @@
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/IoLib.h>
 #include <Protocol/SpiNorFlash.h>
 #include <Protocol/FirmwareVolumeBlock.h>
-#include <Register/Cpuid.h>
-#include <Library/BaseLib.h>
 
 #define BLOCK_SIZE  (FixedPcdGet32 (PcdFlashNvStorageBlockSize))
 
