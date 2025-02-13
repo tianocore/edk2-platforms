@@ -1,0 +1,40 @@
+name: Run Shrinkwrap to validate Arm platform
+
+on:
+  pull_request:
+
+jobs:
+  shrinkwrap:
+    runs-on: ubuntu-24.04-arm
+    container: shrinkwraptool/base-full
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Required System Packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y git netcat-openbsd python3 python3-pip telnet
+
+      - name: Install Required Python Packages
+        run: |
+          sudo pip3 install pyyaml termcolor tuxmake
+          # Check Python version
+          PYTHON_VERSION=$(python3 --version | cut -d' ' -f2)
+          # Install graphlib-backport if Python version is older than 3.9
+          if [[ "$(printf '3.9\n%s\n' "$PYTHON_VERSION" | sort -V | head -n1)" != "3.9" ]]; then
+            sudo pip3 install graphlib-backport
+          fi
+
+      - name: Clone Shrinkwrap Repository
+        run: |
+          git clone https://git.gitlab.arm.com/tooling/shrinkwrap.git
+
+      - name: Update PATH Environment Variable
+        run: |
+          echo "export PATH=$PWD/shrinkwrap/shrinkwrap:\$PATH" >> $GITHUB_ENV
+
+      - name: Validate Shrinkwrap Installation
+        run: |
+          echo "Checking if Shrinkwrap is installed correctly..."
+          shrinkwrap --help || { echo "Shrinkwrap not found or not installed correctly"; exit 1; }
