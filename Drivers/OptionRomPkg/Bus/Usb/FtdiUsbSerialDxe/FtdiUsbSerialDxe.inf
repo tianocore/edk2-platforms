@@ -47,6 +47,9 @@
 [Guids]
   gEfiUartDevicePathGuid
 
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType
+
 [Protocols]
   ## TO_START
   ## BY_START
