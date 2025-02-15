@@ -2086,6 +2086,28 @@ UsbSerialDriverBindingStart (
     goto ErrorExit;
   }
 
+  
+  // Update console variables
+  EfiBootManagerUpdateConsoleVariable (ConIn, UsbSerialDevice->DevicePath, NULL);
+  EfiBootManagerUpdateConsoleVariable (ConOut, UsbSerialDevice->DevicePath, NULL);
+  EfiBootManagerUpdateConsoleVariable (ErrOut, UsbSerialDevice->DevicePath, NULL);
+
+  // Install SimpleText protocols
+  Status = gBS->InstallMultipleProtocolInterfaces (
+                    &UsbSerialDevice->ControllerHandle,
+                    &gEfiSimpleTextInProtocolGuid,
+                    &UsbSerialDevice->SerialIo,
+                    &gEfiSimpleTextOutProtocolGuid,
+                    &UsbSerialDevice->SerialIo,
+                    NULL
+                    );
+
+  if (EFI_ERROR(Status)) {
+      DEBUG ((DEBUG_ERROR, "Failed to install SimpleText protocols on FTDI device: %r\n", Status));
+  } else {
+      DEBUG ((DEBUG_INFO, "Successfully installed SimpleText protocols on FTDI device\n"));
+  }
+
   //
   // Open for child device
   //
