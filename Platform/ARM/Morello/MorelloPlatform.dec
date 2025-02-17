@@ -37,30 +37,48 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSize|0x00000000|UINT32|0x00000005
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkInterrupt|0x00000000|UINT32|0x00000006
 
-  # PCIe
+  # PCIe, Default value in .dec files are for the SoC and the FVP overrides it.
   gArmMorelloTokenSpaceGuid.PcdPciBusMin|0|UINT32|0x00000009
-  gArmMorelloTokenSpaceGuid.PcdPciBusMax|15|UINT32|0x0000000A
-  gArmMorelloTokenSpaceGuid.PcdPciBusCount|16|UINT32|0x0000000B
+  gArmMorelloTokenSpaceGuid.PcdPciBusMax|255|UINT32|0x0000000A
+  gArmMorelloTokenSpaceGuid.PcdPciBusCount|256|UINT32|0x0000000B
   gArmMorelloTokenSpaceGuid.PcdPciIoBase|0x0|UINT32|0x0000000C
-  gArmMorelloTokenSpaceGuid.PcdPciIoSize|0x00800000|UINT32|0x0000000D
-  gArmMorelloTokenSpaceGuid.PcdPciIoMaxBase|0x007FFFFF|UINT32|0x0000000E
-  gArmMorelloTokenSpaceGuid.PcdPciIoTranslation|0x67800000|UINT32|0x0000000F
+  gArmMorelloTokenSpaceGuid.PcdPciIoSize|0x00400000|UINT32|0x0000000D
+  gArmMorelloTokenSpaceGuid.PcdPciIoMaxBase|0x003FFFFF|UINT32|0x0000000E
+  gArmMorelloTokenSpaceGuid.PcdPciIoTranslation|0x6F000000|UINT32|0x0000000F
   gArmMorelloTokenSpaceGuid.PcdPciMmio32Base|0x60000000|UINT32|0x00000010
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Size|0x07800000|UINT32|0x00000011
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32MaxBase|0x677FFFFF|UINT32|0x00000012
+  gArmMorelloTokenSpaceGuid.PcdPciMmio32Size|0x0F000000|UINT32|0x00000011
+  gArmMorelloTokenSpaceGuid.PcdPciMmio32MaxBase|0x6EFFFFFF|UINT32|0x00000012
   gArmMorelloTokenSpaceGuid.PcdPciMmio32Translation|0x0|UINT32|0x00000013
   gArmMorelloTokenSpaceGuid.PcdPciMmio64Base|0x900000000|UINT64|0x00000014
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size|0x2000000000|UINT64|0x00000015
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase|0x28FFFFFFFF|UINT64|0x00000016
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size|0x1FC0000000|UINT64|0x00000015
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase|0x28BFFFFFFF|UINT64|0x00000016
   gArmMorelloTokenSpaceGuid.PcdPciMmio64Translation|0x0|UINT64|0x00000017
-  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000|UINT64|0x00000018
+  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress|0x28C0000000|UINT64|0x00000018
+
+  # CCIX
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMin|0|UINT32|0x0000019
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMax|255|UINT32|0x000001A
+  gArmMorelloTokenSpaceGuid.PcdCcixBusCount|256|UINT32|0x000001B
+  gArmMorelloTokenSpaceGuid.PcdCcixIoBase|0x0|UINT32|0x000001C
+  gArmMorelloTokenSpaceGuid.PcdCcixIoSize|0x0400000|UINT32|0x000001D
+  gArmMorelloTokenSpaceGuid.PcdCcixIoMaxBase|0x003FFFFF|UINT32|0x000001E
+  gArmMorelloTokenSpaceGuid.PcdCcixIoTranslation|0x7F000000|UINT32|0x00000001F
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Base|0x70000000|UINT32|0x00000020
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Size|0x0F000000|UINT32|0x00000021
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32MaxBase|0x7EFFFFFF|UINT32|0x000000022
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Translation|0x0|UINT32|0x00000023
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Base|0x3000000000|UINT64|0x00000024
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size|0x1FC0000000|UINT64|0x00000025
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64MaxBase|0x4FBFFFFFFF|UINT64|0x00000026
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Translation|0x0|UINT64|0x00000027
+  gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress|0x4FC0000000|UINT64|0x0000028
 
   # Virtio Net device
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetBaseAddress|0x00000000|UINT32|0x00000019
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x0000001A
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x0000001B
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetBaseAddress|0x00000000|UINT32|0x00000029
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x0000002A
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x0000002B
 
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x00000007
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000008
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetSupported|FALSE|BOOLEAN|0x0000001C
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetSupported|FALSE|BOOLEAN|0x0000002C
