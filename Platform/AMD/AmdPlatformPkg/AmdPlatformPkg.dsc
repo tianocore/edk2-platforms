@@ -3,7 +3,7 @@
 # This is the package provides the AMD edk2 common platform drivers
 # and libraries for AMD Server, Client and Gaming console platforms.
 #
-# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -45,6 +45,7 @@
   PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
   RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+  StackCheckLib|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
   SecureBootVariableProvisionLib|SecurityPkg/Library/SecureBootVariableProvisionLib/SecureBootVariableProvisionLib.inf
   SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf

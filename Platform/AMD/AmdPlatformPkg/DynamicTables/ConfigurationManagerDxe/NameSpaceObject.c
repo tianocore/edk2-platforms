@@ -304,6 +304,15 @@ GetArchNameSpaceObject (
                  CmObject
                  );
       break;
+    case EArchCommonObjMemoryAffinityInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->MemoryAffinityInfo,
+                 sizeof (*(PlatformRepo->MemoryAffinityInfo)) * PlatformRepo->MemoryAffinityInfoCount,
+                 PlatformRepo->MemoryAffinityInfoCount,
+                 CmObject
+                 );
+      break;
     default:
     {
       Status = EFI_NOT_FOUND;
@@ -450,6 +459,15 @@ SetArchNameSpaceObject (
                  (VOID **)&PlatformRepo->PciConfigSpaceInfo,
                  sizeof (*(PlatformRepo->PciConfigSpaceInfo)) * PlatformRepo->PciConfigSpaceInfoCount,
                  (VOID *)&PlatformRepo->PciConfigSpaceInfoCount,
+                 CmObject
+                 );
+      break;
+    case EArchCommonObjMemoryAffinityInfo:
+      Status = SetHandleCmObjectBuffer (
+                 CmObjectId,
+                 (VOID **)&PlatformRepo->MemoryAffinityInfo,
+                 sizeof (*(PlatformRepo->MemoryAffinityInfo)) * PlatformRepo->MemoryAffinityInfoCount,
+                 (VOID *)&PlatformRepo->MemoryAffinityInfoCount,
                  CmObject
                  );
       break;
@@ -657,6 +675,15 @@ GetX64NameSpaceObject (
                  CmObject
                  );
       break;
+    case EX64ObjLocalApicX2ApicAffinityInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->LocalApicX2ApicAffinityInfo,
+                 sizeof (*PlatformRepo->LocalApicX2ApicAffinityInfo) * PlatformRepo->LocalApicX2ApicAffinityInfoCount,
+                 PlatformRepo->LocalApicX2ApicAffinityInfoCount,
+                 CmObject
+                 );
+      break;
     default:
     {
       Status = EFI_NOT_FOUND;
@@ -854,6 +881,15 @@ SetX64NameSpaceObject (
                  (VOID **)&PlatformRepo->LocalApicX2ApicNmiInfo,
                  sizeof (*(PlatformRepo->LocalApicX2ApicNmiInfo)) * PlatformRepo->LocalApicX2ApicNmiInfoCount,
                  (VOID *)&PlatformRepo->LocalApicX2ApicNmiInfoCount,
+                 CmObject
+                 );
+      break;
+    case EX64ObjLocalApicX2ApicAffinityInfo:
+      Status = SetHandleCmObjectBuffer (
+                 CmObjectId,
+                 (VOID **)&PlatformRepo->LocalApicX2ApicAffinityInfo,
+                 sizeof (*PlatformRepo->LocalApicX2ApicAffinityInfo) * PlatformRepo->LocalApicX2ApicAffinityInfoCount,
+                 (VOID *)&PlatformRepo->LocalApicX2ApicAffinityInfoCount,
                  CmObject
                  );
       break;
