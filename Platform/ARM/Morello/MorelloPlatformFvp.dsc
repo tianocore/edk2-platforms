@@ -66,6 +66,13 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x200
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|134
 
+  #FVP Specific PCD values for PCIe
+  gArmMorelloTokenSpaceGuid.PcdPciBusMax|15
+  gArmMorelloTokenSpaceGuid.PcdPciBusCount|16
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size|0x2000000000
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase|0x28FFFFFFFF
+  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
+
 [Components.common]
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
   OvmfPkg/VirtioNetDxe/VirtioNet.inf
