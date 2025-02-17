@@ -19,7 +19,7 @@
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT  8
+#define PLAT_ACPI_TABLE_COUNT  9
 
 /** The maximum number of ACPI tables to install
 */
@@ -72,6 +72,10 @@ typedef struct PlatformRepositoryInfo {
   UINTN                                           IntrSourceOverrideInfoCount;
   CM_X64_LOCAL_APIC_X2APIC_NMI_INFO               *LocalApicX2ApicNmiInfo;
   UINTN                                           LocalApicX2ApicNmiInfoCount;
+  CM_X64_LOCAL_APIC_X2APIC_AFFINITY_INFO          *LocalApicX2ApicAffinityInfo;
+  UINTN                                           LocalApicX2ApicAffinityInfoCount;
+  CM_ARCH_COMMON_MEMORY_AFFINITY_INFO             *MemoryAffinityInfo;
+  UINTN                                           MemoryAffinityInfoCount;
 } EDKII_PLATFORM_REPOSITORY_INFO;
 #pragma pack()
 
