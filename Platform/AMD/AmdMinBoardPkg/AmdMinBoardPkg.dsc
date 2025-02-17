@@ -3,7 +3,7 @@
 #
 #  Description file for AMD AmdMinBoardPkg
 #
-#  Copyright (c) 2023 - 2024, Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (c) 2023 - 2025, Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -36,6 +36,7 @@
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+  StackCheckLib|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
 
