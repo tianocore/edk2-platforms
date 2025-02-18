@@ -26,14 +26,54 @@
   #   after SMM dispatcher.
   SmmCorePlatformHookLib|Include/Library/AmdSmmCorePlatformHookLib.h
 
+  ## @libraryclass AMD Platform AcDcTimer library
+  #  Provide the function to Set/Clear AcDcTimer
+  AcDcTimerLib|Include/Library/AcDcTimerLib.h
+
+  ## @libraryclass AMD Platform CommonSetup library
+  #  Provide the functions to get/set/load common setup options
+  CommonSetupLib|Include/Library/CommonSetupLib.h
+
+  ## @libraryclass AMD Platform Password Verification library
+  #  Provide the functions to verify/deploy password for BIOS
+  AmdBiosPasswordLib|Include/Library/BiosPasswordLib.h
+
+  ## @libraryclass AMD Platform Flash Update Shell Command library
+  #  Provide the functions to update flash with shell command
+  FlashShellCommandLib|Include/Library/BiosFlashUpdate.h
+
+  ## @libraryclass AMD Pci Platform Library
+  # Provide PciPlatform Library which linked by PciPlatform DXE driver
+  PciPlatformLib|Include/Library/PciPlatformLib.h
+
 [Guids]
   gAmdPlatformPkgTokenSpaceGuid   = { 0x663DE733, 0x70E0, 0x4D37, { 0xBB, 0x30, 0x7D, 0x9E, 0xAF, 0x9B, 0xDA, 0xE9 }}
+
+  ## gAmdPlatformSetupOptions Guid
+  # This GUID is used to define a namespace for Platform Setup Configuration.
+  gAmdPlatformSetupOptionsGuid   = {0xE863E18A, 0xAC7B, 0x4BFE, {0xAA, 0x49, 0x62, 0xAA, 0x9B, 0x60, 0x48, 0xC6}}
+
+  ## gAmdPlatformBiosPassword Guid
+  # This GUID is used to define a namespace for the variable of BiosPassword.
+  gAmdPlatformBiosPasswordGuid   = {0xfbe4a1b1, 0xae60, 0x4f7c, {0xa6, 0x8d, 0x96, 0x2b, 0x1e, 0x3e, 0x6a, 0x63}}
+
+  ## gAmdTscFrequencyGuid
+  # This GUID is used for TSC frequency information.
+  gAmdTscFrequencyGuid           = {0x614facf7, 0x1ac6, 0x4b15, {0xa8, 0x8c, 0x2c, 0x1a, 0x70, 0xd7, 0x77, 0xec}}
+
+  ## gAmdShadowPeimExtractionGuid
+  # This GUID is used for identify the specific FFS which should be extracted as shadow PEIM.
+  gAmdShadowPeimExtractionGuid = {0x268e6723, 0xa162, 0x4f4f, {0xa0, 0x4e, 0xde, 0xe5, 0x30, 0xe3, 0xd1, 0xd2}}
 
 [Protocols]
   gAmdSpiHcStateProtocolGuid      = { 0x189566ab, 0x245, 0x43ae, {0x9d, 0x1, 0xd2, 0x21, 0x1c, 0xb9, 0x1a, 0xda }}
   gFakeDeviceIoProtocolGuid       = { 0x7fecf70, 0xd7ae, 0x4274, {0x9f, 0x70, 0x78, 0xc8, 0x36, 0x91, 0xd4, 0xfb }}
   gEdk2EspiSmmDriverProtocolGuid  = { 0x0ecc91df, 0xe165, 0x42ee, {0x82, 0xa7, 0x8d, 0x63, 0x98, 0x53, 0x6a, 0x31 }}
   gAmdEspiSmmNorFlashProtocolGuid = { 0x6ef7b652, 0x84b7, 0x4d43, {0x9d, 0x88, 0x04, 0xb3, 0x0c, 0x49, 0xde, 0xd5 }}
+
+  ## gAmdBeforeConsoleEventProtocol Guid
+  # This protocol provides the interface which be called before console.
+  gAmdBeforeConsoleEventProtocolGuid = {0xd11d1d0f, 0x5535, 0x4e35, {0x9b, 0xa7, 0x4a, 0xa8, 0x55, 0x44, 0xef, 0x88}}
 
 [PcdsDynamic]
   ## Event GUID to trigger logo displaying
@@ -121,3 +161,21 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdType11OemStrings|NULL|VOID*|0x00030002
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptionsCount|0|UINT8|0x00030003
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptions|NULL|VOID*|0x00030004
+
+[PcdsFeatureFlag]
+  ## Indicates if SecureBoot feature enabled or not.<BR><BR>
+  #   TRUE  - The SecureBoot feature enabled as default.<BR>
+  #   FALSE - The SecureBoot feature disabled as default.<BR>
+  # @Prompt PCIe Bar Resize.
+  gAmdPlatformPkgTokenSpaceGuid.PcdEnableSecureBootByDefault|FALSE|BOOLEAN|0x2000001C
+
+  ## Indicates if the PCIe bar can be resizable or not.<BR><BR>
+  #   TRUE  - The PCIe bar can be resized.<BR>
+  #   FALSE - The PCIe bar can not be resized.<BR>
+  # @Prompt PCIe Bar Resize.
+  gAmdPlatformPkgTokenSpaceGuid.PcdPcieResizableBarSupportDefault|FALSE|BOOLEAN|0x20000024
+  ## Indicates if the system is the first time to boot.<BR><BR>
+  #   TRUE  - System is the first time to boot.<BR>
+  #   FALSE - Not the first boot time.<BR>
+  # @Prompt First Time Boot.
+  gAmdPlatformPkgTokenSpaceGuid.PcdNetworkBootFirstDefault|FALSE|BOOLEAN|0x2000002C

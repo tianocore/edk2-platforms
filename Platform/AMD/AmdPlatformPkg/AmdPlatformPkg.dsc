@@ -92,6 +92,20 @@
   AmdPlatformPkg/Library/SmmCorePlatformHookLib/SmmCorePlatformHookLib.inf
   AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibDxe.inf
   AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
+  AmdPlatformPkg/Library/DxeCpuDxeDepexLib/DxeCpuDxeDepexLib.inf
+  AmdPlatformPkg/Library/AcDcTimerLib/AcDcTimerLib.inf
+  AmdPlatformPkg/Library/PeiCrc32RecoveryLib/PeiCrc32RecoveryLib.inf
+  AmdPlatformPkg/Library/BiosPasswordLib/BiosPasswordLib.inf
+  AmdPlatformPkg/Library/CcxTscTimerLib/BaseTscTimerLib.inf
+  AmdPlatformPkg/Library/CcxTscTimerLib/PeiTscTimerLib.inf
+  AmdPlatformPkg/Library/CcxTscTimerLib/DxeTscTimerLib.inf
+  AmdPlatformPkg/Library/CommonSetupLib/CommonSetupPeiLib.inf
+  AmdPlatformPkg/Library/CommonSetupLib/CommonSetupDxeLib.inf
+  AmdPlatformPkg/Library/FlashShellCommandLib/FlashShellCommandLib.inf
+  AmdPlatformPkg/Library/FmpAuthenticationLibPei/FmpAuthenticationLibPei.inf
+  AmdPlatformPkg/Library/PciPlatformLib/PciPlatformLibNull.inf
+  AmdPlatformPkg/Library/PeiShadowPeimExtractLib/PeiShadowPeimExtractLib.inf
+  AmdPlatformPkg/Library/ProcessVideoOpromLib/ProcessVideoOpromLib.inf
   AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
   AmdPlatformPkg/Universal/LogoDxe/JpegLogoDxe.inf                                           # Server platform JPEG logo driver
   AmdPlatformPkg/Universal/LogoDxe/LogoDxe.inf                                               # Server platfrom Bitmap logo driver
@@ -102,3 +116,6 @@
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
   AmdPlatformPkg/Universal/Spi/SpiFvb/SpiFvbDxe.inf
   AmdPlatformPkg/Universal/Spi/SpiFvb/SpiFvbSmm.inf
+
+[PcdsDynamicDefault]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
