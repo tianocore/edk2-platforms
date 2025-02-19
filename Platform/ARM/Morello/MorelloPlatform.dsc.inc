@@ -134,6 +134,9 @@
   # ACPI Table Version
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
+  # Firmware revision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000000
+
   # RAM Disk
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize|0x18000000

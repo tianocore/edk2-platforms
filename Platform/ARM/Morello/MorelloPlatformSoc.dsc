@@ -120,3 +120,7 @@
   }
   Platform/ARM/Morello/Drivers/CadenceI2cDxe/CadenceI2cDxe.inf
   Platform/ARM/Morello/Drivers/Tda19988Dxe/Tda19988Dxe.inf
+
+  # SMBIOS/DMI
+  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  Platform/ARM/Morello/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
