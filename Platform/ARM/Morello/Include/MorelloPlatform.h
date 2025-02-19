@@ -83,6 +83,12 @@
 #define OSC_CAP_PLAT_COORDINATED_LPI  (1U << 7)
 #define OSC_CAP_OS_INITIATED_LPI      (1U << 8)
 
+// morello silicon revision
+#define MORELLO_SILICON_REVISION_R_MASK  0xFFFF0000
+#define MORELLO_SILICON_REVISION_P_MASK  0x0000FFFF
+#define MORELLO_SILICON_REVISION_R_POS   16
+#define MORELLO_SILICON_REVISION_P_POS   0
+
 /*
  * Platform information structure stored in Non-secure SRAM. Platform
  * information are passed from the trusted firmware with the below structure

@@ -7,7 +7,7 @@
   manufacture, family, processor id, maximum operating frequency, and
   other information related to the processor.
 
-  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -16,9 +16,12 @@
 **/
 
 #include <Library/ArmLib.h>
+#include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/MemoryAllocationLib.h>
 #include <Library/PrintLib.h>
+#include <MorelloPlatform.h>
 #include <Protocol/Smbios.h>
 
 #include "SmbiosPlatformDxe.h"
@@ -27,16 +30,17 @@
   "0x000\0"                     /* Part Number */       \
   "ARM LTD\0"                   /* manufacturer */      \
   "Ironwood Socket\0"           /* socket type */       \
-  "Morello-R0P1\0"              /* Processor Version */ \
   "000-0\0"                     /* Serial number */     \
   "\0"
+
+#define MORELLO_PROCESSOR_VERSION_STR_MAX_LEN  16
 
 typedef enum {
   PartNumber = 1,
   ManufacturerName,
   SocketTypeBase,
-  ProcessorVersionBase,
-  SerialNumberBase
+  SerialNumberBase,
+  ProcessorVersionBase
 } TYPE4_STRING_ELEMENTS;
 
 /* SMBIOS Type4 structure */
@@ -64,7 +68,7 @@ STATIC ARM_MORELLO_SMBIOS_TYPE4  mArmMorelloSmbiosType4 = {
     {
       { 0 }, { 0 }
     },                       // Processor id, update dynamically
-    ProcessorVersionBase,    // Processor version
+    0,                       // Processor version
     {                        // Voltage;// 0x8A (1.0 volts)
       // legacy mode bit 7 set to 1, the remaining seven bits of the field
       // are set to contain the processor’s current voltage times 10.
@@ -130,6 +134,48 @@ UpdatePartNumber (
 }
 
 /**
+  Return the Processor Version string
+
+  Fetch the SoC Revision from the Processor ID and
+  form the processor version string.
+
+  @param[out] ProcessorVerStr   Processor Version string.
+  @param[in out] Length         Length of the processor version string.
+
+  @retval EFI_SUCCESS           The string was returned successfully.
+  @retval EFI_BUFFER_TOO_SMALL  Length of processor version string is not sufficient.
+**/
+EFI_STATUS
+GetProcessorVersionStr (
+  OUT CHAR8      *ProcessorVerStr,
+  IN OUT UINT32  *Length
+  )
+{
+  UINT32  MaxStrLen;
+  UINT64  ProcessorId;
+  UINT32  SiliconRevision;
+
+  MaxStrLen = *Length;
+
+  ProcessorId     = SmbiosGetProcessorId ();
+  SiliconRevision = (ProcessorId >> 32);
+
+  *Length = AsciiSPrint (
+              ProcessorVerStr,
+              MaxStrLen,
+              "Morello-R%dP%d",
+              (SiliconRevision & MORELLO_SILICON_REVISION_R_MASK) >> MORELLO_SILICON_REVISION_R_POS,
+              (SiliconRevision & MORELLO_SILICON_REVISION_P_MASK) >> MORELLO_SILICON_REVISION_P_POS
+              );
+
+  if (*Length >= MaxStrLen) {
+    return EFI_BUFFER_TOO_SMALL;
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
   Install SMBIOS Processor information Table
 
   Install the SMBIOS Processor information (type 4) table for
@@ -147,9 +193,14 @@ InstallType4ProcessorInformation (
   IN     EFI_SMBIOS_PROTOCOL  *Smbios
   )
 {
-  EFI_STATUS         Status;
-  EFI_SMBIOS_HANDLE  SmbiosHandle;
-  UINT64             *ProcessorId = (UINT64 *)&(mArmMorelloSmbiosType4.Base.ProcessorId);
+  EFI_STATUS                Status;
+  EFI_SMBIOS_HANDLE         SmbiosHandle;
+  UINT64                    *ProcessorId = (UINT64 *)&(mArmMorelloSmbiosType4.Base.ProcessorId);
+  UINT32                    StrLen;
+  CHAR8                     *OptionalStrStart;
+  ARM_MORELLO_SMBIOS_TYPE4  *SmbiosType4;
+  UINT32                    Size;
+  CHAR8                     ProcessorVerStr[MORELLO_PROCESSOR_VERSION_STR_MAX_LEN];
 
   SmbiosHandle = ((EFI_SMBIOS_TABLE_HEADER *)&mArmMorelloSmbiosType4)->Handle;
 
@@ -159,12 +210,49 @@ InstallType4ProcessorInformation (
   *ProcessorId = ArmReadMidr ();
   UpdatePartNumber (*ProcessorId);
 
+  ZeroMem (&ProcessorVerStr, sizeof (ProcessorVerStr));
+
+  StrLen = MORELLO_PROCESSOR_VERSION_STR_MAX_LEN;
+  Status = GetProcessorVersionStr (ProcessorVerStr, &StrLen);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "SMBIOS: Failed to get the Processor Version String.\n"
+      ));
+
+    /* Install type 4 table */
+    Status = Smbios->Add (
+                       Smbios,
+                       NULL,
+                       &SmbiosHandle,
+                       (EFI_SMBIOS_TABLE_HEADER *)&mArmMorelloSmbiosType4
+                       );
+    if (Status != EFI_SUCCESS) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "SMBIOS: Failed to install Type4 SMBIOS table.\n"
+        ));
+    }
+
+    return Status;
+  }
+
+  Size        = sizeof (TYPE4_STRINGS) + sizeof (SMBIOS_TABLE_TYPE4) - 2;
+  SmbiosType4 = AllocateZeroPool (Size + StrLen + 2);
+  CopyMem (SmbiosType4, &mArmMorelloSmbiosType4, Size);
+
+  SmbiosHandle = ((EFI_SMBIOS_TABLE_HEADER *)SmbiosType4)->Handle;
+
+  SmbiosType4->Base.ProcessorVersion = ProcessorVersionBase;
+  OptionalStrStart                   = SmbiosType4->Strings + sizeof (TYPE4_STRINGS) - 2;
+  AsciiStrCpyS (OptionalStrStart, StrLen + 1, ProcessorVerStr);
+
   /* Install type 4 table */
   Status = Smbios->Add (
                      Smbios,
                      NULL,
                      &SmbiosHandle,
-                     (EFI_SMBIOS_TABLE_HEADER *)&mArmMorelloSmbiosType4
+                     (EFI_SMBIOS_TABLE_HEADER *)SmbiosType4
                      );
   if (Status != EFI_SUCCESS) {
     DEBUG ((
