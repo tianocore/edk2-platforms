@@ -183,6 +183,10 @@ READ_LOCK_STATUS   = TRUE
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
   INF Drivers/Realtek/Bus/Pcie/PcieNetworking/RtkUndiDxe.inf
 
+  # SMBIOS/DMI
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF Platform/ARM/Morello/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
 BlockSize          = 0x1000
