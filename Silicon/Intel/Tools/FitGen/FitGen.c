@@ -1634,11 +1634,31 @@ GetFitEntryNumber (
       Error (NULL, 0, 0, "-U Parameter incorrect, Duplicated DiagnosticsAcm!", NULL);
       return 0;
     }
+
+    //
+    // 1.1 Support 0x200 DiagnosticAcm Information
+    //     With the -I parameter should assign the Type 2 entry with 0x200 version format
+    //
+    if ((Index + 1 >= argc) ||
+        ((strcmp (argv[Index], "-I") != 0) &&
+         (strcmp (argv[Index], "-i") != 0)) ) {
+      //
+      // Bypass
+      //
+      printf("SET DIAG ACM version 0x100\n");
+      gFitTableContext.DiagnstAcmVersion = DEFAULT_FIT_ENTRY_VERSION;
+    } else {
+      printf("SET DIAG FUSA ACM version 0x200\n");
+      gFitTableContext.DiagnstAcmVersion = STARTUP_ACM_FIT_ENTRY_200_VERSION;
+      gFitTableContext.DiagnstAcm.FMS = (UINT32)xtoi (argv[Index + 1]);
+      gFitTableContext.DiagnstAcm.FMSMask = (UINT32)xtoi (argv[Index + 2]);
+      Index += 3;
+    }
+
     gFitTableContext.DiagnstAcm.Type = FIT_TABLE_TYPE_DIAGNST_ACM;
     gFitTableContext.DiagnstAcm.Address = (UINT32) (UINTN) FileBuffer;
     gFitTableContext.DiagnstAcm.Size = 0;
     gFitTableContext.FitEntryNumber ++;
-    gFitTableContext.DiagnstAcmVersion = DEFAULT_FIT_ENTRY_VERSION;
   } while (FALSE);
 
   // 2. BiosModule
@@ -3149,16 +3169,32 @@ FillFitTable (
   // 4.5. DiagnosticAcm
   //
   if (gFitTableContext.DiagnstAcm.Address != 0) {
-    FitEntrySizeValue           = 0; // gFitTableContext.DiagnstAcmVersion.Size / 16
-    FitEntry[FitIndex].Address  = gFitTableContext.DiagnstAcm.Address;
-    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
-    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
-    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
-    FitEntry[FitIndex].Rsvd     = 0;
-    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.DiagnstAcmVersion;
-    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_DIAGNST_ACM;
-    FitEntry[FitIndex].C_V      = 0;
-    FitEntry[FitIndex].Checksum = 0;
+    if (gFitTableContext.DiagnstAcmVersion == STARTUP_ACM_FIT_ENTRY_200_VERSION) {
+      printf("DiagnstAcmACM version 0x200\n");
+      FMS.Uint32 = gFitTableContext.DiagnstAcm.FMS;
+      FMSMask.Uint32 = gFitTableContext.DiagnstAcm.FMSMask;
+      FitEntry[FitIndex].Address  = gFitTableContext.DiagnstAcm.Address;
+      FitEntry[FitIndex].Size[0]  = NIBBLES_TO_BYTE (FMS.Bits.Family, FMS.Bits.Model);
+      FitEntry[FitIndex].Size[1]  = NIBBLES_TO_BYTE (FMS.Bits.ExtendedModel, FMS.Bits.Type);
+      FitEntry[FitIndex].Size[2]  = NIBBLES_TO_BYTE (FMSMask.Bits.Family, FMSMask.Bits.Model);
+      FitEntry[FitIndex].Rsvd     = NIBBLES_TO_BYTE (FMSMask.Bits.ExtendedModel, FMSMask.Bits.Type);
+      FitEntry[FitIndex].Version = (UINT16)gFitTableContext.DiagnstAcmVersion;
+      FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_DIAGNST_ACM;
+      FitEntry[FitIndex].C_V      = 0;
+      FitEntry[FitIndex].Checksum = NIBBLES_TO_BYTE (FMSMask.Bits.ExtendedFamily, FMS.Bits.ExtendedFamily);
+    } else {
+      printf("DiagnstAcmACM version 0x100\n");
+      FitEntrySizeValue           = 0; // gFitTableContext.DiagnstAcmVersion.Size / 16
+      FitEntry[FitIndex].Address  = gFitTableContext.DiagnstAcm.Address;
+      FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+      FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+      FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+      FitEntry[FitIndex].Rsvd     = 0;
+      FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.DiagnstAcmVersion;
+      FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_DIAGNST_ACM;
+      FitEntry[FitIndex].C_V      = 0;
+      FitEntry[FitIndex].Checksum = 0;
+    }
     FitIndex++;
   }
   //
