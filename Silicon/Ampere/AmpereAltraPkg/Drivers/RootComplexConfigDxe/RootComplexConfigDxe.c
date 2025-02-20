@@ -777,6 +777,8 @@ PcieRCScreenSetup (
       NULL                                       // Default Opcode is NULl
       );
 
+    HiiFreeOpCodeHandle (OptionsOpCodeHandle);
+
     //
     // Create Option OpCode to display bifurcation for RootComplexTypeB-High
     //
@@ -811,6 +813,7 @@ PcieRCScreenSetup (
 
   HiiFreeOpCodeHandle (StartOpCodeHandle);
   HiiFreeOpCodeHandle (EndOpCodeHandle);
+  HiiFreeOpCodeHandle (OptionsOpCodeHandle);
 
   return EFI_SUCCESS;
 }
