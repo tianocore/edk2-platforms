@@ -445,6 +445,8 @@ SmbiosPlatformDxeRestoreHiiDefaultString (
   UINT8       Index;
   EFI_STATUS  Status;
 
+  Status = EFI_INVALID_PARAMETER;
+
   if (StrToken == NULL) {
     DEBUG ((
       DEBUG_ERROR,
