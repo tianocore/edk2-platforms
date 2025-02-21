@@ -84,6 +84,9 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
     return EFI_NOT_FOUND;
   }
 
+  MemorySize = 0;
+  Status     = EFI_INVALID_PARAMETER;
+
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     InputData     = (SMBIOS_TABLE_TYPE19 *)RecordData;
     InputStrToken = (STR_TOKEN_INFO *)StrToken;
