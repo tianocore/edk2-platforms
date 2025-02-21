@@ -243,11 +243,6 @@ Processor/SoC vendor, rather than platform vendor.
 If there are any additional build steps beyond the generic ones listed above,
 they will be documented with the platform.
 
-## AMD
-* [Cello](Platform/LeMaker/CelloBoard)
-* [Overdrive](Platform/AMD/OverdriveBoard)
-* [Overdrive 1000](Platform/SoftIron/Overdrive1000Board)
-
 ## [Ampere](Platform/Ampere/Readme.md)
 * [Mt. Jade](Platform/Ampere/JadePkg)
 

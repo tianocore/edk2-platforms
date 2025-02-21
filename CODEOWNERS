@@ -15,12 +15,6 @@
 /Platform/AMD/AmdCbsPkg/**      @abdattar @changab @pbgrimes
 /Platform/AMD/AmdCpmPkg/**      @abdattar @changab @pbgrimes
 
-# AMD Seattle platforms
-/Platform/AMD/OverdriveBoard/** @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
-/Silicon/AMD/Styx/**            @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
-/Platform/LeMaker/CelloBoard/** @ardbiesheuvel @leiflindholm
-/Platform/SoftIron/             @ardbiesheuvel @leiflindholm
-
 # AMD VanGoghBoard
 /Platform/AMD/VanGoghBoard/** @abdattar @changab @exinghr @pbgrimes
 
