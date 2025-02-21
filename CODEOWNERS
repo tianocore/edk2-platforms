@@ -50,10 +50,6 @@
 
 /Features/Ext4Pkg/** @heatd
 
-# HiSilicon
-/Platform/Hisilicon/** @leiflindholm
-/Silicon/Hisilicon/** @leiflindholm
-
 /Features/Intel/** @nate-desimone @SaiChaganty
 /Features/Intel/Debugging/** @nate-desimone @SaiChaganty @ydong10
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty

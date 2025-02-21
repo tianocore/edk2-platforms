@@ -258,13 +258,6 @@ they will be documented with the platform.
 ## BeagleBoard
 * [BeagleBoard](Platform/BeagleBoard/BeagleBoardPkg)
 
-## Hisilicon
-* [D03](Platform/Hisilicon/D03)
-* [D05](Platform/Hisilicon/D05)
-* [D06](Platform/Hisilicon/D06)
-* [HiKey](Platform/Hisilicon/HiKey)
-* [HiKey960](Platform/Hisilicon/HiKey960)
-
 ## Intel
 ### [Minimum Platforms](Platform/Intel/Readme.md)
 * [Kaby Lake](Platform/Intel/KabylakeOpenBoardPkg)

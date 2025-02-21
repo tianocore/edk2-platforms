@@ -23,11 +23,6 @@
 
 /Features/Ext4Pkg/** @mhaeuser
 
-# Hisilicon
-# Add Wenyi Xie
-/Platform/Hisilicon/** @ardbiesheuvel
-/Silicon/Hisilicon/** @ardbiesheuvel
-
 /Features/Intel/** @lgao4
 /Features/Intel/Debugging/** @lgao4
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @lgao4
