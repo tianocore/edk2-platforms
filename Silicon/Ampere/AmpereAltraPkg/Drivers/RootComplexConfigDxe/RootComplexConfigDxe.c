@@ -314,6 +314,7 @@ RouteConfig (
   PrivateData      = SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
   *Progress        = Configuration;
+  VarStoreConfig   = NULL;
 
   if (HiiIsConfigHdrMatch (Configuration, &gPcieFormSetGuid, mPcieNvparamVarstoreName)) {
     VarStoreConfig = (UINT8 *)&PrivateData->NVParamVarStoreConfig;

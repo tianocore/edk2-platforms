@@ -239,6 +239,8 @@ SystemFirmwareUpdateSetVariable (
     return EFI_SUCCESS;
   }
 
+  SubId = 0;
+
   if (StrCmp (VariableName, FWU_VARIABLE_SCP_REQUEST) == 0) {
     ImageId = FWU_IMG_ID_SCP;
   } else if (StrCmp (VariableName, FWU_VARIABLE_ATFUEFI_REQUEST) == 0) {
