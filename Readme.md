@@ -272,8 +272,6 @@ they will be documented with the platform.
 For more information, see the
 [EDK II Minimum Platform Specification](https://edk2-docs.gitbooks.io/edk-ii-minimum-platform-specification).
 ### Other Platforms
-##### Intel&reg; Quark SoC X1000 based platforms
-* [Galileo](Platform/Intel/QuarkPlatformPkg)
 ##### Minnowboard Max/Turbot based on Intel Valleyview2 SoC
 * [Minnowboard Max](Platform/Intel/Vlv2TbltDevicePkg)
 

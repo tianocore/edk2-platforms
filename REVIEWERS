@@ -28,7 +28,6 @@
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @lgao4
 /Features/Intel/UserInterface/** @lgao4
 
-/Platform/Intel/QuarkPlatformPkg/** @nate-desimone
 /Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone
 /Platform/Intel/BoardModulePkg/** @lgao4
 /Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot5
@@ -41,7 +40,6 @@
 /Platform/Intel/Tools/** @YuweiChen1110
 
 /Silicon/Intel/IntelSiliconPkg/** @AshrafAliS
-/Silicon/Intel/QuarkSocPkg/** @nate-desimone
 /Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone
 
 # Add Heng Luo
