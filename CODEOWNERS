@@ -123,11 +123,6 @@
 
 /Platform/SiFive/U5SeriesPkg/** @JohnAZoidberg
 
-# Socionext platforms and silicon
-/Platform/Socionext/** @ardbiesheuvel @leiflindholm
-/Silicon/NXP/Library/Pcf8563RealTimeClockLib/** @ardbiesheuvel @leiflindholm
-/Silicon/Socionext/** @ardbiesheuvel @leiflindholm
-
 /Silicon/RISC-V/ProcessorPkg/** @vlsunil
 
 /Silicon/SiFive/** @JohnAZoidberg

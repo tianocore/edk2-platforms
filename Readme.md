@@ -289,9 +289,6 @@ For more information, see the
 * [Freedom U500 VC707 FPGA](Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board)
 * [Freedom U540 HiFive Unleashed](Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard)
 
-## Socionext
-* [SynQuacer](Platform/Socionext/DeveloperBox)
-
 ## NXP
 * [LS1043aRdb](Platform/NXP/LS1043aRdbPkg)
 
