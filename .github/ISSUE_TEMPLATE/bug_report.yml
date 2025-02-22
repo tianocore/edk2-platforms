@@ -89,8 +89,6 @@ body:
         - Platform/Ampere/Tools
         - Platform/BeagleBoard/BeagleBoardPkg
         - Platform/Bosc/XiangshanSeriesPkg
-        - Platform/Hisilicon/D03
-        - Platform/Hisilicon/D05
         - Platform/Hisilicon/D06
         - Platform/Hisilicon/HiKey
         - Platform/Hisilicon/HiKey960

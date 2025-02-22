@@ -243,11 +243,6 @@ Processor/SoC vendor, rather than platform vendor.
 If there are any additional build steps beyond the generic ones listed above,
 they will be documented with the platform.
 
-## AMD
-* [Cello](Platform/LeMaker/CelloBoard)
-* [Overdrive](Platform/AMD/OverdriveBoard)
-* [Overdrive 1000](Platform/SoftIron/Overdrive1000Board)
-
 ## [Ampere](Platform/Ampere/Readme.md)
 * [Mt. Jade](Platform/Ampere/JadePkg)
 
@@ -257,13 +252,6 @@ they will be documented with the platform.
 
 ## BeagleBoard
 * [BeagleBoard](Platform/BeagleBoard/BeagleBoardPkg)
-
-## Hisilicon
-* [D03](Platform/Hisilicon/D03)
-* [D05](Platform/Hisilicon/D05)
-* [D06](Platform/Hisilicon/D06)
-* [HiKey](Platform/Hisilicon/HiKey)
-* [HiKey960](Platform/Hisilicon/HiKey960)
 
 ## Intel
 ### [Minimum Platforms](Platform/Intel/Readme.md)
@@ -279,8 +267,6 @@ they will be documented with the platform.
 For more information, see the
 [EDK II Minimum Platform Specification](https://edk2-docs.gitbooks.io/edk-ii-minimum-platform-specification).
 ### Other Platforms
-##### Intel&reg; Quark SoC X1000 based platforms
-* [Galileo](Platform/Intel/QuarkPlatformPkg)
 ##### Minnowboard Max/Turbot based on Intel Valleyview2 SoC
 * [Minnowboard Max](Platform/Intel/Vlv2TbltDevicePkg)
 
@@ -303,14 +289,31 @@ For more information, see the
 * [Freedom U500 VC707 FPGA](Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board)
 * [Freedom U540 HiFive Unleashed](Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard)
 
-## Socionext
-* [SynQuacer](Platform/Socionext/DeveloperBox)
-
 ## NXP
 * [LS1043aRdb](Platform/NXP/LS1043aRdbPkg)
 
 ## Qemu
 * [SBSA](Platform/Qemu/SbsaQemu)
+
+# Retired platforms
+
+## AMD
+* [Cello](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/LeMaker/CelloBoard)
+* [Overdrive](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/AMD/OverdriveBoard)
+* [Overdrive 1000](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/SoftIron/Overdrive1000Board)
+
+## Hisilicon
+* [D03](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D03)
+* [D05](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D05)
+* [D06](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D06)
+* [HiKey](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey)
+* [HiKey960](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey960)
+
+## Intel
+* [Galileo](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Intel/QuarkPlatformPkg)
+
+## Socionext
+* [SynQuacer](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Socionext/DeveloperBox)
 
 # Maintainers
 
