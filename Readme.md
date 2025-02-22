@@ -295,6 +295,26 @@ For more information, see the
 ## Qemu
 * [SBSA](Platform/Qemu/SbsaQemu)
 
+# Retired platforms
+
+## AMD
+* [Cello](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/LeMaker/CelloBoard)
+* [Overdrive](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/AMD/OverdriveBoard)
+* [Overdrive 1000](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/SoftIron/Overdrive1000Board)
+
+## Hisilicon
+* [D03](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D03)
+* [D05](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D05)
+* [D06](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D06)
+* [HiKey](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey)
+* [HiKey960](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey960)
+
+## Intel
+* [Galileo](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Intel/QuarkPlatformPkg)
+
+## Socionext
+* [SynQuacer](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Socionext/DeveloperBox)
+
 # Maintainers
 
 See [CONTRIBUTORS.md](CONTRIBUTORS.md), [CODEOWNERS](CODEOWNERS) and [REVIEWERS](REVIEWERS).
