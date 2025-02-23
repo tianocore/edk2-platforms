@@ -82,7 +82,7 @@ The following tools must be installed on the development PC.
 | 3         | uuid-dev            | Required for including uuid/uuid.h                           | $ sudo apt install uuid-dev                              |
 | 4         | build-essential     | Installs make, gcc, g++, etc                                 | $ sudo apt install build-essential <br> $ make -v <br> GNU Make 4.2.1 <br> gcc --version <br> gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0 <br> $ g++ --version <br> g++ (Ubuntu 9.4.0-1ubuntu1\~20.04.1) 9.4.0 |
 | 5         | bison               | A parser generator required by acpica tools.                 | $ sudo apt install bison                                 |
-| 6         | flex                | A fast lexical analyzer generator required by acpica tools   | $ sudp apt get install flex                              |
+| 6         | flex                | A fast lexical analyzer generator required by acpica tools   | $ sudo apt install flex                                  |
 
 ### Setting up the development tools
 
