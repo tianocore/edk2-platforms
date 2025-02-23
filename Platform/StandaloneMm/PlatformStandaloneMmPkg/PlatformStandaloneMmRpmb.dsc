@@ -111,6 +111,12 @@
 
   gArmTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
 
+  # The BFV is not located in the Flash area but is loaded in the RAM
+  # by optee's stmm_sp.c instead, therefore no shadow copy is needed.
+  # So disable shadow copy of boot firmware volume while loading StMM drivers.
+  #
+  gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
+
 [PcdsPatchableInModule]
   # Allocated memory for EDK2 uppers layers
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0x0
