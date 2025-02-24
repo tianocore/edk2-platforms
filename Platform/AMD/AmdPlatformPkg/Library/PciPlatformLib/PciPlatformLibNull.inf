@@ -1,0 +1,26 @@
+## @file
+#  INF file of AMD Pci Platform library
+#
+#  Copyright (C) 2024 - 2025, Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PciPlatformLibNull
+  FILE_GUID                      = E72BDFB9-B457-4171-BF75-4A9853E64F6A
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PcilatformLib
+
+[Sources]
+  PciPlatformLibNull.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+

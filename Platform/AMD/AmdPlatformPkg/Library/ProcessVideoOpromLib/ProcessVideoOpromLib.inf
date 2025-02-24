@@ -1,0 +1,42 @@
+## @file
+#  Platform Library for Process Video OpRom.
+#
+#  Copyright (C) 2022 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = ProcessVideoOpromLib
+  FILE_GUID                      = 461D6CBF-4704-4678-ABB0-E9BEB3E97C27
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|DXE_DRIVER
+  CONSTRUCTOR                    = ProcessVideoOpromLibConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC
+#
+
+[Sources]
+  ProcessVideoOpromLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  DevicePathLib
+  DebugLib
+
+[Protocols]
+  gAmdBeforeConsoleEventProtocolGuid
+  gEfiPciEnumerationCompleteProtocolGuid
+  gEfiDevicePathProtocolGuid
+  gEfiPciIoProtocolGuid

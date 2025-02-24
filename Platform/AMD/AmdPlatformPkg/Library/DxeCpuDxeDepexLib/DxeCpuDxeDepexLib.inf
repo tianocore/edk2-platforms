@@ -1,0 +1,31 @@
+## @file
+#  CpuDxe Dependency Lib.
+#
+#  Copyright (C) 2017 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = DxeCpuDxeDepexLib
+  MODULE_UNI_FILE                = DxeCpuDxeDepexLib.uni
+  FILE_GUID                      = 7B60C806-73CE-4393-AD39-396ADEB3C1A4
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = AmdCpuDxeDepexLib
+
+#
+#  VALID_ARCHITECTURES           = X64
+#
+
+[Sources]
+  CpuDxeDepexLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaPkg/AgesaPkg.dec
+
+[Depex]
+  gAmdMpServicesPreReqProtocolGuid

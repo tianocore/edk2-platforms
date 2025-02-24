@@ -112,7 +112,7 @@ SaveState (
           case 0x1:
             for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
               *(UINT8 *)State = MmioRead8 (
-                                  mHcAddress
+                                  (UINTN)mHcAddress
                                   + mSpiHcState[Record].Register
                                   );
               State += 1;
@@ -122,7 +122,7 @@ SaveState (
           case 0x2:
             for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
               *(UINT16 *)State = MmioRead16 (
-                                   mHcAddress
+                                   (UINTN)mHcAddress
                                    + mSpiHcState[Record].Register
                                    );
               State += 2;
@@ -132,7 +132,7 @@ SaveState (
           case 0x4:
             for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
               *(UINT32 *)State = MmioRead32 (
-                                   mHcAddress
+                                   (UINTN)mHcAddress
                                    + mSpiHcState[Record].Register
                                    );
               State += 4;
@@ -179,7 +179,7 @@ RestoreState (
         case 0x1:
           for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
             MmioWrite8 (
-              mHcAddress + mSpiHcState[Record].Register,
+              (UINTN)mHcAddress + mSpiHcState[Record].Register,
               *(UINT8 *)State
               );
             State += 1;
@@ -189,7 +189,7 @@ RestoreState (
         case 0x2:
           for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
             MmioWrite16 (
-              mHcAddress + mSpiHcState[Record].Register,
+              (UINTN)mHcAddress + mSpiHcState[Record].Register,
               *(UINT16 *)State
               );
             State += 2;
@@ -199,7 +199,7 @@ RestoreState (
         case 0x4:
           for (Count = 0; Count < mSpiHcState[Record].Count; Count++) {
             MmioWrite32 (
-              mHcAddress + mSpiHcState[Record].Register,
+              (UINTN)mHcAddress + mSpiHcState[Record].Register,
               *(UINT32 *)State
               );
             State += 4;

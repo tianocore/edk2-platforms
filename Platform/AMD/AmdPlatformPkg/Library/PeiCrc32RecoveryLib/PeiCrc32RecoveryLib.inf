@@ -1,0 +1,48 @@
+## @file
+#  CRC32 Recovery Lib in PEI phase.
+#
+#  Copyright (C) 2022 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PeiCrc32RecoveryLib
+  FILE_GUID                      = B47A17A5-35C4-4086-8E52-D3E288E57913
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|PEI_CORE PEIM
+  CONSTRUCTOR                    = PeiCrc32RecoveryLibConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC (EBC is for build only)
+#
+
+[Sources]
+  PeiCrc32RecoveryLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  ExtractGuidedSectionLib
+  DebugLib
+  PeiServicesLib
+  PcdLib
+
+[Guids]
+  gEfiCrc32GuidedSectionExtractionGuid  ## PRODUCES
+  gEfiTpmDeviceInstanceNoneGuid
+
+[Pcd]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid
+
+[Ppis]
+  gEfiPeiBootInRecoveryModePpiGuid      ## SOMETIMES_PRODUCED
+
