@@ -1,0 +1,8 @@
+// /*****************************************************************************
+//  *
+//  * Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+//  *
+//  *
+
+#string STR_PROPERTIES_MODULE_NAME
+#language en-US   "AMD SPI Host controller library"
