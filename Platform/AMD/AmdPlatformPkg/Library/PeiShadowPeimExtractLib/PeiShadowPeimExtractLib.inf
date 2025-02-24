@@ -1,0 +1,42 @@
+## @file
+#  To support PEI shadow extraction library.
+#
+#  Copyright (C) 2024 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PeiShadowPeimExtractLib
+  FILE_GUID                      = 0D0358E0-2CCF-40D2-B137-1E8C0F1841BA
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|PEIM
+  CONSTRUCTOR                    = PeiShadowPeimExtractLibConstructor
+
+[Sources]
+  PeiShadowPeimExtractLib.h
+  PeiShadowPeimExtractLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  ExtractGuidedSectionLib
+  DebugLib
+  BaseMemoryLib
+  BaseLib
+  PeCoffLib
+  PcdLib
+  HobLib
+
+[Guids]
+  gAmdShadowPeimExtractionGuid             ## PRODUCES ## UNDEFINED
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdShadowPeimOnS3Boot                      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdShadowPeimOnBoot                        ## CONSUMES
