@@ -49,11 +49,9 @@
 [Protocols]
   gEfiSmmFirmwareVolumeBlockProtocolGuid                            ## PRODUCES
   gEfiSpiSmmNorFlashProtocolGuid                                    ## CONSUMES
-  gAmdEspiSmmNorFlashProtocolGuid                                   ## Possibly CONSUMES
 
 [Depex]
-  gEfiSpiSmmNorFlashProtocolGuid OR
-  gAmdEspiSmmNorFlashProtocolGuid
+  gEfiSpiSmmNorFlashProtocolGuid
 
 [UserExtensions.TianoCore."ExtraFiles"]
   SpiFvbExtra.uni

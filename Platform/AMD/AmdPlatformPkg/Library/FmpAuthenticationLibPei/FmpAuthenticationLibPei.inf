@@ -1,0 +1,32 @@
+## @file
+#  FMP Authentication Lib in PEI phase.
+#
+#  Copyright (C) 2022 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = FmpAuthenticationLibPei
+  FILE_GUID                      = F4E6391F-9373-4677-A820-90FF76D74A78
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FmpAuthenticationLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32
+#
+
+[Sources]
+  FmpAuthenticationLibPei.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[Guids]
+  gEfiFmpCapsuleGuid             ## SOMETIMES_CONSUMES ## GUID

@@ -1,0 +1,44 @@
+## @file
+#  Setup common lib for PEI phase.
+#
+#  Copyright (C) 2015 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = CommonSetupPeiLib
+  FILE_GUID                      = 2CD286D1-2CBF-41C5-AC32-B7F6DD2FDA70
+  MODULE_TYPE                    = PEIM
+  LIBRARY_CLASS                  = CommonSetupLib|PEIM
+
+[Sources]
+  CommonSetupPeiLib.c
+  CommonSetupDefault.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  PeiServicesLib
+  BaseMemoryLib
+  DebugLib
+
+[Guids]
+  gAmdPlatformSetupOptionsGuid
+
+[Ppis]
+  gEfiPeiReadOnlyVariable2PpiGuid
+
+[FeaturePcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdPcieResizableBarSupportDefault
+  gAmdPlatformPkgTokenSpaceGuid.PcdNetworkBootFirstDefault
+  gAmdPlatformPkgTokenSpaceGuid.PcdEnableSecureBootByDefault
+
+[Depex]
+  gEfiPeiReadOnlyVariable2PpiGuid
+

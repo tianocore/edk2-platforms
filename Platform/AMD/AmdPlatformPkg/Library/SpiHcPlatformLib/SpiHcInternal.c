@@ -39,7 +39,7 @@ FchSpiControllerNotBusy (
   SpiReg00          = FCH_SPI_BUSY;
   RetryCount        = FixedPcdGet32 (PcdAmdSpiRetryCount);
   do {
-    SpiReg00     = MmioRead32 (mHcAddress + FCH_SPI_MMIO_REG4C_SPISTATUS);
+    SpiReg00     = MmioRead32 ((UINTN)mHcAddress + FCH_SPI_MMIO_REG4C_SPISTATUS);
     LpcDmaStatus = PciSegmentRead32 (
                      PCI_SEGMENT_LIB_ADDRESS (
                        0x00,
@@ -82,7 +82,7 @@ FchSpiTransactionCheckFailure (
 
   Status = FchSpiControllerNotBusy ();
   if (!EFI_ERROR (Status)) {
-    Data = MmioRead32 (mHcAddress + FCH_SPI_MMIO_REG00);
+    Data = MmioRead32 ((UINTN)mHcAddress + FCH_SPI_MMIO_REG00);
     if ((Data & FCH_SPI_FIFO_PTR_CRL) != 0) {
       Status = EFI_ACCESS_DENIED;
     }
@@ -107,7 +107,7 @@ FchSpiExecute (
 
   Status = FchSpiControllerNotBusy ();
   if (!EFI_ERROR (Status)) {
-    MmioOr8 (mHcAddress + FCH_SPI_MMIO_REG47_CMDTRIGGER, BIT7);
+    MmioOr8 ((UINTN)mHcAddress + FCH_SPI_MMIO_REG47_CMDTRIGGER, BIT7);
     Status = FchSpiControllerNotBusy ();
     if (!EFI_ERROR (Status)) {
       Status = FchSpiTransactionCheckFailure ();
@@ -154,14 +154,14 @@ InternalFchSpiBlockOpcode (
 
   // Allow only one copy of Opcode in RestrictedCmd register
   for (RestrictedCmd = 0; RestrictedCmd <= 3; RestrictedCmd++) {
-    Data = MmioRead8 (HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd);
+    Data = MmioRead8 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd);
 
     if ((Data == Opcode) && (OpcodeBlocked == FALSE)) {
       OpcodeBlocked = TRUE;
     } else if ((Data == Opcode) && (OpcodeBlocked == TRUE)) {
-      MmioWrite8 (HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, 0x00);
+      MmioWrite8 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, 0x00);
     } else if ((Data == 0x00) && (OpcodeBlocked == FALSE)) {
-      MmioWrite8 (HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, Opcode);
+      MmioWrite8 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, Opcode);
       OpcodeBlocked = TRUE;
     }
   }
@@ -202,8 +202,8 @@ InternalFchSpiUnblockOpcode (
 
   // Unblock any copies of the Opcode
   for (RestrictedCmd = 0; RestrictedCmd <= 3; RestrictedCmd++) {
-    if (MmioRead8 (HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd) == Opcode) {
-      MmioWrite8 (HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, 0x00);
+    if (MmioRead8 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd) == Opcode) {
+      MmioWrite8 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04 + RestrictedCmd, 0x00);
     }
   }
 
@@ -234,7 +234,7 @@ InternalFchSpiUnblockAllOpcodes (
   IN CONST EFI_PHYSICAL_ADDRESS  HcAddress
   )
 {
-  MmioWrite32 (HcAddress + FCH_SPI_MMIO_REG04, 0x00);
+  MmioWrite32 ((UINTN)HcAddress + FCH_SPI_MMIO_REG04, 0x00);
   return EFI_SUCCESS;
 }
 
@@ -258,12 +258,12 @@ InternalFchSpiLockSpiHostControllerRegisters (
   )
 {
   MmioBitFieldAnd32 (
-    HcAddress + FCH_SPI_MMIO_REG00,
+    (UINTN)HcAddress + FCH_SPI_MMIO_REG00,
     22,
     23,
     0x0
     );
-  if (MmioBitFieldRead32 (HcAddress + FCH_SPI_MMIO_REG00, 22, 23)
+  if (MmioBitFieldRead32 ((UINTN)HcAddress + FCH_SPI_MMIO_REG00, 22, 23)
       == 0x0)
   {
     return EFI_SUCCESS;
@@ -293,12 +293,12 @@ InternalFchSpiUnlockSpiHostControllerRegisters (
   )
 {
   MmioBitFieldOr32 (
-    HcAddress + FCH_SPI_MMIO_REG00,
+    (UINTN)HcAddress + FCH_SPI_MMIO_REG00,
     22,
     23,
     BIT0 | BIT1
     );
-  if (MmioBitFieldRead32 (HcAddress + FCH_SPI_MMIO_REG00, 22, 23)
+  if (MmioBitFieldRead32 ((UINTN)HcAddress + FCH_SPI_MMIO_REG00, 22, 23)
       == (BIT0 | BIT1))
   {
     return EFI_SUCCESS;

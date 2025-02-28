@@ -1,0 +1,41 @@
+## @file
+#  PEI CCX TSC Timer Library
+#
+#  Provides basic timer support using the TSC hardware. The performance
+#  counter features are provided by the processors time stamp counter.
+#
+#  Copyright (c) 2013 - 2018, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PeiTscTimerLib
+  FILE_GUID                      = 342C36C0-15DF-43b4-9EC9-FBF748BFB3D1
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = TimerLib|PEIM PEI_CORE
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources.common]
+  TscTimerLibShare.c
+  PeiTscTimerLib.c
+  TscTimerLibPrivate.h
+
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  PcdLib
+  BaseLib
+  HobLib
+
+[Guids]
+  gAmdTscFrequencyGuid                          ## PRODUCES ## HOB
+

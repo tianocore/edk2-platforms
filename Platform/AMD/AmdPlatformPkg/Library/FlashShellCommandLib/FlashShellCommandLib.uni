@@ -1,0 +1,22 @@
+/** @file
+  Shell Application for AMD BIOS Flash.
+
+  Copyright (C) 2015 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#langdef en-US "English"
+
+#string STR_GET_HELP_FLASH       #language en-US  ""
+".TH AmdFlash 0 "AMD Update BIOS Tool."\r\n"
+".SH NAME\r\n"
+"AMD Update BIOS Tool.\r\n"
+".SH SYNOPSIS\r\n"
+" \r\n"
+"AmdFlash [Option]\r\n"
+".SH OPTIONS\r\n"
+"    -nv : Preserve NV Storage regions\r\n"
+"NOTES:\r\n"
+"    BIOS image must be located at \EFI\AMDFLASH\BIOS.FD.\r\n"
