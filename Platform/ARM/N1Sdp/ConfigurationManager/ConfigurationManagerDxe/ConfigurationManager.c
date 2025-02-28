@@ -1258,7 +1258,7 @@ InitializePlatformRepository (
 
   RemoteDdrSize = 0;
 
-  Dram2Size = ((PlatRepoInfo->PlatInfo->LocalDdrSize - 2) * SIZE_1GB);
+  Dram2Size = (((UINT64)PlatRepoInfo->PlatInfo->LocalDdrSize - 2) * SIZE_1GB);
 
   PlatRepoInfo->MemAffInfo[LOCAL_DDR_REGION2].Length = Dram2Size;
 
