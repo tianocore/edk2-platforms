@@ -53,6 +53,7 @@
   BtInterfaceLib
   SsifInterfaceLib
   IpmbInterfaceLib
+  PeiServicesLib
 
 [Guids]
   gPeiIpmiHobGuid
