@@ -26,5 +26,7 @@
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
   #
-  DEFINE UEFI_ATF_IMAGE          = Build/Jade/jade_tfa_uefi.bin
-  DEFINE SCP_IMAGE               = Build/Jade/altra_scp.slim
+  DEFINE INCLUDE_TFA_FW          = TRUE
+  DEFINE UEFI_IMAGE              = Build/Jade/jade_uefi.bin
+  DEFINE TFA_UEFI_IMAGE          = Build/Jade/jade_tfa_uefi.bin
+
