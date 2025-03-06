@@ -30,6 +30,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformOemString) {
 
   InputData     = (SMBIOS_TABLE_TYPE11 *)RecordData;
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
+  Status        = EFI_INVALID_PARAMETER;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {
     SmbiosPlatformDxeCreateTable (
