@@ -1,0 +1,58 @@
+#/** @file
+#
+#  Component description file for SpiFvbDxe module
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                = 0x00010017
+  BASE_NAME                  = AmdSpiFvbDxe
+  FILE_GUID                  = 0895B765-D2ED-4FDF-AB44-BE48A761CE34
+  MODULE_TYPE                = DXE_DRIVER
+  VERSION_STRING             = 1.0
+  PI_SPECIFICATION_VERSION   = 0x0001000A
+  ENTRY_POINT                = SpiFvbDxeEntryPoint
+
+[Sources]
+  SpiFvbDxe.c
+  SpiFvbCommon.c
+
+[Packages]
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  DebugLib
+  IoLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase      ## CONSUMES
+
+[FixedPcd]
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAgesaFlashNvStorageBlockSize     ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize      ## CONSUMES
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAgesaFlashAreaBaseAddress        ## CONSUMES
+
+[Protocols]
+  gEfiFirmwareVolumeBlockProtocolGuid
+  gEfiSpiNorFlashProtocolGuid
+
+[Depex]
+  gEfiSpiNorFlashProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  AmdSpiFvbExtra.uni

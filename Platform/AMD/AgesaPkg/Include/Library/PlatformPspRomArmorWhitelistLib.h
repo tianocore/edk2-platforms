@@ -1,11 +1,13 @@
 /** @file
-  Platform ROM Armor Whitelist table
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
+
+#ifndef PLATFORM_PSP_ROM_ARMOR_WHILE_LIST_
+#define PLATFORM_PSP_ROM_ARMOR_WHILE_LIST_
 
 #include <Library/AmdPspRomArmorLib.h>
 
@@ -23,3 +25,5 @@ EFIAPI
 GetPspRomArmorWhitelist (
   IN       SPI_WHITE_LIST  **PlatformSpiWhitelist
   );
+
+#endif // PLATFORM_PSP_ROM_ARMOR_WHILE_LIST_

@@ -2,7 +2,7 @@
   Implements AMD Platform SoC Library.
   Provides interface to Get/Set platform specific data.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

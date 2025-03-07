@@ -1,0 +1,26 @@
+## @file
+#
+#  Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = AmdAutoToolApp
+  FILE_GUID                      = 470E1741-2DFE-43EF-861E-505CB3226DC0
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ActCommandInitialize
+
+[Sources.common]
+  AmdAutoDynamicCommand.c
+  AutoConfigOptions.c
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiApplicationEntryPoint
+
+[Depex]
+  TRUE

@@ -1,7 +1,6 @@
 /** @file
-  Fabric resource manager common definition
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -11,7 +10,7 @@
 #define FABRIC_RESOURCE_MANAGER_CMN_H_
 #pragma pack (push, 1)
 
-#define MAX_SOCKETS_SUPPORTED  2                ///< Max number of sockets in system.
+#define MAX_SOCKETS_SUPPORTED  4                ///< Max number of sockets in system.
 #define MAX_RBS_PER_SOCKET     20               ///< Max number of root bridges per socket.
 
 /**

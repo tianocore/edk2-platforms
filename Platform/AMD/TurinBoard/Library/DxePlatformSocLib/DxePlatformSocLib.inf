@@ -1,0 +1,58 @@
+## @file
+#
+#  INF file of AMD Platform SoC library
+#  
+#  Copyright (C) 2023 -2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = DxePlatformSocLib
+  MODULE_UNI_FILE                = DxePlatformSocLib.uni
+  FILE_GUID                      = 27F805CC-7724-48CE-935F-6FBBC7B17BCE
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformSocLib
+
+[Sources]
+  DxePlatformSocLib.c
+
+[Packages]
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaModulePkg/AgesaModuleDfPkg.dec
+  AgesaModulePkg/AgesaModuleNbioPkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AmdCpmPkg/AmdCpmPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  NbioCommonDxeLib
+  NbioHandleLib
+  PcdLib
+  PcieConfigLib
+  SmnAccessLib
+
+[Pcd]
+  gMinPlatformPkgTokenSpaceGuid.PcdIoApicAddress
+  gMinPlatformPkgTokenSpaceGuid.PcdIoApicId
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdNumberOfPhysicalSocket            ## CONSUMES
+
+[Protocols]
+  gAmdFabricNumaServices2ProtocolGuid
+  gAmdNbioCxlServicesProtocolGuid
+  gAmdNbioPcieServicesProtocolGuid
+  gAmdPciResourceProtocolGuid
+  gAmdSocLogicalIdProtocolGuid
+  gAmdCpmTableProtocolGuid
+
+[Depex]
+  gAmdNbioPcieServicesProtocolGuid

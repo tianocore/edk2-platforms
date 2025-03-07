@@ -1,0 +1,58 @@
+#/*****************************************************************************
+# *
+# * Copyright (C) 2018-2025 Advanced Micro Devices, Inc. All rights reserved.
+# * SPDX-License-Identifier: BSD-2-Clause-Patent
+# *****************************************************************************/
+
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = EspiNorFlashSmm
+  FILE_GUID                 = 83705B89-CBF9-44f8-8546-E0124C682D08
+  MODULE_TYPE               = DXE_SMM_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = EspiNorFlashEntry
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  SmmServicesTableLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  TimerLib
+  DebugLib
+  IoLib
+  PciLib
+  FchEspiCmdLib
+  BaseMemoryLib
+  MemoryAllocationLib
+[Sources]
+  EspiNorFlashSmm.c
+  EspiNorFlash.c
+  EspiNorFlashSfdp.c
+  EspiNorFlashInstance.h
+  EspiNorFlash.h
+
+[Protocols]
+  gAmdEspiSmmNorFlashProtocolGuid                                ## PRODUCES
+  gEdk2EspiSmmDriverProtocolGuid                                 ## CONSUMES
+
+[FixedPcd]
+  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationRetryCount
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdEspiOffset
+
+[Pcd]
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdPspRomArmorSelection      ## CONSUMES
+
+[Depex]
+  gEdk2EspiSmmDriverProtocolGuid

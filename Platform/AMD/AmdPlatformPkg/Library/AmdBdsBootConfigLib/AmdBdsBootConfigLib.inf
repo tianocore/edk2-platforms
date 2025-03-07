@@ -1,0 +1,71 @@
+## @file
+#
+#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AmdBdsBootConfigLib
+  FILE_GUID                      = c2481551-17f3-4ac5-ab4c-ea5396056c9b
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  CONSTRUCTOR                    = AmdBdsBootConfigConstructor
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  AmdBdsBootConfig.h
+  AmdBdsBootConfigLib.c
+  DefaultLomDevicePath.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AmdCpmPkg/AmdCpmPkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaModulePkg/AgesaModuleNbioPkg.dec
+  AgesaModulePkg/AgesaEdk2Pkg.dec
+  BoardModulePkg/BoardModulePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  AmdMinBoardPkg/AmdMinBoardPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  HobLib
+  MemoryAllocationLib
+  NbioCommonDxeLib
+  NbioHandleLib
+  PcdLib
+  PcieConfigLib
+  PciSegmentLib
+  UefiDriverEntryPoint
+  UefiLib
+  IpmiLib
+  IpmiCommandLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  BoardBdsHookLib
+
+[Protocols]
+  gEfiPciEnumerationCompleteProtocolGuid       ## CONSUMES
+  gAmdSocLogicalIdProtocolGuid                 ## CONSUMES
+  gEfiPciIoProtocolGuid                        ## CONSUMES
+  gAmdBoardBdsBootOptionPriorityProtocolGuid   ## PRODUCES SOMETIMES
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType41            ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType41Number      ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc              ## CONSUMES
+
+[Depex]
+  TRUE

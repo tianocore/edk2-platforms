@@ -1,0 +1,50 @@
+## @file
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                   = 0x00010005
+  BASE_NAME                     = AmlGenerationLib
+  FILE_GUID                     = 8F62C8D1-B67F-4AFB-9179-54384F1A6163
+  MODULE_TYPE                   = DXE_DRIVER
+  VERSION_STRING                = 1.0
+  LIBRARY_CLASS                 = DXE_DRIVER UEFI_DRIVER HOST_APPLICATION
+
+[Sources.common]
+  LocalAmlObjects.h
+  LocalAmlObjects.c
+  LocalAmlLib.h
+  AmlAssistFunctions.c
+  AmlObjectsDebug.c
+  AmlNameString.c
+  AmlDataObjects.c
+  AmlNamespaceModifierObjects.c
+  AmlPkgLength.c
+  AmlNamedObject.c
+  AmlTable.c
+  AmlStatementOpcodes.c
+  AmlResourceDescriptor.c
+  AmlExpressionOpcodes.c
+  AmlArgObjects.c
+  AmlLocalObjects.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaPkg/AgesaPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  BaseMemoryLib
+  MemoryAllocationLib
+
+[Protocols]
+
+[Pcd]
+
+[Depex]
+  TRUE

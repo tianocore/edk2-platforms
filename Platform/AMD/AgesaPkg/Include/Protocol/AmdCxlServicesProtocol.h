@@ -1,7 +1,6 @@
 /** @file
-  CXL Configuration Services Protocol prototype definition
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

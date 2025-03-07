@@ -2,9 +2,9 @@
 
   FV block I/O protocol driver for SPI flash libary.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
 #include <Base.h>
@@ -17,14 +17,9 @@
 #include <FchRegistersCommon.h>
 #include <Spi/AmdSpiDevicePaths.h>
 
-SPI_CONTROLLER_DEVICE_PATH  mFchDevicePath = FCH_DEVICE_PATH;
+EFI_HANDLE mSpiConfigHandle = NULL;
 
-CHIP_SELECT_PARAMETERS  ChipSelect1 = CHIP_SELECT_1;
-CHIP_SELECT_PARAMETERS  ChipSelect2 = CHIP_SELECT_2;
-
-EFI_HANDLE  mSpiConfigHandle = NULL;
-
-CONST EFI_SPI_PART  Mx25u6435f = {
+CONST EFI_SPI_PART Mx25u6435f = {
   L"Macronix",                      // Vendor
   L"MX25U6435F",                    // PartNumber
   0,                                // MinClockHz
@@ -65,7 +60,6 @@ EFI_SPI_CONFIGURATION_PROTOCOL  mBoardSpiConfigProtocol = {
   0x1,                              // BusCount
   mSpiBusList                       // BusList
 };
-
 /**
   Check if SAFS mode is enabled
 
@@ -85,7 +79,6 @@ IsEspiSafsMode (
     // romtype [5:4] 10: eSPI with SAFS support
     return TRUE;
   }
-
   return FALSE;
 }
 
@@ -143,7 +136,6 @@ BuildSpiList (
   DEBUG ((DEBUG_INFO, "%a: Exit Status=%r\n", __func__, Status));
   return Status;
 }
-
 /**
   Entry point of the Board SPI Configuration driver.
 

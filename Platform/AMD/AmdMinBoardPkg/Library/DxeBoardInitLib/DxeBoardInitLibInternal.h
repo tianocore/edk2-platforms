@@ -1,6 +1,6 @@
 /** @file
 
-Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -20,7 +20,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <IndustryStandard/Acpi65.h>
 #include <Library/SortLib.h>
 #include <Library/IoLib.h>
-#include <Register/IoApic.h>
+#include <Register/AmdIoApic.h>
 #include <Protocol/MpService.h>
 #include <Library/BaseLib.h>
 
@@ -86,7 +86,64 @@ EFI_STATUS
   );
 
 /**
-  Reserve Legacy VGA IO space.
+  A helper function to update and re-install ACPI table.
+  It searh for ACPI table for provided table signature,
+  if found then creates a copy of the table and calls the callbackfunction.
+
+  @param[in] Signature           ACPI table signature
+  @param[in] CallbackFunction    The function to call to patch the searching ACPI table.
+
+  @return EFI_SUCCESS            Successfully Re-install the ACPI Table
+  @return EFI_NOT_FOUND          Table not found
+  @return EFI_STATUS             returns non-EFI_SUCCESS value in case of failure
+
+**/
+EFI_STATUS
+EFIAPI
+UpdateReinstallAcpiTable (
+  IN UINT32           Signature,
+  IN PATCH_ACPITABLE  CallbackFunction
+  );
+
+/**
+  A Callback function to patch the ACPI FADT table.
+  Updates FADT table with AMD specific values, which
+  are different than MinPlatformPkg.
+
+  @param[in, out] NewTable       Pointer to ACPI FADT table
+
+  @return         EFI_SUCCESS    Always return EFI_SUCCESSe
+
+**/
+EFI_STATUS
+EFIAPI
+FadtAcpiTablePatch (
+  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
+  );
+
+EFI_STATUS
+EFIAPI
+MadtAcpiTablePatch (
+  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
+  );
+
+/**
+  A Callback function to patch the ACPI DSDT/SSDT table.
+  Which has ASL code that needs to be updated.
+
+  @param[in, out] NewTable       Pointer to ACPI FADT table
+
+  @return         EFI_SUCCESS    Always return EFI_SUCCESSe
+
+**/
+EFI_STATUS
+EFIAPI
+AcpiTableAmlUpdate (
+  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
+  );
+
+/**
+  Reserve Legay VGA IO space.
 
   @retval  EFI_SUCCESS  MMIO at Legacy VGA region has been allocated.
   @retval  !EFI_SUCCESS Error allocating the legacy VGA region.

@@ -2,8 +2,7 @@
 
   Implementation of SpiHcPlatformLibrary for SMM
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -18,12 +17,13 @@
 #include <Protocol/SpiSmmHc.h>
 #include <Protocol/AmdSpiSmmHcState.h>
 #include <Protocol/MmReadyToLock.h>
+#include <FchRegistersCommon.h>
 #include <Library/PciSegmentLib.h>
 #include <Library/SpiHcPlatformLib.h>
 #include <IndustryStandard/SpiNorFlashJedecSfdp.h>
 #include <FchRegistersCommon.h>
-#include "SpiHcInternal.h"
-#include "SpiHcSmmState.h"
+#include "AmdSpiHcInternal.h"
+#include "AmdSpiHcSmmState.h"
 
 #define SPI_HC_MAXIMUM_TRANSFER_BYTES  64
 
@@ -49,7 +49,7 @@ UINT32                         mStateRecordCount;
 
   @retval EFI_SUCCESS             SPI_HOST_CONTROLLER_INSTANCE was allocated properly
   @retval EFI_OUT_OF_RESOURCES    The SPI_HOST_CONTROLLER_INSTANCE could not be allocated
-**/
+*/
 EFI_STATUS
 EFIAPI
 GetPlatformSpiHcDetails (

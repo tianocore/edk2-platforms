@@ -3,7 +3,7 @@
   implementation instance of the BDS hook library
 
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -26,7 +26,6 @@
   #include <Register/Amd/Msr.h>
 #endif
 
-CHAR16                                       *mConsoleVar[] = { L"ConIn", L"ConOut" };
 GLOBAL_REMOVE_IF_UNREFERENCED EFI_BOOT_MODE  gBootMode;
 BOOLEAN                                      gPPRequireUIConfirm;
 extern UINTN                                 mBootMenuOptionNumber;
@@ -47,7 +46,7 @@ GLOBAL_REMOVE_IF_UNREFERENCED USB_CLASS_FORMAT_DEVICE_PATH  gUsbClassKeyboardDev
     SUBCLASS_BOOT,    // DeviceSubClass
     PROTOCOL_KEYBOARD // DeviceProtocol
   },
-  END_ENTIRE_DEVICE_PATH
+  gEndEntire
 };
 
 #ifdef INTERNAL_IDS
@@ -638,6 +637,7 @@ ConnectTrustedConsole (
   UINTN                     Index;
   EFI_HANDLE                Handle;
   EFI_STATUS                Status;
+  CHAR16                    *ConsoleVar[] = { L"ConIn", L"ConOut" };
   VOID                      *TrustedConsoleDevicepath;
 
   TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleInputDevicePath);
@@ -645,8 +645,8 @@ ConnectTrustedConsole (
   TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleOutputDevicePath);
   DumpDevicePath (L"TrustedConsoleOut", TrustedConsoleDevicepath);
 
-  for (Index = 0; Index < sizeof (mConsoleVar) / sizeof (mConsoleVar[0]); Index++) {
-    GetEfiGlobalVariable2 (mConsoleVar[Index], (VOID **)&Consoles, NULL);
+  for (Index = 0; Index < sizeof (ConsoleVar) / sizeof (ConsoleVar[0]); Index++) {
+    GetEfiGlobalVariable2 (ConsoleVar[Index], (VOID **)&Consoles, NULL);
 
     TempDevicePath = Consoles;
     do {

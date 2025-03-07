@@ -1,10 +1,6 @@
 ## @file
-# AMD Generic Encapsulated Software Architecture (AGESA) FCH Module Package DEC
-# file.
-# This file provides the minimum AMD Fusion Control Hub package definitions for building AMD
-# edk2 modules.
 #
-#  Copyright (C) 2016-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#  Copyright (C) 2016-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

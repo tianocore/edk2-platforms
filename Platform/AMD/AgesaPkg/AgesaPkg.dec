@@ -1,8 +1,6 @@
 ## @file
-#  AMD Generic Encapsulated Software Architecture (AGESA) Package DEC
-#  file.
 #
-#  Copyright (C) 2015-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#  Copyright (C) 2015-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -341,7 +339,6 @@
   gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdMemPostPackageRepair|TRUE|BOOLEAN|0x00030004
   gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdMemBootTimePostPackageRepair|TRUE|BOOLEAN|0x00030005
   gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdMemRuntimePostPackageRepair|FALSE|BOOLEAN|0x00030006
-[PcdsDynamicEx]
 
 [PcdsFixedAtBuild, PcdsDynamic]
 #----------------------------------------------------------------------------
@@ -408,6 +405,14 @@
 #----------------------------------------------------------------------------
   ### PSP PCDs
 
+  ### @brief Switch to control if S3/Capsule start
+  ### @details Switch to control if S3/Capsule start from SMM or
+  ### the address provided by PspPlatfromProtocol->RsmHandOffInfo->RsmEntryPoint.
+  ### @li TRUE:  S3/Capsule start from BspSmmResumeVector.
+  ### @li FALSE: S3/Capsule start from PspPlatfromProtocol->RsmHandOffInfo->RsmEntryPoint.
+  ### NOTE, Processor will be set to 32bits protect mode with pagging disabled.
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdPspS3WakeFromSmm|TRUE|BOOLEAN|0x95940F00
+
   ### @brief Rom Armor selection
   ### @details Rom Armor selection
   ### @li 0:  Rom Armor is disabled
@@ -415,8 +420,6 @@
   ### @li 2:  Rom Armor 2 is enabled (RN/CZN)
   ### @li 3:  Rom Armor 3 is enabled (CGL, RMB and later)
   gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdPspRomArmorSelection|0|UINT8|0x95940054
-
-
 
   ### @brief System TPM config Value
   ### @details System TPM config Value, SBIOS needs to set the value in PEI phase.

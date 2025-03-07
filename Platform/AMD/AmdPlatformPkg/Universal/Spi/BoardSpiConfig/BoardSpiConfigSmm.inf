@@ -1,10 +1,11 @@
-## @file
-#  AMD Board SPI config SMM Description File
+#/** @file
 #
-#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#  Component description file for SpiFvbDxe module
 #
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-##
+#
+#**/
 
 [Defines]
   INF_VERSION               = 0x00010019
@@ -17,8 +18,8 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  MdeModulePkg/MdeModulePkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
 
 [LibraryClasses]
   DebugLib
@@ -27,6 +28,7 @@
   UefiDriverEntryPoint
   UefiBootServicesTableLib
   IoLib
+  PciLib
 
 [Sources]
   BoardSpiConfigSmm.c

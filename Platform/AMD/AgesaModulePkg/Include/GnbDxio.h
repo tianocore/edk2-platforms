@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -33,6 +33,8 @@
 
 #define DESCRIPTOR_ALL_TYPES  (DESCRIPTOR_ALL_WRAPPERS | DESCRIPTOR_ALL_ENGINES | DESCRIPTOR_SILICON | DESCRIPTOR_PLATFORM)
 #define PcieLibGetNextDescriptor(Descriptor)  ((Descriptor == NULL) ? NULL : ((Descriptor->Header.DescriptorFlags & DESCRIPTOR_TERMINATE_LIST) != 0) ? NULL : (Descriptor + 1))
+
+#define SILICON_CXL_CAPABLE  0x00008000ull
 
 typedef UINT16 PCIE_ENGINE_INIT_STATUS;
 

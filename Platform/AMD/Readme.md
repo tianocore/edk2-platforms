@@ -83,6 +83,7 @@ booting certain AMD platforms. The definition of sub-folders is described in bel
   which are specifically to a board.
 
   ```
+  e.g. OverdriveBoard
   e.g. GenoaBoard
            |------Board1Pkg
            |------Board2Pkg
@@ -98,9 +99,10 @@ booting certain AMD platforms. The definition of sub-folders is described in bel
             |----AmdCpmPkg
             |----AmdPlatformPkg
             |----AmdMinBoardPkg
-            |----GenoaBoard
+            |----OverdriveBoard
+            |----TurinBoard
             |         |------Common Modules for Genoa boards
-            |         |------Board1Pkg
+            |         |------VolcanoBoardPkg
             |         |        |-------Board specific modules
             |         |------Board2Pkg
             |
@@ -112,6 +114,5 @@ booting certain AMD platforms. The definition of sub-folders is described in bel
                                |-------Board specific modules
   ```
 
-
 ## Board Support
-Under progress
+### [Server Boards](./ServerBoard.md)

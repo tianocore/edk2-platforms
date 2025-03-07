@@ -1,0 +1,924 @@
+/** @file
+
+  Fch Return I2C I3C Interrupt
+
+  Copyright (C) 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+Scope(\_SB) {
+
+Name (TSOS, 0x75)
+
+If(CondRefOf(\_OSI))
+{
+  If(\_OSI("Windows 2009"))
+  {
+    Store(0x50, TSOS)
+  }
+  If(\_OSI("Windows 2015"))
+  {
+    Store(0x70, TSOS)
+  }
+}
+
+OperationRegion(ECMC, SystemIo, 0x72, 0x02)
+Field(ECMC, AnyAcc, NoLock, Preserve)
+{
+  ECMI, 8,
+  ECMD, 8,
+}
+IndexField(ECMI, ECMD, ByteAcc, NoLock, Preserve) {
+  Offset (0x08),
+  FRTB, 32,
+}
+OperationRegion(FRTP, SystemMemory, FRTB, 0x100)
+Field(FRTP, AnyAcc, NoLock, Preserve)
+{
+  PEBA, 64,
+  Offset (0x08),
+  , 4,
+  LPCE, 1,   //LPC , 4
+  IC0E, 1,   //I2C0, 5
+  IC1E, 1,   //I2C1, 6
+  IC2E, 1,   //I2C2, 7
+  IC3E, 1,   //I2C3, 8
+  IC4E, 1,   //I2C3, 9
+  IC5E, 1,   //I2C3, 10
+  UT0E, 1,   //UART0, 11
+  UT1E, 1,   //UART1, 12
+  I31E, 1,   //I3C1  13
+  I32E, 1,   //I3C2, 14
+  I33E, 1,   //I3C3, 15
+  UT2E, 1,   //UART2, 16
+  , 1,
+  EMMD, 2,   //18-19, EMMC Driver type, 0:AMD eMMC Driver (AMDI0040) 1:MS SD Driver (PNP0D40) 2:0:MS eMMC Driver (AMDI0040)
+  , 1,       //UART4, 20
+  I30E, 1,   //I3C0, 21
+  , 1,
+  XHCE, 1,   //XCHI, 23
+  , 1,   //24
+  , 1,
+  UT3E, 1,   //UART3, 26
+  ESPI, 1,   //ESPI  27
+  EMME, 1,   //EMMC  28
+  Offset (0x0C),
+  PCEF, 1,   // Post Code Enable Flag
+  , 4,
+  IC0D, 1,   //I2C0, 5
+  IC1D, 1,
+  IC2D, 1,
+  IC3D, 1,   //I2C3, 8
+  IC4D, 1,   //I2C3, 9
+  IC5D, 1,   //I2C3, 10
+  UT0D, 1,   //UART0, 11
+  UT1D, 1,   //UART1, 12
+  , 1,   //, 13
+  , 1,   //, 14
+  ST_D, 1,   //SATA, 15
+  UT2D, 1,   //UART2, 16
+  , 1,
+  EHCD, 1,   //EHCI, 18
+  , 4,
+  XHCD, 1,   //XCHI, 23
+  SD_D, 1,   //SD,   24
+  , 1,
+  UT3D, 1,   //UART1, 26
+  , 1,
+  EMD3, 1,   //EMMC D3  28
+  , 2,
+  S03D, 1,   //S0I3 flag, 31
+  Offset (0x10),
+  FW00, 16,
+  FW01, 32,
+  FW02, 16,
+  FW03, 32,
+  SDS0, 8, //SataDevSlpPort0S5Pin
+  SDS1, 8, //SataDevSlpPort1S5Pin
+  Offset (0x2A),
+  I30M, 1,   //I3C 0 Mode
+  I31M, 1,   //I3C 1 Mode
+  I32M, 1,   //I3C 2 Mode
+  I33M, 1,   //I3C 3 Mode
+  Offset (0x2E),
+  UT0I, 1,   // UART0 Invisible  0
+  UT1I, 1,   // UART1 Invisible  1
+  UT2I, 1,   // UART2 Invisible  2
+  UT3I, 1,   // UART3 Invisible  3
+  UT4I, 1,   // UART4 Invisible  4
+  , 3,
+  UL0I, 1,   // UART0 Legacy IO Invisible  8
+  UL1I, 1,   // UART1 Legacy IO Invisible  9
+  UL2I, 1,   // UART2 Legacy IO Invisible  10
+  UL3I, 1,   // UART3 Legacy IO Invisible  11
+  Offset (0x30),
+  I20I, 1,   // I2C0 Invisidble  0
+  I21I, 1,   // I2C1 Invisidble  1
+  I22I, 1,   // I2C2 Invisidble  2
+  I23I, 1,   // I2C3 Invisidble  3
+  I24I, 1,   // I2C4 Invisidble  4
+  I25I, 1,   // I2C5 Invisidble  5
+  I30I, 1,   // I3C0 Invisidble  6
+  I31I, 1,   // I3C1 Invisidble  7
+  I32I, 1,   // I3C2 Invisidble  8
+  I33I, 1,   // I3C3 Invisidble  9
+  Offset (0x32),
+  IDPC, 8,    // Identify Dimms per channel    - Offset (0x32)
+}
+OperationRegion(FCFG, SystemMemory, PEBA, 0x01000000)
+Field(FCFG, DwordAcc, NoLock, Preserve)
+{
+  Offset(0x000A3044),
+    IPDE,  32, //IO Port Decode Enable
+  Offset(0x000A3048),
+    IMPE,  32, //IO Memory Port decode Enable
+  Offset(0x000A3078),
+    , 2,
+    LDQ0,  1, //
+  Offset(0x000A30CB),
+    ,  7,
+    AUSS,  1, //AutoSizeStart
+}
+OperationRegion(IOMX, SystemMemory, 0xFED80D00, 0x100)
+Field(IOMX, AnyAcc, NoLock, Preserve)
+{
+  Offset (0x15),
+  IM15, 8,   //
+  Offset (0x16),
+  IM16, 8,   //
+  Offset (0x1F),
+  IM1F, 8,   //
+  Offset (0x20),
+  IM20, 8,   //
+  Offset (0x44),
+  IM44, 8,   //
+  Offset (0x46),
+  IM46, 8,   //
+  Offset (0x4A),
+  IM4A, 8,   //
+  Offset (0x4B),
+  IM4B, 8,   //
+  Offset (0x57),
+  IM57, 8,   //
+  Offset (0x58),
+  IM58, 8,   //
+  Offset (0x68),
+  IM68, 8,   //
+  Offset (0x69),
+  IM69, 8,   //
+  Offset (0x6A),
+  IM6A, 8,   //
+  Offset (0x6B),
+  IM6B, 8,   //
+  Offset (0x6D),
+  IM6D, 8,   //
+}
+OperationRegion(FACR, SystemMemory, 0xFED81E00, 0x100)  //Fch AoaC Register
+Field(FACR, AnyAcc, NoLock, Preserve)
+{
+  Offset (0x80),
+      ,28,
+  RD28, 1,   //Request of Device 28, MAP
+      , 1,
+  RQTY, 1,     //ReQuestTYpe
+  Offset (0x84),
+      ,28,
+  SD28, 1,   //Status of Device 28, MAP
+      , 1,
+  Offset (0xA0), //AOACx0000A0 [PwrGood Control] (PwrGoodCtl)
+  PG1A, 1,
+}
+
+
+OperationRegion(LUIE, SystemMemory, 0xFEDC0020, 0x4) //Legacy Uart Io Enable
+Field(LUIE, AnyAcc, NoLock, Preserve)
+{
+  IER0, 1,   //2E8
+  IER1, 1,   //2F8
+  IER2, 1,   //3E8
+  IER3, 1,   //3F8
+  RESV, 4,   //Reserved
+  WUR0, 2,   // 0=Uart0, 1=Uart1, 2=Uart2, 3=Uart3
+  WUR1, 2,   //
+  WUR2, 2,   //
+  WUR3, 2,   //
+}
+
+// Fch Return I2C/I3C Interrupt
+Method (FRII, 1, Serialized) {
+  if (LEqual (Arg0, 0)) {
+    return (IIC0)
+  } elseif (LEqual (Arg0, 1)) {
+    return (IIC1)
+  } elseif (LEqual (Arg0, 2)) {
+    return (IIC2)
+  } elseif (LEqual (Arg0, 3)) {
+    return (IIC3)
+  } elseif (LEqual (Arg0, 4)) {
+    return (IIC4)
+  } elseif (LEqual (Arg0, 5)) {
+    return (IIC5)
+  } else {
+    // Return IRQ10 should never be run, it avoids ASL compiler warning.
+    return (10)
+  }
+} // End of Method (FRII, 1, Serialized)
+
+// Fch Return Uart Interrupt
+Method (FRUI, 1, Serialized) {
+  if (LEqual (Arg0, 0)) {
+    return (IUA0)
+  } elseif (LEqual (Arg0, 1)) {
+    return (IUA1)
+  } elseif (LEqual (Arg0, 2)) {
+    return (IUA2)
+  } elseif (LEqual (Arg0, 3)) {
+    return (IUA3)
+  } else {
+    // Return IRQ3 should never be run, it avoids ASL compiler warning.
+    return (3)
+  }
+} // End of Method (FRUI
+
+Method(SRAD,2, Serialized)  //SoftResetAoacDevice, Arg0:Device ID, Arg1:reset period in micro seconds
+{
+  ShiftLeft(Arg0, 1, Local0)
+  Add (Local0, 0xfed81e40, Local0)
+  OperationRegion( ADCR, SystemMemory, Local0, 0x02)
+  Field( ADCR, ByteAcc, NoLock, Preserve) { //AoacD3ControlRegister
+    ADTD, 2,
+    ADPS, 1,
+    ADPD, 1,
+    ADSO, 1,
+    ADSC, 1,
+    ADSR, 1,
+    ADIS, 1,
+    ADDS, 3,
+  }
+  store (one, ADIS)       // IsSwControl = 1
+  store (zero, ADSR)      // SwRstB = 0
+  stall (Arg1)
+  store (one, ADSR)       // SwRstB = 1
+  store (zero, ADIS)      // IsSwControl = 0
+  stall (Arg1)
+}
+Method(DSAD,2, Serialized)  //DxSequenceAoacDevice, Arg0:Device ID, Arg1:3=D3, 0=D0
+{
+  ShiftLeft(Arg0, 1, Local0)
+  Add (Local0, 0xfed81e40, Local0)
+  OperationRegion( ADCR, SystemMemory, Local0, 0x02)
+  Field( ADCR, ByteAcc, NoLock, Preserve) { //AoacD3ControlRegister
+    ADTD, 2,
+    ADPS, 1,
+    ADPD, 1,
+    ADSO, 1,
+    ADSC, 1,
+    ADSR, 1,
+    ADIS, 1,
+    ADDS, 3,
+  }
+  if (LNotEqual(Arg0, ADTD)) {
+   if (LEqual(Arg1, 0)) {
+    //D0
+    store(0x00, ADTD)
+    store(one, ADPD)
+    store(ADDS, Local0)
+    while (LNotEqual(Local0,0x7)) {store(ADDS, Local0)}
+   }
+   if (LEqual(Arg1, 3)) {
+    //D3
+    store(zero, ADPD)
+    store(ADDS, Local0)
+    while (LNotEqual(Local0,0x0)) {store(ADDS, Local0)}
+    store(0x03, ADTD)
+   }
+  }
+}
+Method(HSAD,2, Serialized)  //Hardware dx Sequence Aoac Device, Arg0:Device ID, Arg1:3=D3, 0=D0
+{
+  //ShiftLeft(1, Arg0, Local3) //caculate bit map location
+  ShiftLeft(Arg0, 1, Local0) //Caculate device register location
+  Add (Local0, 0xfed81e40, Local0)
+  OperationRegion( ADCR, SystemMemory, Local0, 0x02)
+  Field( ADCR, ByteAcc, NoLock, Preserve) { //AoacD3ControlRegister
+    ADTD, 2,
+    ADPS, 1,
+    ADPD, 1,
+    ADSO, 1,
+    ADSC, 1,
+    ADSR, 1,
+    ADIS, 1,
+    ADDS, 3,
+  }
+  if (LNotEqual(Arg1, ADTD)) {
+   if (LEqual(Arg1, 0)) {
+    store (One, PG1A)  //power up
+    //D0
+    store(0x00, ADTD)
+    store(one, ADPD)
+    store(ADDS, Local0)
+    while (LNotEqual(Local0,0x7)) {store(ADDS, Local0)}
+    //Do hareware restore now
+    // Set RequestType to restore
+    store (one, RQTY)
+    store (one, RD28)
+    // Wait for restore complete
+    store (SD28, Local0)
+    while (LNot(Local0)) {store (SD28, Local0)}
+   }
+   if (LEqual(Arg1, 3)) {
+    //Do hareware save first
+    store (zero, RQTY)
+    store (one, RD28)
+    store (SD28, Local0)
+    while (Local0) {store (SD28, Local0)}
+    //D3
+    store(zero, ADPD)
+    store(ADDS, Local0)
+    while (LNotEqual(Local0,0x0)) {store(ADDS, Local0)}
+    store(0x03, ADTD)
+    store (Zero, PG1A)  //power down
+   }
+  }
+}
+OperationRegion(FPIC, SystemIo, 0xc00, 0x02)//Fch Pci Interrupt Connector
+Field(FPIC, AnyAcc, NoLock, Preserve)
+{
+  FPII, 8,
+  FPID, 8,
+}
+IndexField(FPII, FPID, ByteAcc, NoLock, Preserve) {
+  Offset (0xF0),      //Interrupt for I2C/I3C/UART
+  IIC0, 8,
+  IIC1, 8,
+  IIC2, 8,
+  IIC3, 8,
+  IUA0, 8,
+  IUA1, 8,
+  IIC4, 8,
+  IIC5, 8,
+  IUA2, 8,
+  IUA3, 8,
+}
+
+Method(CKUL,1, Serialized)
+{
+ //Check if legacy UART is enabled.  Return 1: enabled, 0:no legacy UART enabled.
+  if (LAnd (LEqual (IER0, 1), LEqual (WUR0, Arg0)))     {Return (1)}
+  elseif (LAnd (LEqual (IER1, 1), LEqual (WUR1, Arg0))) {Return (1)}
+  elseif (LAnd (LEqual (IER2, 1), LEqual (WUR2, Arg0))) {Return (1)}
+  elseif (LAnd (LEqual (IER3, 1), LEqual (WUR3, Arg0))) {Return (1)}
+  else {Return (0)}
+}
+
+  Device(GPIO) {
+    Name (_HID, "AMDI0030")
+    Name (_CID, "AMDI0030")
+    Name(_UID, 0)
+
+    Method (_CRS, 0x0, NotSerialized) {
+      Name (RBUF, ResourceTemplate () {
+        //
+        // Interrupt resource. In this example, banks 0 & 1 share the same
+        // interrupt to the parent controller and similarly banks 2 & 3.
+        //
+        // N.B. The definition below is chosen for an arbitrary
+        //      test platform. It needs to be changed to reflect the hardware
+        //      configuration of the actual platform
+        //
+        Interrupt(ResourceConsumer, Level, ActiveLow, Shared, , , ) {7}
+
+        //
+        // Memory resource. The definition below is chosen for an arbitrary
+        // test platform. It needs to be changed to reflect the hardware
+        // configuration of the actual platform.
+        //
+        Memory32Fixed(ReadWrite, 0xFED81500, 0x400)
+        //for 11 remote GPIO ( GPIO256~GPIO266)
+        Memory32Fixed(ReadWrite, 0xFED81200, 0x2C)
+      })
+
+      Return (RBUF)
+    }
+
+    Method(_STA, 0, NotSerialized) {
+        If (LGreaterEqual(TSOS, 0x70)) {
+          Return (0x0F)
+        } Else {
+          Return (0x00)
+        }
+    }
+  } // End Device GPIO
+
+
+  Device(FUR0) {
+    Name(_HID,"AMDI0020")            // UART Hardware Device ID
+    Name(_UID,"ID00")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {3}
+        Memory32Fixed(ReadWrite, 0xFEDC9000, 0x1000)
+        Memory32Fixed(ReadWrite, 0xFEDC7000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IUA0, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+        If (LGreaterEqual(TSOS, 0x70)) {
+          if (LEqual(UT0E, one)) {
+            if (LEqual(CKUL(0), one) ) {Return (0)} //if legacy uart enabled ,hide it.
+            if (LEqual(UT0I, one) ) {Return (0)}
+            Return (0x0F)
+          }
+          Return (0x00)
+        } Else {
+          Return (0x00)
+        }
+    }
+  } // End Device FUR0
+
+  Device(FUR1) {
+    Name(_HID,"AMDI0020")            // UART Hardware Device ID
+    Name(_UID,"ID01")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {14}
+        Memory32Fixed(ReadWrite, 0xFEDCA000, 0x1000)
+        Memory32Fixed(ReadWrite, 0xFEDC8000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IUA1, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+        If (LGreaterEqual(TSOS, 0x70)) {
+          if (LEqual(UT1E, one)) {
+            if (LEqual(CKUL(1), one) ) {Return (0)} //if legacy uart enabled ,hide it.
+            if (LEqual(UT1I, one) ) {Return (0)}
+            Return (0x0F)
+          }
+          Return (0x00)
+        } Else {
+          Return (0x00)
+        }
+    }
+  } // End Device FUR1
+
+  Device(FUR2) {
+    Name(_HID,"AMDI0020")            // UART Hardware Device ID
+    Name(_UID,"ID02")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {5}
+        Memory32Fixed(ReadWrite, 0xFEDCE000, 0x1000)
+        Memory32Fixed(ReadWrite, 0xFEDCC000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IUA2, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+        If (LGreaterEqual(TSOS, 0x70)) {
+          if (LEqual(UT2E, one)) {
+            if (LEqual(CKUL(2), one) ) {Return (0)} //if legacy uart enabled ,hide it.
+            if (LEqual(UT2I, one) ) {Return (0)}
+            Return (0x0F)
+          }
+          Return (0x00)
+        } Else {
+          Return (0x00)
+        }
+    }
+  } // End Device FUR2
+
+  Device(FUR3) {
+    Name(_HID,"AMDI0020")            // UART Hardware Device ID
+    Name(_UID,"ID03")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {15}
+        Memory32Fixed(ReadWrite, 0xFEDCF000, 0x1000)
+        Memory32Fixed(ReadWrite, 0xFEDCD000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IUA3, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+        If (LGreaterEqual(TSOS, 0x70)) {
+          if (LEqual(UT3E, one)) {
+            if (LEqual(CKUL(3), one) ) {Return (0)} //if legacy uart enabled ,hide it.
+            if (LEqual(UT3I, one) ) {Return (0)}
+            Return (0x0F)
+          }
+          Return (0x00)
+        } Else {
+          Return (0x00)
+        }
+    }
+  } // End Device FUR3
+
+  Device(I2CA) {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x0)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {10}
+        Memory32Fixed(ReadWrite, 0xFEDC2000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC0, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC0E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I20I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (5, 200)}
+
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        if (LEqual(IDPC, one) || LEqual(IDPC, 2)) {
+         Return(Buffer(One){0x01})
+        } Else {
+          Return(Buffer(One){0x00})
+        }
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CA
+
+  Device(I2CB)
+  {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x1)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {11}
+        Memory32Fixed(ReadWrite, 0xFEDC3000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC1, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC1E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I21I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (6, 200)}
+
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        if (LEqual(IDPC, one) || LEqual(IDPC, 2)) {
+         Return(Buffer(One){0x01})
+        } Else {
+          Return(Buffer(One){0x00})
+        }
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CB
+
+  Device(I2CC) {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x2)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {4}
+        Memory32Fixed(ReadWrite, 0xFEDC4000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC2, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC2E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I22I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (7, 200)}
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        if (LEqual(IDPC, 2)) {
+         Return(Buffer(One){0x01})
+        } Else {
+          Return(Buffer(One){0x00})
+        }
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CC
+
+  Device(I2CD) {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x3)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {6}
+        Memory32Fixed(ReadWrite, 0xFEDC5000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC3, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC3E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I23I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+    Method(RSET,0) { SRAD (8, 200)}
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        if (LEqual(IDPC, 2)) {
+         Return(Buffer(One){0x01})
+        } Else {
+          Return(Buffer(One){0x00})
+        }
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CD
+
+  Device(I2CE) {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x4)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {22}
+        Memory32Fixed(ReadWrite, 0xFEDC6000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC4, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC4E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I24I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (9, 200)}
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        Return(Buffer(One){0x00})
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CE
+
+  Device(I2CF) {
+    Name(_HID,"AMDI0010")            // Hardware Device ID
+    Name(_UID,0x5)
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {23}
+        Memory32Fixed(ReadWrite, 0xFEDCB000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC5, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(IC5E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I25I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (10, 200)}
+    Method(_DSM, 0x4, NotSerialized)
+    {
+      If(LEqual(Arg0, ToUUID("48DFFC9D-B5A5-48B0-8BA8-28D4E674B25A")))
+      {
+        Return(Buffer(One){0x00})
+      } Else {
+        Return(Buffer(One){0x00})
+      }
+    }
+  } // End Device I2CF
+
+
+ Device(I3CA) {
+    Name(_UID,0x0)
+    // I3C DisCo Definition
+    Name(_HID, "AMDI0015")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {10}
+        Memory32Fixed(ReadWrite, 0xFEDD2000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC0, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(I30E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I30I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (21, 200)}
+
+} // End Device I3C0
+
+
+ Device(I3CB) {
+    Name(_UID,0x1)
+    // I3C DisCo Definition
+    Name(_HID, "AMDI0015")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {11}
+        Memory32Fixed(ReadWrite, 0xFEDD3000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC1, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(I31E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I31I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (13, 200)}
+
+} // End Device I3C1
+
+
+ Device(I3CC) {
+    Name(_UID,0x2)
+    // I3C DisCo Definition
+    Name(_HID, "AMDI0015")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {4}
+        Memory32Fixed(ReadWrite, 0xFEDD4000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC2, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(I32E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I32I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (14, 200)}
+
+} // End Device I3C2
+
+
+ Device(I3CD) {
+    Name(_UID,0x3)
+    // I3C DisCo Definition
+    Name(_HID, "AMDI0015")
+    Method(_CRS, 0, Serialized) {
+      Name(BUF0, ResourceTemplate(){
+        Interrupt(ResourceConsumer, Edge, ActiveHigh, Exclusive) {6}
+        Memory32Fixed(ReadWrite, 0xFEDD6000, 0x1000)
+      })
+      // Create pointers to the specific byte
+      CreateWordField (BUF0, 0x05, IRQW)
+      //Modify the IRQ
+      Store (IIC3, IRQW)
+      Return(BUF0) // return the result
+    }// end _CRS method
+
+    Method(_STA, 0, NotSerialized) {
+      Store (0x0, Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+          If (LEqual(I33E, one)) {
+            Store (0x0F, Local0)
+          }
+      }
+      If (LEqual (I33I, One)) {
+         Store (0x0, Local0)
+      }
+      Return (Local0)
+    }
+
+    Method(RSET,0) { SRAD (15, 200)}
+
+} // End Device I3C3
+
+
+
+
+} // End of Scope(\_SB)
+

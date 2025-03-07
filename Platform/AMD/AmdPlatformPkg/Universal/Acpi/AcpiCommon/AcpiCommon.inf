@@ -1,0 +1,73 @@
+#/** @file
+#
+#  Component description file for SpiFvbDxe module
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AcpiCommon
+  FILE_GUID                      = 66838F31-1062-415C-957A-CC2871D9E6B7
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InstallAllAcpiTables
+
+[Sources.common]
+  AcpiCommon.c
+  AcpiCommon.h
+  CpuSsdt.c
+  PciSsdt.c
+  Spmi.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[LibraryClasses]
+  AmlLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  IoLib
+  MemoryAllocationLib
+  PcdLib
+  PlatformSocLib
+  SortLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiAcpiSdtProtocolGuid                       ## CONSUMES
+  gEfiAcpiTableProtocolGuid                     ## CONSUMES
+  gEfiMpServiceProtocolGuid                     ## CONSUMES
+  gEfiPciRootBridgeIoProtocolGuid               ## CONSUMES
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision      ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress              ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress             ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize                ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdIoApicAddress                ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuSocketCount            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicAddressBase
+
+[Guids]
+  gEfiHobListGuid
+
+[Depex]
+  gEfiMpServiceProtocolGuid AND
+  gEfiAcpiTableProtocolGuid AND
+  gEfiPciRootBridgeIoProtocolGuid AND
+  gEfiPciEnumerationCompleteProtocolGuid
+

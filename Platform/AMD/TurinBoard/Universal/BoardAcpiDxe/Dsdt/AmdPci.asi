@@ -1,0 +1,412 @@
+/** @file
+
+  Copyright (C) 2020-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+External (PCI0, DeviceObj)
+External (\_SB.PCI0.RP71, DeviceObj)
+External (PCI3, DeviceObj)
+External (\_SB.PCI3.RP71, DeviceObj)
+External (POSS, FieldUnitObj)
+External (POSC, FieldUnitObj)
+
+Name (SS1, Zero)
+Name (SS2, Zero)
+Name (SS3, One)
+Name (SS4, Zero)
+Name (PRWP, Package (0x02)
+{
+  Zero,
+  Zero
+})
+Method (GPRW, 2, NotSerialized)
+{
+  PRWP [Zero] = Arg0
+  Local0 = (SS1 << One)
+  Local0 |= (SS2 << 0x02)
+  Local0 |= (SS3 << 0x03)
+  Local0 |= (SS4 << 0x04)
+  If (((One << Arg1) & Local0))
+  {
+    PRWP [One] = Arg1
+  }
+  Else
+  {
+    Local0 >>= One
+    FindSetRightBit (Local0, PRWP [One])
+  }
+
+  Return (PRWP)
+}
+
+Scope (PCI0) {
+  Device (AL2A) {
+    Name (_HID, EISAID ("PNP0C02"))
+    Name (_UID, "AL2AHB")
+    Name (_CRS, ResourceTemplate () {
+      Memory32Fixed (ReadOnly, 0xFEDC0000, 0x00001000)
+    })
+    OperationRegion (LUIE, SystemMemory, 0xFEDC0020, 0x4)
+    Field(LUIE, AnyAcc, NoLock, Preserve) {
+      IER0, 1,  // IO_Enable_Range_0
+      IER1, 1,  // IO_Enable_Range_1
+      IER2, 1,  // IO_Enable_Range_2
+      IER3, 1,  // IO_Enable_Range_3
+      LUR1, 4,  // Reserved
+      WUR0, 2,  // Which_UART_RANGE_0
+      WUR1, 2,  // Which_UART_RANGE_0
+      WUR2, 2,  // Which_UART_RANGE_0
+      WUR3, 2,  // Which_UART_RANGE_0
+      LUR2, 16, // Reserved
+    }
+    // Return _STA Disable value if Legacy Resources Enabled
+    // Otherwise return _STA Enabled valude (0xF)
+    // ARG0 = UART number 0-3
+    Method (USTA, 1) {
+      If (LAnd (LEqual(IER0, One), LEqual (WUR0, Arg0))) {
+        Return (Zero)
+      }
+      ElseIf (LAnd (LEqual(IER1, One), LEqual (WUR1, Arg0))) {
+        Return (Zero)
+      }
+      ElseIf (LAnd (LEqual(IER2, One), LEqual (WUR2, Arg0))) {
+        Return (Zero)
+      }
+      ElseIf (LAnd (LEqual(IER3, One), LEqual (WUR3, Arg0))) {
+        Return (Zero)
+      }
+      Else {
+        Return (0xF)
+      }
+    }
+
+    // Return _STA Enable value (0xF) if COMx address is being decoded
+    // Else return _STA Disable value (0x0)
+    // ARG0 = COM port number 1-4
+    Method (CSTA, 1) {
+      If (LAnd (LEqual (Arg0, 1), LEqual (IER3, 1))) {
+        Return (0xF)
+      }
+      ElseIf (LAnd (LEqual (Arg0, 2), LEqual (IER1, 1))) {
+        Return (0xF)
+      }
+      ElseIf (LAnd (LEqual (Arg0, 3), LEqual (IER2, 1))) {
+        Return (0xF)
+      }
+      ElseIf (LAnd (LEqual (Arg0, 4), LEqual (IER0, 1))) {
+        Return (0xF)
+      }
+      Else {
+        Return (Zero)
+      }
+    }
+  }
+  Device (URT0) {
+    Name (_HID, "AMDI0020")
+    Name (_UID, Zero)
+    Method (_STA) {
+      Store (^^AL2A.USTA (_UID), Local0)
+      Return (Local0)
+    }
+    Name (_CRS, ResourceTemplate () {
+      Memory32Fixed (ReadWrite, 0xFEDC9000, 0x1000)
+      Memory32Fixed (ReadWrite, 0xFEDC7000, 0x1000)
+      IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart0Irq)}
+    })
+  }
+
+  Device (URT1) {
+    Name (_HID, "AMDI0020")
+    Name (_UID, One)
+    Method (_STA) {
+      Store (^^AL2A.USTA (_UID), Local0)
+      Return (Local0)
+    }
+    Name (_CRS, ResourceTemplate () {
+      Memory32Fixed (ReadWrite, 0xFEDCA000, 0x1000)
+      Memory32Fixed (ReadWrite, 0xFEDC8000, 0x1000)
+      IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart1Irq)}
+    })
+  }
+
+  // UART 2 always disabled
+  Device (URT2) {
+    Name (_HID, "AMDI0020")
+    Name (_UID, 0x2)
+    Name (_STA, Zero)
+    Name (_CRS, ResourceTemplate () {
+      Memory32Fixed (ReadWrite, 0xFEDCE000, 0x1000)
+      Memory32Fixed (ReadWrite, 0xFEDCC000, 0x1000)
+      IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart2Irq)}
+    })
+  }
+
+  // UART 3 always disabled
+  Device (URT3) {
+    Name (_HID, "AMDI0020")
+    Name (_UID, 0x3)
+    Name (_STA, Zero)
+    Name (_CRS, ResourceTemplate () {
+      Memory32Fixed (ReadWrite, 0xFEDCF000, 0x1000)
+      Memory32Fixed (ReadWrite, 0xFEDCD000, 0x1000)
+      IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart3Irq)}
+    })
+  }
+
+  Device (LPC0) {
+    Name (_ADR, 0x140003)
+
+    // UARTx -> COM1: I/O port 0x3F8, IRQ PcdFchUart1Irq
+    Device (COM1) {
+      Name (_HID, EISAID ("PNP0501"))
+      Name (_DDN, "COM1")
+      Name (_UID, One)
+      Method (_STA) {
+        Store (^^^AL2A.CSTA (_UID), Local0)
+        Return (Local0)
+      }
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x03F8, 0x03F8, 0x01, 0x08)
+        IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart1Irq)}
+        UARTSerialBusV2 (115200,              // InitialBaudRate
+                         DataBitsEight,       // BitsPerByte
+                         StopBitsOne,         // StopBits
+                         0x00,                // LinesInUse
+                         ,                    // IsBigEndian
+                         ParityTypeNone,      // Parity
+                         FlowControlNone,     // FlowControl
+                         1,                   // ReceiveBufferSize
+                         1,                   // TransimitBufferSize
+                         "COM1",              // ResourceSource
+                         ,                    // ResourceSourceIndex
+                         ,                    // ResourceUsage
+                         ,                    // DescrpitorName
+                         ,                    // Shared
+                                              // VendorData
+                         )
+      })
+    }
+
+    // UARTx -> COM2: I/O port 0x2F8, IRQ PcdFchUart0Irq
+    Device (COM2) {
+      Name (_HID, EISAID ("PNP0501"))
+      Name (_DDN, "COM2")
+      Name (_UID, 2)
+      Method (_STA) {
+        Store (^^^AL2A.CSTA (_UID), Local0)
+        Return (Local0)
+      }
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x02F8, 0x02F8, 0x01, 0x08)
+        IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart0Irq)}
+        UARTSerialBusV2 (115200,              // InitialBaudRate
+                         DataBitsEight,       // BitsPerByte
+                         StopBitsOne,         // StopBits
+                         0x00,                // LinesInUse
+                         ,                    // IsBigEndian
+                         ParityTypeNone,      // Parity
+                         FlowControlNone,     // FlowControl
+                         1,                   // ReceiveBufferSize
+                         1,                   // TransimitBufferSize
+                         "COM2",              // ResourceSource
+                         ,                    // ResourceSourceIndex
+                         ,                    // ResourceUsage
+                         ,                    // DescrpitorName
+                         ,                    // Shared
+                                              // VendorData
+                         )
+      })
+    }
+
+    // UARTx -> COM3: I/O port 0x3E8, IRQ PcdFchUart2Irq
+    Device (COM3) {
+      Name (_HID, EISAID ("PNP0501"))
+      Name (_DDN, "COM3")
+      Name (_UID, 3)
+      Method (_STA) {
+        Store (^^^AL2A.CSTA (_UID), Local0)
+        Return (Local0)
+      }
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x03E8, 0x03E8, 0x01, 0x08)
+        IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart2Irq)}
+        UARTSerialBusV2 (115200,              // InitialBaudRate
+                         DataBitsEight,       // BitsPerByte
+                         StopBitsOne,         // StopBits
+                         0x00,                // LinesInUse
+                         ,                    // IsBigEndian
+                         ParityTypeNone,      // Parity
+                         FlowControlNone,     // FlowControl
+                         1,                   // ReceiveBufferSize
+                         1,                   // TransimitBufferSize
+                         "COM3",              // ResourceSource
+                         ,                    // ResourceSourceIndex
+                         ,                    // ResourceUsage
+                         ,                    // DescrpitorName
+                         ,                    // Shared
+                                              // VendorData
+                         )
+      })
+    }
+
+    // UARTx -> COM4: I/O port 0x2E8, IRQ PcdFchUart3Irq
+    Device (COM4) {
+      Name (_HID, EISAID ("PNP0501"))
+      Name (_DDN, "COM4")
+      Name (_UID, 4)
+      Method (_STA) {
+        Store (^^^AL2A.CSTA (_UID), Local0)
+        Return (Local0)
+      }
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x02E8, 0x02E8, 0x01, 0x08)
+        IRQ (Edge, ActiveLow, Shared) {FixedPcdGet8(PcdFchUart3Irq)}
+        UARTSerialBusV2 (115200,              // InitialBaudRate
+                         DataBitsEight,       // BitsPerByte
+                         StopBitsOne,         // StopBits
+                         0x00,                // LinesInUse
+                         ,                    // IsBigEndian
+                         ParityTypeNone,      // Parity
+                         FlowControlNone,     // FlowControl
+                         1,                   // ReceiveBufferSize
+                         1,                   // TransimitBufferSize
+                         "COM4",              // ResourceSource
+                         ,                    // ResourceSourceIndex
+                         ,                    // ResourceUsage
+                         ,                    // DescrpitorName
+                         ,                    // Shared
+                                              // VendorData
+                         )
+      })
+    }
+
+    Device (DMAC) {
+      Name (_HID, EISAID ("PNP0200"))
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x0, 0x0, 0x1, 0x10)
+        IO (Decode16, 0x81, 0x81, 0x1, 0xF)
+        IO (Decode16, 0xC0, 0xC0, 0x1, 0x20)
+        DMA (Compatibility, NotBusMaster, Transfer8_16) {4}
+      })
+    } // Device (DMAC)
+
+    Device (RTC) {
+      Name (_HID, EISAID ("PNP0B00"))
+      Name (_FIX, Package () {EISAID ("PNP0B00")})
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16,0x70,0x70,0x01,0x02)
+        IO (Decode16,0x72,0x72,0x01,0x02)
+      })
+    } // Device (RTC)
+
+    Device (SPKR) {
+      Name (_HID, EISAID ("PNP0800"))
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x61, 0x61, 0x1, 0x1)
+      })
+    } // Device (SPKR)
+
+    Device (TMR) {
+      Name (_HID, EISAID ("PNP0100"))
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x40, 0x40, 0x1, 0x4)
+      })
+    } // Device (TMR)
+
+    Device (SYSR) {
+      Name (_HID, EISAID ("PNP0C02"))
+      Name (_UID, 1)
+      Name (_CRS, ResourceTemplate () {
+        IO (Decode16, 0x10, 0x10, 0x1, 0x10)
+        IO (Decode16, 0x20, 0x20, 0x1, 0x2)
+        IO (Decode16, 0xA0, 0xA0, 0x1, 0x2)
+        IO (Decode16, 0x72, 0x72, 0x1, 0x2)
+        IO (Decode16, 0x80, 0x80, 0x1, 0x1)
+        IO (Decode16, 0xB0, 0xB0, 0x1, 0x2)
+        IO (Decode16, 0x92, 0x92, 0x1, 0x1)
+        IO (Decode16, 0xF0, 0xF0, 0x1, 0x1)
+        IO (Decode16, 0x400, 0x400, 0x01,0xd0)
+        IO (Decode16, 0x4D0, 0x4D0, 0x1, 0x2)
+        IO (Decode16, 0x4D6, 0x4D6, 0x1, 0x1)
+        IO (Decode16, 0xC00, 0xC00, 0x1, 0x2)
+        IO (Decode16, 0xC14, 0xC14, 0x1, 0x1)
+        IO (Decode16, 0xC50, 0xC50, 0x1, 0x3)
+        IO (Decode16, 0xC6C, 0xC6C, 0x1, 0x1)
+        IO (Decode16, 0xC6F, 0xC6F, 0x1, 0x1)
+        IO (Decode16, 0xCD0, 0xCD0, 0x1, 0xc)
+      })
+    } // Device (SYSR)
+
+    Device (SPIR) {   // SPI ROM
+      Name (_HID, EISAID ("PNP0C01"))
+      Name (_CRS, ResourceTemplate () {
+        Memory32Fixed (ReadOnly,
+                       FixedPcdGet32 (PcdFlashAreaBaseAddress),
+                       FixedPcdGet32 (PcdFlashAreaSize)
+                       )
+      })
+    } // Device (SPIR)
+
+#if FixedPcdGet8 (PcdIpmiInterfaceType) != 0
+    Device (IPMK) {   // IPMI KCS Device
+      Name (_HID, EisaId ("IPI0001"))       // _HID: Hardware ID
+      Name (_STR, Unicode ("IPMI_KCS"))     // _STR: Description String
+      Name (_UID, Zero)                     // _UID: Unique ID
+      Name (_IFT, One)                      // _IFT: IPMI Interface Type
+      Name (_CRS, ResourceTemplate () {     // _CRS: Current Resource Settings
+        IO (Decode16,
+            FixedPcdGet16 (PcdIpmiKcsIoBaseAddress), // Range Minimum
+            FixedPcdGet16 (PcdIpmiKcsIoBaseAddress), // Range Maximum
+            0x00,                                    // Alignment
+            0x02                                     // Length
+            )
+      })
+      Method (_SRV, 0, NotSerialized) {     // _SRV: IPMI Spec Revision
+        Return (0x0200)
+      }
+      Method (_STA, 0, NotSerialized) {     // _STA: Status
+        If (FixedPcdGet8 (PcdIpmiInterfaceType) == _IFT) {
+          Return (0x0F)
+        }
+        Else {
+          Return (Zero)
+        }
+      } // Method (_STA)
+    } // Device (IPMK)
+#endif
+
+  } // Device (LPC0)
+} // Device (PCI0)
+
+  Scope (\_SB.PCI0.RP71) {
+        Device (XHC0)
+    {
+      Name (_ADR, 0x00000004)
+       Method (_PRW, 0, NotSerialized)
+      {
+        Return (GPRW (0x0B, 0x04))
+      }
+    }
+  }
+Scope (\_SB.PCI3.RP71) {
+        Device (XHC0)
+    {
+     Name (_ADR, 0x00000004)
+       Method (_PRW, 0, NotSerialized)
+      {
+        Return (GPRW (0x0B, 0x04))
+      }
+    }
+  }
+
+
+Scope (_GPE)
+{
+    Method (_L0B, 0, NotSerialized)  // _Lxx: Level-Triggered GPE, xx=0x00-0xFF
+    {
+        Notify (\_SB.PCI0.RP71.XHC0, 0x02) // Device Wake
+        Notify (\_SB.PCI3.RP71.XHC0, 0x02) // Device Wake
+    }
+}

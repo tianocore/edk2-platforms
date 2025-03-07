@@ -1,0 +1,41 @@
+## @file
+#
+#  INF file of AMD FCH initialization hook PEI library
+#  
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = FchPLatformInitPei
+  FILE_GUID                      = 520A04A3-1BAB-4E24-AF12-859F5D632B58
+  MODULE_TYPE                    = PEIM
+  ENTRY_POINT                    = FchInitEntry
+
+[Sources]
+  FchPlatformInitPei.c
+  FchPlatformInit.h
+
+[Packages]
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  PcdLib
+  PciLib
+  PeimEntryPoint
+
+[Pcd]
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdLpcEnable
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress
+
+[Depex]
+  TRUE
+

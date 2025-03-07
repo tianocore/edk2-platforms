@@ -1,0 +1,66 @@
+## @file
+#
+#  SpiHcPlatformLibrary DXE_SMM_DRIVER inf
+#  
+#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = SpiHcPlatformLibSmm
+  FILE_GUID                 = 6D856A06-B502-49D5-80D5-10A0BA4EDB4D
+  MODULE_TYPE               = DXE_SMM_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  LIBRARY_CLASS             = SpiHcPlatformLib
+
+[Packages]
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  AmdPspRomArmorLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  MmServicesTableLib
+  PcdLib
+  PciSegmentLib
+  PlatformPspRomArmorWhitelistLib
+  TimerLib
+  UefiDriverEntryPoint
+
+[Sources]
+  SpiHcPlatformLibSmm.c
+  SpiHcPlatformLib.c
+  AmdSpiHcInternal.h
+  AmdSpiHcInternal.c
+  AmdSpiHcSmmState.h
+  AmdSpiHcSmmState.c
+
+[Protocols]
+  gEfiSmmVariableProtocolGuid
+  gEfiSpiSmmHcProtocolGuid
+  gAmdSpiHcStateProtocolGuid
+  gEfiMmReadyToLockProtocolGuid
+
+[FeaturePcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdRomArmorEnable 
+  gAmdPlatformPkgTokenSpaceGuid.PcdRomArmorWhitelistEnable
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount
+  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiHcPlatformLib.uni
