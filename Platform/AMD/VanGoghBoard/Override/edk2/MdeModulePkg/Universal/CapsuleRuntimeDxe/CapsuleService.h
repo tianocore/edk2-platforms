@@ -4,7 +4,7 @@
   It installs the Capsule Architectural Protocol defined in PI1.0a to signify
   the capsule runtime services are ready.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2006 - 2018, Intel Corporation. All rights reserved.<BR>
   Copyright (c) 2018, Linaro, Ltd. All rights reserved.<BR>
 

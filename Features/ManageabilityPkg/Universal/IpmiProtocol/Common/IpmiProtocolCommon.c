@@ -2,7 +2,7 @@
 
   IPMI Manageability Protocol common file.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

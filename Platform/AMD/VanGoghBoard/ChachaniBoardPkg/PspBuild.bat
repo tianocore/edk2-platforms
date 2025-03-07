@@ -1,7 +1,7 @@
 @REM @file
 @REM   Windows batch file to launch PSP build scripts
 @REM
-@REM Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+@REM Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 @REM SPDX-License-Identifier: BSD-2-Clause-Patent
 @REM
 @echo off

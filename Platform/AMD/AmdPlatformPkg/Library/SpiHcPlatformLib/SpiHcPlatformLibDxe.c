@@ -2,8 +2,7 @@
 
   Implementation of SpiHcPlatformLib for DXE
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -15,9 +14,10 @@
 #include <Library/PcdLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Protocol/SpiHc.h>
+#include <FchRegistersCommon.h>
 #include <Library/PciSegmentLib.h>
 #include <Library/SpiHcPlatformLib.h>
-#include "SpiHcInternal.h"
+#include "AmdSpiHcInternal.h"
 #include <IndustryStandard/SpiNorFlashJedecSfdp.h>
 #include <FchRegistersCommon.h>
 
@@ -35,7 +35,7 @@ EFI_PHYSICAL_ADDRESS  mHcAddress;
 
   @retval EFI_SUCCESS             SPI_HOST_CONTROLLER_INSTANCE was allocated properly
   @retval EFI_OUT_OF_RESOURCES    The SPI_HOST_CONTROLLER_INSTANCE could not be allocated
-**/
+*/
 EFI_STATUS
 EFIAPI
 GetPlatformSpiHcDetails (

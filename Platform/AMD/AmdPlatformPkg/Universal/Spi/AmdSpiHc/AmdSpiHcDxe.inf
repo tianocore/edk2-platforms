@@ -1,0 +1,66 @@
+#/** @file
+#
+#  Component description file for SpiFvbDxe module
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = AmdSpiHcProtocolDxe
+  FILE_GUID                 = E3498244-5E16-4FA2-A023-5D34559AC87F
+  MODULE_TYPE               = DXE_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = AmdSpiHcProtocolEntry
+
+[Packages]
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  MemoryAllocationLib
+  PciSegmentLib
+  IoLib
+  PcdLib
+  TimerLib
+  DebugLib
+  UefiLib
+  AmdPspRomArmorLib
+  BaseMemoryLib
+
+[Sources]
+  AmdSpiHcDxe.c
+  AmdSpiHc.c
+  AmdSpiHcNull.c
+  AmdSpiHc.h
+  AmdSpiHcInstance.h
+  AmdSpiHcInternal.c
+  AmdSpiHcInternal.h
+
+[Protocols]
+  gEfiSpiHcProtocolGuid
+  gEfiDxeMmReadyToLockProtocolGuid
+
+[FeaturePcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdRomArmorEnable
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount
+  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+
+[Guids]
+
+[Depex]
+  TRUE
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  AmdSpiHcExtra.uni

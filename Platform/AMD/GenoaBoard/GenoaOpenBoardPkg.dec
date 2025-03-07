@@ -1,0 +1,25 @@
+#;*****************************************************************************
+#;
+#; Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+#; SPDX-License-Identifier: BSD-2-Clause-Patent
+#;
+#;******************************************************************************
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = GenoaOpenBoardPkg
+  PACKAGE_GUID                   = C444E72E-1F8E-428C-AB47-AAB943A74813
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+
+[Guids]
+  gGenoaOpenBoardPkgTokenSpaceGuid = { 0x11212FC3, 0xA0ED, 0x4A97, { 0xA0, 0xC7, 0x0D, 0x2C, 0x20, 0x9F, 0x92, 0x40 }}
+
+[Ppis]
+
+[PcdsFixedAtBuild]
+  #
+  # Console
+  #
+  gGenoaOpenBoardPkgTokenSpaceGuid.PcdFchUartPort|0|UINT8|0x40000000

@@ -1,15 +1,16 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef _SMNACCESSLIB_H_
-#define _SMNACCESSLIB_H_
+#ifndef SMNACCESSLIB_H_
+#define SMNACCESSLIB_H_
 
 VOID
+EFIAPI
 SmnRegisterReadS (
   IN       UINT32  SegmentNumber,
   IN       UINT32  BusNumber,
@@ -18,6 +19,7 @@ SmnRegisterReadS (
   );
 
 VOID
+EFIAPI
 SmnRegisterRMWS (
   IN       UINT32  SegmentNumber,
   IN       UINT32  BusNumber,
@@ -27,4 +29,4 @@ SmnRegisterRMWS (
   IN       UINT32  Flags
   );
 
-#endif
+#endif // SMNACCESSLIB_H_

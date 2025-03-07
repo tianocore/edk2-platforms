@@ -2,7 +2,7 @@
   Sample to provide FSP wrapper platform sec related function.
 
   Copyright (c) 2014 - 2016, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -44,7 +44,7 @@ PEI_SEC_PERFORMANCE_PPI  mSecPerformancePpi = {
 EFI_PEI_PPI_DESCRIPTOR  mPeiSecPlatformPpi[] = {
   {
     EFI_PEI_PPI_DESCRIPTOR_PPI,
-    &gAmdTopOfTemporaryRamPpiGuid,
+    &gTopOfTemporaryRamPpiGuid,
     NULL // To be patched later.
   },
   {

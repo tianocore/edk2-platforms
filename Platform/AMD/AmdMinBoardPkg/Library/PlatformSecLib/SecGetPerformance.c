@@ -2,13 +2,14 @@
   Sample to provide SecGetPerformance function.
 
   Copyright (c) 2017 - 2019, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <PiPei.h>
 #include <Ppi/SecPerformance.h>
+#include <Ppi/TopOfTemporaryRam.h>
 #include <Ppi/SecPlatformInformation.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/TimerLib.h>
@@ -49,7 +50,7 @@ SecGetPerformance (
 
   Status = (*PeiServices)->LocatePpi (
                              PeiServices,
-                             &gAmdTopOfTemporaryRamPpiGuid,
+                             &gTopOfTemporaryRamPpiGuid,
                              0,
                              NULL,
                              (VOID **)&TopOfTemporaryRamPpi

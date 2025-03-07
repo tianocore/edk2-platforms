@@ -3,7 +3,7 @@
   produce the implementation of native PCD protocol and EFI_PCD_PROTOCOL defined in
   PI 1.4a Vol3.
 
-Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 Copyright (c) 2006 - 2018, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 

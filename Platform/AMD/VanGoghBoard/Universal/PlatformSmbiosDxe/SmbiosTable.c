@@ -14,7 +14,7 @@
     Memory Array Mapped Address (Type 19) - One per contiguous block per Physical Memroy Array
     System Boot Information (Type 32)
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2012, Apple Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/

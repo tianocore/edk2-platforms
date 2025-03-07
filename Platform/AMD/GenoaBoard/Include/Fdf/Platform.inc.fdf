@@ -1,0 +1,16 @@
+#;*****************************************************************************
+#; Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+#; SPDX-License-Identifier: BSD-2-Clause-Patent
+#;
+#;*****************************************************************************
+
+!ifdef $(INTERNAL_IDS)
+  DEFINE AGESA_PEI_INC_FDF = $(PROCESSOR_PATH)/Include/AgesaInc/AgesaInt.pei.inc.fdf
+  DEFINE AGESA_DXE_INC_FDF = $(PROCESSOR_PATH)/Include/AgesaInc/AgesaInt.dxe.inc.fdf
+!else
+  DEFINE AGESA_PEI_INC_FDF = $(PROCESSOR_PATH)/Include/AgesaInc/AgesaExt.pei.inc.fdf
+  DEFINE AGESA_DXE_INC_FDF = $(PROCESSOR_PATH)/Include/AgesaInc/AgesaExt.dxe.inc.fdf
+!endif
+
+DEFINE CPM_PEI_INC_FDF = AmdCpmPkg/Addendum/Oem/$(PLATFORM_CRB)/Processor/$(AMD_PROCESSOR)/AmdCpm$(AMD_PROCESSOR)$(PLATFORM_CRB)Pkg.pei.inc.fdf
+DEFINE CPM_DXE_INC_FDF = AmdCpmPkg/Addendum/Oem/$(PLATFORM_CRB)/Processor/$(AMD_PROCESSOR)/AmdCpm$(AMD_PROCESSOR)$(PLATFORM_CRB)Pkg.dxe.inc.fdf

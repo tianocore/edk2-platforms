@@ -1,0 +1,901 @@
+#;*****************************************************************************
+#; Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#; SPDX-License-Identifier: BSD-2-Clause-Patent
+#;
+#;*****************************************************************************
+
+# EFS multi gen is 32bit value
+!ifndef EFS_MULTI_GEN_BYTE0
+  DEFINE EFS_MULTI_GEN_BYTE0 = 0xFE
+!endif
+
+# EFS PSP address, 32-bit value, 0x00121000
+!ifndef EFS_PSP_ADDR_BYTE0
+  DEFINE EFS_PSP_ADDR_BYTE0 = 0x00
+!endif
+!ifndef EFS_PSP_ADDR_BYTE1
+  DEFINE EFS_PSP_ADDR_BYTE1 = 0x10
+!endif
+!ifndef EFS_PSP_ADDR_BYTE2
+  DEFINE EFS_PSP_ADDR_BYTE2 = 0x12
+!endif
+!ifndef EFS_PSP_ADDR_BYTE3
+  DEFINE EFS_PSP_ADDR_BYTE3 = 0x00
+!endif
+
+# EFS BIOS address, 32-bit value, 0x0034A000
+!ifndef EFS_BIOS_ADDR_BYTE0
+  DEFINE EFS_BIOS_ADDR_BYTE0 = 0x00
+!endif
+!ifndef EFS_BIOS_ADDR_BYTE1
+  DEFINE EFS_BIOS_ADDR_BYTE1 = 0xA0
+!endif
+!ifndef EFS_BIOS_ADDR_BYTE2
+  DEFINE EFS_BIOS_ADDR_BYTE2 = 0x34
+!endif
+!ifndef EFS_BIOS_ADDR_BYTE3
+  DEFINE EFS_BIOS_ADDR_BYTE3 = 0x00
+!endif
+
+# EFS ESPI defination
+!ifndef EFS_ESPI_BYTE0
+  DEFINE EFS_ESPI_BYTE0 = 0x0E
+!endif
+!ifndef EFS_ESPI_BYTE1
+  DEFINE EFS_ESPI_BYTE1 = 0xFF
+!endif
+
+[FD.Platform]
+  # Need ROM 2 flash base for calculated Addresses of FVs below 4GB
+  BaseAddress   = $(ROM2_FLASH_BASE)|gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  # Need full flash size for FD Image size
+  !if $(BUILD_16MB_IMAGE) == TRUE
+    Size          = $(ROM2_FLASH_SIZE)
+  !else
+    Size          = $(ROM3_FLASH_SIZE)
+  !endif
+  ErasePolarity = 1
+  BlockSize     = $(SPI_BLOCK_SIZE)
+  NumBlocks     = $(SPI_NUM_BLOCKS)
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize = $(ROM2_FLASH_SIZE)
+  SET gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaBase = $(ROM3_FLASH_BASE)
+  SET gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize = $(ROM3_FLASH_SIZE)
+
+  #
+  # Embedded Firmware Signature
+  #
+  $(FV_FW_SIG_OFFSET)|$(FV_FW_SIG_SIZE)
+!ifdef EMBEDDED_FIRMWARE_SIGNATURE
+  !include $(PROCESSOR_PATH)/Include/Fdf/PlatformEfs.inc.fdf
+!else
+  DATA = {
+      0xAA, 0x55, 0xAA, 0x55,     # 0x00: Signature
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      $(EFS_PSP_ADDR_BYTE0),      #
+      $(EFS_PSP_ADDR_BYTE1),      #
+      $(EFS_PSP_ADDR_BYTE2),      #
+      $(EFS_PSP_ADDR_BYTE3),      # 0x14: PSP Dir1
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      $(EFS_MULTI_GEN_BYTE0),     #
+          0xFF, 0xFF, 0xFF,       # 0x24: BRH  4:0 as 00011b
+      $(EFS_BIOS_ADDR_BYTE0),     #
+      $(EFS_BIOS_ADDR_BYTE1),     #
+      $(EFS_BIOS_ADDR_BYTE2),     #
+      $(EFS_BIOS_ADDR_BYTE3),     # 0x28: BIOS Dir1
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      0x00, 0x00, 0x00, 0x00,     # 0x40
+      0xFF, 0xFF, 0xFF, 0xFF,     #
+      0xFF, 0xFF, 0xFF, 0xFF,     #
+      0x00, 0x00, 0x00, 0x00,     #
+      $(EFS_ESPI_BYTE0),          #
+      $(EFS_ESPI_BYTE1),          #
+                  0xFF, 0xFF      # 0x50: eSPI0 Configuration
+                                  #       Default value = 0x0E (eSPI0, bus1, Alert mode, Port 80h, CLK1)
+                                  #
+                                  #       bit[0]:   eSPI PSP configuration valid bit.
+                                  #                 0-Valid, 1-Not Valid
+                                  #       bit[1]:   enable 80h port.
+                                  #                 0-disable, 1-enable
+                                  #       bit[2]:   Alert mode.
+                                  #                 0-non-Alert, 1-dedicated Alert Pin.
+                                  #       bit[3]:   Data Bus,
+                                  #                 0-bus0, 1-bus1.
+                                  #       bit[4]:   Clock pin. ignore for controller0 (always CLK0).
+                                  #                 for controller1, 0-CLK1, 1-CLK2
+                                  #       bit[7:5]: reserved
+                                  # 0x51: eSPI1 Configuration
+                                  #       bit[0]:   eSPI PSP configuration valid bit.
+                                  #                 0-Valid, 1-Not Valid
+                                  #       bit[1]:   enable 80h port.
+                                  #                 0-disable, 1-enable
+                                  #       bit[2]:   Alert mode.
+                                  #                 0-non-Alert, 1-dedicated Alert Pin.
+                                  #       bit[3]:   Data Bus,
+                                  #                 0-bus0, 1-bus1.
+                                  #       bit[4]:   Clock pin. ignore for controller0 (always CLK0).
+                                  #                 for controller1, 0-CLK1, 1-CLK2
+                                  #       bit[7:5]: reserved
+    }
+!endif
+  #
+  # PSP NVRAM: NV Storage Area
+  # NV_VARIABLE_STORE
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  DATA = {
+    ## This is the EFI_FIRMWARE_VOLUME_HEADER
+    # ZeroVector []
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    # FileSystemGuid: gEfiSystemNvDataFvGuid =
+    #   { 0xFFF12B8D, 0x7696, 0x4C8B,
+    #     { 0xA9, 0x85, 0x27, 0x47, 0x07, 0x5B, 0x4F, 0x50 }}
+    0x8D, 0x2B, 0xF1, 0xFF, 0x96, 0x76, 0x8B, 0x4C,
+    0xA9, 0x85, 0x27, 0x47, 0x07, 0x5B, 0x4F, 0x50,
+    # FvLength: 0x80000
+    0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    # Signature "_FVH"       # Attributes
+    0x5f, 0x46, 0x56, 0x48, 0xff, 0xfe, 0x04, 0x00,
+    # HeaderLength # CheckSum # ExtHeaderOffset #Reserved #Revision
+    0x48, 0x00, 0x19, 0xF9, 0x00, 0x00, 0x00, 0x02,
+    # Blockmap[0]: 0x80 Blocks * 0x1000 Bytes / Block
+    0x80, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00,
+    # Blockmap[1]: End (null-terminated)
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    ## This is the VARIABLE_STORE_HEADER
+    !if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
+      # Signature: gEfiAuthenticatedVariableGuid =
+      #   { 0xaaf32c78, 0x947b, 0x439a,
+      #     { 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92 }}
+      0x78, 0x2c, 0xf3, 0xaa, 0x7b, 0x94, 0x9a, 0x43,
+      0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92,
+    !else
+      #  Signature: gEfiVariableGuid =
+      #    { 0xddcf3616, 0x3275, 0x4164,
+      #      { 0x98, 0xb6, 0xfe, 0x85, 0x70, 0x7f, 0xfe, 0x7d }}
+      0x16, 0x36, 0xcf, 0xdd, 0x75, 0x32, 0x64, 0x41,
+      0x98, 0xb6, 0xfe, 0x85, 0x70, 0x7f, 0xfe, 0x7d,
+    !endif
+    # Size: 0x3E000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) -
+    #          0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0x3DFB8
+    # This can speed up the Variable Dispatch a bit.
+    0xB8, 0xDF, 0x03, 0x00,
+    # FORMATTED: 0x5A #HEALTHY: 0xFE #Reserved: UINT16 #Reserved1: UINT32
+    0x5A, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+  }
+
+  #
+  # NV_FTW_WORKING
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingOffset|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  DATA = {
+    # EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER->Signature = gEdkiiWorkingBlockSignatureGuid =
+    #  { 0x9e58292b, 0x7c68, 0x497d,
+    #    { 0xa0, 0xce, 0x65,  0x0, 0xfd, 0x9f, 0x1b, 0x95 }}
+    0x2b, 0x29, 0x58, 0x9e, 0x68, 0x7c, 0x7d, 0x49,
+    0xa0, 0xce, 0x65,  0x0, 0xfd, 0x9f, 0x1b, 0x95,
+    # Crc:UINT32            #WorkingBlockValid:1, WorkingBlockInvalid:1, Reserved
+    0x2C, 0xAF, 0x2C, 0x64, 0xFE, 0xFF, 0xFF, 0xFF,
+    # WriteQueueSize: UINT64 #Size: 0x1000(SPI_BLOCK_SIZE) - 0x20 (FTW_WORKING_HEADER) = 0x0FE0
+    0xE0, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+  }
+
+  #
+  # NV_FTW_SPARE
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+
+  # Advance firmware volume where advance Board features are enabled.
+  !if $(ROM3_FLASH_ENABLE) == FALSE
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize
+    FV = FvAdvanced
+
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset|gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase|gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize
+    FV = FvAdvancedSecurity
+
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize
+    FV = FvOsBoot
+
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
+    FV = FvUefiBoot
+  !endif
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize
+  FV = FvSecurity
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize
+  FV = FvPostMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize
+  FV = FvAdvancedPreMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
+  FV = FvPreMemory
+
+  !if $(ROM3_FLASH_ENABLE) == TRUE
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize
+    FV = FvAdvanced
+
+    gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset|gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize
+    FV = FvAdvancedSecurity
+
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize
+    FV = FvOsBoot
+
+    gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
+    FV = FvUefiBoot
+
+    # Fill unused space to create 32 MB FD image
+    $(ROM3_FLASH_SIZE) - 0x1000|0x1000
+
+  !elseif $(BUILD_16MB_IMAGE) == FALSE
+    # Fill unused space to create 32 MB FD image
+    0x01000000|0x01000000
+  !endif
+
+[FV.FvPreMemory]
+  FvNameGuid          = 1BD2AB8A-BD04-4ee1-83B0-B05E5500121D
+  FvBaseAddress       = $(BOOT_FV_BASE)
+  FvForceRebase       = TRUE
+  BlockSize           = $(SPI_BLOCK_SIZE)
+  FvAlignment         = 64
+  ERASE_POLARITY      = 1
+  MEMORY_MAPPED       = TRUE
+  STICKY_WRITE        = TRUE
+  LOCK_CAP            = TRUE
+  LOCK_STATUS         = TRUE
+  WRITE_DISABLED_CAP  = TRUE
+  WRITE_ENABLED_CAP   = TRUE
+  WRITE_STATUS        = TRUE
+  WRITE_LOCK_CAP      = TRUE
+  WRITE_LOCK_STATUS   = TRUE
+  READ_DISABLED_CAP   = TRUE
+  READ_ENABLED_CAP    = TRUE
+  READ_STATUS         = TRUE
+  READ_LOCK_CAP       = TRUE
+  READ_LOCK_STATUS    = TRUE
+
+  APRIORI PEI {
+    INF  MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+    INF  AgesaPkg/Addendum/PciSegments/PciExpressPciCfg2/PciExpressPciCfg2.inf
+    INF  MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
+    INF  MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
+  }
+
+  # SEC Core
+  INF  UefiCpuPkg/SecCore/SecCore.inf
+
+  # PEI Core
+  INF  MdeModulePkg/Core/Pei/PeiMain.inf
+
+  !include MinPlatformPkg/Include/Fdf/CorePreMemoryInclude.fdf
+  INF  AgesaPkg/Addendum/PciSegments/PciExpressPciCfg2/PciExpressPciCfg2.inf
+
+  !if $(PREDEFINED_FABRIC_RESOURCES) == TRUE
+    INF $(PROCESSOR_PATH)/Universal/DfResourcesPei/DfResourcesPei.inf
+  !endif
+
+  !if $(EMULATION) == FALSE
+    INF TurinBoard/Universal/FchPlatformInitPei/FchPlatformInitPei.inf
+  !endif
+
+  # PEIM
+  INF MinPlatformPkg/PlatformInit/ReportFv/ReportFvPei.inf
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPreMem.inf
+  INF UefiCpuPkg/CpuMpPei/CpuMpPei.inf
+  # INF $(PLATFORM_BOARD_PACKAGE)/BiosInfo/BiosInfo.inf
+  # INF MdeModulePkg/Universal/ResetSystemPei/ResetSystemPei.inf
+
+  # AMD AGESA, CPM PEI Includes
+  !include $(CPM_PEI_INC_FDF)
+  !include $(AGESA_PEI_INC_FDF)
+
+[FV.FvAdvancedPreMemory]
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 87F76F65-4128-4B77-85D8-DE0F757B40F8
+
+  # !include AdvancedFeaturePkg/Include/PreMemory.fdf
+
+[FV.FvPostMemoryUncompact]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 09F55EB9-7181-4919-8755-9185E3E35CA9
+
+  !include MinPlatformPkg/Include/Fdf/CorePostMemoryInclude.fdf
+
+  # Init Board Config PCD
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPostMem.inf
+
+[FV.FvPostMemory]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 3445B977-C771-4928-9851-2EFBD55CAACD
+
+  FILE FV_IMAGE = F38D7A3E-35F1-4CE4-ACC8-AA059ABEA622{
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvPostMemoryUncompact
+    }
+  }
+  !if $(ROM3_FLASH_ENABLE) == TRUE
+    FILE FV_IMAGE = 8DA879CE-D6D0-4687-8025-0EA967F506BD {
+      SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+        SECTION FV_IMAGE = FvDxeMain
+      }
+    }
+  !endif
+
+[FV.FvUefiBootUncompact]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = E889A6E3-385B-4DAF-A19A-E9B1D41EB046
+
+  APRIORI DXE {
+    INF  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+    INF  MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+    INF  MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
+  }
+  !include MinPlatformPkg/Include/Fdf/CoreUefiBootInclude.fdf
+
+  # AMD AGESA, CPM DXE Includes
+  !include $(CPM_DXE_INC_FDF)
+  !include $(AGESA_DXE_INC_FDF)
+
+
+  # AMD PRM feature support
+    INF  PrmPkg/PrmLoaderDxe/PrmLoaderDxe.inf
+
+  # EDK Core modules
+  INF  UefiCpuPkg/CpuDxe/CpuDxe.inf
+  INF  MdeModulePkg/Universal/SectionExtractionDxe/SectionExtractionDxe.inf
+  !if $(SOURCE_DEBUG_ENABLE)
+    INF  SourceLevelDebugPkg/DebugAgentDxe/DebugAgentDxe.inf
+  !endif
+
+  # File System Modules
+  !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
+    INF  MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
+  !endif
+
+  # Console
+  !if $(SIMNOW_SUPPORT) == FALSE || $(EMULATION) == FALSE
+    INF Drivers/ASpeed/ASpeedGopBinPkg/ASpeedAst2600GopDxe.inf
+  !endif
+
+  INF AmdCpmPkg/Library/AmdAutoDynamicCommand/AmdAutoDynamicCommand.inf
+  INF AmdCpmPkg/Library/AmdAutoDynamicCommand/AmdAutoToolApp.inf
+
+  INF AmdCpmPkg/Addendum/Oem/$(PLATFORM_CRB)/Dxe/ServerHotplugDxe/ServerHotplugDxe.inf
+  INF AmdCpmPkg/Addendum/Oem/$(PLATFORM_CRB)/Dxe/PspPlatformDriver/PspPlatform.inf
+
+  # UEFI Shell
+  !if $(SHELL_BIN_PACKAGE)
+    INF  ShellBinPkg/UefiShell/UefiShell.inf
+  !else
+    INF  ShellPkg/Application/Shell/Shell.inf
+  !endif
+
+  # AmdHiiConfigRouting
+  INF AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
+
+  # PCI
+  INF  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+
+  # SATA
+  !if $(SATA_SUPPORT)
+    INF  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+    INF  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+    INF  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+    INF  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+    INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+  !endif
+
+  # NVME
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE && $(NVME_SUPPORT) == TRUE
+    INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+  !endif
+
+  # USB
+  !if $(USB_SUPPORT)
+    INF  MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+  !endif
+
+  # SMBIOS
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF SystemInformation/SmbiosFeaturePkg/SmbiosBasicDxe/SmbiosBasicDxe.inf
+  INF AmdPlatformPkg/Universal/SmbiosCommonDxe/SmbiosCommonDxe.inf
+
+  # Board
+  INF  BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf
+  INF  MinPlatformPkg/PlatformInit/PlatformInitDxe/PlatformInitDxe.inf
+  INF  MinPlatformPkg/Test/TestPointStubDxe/TestPointStubDxe.inf
+
+  # Spi Flash Drivers
+  INF  AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigDxe.inf
+  INF  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusDxe.inf
+  INF  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcDxe.inf
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE && $(USE_EMULATED_VARIABLE_STORE) == FALSE
+    INF  AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
+    INF  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusSmm.inf
+    INF  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcSmm.inf
+    INF  AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbSmm.inf
+    INF  MdeModulePkg/Bus/Spi/SpiNorFlashJedecSfdp/SpiNorFlashJedecSfdpSmm.inf
+    INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmmDxe.inf
+    INF  AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
+  !else
+    INF AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbDxe.inf
+  !endif
+
+  # SMM Modules
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == TRUE
+    # putting under conditional flag to avoid loading modules again(second time).
+    # MinPlatformPkg already has these modules included if
+    # gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+    # in CoreOsBootInclude.fdf
+    INF  MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
+    INF  MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
+    INF  MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
+    INF  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
+    INF  UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
+    INF  MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
+  !endif
+  INF  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
+
+  !if $(EMULATION) == TRUE
+    INF EmulationToolsPkg/EmuLinuxLoader/EmuLinuxLoader.inf
+  !endif
+
+  !if $(USE_EMULATED_VARIABLE_STORE) == TRUE && gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+    INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  !endif
+
+  #
+  # edk2 Redfish Foundation
+  #
+!if $(REDFISH_ENABLE) == TRUE
+  !include RedfishPkg/Redfish.fdf.inc
+!endif
+
+  #
+  # USB Network (Communication Device Class) drivers
+  #
+!if $(USB_NETWORK_SUPPORT) == TRUE
+  INF MdeModulePkg/Bus/Usb/UsbNetwork/NetworkCommon/NetworkCommon.inf
+  INF MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
+!endif
+!if $(SIMNOW_SUPPORT) == FALSE && $(EMULATION) == FALSE
+  INF AmdCpmPkg/Addendum/Oem/OobPprDxe/OobPprDxe.inf
+!endif
+
+[FV.FvUefiBoot]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 5489442E-30C6-479F-9CA4-BAAAEE279A20
+
+  FILE FV_IMAGE = B5733BA8-C486-4B0F-889C-0815F483450A {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvUefiBootUncompact
+    }
+  }
+
+[FV.FvOsBootUncompact]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 48FD70BC-3389-4B90-A364-EF829F41DB70
+
+  !include MinPlatformPkg/Include/Fdf/CoreOsBootInclude.fdf
+
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+    INF MinPlatformPkg/Acpi/AcpiTables/AcpiPlatform.inf
+    INF RuleOverride = DRIVER_ACPITABLE   $(PROCESSOR_PATH)/Universal/BoardAcpiDxe/BoardAcpiDxe.inf
+    INF AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
+  !endif
+
+[FV.FvLateSilicon]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = C3740903-41CC-4C7E-B9A1-7A4B59C0CEC2
+
+[FV.FvOsBoot]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 7E097F4E-A40F-47D4-93FB-8802BB9051C0
+
+  FILE FV_IMAGE = B975908C-6ECF-4413-A87A-199DDA11AB37 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvOsBootUncompact
+    }
+  }
+  FILE FV_IMAGE = 41077C2D-331A-4188-809A-E5278A534E51 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvLateSilicon
+    }
+  }
+
+[FV.FvSecurityPreMemory]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 87E97057-5DEF-4EB3-ACC5-063AC68AA7B7
+
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityPreMemoryInclude.fdf
+
+[FV.FvSecurityPostMemory]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = FBA1BC9C-66FD-4B05-887C-C00AB6DDEE1F
+
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityPostMemoryInclude.fdf
+
+  !if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
+    INF MinPlatformPkg/Tcg/Tcg2PlatformPei/Tcg2PlatformPei.inf
+  !endif
+
+[FV.FvSecurityLate]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 79045073-CB0E-4E28-BC31-4AE00FBF4907
+
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityLateInclude.fdf
+
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+    !if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
+      INF MinPlatformPkg/Tcg/Tcg2PlatformDxe/Tcg2PlatformDxe.inf
+      INF UefiCpuPkg/MicrocodeMeasurementDxe/MicrocodeMeasurementDxe.inf
+      INF MdeModulePkg/Universal/SmbiosMeasurementDxe/SmbiosMeasurementDxe.inf
+    !endif
+  !endif
+
+  !if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
+    INF AmdPlatformPkg/Universal/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
+
+    FILE FREEFORM = 85254ea7-4759-4fc4-82d4-5eed5fb0a4a0 {
+      SECTION RAW = SecurebootKeys/PK/PK.cer
+    }
+
+    FILE FREEFORM = 6f64916e-9f7a-4c35-b952-cd041efb05a3 {
+      SECTION RAW = SecurebootKeys/KEK/MicCorKEKCA2011_2011-06-24.crt
+    }
+
+    FILE FREEFORM = c491d352-7623-4843-accc-2791a7574421 {
+      SECTION RAW = SecurebootKeys/db/MicWinProPCA2011_2011-10-19.crt
+      SECTION RAW = SecurebootKeys/db/MicCorUEFCA2011_2011-06-27.crt
+    }
+
+    FILE FREEFORM = 5740766a-718e-4dc0-9935-c36f7d3f884f {
+      SECTION RAW = SecurebootKeys/dbx/dbxupdate_x64.bin
+    }
+
+  !endif
+
+[FV.FvSecurity]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 2D25F4E7-50AB-442C-B2AE-9C48F3116E62
+
+  !if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
+    FILE FV_IMAGE = 757CC075-1428-423D-A73C-22639706C119 {
+         SECTION FV_IMAGE = FvSecurityPreMemory
+      }
+  !endif
+
+  FILE FV_IMAGE = 7E21EF3C-D813-40C0-BE9E-A5F739CA88AC {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvSecurityPostMemory
+    }
+  }
+
+[FV.FvAdvancedSecurity]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 2FFD72AF-4917-4430-8A46-97BD74816264
+
+  FILE FV_IMAGE = B431E18D-A610-4A65-8D81-A4E482354EF8 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvSecurityLate
+    }
+  }
+
+[FV.FvAdvancedUncompact]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = 9DC9F824-7D1E-4A81-A410-CE3CA6ABA779
+
+  # Enable Manageabilty modules, such as IPMI Driver
+  !include ManageabilityPkg/Include/PostMemory.fdf
+
+  #
+  # Network Advanced Features
+  #
+  !if gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable == TRUE
+    !include Network/NetworkFeaturePkg/Include/PostMemory.fdf
+  !endif
+
+  # LOGO
+  INF AmdPlatformPkg/Universal/LogoDxe/LogoDxe.inf
+
+  # PCI HotPlug
+  !if gEfiMdeModulePkgTokenSpaceGuid.PcdPciBusHotplugDeviceSupport == TRUE
+    INF AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
+  !endif
+
+  # SPCR
+  !if gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable == TRUE
+    !include SpcrFeaturePkg/Include/PostMemory.fdf
+  !endif
+
+[FV.FvAdvanced]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = FC5D42FA-964F-47D5-9D53-35D997F1B83E
+
+  FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvAdvancedUncompact
+    }
+  }
+
+[FV.FvDxeMain]
+  BlockSize          = $(SPI_BLOCK_SIZE)
+  FvAlignment        = 64
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+  FvNameGuid         = AF85B2E1-DC13-445A-AF0F-C7659E39BBAC
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf

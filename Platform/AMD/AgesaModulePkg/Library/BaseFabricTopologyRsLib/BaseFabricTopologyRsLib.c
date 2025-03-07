@@ -1,7 +1,7 @@
 ** @file
   Fabric Topology Base Lib implementation
 
-  Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2020-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

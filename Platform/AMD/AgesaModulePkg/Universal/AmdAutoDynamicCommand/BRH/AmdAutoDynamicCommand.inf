@@ -1,0 +1,26 @@
+## @file
+#
+#  Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = AmdAutoDynamicCommand
+  FILE_GUID                      = CCD8FEC8-1E30-45BD-8632-DB83A255FAC3
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.1
+  ENTRY_POINT                    = ActCommandInitialize
+
+[Sources.common]
+  AmdAutoDynamicCommand.c
+  AutoConfigOptions.c
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Depex]
+  TRUE

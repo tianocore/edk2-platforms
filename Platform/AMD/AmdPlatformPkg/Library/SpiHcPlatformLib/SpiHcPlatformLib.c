@@ -3,8 +3,7 @@
   SPI HC platform library implementation. This code touches the SPI controllers and performs
   the hardware transaction
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -17,17 +16,16 @@
 #include <Library/PcdLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Protocol/SpiHc.h>
+#include <FchRegistersCommon.h>
 #include <Spi/AmdSpiHcChipSelectParameters.h>
 #include <Spi/AmdSpiDevicePaths.h>
 #include <Library/PciSegmentLib.h>
 #include <Library/SpiHcPlatformLib.h>
-#include "SpiHcInternal.h"
+#include "AmdSpiHcInternal.h"
 #include <IndustryStandard/SpiNorFlashJedecSfdp.h>
 #include <FchRegistersCommon.h>
 
 extern EFI_PHYSICAL_ADDRESS  mHcAddress;
-
-SPI_CONTROLLER_DEVICE_PATH  mFchDevicePath = FCH_DEVICE_PATH;
 
 /**
   This function reports the device path of SPI host controller. This is needed in order for the SpiBus
@@ -36,7 +34,7 @@ SPI_CONTROLLER_DEVICE_PATH  mFchDevicePath = FCH_DEVICE_PATH;
   @param[out] DevicePath The device path for this SPI HC is returned in this variable
 
   @retval EFI_SUCCESS
-**/
+*/
 EFI_STATUS
 EFIAPI
 GetSpiHcDevicePath (
@@ -49,7 +47,7 @@ GetSpiHcDevicePath (
 
 /**
   This is the platform specific Spi Chip select function.
-  Assert or de-assert the SPI chip select.
+  Assert or deassert the SPI chip select.
 
   This routine is called at TPL_NOTIFY.
   Update the value of the chip select line for a SPI peripheral. The SPI bus
@@ -265,11 +263,11 @@ PlatformSpiHcTransaction (
   Status = FchSpiControllerNotBusy ();
   if (!EFI_ERROR (Status)) {
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG48_TX_BYTE_COUNT,
+      HcAddress + FCH_SPI_MMIO_REG48_TX_BYTECOUNT,
       (UINT8)WriteBytes
       );
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG4B_RX_BYTE_COUNT,
+      HcAddress + FCH_SPI_MMIO_REG4B_RXBYTECOUNT,
       (UINT8)ReadBytes
       );
 

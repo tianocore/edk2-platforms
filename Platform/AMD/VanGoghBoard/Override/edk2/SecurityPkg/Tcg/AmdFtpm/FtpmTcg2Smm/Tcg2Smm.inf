@@ -16,7 +16,7 @@
 #  This driver will have external input - variable and ACPINvs data in SMM mode.
 #  This external input must be validated carefully to avoid security issue.
 #
-# Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2015 - 2018, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #

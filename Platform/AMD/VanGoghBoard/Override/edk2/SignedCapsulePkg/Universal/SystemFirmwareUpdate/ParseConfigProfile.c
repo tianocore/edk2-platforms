@@ -3,7 +3,7 @@
   Parse the INI configuration file and pass the information to the update driver
   so that the driver can perform update accordingly.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2016 - 2017, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

@@ -7,7 +7,7 @@
 #  Note: The implementation uses the lower 24-bits of the ACPI timer and
 #  is compatible with both 24-bit and 32-bit ACPI timers.
 #
-#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #  Copyright (c) 2013 - 2018, Intel Corporation. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

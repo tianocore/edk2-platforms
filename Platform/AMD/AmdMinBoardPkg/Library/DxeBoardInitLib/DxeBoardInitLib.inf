@@ -1,7 +1,7 @@
 ## @file
 #  Implements BoardInitLib Library Class in DXE phase.
 #
-# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+# Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -29,14 +29,13 @@
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
-  PcAtChipsetPkg/PcAtChipsetPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
 
 [Sources]
   DxeBoardInitLib.c
   DxeBoardInitLibInternal.c
-  DxeBoardInitLibInternal.h
   MadtAcpiTablePatch.c
+  DxeBoardInitLibInternal.h
 
 [Protocols]
   gEfiAcpiSdtProtocolGuid

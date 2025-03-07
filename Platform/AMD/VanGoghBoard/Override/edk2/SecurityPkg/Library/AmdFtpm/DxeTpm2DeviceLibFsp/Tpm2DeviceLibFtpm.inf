@@ -5,7 +5,7 @@
 #  it via PcdTpmInstanceGuid. Platform need make choice that which one will be final one.
 #  At most one TPM 2.0 instance can be finally registered, and other will return unsupported.
 #
-# Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2013 - 2016, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #

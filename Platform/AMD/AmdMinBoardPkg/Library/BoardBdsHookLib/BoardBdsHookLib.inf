@@ -18,85 +18,83 @@
 
 [LibraryClasses]
   BaseLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
   BaseMemoryLib
   DebugLib
+  PcdLib
+  PrintLib
   DevicePathLib
+  UefiLib
+  HobLib
   DxeServicesLib
   DxeServicesTableLib
   HiiLib
-  HobLib
-  IpmiCommandLib
-  IpmiLib
-  MemoryAllocationLib
-  PcdLib
-  PerformanceLib
-  PrintLib
-  SortLib
-  Tcg2PhysicalPresenceLib
-  TimerLib
   UefiBootManagerLib
-  UefiBootServicesTableLib
-  UefiLib
-  UefiRuntimeServicesTableLib
+  PerformanceLib
+  TimerLib
+  Tcg2PhysicalPresenceLib
+  IpmiLib
+  IpmiCommandLib
+  SortLib
 
 [Packages]
-  AmdMinBoardPkg/AmdMinBoardPkg.dec
-  BoardModulePkg/BoardModulePkg.dec
-  IpmiFeaturePkg/IpmiFeaturePkg.dec
-  ManageabilityPkg/ManageabilityPkg.dec
-  MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  MinPlatformPkg/MinPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   SecurityPkg/SecurityPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  BoardModulePkg/BoardModulePkg.dec
+  ManageabilityPkg/ManageabilityPkg.dec
+  AmdMinBoardPkg/AmdMinBoardPkg.dec
 
 [Pcd]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConInConnectOnDemand            ## PRODUCES
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn                    ## PRODUCES
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable                       ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut                   ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution       ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution         ## PRODUCES
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow                       ## PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn                    ## PRODUCES
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn               ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow                  ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution  ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution    ## CONSUMES
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution       ## PRODUCES
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution         ## PRODUCES
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut                   ## PRODUCES
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                  ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConInConnectOnDemand            ## PRODUCES
   gMinPlatformPkgTokenSpaceGuid.PcdPlatformMemoryCheckLevel         ## CONSUMES
-  gMinPlatformPkgTokenSpaceGuid.PcdShellFile                        ## CONSUMES
-  gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc                    ## CONSUMES
-  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable                       ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                  ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleInputDevicePath    ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleOutputDevicePath   ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedStorageDevicePath         ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFile                        ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc                    ## CONSUMES
 
 [Sources]
   BoardBdsHook.h
   BoardBdsHookLib.c
-  BoardBootOption.c
   BoardMemoryTest.c
+  BoardBootOption.c
 
 [Protocols]
-  gAmdBoardBdsBootOptionPriorityProtocolGuid    ## CONSUMES
+  gEfiPciRootBridgeIoProtocolGuid               ## CONSUMES
+  gEfiPciIoProtocolGuid                         ## CONSUMES
   gEfiCpuIo2ProtocolGuid                        ## CONSUMES
-  gEfiDevicePathToTextProtocolGuid              ## CONSUMES
-  gEfiDiskInfoProtocolGuid                      ## CONSUMES
-  gEfiDxeSmmReadyToLockProtocolGuid
   gEfiDxeSmmReadyToLockProtocolGuid             ## PRODUCES
+  gEfiGenericMemTestProtocolGuid                ## CONSUMES
+  gEfiDiskInfoProtocolGuid                      ## CONSUMES
+  gEfiDevicePathToTextProtocolGuid              ## CONSUMES
+  gEfiSimpleTextInputExProtocolGuid             ## CONSUMES
   gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
   gEfiFormBrowser2ProtocolGuid                  ## CONSUMES
   gEfiGenericMemTestProtocolGuid                ## CONSUMES
-  gEfiGenericMemTestProtocolGuid                ## CONSUMES
-  gEfiPciIoProtocolGuid                         ## CONSUMES
-  gEfiPciRootBridgeIoProtocolGuid               ## CONSUMES
-  gEfiSimpleTextInputExProtocolGuid             ## CONSUMES
-
+  gAmdBoardBdsBootOptionPriorityProtocolGuid    ## CONSUMES
+  gEfiDxeSmmReadyToLockProtocolGuid
 [Guids]
-  gBdsEventAfterConsoleReadyBeforeBootOptionGuid
-  gBdsEventBeforeConsoleAfterTrustedConsoleGuid
-  gBdsEventBeforeConsoleBeforeEndOfDxeGuid
-  gEfiEndOfDxeEventGroupGuid                    ## CONSUMES
   gEfiGlobalVariableGuid                        ## PRODUCES
   gEfiMemoryOverwriteControlDataGuid            ## PRODUCES
+  gEfiEndOfDxeEventGroupGuid                    ## CONSUMES
+  gBdsEventBeforeConsoleAfterTrustedConsoleGuid
+  gBdsEventBeforeConsoleBeforeEndOfDxeGuid
+  gBdsEventAfterConsoleReadyBeforeBootOptionGuid
 
 [Depex.common.DXE_DRIVER]
   gEfiVariableArchProtocolGuid

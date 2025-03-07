@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -75,7 +75,7 @@
 #define FCH_SPI_R2MSK25                  0x00000008l //
 #define FCH_SPI_MMIO_REG45_CMDCODE       0x45        //
 #define FCH_SPI_MMIO_REG47_CMDTRIGGER    0x47        //
-#define FCH_SPI_MMIO_REG48_TXBYTECOUNT   0x48        //
+#define FCH_SPI_MMIO_REG48_TX_BYTECOUNT   0x48        //
 #define FCH_SPI_MMIO_REG4B_RXBYTECOUNT   0x4B        //
 #define FCH_SPI_MMIO_REG4C_SPISTATUS     0x4C        //
 #define FCH_SPI_MMIO_REG5C_Addr32_Ctrl3  0x5C        //

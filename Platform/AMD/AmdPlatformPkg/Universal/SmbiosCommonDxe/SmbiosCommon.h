@@ -1,8 +1,7 @@
 /** @file
   AMD Smbios common header file.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -184,6 +183,18 @@ EFI_STATUS
 EFIAPI
 OnboardDevExtInfoFunction (
   IN EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  Find the Lan-On-Motherboard device path. Installs BOARD_BDS_BOOT_FROM_DEVICE_PATH_PROTOCOL
+  with the LOM device path protocol
+
+  @retval EFI NOT_FOUND         LOM device path is not found
+  @retval EFI_SUCCESS           LOM device path found
+**/
+EFI_STATUS
+EFIAPI
+InstallLomDevicePath (
   );
 
 typedef

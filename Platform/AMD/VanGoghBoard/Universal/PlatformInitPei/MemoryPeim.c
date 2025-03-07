@@ -3,7 +3,7 @@
   Tiano PEIM to provide the platform support functionality.
   This file implements the Platform Memory Range PPI
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2004  - 2016, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

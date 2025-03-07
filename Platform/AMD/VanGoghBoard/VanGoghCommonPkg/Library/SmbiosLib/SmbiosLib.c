@@ -2,7 +2,7 @@
   Provides library functions for common SMBIOS operations. Only available to DXE
   and UEFI module types.
 
-Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 Copyright (c) 2012, Apple Inc. All rights reserved.
 Portitions Copyright (c) 2006 - 2019, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent

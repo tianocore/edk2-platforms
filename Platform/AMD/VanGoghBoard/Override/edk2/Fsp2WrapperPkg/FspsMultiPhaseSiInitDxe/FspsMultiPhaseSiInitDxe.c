@@ -1,7 +1,7 @@
 /** @file
   This driver will register two callbacks to call fsp's notifies.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2014 - 2019, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

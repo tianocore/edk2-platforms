@@ -1,9 +1,9 @@
 /** @file
   SMM core hook for AMD SPI Host Controller State
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 #include <PiSmm.h>
 #include <Library/SmmServicesTableLib.h>

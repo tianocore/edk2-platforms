@@ -2,7 +2,7 @@
   The TPM2 definition block in ACPI table for TCG2 physical presence
   and MemoryClear.
 
-Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 Copyright (c) 2015 - 2018, Intel Corporation. All rights reserved.<BR>
 (c)Copyright 2016 HP Development Company, L.P.<BR>
 Copyright (c) 2017, Microsoft Corporation.  All rights reserved. <BR>

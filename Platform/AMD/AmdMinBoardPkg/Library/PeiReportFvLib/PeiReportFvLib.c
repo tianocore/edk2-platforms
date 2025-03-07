@@ -1,13 +1,17 @@
+/**
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved
+**/
+
 /** @file
   Source code file for Report Firmware Volume (FV) library for AMD platforms.
 
   @par Note:
     This source has the reference of MinPlatformPkgs's PeriReportFvLib.c module.
+**/
 
+/**
   Copyright (c) 2018 - 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
 
 #include <Base.h>

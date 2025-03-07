@@ -8,7 +8,7 @@
     3. Install ResetSystem and FinvFv PPI.
     4. Set MTRR for PEI
     5. Create FV HOB and Flash HOB
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2013 - 2016, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

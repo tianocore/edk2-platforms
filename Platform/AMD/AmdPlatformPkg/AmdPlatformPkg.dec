@@ -3,7 +3,7 @@
 # This is the package provides the AMD edk2 common platform drivers
 # and libraries for AMD Server, Client and Gaming console platforms.
 #
-# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -31,9 +31,9 @@
 
 [Protocols]
   gAmdSpiHcStateProtocolGuid      = { 0x189566ab, 0x245, 0x43ae, {0x9d, 0x1, 0xd2, 0x21, 0x1c, 0xb9, 0x1a, 0xda }}
-  gFakeDeviceIoProtocolGuid       = { 0x7fecf70, 0xd7ae, 0x4274, {0x9f, 0x70, 0x78, 0xc8, 0x36, 0x91, 0xd4, 0xfb }}
-  gEdk2EspiSmmDriverProtocolGuid  = { 0x0ecc91df, 0xe165, 0x42ee, {0x82, 0xa7, 0x8d, 0x63, 0x98, 0x53, 0x6a, 0x31 }}
-  gAmdEspiSmmNorFlashProtocolGuid = { 0x6ef7b652, 0x84b7, 0x4d43, {0x9d, 0x88, 0x04, 0xb3, 0x0c, 0x49, 0xde, 0xd5 }}
+  gFakeDeviceIoProtocolGuid       = {0x7fecf70, 0xd7ae, 0x4274, {0x9f, 0x70, 0x78, 0xc8, 0x36, 0x91, 0xd4, 0xfb}}
+  gEdk2EspiSmmDriverProtocolGuid  = {0x0ecc91df, 0xe165, 0x42ee, {0x82, 0xa7, 0x8d, 0x63, 0x98, 0x53, 0x6a, 0x31}}
+  gAmdEspiSmmNorFlashProtocolGuid = {0x6ef7b652, 0x84b7, 0x4d43, {0x9d, 0x88, 0x04, 0xb3, 0x0c, 0x49, 0xde, 0xd5}}
 
 [PcdsDynamic]
   ## Event GUID to trigger logo displaying
@@ -81,6 +81,22 @@
   }
 
   #
+  # SPI PCDs
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount|0xFFFFFFFF|UINT32|0x00020006
+
+  #
+  # eSPI PCDs
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdEspiOffset|0x10000|UINT32|0x00040003
+
+  #
+  # ROM selection PCDs
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaBase|0x00000000|UINT64|0x00020007
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize|0x00000000|UINT64|0x00020008
+
+  #
   # These PCDs are mapped to AMD SMBIOS type 9 record structure
   #
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics1|{0x0}|MISC_SLOT_CHARACTERISTICS1|0x00020009 {
@@ -95,6 +111,7 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics1.CardBusSupported|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics1.ZoomVideoSupported|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics1.ModemRingResumeSupported|0
+
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2|{0x0}|MISC_SLOT_CHARACTERISTICS2|0x0002000A {
   <HeaderFiles>
     IndustryStandard/SmBios.h
@@ -106,18 +123,23 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.AsyncSurpriseRemoval|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl10Capable|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl20Capable|0
-  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl30Capable|0
-
-  #
-  # SPI PCDs
-  #
-  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount|0xFFFFFFFF|UINT32|0x00020006
-  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize|0x1000|UINT32|0x0002000B
-  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress|0xFF000000|UINT32|0x10000001
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.Reserved|0
 
 [PcdsDynamic, PcdsDynamicEx]
+
   # SMBIOS
   gAmdPlatformPkgTokenSpaceGuid.PcdType11OemStringsCount|0|UINT8|0x00030001
   gAmdPlatformPkgTokenSpaceGuid.PcdType11OemStrings|NULL|VOID*|0x00030002
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptionsCount|0|UINT8|0x00030003
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptions|NULL|VOID*|0x00030004
+
+[PcdsFeatureFlag]
+  ## ROM Armor PCDs
+  # Used to specify if the Rom Armor is enabled or not
+  gAmdPlatformPkgTokenSpaceGuid.PcdRomArmorEnable|FALSE|BOOLEAN|0x00040000
+  # pecify whether to enable ROM Armor white list for the SPI device.
+  gAmdPlatformPkgTokenSpaceGuid.PcdRomArmorWhitelistEnable|FALSE|BOOLEAN|0x00040001
+
+  # Used to specify if the driver should disable SPI Write Enable command
+  # outside of SMM.
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiWriteDisable|TRUE|BOOLEAN|0x00040002

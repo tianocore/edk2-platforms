@@ -3,7 +3,7 @@
   SPCR is abbreviation of Serial Port Console Redirection Table (SPCR).
 
   Copyright (c) 2004 - 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -109,7 +109,7 @@ EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE gSpcrInfo = {
   @param ImageHandle     The image handle.
   @param SystemTable     The system table.
 
-  @retval  EFI_SUCEESS  BDS has finished initializing.
+  @retval  EFI_SUCCESS  BDS has finished initializing.
                         Return the dispatcher and recall BDS.Entry
   @retval  Other        Return status from AllocatePool() or gBS->InstallProtocolInterface
 

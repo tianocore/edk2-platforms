@@ -1,14 +1,181 @@
 /** @file
   BoardInitLib library internal implementation for DXE phase.
 
-Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 #include "DxeBoardInitLibInternal.h"
 
 /**
-  Reserve Legacy VGA IO space.
+  A helper function to uninstall or update the ACPI table.
+  It searches for ACPI table for provided table signature,
+  if found then creates a copy of the table and calls the callbackfunction.
+
+  @param[in] Signature           ACPI table signature
+  @param[in] CallbackFunction    The function to call to patch the searching ACPI table.
+                                 If NULL then uninstalls the table.
+
+  @return EFI_SUCCESS            Successfully Re-install the ACPI Table
+  @return EFI_NOT_FOUND          Table not found
+  @return EFI_STATUS             returns non-EFI_SUCCESS value in case of failure
+
+**/
+EFI_STATUS
+EFIAPI
+UpdateReinstallAcpiTable (
+  IN UINT32           Signature,
+  IN PATCH_ACPITABLE  CallbackFunction
+  )
+{
+  EFI_ACPI_SDT_PROTOCOL    *AcpiSdtProtocol;
+  EFI_STATUS               Status;
+  UINTN                    Index;
+  EFI_ACPI_SDT_HEADER      *Table;
+  EFI_ACPI_TABLE_VERSION   Version;
+  UINTN                    OriginalTableKey;
+  EFI_ACPI_TABLE_PROTOCOL  *AcpiTableProtocol;
+  EFI_ACPI_SDT_HEADER      *NewTable;
+  UINTN                    NewTableKey;
+  BOOLEAN                  Found;
+
+  Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **)&AcpiTableProtocol);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Error(%r): Unable to locate ACPI Table protocol.\n", Status));
+    return Status;
+  }
+
+  Status = gBS->LocateProtocol (&gEfiAcpiSdtProtocolGuid, NULL, (VOID **)&AcpiSdtProtocol);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Error(%r): Unable to locate ACPI SDT protocol.\n", Status));
+    return Status;
+  }
+
+  Found = FALSE;
+  Index = 0;
+  do {
+    Status = AcpiSdtProtocol->GetAcpiTable (Index, &Table, &Version, &OriginalTableKey);
+    if (EFI_ERROR (Status)) {
+      goto END_OF_SEARCH;
+    }
+
+    // Look for given table
+    if (Table->Signature == Signature) {
+      if (CallbackFunction == NULL) {
+        Status = AcpiTableProtocol->UninstallAcpiTable (AcpiTableProtocol, OriginalTableKey);
+        return Status;
+      }
+
+      NewTable = AllocateCopyPool (Table->Length, Table);
+      if (NULL == NewTable) {
+        Status = EFI_OUT_OF_RESOURCES;
+        DEBUG ((DEBUG_ERROR, "Error(%r): Not enough resource to allocate table.\n", Status));
+        return Status;
+      }
+
+      Status = CallbackFunction (NewTable);
+      if (!EFI_ERROR (Status)) {
+        // Uninstall the old table
+        Status = AcpiTableProtocol->UninstallAcpiTable (AcpiTableProtocol, OriginalTableKey);
+        if (EFI_ERROR (Status)) {
+          DEBUG ((DEBUG_ERROR, "Error(%r): Uninstall old table error.\n", Status));
+          FreePool (NewTable);
+          return Status;
+        }
+
+        // Install the new table
+        Status = AcpiTableProtocol->InstallAcpiTable (AcpiTableProtocol, NewTable, NewTable->Length, &NewTableKey);
+        FreePool (NewTable);
+        if (EFI_ERROR (Status)) {
+          DEBUG ((DEBUG_ERROR, "Error(%r): Failed to install new table.\n", Status));
+          return Status;
+        }
+
+        // If non SSDT table, then return status
+        if (Table->Signature != EFI_ACPI_6_5_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE) {
+          return Status;
+        }
+
+        // Atleast one SSDT table update is success
+        Found = TRUE;
+      }
+
+      // continue to search next SSDT table.
+      Status = EFI_SUCCESS;
+    }
+
+    Index++;
+  } while (!EFI_ERROR (Status));
+
+END_OF_SEARCH:
+  if (!Found) {
+    DEBUG ((DEBUG_ERROR, "Error(%r): Unable to locate ACPI Table.\n", Status));
+    return EFI_NOT_FOUND;
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
+  A Callback function to patch the ACPI FADT table.
+  Updates FADT table with AMD specific values, which
+  are different than MinPlatformPkg.
+
+  @param[in, out] NewTable       Pointer to ACPI FADT table
+
+  @return         EFI_SUCCESS    Always return EFI_SUCCESSe
+
+**/
+EFI_STATUS
+EFIAPI
+FadtAcpiTablePatch (
+  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
+  )
+{
+  EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE  *NewFadt;
+
+  NewFadt = (EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE *)NewTable;
+  // Patch the Table
+  NewFadt->PLvl2Lat                  = 0x64;
+  NewFadt->Pm2CntLen                 = 0;
+  NewFadt->XGpe0Blk.RegisterBitWidth = 0x40;
+  NewFadt->FlushSize                 = 0x400;
+  NewFadt->FlushStride               = 0x10;
+  NewFadt->XGpe1Blk.AccessSize       = 0x01;
+
+  return EFI_SUCCESS;
+}
+
+/**
+  A Callback function to patch the ACPI DSDT/SSDT table.
+  Which has ASL code that needs to be updated.
+
+  @param[in, out] NewTable       Pointer to ACPI FADT table
+
+  @return         EFI_SUCCESS    If table is modified.
+                  EFI_NOT_FOUND  If table is not modified.
+
+**/
+EFI_STATUS
+EFIAPI
+AcpiTableAmlUpdate (
+  IN OUT  EFI_ACPI_SDT_HEADER  *NewTable
+  )
+{
+  UINT64  OemTableId;
+
+  if ((AsciiStrnCmp (NewTable->OemTableId, "AmdTable", 8) == 0)) {
+    DEBUG ((DEBUG_INFO, "Found (D/S)SDT table for patching OemTableId.\n"));
+    OemTableId = PcdGet64 (PcdAcpiDefaultOemTableId);
+    CopyMem (NewTable->OemTableId, &OemTableId, 8);
+    return EFI_SUCCESS;
+  }
+
+  return EFI_NOT_FOUND;
+}
+
+/**
+  Reserve Legay VGA IO space.
 
   @retval  EFI_SUCCESS  MMIO at Legacy VGA region has been allocated.
   @retval  !EFI_SUCCESS Error allocating the legacy VGA region.

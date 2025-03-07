@@ -1,13 +1,13 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef _FCH_ESPI_CMD_LIB_H_
-#define _FCH_ESPI_CMD_LIB_H_
+#ifndef FCH_ESPI_CMD_LIB_H_
+#define FCH_ESPI_CMD_LIB_H_
 
 #include <Uefi/UefiBaseType.h>
 
@@ -410,4 +410,4 @@ FchEspiCmd_SafsRpmcOp2  (
   OUT UINT8   *Buffer
   );
 
-#endif
+#endif // FCH_ESPI_CMD_LIB_H_

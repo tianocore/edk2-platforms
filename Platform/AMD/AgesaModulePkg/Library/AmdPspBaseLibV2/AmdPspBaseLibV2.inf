@@ -1,0 +1,18 @@
+## @file
+#
+#  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = AmdPspBaseLibV2
+  FILE_GUID                      = 3463D317-7619-4350-A7BB-64DA224D7DFD
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = AmdPspBaseLibV2
+
+
+

@@ -7,7 +7,7 @@
     4. Calls MRC to initialize memory and install a PPI notify to do post memory initialization.
        This file contains the main entrypoint of the PEIM.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2013 - 2016，Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

@@ -2,8 +2,8 @@
 #
 #  The DSC include file for edk2 package to pull in the necessary AGESA modules
 #  into build process.
-#
-#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#  
+#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

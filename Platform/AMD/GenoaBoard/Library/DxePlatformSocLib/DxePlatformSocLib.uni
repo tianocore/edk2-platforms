@@ -1,0 +1,12 @@
+## @file
+#  UNI file of AMD Genoa Platform SoC library
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+#string STR_MODULE_ABSTRACT             #language en-US "AMD DXE Genoa SoC library instance."
+
+#string STR_MODULE_DESCRIPTION          #language en-US "AMD DXE Genoa SoC library instance."
+

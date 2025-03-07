@@ -7,7 +7,7 @@ Intel(R) 64 and IA-32 Architectures Software Developer's Manual
   Volume 3C, Section 34.5 SMI Handler Execution Environment
   Volume 3C, Section 34.7 Managing Synchronous and Asynchronous SMIs
 
-Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 Copyright (c) 2015 - 2019, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 

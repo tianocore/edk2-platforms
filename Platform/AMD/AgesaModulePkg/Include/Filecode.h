@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -23,9 +23,9 @@
  * @e _$Revision: 312538 $   @e \$Date: 2015-02-09 16:53:54 +0800 (Mon, 09 Feb 2015) $
  */
 
-#ifndef _FILECODE_H_
-#define _FILECODE_H_
+#ifndef FILECODE_H_
+#define FILECODE_H_
 
 #define UNASSIGNED_FILE_FILECODE  (0xFFFF)
 
-#endif // _FILECODE_H_
+#endif // FILECODE_H_

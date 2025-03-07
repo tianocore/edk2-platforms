@@ -6,7 +6,7 @@
   To make changes to the MADT, it is necessary to update the count for the
   APIC structure being updated, and to modify table found in Madt.c.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2004  - 2014, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/

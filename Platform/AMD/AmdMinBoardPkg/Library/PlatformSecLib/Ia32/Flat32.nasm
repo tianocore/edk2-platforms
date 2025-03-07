@@ -9,7 +9,7 @@
 ;  It consumes the reset vector, and configures the stack.
 ;
 ; Copyright (c) 2013-2015 Intel Corporation
-; Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+; Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 ;
 ; SPDX-License-Identifier: BSD-2-Clause-Patent
 ;
@@ -50,6 +50,11 @@ extern   ASM_PFX(PlatformSecLibStartup)
 extern   ASM_PFX(BoardBeforeTempRamInit)
 extern   ASM_PFX(BoardAfterTempRamInitWrapper)
 
+
+; Following are fixed PCDs
+
+extern ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressHi))
+extern ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressLow))
 
 %define BSP_HEAP_STACK_BASE     FixedPcdGet32 (PcdTempRamBase)
 %define BSP_HEAP_STACK_SIZE     FixedPcdGet32 (PcdTempRamSize)
@@ -177,6 +182,19 @@ ProtectedModeEntryPoint:
   ; Early board hooks
   ;
   JMP32  ASM_PFX(BoardBeforeTempRamInit)
+  ;
+  ; Configure MMIO Base Address
+  ;
+  mov     ecx, 0x0C0010058
+  rdmsr
+  mov     ebx, eax
+  mov     eax, DWORD [ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressLow))]
+  or      eax, ebx
+  or      eax, MMIO_CFG_ENABLE
+  mov     edx, DWORD [ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressHi))]
+  mov     ecx, 0x0C0010058
+  wrmsr
+
   ;
   ; Set UEFI stack
   ;

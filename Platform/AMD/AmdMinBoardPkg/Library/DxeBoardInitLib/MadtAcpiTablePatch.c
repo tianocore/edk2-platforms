@@ -1,7 +1,7 @@
 /** @file
   This file patches the ACPI MADT table for AMD specific values.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -92,6 +92,23 @@ SortByCcd (
   }
 
   return 0;
+}
+
+/**
+  Function that determines whether SMT is enabled or disabled
+  based on CPU register values
+
+  @retval         TRUE     SMT Enabled
+  @retval         FALSE    SMT Disabled
+
+**/
+BOOLEAN
+IsSmtEnabled (VOID) {
+  UINT32    RegEbx = 0;
+
+  // Get SMT enable/disable info from CPUIDx8000001E_EBX[15:8]: 0 SMT off, 1 SMT on
+  AsmCpuid (0x8000001E, NULL, &RegEbx, NULL, NULL);
+  return ((BOOLEAN) (((RegEbx >> 8) & 0xFF) != 0));
 }
 
 /**
@@ -232,10 +249,11 @@ MadtAcpiTablePatch (
         } else {
           Src++;
         }
+
+        CopyMem (LocalX2ApicPtr, SortedItem, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
+        FreePool (SortedItem);
       }
 
-      CopyMem (LocalX2ApicPtr, SortedItem, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
-      FreePool (SortedItem);
     }
   }
 

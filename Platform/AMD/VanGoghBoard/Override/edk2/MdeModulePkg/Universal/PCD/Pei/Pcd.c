@@ -1,7 +1,7 @@
 /** @file
   All Pcd Ppi services are implemented here.
 
-Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 Copyright (c) 2006 - 2021, Intel Corporation. All rights reserved.<BR>
 (C) Copyright 2016 Hewlett Packard Enterprise Development LP<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent

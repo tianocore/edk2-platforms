@@ -1,0 +1,37 @@
+#;*****************************************************************************
+#; Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+#; SPDX-License-Identifier: BSD-2-Clause-Patent
+#;
+#;*****************************************************************************
+
+
+##############################################################################
+#
+# Genoa reference board - 2 SPI FLash devices accessible by x86 (selected by DIP-switch):
+# 1) 32MB Flash with 10-pin header next to the VGA connector.
+# 2) 64MB Flash with 10-pin header at 90-degrees from VGA connector, and also accessible by the BMC.
+#
+##############################################################################
+
+[Defines]
+  # Platform.inc.fdf can contain custom DEFINES, consumed by FlashmMapInclude.fdf
+  !include $(PROCESSOR_PATH)/Include/Fdf/Platform.inc.fdf
+  !include $(PROCESSOR_PATH)/Include/Fdf/FlashMapInclude.fdf
+
+  DEFINE    EFS_ESPI_BYTE0  = 0x0E
+  DEFINE    EFS_ESPI_BYTE1  = 0xFF
+
+#-----------------------------------------------------------
+#  End of [Defines] section
+#-----------------------------------------------------------
+
+!include $(PROCESSOR_PATH)/Include/Fdf/ProjectCommon.inc.fdf
+################################################################################
+#
+# Rules are use with the [FV] section's module INF type to define
+# how an FFS file is created for a given INF file. The following Rule are the default
+# rules for the different module type. User can add the customized rules to define the
+# content of the FFS file.
+#
+################################################################################
+!include MinPlatformPkg/Include/Fdf/RuleInclude.fdf

@@ -1,0 +1,25 @@
+## @file
+#
+#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AmdPspDpeDxe
+  FILE_GUID                      = 3d86af84-10ca-4139-b253-f1b88e6fc279
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = AmdPspDpeDxeEntry
+
+[Sources]
+  AmdPspDpeDxe.c
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Depex]
+  TRUE
