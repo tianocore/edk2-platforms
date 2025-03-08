@@ -2,22 +2,18 @@
 
   FV block I/O protocol driver for SPI flash libary.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 #include <PiDxe.h>
-#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/IoLib.h>
 #include <Protocol/SpiSmmNorFlash.h>
 #include <Protocol/SmmFirmwareVolumeBlock.h>
-#include <Register/Cpuid.h>
-#include <Library/BaseLib.h>
 #include <FchRegistersCommon.h>
-#include <Library/PciLib.h>
 #define BLOCK_SIZE  (FixedPcdGet32 (PcdFlashNvStorageBlockSize))
 
 extern EFI_SPI_NOR_FLASH_PROTOCOL          *mSpiNorFlashProtocol;
@@ -89,7 +85,7 @@ SpiFvbSmmEntryPoint (
   if (IsEspiSafsMode ()) {
     DEBUG ((DEBUG_INFO, "Espi SAFS boot mode detected!\n"));
     Status = gSmst->SmmLocateProtocol (
-                      &gAmdEspiSmmNorFlashProtocolGuid,
+                      &gEfiSpiSmmNorFlashProtocolGuid,
                       NULL,
                       (VOID **)&mSpiNorFlashProtocol
                       );

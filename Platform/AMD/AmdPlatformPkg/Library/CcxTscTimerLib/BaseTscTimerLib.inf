@@ -1,0 +1,39 @@
+## @file
+#  Base CCX TSC Timer Library
+#
+#  Provides basic timer support using the TSC hardware. The performance
+#  counter features are provided by the processors time stamp counter.
+#
+#  Copyright (C) 2008 - 2025, Advanced Micro Devices, Inc. All rights reserved
+#  Copyright (c) 2013 - 2018, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = BaseTscTimerLib
+  FILE_GUID                      = D29338B9-50FE-4e4f-B7D4-A150A2C1F4FB
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = TimerLib
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources.common]
+  TscTimerLibShare.c
+  BaseTscTimerLib.c
+  TscTimerLibPrivate.h
+
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  PcdLib
+  BaseLib
+
+

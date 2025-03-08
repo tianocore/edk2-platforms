@@ -2,14 +2,12 @@
 
   FV block I/O protocol driver for SPI flash libary.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <PiDxe.h>
-#include <Register/Cpuid.h>
-#include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/IoLib.h>
@@ -47,43 +45,31 @@ SetSpiFlashOffset (
   IN UINT32  FlashSize
   )
 {
-  UINT32                  Value32;
-  UINT8                   SpiRomPageXor;
-  UINT32                  RomPage;
-  UINT32                  RomBase;
-  CPUID_VERSION_INFO_EAX  VersionInfoEax;
+  UINT32  Value32;
+  UINT8   SpiRomPageXor;
+  UINT32  RomPage;
+  UINT32  RomBase;
+
+  if (FlashSize == 0) {
+    ASSERT (FALSE);
+    return 0xFFFFFFFF;
+  }
 
   RomPage = FixedPcdGet32 (PcdFlashAreaBaseAddress) >> 24;
 
-  ///
-  /// Set Base SPI address
-  ///
-  VersionInfoEax.Uint32 = 0;
-  AsmCpuid (CPUID_VERSION_INFO, &VersionInfoEax.Uint32, NULL, NULL, NULL);
-  switch (VersionInfoEax.Uint32) {
-    case F1A_BRH_A0_RAW_ID:
-    case F1A_BRH_B0_RAW_ID:
-    case F1A_BRH_B1_RAW_ID:
-    case F1A_BRHD_A0_RAW_ID:
-    case F1A_BRHD_B0_RAW_ID:
-      DEBUG ((DEBUG_VERBOSE, "Turin A/B Detected\n"));
-      RomBase = (0xFFFFFFFF - FlashSize) + 1;
-      break;
-    default:
-      RomBase = 0xFC000000;
-      break;
-  }
+  // Rom Base is at top of address space
+  RomBase = (0xFFFFFFFF - FlashSize) + 1;
 
   // Determine Bit [24], [25] Address Override Settings
   // SPI ROM Addr[25:24] |= Bit Override Settings
   Value32 = MmioRead32 ((UINTN)(FCH_SPI_BASE_ADDRESS + FCH_SPI_MMIO_REG30));
   if (Value32 & FCH_SPI_R2MSK24) {
-    RomPage &= ~FCH_SPI_R2VAL24;
+    RomPage &= ~(UINT32)FCH_SPI_R2VAL24;
     RomPage |= Value32 & FCH_SPI_R2VAL24;
   }
 
   if (Value32 & FCH_SPI_R2MSK25) {
-    RomPage &= ~FCH_SPI_R2VAL25;
+    RomPage &= ~(UINT32)FCH_SPI_R2VAL25;
     RomPage |= Value32 & FCH_SPI_R2VAL25;
   }
 
@@ -133,14 +119,14 @@ VerifyWrite (
   )
 {
   EFI_STATUS  Status;
-  UINTN       Index;
+  UINT32      Index;
   UINT8       *VerifyBuffer;
 
   VerifyBuffer = AllocateZeroPool (WriteBytes);
   // Compare Write request with data read back
   Status = mSpiNorFlashProtocol->ReadData (mSpiNorFlashProtocol, Address, WriteBytes, VerifyBuffer);
   if (!EFI_ERROR (Status)) {
-    Index = CompareMem (VerifyBuffer, WriteBuffer, WriteBytes);
+    Index = (UINT32)CompareMem (VerifyBuffer, WriteBuffer, WriteBytes);
     if (Index != 0) {
       Status = EFI_DEVICE_ERROR;
       DEBUG ((
@@ -209,9 +195,10 @@ VerifyErase (
         Status = EFI_DEVICE_ERROR;
         DEBUG ((
           DEBUG_ERROR,
-          "%a: Failure: SpiAddress=0x%X VerifyBuffer[0x%X]=0x%X *** FAILED ***\n",
+          "%a: Failure: SpiAddress=0x%X + 0x%X, VerifyBuffer[0x%X]=0x%X *** FAILED ***\n",
           __func__,
-          Address + Index,
+          Address,
+          Index,
           Index,
           VerifyBuffer[Index]
           ));
@@ -362,7 +349,7 @@ SpiFvbGetBlockSize (
   )
 {
   *BlockSize      = BLOCK_SIZE;
-  *NumberOfBlocks = mNvStorageSize / BLOCK_SIZE - (UINTN)Lba;
+  *NumberOfBlocks = (UINTN)mNvStorageSize / BLOCK_SIZE - (UINTN)Lba;
 
   return EFI_SUCCESS;
 }
@@ -428,10 +415,6 @@ SpiFvbRead (
   EFI_STATUS  Status;
   UINT32      SpiOffset;
 
-  if (Offset >= BLOCK_SIZE) {
-    return EFI_INVALID_PARAMETER;
-  }
-
   DEBUG ((
     DEBUG_VERBOSE,
     "%a(Lba=%lX, Offset=%lX, *NumBytes=%lX, Buffer=%lX)\n",
@@ -441,6 +424,15 @@ SpiFvbRead (
     *NumBytes,
     Buffer
     ));
+
+  if (Offset >= BLOCK_SIZE) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (*NumBytes > (MAX_UINTN - Offset)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   if (Offset + *NumBytes > BLOCK_SIZE) {
     *NumBytes = ((Offset + *NumBytes) & ~(BLOCK_SIZE - 1)) - Offset;
   }
@@ -457,14 +449,19 @@ SpiFvbRead (
 
   SpiOffset = ((UINT32)mNvStorageLbaOffset + (UINT32)(Lba))
               * BLOCK_SIZE + (UINT32)Offset;
-  SpiOffset += mSpiFlashOffset;
 
-  Status = mSpiNorFlashProtocol->ReadData (
-                                   mSpiNorFlashProtocol,
-                                   SpiOffset,
-                                   (UINT32)*NumBytes,
-                                   Buffer
-                                   );
+  if (SpiOffset > (MAX_UINT32 - mSpiFlashOffset)) {
+    Status = EFI_INVALID_PARAMETER;
+  } else {
+    SpiOffset += mSpiFlashOffset;
+
+    Status = mSpiNorFlashProtocol->ReadData (
+                                     mSpiNorFlashProtocol,
+                                     SpiOffset,
+                                     (UINT32)*NumBytes,
+                                     Buffer
+                                     );
+  }
 
   return Status;
 }
@@ -542,10 +539,6 @@ SpiFvbWrite (
   EFI_STATUS  Status;
   UINT32      SpiOffset;
 
-  if (Offset >= BLOCK_SIZE) {
-    return EFI_INVALID_PARAMETER;
-  }
-
   DEBUG ((
     DEBUG_VERBOSE,
     "%a(Lba=%lX, Offset=%lX, *NumBytes=%lX, Buffer=%lX)\n",
@@ -555,6 +548,15 @@ SpiFvbWrite (
     *NumBytes,
     Buffer
     ));
+
+  if (Offset >= BLOCK_SIZE) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (*NumBytes > (MAX_UINTN - Offset)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   if (Offset + *NumBytes > BLOCK_SIZE) {
     *NumBytes = ((Offset + *NumBytes) & ~(BLOCK_SIZE - 1)) - Offset;
   }
@@ -571,18 +573,23 @@ SpiFvbWrite (
 
   SpiOffset = ((UINT32)mNvStorageLbaOffset + (UINT32)(Lba))
               * BLOCK_SIZE + (UINT32)Offset;
-  SpiOffset += mSpiFlashOffset;
 
-  Status = mSpiNorFlashProtocol->WriteData (
-                                   mSpiNorFlashProtocol,
-                                   SpiOffset,
-                                   (UINT32)*NumBytes,
-                                   Buffer
-                                   );
+  if (SpiOffset > (MAX_UINT32 - mSpiFlashOffset)) {
+    Status = EFI_INVALID_PARAMETER;
+  } else {
+    SpiOffset += mSpiFlashOffset;
+
+    Status = mSpiNorFlashProtocol->WriteData (
+                                     mSpiNorFlashProtocol,
+                                     SpiOffset,
+                                     (UINT32)*NumBytes,
+                                     Buffer
+                                     );
 
  #if SPI_FVB_VERIFY
-  Status = VerifyWrite (SpiOffset, (UINT32)*NumBytes, Buffer);
+    Status = VerifyWrite (SpiOffset, (UINT32)*NumBytes, Buffer);
  #endif // SPI_FVB_VERIFY
+  }
 
   return Status;
 }
@@ -650,6 +657,7 @@ SpiFvbErase (
   UINT32      SpiOffset;
 
   Status = EFI_SUCCESS;
+  Args   = NULL;
   VA_START (Args, This);
 
   for (Start = VA_ARG (Args, EFI_LBA);
@@ -664,9 +672,20 @@ SpiFvbErase (
       Start,
       Length
       ));
-    Length *= BLOCK_SIZE;
+    if (MAX_UINTN/Length > BLOCK_SIZE) {
+      Length *= BLOCK_SIZE;
+    } else {
+      Status = EFI_INVALID_PARAMETER;
+      break;
+    }
 
-    SpiOffset  = ((UINT32)Start + (UINT32)mNvStorageLbaOffset) * BLOCK_SIZE;
+    SpiOffset = ((UINT32)Start + (UINT32)mNvStorageLbaOffset) * BLOCK_SIZE;
+
+    if (SpiOffset > (MAX_UINT32 - mSpiFlashOffset)) {
+      Status = EFI_INVALID_PARAMETER;
+      break;
+    }
+
     SpiOffset += mSpiFlashOffset;
 
     Status = mSpiNorFlashProtocol->Erase (

@@ -88,7 +88,7 @@ PlatformSpiHcChipSelect (
 
   if (ChipSelectParameter->OrValue <= 1) {
     MmioAndThenOr8 (
-      mHcAddress + FCH_SPI_MMIO_REG1D,
+      (UINTN)mHcAddress + FCH_SPI_MMIO_REG1D,
       ChipSelectParameter->AndValue,
       ChipSelectParameter->OrValue
       );
@@ -182,13 +182,13 @@ PlatformSpiHcClock (
     if (!EFI_ERROR (Status)) {
       // Enable UseSpi100
       MmioOr8 (
-        mHcAddress + FCH_SPI_MMIO_REG20,
+        (UINTN)mHcAddress + FCH_SPI_MMIO_REG20,
         BIT0
         );
       // Set the Value for NormSpeed and FastSpeed
       InternalClockValue = InternalClockValue << 12 | InternalClockValue << 8;
       MmioAndThenOr16 (
-        mHcAddress + FCH_SPI_MMIO_REG22,
+        (UINTN)mHcAddress + FCH_SPI_MMIO_REG22,
         0x00FF,
         InternalClockValue
         );
@@ -265,18 +265,18 @@ PlatformSpiHcTransaction (
   Status = FchSpiControllerNotBusy ();
   if (!EFI_ERROR (Status)) {
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG48_TX_BYTE_COUNT,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG48_TX_BYTE_COUNT,
       (UINT8)WriteBytes
       );
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG4B_RX_BYTE_COUNT,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG4B_RX_BYTE_COUNT,
       (UINT8)ReadBytes
       );
 
     // Fill in Write Data including Address
     if (WriteBytes != 0) {
       MmioWriteBuffer8 (
-        HcAddress + FCH_SPI_MMIO_REG80_FIFO,
+        (UINTN)HcAddress + FCH_SPI_MMIO_REG80_FIFO,
         WriteBytes,
         WriteBuffer
         );
@@ -284,7 +284,7 @@ PlatformSpiHcTransaction (
 
     // Set Opcode
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG45_CMDCODE,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG45_CMDCODE,
       Opcode
       );
 
@@ -293,7 +293,7 @@ PlatformSpiHcTransaction (
     if (!EFI_ERROR (Status)) {
       if (ReadBytes != 0) {
         MmioReadBuffer8 (
-          HcAddress
+          (UINTN)HcAddress
           + FCH_SPI_MMIO_REG80_FIFO
           + WriteBytes,
           ReadBytes,

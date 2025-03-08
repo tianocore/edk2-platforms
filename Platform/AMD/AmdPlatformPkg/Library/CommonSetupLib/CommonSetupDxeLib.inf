@@ -1,0 +1,41 @@
+## @file
+#  Common Setup Library.
+#
+#  Copyright (C) 2015 - 2023, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = CommonSetupDxeLib
+  FILE_GUID                      = 0470521E-3ACC-4E36-98EA-D489F463E950
+  MODULE_TYPE                    = DXE_DRIVER
+  LIBRARY_CLASS                  = CommonSetupLib|DXE_DRIVER DXE_SMM_DRIVER UEFI_APPLICATION
+
+[Sources]
+  CommonSetupDxeLib.c
+  CommonSetupDefault.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[LibraryClasses]
+  UefiRuntimeServicesTableLib
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  DebugLib
+  UefiLib
+
+[Guids]
+  gAmdPlatformSetupOptionsGuid
+
+[FeaturePcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdPcieResizableBarSupportDefault
+  gAmdPlatformPkgTokenSpaceGuid.PcdNetworkBootFirstDefault
+  gAmdPlatformPkgTokenSpaceGuid.PcdEnableSecureBootByDefault
+
