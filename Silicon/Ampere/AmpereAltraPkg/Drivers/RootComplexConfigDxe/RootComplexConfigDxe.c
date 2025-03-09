@@ -314,6 +314,7 @@ RouteConfig (
   PrivateData      = SCREEN_PRIVATE_FROM_THIS (This);
   HiiConfigRouting = PrivateData->HiiConfigRouting;
   *Progress        = Configuration;
+  VarStoreConfig   = NULL;
 
   if (HiiIsConfigHdrMatch (Configuration, &gPcieFormSetGuid, mPcieNvparamVarstoreName)) {
     VarStoreConfig = (UINT8 *)&PrivateData->NVParamVarStoreConfig;
@@ -776,6 +777,8 @@ PcieRCScreenSetup (
       NULL                                       // Default Opcode is NULl
       );
 
+    HiiFreeOpCodeHandle (OptionsOpCodeHandle);
+
     //
     // Create Option OpCode to display bifurcation for RootComplexTypeB-High
     //
@@ -810,6 +813,7 @@ PcieRCScreenSetup (
 
   HiiFreeOpCodeHandle (StartOpCodeHandle);
   HiiFreeOpCodeHandle (EndOpCodeHandle);
+  HiiFreeOpCodeHandle (OptionsOpCodeHandle);
 
   return EFI_SUCCESS;
 }
