@@ -10,8 +10,8 @@
 BaseAddress   = 0x0
 Size          = 0x1000000
 ErasePolarity = 1
-BlockSize     = 0x20000
-NumBlocks     = 128
+BlockSize     = 0x40000
+NumBlocks     = 64
 
 0x00000000|0x00040000
 #NV_VARIABLE_STORE
