@@ -70,8 +70,8 @@ FvNameGuid         = d248e9b7-9ce3-43a7-868e-70c17c4b3819
 
   APRIORI DXE {
     INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf                      # gEfiPcdProtocolGuid
-    INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf                    # gHardwareInterruptProtocolGuid
     INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf                            # gEfiCpuArchProtocolGuid
+    INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf                    # gHardwareInterruptProtocolGuid
   }
 
   #
@@ -183,7 +183,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # SEC Phase modules
   #
-  INF ArmPlatformPkg/PrePi/PeiUniCore.inf
+  INF ArmPlatformPkg/PeilessSec/PeilessSec.inf
 
   #
   # PEI Phase modules

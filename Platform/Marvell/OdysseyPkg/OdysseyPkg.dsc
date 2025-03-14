@@ -28,6 +28,8 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
 
+!include MdePkg/MdeLibs.dsc.inc
+
 # dsc.inc file can be used in case there are different variants/boards of Odyssey family.
 # Per-board additional components shall be defined in exclusive dsc.inc files.
 !include Silicon/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).dsc.inc
@@ -135,8 +137,9 @@
   #
 
   # UEFI is placed in RAM by bootloader
-  ArmPlatformPkg/PrePi/PeiUniCore.inf {
+  ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
+      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       # SoC specific implementation of ArmPlatformLib
       ArmPlatformLib|Silicon/Marvell/OdysseyPkg/Library/OdysseyLib/OdysseyLib.inf
   }
