@@ -51,6 +51,7 @@
   BaseMemoryLib
   DebugLib
   HiiLib
+  JedecJep106Lib
   MemoryAllocationLib
   NVParamLib
   UefiBootServicesTableLib
