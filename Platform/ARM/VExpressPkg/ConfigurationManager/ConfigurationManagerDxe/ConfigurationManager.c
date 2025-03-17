@@ -1181,6 +1181,71 @@ CopyString (
 STATIC
 EFI_STATUS
 EFIAPI
+PopulatePlatformTpmInfoSpmMm (
+  IN EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  )
+{
+  CM_ARCH_COMMON_TPM2_INTERFACE_INFO *TpmInfo;
+  CM_ARCH_COMMON_TPM2_DEVICE_INFO    *TpmDevInfo;
+  EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC Tpm2ArmSmcParam;
+
+  TpmInfo = &PlatformRepo->TpmInfo;
+
+  // Client platform.
+  TpmInfo->PlatformClass = 0x00;
+  // Kernel uses only locality 0. set locality 0's crb control request address.
+  TpmInfo->AddressOfControlArea =
+    FixedPcdGet64 (PcdTpmBaseAddress) + OFFSET_OF (PTP_CRB_REGISTERS, CrbControlRequest);
+
+  // Temporary, no event log right now before UEFI boot...
+  TpmInfo->Laml = 0x00;
+  TpmInfo->Lasa = 0x00;
+
+  TpmDevInfo = &PlatformRepo->TpmDevInfo;
+  TpmDevInfo->Tpm2DeviceBaseAddress =  FixedPcdGet64 (PcdTpmBaseAddress);
+  TpmDevInfo->Tpm2DeviceSize = PcdGet32 (PcdTpmCrbRegionSize);
+
+  if (FixedPcdGetBool (PcdTpmUseSipSmc)) {
+    ZeroMem (
+      &Tpm2ArmSmcParam,
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC)
+      );
+
+    Tpm2ArmSmcParam.Interrupt = 0x00;
+
+    /*
+     * BIT0 == 0: Interrupt not supported
+     * BIT1 == 0: Use SMC conduit
+     * BIT2 == 1: Attributes field contains valid data
+     */
+    Tpm2ArmSmcParam.Flags = BIT2;
+
+    /*
+     * BIT0 == 0: CRB interface only support Ready and Execution
+     */
+    Tpm2ArmSmcParam.OperationFlags = 0;
+    Tpm2ArmSmcParam.SmcFunctionId = FixedPcdGet32 (PcdTpmSipSmcId);
+
+    TpmInfo->StartMethodParametersSize =
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC);
+    CopyMem (
+      &TpmInfo->StartMethodParameters,
+      &Tpm2ArmSmcParam,
+      TpmInfo->StartMethodParametersSize
+      );
+    TpmInfo->StartMethod =
+      EFI_TPM2_ACPI_TABLE_START_METHOD_COMMAND_RESPONSE_BUFFER_INTERFACE_WITH_SMC;
+  } else {
+    DEBUG ((DEBUG_ERROR, "%a: SPM_MM supports SMC method only for TPM\n", __func__));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  return EFI_SUCCESS;
+}
+
+STATIC
+EFI_STATUS
+EFIAPI
 GetFfaCrbTpmPartId (
   OUT UINT16 *TpmPartId
   )
@@ -1411,7 +1476,7 @@ PopulatePlatformTpmInfo (
   if (IsFfaSupported ()) {
     Status = PopulatePlatformTpmInfoFfa (PlatformRepo);
   } else {
-    Status = EFI_NOT_FOUND;
+    Status = PopulatePlatformTpmInfoSpmMm (PlatformRepo);
   }
 
   return Status;
