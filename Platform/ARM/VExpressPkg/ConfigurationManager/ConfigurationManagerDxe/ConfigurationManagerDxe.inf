@@ -89,6 +89,9 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize
 
+  gArmVExpressTokenSpaceGuid.PcdTpmSipSmcId
+  gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc
+
 [Pcd]
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
 
