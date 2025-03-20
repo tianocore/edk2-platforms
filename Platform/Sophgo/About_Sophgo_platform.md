@@ -1,17 +1,48 @@
-# Sophogo SG2042 EDK2 RISC-V Platform Project
-## Sophgo SG2042 Platform
-The development work for this project was carried out around the Sophgo SG2042 EVB development board.
-The deployment of EDK2 was completed on the EVB test version. Below is the external appearance display of the EVB version.
-![image](Documents/Media/Sophgo_SG2042_EVB.png)
+# Sophgo EDK2 RISC-V Platform Project
 
-SG2042 is a server processor based on the RISC-V architecture.It has 64 RISC-V cores and supports up to 2-way SG2042 interconnectivity.
-Each SG2042 CPU can be configured with a maximum of 4 DIMM memory slots (RDIMM & UDIMM), supporting a maximum memory capacity of 256GB. It also supports a maximum of 32 PCIe 4.0 channels.
-![image](Documents/Media/SG2042_CPU.png)
+## Sophgo Product Series
 
-## SG2042 EDK2 RISC-V Design and the Boot Processes
-The SG2042 RISC-V EDK2 project is developed based on the original Sophgo SG2042 project.SG2042 RISC-V edk2 is designed and optimized based on the edk2 startup phase. The startup process can be roughly divided into the following stages:**ZSBL+FSBL+OpenSBI+EDK2+GRUB2+OS**.The design diagram and start-up process are shown in the figure below.
+### 1. SG2042
 
-**SG2042 RISC-V EDK2 startup flowchart**
+![image](Documents/Media/SG2042.png)
+
+A Server SOC (System-on-Chip) integrates 64 high performance RISC-V cores with 64MB system cache. RISC-V clock runs at 2GHz.
+
+
+| RISC-V Cores | Frequency | System Cache | Connectivity   | DDR           | Other              |
+| ------------ | --------- | ------------ | -------------- | ------------- | ------------------ |
+| 64           | 2GHz      | 64MB         | 32X PCIe Gen 4 | 256 bits DDR4 | RVV0.7, SV39, CCIX |
+
+### 2. SG2044
+
+![image](Documents/Media/SG2044.png)
+
+Second-generation RISC-V server-grade processor.
+
+
+| RISC-V Cores | Frequency | DDR              | Connectivity   | Other                           |
+| ------------ | --------- | ---------------- | -------------- | ------------------------------- |
+| 64           | 2.6GHz    | 512 bits LPDDR5X | 40X PCIe Gen 5 | RVV1.0, SV48, SOPHON TPU, Codec |
+
+## Sophgo Platform
+
+EDK2 has been adapted according to different hardware platforms and is mainly divided into SG2044 series and SG2042 series.Completed EDK2 adaptation according to different hardware platforms.
+
+SG2044 Series
+
+* SG2044 EVB
+
+SG2042 Series
+
+* SG2042 X8 EVB
+* SG2042 X4 EVB
+
+## SG20XX series EDK2 RISC-V Design and the Boot Processes
+
+The SG20XX RISC-V EDK2 project is developed based on the original Sophgo SG20XX project.SG20XX series RISC-V EDK2 is designed and optimized based on the EDK2 startup phase. The startup process can be roughly divided into the following stages: **ZSBL+FSBL+OpenSBI+EDK2+GRUB2+OS** .
+The design diagram and start-up process are shown in the figure below.
+
+**SG20XX series RISC-V EDK2 startup flowchart**
 ![image](Documents/Media/EDK2_SDU_Programme.png)
 
 **ZSBL Phase**
@@ -22,13 +53,14 @@ ZSBL is the first stage of chip initialization, Code provided by Sophgo.the main
 
 **Note:** The FSBL here corresponds to the ZSBL stage code provided by Sophgo.
 The ZSBL stage works for the following:
+
 1. Initialize the serial port of the ZSBL stage for DEBUG.
 2. Establish a memory mapping table for initializing and configuring the memory management of the operating system or firmware.
 3. Initialization of some CPU functions.
 
 **OpenSBI Phase**
 
-OpenSBI provides the conditions for platform initialization of SG2042, which runs as an independent firmware and an environment of an initialization link before edk2, which exists in the form of FW_PAYLOAD, which initializes the system in M-mode and initializes some functions of SG2042 , and put the subsequent edk2 operating environment in S-mode.
+OpenSBI provides the conditions for platform initialization of SG20XX, which runs as an independent firmware and an environment of an initialization link before edk2, which exists in the form of FW_PAYLOAD, which initializes the system in M-mode and initializes some functions of SG20XX , and put the subsequent edk2 operating environment in S-mode.
 
 **PrePI Phase**
 
@@ -36,7 +68,7 @@ The PrePI phase builds some HOBs on Memory, CPU, FV, Stack and processor smbios 
 
 **DXE Phase**
 
-edk2 DXE OpenSBI protocol provides the unified interface for all DXE drivers to invoke SBI services，the DXE stage mainly adds the SG2042 SD card reading driver to read the contents of the SD card.
+EDK2 DXE OpenSBI protocol provides the unified interface for all DXE drivers to invoke SBI services，the DXE stage mainly adds the SG20XX SD card reading driver to read the contents of the SD card.
 
 **BDS Phase**
 
