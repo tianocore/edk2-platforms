@@ -24,7 +24,7 @@
   OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
 !endif
   SUPPORTED_ARCHITECTURES        = AARCH64
-  BUILD_TARGETS                  = DEBUG|RELEASE
+  BUILD_TARGETS                  = DEBUG|NOOPT|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
 
@@ -60,7 +60,7 @@
 [BuildOptions]
 # GCC will generate code that runs on processors as idicated by -march
 # Single = (append) allows flags appendixes coming from [BuildOptions] defined in specific INFs.
-  GCC:*_*_AARCH64_PLATFORM_FLAGS = -DPLAT=0xBF -march=armv8.2-a -fdiagnostics-color -fno-diagnostics-show-caret
+  GCC:*_*_AARCH64_PLATFORM_FLAGS = -DPLAT=0xBF -march=armv8.2-a -fdiagnostics-color
 ################################################################################
 #
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform
