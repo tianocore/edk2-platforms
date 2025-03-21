@@ -44,8 +44,6 @@ ArmPlatformInitialize (
   IN  UINTN                     MpId
   )
 {
-  ASSERT(ArmPlatformIsPrimaryCore (MpId));
-
   return RETURN_SUCCESS;
 }
 
