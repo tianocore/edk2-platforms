@@ -177,7 +177,7 @@ MmFlashUpdate (
     // Return data in the first double word of payload
     MmFwuStatus = (EFI_MM_COMMUNICATE_FWU_RES *)mEfiMmSysFwuReq.PayLoad.Data;
     if (MmFwuStatus->Status == FWU_MM_RES_IN_PROGRESS) {
-      if (NULL != Progress) {
+      if (Progress != NULL) {
         Progress (ProgressUpdate);
       }
 
