@@ -27,6 +27,8 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformPhysicalMemoryArray) {
   EFI_STATUS           Status;
   SMBIOS_TABLE_TYPE16  *InputData;
 
+  Status = EFI_INVALID_PARAMETER;
+
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     InputData = (SMBIOS_TABLE_TYPE16 *)RecordData;
 
