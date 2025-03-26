@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2020 - 2024, Arm Limited. All rights reserved.
+#  Copyright (c) 2020 - 2025, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -54,10 +54,15 @@
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|46
 
   # Timer & Watchdog interrupts
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv|109
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv|108
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv|109
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv|108
   gArmSgiTokenSpaceGuid.PcdWdogWS0Gsiv|110
   gArmSgiTokenSpaceGuid.PcdWdogWS1Gsiv|111
+
+  # Generic Timer
+  gArmSgiTokenSpaceGuid.PcdTimerControlBase|0x2A810000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base|0x2A830000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base|0x2A820000
 
   # SP804 dual timer
   gArmSgiTokenSpaceGuid.PcdSp804DualTimerBaseAddress|0x0C110000
@@ -81,3 +86,8 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000
 
+  #Second DRAM Block Addresses
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0|0x008080000000
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip1|0x408080000000
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip2|0x808080000000
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip3|0xC08080000000
