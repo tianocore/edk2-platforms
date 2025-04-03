@@ -104,7 +104,11 @@
   # BDS Libraries
   #
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
+!if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) == TRUE
+  PlatformBootManagerLib|Silicon/Ampere/AmpereSiliconPkg/Library/LinuxBootBootManagerLib/LinuxBootBootManagerLib.inf
+!else
   PlatformBootManagerLib|ArmPkg/Library/LinuxBootBootManagerLib/LinuxBootBootManagerLib.inf
+!endif
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
   SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
 
@@ -466,6 +470,10 @@
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
+
+!if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) == TRUE
+  Silicon/Ampere/AmpereAltraPkg/Drivers/ExtraFvInitPei/ExtraFvInitPei.inf
+!endif
 
   #
   # DXE Phase modules

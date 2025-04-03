@@ -1,0 +1,39 @@
+#/** @file
+#
+#  Copyright (c) 2025, Ampere Computing LLC. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ExtraFvInitPei
+  FILE_GUID                      = 95752e94-955e-4c42-9096-32b9812160ac
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeExtraFvInitPeim
+
+[Sources]
+  ExtraFvInitPei.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  FlashLib
+  HobLib
+  PeiServicesLib
+  PeimEntryPoint
+
+[FixedPcd]
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdSize
+
+[Depex]
+  TRUE
+

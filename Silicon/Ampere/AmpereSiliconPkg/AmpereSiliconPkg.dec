@@ -101,6 +101,12 @@
   #
   gAmpereTokenSpaceGuid.PcdBmcReadyGpio|0x18|UINT8|0x00000009
 
+  #
+  # UEFI Extra FD file size
+  #
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress|0x93100000|UINT64|0x0000000a
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdSize|0x00900000|UINT32|0x0000000b
+
 [PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   #
   # Firmware Volume Pcds
