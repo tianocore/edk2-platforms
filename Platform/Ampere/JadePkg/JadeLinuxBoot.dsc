@@ -78,6 +78,9 @@
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress|0x93100000
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdSize|0x00AC0000
+
 [PcdsDynamicExDefault.common]
   gArmTokenSpaceGuid.PcdLinuxBootFileGuid|{GUID({0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}})}
 
