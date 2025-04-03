@@ -6,7 +6,7 @@
   implemented, cache configuration, ways of associativity and other
   information related to cache memory installed.
 
-  Copyright (c) 2021 - 2024, Arm Limited. All rights reserved.
+  Copyright (c) 2021 - 2025, Arm Limited. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
@@ -336,6 +336,7 @@ InstallType7CacheInformation (
     break;
   case RdV2:
   case RdV3:
+  case RdV3Cfg2:
     /* L1 instruction cache */
     mArmRdSmbiosType7[0].Base.MaximumCacheSize2 = 64;    // 64KB
     mArmRdSmbiosType7[0].Base.InstalledSize2 = 64;       // 64KB
@@ -353,6 +354,42 @@ InstallType7CacheInformation (
     mArmRdSmbiosType7[4].Base.InstalledSize2 = 32768;    // 32MB SLC
     mArmRdSmbiosType7[4].Base.Associativity = CacheAssociativity16Way;
     break;
+  case RdV3Cfg1:
+  case RdV3R1Cfg1:
+    /* L1 instruction cache */
+    mArmRdSmbiosType7[0].Base.MaximumCacheSize2 = 64;    // 64KB
+    mArmRdSmbiosType7[0].Base.InstalledSize2 = 64;       // 64KB
+    mArmRdSmbiosType7[0].Base.Associativity = CacheAssociativity4Way;
+    /* L1 data cache */
+    mArmRdSmbiosType7[1].Base.MaximumCacheSize2 = 64;    // 64KB
+    mArmRdSmbiosType7[1].Base.InstalledSize2 = 64;       // 64KB
+    mArmRdSmbiosType7[1].Base.Associativity = CacheAssociativity4Way;
+    /* L2 cache */
+    mArmRdSmbiosType7[2].Base.MaximumCacheSize2 = 2048;  // 2MB
+    mArmRdSmbiosType7[2].Base.InstalledSize2 = 2048;     // 2MB
+    mArmRdSmbiosType7[2].Base.Associativity = CacheAssociativity8Way;
+    /* System level cache */
+    mArmRdSmbiosType7[4].Base.MaximumCacheSize2 = 8192;  // 8MB SLC
+    mArmRdSmbiosType7[4].Base.InstalledSize2 = 8192;     // 8MB SLC
+    mArmRdSmbiosType7[4].Base.Associativity = CacheAssociativity16Way;
+    break;
+  case RdV3R1:
+    /* L1 instruction cache */
+    mArmRdSmbiosType7[0].Base.MaximumCacheSize2 = 64;    // 64KB
+    mArmRdSmbiosType7[0].Base.InstalledSize2 = 64;       // 64KB
+    mArmRdSmbiosType7[0].Base.Associativity = CacheAssociativity4Way;
+    /* L1 data cache */
+    mArmRdSmbiosType7[1].Base.MaximumCacheSize2 = 64;    // 64KB
+    mArmRdSmbiosType7[1].Base.InstalledSize2 = 64;       // 64KB
+    mArmRdSmbiosType7[1].Base.Associativity = CacheAssociativity4Way;
+    /* L2 cache */
+    mArmRdSmbiosType7[2].Base.MaximumCacheSize2 = 2048;  // 2MB
+    mArmRdSmbiosType7[2].Base.InstalledSize2 = 2048;     // 2MB
+    mArmRdSmbiosType7[2].Base.Associativity = CacheAssociativity8Way;
+    /* System level cache */
+    mArmRdSmbiosType7[4].Base.MaximumCacheSize2 = 71680; // 70MB SLC
+    mArmRdSmbiosType7[4].Base.InstalledSize2 = 71680;    // 70MB SLC
+    mArmRdSmbiosType7[4].Base.Associativity = CacheAssociativity16Way;
   }
 
   /* Install valid cache information tables */
