@@ -13,6 +13,7 @@
 #define  FWU_IMG_STR_ATFUEFI                       "ATFUEFI"
 #define  FWU_IMG_STR_CFGUEFI                       "CFGUEFI"
 #define  FWU_IMG_STR_UEFI                          "UEFI"
+#define  FWU_IMG_STR_UEFI_EXTRA                    "UEFI_EXTRA"
 #define  FWU_IMG_STR_SINGLE_ATFUEFI_FULL_FLASH     "SINGLE_IMG_FULL_FLASH"
 #define  FWU_IMG_STR_SINGLE_ATFUEFI_CLEAR_SETTING  "SINGLE_IMG_FW_ONLY"
 #define  FWU_IMG_STR_SINGLE_ATFUEFI_FW             "SINGLE_IMG_CLEAR_SETTING"
@@ -38,5 +39,6 @@
 #define FWU_VARIABLE_SINGLE_IMG_FULL_FLASH_REQUEST     L"UpgradeSingleImageFullFlashRequest"
 #define FWU_VARIABLE_SINGLE_IMG_FWONLY_REQUEST         L"UpgradeSingleImageFWOnlyRequest"
 #define FWU_VARIABLE_SINGLE_IMG_CLEAR_SETTING_REQUEST  L"UpgradeSingleImageClearSettingRequest"
+#define FWU_VARIABLE_UEFI_EXTRA_REQUEST                L"UpgradeUEFIExtraRequest"
 
 #endif // SYSTEM_FIRMWARE_UPDATE_DXE_H_

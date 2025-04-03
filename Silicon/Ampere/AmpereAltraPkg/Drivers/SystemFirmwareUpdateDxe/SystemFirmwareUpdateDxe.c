@@ -15,6 +15,7 @@
 #include <Library/DebugLib.h>
 #include <Library/DxeServicesTableLib.h>
 #include <Library/FirmwareUpdateLib.h>
+#include <Library/FlashLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PrintLib.h>
 #include <Library/UefiBootServicesTableLib.h>
@@ -184,6 +185,58 @@ SystemFirmwareUpdateGetVariable (
 }
 
 /**
+  Handles updates SPI-NOR UEFI Extra region.
+
+  This function will performs erase and write data to UEFI extra region directly
+  through FlashLib's APIs.
+
+  @param  DataSize     Size of data buffer.
+  @param  Data         Pointer to input data buffer.
+
+  @retval EFI_SUCCESS            Get response data successfully.
+  @retval EFI_INVALID_PARAMETER  Buffer is NULL or DataSize is Zero.
+**/
+static
+EFI_STATUS
+UpgradeUefiExtraFirmware (
+  IN  UINTN  DataSize,
+  IN  VOID   *Data
+  )
+{
+  EFI_STATUS  Status;
+  UINT32      UefiExtraFdSize;
+  UINT64      UefiExtraFdBaseAddress;
+
+  UefiExtraFdSize        = PcdGet32 (PcdUefiExtraFdSize);
+  UefiExtraFdBaseAddress = PcdGet64 (PcdUefiExtraFdBaseAddress);
+
+  if (Data == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (mDataCount + DataSize > UefiExtraFdSize) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = FlashEraseCommand (UefiExtraFdBaseAddress + mDataCount, DataSize);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  Status = FlashWriteCommand (
+             UefiExtraFdBaseAddress + mDataCount,
+             Data,
+             DataSize
+             );
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  mDataCount += DataSize;
+  return Status;
+}
+
+/**
   Handles SetVariable runtime service calls.
 
   This function will filter action set variable with VendorGuid is gAmpereFWUpgradeGuid and redirect to
@@ -219,7 +272,6 @@ SystemFirmwareUpdateSetVariable (
 
   if (((mDataCount == 0) && (DataSize == 0)) ||
       (DataSize > FIRMWARE_UPDATE_MAX_SIZE) ||
-      (mDataCount > FIRMWARE_UPDATE_MAX_SIZE) ||
       (VariableName == NULL) ||
       (Data == NULL))
   {
@@ -234,12 +286,20 @@ SystemFirmwareUpdateSetVariable (
     mDataCount = *((UINT32 *)Data);
     return EFI_SUCCESS;
   } else if (StrCmp (VariableName, FWU_VARIABLE_CONTINUE_UPLOAD) == 0) {
+    if (mDataCount > FIRMWARE_UPDATE_MAX_SIZE) {
+      return EFI_INVALID_PARAMETER;
+    }
+
     CopyMem ((VOID *)(mVirtDataBuf + mDataCount), (VOID *)Data, DataSize);
     mDataCount += DataSize;
     return EFI_SUCCESS;
   }
 
   SubId = 0;
+
+  if (StrCmp (VariableName, FWU_VARIABLE_UEFI_EXTRA_REQUEST) == 0) {
+    return UpgradeUefiExtraFirmware (DataSize, Data);
+  }
 
   if (StrCmp (VariableName, FWU_VARIABLE_SCP_REQUEST) == 0) {
     ImageId = FWU_IMG_ID_SCP;

@@ -28,6 +28,7 @@
 [LibraryClasses]
   DebugLib
   BaseLib
+  FlashLib
   FirmwareUpdateLib
   PrintLib
   UefiBootServicesTableLib
@@ -35,6 +36,10 @@
   UefiLib
   UefiRuntimeServicesTableLib
   UefiRuntimeLib
+
+[FixedPcd]
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress
+  gAmpereTokenSpaceGuid.PcdUefiExtraFdSize
 
 [Protocols]
   gEfiMmCommunication2ProtocolGuid        ## CONSUMES
