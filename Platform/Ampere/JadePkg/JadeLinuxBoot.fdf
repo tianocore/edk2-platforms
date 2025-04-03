@@ -294,6 +294,10 @@ FvNameGuid         = 9a66974a-02cc-4455-bd51-7fec7abc78a3
       SECTION FV_IMAGE = UEFIEXTRAFVMAIN
     }
   }
+!else
+
+SET gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress  = 0x93100000
+SET gAmpereTokenSpaceGuid.PcdUefiExtraFdSize         = 0
 !endif
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc
