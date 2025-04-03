@@ -20,12 +20,15 @@
 #
 ################################################################################
 
-# Note: We actually have 26MB (0x01A0'0000 bytes) for UEFI.
-#       A smaller size of 8MB is used to reduce time for flashing etc.
+# Note: We have 10MB (0x00A0'0000 bytes) for UEFI.
+#
+#       If this 10MB is ever changed, ComHpcAltCapsule.fdf and
+#       Capsule/HostFirmwareDescriptor/HostFirmwareDescriptor.aslc need
+#       updated too.
 
 [FD.BL33_COMHPCALT_UEFI]
 BaseAddress   = 0x92000000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
-Size          = 0x00A00000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
+Size          = 0x00A00000                                      # The size in bytes of the FLASH Device
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
@@ -51,18 +54,18 @@ NumBlocks     = 0xA0
 #
 # FV MAIN
 # Offset: 0x00000000
-# Size:   0x00970000
+# Size:   0x00900000
 #
-0x00000000|0x00970000
+0x00000000|0x00900000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
 #
 # NV Variables
-# Offset: 0x00970000
-# Size:   0x00030000
+# Offset: 0x00900000
+# Size:   0x00070000
 #
-0x00970000|0x00030000
+0x00900000|0x00070000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 DATA = {
   ## This is the EFI_FIRMWARE_VOLUME_HEADER
@@ -80,26 +83,26 @@ DATA = {
   0x5f, 0x46, 0x56, 0x48, 0xff, 0xfe, 0x04, 0x00,
   # HeaderLength # CheckSum # ExtHeaderOffset #Reserved #Revision
   0x48, 0x00, 0x2D, 0x09, 0x00, 0x00, 0x00, 0x02,
-  # Blockmap[0]: 0x3 Blocks * 0x10000 Bytes / Block
-  0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
+  # Blockmap[0]: 0x10 Blocks * 0x10000 Bytes / Block
+  0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
   # Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
-  # It is compatible with SECURE_BOOT_ENABLE == FALSE as well.
+  # It is compatible with UEFI_SECURE_BOOT_ENABLE == FALSE as well.
   # Signature: gEfiAuthenticatedVariableGuid =
   #   { 0xaaf32c78, 0x947b, 0x439a,
   #     { 0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92 }}
   0x78, 0x2c, 0xf3, 0xaa, 0x7b, 0x94, 0x9a, 0x43,
   0xa1, 0x80, 0x2e, 0x14, 0x4e, 0xc3, 0x77, 0x92,
-  # Size: 0x30000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) -
-  #         0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0x2FFB8
+  # Size: 0x70000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) -
+  #         0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0x6FFB8
   # This can speed up the Variable Dispatch a bit.
-  0xB8, 0xFF, 0x02, 0x00,
+  0xB8, 0xFF, 0x06, 0x00,
   # FORMATTED: 0x5A #HEALTHY: 0xFE #Reserved: UINT16 #Reserved1: UINT32
   0x5A, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 }
 
-0x009A0000|0x00010000
+0x00970000|0x00020000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 DATA = {
   # EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER->Signature = gEdkiiWorkingBlockSignatureGuid =
@@ -108,16 +111,12 @@ DATA = {
   0xa0, 0xce, 0x65,  0x0, 0xfd, 0x9f, 0x1b, 0x95,
   # Crc:UINT32            #WorkingBlockValid:1, WorkingBlockInvalid:1, Reserved
   0x2c, 0xaf, 0x2c, 0x64, 0xFE, 0xFF, 0xFF, 0xFF,
-  # WriteQueueSize: UINT64 Size: 0x10000 - 0x20 (FTW_WORKING_HEADER) = 0xFFE0
-  0xE0, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+  # WriteQueueSize: UINT64 Size: 0x20000 - 0x20 (FTW_WORKING_HEADER) = 0x1FFE0
+  0xE0, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00
 }
 
-0x009B0000|0x00040000
+0x00990000|0x00070000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
-
-# Leave 0x10000 (64KB) at the end for VPD data
-# 0x009F0000|0x00010000
-# Absolute SPI-NOR flash address: 0xFF0000
 
 ################################################################################
 #
@@ -160,21 +159,27 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 }
 
+!if $(CAPSULE_ENABLE) == TRUE
+  INF RuleOverride = FMP_IMAGE_DESC Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
+!endif
+
   INF ArmPlatformPkg/Sec/Sec.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF UefiCpuPkg/CpuIoPei/CpuIoPei.inf
+!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
+!endif
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
   INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
-!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
-  INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
-!endif
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/BootProgress/BootProgressPeim/BootProgressPeim.inf
   INF ArmPkg/Drivers/CpuPei/CpuPei.inf
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+  INF MdeModulePkg/Universal/CapsuleOnDiskLoadPei/CapsuleOnDiskLoadPei.inf
+  INF MdeModulePkg/Universal/CapsulePei/CapsulePei.inf
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
@@ -191,8 +196,6 @@ APRIORI PEI {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/DebugInfoPei/DebugInfoPei.inf
 
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
-
-  INF RuleOverride = FMP_IMAGE_DESC Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
@@ -247,9 +250,11 @@ APRIORI DXE {
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   INF SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   INF SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
+
+  !include ArmPlatformPkg/SecureBootDefaultKeys.fdf.inc
 !endif
   INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
   INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
@@ -367,12 +372,14 @@ APRIORI DXE {
   #
   # UEFI application (Shell Embedded Boot Loader)
   #
+!if $(SHELL_ENABLE) == TRUE
   INF ShellPkg/Application/Shell/Shell.inf
 !if $(INCLUDE_TFTP_COMMAND) == TRUE
   INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 !endif
 !if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
   INF ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
+!endif
 !endif
 
 !if $(TPM2_ENABLE) == TRUE
@@ -391,6 +398,9 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
+  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/IpmiBootDxe/IpmiBootDxe.inf
 
   #
   # Networking stack
@@ -404,6 +414,7 @@ APRIORI DXE {
   #
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
   INF RuleOverride=ACPITABLE Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
   INF RuleOverride=ACPITABLE Platform/ADLINK/ComHpcAltPkg/Ac01AcpiTables/Ac01AcpiTables.inf
   INF RuleOverride=ACPITABLE Platform/ADLINK/ComHpcAltPkg/Ac02AcpiTables/Ac02AcpiTables.inf
@@ -412,21 +423,19 @@ APRIORI DXE {
   # SMBIOS
   #
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
+  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/ADLINK/ComHpcAltPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 
   #
   # Firmware Capsule Update
   #
-  INF  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-
-  FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
-      SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
-      SECTION UI = "Pkcs7TestRoot"
-      }
+!if $(CAPSULE_ENABLE) == TRUE
+  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  INF MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+!endif
 
   #
   # HII
@@ -439,10 +448,14 @@ APRIORI DXE {
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/RootComplexConfigDxe/RootComplexConfigDxe.inf
   INF Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
 
+  INF MdeModulePkg/Logo/LogoDxe.inf
+
   #
   # Emulator for x64 OpRoms, etc.
   #
+!if $(X86_EMULATOR_ENABLE) == TRUE
   INF Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+!endif
 
   #
   # set MMC power off type

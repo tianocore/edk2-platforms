@@ -12,15 +12,13 @@
 #include <Guid/EdkiiSystemFmpCapsule.h>
 #include <Protocol/FirmwareManagement.h>
 
+#include "HostFwInfo.h"
+
 #define PACKAGE_VERSION                     0xFFFFFFFF
 #define PACKAGE_VERSION_STRING              L"Unknown"
 
-#define CURRENT_FIRMWARE_VERSION            0x00000001
-#define CURRENT_FIRMWARE_VERSION_STRING     L"0x00000001"
-#define LOWEST_SUPPORTED_FIRMWARE_VERSION   0x00000001
-
 #define IMAGE_ID                            SIGNATURE_64('J', 'A', 'D', 'E', '_', 'F', 'W', ' ')
-#define IMAGE_ID_STRING                     L"Jade System Firmware"
+#define IMAGE_ID_STRING                     L"Jade Host Firmware"
 
 // PcdSystemFmpCapsuleImageTypeIdGuid
 #define IMAGE_TYPE_ID_GUID                  { 0xf08bca31, 0x542e, 0x4cea, { 0x8b, 0x48, 0x8e, 0x54, 0xf9, 0x42, 0x25, 0x94 } }
@@ -49,15 +47,17 @@ STATIC IMAGE_DESCRIPTOR mImageDescriptor =
     CURRENT_FIRMWARE_VERSION,                              // Version;
     OFFSET_OF (IMAGE_DESCRIPTOR, VersionNameStr),          // VersionName;
     {0x0},                                                 // Reserved2
-    0,                                                     // Size;
+    0xA00000,                                              // Size;
     IMAGE_ATTRIBUTE_IMAGE_UPDATABLE |
       IMAGE_ATTRIBUTE_RESET_REQUIRED |
       IMAGE_ATTRIBUTE_AUTHENTICATION_REQUIRED |
-      IMAGE_ATTRIBUTE_IN_USE,                              // AttributesSupported;
+      IMAGE_ATTRIBUTE_IN_USE |
+      IMAGE_ATTRIBUTE_UEFI_IMAGE,                          // AttributesSupported;
     IMAGE_ATTRIBUTE_IMAGE_UPDATABLE |
       IMAGE_ATTRIBUTE_RESET_REQUIRED |
       IMAGE_ATTRIBUTE_AUTHENTICATION_REQUIRED |
-      IMAGE_ATTRIBUTE_IN_USE,                              // AttributesSetting;
+      IMAGE_ATTRIBUTE_IN_USE |
+      IMAGE_ATTRIBUTE_UEFI_IMAGE,                          // AttributesSetting;
     0x0,                                                   // Compatibilities;
     LOWEST_SUPPORTED_FIRMWARE_VERSION,                     // LowestSupportedImageVersion;
     0x00000000,                                            // LastAttemptVersion;

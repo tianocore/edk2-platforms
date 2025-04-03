@@ -495,7 +495,7 @@ FlashFvbDxeInitialize (
     return EFI_DEVICE_ERROR;
   }
 
-  if (mNvFlashSize >= (mNvStorageSize * 2)) {
+  if (mNvFlashSize > mNvStorageSize) {
     DEBUG ((DEBUG_INFO, "%a: NV store on Flash is valid\n", __func__));
   } else {
     DEBUG ((DEBUG_ERROR, "%a: NV store on Flash is invalid\n", __func__));

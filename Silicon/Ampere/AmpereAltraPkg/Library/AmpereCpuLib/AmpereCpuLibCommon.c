@@ -446,6 +446,7 @@ GetNumberOfSupportedSockets (
   )
 {
   PLATFORM_INFO_HOB  *PlatformHob;
+  UINT8              NumSockets;
 
   PlatformHob = GetPlatformHob ();
   if (PlatformHob == NULL) {
@@ -455,7 +456,13 @@ GetNumberOfSupportedSockets (
     return 1;
   }
 
-  return (sizeof (PlatformHob->ClusterEn) / sizeof (PLATFORM_CLUSTER_EN));
+  if (PlatformHob->SkuMaxLink2pSpeed != 0) {
+    NumSockets = 2;
+  } else {
+    NumSockets = 1;
+  }
+
+  return NumSockets;
 }
 
 /**

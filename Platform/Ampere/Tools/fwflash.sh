@@ -5,7 +5,7 @@
 
 set -e
 
-BMC_ENV_FILE=bmc.sh
+BMC_ENV_FILE=bmc.conf
 
 usage () {
 	echo "Copies firmware to the BMC (running OpenBMC) and runs ampere_flash_bios.sh to flash the host."
@@ -25,7 +25,7 @@ usage () {
 }
 
 if ! [ -f "${BMC_ENV_FILE}" ]; then
-  echo "bmc.sh does not exist!"
+  echo "${BMC_ENV_FILE} does not exist!"
   echo
   echo "Please create it, with contents such as:"
   echo
