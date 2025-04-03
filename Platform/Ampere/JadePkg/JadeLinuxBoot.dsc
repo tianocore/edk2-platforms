@@ -113,3 +113,9 @@
   # In-band NVPARAM Access
   #
   Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf
+
+  #
+  # In-band UefiExtra Region Access
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/UefiExtraRuntimeDxe/UefiExtraRuntimeDxe.inf
+
