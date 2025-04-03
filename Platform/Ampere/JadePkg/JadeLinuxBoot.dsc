@@ -26,8 +26,9 @@
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
   #
-  DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000000F
-  DEFINE FIRMWARE_VER            = 0.01.001
+  DEFINE DEBUG_PRINT_ERROR_LEVEL          = 0x8000000F
+  DEFINE FIRMWARE_VER                     = 0.01.001
+  DEFINE LINUXBOOT_FILE_IN_UEFI_EXTRA     = FALSE
 
   #
   # The build command must specify the path of the LinuxBoot flashkernel file
@@ -77,9 +78,6 @@
   # below 4 GB needlessly fragment the memory map. So expose the 64-bit entry
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
-
-  gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress|0x93100000
-  gAmpereTokenSpaceGuid.PcdUefiExtraFdSize|0x00AC0000
 
 [PcdsDynamicExDefault.common]
   gArmTokenSpaceGuid.PcdLinuxBootFileGuid|{GUID({0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}})}
