@@ -25,7 +25,7 @@ usage () {
 }
 
 if ! [ -f "${BMC_ENV_FILE}" ]; then
-  echo "bmc.sh does not exist!"
+  echo "${BMC_ENV_FILE} does not exist!"
   echo
   echo "Please create it, with contents such as:"
   echo
