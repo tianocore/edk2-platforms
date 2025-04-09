@@ -37,7 +37,7 @@
 [LibraryClasses]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
 
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf # used by SpiNorDxe
 
