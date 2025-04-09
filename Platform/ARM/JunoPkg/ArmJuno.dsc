@@ -139,8 +139,6 @@
   gArmPlatformTokenSpaceGuid.PcdCoreCount|6
   gArmPlatformTokenSpaceGuid.PcdClusterCount|2
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   #
   # ARM PrimeCell
   #
@@ -222,6 +220,9 @@
   # Juno Support Trng. Override PcdEnforceSecureRngAlgorithms.
   #
   gEfiMdePkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
+
+[PcdsFixedAtBuild.ARM]
+  gArmTokenSpaceGuid.PcdVFPEnabled|1
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)

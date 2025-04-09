@@ -52,7 +52,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Durian Platform"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"V1.0"
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask|0x101
   gArmTokenSpaceGuid.PcdArmPrimaryCore|0x0
   gArmPlatformTokenSpaceGuid.PcdCoreCount|4
