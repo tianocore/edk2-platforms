@@ -98,8 +98,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   # RAM Disk
   gArmN1SdpTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmN1SdpTokenSpaceGuid.PcdRamDiskSize|0x18000000

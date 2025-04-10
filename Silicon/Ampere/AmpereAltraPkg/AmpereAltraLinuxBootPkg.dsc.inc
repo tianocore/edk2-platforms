@@ -319,8 +319,6 @@
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|20
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData|0
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   gArmTokenSpaceGuid.PcdArmPrimaryCore|0x0
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000

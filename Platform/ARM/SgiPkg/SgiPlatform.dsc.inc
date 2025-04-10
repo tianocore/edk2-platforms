@@ -114,7 +114,6 @@
 !endif
 
 [PcdsFixedAtBuild.common]
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
 
   # DRAM Block2 Base and Size

@@ -387,8 +387,6 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetNxForStack|TRUE
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   # System Memory Base -- fixed
   !if $(ENABLE_RME)
     #

@@ -86,8 +86,6 @@
   # The size of volatile buffer. This buffer is used to store VOLATILE attribute variables.
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x00040000
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   # Set ARM PCD: Odyssey: up to 80 Neoverse V2 cores (code named Demeter)
   # Used to setup secondary cores stacks and ACPI PPTT.
   gArmPlatformTokenSpaceGuid.PcdCoreCount|80

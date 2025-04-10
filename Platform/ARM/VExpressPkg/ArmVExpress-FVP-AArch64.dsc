@@ -131,8 +131,6 @@
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   # Non-Trusted SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
