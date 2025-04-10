@@ -74,7 +74,10 @@ GetFirmwareMajorVersion (
   Status = NVParamGet (NV_SI_RO_BOARD_I2C_VRD_CONFIG_INFO, ACLRd, &Val);
 
   if (!EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, " I2C brd config info    0x%X (%d)\n", Val, Val));
+    DEBUG ((DEBUG_INFO, " I2C brd config info %r 0x%X (%d)\n", Status, Val, Val));
+  } else {
+    DEBUG ((DEBUG_ERROR, "Failed to fetch I2C board config info. Defaulting to A2\n"));
+    return 0xA2;
   }
 
   if (Val == 0x6A685860) {
