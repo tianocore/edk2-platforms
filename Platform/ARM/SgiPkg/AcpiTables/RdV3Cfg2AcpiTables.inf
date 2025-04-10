@@ -1,7 +1,7 @@
 ## @file
 #  ACPI table data and ASL sources required to boot the platform.
 #
-#  Copyright (c) 2018 - 2025, ARM Ltd. All rights reserved.
+#  Copyright (c) 2025, Arm Ltd. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -9,7 +9,7 @@
 
 [Defines]
   INF_VERSION                    = 0x0001001A
-  BASE_NAME                      = Sgi575AcpiTables
+  BASE_NAME                      = RdV3Cfg1AcpiTables
   FILE_GUID                      = c712719a-0aaf-438c-9cdd-35ab4d60207d  # gArmSgiAcpiTablesGuid
   MODULE_TYPE                    = USER_DEFINED
   VERSION_STRING                 = 1.0
@@ -18,15 +18,12 @@
   Dbg2.aslc
   Fadt.aslc
   Gtdt.aslc
-  Iort.aslc
-  Mcfg.aslc
-  Sgi575/Dsdt.asl
-  Sgi575/Madt.aslc
-  Sgi575/Pptt.aslc
+  RdV3Cfg2/Dsdt.asl
+  RdV3Cfg2/Madt.aslc
+  RdV3Cfg2/Pptt.aslc
+  RdV3Cfg2/Srat.aslc
   Spcr.aslc
-  Ssdt.asl
   SsdtRos.asl
-  SsdtEvents.asl
 
 [Packages]
   ArmPkg/ArmPkg.dec
@@ -37,44 +34,47 @@
   Platform/ARM/SgiPkg/SgiPlatform.dec
 
 [FixedPcd]
-  gArmPlatformTokenSpaceGuid.PcdCoreCount
   gArmPlatformTokenSpaceGuid.PcdClusterCount
+  gArmPlatformTokenSpaceGuid.PcdCoreCount
   gArmPlatformTokenSpaceGuid.PcdSerialDbgInterrupt
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
   gArmPlatformTokenSpaceGuid.PL011UartInterrupt
 
-  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
-  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
-  gArmTokenSpaceGuid.PcdPciBusMin
-  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
 
+  gArmSgiTokenSpaceGuid.PcdChipCount
   gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0
-  gArmSgiTokenSpaceGuid.PcdGpioController0BaseAddress
-  gArmSgiTokenSpaceGuid.PcdGpioController0Size
-  gArmSgiTokenSpaceGuid.PcdGpioController0Interrupt
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip1
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip2
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip3
+  gArmSgiTokenSpaceGuid.PcdDramBlock2Base
+  gArmSgiTokenSpaceGuid.PcdDramBlock2Size
+  gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
+  gArmSgiTokenSpaceGuid.PcdOscCppcEnable
   gArmSgiTokenSpaceGuid.PcdOscLpiEnable
-  gArmSgiTokenSpaceGuid.PcdSp804DualTimerBaseAddress
-  gArmSgiTokenSpaceGuid.PcdSp804DualTimerSize
-  gArmSgiTokenSpaceGuid.PcdSp804DualTimerInterrupt
   gArmSgiTokenSpaceGuid.PcdTimerControlBase
   gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
   gArmSgiTokenSpaceGuid.PcdTimerFrame1Base
   gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv
   gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv
   gArmSgiTokenSpaceGuid.PcdVirtioBlkBaseAddress
-  gArmSgiTokenSpaceGuid.PcdVirtioBlkSize
   gArmSgiTokenSpaceGuid.PcdVirtioBlkInterrupt
+  gArmSgiTokenSpaceGuid.PcdVirtioBlkSize
   gArmSgiTokenSpaceGuid.PcdVirtioNetBaseAddress
-  gArmSgiTokenSpaceGuid.PcdVirtioNetSize
   gArmSgiTokenSpaceGuid.PcdVirtioNetInterrupt
+  gArmSgiTokenSpaceGuid.PcdVirtioNetSize
   gArmSgiTokenSpaceGuid.PcdWdogWS0Gsiv
   gArmSgiTokenSpaceGuid.PcdWdogWS1Gsiv
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress

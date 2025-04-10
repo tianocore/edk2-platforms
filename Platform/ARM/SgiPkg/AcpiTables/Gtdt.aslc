@@ -5,7 +5,7 @@
   configuration. This table lists the watchdog and generic timer instances
   available on the reference design platforms.
 
-  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
+  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -25,14 +25,14 @@
 #define GTDT_GLOBAL_FLAGS                 0
 #define GTDT_GTIMER_FLAGS                 EFI_ACPI_6_4_GTDT_TIMER_FLAG_TIMER_INTERRUPT_POLARITY
 
-#define SGI_GT_BLOCK_CTL_BASE             0x2A810000
-#define SGI_GT_BLOCK_FRAME1_CTL_BASE      0x2A820000
+#define SGI_GT_BLOCK_CTL_BASE             FixedPcdGet32 (PcdTimerControlBase)
+#define SGI_GT_BLOCK_FRAME1_CTL_BASE      FixedPcdGet32 (PcdTimerFrame1Base)
 #define SGI_GT_BLOCK_FRAME1_CTL_EL0_BASE  0xFFFFFFFFFFFFFFFF
-#define SGI_GT_BLOCK_FRAME1_GSIV          FixedPcdGet32 (PcdGtFrame1Gsiv)
+#define SGI_GT_BLOCK_FRAME1_GSIV          FixedPcdGet32 (PcdTimerFrame1Gsiv)
 
-#define SGI_GT_BLOCK_FRAME0_CTL_BASE      0x2A830000
+#define SGI_GT_BLOCK_FRAME0_CTL_BASE      FixedPcdGet32 (PcdTimerFrame0Base)
 #define SGI_GT_BLOCK_FRAME0_CTL_EL0_BASE  0xFFFFFFFFFFFFFFFF
-#define SGI_GT_BLOCK_FRAME0_GSIV          FixedPcdGet32 (PcdGtFrame0Gsiv)
+#define SGI_GT_BLOCK_FRAME0_GSIV          FixedPcdGet32 (PcdTimerFrame0Gsiv)
 
 #define SGI_GTX_TIMER_FLAGS               0
 #define GTX_TIMER_SECURE                  EFI_ACPI_6_4_GTDT_GT_BLOCK_COMMON_FLAG_SECURE_TIMER
