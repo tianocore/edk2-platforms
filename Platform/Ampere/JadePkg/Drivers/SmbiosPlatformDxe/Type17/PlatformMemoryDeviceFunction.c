@@ -372,6 +372,8 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryDevice) {
     return EFI_NOT_FOUND;
   }
 
+  Status = EFI_INVALID_PARAMETER;
+
   for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
     InputData         = (SMBIOS_TABLE_TYPE17 *)RecordData;
     InputStrToken     = (STR_TOKEN_INFO *)StrToken;
