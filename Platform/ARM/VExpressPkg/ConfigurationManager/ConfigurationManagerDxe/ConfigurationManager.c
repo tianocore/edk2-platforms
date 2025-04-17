@@ -1241,6 +1241,19 @@ ConfigurationManagerDxeInitialize (
 {
   EFI_STATUS  Status;
 
+  Status = InitializePlatformRepository (
+             &VExpressPlatformConfigManagerProtocol
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "ERROR: Failed to initialize the Platform Configuration Repository." \
+      " Status = %r\n",
+      Status
+      ));
+    return Status;
+  }
+
   Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
                   &gEdkiiConfigurationManagerProtocolGuid,
@@ -1254,21 +1267,7 @@ ConfigurationManagerDxeInitialize (
       " Status = %r\n",
       Status
       ));
-    goto error_handler;
   }
 
-  Status = InitializePlatformRepository (
-    &VExpressPlatformConfigManagerProtocol
-    );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "ERROR: Failed to initialize the Platform Configuration Repository." \
-      " Status = %r\n",
-      Status
-      ));
-  }
-
-error_handler:
   return Status;
 }
