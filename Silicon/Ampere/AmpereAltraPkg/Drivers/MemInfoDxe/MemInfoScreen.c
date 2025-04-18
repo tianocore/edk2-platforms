@@ -878,7 +878,7 @@ MemInfoMainPerformanceScreen (
     StringId,
     0,
     EFI_IFR_NUMERIC_SIZE_4,
-    0
+    EccDisabled
     );
 
   UnicodeSPrint (Str, sizeof (Str), L"SECDED");
@@ -889,7 +889,7 @@ MemInfoMainPerformanceScreen (
     StringId,
     0,
     EFI_IFR_NUMERIC_SIZE_4,
-    1
+    EccSecded
     );
 
   UnicodeSPrint (Str, sizeof (Str), L"Symbol");
@@ -900,7 +900,18 @@ MemInfoMainPerformanceScreen (
     StringId,
     0,
     EFI_IFR_NUMERIC_SIZE_4,
-    2
+    EccSymbol
+    );
+
+  UnicodeSPrint (Str, sizeof (Str), L"Auto");
+  StringId = HiiSetString (PrivateData->HiiHandle, 0, Str, NULL);
+
+  HiiCreateOneOfOptionOpCode (
+    OptionsEccOpCodeHandle,
+    StringId,
+    0,
+    EFI_IFR_NUMERIC_SIZE_4,
+    EccAuto
     );
 
   HiiCreateOneOfOpCode (
