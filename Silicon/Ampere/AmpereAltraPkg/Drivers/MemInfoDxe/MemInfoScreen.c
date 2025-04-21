@@ -362,14 +362,14 @@ DriverCallback (
           //
           // ErrCtrl_DE default to be enabled
           //
-          Value->u32 = ErrCtlrDeEnable;
+          Value->u32 = ErrCtrlDeEnable;
           break;
 
         case MEM_INFO_FORM_PERFORMANCE_ERR_CTRL_FI_QUESTION_ID:
           //
           // ErrCtrl_FI default to be enabled
           //
-          Value->u32 = ErrCtlrDeEnable;
+          Value->u32 = ErrCtrlFiEnable;
           break;
 
         case MEM_INFO_DDR_SLAVE_32BIT_QUESTION_ID:

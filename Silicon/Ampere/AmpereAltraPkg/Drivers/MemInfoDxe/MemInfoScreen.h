@@ -43,15 +43,15 @@ typedef enum {
 } DDR_ECC_MODE;
 
 typedef enum {
-  ErrCtlrDeDisable = 0,
-  ErrCtlrDeEnable,
-  ErrCtlrDeMax
+  ErrCtrlDeDisable = 0,
+  ErrCtrlDeEnable,
+  ErrCtrlDeMax
 } DDR_ERROR_CTRL_MODE_DE;
 
 typedef enum {
-  ErrCtlrFiDisable = 0,
-  ErrCtlrFiEnable,
-  ErrCtlrFiMax
+  ErrCtrlFiDisable = 0,
+  ErrCtrlFiEnable,
+  ErrCtrlFiMax
 } DDR_ERROR_CTRL_MODE_FI;
 
 #define MEM_INFO_DDR_SPEED_SEL_OFFSET         OFFSET_OF (MEM_INFO_VARSTORE_DATA, DDRSpeedSel)
