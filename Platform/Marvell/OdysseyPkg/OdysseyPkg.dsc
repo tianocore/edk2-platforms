@@ -37,7 +37,7 @@
 [LibraryClasses]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
 
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf # used by SpiNorDxe
 
@@ -85,8 +85,6 @@
 
   # The size of volatile buffer. This buffer is used to store VOLATILE attribute variables.
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x00040000
-
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
 
   # Set ARM PCD: Odyssey: up to 80 Neoverse V2 cores (code named Demeter)
   # Used to setup secondary cores stacks and ACPI PPTT.

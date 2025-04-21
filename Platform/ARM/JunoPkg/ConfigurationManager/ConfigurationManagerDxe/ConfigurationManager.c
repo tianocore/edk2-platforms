@@ -226,7 +226,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
     FixedPcdGet32 (PL011UartInterrupt),               // Interrupt
     FixedPcdGet64 (PcdUartDefaultBaudRate),           // BaudRate
     FixedPcdGet32 (PL011UartClkInHz),                 // Clock
-    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_PL011_UART  // Port subtype
+    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_PL011_UART, // Port subtype
+    0x1000,                                           // Address length
+    EFI_ACPI_6_3_DWORD,                               // Access size
   },
   // Debug Serial Port
   {
@@ -234,7 +236,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
     38,                                               // Interrupt
     FixedPcdGet64 (PcdSerialDbgUartBaudRate),         // BaudRate
     FixedPcdGet32 (PcdSerialDbgUartClkInHz),          // Clock
-    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_PL011_UART  // Port subtype
+    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_PL011_UART, // Port subtype
+    0x1000,                                           // Address length
+    EFI_ACPI_6_3_DWORD,                               // Access size
   },
 
   // PCI Configuration Space Info

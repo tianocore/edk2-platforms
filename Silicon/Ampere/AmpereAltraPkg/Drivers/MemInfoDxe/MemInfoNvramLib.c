@@ -65,8 +65,8 @@ MemInfoNvparamGet (
              &Value
              );
   if (EFI_ERROR (Status)) {
-    VarStoreConfig->ErrCtrl_DE = ErrCtlrDeEnable;
-    VarStoreConfig->ErrCtrl_FI = ErrCtlrFiEnable;
+    VarStoreConfig->ErrCtrl_DE = ErrCtrlDeEnable;
+    VarStoreConfig->ErrCtrl_FI = ErrCtrlFiEnable;
   } else {
     VarStoreConfig->ErrCtrl_DE = (Value & DDR_NVPARAM_ERRCTRL_DE_FIELD_MASK) >> DDR_NVPARAM_ERRCTRL_DE_FIELD_SHIFT;
     VarStoreConfig->ErrCtrl_FI = (Value & DDR_NVPARAM_ERRCTRL_FI_FIELD_MASK) >> DDR_NVPARAM_ERRCTRL_FI_FIELD_SHIFT;

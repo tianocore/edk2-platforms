@@ -39,7 +39,7 @@
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/ARM/JunoPkg/Library/ArmJunoLib/ArmJunoLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmHvcLib|ArmPkg/Library/ArmHvcLib/ArmHvcLib.inf
 
   # Trng Supports.
@@ -139,8 +139,6 @@
   gArmPlatformTokenSpaceGuid.PcdCoreCount|6
   gArmPlatformTokenSpaceGuid.PcdClusterCount|2
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
-
   #
   # ARM PrimeCell
   #
@@ -222,6 +220,9 @@
   # Juno Support Trng. Override PcdEnforceSecureRngAlgorithms.
   #
   gEfiMdePkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
+
+[PcdsFixedAtBuild.ARM]
+  gArmTokenSpaceGuid.PcdVFPEnabled|1
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)

@@ -26,8 +26,9 @@
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
   #
-  DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000000F
-  DEFINE FIRMWARE_VER            = 0.01.001
+  DEFINE DEBUG_PRINT_ERROR_LEVEL          = 0x8000000F
+  DEFINE FIRMWARE_VER                     = 0.01.001
+  DEFINE LINUXBOOT_FILE_IN_UEFI_EXTRA     = FALSE
 
   #
   # The build command must specify the path of the LinuxBoot flashkernel file
