@@ -115,3 +115,7 @@ build -a X64 -a IA32 -t GCC -DSOC_FAMILY=0x1A -DSOC_SKU=BRH -DSOC2=Breithorn -p 
 cd [WorkSpace]
 build -a X64 -a IA32 -t VS2017 -DSOC_FAMILY=0x1A -DSOC_SKU=BRH -DSOC2=Breithorn -p TurinBoard\ChalupaBoardPkg\Project.dsc
 ```
+
+##### Build Flag for Turin SP5 Purico board with DGX/MGX,
+--edk2args="-DEFS_MGX_BYTE=0x01"
+```

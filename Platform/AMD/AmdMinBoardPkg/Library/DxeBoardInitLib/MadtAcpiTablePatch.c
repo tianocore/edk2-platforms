@@ -218,42 +218,42 @@ MadtAcpiTablePatch (
       SortedItem->AcpiProcessorUid = Index;
     }
 
-    // Now separate the second thread list
-    SortedItem = LocalX2ApicPtr + 1;
-    if ((SortedItem->X2ApicId & 0x1) == 0x1) {
-      // It has multi-thread on
-      SortedItem = NULL;
-      SortedItem = AllocateZeroPool (sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
-      if (SortedItem == NULL) {
-        return EFI_OUT_OF_RESOURCES;
-      }
-
-      Src = LocalX2ApicPtr;
-      Dst = SortedItem;
-      for (Index = 0; Index < LapicCount; Index++) {
-        if ((Src->X2ApicId & 0x1) == 0) {
-          CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
-          Src++;
-          Dst++;
-        } else {
-          Src++;
-        }
-      }
-
-      Src = LocalX2ApicPtr;
-      for (Index = 0; Index < LapicCount; Index++) {
-        if ((Src->X2ApicId & 0x1) == 1) {
-          CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
-          Src++;
-          Dst++;
-        } else {
-          Src++;
+    if (IsSmtEnabled()) {
+      // Now separate the second thread list
+      SortedItem = LocalX2ApicPtr + 1;
+      if ((SortedItem->X2ApicId & 0x1) == 0x1) {
+        // It has multi-thread on
+        SortedItem = NULL;
+        SortedItem = AllocateZeroPool (sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
+        if (SortedItem == NULL) {
+          return EFI_OUT_OF_RESOURCES;
         }
 
+        Src = LocalX2ApicPtr;
+        Dst = SortedItem;
+        for (Index = 0; Index < LapicCount; Index++) {
+          if ((Src->X2ApicId & 0x1) == 0) {
+            CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
+            Src++;
+            Dst++;
+          } else {
+            Src++;
+          }
+        }
+
+        Src = LocalX2ApicPtr;
+        for (Index = 0; Index < LapicCount; Index++) {
+          if ((Src->X2ApicId & 0x1) == 1) {
+            CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
+            Src++;
+            Dst++;
+          } else {
+            Src++;
+          }
+        }
         CopyMem (LocalX2ApicPtr, SortedItem, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
         FreePool (SortedItem);
       }
-
     }
   }
 

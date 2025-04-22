@@ -24,7 +24,7 @@ typedef struct {
 //
 typedef struct {
   SMBIOS_TABLE_TYPE8  Type8Data;
-  PORT_CONNECTOR_STR  DesinatorStr;
+  PORT_CONNECTOR_STR  Designator;
 } SMBIOS_PORT_CONNECTOR_RECORD;
 
 //

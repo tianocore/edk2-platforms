@@ -47,6 +47,11 @@
   DEFINE EFS_ESPI_BYTE1 = 0xFF
 !endif
 
+# EFS MGX Definition
+!ifndef EFS_MGX_BYTE
+  DEFINE EFS_MGX_BYTE = 0xFF
+!endif
+
 [FD.Platform]
   # Need ROM 2 flash base for calculated Addresses of FVs below 4GB
   BaseAddress   = $(ROM2_FLASH_BASE)|gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
@@ -96,7 +101,8 @@
     0x00, 0x00, 0x00, 0x00,     #
     0x00, 0x00, 0x00, 0x00,     # 0x40
     0xFF, 0xFF, 0xFF, 0xFF,     #
-    0xFF, 0xFF, 0xFF, 0xFF,     #
+    0xFF, 0xFF,                 #
+    $(EFS_MGX_BYTE), 0xFF,      # 0x48
     0x00, 0x00, 0x00, 0x00,     #
     $(EFS_ESPI_BYTE0),          #
     $(EFS_ESPI_BYTE1),          #
