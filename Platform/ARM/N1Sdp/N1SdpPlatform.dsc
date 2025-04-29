@@ -73,7 +73,6 @@
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
 
 [LibraryClasses.common.DXE_DRIVER]
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
   PciHostBridgeLib|Silicon/ARM/NeoverseN1Soc/Library/PciHostBridgeLib/PciHostBridgeLib.inf
   PciSegmentLib|Silicon/ARM/NeoverseN1Soc/Library/PciSegmentLib/PciSegmentLib.inf
 
@@ -237,7 +236,10 @@
   Platform/ARM/N1Sdp/Drivers/PlatformDxe/PlatformDxe.inf
 
   # PEI Phase modules
-  Silicon/ARM/NeoverseN1Soc/Library/N1SdpNtFwConfigPei/NtFwConfigPei.inf
+  Silicon/ARM/NeoverseN1Soc/Library/N1SdpNtFwConfigPei/NtFwConfigPei.inf {
+    <LibraryClasses>
+      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+  }
 
   # Human Interface Support
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf

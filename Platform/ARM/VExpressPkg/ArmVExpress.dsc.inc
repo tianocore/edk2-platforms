@@ -142,7 +142,6 @@
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
 
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
 
   # RunAxf support via Dynamic Shell Command protocol
   # It uses the Shell libraries.
