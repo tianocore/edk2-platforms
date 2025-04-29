@@ -28,7 +28,6 @@
 
 [LibraryClasses]
   ArmLib
-  FdtLib
   IoLib
   MemoryAllocationLib
   PcdLib
