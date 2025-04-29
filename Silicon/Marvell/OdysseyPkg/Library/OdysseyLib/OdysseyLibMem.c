@@ -13,12 +13,12 @@
 #include <Library/DebugLib.h>             // DEBUG
 #include <Pi/PiBootMode.h>                // EFI_BOOT_MODE required by PiHob.h
 #include <Pi/PiHob.h>                     // EFI_RESOURCE_ATTRIBUTE_TYPE
+#include <Library/FdtLib.h>
 #include <Library/HobLib.h>               // BuildResourceDescriptorHob
 #include <Library/PcdLib.h>               // PcdGet64
 #include <Library/ArmLib.h>               // ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
 #include <IndustryStandard/SmcLib.h>      // SmcGetRamSize
 #include <Library/MemoryAllocationLib.h>  // AllocatePages
-#include <libfdt.h>                       // fdt_totalsize //
 
 // Number of Virtual Memory Map Descriptors
 #define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS          129
@@ -133,10 +133,10 @@ ArmPlatformGetVirtualMemoryMap (
   *VirtualMemoryMap = VirtualMemoryTable;
 
   // Build the FDT HOB
-  ASSERT(fdt_check_header ((VOID *)mDeviceTreeBaseAddress) == 0);
+  ASSERT(FdtCheckHeader ((VOID *)mDeviceTreeBaseAddress) == 0);
   DEBUG((DEBUG_INFO, "FDT address: %lx, size: %d\n",
           mDeviceTreeBaseAddress,
-          fdt_totalsize((VOID *)mDeviceTreeBaseAddress)));
+          FdtTotalSize((VOID *)mDeviceTreeBaseAddress)));
 
   BuildGuidDataHob (&gFdtHobGuid, &mDeviceTreeBaseAddress, sizeof(mDeviceTreeBaseAddress));
 }

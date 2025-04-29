@@ -100,8 +100,6 @@
   DebugAgentLib|MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
   DebugAgentTimerLib|EmbeddedPkg/Library/DebugAgentTimerLibNull/DebugAgentTimerLibNull.inf
 
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
-
   # RunAxf support via Dynamic Shell Command protocol
   # It uses the Shell libraries.
   ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
@@ -328,8 +326,14 @@
   #
   # FDT support
   #
-  Silicon/Marvell/Drivers/Fdt/FdtPlatformDxe/FdtPlatformDxe.inf
-  Silicon/Marvell/Drivers/Fdt/FdtClientDxe/FdtClientDxe.inf
+  Silicon/Marvell/Drivers/Fdt/FdtPlatformDxe/FdtPlatformDxe.inf {
+    <LibraryClasses>
+      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+  }
+  Silicon/Marvell/Drivers/Fdt/FdtClientDxe/FdtClientDxe.inf {
+    <LibraryClasses>
+      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+  }
 
   # No EMMC/SD Interface
 
@@ -351,6 +355,7 @@
       HandleParsingLib|ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
       PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
       BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
+      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
   }
 
   ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
