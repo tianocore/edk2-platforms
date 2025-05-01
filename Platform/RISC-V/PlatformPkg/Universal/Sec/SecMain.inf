@@ -54,6 +54,7 @@
   RiscVOpensbiLib
   RiscVOpensbiPlatformLib
   RiscVSbiLib
+  StackCheckLib
 
 [FixedPcd]
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVPeiFvBase

@@ -68,12 +68,6 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = d248e9b7-9ce3-43a7-868e-70c17c4b3819
 
-  APRIORI DXE {
-    INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf                      # gEfiPcdProtocolGuid
-    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf                         # gHardwareInterruptProtocolGuid
-    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf                            # gEfiCpuArchProtocolGuid
-  }
-
   #
   # Core DXE modules
   #
@@ -116,7 +110,7 @@ FvNameGuid         = d248e9b7-9ce3-43a7-868e-70c17c4b3819
   #
   # ARM Support
   #
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   #
@@ -183,7 +177,7 @@ READ_LOCK_STATUS   = TRUE
   #
   # SEC Phase modules
   #
-  INF ArmPlatformPkg/PrePi/PeiUniCore.inf
+  INF ArmPlatformPkg/PeilessSec/PeilessSec.inf
 
   #
   # PEI Phase modules

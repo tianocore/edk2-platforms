@@ -2,7 +2,7 @@
 # Platform SEC Library.
 #
 #  Copyright (c) 2013-2015 Intel Corporation.
-#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -31,6 +31,8 @@
   Ia32/Flat32.nasm
 
 [Packages]
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
   AmdMinBoardPkg/AmdMinBoardPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
@@ -53,7 +55,9 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdBootFvBase                ## CONSUMES
   gAmdMinBoardPkgTokenSpaceGuid.PcdTempRamBase               ## CONSUMES
   gAmdMinBoardPkgTokenSpaceGuid.PcdTempRamSize               ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressLow  ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressHi   ## CONSUMES
 
 [Ppis]
   gEfiSecPlatformInformationPpiGuid   ## UNDEFINED # it is used as GUIDED HOB
-  gAmdTopOfTemporaryRamPpiGuid
+  gTopOfTemporaryRamPpiGuid

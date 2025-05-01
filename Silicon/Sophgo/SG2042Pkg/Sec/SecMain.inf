@@ -51,6 +51,7 @@
   MemoryAllocationLib
   HobLib
   SerialPortLib
+  StackCheckLib
 
 [FixedPcd]
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase                         ## CONSUMES

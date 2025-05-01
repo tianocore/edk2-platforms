@@ -1,0 +1,159 @@
+#;*****************************************************************************
+#; Copyright (C) 2022-2025 Advanced Micro Devices, Inc. All rights reserved.
+#; SPDX-License-Identifier: BSD-2-Clause-Patent
+#;
+#;*****************************************************************************
+
+
+##############################################################################
+#
+# GenoaCinnabar reference board - 2 SPI FLash devices accessible by x86 (selected by DIP-switch):
+# 1) 32MB Flash with 10-pin header next to the VGA connector.
+# 2) 64MB Flash with 10-pin header at 90-degrees from VGA connector, and also accessible by the BMC.
+#
+##############################################################################
+
+##############################################################################
+#
+# BIOS image layout
+#
+##############################################################################
+# +===============================+
+# |Flash Device (FD)              |
+# |BaseAddress = 0xFF000000       |
+# |  ONLY 0xFF000000-0xFFFFFFFF   |
+# |    Visible in MMIO < 4GB      |
+# |Size        = 0x02000000 (32MB)|
+# +===============================+
+    DEFINE ROM2_FLASH_BASE        = 0xFF000000
+    DEFINE ROM2_FLASH_SIZE        = 0x01000000
+    DEFINE ROM3_FLASH_BASE        = 0xFD02000000
+    DEFINE ROM3_FLASH_SIZE        = 0x02000000
+    DEFINE SPI_BLOCK_SIZE         = 0x1000
+    DEFINE SPI_NUM_BLOCKS         = 0x2000
+    DEFINE ROM3_FLASH_ENABLE      = TRUE
+# +===============================+
+# Section                           FD Offset   SPI Addr.   RAM Addr
+# +===============================+ 0x00000000  0xFF000000
+# |Unused             Size=0x20000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x0001FFFF  0xFF01FFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00020000  0xFF020000
+# |Embedded FW Sig    Size=0x1000 |
+    DEFINE FV_FW_SIG_OFFSET       = 0x00020000
+    DEFINE FV_FW_SIG_SIZE         = 0x00001000
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00020FFF  0xFF020FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00021000  0xFF021000
+# |Unused             Size=0x16000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00036FFF  0xFF036FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00037000  0xFF037000
+# |UEFI NVRAM         Size=0x20000|
+    DEFINE NVRAM_AREA_VAR_OFFSET  = 0x00037000
+    DEFINE NVRAM_AREA_VAR_SIZE    = 0x0000E000
+    DEFINE NVRAM_AREA_SIZE        = 0x00020000
+
+    DEFINE FTW_WORKING_OFFSET     = $(NVRAM_AREA_VAR_OFFSET) + $(NVRAM_AREA_VAR_SIZE)
+    DEFINE FTW_WORKING_SIZE       = $(SPI_BLOCK_SIZE)
+
+    DEFINE FTW_SPARE_OFFSET       = $(FTW_WORKING_OFFSET) + $(FTW_WORKING_SIZE)
+    DEFINE FTW_SPARE_SIZE         = $(NVRAM_AREA_SIZE) - $(NVRAM_AREA_VAR_SIZE) - $(FTW_WORKING_SIZE)
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00056FFF  0xFF056FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00057000  0xFF057000
+# |Unused              Size=0xb000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00061FFF  0xFF061FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00062000  0xFF062000
+# |PSP Dir1          Size=0x200000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x002C5FFF  0xFF2C5FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x002C6000  0xFF2C6000
+# |BIOS Dir1          Size=0x40000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00306FFF  0xFF306FFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00307000  0xFF307000
+# |PSP Dir2          Size=0x234000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x0053AFFF  0xFF53AFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x0053B000  0xFF53B000
+# |BIOS Dir2        Size=0x100000 |
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x0063AFFF  0xFF63AFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x0063B000  0xFF63B000
+# |FV.FvAdvanced      Size=0x90000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x006CAFFF  0xFF6CAFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x006CB000  0xFF6CB000
+# |FV.FvAdvancedSecurity   0x40000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x0070AFFF  0xFF70AFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x0070B000  0xFF70B000
+# |FV. FvOsBoot      Size=0x100000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x0080AFFF  0xFF80AFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x0080B000  0xFF80B000
+# |FV.FvUefiBoot     Size=0x2C0000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00ACAFFF  0xFFACAFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00ACB000  0xFFCAB000
+# |FV.FvSecurity     Size=0x010000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00ADAFFF  0xFFADAFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00ADB000  0xFFADB000
+# |FV.FvPostMemory   Size=0x040000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00B1AFFF  0xFFB1AFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00B1B000  0xFFB1B000
+# |FV.FvAdvancedPreMemory 0x1E5000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00CFFFFF  0xFFCFFFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x00D00000  0xFFD00000  0x76D00000
+# |FV.FvPreMemory    Size=0x300000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x00FFFFFF  0xFFFFFFFF  0x76FFFFFF
+    DEFINE BOOT_FV_BASE           = 0x76D00000
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x01000000
+# |Unused          Size=0x00100000|
+# |^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^| 0x010FFFFF
+# |vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv| 0x01100000
+# |Unused          Size=0x00F00000|
+# +===============================+ 0x01FFFFFF
+
+SET gEfiAmdAgesaPkgTokenSpaceGuid.PcdAgesaFlashNvStorageBlockSize   = $(SPI_BLOCK_SIZE)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress           = 0xFF800000
+SET gEfiAmdAgesaPkgTokenSpaceGuid.PcdAgesaFlashAreaBaseAddress      = gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+
+# SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageOffset           = 0x00000000
+# SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageSize             = 0x00040000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset   = $(NVRAM_AREA_VAR_OFFSET)
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    = $(NVRAM_AREA_VAR_SIZE)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingOffset = $(FTW_WORKING_OFFSET)
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize  = $(FTW_WORKING_SIZE)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset   = $(FTW_SPARE_OFFSET)
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize    = $(FTW_SPARE_SIZE)
+
+# FV offset and size assignment
+# FvSecurity
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset          = 0x00ACB000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            = 0x00010000
+# FvPostMemory
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset        = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize          = 0x00040000
+# FvAdvancedPreMemory
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryOffset = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize   = 0x001E5000
+# FvPreMemory
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset         = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemoryOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedPreMemorySize)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize           = 0x00300000
+
+# FvAdvanced
+!if $(ROM3_FLASH_ENABLE) == TRUE
+  # if ROM3 is enabled then continue the offset update
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize)
+!else
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = 0x0063B000
+!endif
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            = 0x00090000
+# FvAdvancedSecurity
+SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize)
+SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize   = 0x00040000
+# FvOsBoot
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset            = (gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset + gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              = 0x00100000
+# FvUefiBoot
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset          = (gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            = 0x002C0000
+
+SET gAmdMinBoardPkgTokenSpaceGuid.PcdBootFvBase = $(BOOT_FV_BASE)
+
+!if $(ROM3_FLASH_ENABLE) == TRUE
+  SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase           = $(ROM3_FLASH_BASE)
+  SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase   = (gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize)
+  SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase             = (gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase + gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize)
+  SET gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase           = (gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase + gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize)
+!endif

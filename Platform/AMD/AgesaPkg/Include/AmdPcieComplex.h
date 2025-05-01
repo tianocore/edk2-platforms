@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (C) 2008-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2008-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -47,6 +47,17 @@ typedef struct {
   IN       UINT32    Count;                          ///< Total count in this Ancillary data table
   IN       UINT32    Ovrd;                           ///< Ancillary data table address point to ANC_DATA_PARAM[]
 } ANC_DATA;
+
+/**
+ *  @brief Port parameter override enumerator.
+ *  @details This enumerator provides a parmeter type for platform topology override values.
+ *  If unused all ports will default to platform configurations.
+ */
+typedef enum {
+  PP_SLOT_NUM,                 /**< (__UINT16__) Specify a SLOT NUMBER value.
+                                *  @li Valid Values: __0-0xFFFF__
+                                */
+} DXIO_PORT_PARAM_TYPE;
 
 typedef struct {
   UINT16    ParamType;                 ///< This identifies a specific PHY parameter
@@ -429,4 +440,14 @@ typedef enum  {
   DxioGen5,                                               ///< Gen5
   MaxDxioGen                                              ///< Max Gen for boundary check
 } DXIO_LINK_SPEEDS;
+
+/**
+ * @brief  PCIe link initialization
+ * @details NOTE: UBM HFC hotplug types are identified during auto-discovery
+ */
+typedef enum {
+  DxioPortDisabled,                                           ///< Disable
+  DxioPortEnabled                                             ///< Enable
+} DXIO_PORT_ENABLE;
+
 #endif // AMD_PCIE_COMPLEX_H_

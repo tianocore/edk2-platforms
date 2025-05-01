@@ -1,0 +1,247 @@
+# TianoCore edk2-platforms GitHub Feature Request Template
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+name: 🚀 Feature Request
+description: Request a feature change
+title: "[Feature]: <title>"
+labels: ["type:feature-request", "state:needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        👋 Thanks for taking the time to help us improve our features!
+
+  - type: textarea
+    id: feature_overview
+    attributes:
+      label: Feature Overview
+      description: Provide a high-level summary of your feature request.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution_overview
+    attributes:
+      label: Solution Overview
+      description: Give a clear and concise description of what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives_considered
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternatives you've considered.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: packages_impacted
+    attributes:
+      label: What packages are impacted?
+      description: |
+        *Select all that apply*
+      multiple: true
+      options:
+        - All
+        - 96Boards/96Boards
+        - ADLINK/ComHpcAltPkg
+        - Drivers/ASIX/Asix
+        - Drivers/DisplayLink/DisplayLinkPkg
+        - Drivers/OpTee/OpteeRpmbPkg
+        - Drivers/OptionRomPkg
+        - Features/Ext4Pkg
+        - Features/Intel/AdvancedFeaturePkg
+        - Features/Intel/Debugging
+        - Features/Intel/Network
+        - Features/Intel/OutOfBandManagement
+        - Features/Intel/PlatformPayloadFeaturePkg
+        - Features/Intel/PowerManagement
+        - Features/Intel/SystemInformation
+        - Features/Intel/TemplateFeaturePkg
+        - Features/Intel/UserInterface
+        - Features/ManageabilityPkg
+        - Platform/AMD/AgesaModulePkg
+        - Platform/AMD/AgesaPkg
+        - Platform/AMD/AmdCbsPkg
+        - Platform/AMD/AmdCpmPkg
+        - Platform/AMD/AmdMinBoardPkg
+        - Platform/AMD/AmdPlatformPkg
+        - Platform/AMD/OverdriveBoard
+        - Platform/AMD/VanGoghBoard
+        - Platform/ARM/ARM
+        - Platform/ARM/JunoPkg
+        - Platform/ARM/MorelloPlatform
+        - Platform/ARM/N1SdpPlatform
+        - Platform/ARM/SgiPkg
+        - Platform/ARM/VExpressPkg
+        - Platform/Ampere/JadePkg
+        - Platform/Ampere/Tools
+        - Platform/BeagleBoard/BeagleBoardPkg
+        - Platform/Bosc/XiangshanSeriesPkg
+        - Platform/Hisilicon/D03
+        - Platform/Hisilicon/D05
+        - Platform/Hisilicon/D06
+        - Platform/Hisilicon/HiKey
+        - Platform/Hisilicon/HiKey960
+        - Platform/Intel/AlderlakeOpenBoardPkg
+        - Platform/Intel/BoardModulePkg
+        - Platform/Intel/CometlakeOpenBoardPkg
+        - Platform/Intel/KabylakeOpenBoardPkg
+        - Platform/Intel/MinPlatformPkg
+        - Platform/Intel/PurleyOpenBoardPkg
+        - Platform/Intel/QuarkPlatformPkg
+        - Platform/Intel/SimicsOpenBoardPkg
+        - Platform/Intel/TigerlakeOpenBoardPkg
+        - Platform/Intel/Vlv2TbltDevicePkg
+        - Platform/Intel/WhiskeylakeOpenBoardPkg
+        - Platform/Intel/WhitleyOpenBoardPkg
+        - Platform/LeMaker/CelloBoard
+        - Platform/Loongson/LoongArchQemuPkg
+        - Platform/Marvell/Armada70x0Db
+        - Platform/Marvell/Armada80x0Db
+        - Platform/Marvell/Cn913xDb
+        - Platform/Marvell/OdysseyPkg
+        - Platform/NXP/ConfigurationManagerPkg
+        - Platform/NXP/LS1043aRdbPkg
+        - Platform/NXP/LS1046aFrwyPkg
+        - Platform/NXP/LX2160aRdbPkg
+        - Platform/Phytium/DurianPkg
+        - Platform/Qemu/QemuOpenBoardPkg
+        - Platform/Qemu/SbsaQemu
+        - Platform/RISC-V/PlatformPkg
+        - Platform/RaspberryPi/RaspberryPi
+        - Platform/RaspberryPi/RPi3
+        - Platform/RaspberryPi/RPi4
+        - Platform/SiFive/U5SeriesPkg
+        - Platform/Socionext/DeveloperBox
+        - Platform/Socionext/SynQuacerEvalBoard
+        - Platform/SoftIron/Overdrive1000Board
+        - Platform/SolidRun/Armada80x0McBin
+        - Platform/SolidRun/Cn913xCEx7Eval
+        - Platform/Sophgo/Documents
+        - Platform/Sophgo/SG2042_EVB_Board
+        - Platform/StandaloneMm/PlatformStandaloneMmPkg
+        - Silicon/AMD/Styx
+        - Silicon/AMD/VanGoghBoard
+        - Silicon/ARM/NeoverseN1Soc
+        - Silicon/Ampere/AmpereAltraPkg
+        - Silicon/Ampere/AmpereSiliconPkg
+        - Silicon/Atmel/AtSha204a
+        - Silicon/Bosc/NanHuPkg
+        - Silicon/Broadcom/Bcm27xx
+        - Silicon/Broadcom/Bcm283x
+        - Silicon/Broadcom/Drivers
+        - Silicon/HiSilicon/Drivers
+        - Silicon/HiSilicon/Hi1610
+        - Silicon/HiSilicon/Hi1616
+        - Silicon/HiSilicon/Hi1620
+        - Silicon/HiSilicon/Hi3660
+        - Silicon/HiSilicon/Hi6220
+        - Silicon/HiSilicon/HisiPkg
+        - Silicon/Intel/AlderlakeSiliconPkg
+        - Silicon/Intel/CoffeelakeSiliconPkg
+        - Silicon/Intel/IntelSiliconPkg
+        - Silicon/Intel/KabylakeSiliconPkg
+        - Silicon/Intel/PurleyRefreshSiliconPkg
+        - Silicon/Intel/QuarkSocPkg
+        - Silicon/Intel/SimicsIch10Pkg
+        - Silicon/Intel/SimicsX58SktPkg
+        - Silicon/Intel/TigerlakeSiliconPkg
+        - Silicon/Intel/Tools
+        - Silicon/Intel/Vlv2DeviceRefCodePkg
+        - Silicon/Intel/WhitleySiliconPkg
+        - Silicon/Marvell/Applications
+        - Silicon/Marvell/Armada7k8k
+        - Silicon/Marvell/Documentation
+        - Silicon/Marvell/Drivers
+        - Silicon/Marvell/Library
+        - Silicon/Marvell/MarvellSiliconPkg
+        - Silicon/Marvell/OcteonTx
+        - Silicon/Marvell/OdysseyPkg
+        - Silicon/Maxim
+        - Silicon/NXP/Chassis2
+        - Silicon/NXP/Chassis3V2
+        - Silicon/NXP/LS1043A
+        - Silicon/NXP/LS1046A
+        - Silicon/NXP/LX2160A
+        - Silicon/NXP/NxpQoriqLs
+        - Silicon/Openmoko
+        - Silicon/Phytium/FT2000-4Pkg
+        - Silicon/Phytium/PhytiumCommonPkg
+        - Silicon/Qemu/SbsaQemu
+        - Silicon/RISC-V/ProcessorPkg
+        - Silicon/SiFive/SiFive
+        - Silicon/Socionext/SynQuacer
+        - Silicon/Sophgo/SG2042Pkg
+        - SiliconSynopsys/DesignWare
+        - Silicon/TexasInstruments/Omap35xxPkg
+        - Other
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **Urgency Key**
+        - 🟢 **Low**
+          - A minor enhancement
+          - It is not important to address this request in a specific time frame
+        - 🟡 **Medium**
+          - An important enhancement
+          - Will be prioritized above *low* requests in the normal course of development
+        - 🔥 **High**
+          - A critical enhancement with significant value
+          - Should be prioritized above *low* and *medium* requests
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is it to resolve this feature request?
+      multiple: false
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request_owner
+    attributes:
+      label: Are you going to implement the feature request?
+      description: Indicate if you are going to do the work to close this feature request.
+      multiple: false
+      options:
+        - I will implement the feature
+        - Someone else needs to implement the feature
+    validations:
+      required: true
+
+  - type: dropdown
+    id: needs_maintainer_feedback
+    attributes:
+      label: Do you need maintainer feedback?
+      description: Indicate if you would like a maintainer to provide feedback on this submission.
+      multiple: false
+      options:
+        - No maintainer feedback needed
+        - Maintainer feedback requested
+    validations:
+      required: true
+
+  - type: textarea
+    id: anything_else
+    attributes:
+      label: Anything else?
+      description: |
+        Links? References? Anything that will give us more context about the feature you are requesting.
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false

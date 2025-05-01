@@ -24,9 +24,11 @@
   OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
 !endif
   SUPPORTED_ARCHITECTURES        = AARCH64
-  BUILD_TARGETS                  = DEBUG|RELEASE
+  BUILD_TARGETS                  = DEBUG|NOOPT|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
+
+!include MdePkg/MdeLibs.dsc.inc
 
 # dsc.inc file can be used in case there are different variants/boards of Odyssey family.
 # Per-board additional components shall be defined in exclusive dsc.inc files.
@@ -35,13 +37,14 @@
 [LibraryClasses]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
 
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf # used by SpiNorDxe
 
   # USB Requirements
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf # used by UsbKbDxe
-  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
@@ -59,7 +62,7 @@
 [BuildOptions]
 # GCC will generate code that runs on processors as idicated by -march
 # Single = (append) allows flags appendixes coming from [BuildOptions] defined in specific INFs.
-  GCC:*_*_AARCH64_PLATFORM_FLAGS = -DPLAT=0xBF -march=armv8.2-a -fdiagnostics-color -fno-diagnostics-show-caret
+  GCC:*_*_AARCH64_PLATFORM_FLAGS = -DPLAT=0xBF -march=armv8.2-a -fdiagnostics-color
 ################################################################################
 #
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform
@@ -84,8 +87,6 @@
 
   # The size of volatile buffer. This buffer is used to store VOLATILE attribute variables.
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x00040000
-
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
 
   # Set ARM PCD: Odyssey: up to 80 Neoverse V2 cores (code named Demeter)
   # Used to setup secondary cores stacks and ACPI PPTT.
@@ -135,8 +136,9 @@
   #
 
   # UEFI is placed in RAM by bootloader
-  ArmPlatformPkg/PrePi/PeiUniCore.inf {
+  ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
+      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       # SoC specific implementation of ArmPlatformLib
       ArmPlatformLib|Silicon/Marvell/OdysseyPkg/Library/OdysseyLib/OdysseyLib.inf
   }
@@ -154,7 +156,11 @@
       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
       NULL|MdeModulePkg/Library/DxeCrc32GuidedSectionExtractLib/DxeCrc32GuidedSectionExtractLib.inf
   }
-  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+
+  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  }
 
   #
   # DXE Status codes
@@ -205,7 +211,7 @@
   #
   # ARM Support
   #
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   #

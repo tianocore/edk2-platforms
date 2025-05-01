@@ -23,17 +23,11 @@
 
 /Features/Ext4Pkg/** @mhaeuser
 
-# Hisilicon
-# Add Wenyi Xie
-/Platform/Hisilicon/** @ardbiesheuvel
-/Silicon/Hisilicon/** @ardbiesheuvel
-
 /Features/Intel/** @lgao4
 /Features/Intel/Debugging/** @lgao4
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @lgao4
 /Features/Intel/UserInterface/** @lgao4
 
-/Platform/Intel/QuarkPlatformPkg/** @nate-desimone
 /Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone
 /Platform/Intel/BoardModulePkg/** @lgao4
 /Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot5
@@ -42,17 +36,16 @@
 /Platform/Intel/CometlakeOpenBoardPkg/** @dkethire @kesakkit
 # Add Heng Luo
 # /Platform/Intel/TigerlakeOpenBoardPkg/**
-/Platform/Intel/AlderlakeOpenBoardPkg/** @rbitw @SaloniKasbekar
+/Platform/Intel/AlderlakeOpenBoardPkg/** @SaloniKasbekar
 /Platform/Intel/Tools/** @YuweiChen1110
 
 /Silicon/Intel/IntelSiliconPkg/** @AshrafAliS
-/Silicon/Intel/QuarkSocPkg/** @nate-desimone
 /Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone
 
 # Add Heng Luo
 # /Silicon/Intel/TigerlakeSiliconPkg/**
 
-/Silicon/Intel/AlderlakeSiliconPkg/** @rbitw @SaloniKasbekar
+/Silicon/Intel/AlderlakeSiliconPkg/** @SaloniKasbekar
 
 /Silicon/Intel/Tools/** @YuweiChen1110
 

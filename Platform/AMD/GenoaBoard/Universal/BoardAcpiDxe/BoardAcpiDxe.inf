@@ -1,0 +1,62 @@
+## @file
+# BoardAcpiDxe friver to install common ACPI tables.
+#
+# Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = BoardAcpiDxe
+  FILE_GUID                      = ADA70EED-1CB6-4A69-B136-12E395ED2FC5
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InstallAcpiBoard
+
+[Sources.common]
+  BoardAcpiDxe.c
+  Dsdt/Dsdt.asl
+  Dsdt/PciSsdt.asl
+  Dsdt/AmdPci.asi
+
+[Packages]
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  BoardAcpiTableLib
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                     ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart0Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart1Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart2Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart3Irq
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiFirmwareVolume2ProtocolGuid
+
+[BuildOptions.common]
+  #
+  # Specify the addtinoal directories for IASL compiler to serach FchSongshanI2C_I3C.asl from either /AGESA/AgesaModulePkg or /edk2-platforms/Platform/AMD.
+  # /AGESA/AgesaModulePkg has the higher priority to search if this driver is built with AGESA PI release, otherwise the driver is build with opensource AGESA.
+  #
+  MSFT:*_*_*_ASL_FLAGS = -I$(WORKSPACE)/AGESA/AgesaModulePkg/Fch/Songshan/FchSongshanDxe -I$(WORKSPACE)/edk2-platforms/Platform/AMD/AgesaModulePkg/Fch/Songshan/FchSongshanDxe
+  GCC:*_*_*_ASL_FLAGS  = -I$(WORKSPACE)/AGESA/AgesaModulePkg/Fch/Songshan/FchSongshanDxe -I$(WORKSPACE)/edk2-platforms/Platform/AMD/AgesaModulePkg/Fch/Songshan/FchSongshanDxe

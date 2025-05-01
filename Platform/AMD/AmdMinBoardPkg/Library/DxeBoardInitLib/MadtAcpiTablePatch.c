@@ -1,7 +1,7 @@
 /** @file
   This file patches the ACPI MADT table for AMD specific values.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -92,6 +92,23 @@ SortByCcd (
   }
 
   return 0;
+}
+
+/**
+  Function that determines whether SMT is enabled or disabled
+  based on CPU register values
+
+  @retval         TRUE     SMT Enabled
+  @retval         FALSE    SMT Disabled
+
+**/
+BOOLEAN
+IsSmtEnabled (VOID) {
+  UINT32    RegEbx = 0;
+
+  // Get SMT enable/disable info from CPUIDx8000001E_EBX[15:8]: 0 SMT off, 1 SMT on
+  AsmCpuid (0x8000001E, NULL, &RegEbx, NULL, NULL);
+  return ((BOOLEAN) (((RegEbx >> 8) & 0xFF) != 0));
 }
 
 /**
@@ -201,41 +218,42 @@ MadtAcpiTablePatch (
       SortedItem->AcpiProcessorUid = Index;
     }
 
-    // Now separate the second thread list
-    SortedItem = LocalX2ApicPtr + 1;
-    if ((SortedItem->X2ApicId & 0x1) == 0x1) {
-      // It has multi-thread on
-      SortedItem = NULL;
-      SortedItem = AllocateZeroPool (sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
-      if (SortedItem == NULL) {
-        return EFI_OUT_OF_RESOURCES;
-      }
-
-      Src = LocalX2ApicPtr;
-      Dst = SortedItem;
-      for (Index = 0; Index < LapicCount; Index++) {
-        if ((Src->X2ApicId & 0x1) == 0) {
-          CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
-          Src++;
-          Dst++;
-        } else {
-          Src++;
+    if (IsSmtEnabled()) {
+      // Now separate the second thread list
+      SortedItem = LocalX2ApicPtr + 1;
+      if ((SortedItem->X2ApicId & 0x1) == 0x1) {
+        // It has multi-thread on
+        SortedItem = NULL;
+        SortedItem = AllocateZeroPool (sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
+        if (SortedItem == NULL) {
+          return EFI_OUT_OF_RESOURCES;
         }
-      }
 
-      Src = LocalX2ApicPtr;
-      for (Index = 0; Index < LapicCount; Index++) {
-        if ((Src->X2ApicId & 0x1) == 1) {
-          CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
-          Src++;
-          Dst++;
-        } else {
-          Src++;
+        Src = LocalX2ApicPtr;
+        Dst = SortedItem;
+        for (Index = 0; Index < LapicCount; Index++) {
+          if ((Src->X2ApicId & 0x1) == 0) {
+            CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
+            Src++;
+            Dst++;
+          } else {
+            Src++;
+          }
         }
-      }
 
-      CopyMem (LocalX2ApicPtr, SortedItem, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
-      FreePool (SortedItem);
+        Src = LocalX2ApicPtr;
+        for (Index = 0; Index < LapicCount; Index++) {
+          if ((Src->X2ApicId & 0x1) == 1) {
+            CopyMem (Dst, Src, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE));
+            Src++;
+            Dst++;
+          } else {
+            Src++;
+          }
+        }
+        CopyMem (LocalX2ApicPtr, SortedItem, sizeof (EFI_ACPI_6_5_PROCESSOR_LOCAL_X2APIC_STRUCTURE) * LapicCount);
+        FreePool (SortedItem);
+      }
     }
   }
 

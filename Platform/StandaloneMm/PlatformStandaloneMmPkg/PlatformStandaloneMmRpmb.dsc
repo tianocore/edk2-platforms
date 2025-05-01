@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018, ARM Limited. All rights reserved.
+#  Copyright (c) 2018-2024, Arm Limited. All rights reserved.
 #  Copyright (c) 2020, Linaro Ltd. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -30,8 +30,10 @@
 #
 ################################################################################
 [LibraryClasses]
-  ArmSvcLib|ArmPkg/Library/ArmSvcLib/ArmSvcLib.inf
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaStandaloneMmLib.inf
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
@@ -56,16 +58,23 @@
   #
   # Entry point
   #
-  StandaloneMmCoreEntryPoint|StandaloneMmPkg/Library/StandaloneMmCoreEntryPoint/StandaloneMmCoreEntryPoint.inf
+  StandaloneMmCoreEntryPoint|ArmPkg/Library/ArmStandaloneMmCoreEntryPoint/ArmStandaloneMmCoreEntryPoint.inf
   StandaloneMmDriverEntryPoint|MdePkg/Library/StandaloneMmDriverEntryPoint/StandaloneMmDriverEntryPoint.inf
 
   StandaloneMmMmuLib|ArmPkg/Library/StandaloneMmMmuLib/ArmMmuStandaloneMmLib.inf
   CacheMaintenanceLib|MdePkg/Library/BaseCacheMaintenanceLibNull/BaseCacheMaintenanceLibNull.inf
+  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
+  PeCoffGetEntryPointLib|MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
   PeCoffExtraActionLib|StandaloneMmPkg/Library/StandaloneMmPeCoffExtraActionLib/StandaloneMmPeCoffExtraActionLib.inf
   RngLib|MdePkg/Library/BaseRngLibNull/BaseRngLibNull.inf
 
   SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
   DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+
+[LibraryClasses.common.MM_CORE_STANDALONE]
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaStandaloneMmCoreLib.inf
+  ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
+  HobLib|StandaloneMmPkg/Library/StandaloneMmCoreHobLib/StandaloneMmCoreHobLib.inf
 
 [LibraryClasses.common.MM_STANDALONE]
   HobLib|StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
@@ -84,9 +93,6 @@
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform
 #
 ################################################################################
-[PcdsFeatureFlag.common]
-  gArmTokenSpaceGuid.PcdFfaEnable|TRUE
-
 [PcdsFixedAtBuild]
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800000CF
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xff
@@ -102,6 +108,14 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x00004000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x00004000
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x00004000
+
+  gArmTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
+
+  # The BFV is not located in the Flash area but is loaded in the RAM
+  # by optee's stmm_sp.c instead, therefore no shadow copy is needed.
+  # So disable shadow copy of boot firmware volume while loading StMM drivers.
+  #
+  gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
 
 [PcdsPatchableInModule]
   # Allocated memory for EDK2 uppers layers
@@ -133,7 +147,7 @@
   #
   Drivers/OpTee/OpteeRpmbPkg/OpTeeRpmbFv.inf
   StandaloneMmPkg/Core/StandaloneMmCore.inf
-  StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
+  ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf {
     <LibraryClasses>
       NULL|Drivers/OpTee/OpteeRpmbPkg/FixupPcd.inf

@@ -125,17 +125,17 @@ FdtFixup(
   IN VOID *FdtAddr
   )
 {
-  EFI_STATUS Status = EFI_SUCCESS;
+  EFI_STATUS Status;
 
   if (FeaturePcdGet(PcdFixupFdt)) {
-    Status |= DeleteFdtNode (FdtAddr, (CHAR8*)PcdGetPtr (PcdFdtConfigRootNode), NULL);
+    Status = DeleteFdtNode (FdtAddr, (CHAR8*)PcdGetPtr (PcdFdtConfigRootNode), NULL);
 
     // Hide the RTC
     Status |= DeleteRtcNode (FdtAddr);
-  }
 
-  if (!EFI_ERROR(Status)) {
-    fdt_pack(FdtAddr);
+    if (!EFI_ERROR(Status)) {
+      fdt_pack(FdtAddr);
+    }
   }
 
   return EFI_SUCCESS;
@@ -223,6 +223,7 @@ FdtPlatformEntryPoint (
   //
   GuidHob = GetNextGuidHob (&gFdtHobGuid, HobList);
   if (GuidHob != NULL) {
+    Status = EFI_SUCCESS;
     mFdtBlobBase = (VOID *)*(UINT64 *)(GET_GUID_HOB_DATA (GuidHob));
     FdtBlobSize = fdt_totalsize((VOID *)mFdtBlobBase);
 
@@ -234,22 +235,18 @@ FdtPlatformEntryPoint (
         DEBUG ((DEBUG_ERROR, "InstallFdt() - FDT blob seems to be corrupt\n"));
         mFdtBlobBase = NULL;
         Status = EFI_LOAD_ERROR;
-        goto Error;
     }
   } else {
     Status = EFI_NOT_FOUND;
-    goto Error;
   }
 
   //
   // Install the Device Tree from its expected location
   //
-  if (FeaturePcdGet(PcdPublishFdt)) {
+  if (!EFI_ERROR (Status) && FeaturePcdGet(PcdPublishFdt)) {
     Status = InstallFdt (FdtBlobSize);
+    ASSERT_EFI_ERROR(Status);
   }
 
-  ASSERT_EFI_ERROR(Status);
-
-Error:
   return Status;
 }

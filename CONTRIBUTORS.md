@@ -28,7 +28,6 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Eric Dong              | eric.dong@intel.com              | [@ydong10](https://github.com/ydong10)               |
 | Eric Xing              | eric.xing@amd.com                | [@exinghr](https://github.com/exinghr)               |
 | Graeme Gregory         | graeme@xora.org.uk               |                                                      |
-| Heng Luo               | heng.luo@intel.com               |                                                      |
 | Igniculus Fu           | igniculus.fu@amd.com             | [@fhh200000](https://github.com/fhh200000)           |
 | Ilias Apalodimas       | ilias.apalodimas@linaro.org      | [@apalos](https://github.com/apalos)                 |
 | Jeremy Linton          | jeremy.linton@arm.com            | [@jlinton](https://github.com/jlinton)               |
@@ -44,6 +43,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Meenakshi Aggarwal     | meenakshi.aggarwal@nxp.com       | [@Meenakshi88](https://github.com/Meenakshi88)       |
 | meng-cz                | mengcz1126@gmail.com             | [@meng-cz](https://github.com/meng-cz)               |
 | Michael D Kinney       | michael.d.kinney@intel.com       | [@mdkinney](https://github.com/mdkinney)             |
+| Michal Šimek           | michal.simek@amd.com             | [@michalsimek](https://github.com/michalsimek)       |
 | Narinder Dhillon       | ndhillon@marvell.com             | [@ndhillonm](https://github.com/ndhillonm)           |
 | Nate DeSimone          | nathaniel.l.desimone@intel.com   | [@nate-desimone](https://github.com/nate-desimone)   |
 | Nhi Pham               | nhi@os.amperecomputing.com       | [@nhivp](https://github.com/nhivp)                   |
@@ -54,7 +54,6 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Ran Wang               | wangran@bosc.ac.cn               |                                                      |
 | Ray Ni                 | ray.ni@intel.com                 | [@niruiyu](https://github.com/niruiyu)               |
 | Rebecca Cran           | rebecca@os.amperecomputing.com   | [@bexcran](https://github.com/bexcran)               |
-| Rosen Chuang           | rosen.chuang@intel.com           | [@rbitw](https://github.com/rbitw)                   |
 | Sai Chaganty           | rangasai.v.chaganty@intel.com    | [@SaiChaganty](https://github.com/SaiChaganty)       |
 | Saloni Kasbekar        | saloni.kasbekar@intel.com        | [@SaloniKasbekar](https://github.com/SaloniKasbekar) |
 | Sami Mujawar           | sami.mujawar@arm.com             | [@samimujawar](https://github.com/samimujawar)       |

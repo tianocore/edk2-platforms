@@ -1,0 +1,49 @@
+#/** @file
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = ArasanMMCHost
+  FILE_GUID                      = 1448E2EA-337A-48DB-BAD7-0D6A62B6BD38
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = MMCInitialize
+
+[Sources.common]
+  ArasanMmcHostDxe.h
+  ArasanMmcHostDxe.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/AMD/Xilinx/CommonPkg/CommonPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  IoLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEmbeddedMmcHostProtocolGuid  ## PRODUCES
+
+[FixedPcd]
+  gXilinxTokenSpaceGuid.PcdSdhciBase
+  gXilinxTokenSpaceGuid.PcdEnableMmcWPDetection
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterCmdSend
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterResponseReceive
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataWrite
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataRead
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterRegisterWrite
+  gXilinxTokenSpaceGuid.PcdMmcStallAfterRetry
+
+[Depex]
+  TRUE

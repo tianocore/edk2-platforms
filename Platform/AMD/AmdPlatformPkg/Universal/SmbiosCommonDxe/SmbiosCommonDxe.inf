@@ -1,10 +1,9 @@
 ## @file
 #  AMD common SMBIOS DXE library Description File
 #
-#  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-##
+#
 
 [Defines]
   INF_VERSION                    = 0x00010005
@@ -30,11 +29,13 @@
   Type12SystemCfgOptionsFunction.c
   Type13BiosLanguageInfoFunction.c
   Type41OnboardDevExtInfoFunction.c
+  DefaultLomDevicePath.c
 
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
+  BoardModulePkg/BoardModulePkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -47,11 +48,13 @@
   UefiDriverEntryPoint
   UefiLib
   PlatformSocLib
+  PciSegmentLib
 
 [Protocols]
   gEfiSmbiosProtocolGuid                       ## PROTOCOL ALWAYS_CONSUMED
   gEfiPciEnumerationCompleteProtocolGuid       ## CONSUMES
   gEfiPciIoProtocolGuid                        ## CONSUMES
+  gBoardBdsBootFromDevicePathProtocolGuid      ## PRODUCES
 
 [Pcd]
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType8                       ## CONSUMES

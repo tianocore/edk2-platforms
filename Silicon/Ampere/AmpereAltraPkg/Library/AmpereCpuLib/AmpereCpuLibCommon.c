@@ -165,10 +165,6 @@ CpuGetMaxFreq (
   PlatformHob = GetPlatformHob ();
   ASSERT (PlatformHob != NULL);
 
-  if (PlatformHob->TurboCapability[Socket]) {
-    return PlatformHob->TurboFrequency[Socket];
-  }
-
   return PlatformHob->CpuClk;
 }
 

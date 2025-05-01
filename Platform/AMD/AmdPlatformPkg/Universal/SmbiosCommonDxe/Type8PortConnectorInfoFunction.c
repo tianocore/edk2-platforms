@@ -1,9 +1,9 @@
 /** @file
   AMD SMBIOS Type 8 Record
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 #include <Pcd/SmbiosPcd.h>
 #include "SmbiosCommon.h"
@@ -53,18 +53,18 @@ PortConnectorInfoFunction (
     DEBUG ((DEBUG_MANAGEABILITY, "Port %d:\n", PortIdx));
     // Check whether Port connector designator strings are present or not.
     if (PortConnRecord->Type8Data.InternalReferenceDesignator != 0) {
-      IntPortConDesStr    = PortConnRecord->DesinatorStr.IntDesignatorStr;
+      IntPortConDesStr    = PortConnRecord->Designator.IntDesignatorStr;
       IntPortConDesStrLen = AsciiStrLen (IntPortConDesStr) + 1;
-      DEBUG ((DEBUG_MANAGEABILITY, "-- DesinatorStr.IntDesignatorStr = %a\n", IntPortConDesStr));
+      DEBUG ((DEBUG_MANAGEABILITY, "-- Designator.IntDesignatorStr = %a\n", IntPortConDesStr));
     } else {
       IntPortConDesStr    = NULL;
       IntPortConDesStrLen = 0;
     }
 
     if (PortConnRecord->Type8Data.ExternalReferenceDesignator != 0) {
-      ExtPortConDesStr    = PortConnRecord->DesinatorStr.ExtDesignatorStr;
+      ExtPortConDesStr    = PortConnRecord->Designator.ExtDesignatorStr;
       ExtPortConDesStrLen = AsciiStrLen (ExtPortConDesStr) + 1;
-      DEBUG ((DEBUG_MANAGEABILITY, "-- DesinatorStr.ExtDesignatorStr = %a\n", ExtPortConDesStr));
+      DEBUG ((DEBUG_MANAGEABILITY, "-- Designator.ExtDesignatorStr = %a\n", ExtPortConDesStr));
     } else {
       ExtPortConDesStr    = NULL;
       ExtPortConDesStrLen = 0;

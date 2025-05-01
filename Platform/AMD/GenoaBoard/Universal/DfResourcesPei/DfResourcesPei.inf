@@ -1,0 +1,34 @@
+### @file
+# Component information file for Pre-defined Data Fabric resources module.
+# Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = DfResourcesPei
+  FILE_GUID                      = E215DB0C-CD25-450D-8A74-87D4CCB107A0
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PeiDfResourcesInit
+
+[Sources]
+  DfResourcesPei.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaModuleNbioPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseFabricTopologyLib
+  PcdLib
+  PeimEntryPoint
+  PeiServicesLib
+
+[Pcd]
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFabricResourceDefaultSizePtr
+
+[Depex]
+  TRUE

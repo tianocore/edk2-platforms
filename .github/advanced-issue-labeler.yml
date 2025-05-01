@@ -1,0 +1,52 @@
+# Defines the mappings between GitHub issue responses and labels applied to the issue.
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+# For more information, see:
+# https://github.com/redhat-plumbers-in-action/advanced-issue-labeler
+
+policy:
+  - section:
+
+    # Issue Template - Urgency Dropdown
+    - id: ['urgency']
+      block-list: []
+      label:
+        - name: 'priority:low'
+          keys: ['Low']
+        - name: 'priority:medium'
+          keys: ['Medium']
+        - name: 'priority:high'
+          keys: ['High']
+
+    # Issue Template - Code First
+    - id: ['code_first']
+      block-list: []
+      label:
+        - name: 'type:code-first'
+          keys: ['Yes']
+
+    # Issue Template - Fix Owner Dropdown
+    - id: ['fix_owner', 'request_owner']
+      block-list: []
+      label:
+        - name: 'state:needs-owner'
+          keys: [
+            'Someone else needs to fix it',
+            'Someone else needs to make the change',
+            'Someone else needs to implement the feature'
+            ]
+        - name: 'state:needs-triage'
+          keys: [
+            'Someone else needs to fix it',
+            'Someone else needs to make the change',
+            'Someone else needs to implement the feature'
+            ]
+
+    # Issue Template - Needs Maintainer Feedback Dropdown
+    - id: ['needs_maintainer_feedback']
+      block-list: []
+      label:
+        - name: 'state:needs-maintainer-feedback'
+          keys: ['Maintainer feedback requested']

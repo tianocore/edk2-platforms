@@ -1,13 +1,13 @@
 /** @file
 
-  Copyright (C) 2020-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2020-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef _INTERNAL_AML_OBJECTS_H_
-#define _INTERNAL_AML_OBJECTS_H_
+#ifndef INTERNAL_AML_OBJECTS_H_
+#define INTERNAL_AML_OBJECTS_H_
 
 // #include "LocalAmlLib.h"
 
@@ -147,4 +147,4 @@ InternalAmlCollapseAndReleaseChildren (
   IN OUT  LIST_ENTRY        *ListHead
   );
 
-#endif // _INTERNAL_AML_OBJECTS_H_
+#endif // INTERNAL_AML_OBJECTS_H_

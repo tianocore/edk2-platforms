@@ -1,7 +1,7 @@
 /** @file
   This file contains definitions required for memory initialization in PEI phase.
 
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 

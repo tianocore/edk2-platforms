@@ -39,4 +39,8 @@
   gNxpQoriqLsTokenSpaceGuid.PcdPcieLutBase|0x10000
   gNxpQoriqLsTokenSpaceGuid.PcdPcieLutDbg|0x7FC
   gNxpQoriqLsTokenSpaceGuid.PcdSerDesLanes|0x4
+
+[Components.common]
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV2Dxe.inf
+
 ##

@@ -30,7 +30,7 @@
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmPlatformSysConfigLib|Platform/ARM/VExpressPkg/Library/ArmVExpressSysConfigLib/ArmVExpressSysConfigLib.inf
   ArmPlatformLib|Platform/ARM/SgiPkg/Library/PlatformLib/PlatformLib.inf
   BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
@@ -82,7 +82,6 @@
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
   PciHostBridgeLib|Platform/ARM/SgiPkg/Library/PciHostBridgeLib/PciHostBridgeLib.inf
   PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
   PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
@@ -114,7 +113,6 @@
 !endif
 
 [PcdsFixedAtBuild.common]
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
 
   # DRAM Block2 Base and Size
@@ -236,7 +234,10 @@
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
-  Platform/ARM/SgiPkg/Library/SgiPlatformPei/SgiPlatformPei.inf
+  Platform/ARM/SgiPkg/Library/SgiPlatformPei/SgiPlatformPei.inf {
+    <LibraryClasses>
+      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+  }
 
   #
   # DXE
@@ -252,7 +253,7 @@
   # Architectural Protocols
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 !if $(ENABLE_GOP) == TRUE

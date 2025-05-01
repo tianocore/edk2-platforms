@@ -44,7 +44,7 @@
 
   Copyright (c) 2007 - 2018, Intel Corporation. All rights reserved.<BR>
   Copyright (C) 2016, Red Hat, Inc.<BR>
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

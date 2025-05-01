@@ -1,9 +1,9 @@
 /** @file
   Header file of AMD SMM SPI host controller state protocol
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
-
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
 #ifndef AMD_SMM_SPI_HC_STATE_PROTOCOL_H_

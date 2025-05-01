@@ -15,14 +15,12 @@
 /Platform/AMD/AmdCbsPkg/**      @abdattar @changab @pbgrimes
 /Platform/AMD/AmdCpmPkg/**      @abdattar @changab @pbgrimes
 
-# AMD Seattle platforms
-/Platform/AMD/OverdriveBoard/** @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
-/Silicon/AMD/Styx/**            @abdattar @ardbiesheuvel @changab @leiflindholm @pbgrimes
-/Platform/LeMaker/CelloBoard/** @ardbiesheuvel @leiflindholm
-/Platform/SoftIron/             @ardbiesheuvel @leiflindholm
-
 # AMD VanGoghBoard
 /Platform/AMD/VanGoghBoard/** @abdattar @changab @exinghr @pbgrimes
+
+# Xilinx
+/Silicon/AMD/Xilinx/** @michalsimek
+/Platform/AMD/XilinxBoard/** @michalsimek
 
 # Ampere Computing
 /Platform/Ampere/** @nhivp @bexcran @chuongtranle
@@ -46,10 +44,6 @@
 
 /Features/Ext4Pkg/** @heatd
 
-# HiSilicon
-/Platform/Hisilicon/** @leiflindholm
-/Silicon/Hisilicon/** @leiflindholm
-
 /Features/Intel/** @nate-desimone @SaiChaganty
 /Features/Intel/Debugging/** @nate-desimone @SaiChaganty @ydong10
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty
@@ -58,7 +52,6 @@
 /Features/ManageabilityPkg/** @changab
 
 /Platform/Intel/** @nate-desimone @SaiChaganty
-/Platform/Intel/QuarkPlatformPkg/** @mdkinney @nate-desimone @SaiChaganty
 /Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone @SaiChaganty @yqian4
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
 /Platform/Intel/KabylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
@@ -76,7 +69,6 @@
 
 /Silicon/Intel/** @nate-desimone @SaiChaganty
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
-/Silicon/Intel/QuarkSocPkg/** @mdkinney @nate-desimone @SaiChaganty
 /Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone @SaiChaganty @yqian4
 /Silicon/Intel/CoffeelakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/KabylakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
@@ -117,8 +109,8 @@
 /Platform/Qemu/QemuOpenBoardPkg/** @heatd
 
 # QEMU sbsa-ref platform
-/Platform/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
-/Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @hrw @leiflindholm
+/Platform/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
+/Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
 
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm
@@ -130,11 +122,6 @@
 /Platform/RISC-V/PlatformPkg/** @vlsunil
 
 /Platform/SiFive/U5SeriesPkg/** @JohnAZoidberg
-
-# Socionext platforms and silicon
-/Platform/Socionext/** @ardbiesheuvel @leiflindholm
-/Silicon/NXP/Library/Pcf8563RealTimeClockLib/** @ardbiesheuvel @leiflindholm
-/Silicon/Socionext/** @ardbiesheuvel @leiflindholm
 
 /Silicon/RISC-V/ProcessorPkg/** @vlsunil
 

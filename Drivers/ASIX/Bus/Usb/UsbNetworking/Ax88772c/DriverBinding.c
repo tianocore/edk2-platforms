@@ -58,7 +58,7 @@ DriverSupported (
       //  Validate the adapter
       //
       if (VENDOR_ID == Device.IdVendor) {
-        if (PRODUCT_AX88772B_ID != Device.IdProduct) {
+        if (PRODUCT_AX88772B_ID == Device.IdProduct) {
         } else if (PRODUCT_AX88772B_ASUS_ID == Device.IdProduct) {
         } else if (PRODUCT_AX88772A_ID == Device.IdProduct) {
         } else if (PRODUCT_ID == Device.IdProduct) {

@@ -1,0 +1,20 @@
+## @file
+#
+#  Copyright (C) 2016-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION     = 0x00010005
+  PACKAGE_NAME          = AgesaRasPkg
+  PACKAGE_GUID          = B517CFC7-446E-A818-5FB9-C985575EA47B
+  PACKAGE_VERSION       = 0.2
+
+[Includes]
+  Include/
+  Include/Library/
+
+[Protocols]
+  gAmdRasInitDataProtocolGuid           = {0x3C6ED57C, 0x4F6A, 0x8A58, {0x85, 0xDF, 0xDC, 0xA5, 0xAD, 0xF0, 0xF1, 0x6B}}

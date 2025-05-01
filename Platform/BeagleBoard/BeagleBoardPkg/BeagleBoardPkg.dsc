@@ -31,7 +31,7 @@
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/BeagleBoard/BeagleBoardPkg/Library/BeagleBoardLib/BeagleBoardLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
 
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
   UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
@@ -115,11 +115,8 @@
   DebugAgentTimerLib|Silicon/TexasInstruments/Omap35xxPkg/Library/DebugAgentTimerLib/DebugAgentTimerLib.inf
 
   GdbSerialLib|Silicon/TexasInstruments/Omap35xxPkg/Library/GdbSerialLib/GdbSerialLib.inf
-  ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
   DebugAgentLib|MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
   DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
-
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
 
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   PlatformBootManagerLib|ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
@@ -211,9 +208,6 @@
   gEfiMdePkgTokenSpaceGuid.PcdComponentName2Disable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdDriverDiagnostics2Disable|TRUE
 
-  # Use the Vector Table location in CpuDxe. We will not copy the Vector Table at PcdCpuVectorBaseAddress
-  gArmTokenSpaceGuid.PcdRelocateVectorTable|FALSE
-
   gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob|TRUE
   gArmTokenSpaceGuid.PcdCpuDxeProduceDebugSupport|FALSE
 
@@ -304,7 +298,6 @@
   # Size of the region used by UEFI in permanent memory (Reserved 16MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x01000000
 
-  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x80008000
   gArmTokenSpaceGuid.PcdCpuResetAddress|0x80008000
 
   gEmbeddedTokenSpaceGuid.PcdTimerPeriod|100000

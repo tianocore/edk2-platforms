@@ -2,7 +2,7 @@
   AMD Platform SoC Library.
   Provides interface to Get/Set platform specific data.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -18,12 +18,6 @@
 #define PCIE_MAX_FUNCTIONS  8
 #define PCIE_MAX_DEVICES    32
 #define PCIE_MAX_ROOTPORT   (PCIE_MAX_DEVICES * PCIE_MAX_FUNCTIONS)
-
-#define F1A_BRH_A0_RAW_ID   0x00B00F00ul
-#define F1A_BRH_B0_RAW_ID   0x00B00F10ul
-#define F1A_BRH_B1_RAW_ID   0x00B00F11ul
-#define F1A_BRHD_A0_RAW_ID  0x00B10F00ul
-#define F1A_BRHD_B0_RAW_ID  0x00B10F10ul
 
 typedef struct {
   UINTN      Index;

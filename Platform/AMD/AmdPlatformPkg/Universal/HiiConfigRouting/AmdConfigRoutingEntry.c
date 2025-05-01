@@ -2,7 +2,7 @@
   AMD implementation of interface functions for EFI_HII_CONFIG_ROUTING_PROTOCOL.
   This module overrides BlockToConfig and ConfigToBlock for the better performance.
 
-  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 

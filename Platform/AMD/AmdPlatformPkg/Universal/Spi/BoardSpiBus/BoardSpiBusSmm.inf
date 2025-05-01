@@ -1,0 +1,44 @@
+#/** @file
+#
+#  Component description file for SpiFvbDxe module
+#
+#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = BoardSpiBusSmm
+  FILE_GUID                 = A9B5FA1E-6CC1-424E-A5DC-D45C4384B44F
+  MODULE_TYPE               = DXE_SMM_DRIVER
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = BoardSpiBusEntry
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  SmmServicesTableLib
+  UefiDriverEntryPoint
+
+[Sources]
+  BoardSpiBusSmm.c
+  BoardSpiBus.c
+  BoardSpiBus.h
+  BoardSpiBusInstance.h
+
+[Protocols]
+  gEfiSpiSmmConfigurationProtocolGuid                           ## CONSUMES
+  gEfiSpiSmmHcProtocolGuid                                      ## CONSUMES
+
+[Guids]
+
+[Depex]
+  gEfiSpiSmmConfigurationProtocolGuid AND
+  gEfiSpiSmmHcProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  BoardSpiBusExtra.uni

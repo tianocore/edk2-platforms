@@ -2,7 +2,7 @@
   Header file for BDS Hook Library
 
   Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -68,13 +68,28 @@
 #define STD_ERROR    0x00000002
 #define CONSOLE_IN   0x00000004
 #define CONSOLE_ALL  (CONSOLE_OUT | CONSOLE_IN | STD_ERROR)
-#define END_ENTIRE_DEVICE_PATH \
-  { \
-    END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { END_DEVICE_PATH_LENGTH, 0 } \
-  }
 
 extern EFI_GUID       gUefiShellFileGuid;
 extern EFI_BOOT_MODE  gBootMode;
+
+#define gPciRootBridge \
+  { \
+    { \
+      ACPI_DEVICE_PATH, \
+      ACPI_DP, \
+      { \
+        (UINT8) (sizeof (ACPI_HID_DEVICE_PATH)), \
+        (UINT8) ((sizeof (ACPI_HID_DEVICE_PATH)) >> 8) \
+      }, \
+    }, \
+    EISA_PNP_ID (0x0A03), \
+    0 \
+  }
+
+#define gEndEntire \
+  { \
+    END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { END_DEVICE_PATH_LENGTH, 0 } \
+  }
 
 typedef struct {
   EFI_DEVICE_PATH_PROTOCOL    *DevicePath;

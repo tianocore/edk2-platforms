@@ -30,6 +30,7 @@
 
 [LibraryClasses]
   ArmSvcLib
+  ArmFfaLib
   BaseLib
   BaseMemoryLib
   DebugLib

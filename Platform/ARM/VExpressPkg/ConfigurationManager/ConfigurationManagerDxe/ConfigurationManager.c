@@ -231,7 +231,9 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     FixedPcdGet32 (PL011UartInterrupt),                       // Interrupt
     FixedPcdGet64 (PcdUartDefaultBaudRate),                   // BaudRate
     FixedPcdGet32 (PL011UartClkInHz),                         // Clock
-    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART   // Port subtype
+    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART,  // Port subtype
+    0x1000,                                                   // Address length
+    EFI_ACPI_6_3_DWORD,                                       // Access size
   },
   // Debug Serial Port
   {
@@ -239,7 +241,9 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     38,                                                       // Interrupt
     FixedPcdGet64 (PcdSerialDbgUartBaudRate),                 // BaudRate
     FixedPcdGet32 (PcdSerialDbgUartClkInHz),                  // Clock
-    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART   // Port subtype
+    EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART,  // Port subtype
+    0x1000,                                                   // Address length
+    EFI_ACPI_6_3_DWORD,                                       // Access size
   },
 
   // GIC ITS
@@ -1237,6 +1241,19 @@ ConfigurationManagerDxeInitialize (
 {
   EFI_STATUS  Status;
 
+  Status = InitializePlatformRepository (
+             &VExpressPlatformConfigManagerProtocol
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "ERROR: Failed to initialize the Platform Configuration Repository." \
+      " Status = %r\n",
+      Status
+      ));
+    return Status;
+  }
+
   Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
                   &gEdkiiConfigurationManagerProtocolGuid,
@@ -1250,21 +1267,7 @@ ConfigurationManagerDxeInitialize (
       " Status = %r\n",
       Status
       ));
-    goto error_handler;
   }
 
-  Status = InitializePlatformRepository (
-    &VExpressPlatformConfigManagerProtocol
-    );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "ERROR: Failed to initialize the Platform Configuration Repository." \
-      " Status = %r\n",
-      Status
-      ));
-  }
-
-error_handler:
   return Status;
 }

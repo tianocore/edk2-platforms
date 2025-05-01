@@ -1,6 +1,6 @@
 /** @file
 
-Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
+Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -11,11 +11,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 /**
   A Callback routine only AmdMemoryInfoHob is ready.
 
-  @param[in]  PeiServices       General purpose services available to every PEIM.
-  @param[in]  NotifyDescriptor  The descriptor for the notification event.
-  @param[in]  Ppi               The context of the notification.
-
-  @retval EFI_SUCCESS   Platform Pre Memory initialization is successful.
+  @retval EFI_SUCCESS   Platform Pre Memory initialization is successfull.
           EFI_STATUS    Various failure from underlying routine calls.
 **/
 EFI_STATUS
@@ -89,7 +85,22 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
             FixedPcdGet32 (PcdAmdSmramAreaSize)
             ));
 
-          AmdMemoryInfoRange->Size -= FixedPcdGet32 (PcdAmdSmramAreaSize);
+          if (AmdMemoryInfoRange->Size) {
+          BuildResourceDescriptorHob (
+            EFI_RESOURCE_SYSTEM_MEMORY,
+            SYSTEM_MEMORY_ATTRIBUTES,
+            AmdMemoryInfoRange->Base,
+            AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+            );
+
+          DEBUG ((
+            DEBUG_INFO,
+            "SYSTEM_MEMORY: Base = 0x%lX, Size = 0x%lX\n",
+            AmdMemoryInfoRange->Base,
+            AmdMemoryInfoRange->Size - FixedPcdGet32 (PcdAmdSmramAreaSize)
+            ));
+          }
+          break;
         }
 
         if (AmdMemoryInfoRange->Size) {

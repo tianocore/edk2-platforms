@@ -53,6 +53,7 @@
   ExtractGuidedSectionLib
   LocalApicLib
   PciCf8Lib
+  StackCheckLib
 
 [Ppis]
   gEfiTemporaryRamSupportPpiGuid                # PPI ALWAYS_PRODUCED

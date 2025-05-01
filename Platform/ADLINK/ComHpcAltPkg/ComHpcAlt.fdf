@@ -231,7 +231,7 @@ APRIORI DXE {
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   INF ArmPkg/Drivers/MmCommunicationDxe/MmCommunication.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashFvbDxe/FlashFvbDxe.inf
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
 }
 
   INF MdeModulePkg/Core/Dxe/DxeMain.inf
@@ -292,7 +292,7 @@ APRIORI DXE {
   #
   # ARM GIC Dxe
   #
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
 
   INF UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
 

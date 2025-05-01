@@ -130,7 +130,7 @@ APRIORI DXE {
   #
   # ARM GIC Dxe
   #
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
 
   #
   # IPMI SSIF
@@ -172,10 +172,13 @@ APRIORI DXE {
 
   #
   # LinuxBoot
+!if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) != TRUE
 !ifdef $(LINUXBOOT_FILE)
   FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {
+    SECTION UI = "LinuxBoot"
     SECTION PE32 = $(LINUXBOOT_FILE)
   }
+!endif
 !endif
 
 [FV.FVMAIN_COMPACT]
@@ -195,6 +198,7 @@ READ_ENABLED_CAP   = TRUE
 READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
+FvNameGuid         = 3c0f22dc-e822-11ef-ad75-5ba44f1d21ad
 
 APRIORI PEI {
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
@@ -211,6 +215,10 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 
+!if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) == TRUE
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/ExtraFvInitPei/ExtraFvInitPei.inf
+!endif
+
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
@@ -218,5 +226,74 @@ APRIORI PEI {
       SECTION FV_IMAGE = FVMAIN
     }
   }
+
+!if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) == TRUE
+[FD.LINUXBOOT_UEFI_EXTRA]
+BaseAddress   = 0x93100000|gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress
+Size          = 0x00900000|gAmpereTokenSpaceGuid.PcdUefiExtraFdSize
+ErasePolarity = 1
+
+# This one is tricky, it must be: BlockSize * NumBlocks = Size
+BlockSize     = 0x10000
+NumBlocks     = 0x90
+
+0x00000000|0x00900000
+FV = UEFI_EXTRA_FVMAIN_COMPACT
+
+[FV.UefiExtraFvMain]
+BlockSize          = 0x10000
+NumBlocks          = 0         # This FV gets compressed so make it just big enough
+FvAlignment        = 16        # FV alignment and FV attributes setting.
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+FvNameGuid         = 09ec2e94-2d5c-46f9-b338-f113281a5545
+
+  #
+  # LinuxBoot
+!ifdef $(LINUXBOOT_FILE)
+  FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {
+    SECTION UI = "LinuxBoot"
+    SECTION PE32 = $(LINUXBOOT_FILE)
+  }
+!endif
+
+[FV.UEFI_EXTRA_FVMAIN_COMPACT]
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+FvNameGuid         = 9a66974a-02cc-4455-bd51-7fec7abc78a3
+
+  FILE FV_IMAGE = 09059efb-e6c1-4c59-b614-7919cc28e62f {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = UEFIEXTRAFVMAIN
+    }
+  }
+!endif
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc

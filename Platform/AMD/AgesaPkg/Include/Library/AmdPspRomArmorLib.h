@@ -1,13 +1,13 @@
 /** @file
 
-  Copyright (C) 2019-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2019-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef _PSP_ROM_ARMOR_LIB_H_
-#define _PSP_ROM_ARMOR_LIB_H_
+#ifndef PSP_ROM_ARMOR_LIB_H_
+#define PSP_ROM_ARMOR_LIB_H_
 
 #include "Uefi.h"
 
@@ -228,4 +228,4 @@ PspSwitchChipSelect (
   IN     UINT8  ChipSelect
   );
 
-#endif //_PSP_ROM_ARMOR_LIB_H_
+#endif // PSP_ROM_ARMOR_LIB_H_

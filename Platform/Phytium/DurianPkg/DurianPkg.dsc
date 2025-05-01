@@ -52,7 +52,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Durian Platform"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"V1.0"
 
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask|0x101
   gArmTokenSpaceGuid.PcdArmPrimaryCore|0x0
   gArmPlatformTokenSpaceGuid.PcdCoreCount|4
@@ -180,7 +179,7 @@
   # Common Arm Timer and Gic Components
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
