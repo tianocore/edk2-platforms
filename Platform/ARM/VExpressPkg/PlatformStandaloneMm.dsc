@@ -147,7 +147,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x00010000
 !endif
 
-  gArmTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
 
   #
   # The BFV is not located in the Flash area but is loaded in the RAM
