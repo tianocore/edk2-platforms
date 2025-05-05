@@ -67,7 +67,7 @@ DEFINE DSC_SIPKG_FEATURE_BUILD_OPTIONS = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(PC
 #
 # For IA32 Global Build Flag
 #
-       *_*_IA32_CC_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015 -DASF_PEI
+       *_*_IA32_CC_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -DASF_PEI
        *_*_IA32_VFRPP_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
        *_*_IA32_APP_FLAGS     = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
        *_*_IA32_ASLPP_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
@@ -76,10 +76,10 @@ DEFINE DSC_SIPKG_FEATURE_BUILD_OPTIONS = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(PC
 #
 # For IA32 Specific Build Flag
 #
-CLANGPDB:*_*_IA32_CC_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015 -DASF_PEI -Wno-enum-conversion -Wno-incompatible-pointer-types-discards-qualifiers -Wno-sometimes-uninitialized -Wno-braced-scalar-init -Wno-nonportable-include-path -Wno-misleading-indentation
+CLANGPDB:*_*_IA32_CC_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -DASF_PEI -Wno-enum-conversion -Wno-incompatible-pointer-types-discards-qualifiers -Wno-sometimes-uninitialized -Wno-braced-scalar-init -Wno-nonportable-include-path -Wno-misleading-indentation
 GCC:   *_*_IA32_PP_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
 MSFT:  *_*_IA32_ASM_FLAGS     = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
-MSFT:  *_*_IA32_CC_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015 -DASF_PEI /w34668
+MSFT:  *_*_IA32_CC_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS) -DASF_PEI /w34668
 MSFT:  *_*_IA32_VFRPP_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS)
 MSFT:  *_*_IA32_APP_FLAGS     = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS)
 MSFT:  *_*_IA32_ASLPP_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS)
@@ -88,7 +88,7 @@ MSFT:  *_*_IA32_ASLCC_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DI
 #
 # For X64 Global Build Flag
 #
-       *_*_X64_CC_FLAGS       = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015
+       *_*_X64_CC_FLAGS       = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
        *_*_X64_VFRPP_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
        *_*_X64_APP_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
        *_*_X64_ASLPP_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
@@ -97,10 +97,10 @@ MSFT:  *_*_IA32_ASLCC_FLAGS   = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DI
 #
 # For X64 Specific Build Flag
 #
-CLANGPDB:*_*_X64_CC_FLAGS     = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015 -Wno-enum-conversion -Wno-main-return-type -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-unused-variable -Wno-incompatible-pointer-types-discards-qualifiers -Wno-ignored-pragma-optimize -Wno-bitwise-op-parentheses  -Wno-sometimes-uninitialized -Wno-unused-function -Wno-misleading-indentation
+CLANGPDB:*_*_X64_CC_FLAGS     = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) -Wno-enum-conversion -Wno-main-return-type -Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-unused-variable -Wno-incompatible-pointer-types-discards-qualifiers -Wno-ignored-pragma-optimize -Wno-bitwise-op-parentheses  -Wno-sometimes-uninitialized -Wno-unused-function -Wno-misleading-indentation
 GCC:   *_*_X64_PP_FLAGS       = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
 MSFT:  *_*_X64_ASM_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
-MSFT:  *_*_X64_CC_FLAGS       = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS) -D PI_SPECIFICATION_VERSION=0x00010015 /w34668
+MSFT:  *_*_X64_CC_FLAGS       = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS) /w34668
 MSFT:  *_*_X64_VFRPP_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS)
 MSFT:  *_*_X64_APP_FLAGS      = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS) $(OPTIMIZE_DISABLE_OPTIONS)
 MSFT:  *_*_X64_ASLPP_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
