@@ -1,7 +1,7 @@
 ## @file
 #  FDF file for post-memory modules that enable Intelligent Platform Management Interface.
 #
-# Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2025, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -11,13 +11,19 @@ INF IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
 INF IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
 INF RuleOverride = DRIVER_ACPITABLE IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
 INF IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
-INF IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
 INF IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
-INF IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+INF IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
+  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
+  IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf
+!else
+  INF IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
+  INF IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+  INF IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
+!endif
 INF IpmiFeaturePkg/Frb/FrbDxe.inf
 INF IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
-INF IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
-INF IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
 INF IpmiFeaturePkg/GenericFru/GenericFru.inf
 INF IpmiFeaturePkg/OsWdt/OsWdt.inf
 INF IpmiFeaturePkg/SolStatus/SolStatus.inf
