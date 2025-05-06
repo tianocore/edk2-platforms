@@ -33,7 +33,10 @@
 #
 ################################################################################
 [PcdsFixedAtBuild]
-  !include NetworkPkg/NetworkPcds.dsc.inc
+  !include NetworkPkg/NetworkFixedPcds.dsc.inc
+
+[PcdsDynamicDefault]
+  !include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
 ################################################################################
 #
