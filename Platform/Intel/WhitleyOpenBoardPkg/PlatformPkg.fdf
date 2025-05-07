@@ -3,7 +3,7 @@
 # This package provides platform specific modules and flash layout information.
 #
 # @copyright
-# Copyright 2006 - 2021 Intel Corporation. <BR>
+# Copyright 2006 - 2025 Intel Corporation. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -188,7 +188,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   # This makes it easy to adjust the various sizes without having to manually calculate the offsets.
   # These are out of flash layout order because FvAdvanced gets any remaining space
   #
-  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize      = 0x00010000
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize      = 0x00070000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize        = 0x00230000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize      = 0x0004C000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize      = gCpPlatFlashTokenSpaceGuid.PcdFlashFdMainSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize
@@ -395,6 +395,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 [FV.FvSecurityPreMemory]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 40ab290f-8494-41cf-b302-31b178b4ce0b
+
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityPreMemoryInclude.fdf
 
 [FV.FvPreMemory]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
@@ -691,6 +693,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 [FV.FvSecuritySilicon]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = AD262F8D-BDED-4668-A8D4-8BC73516652F
+
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityLateInclude.fdf
 
 [FV.FvSecurityUncompressed]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
