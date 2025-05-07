@@ -511,6 +511,14 @@
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdRtd3TbtClkReqDelay|0x0
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdRtd3TbtOffDelay|5000
 
+[PcdsDynamicHii.common.DEFAULT]
+  ######################################
+  # Edk2 Configuration
+  ######################################
+!if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcgPhysicalPresenceInterfaceVer|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x0|"1.3"|NV,BS
+!endif
+
 [PcdsDynamicHii.X64.DEFAULT]
   ######################################
   # Edk2 Configuration
@@ -522,6 +530,5 @@
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|5 # Variable: L"Timeout"
 !endif
 !if gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable == TRUE
-  gEfiSecurityPkgTokenSpaceGuid.PcdTcgPhysicalPresenceInterfaceVer|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x0|"1.3"|NV,BS
   gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|3|NV,BS
 !endif
