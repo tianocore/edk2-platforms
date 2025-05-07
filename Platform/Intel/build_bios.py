@@ -451,6 +451,9 @@ def build(config):
     if config.get("VERBOSE", "FALSE") == "TRUE":
         command.append("--verbose")
 
+    if config.get("VERY_VERBOSE", "FALSE") == "TRUE":
+        command.append("--debug=1")
+
     if config.get("MAX_SOCKET") is not None:
         command.append("-D")
         command.append("MAX_SOCKET=" + config["MAX_SOCKET"])
@@ -985,6 +988,12 @@ def get_cmd_config_arguments(arguments):
     if arguments.performance is True:
         result["PERFORMANCE_BUILD"] = "TRUE"
 
+    if arguments.verbose is not None and arguments.verbose > 0:
+        result["VERBOSE"] = "TRUE"
+
+    if arguments.verbose is not None and arguments.verbose > 1:
+        result["VERY_VERBOSE"] = "TRUE"
+
     if arguments.fsp is True:
         result["FSP_WRAPPER_BUILD"] = "TRUE"
 
@@ -1065,6 +1074,9 @@ def get_cmd_arguments(build_config):
 
     parser.add_argument('--clean', dest='clean',
                         help='cleans specific platform', action='store_true')
+
+    parser.add_argument('--verbose', '-v', dest='verbose',
+                        help='Verbose build log output, specify -vv for very verbose.', action='count')
 
     parser.add_argument("--capsule", help="capsule build enabled",
                         action='store_true', dest="capsule")
