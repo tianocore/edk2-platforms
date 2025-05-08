@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2017 - 2021, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2025, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -17,7 +17,6 @@
     containing the AML bytecode array.
 */
 extern CHAR8  dsdt_aml_code[];
-extern CHAR8  ssdtpci_aml_code[];
 
 /** The configuration manager version.
 */
@@ -99,6 +98,21 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 */
 #define PLAT_GTFRAME_COUNT          2
 
+/** Count of PCI address-range mapping struct.
+*/
+#define PCI_ADDRESS_MAP_COUNT       3
+
+/** Count of PCI device legacy interrupt mapping struct.
+*/
+#define PCI_INTERRUPT_MAP_COUNT     4
+
+/** PCI space codes.
+*/
+#define PCI_SS_CONFIG   0
+#define PCI_SS_IO       1
+#define PCI_SS_M32      2
+#define PCI_SS_M64      3
+
 /** A structure describing the platform configuration
     manager repository information
 */
@@ -170,6 +184,18 @@ typedef struct PlatformRepositoryInfo {
 
   /// PCI configuration space information
   CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo;
+
+  // PCI address-range mapping references
+  CM_ARCH_COMMON_OBJ_REF                PciAddressMapRef[PCI_ADDRESS_MAP_COUNT];
+
+  // PCI address-range mapping information
+  CM_ARCH_COMMON_PCI_ADDRESS_MAP_INFO   PciAddressMapInfo[PCI_ADDRESS_MAP_COUNT];
+
+  // PCI device legacy interrupts mapping references
+  CM_ARCH_COMMON_OBJ_REF                PciInterruptMapRef[PCI_INTERRUPT_MAP_COUNT];
+
+  // PCI device legacy interrupts mapping information
+  CM_ARCH_COMMON_PCI_INTERRUPT_MAP_INFO PciInterruptMapInfo[PCI_INTERRUPT_MAP_COUNT];
 
   CM_ARM_ET_INFO                        EtInfo;
 
