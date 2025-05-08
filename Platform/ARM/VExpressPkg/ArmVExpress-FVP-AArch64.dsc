@@ -35,7 +35,9 @@
 !endif
 
 !ifndef ARM_FVP_RUN_NORFLASH
-  DEFINE EDK2_SKIP_PEICORE=1
+  DEFINE EDK2_SKIP_PEICORE=TRUE
+!else
+  DEFINE EDK2_SKIP_PEICORE=FALSE
 !endif
 
   DT_SUPPORT                     = FALSE
@@ -225,7 +227,7 @@
   #
   # PEI Phase modules
   #
-!ifdef EDK2_SKIP_PEICORE
+!if $(EDK2_SKIP_PEICORE) == TRUE
   # UEFI is placed in RAM by bootloader
   ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
@@ -243,7 +245,6 @@
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf
-  Nt32Pkg/BootModePei/BootModePei.inf
   MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf {
     <LibraryClasses>
