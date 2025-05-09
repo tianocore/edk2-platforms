@@ -82,6 +82,9 @@
   Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
 !endif
 
+[LibraryClasses.common.PEIM]
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaPeiLib.inf
+
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   ArmPlatformSysConfigLib|Platform/ARM/VExpressPkg/Library/ArmVExpressSysConfigRuntimeLib/ArmVExpressSysConfigRuntimeLib.inf
@@ -154,7 +157,11 @@
 
   # Non-Trusted SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
+!if $(EDK2_SKIP_PEICORE) == TRUE
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
+!else
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x10000
+!endif
 
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top
@@ -276,6 +283,13 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{GUID("17b862a4-1806-4faf-86b3-089a58353861")}|VOID*|0x10
   gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|0x00000006
 
+  #
+  # The TPM initialized by secure partition.
+  # and ARM doesn't come back to PEI when S3. (It's handled by PSCI and OS).
+  # So, set the PcdTpm2InitializationPolicy as 0.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2InitializationPolicy|0
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform
@@ -313,11 +327,33 @@
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf
-  MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  ArmPkg/Drivers/MmCommunicationPei/MmCommunicationPei.inf
+  MdeModulePkg/Universal/Variable/MmVariablePei/MmVariablePei.inf
+!else
+  INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
+  INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+!endif
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
+
+  #
+  # Trust Platform Module
+  #
+!if $(ENABLE_TPM) == TRUE
+  SecurityPkg/Tcg/Tcg2Pei/Tcg2Pei.inf {
+    <LibraryClasses>
+      Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterPei.inf
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterPei.inf
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+  }
+
+  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigFfaPei.inf
+!endif
 !endif
 
   #
@@ -498,5 +534,9 @@
       NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   }
-  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
+
+  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf {
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+  }
 !endif
