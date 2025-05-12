@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2017 - 2024, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2025, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -103,8 +103,9 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     {
       EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
       0, // Unused
-      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdt),
-      (EFI_ACPI_DESCRIPTION_HEADER*)ssdtpci_aml_code
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtPciExpress),
+      NULL,
+      SIGNATURE_64 ('S','S','D','T','-','P','C','I')
     },
   },
 
@@ -367,7 +368,88 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     // PciSegmentGroupNumber
     0,
     FixedPcdGet32 (PcdPciBusMin),
-    FixedPcdGet32 (PcdPciBusMax)
+    FixedPcdGet32 (PcdPciBusMax),
+    // AddressMapToken
+    REFERENCE_TOKEN (PciAddressMapRef),
+    // InterruptMapToken
+    REFERENCE_TOKEN (PciInterruptMapRef)
+  },
+
+  // PCI address-range mapping references
+  {
+    { REFERENCE_TOKEN (PciAddressMapInfo[0]) },
+    { REFERENCE_TOKEN (PciAddressMapInfo[1]) },
+    { REFERENCE_TOKEN (PciAddressMapInfo[2]) }
+  },
+
+  // PCI address-range mapping information
+  {
+    { // PciAddressMapInfo[0] -> 32-bit BAR Window
+      PCI_SS_M32,    // SpaceCode
+      0x50000000,    // PciAddress
+      0x50000000,    // CpuAddress
+      0x08000000     // AddressSize
+    },
+    { // PciAddressMapInfo[1] -> 64-bit BAR Window
+      PCI_SS_M64,    // SpaceCode
+      0x4000000000,  // PciAddress
+      0x4000000000,  // CpuAddress
+      0x0100000000   // AddressSize
+    },
+    { // PciAddressMapInfo[2] -> IO BAR Window
+      PCI_SS_IO,     // SpaceCode
+      0x00000000,    // PciAddress
+      0x5f800000,    // CpuAddress
+      0x00800000     // AddressSize
+    },
+  },
+
+  // PCI device legacy interrupts mapping information
+  {
+    { REFERENCE_TOKEN (PciInterruptMapInfo[0]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[1]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[2]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) }
+  },
+
+  // PCI device legacy interrupts mapping information
+  {
+    { // PciInterruptMapInfo[0] -> Device 0, INTA
+      0,   // PciBus
+      0,   // PciDevice
+      0,   // PciInterrupt
+      {
+        168, // Interrupt
+        0x0  // Flags
+      }
+    },
+    { // PciInterruptMapInfo[1] -> Device 0, INTB
+      0,   // PciBus
+      0,   // PciDevice
+      1,   // PciInterrupt
+      {
+        169, // Interrupt
+        0x0  // Flags
+      }
+    },
+    { // PciInterruptMapInfo[2] -> Device 0, INTC
+      0,   // PciBus
+      0,   // PciDevice
+      2,   // PciInterrupt
+      {
+        170, // Interrupt
+        0x0  // Flags
+      }
+    },
+    { // PciInterruptMapInfo[3] -> Device 0, INTD
+      0,   // PciBus
+      0,   // PciDevice
+      3,   // PciInterrupt
+      {
+        171, // Interrupt
+        0x0  // Flags
+      }
+    },
   },
 
   // Embedded Trace device info
@@ -456,6 +538,57 @@ HandleCmObjectRefByToken (
     Status = HandlerProc (This, CmObjectId, Token, CmObjectDesc);
   }
 
+  DEBUG ((
+    DEBUG_INFO,
+    "INFO: Token = 0x%p, CmObjectId = %x, Ptr = 0x%p, Size = %d, Count = %d\n",
+    (VOID*)Token,
+    CmObjectId,
+    CmObjectDesc->Data,
+    CmObjectDesc->Size,
+    CmObjectDesc->Count
+    ));
+  return Status;
+}
+
+/** A helper function for returning Configuration Manager Object(s) referenced
+    by token when the entire platform repository is in scope and the
+    CM_NULL_TOKEN value is not allowed.
+
+  @param [in]  This               Pointer to the Configuration Manager Protocol.
+  @param [in]  CmObjectId         The Configuration Manager Object ID.
+  @param [in]  Token              A token identifying the object.
+  @param [in]  HandlerProc        A handler function to search the object(s)
+                                  referenced by the token.
+  @param [in, out]  CmObjectDesc  Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS           Success.
+  @retval EFI_INVALID_PARAMETER A parameter is invalid.
+  @retval EFI_NOT_FOUND         The required object information is not found.
+**/
+STATIC
+EFI_STATUS
+EFIAPI
+HandleCmObjectSearchPlatformRepo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               Token,
+  IN  CONST CM_OBJECT_HANDLER_PROC                        HandlerProc,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObjectDesc
+  )
+{
+  EFI_STATUS  Status;
+  CmObjectDesc->ObjectId = CmObjectId;
+  if (Token == CM_NULL_TOKEN) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "ERROR: CM_NULL_TOKEN value is not allowed when searching"
+      " the entire platform repository.\n"
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = HandlerProc (This, CmObjectId, Token, CmObjectDesc);
   DEBUG ((
     DEBUG_INFO,
     "INFO: Token = 0x%p, CmObjectId = %x, Ptr = 0x%p, Size = %d, Count = %d\n",
@@ -654,6 +787,153 @@ GetDeviceIdMappingArray (
   return EFI_SUCCESS;
 }
 
+/** Return PCI address-range mapping Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_PCI_ADDRESS_MAP_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetPciAddressMapInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->PciAddressMapInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciAddressMapInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->PciAddressMapInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->PciAddressMapInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
+/** Return PCI device legacy interrupt mapping Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_PCI_INTERRUPT_MAP_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetPciInterruptMapInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->PciInterruptMapInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->PciInterruptMapInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
+/** Return a list of Configuration Manager object references pointed to by the
+    given input token.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_OBJ_REF list.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetCmObjRefs (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciAddressMapRef) {
+    CmObject->Size = sizeof (PlatformRepo->PciAddressMapRef);
+    CmObject->Data = (VOID*)&PlatformRepo->PciAddressMapRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->PciAddressMapRef);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapRef) {
+    CmObject->Size = sizeof (PlatformRepo->PciInterruptMapRef);
+    CmObject->Data = (VOID*)&PlatformRepo->PciInterruptMapRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    return EFI_SUCCESS;
+  }
+
+  return EFI_NOT_FOUND;
+}
+
 /** Return a standard namespace object.
 
   @param [in]      This        Pointer to the Configuration Manager Protocol.
@@ -825,6 +1105,42 @@ GetArchCommonNameSpaceObject (
                  &PlatformRepo->PciConfigInfo,
                  sizeof (PlatformRepo->PciConfigInfo),
                  PciConfigSpaceCount,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjPciAddressMapInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PciAddressMapInfo,
+                 sizeof (PlatformRepo->PciAddressMapInfo),
+                 ARRAY_SIZE (PlatformRepo->PciAddressMapInfo),
+                 Token,
+                 GetPciAddressMapInfo,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjPciInterruptMapInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PciInterruptMapInfo,
+                 sizeof (PlatformRepo->PciInterruptMapInfo),
+                 ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo),
+                 Token,
+                 GetPciInterruptMapInfo,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjCmRef:
+      Status = HandleCmObjectSearchPlatformRepo (
+                 This,
+                 CmObjectId,
+                 Token,
+                 GetCmObjRefs,
                  CmObject
                  );
       break;
