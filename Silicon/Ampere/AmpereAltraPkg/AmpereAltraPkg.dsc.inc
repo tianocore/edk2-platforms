@@ -80,8 +80,8 @@
   I2cLib|Silicon/Ampere/AmpereAltraPkg/Library/DwI2cLib/DwI2cLib.inf
   GpioLib|Silicon/Ampere/AmpereAltraPkg/Library/DwGpioLib/DwGpioLib.inf
   MmCommunicationLib|Silicon/Ampere/AmpereAltraPkg/Library/MmCommunicationLib/MmCommunicationLib.inf
-  ArmFfaLib|ArmPkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
-  ArmSvcLib|ArmPkg/Library/ArmSvcLib/ArmSvcLib.inf
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
+  ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
   FlashLib|Silicon/Ampere/AmpereAltraPkg/Library/FlashLib/FlashLib.inf
   ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
   FirmwareUpdateLib|Silicon/Ampere/AmpereAltraPkg/Library/SystemFirmwareUpdateLib/SystemFirmwareUpdateLib.inf
