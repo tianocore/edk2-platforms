@@ -378,7 +378,7 @@ if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
   sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
   sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
   pushd "Build/${BOARD_NAME}/Cab"
-  lcab -q ./* "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab"
+  gcab -c -z -v "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab" ./*
   popd
 fi
 
