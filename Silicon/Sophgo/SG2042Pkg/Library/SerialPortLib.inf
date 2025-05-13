@@ -1,0 +1,39 @@
+#/** @file
+#
+#  Copyright (c) 2011, ARM Ltd. All rights reserved.<BR>
+#  Copyright (c) 2015-2016, Hisilicon Limited. All rights reserved.<BR>
+#  Copyright (c) 2015-2016, Linaro Limited. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  Based on the files under ArmPlatformPkg/Library/PL011SerialPortLib/
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SerialPortLib
+  FILE_GUID                      = 7BB3D198-D3B7-58D1-1281-57E791FE314D
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SerialPortLib
+
+
+[Sources.common]
+  SerialPortLib.c
+
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+
+  Platform/Sophgo/SG2042_EVB_Board/SG2042.dec
+
+[LibraryClasses]
+  BaseLib
+  IoLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+  gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdSerialPortSendDelay
+  gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdUartClkInHz
