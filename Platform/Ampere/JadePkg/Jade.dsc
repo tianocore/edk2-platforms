@@ -70,6 +70,7 @@
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
+  DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
 
 !if $(CAPSULE_ENABLE) == TRUE
   DEFINE UEFI_IMAGE                          = Build/Jade/jade_uefi.bin
@@ -332,4 +333,15 @@
   MdeModulePkg/Bus/Usb/UsbNetwork/NetworkCommon/NetworkCommon.inf
   MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
 !include RedfishPkg/Redfish.dsc.inc
+!endif
+
+!if $(PERFORMANCE_MEASUREMENT_ENABLE) == TRUE
+  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
+  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
+!if $(SHELL_ENABLE) == TRUE
+  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf {
+    <PcdsFixedAtBuild>
+      gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
+  }
+!endif
 !endif
