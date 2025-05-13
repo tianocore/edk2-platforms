@@ -1,0 +1,41 @@
+## @file
+#
+# Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[defines]
+  INF_VERSION          = 0x0001001B
+  BASE_NAME            = PciPlatformDxe
+  FILE_GUID            = 73276F3D-DCBC-49B2-9890-7564F917501D
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = PciPlatformDriverEntry
+
+[Sources]
+  PciPlatformDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+
+[LibraryClasses]
+  Ac01PcieLib
+  DebugLib
+  HobLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiDevicePathProtocolGuid
+  gEfiPciHostBridgeResourceAllocationProtocolGuid
+  gEfiPciPlatformProtocolGuid
+
+[Guids]
+  gRootComplexInfoHobGuid
+
+[Depex]
+  TRUE
