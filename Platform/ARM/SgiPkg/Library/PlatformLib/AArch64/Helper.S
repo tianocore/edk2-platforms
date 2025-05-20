@@ -18,7 +18,7 @@ GCC_ASM_IMPORT(NtFwConfigDtBlob)
 //
 // First platform specific function to be called in the PEI phase
 //
-// The trusted firmware passed the hw config DT blob in x1 register.
+// The trusted firmware passed the NT FW config DT blob in x0 register.
 // Keep a copy of it in a global variable.
 //VOID
 //ArmPlatformPeiBootAction (
