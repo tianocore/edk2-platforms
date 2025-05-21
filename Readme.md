@@ -1,5 +1,8 @@
-This branch holds all platforms actively maintained against the
-[edk2](https://github.com/tianocore/edk2) master branch.
+This branch holds platforms and drivers actively maintained against the
+[edk2](https://github.com/tianocore/edk2) default branch.
+If any platform or driver is failing to build against current edk2 and (if
+applicable) [edk2-non-osi](https://github.com/tianocore/edk2-non-osi), please
+raise a github issue.
 
 For generic information about the edk2-platforms repository, and the process
 under which _stable_ and _devel_ branches can be added for individual platforms,
