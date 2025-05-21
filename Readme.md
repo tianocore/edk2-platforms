@@ -21,7 +21,6 @@ are covered by additional licenses:
    * [Manual building](#manual-building)
    * [Using uefi-tools helper scripts](#using-uefi-tools-helper-scripts)
 * [How To Build (Windows Environment)](#how-to-build-windows-environment)
-* [Supported Platforms](#supported-platforms)
 * [Maintainers](#maintainers)
 
 # Overview
@@ -234,86 +233,6 @@ $ ./uefi-tools/edk2-build.sh -b DEBUG -b RELEASE
 
 (I genuinely have no idea. Please help!)
 
-
-# Supported Platforms
-
-These are the platforms currently supported by this tree - grouped by
-Processor/SoC vendor, rather than platform vendor.
-
-If there are any additional build steps beyond the generic ones listed above,
-they will be documented with the platform.
-
-## [Ampere](Platform/Ampere/Readme.md)
-* [Mt. Jade](Platform/Ampere/JadePkg)
-
-## [ARM](Platform/ARM/Readme.md)
-* [Juno](Platform/ARM/JunoPkg)
-* [SGI family](Platform/ARM/SgiPkg)
-
-## BeagleBoard
-* [BeagleBoard](Platform/BeagleBoard/BeagleBoardPkg)
-
-## Intel
-### [Minimum Platforms](Platform/Intel/Readme.md)
-* [Kaby Lake](Platform/Intel/KabylakeOpenBoardPkg)
-* [Purley](Platform/Intel/PurleyOpenBoardPkg)
-* [Simics](Platform/Intel/SimicsOpenBoardPkg)
-* [Whiskey Lake](Platform/Intel/WhiskeylakeOpenBoardPkg)
-* [Comet Lake](Platform/Intel/CometlakeOpenBoardPkg)
-* [Tiger Lake](Platform/Intel/TigerlakeOpenBoardPkg)
-* [Whitley/Cedar Island](Platform/Intel/WhitleyOpenBoardPkg)
-* [Alder Lake](Platform/Intel/AlderlakeOpenBoardPkg)
-
-For more information, see the
-[EDK II Minimum Platform Specification](https://edk2-docs.gitbooks.io/edk-ii-minimum-platform-specification).
-### Other Platforms
-##### Minnowboard Max/Turbot based on Intel Valleyview2 SoC
-* [Minnowboard Max](Platform/Intel/Vlv2TbltDevicePkg)
-
-## Loongson
-* [LoongArchQemu](Platform/Loongson/LoongArchQemuPkg)
-
-## Marvell
-* [Armada 70x0](Platform/Marvell/Armada70x0Db)
-* [Armada 80x0](Platform/Marvell/Armada80x0Db)
-* [CN913x](Platform/Marvell/Cn913xDb)
-* [SolidRun Armada MacchiatoBin](Platform/SolidRun/Armada80x0McBin)
-
-## Raspberry Pi
-* [Pi 3](Platform/RaspberryPi/RPi3)
-* [Pi 4](Platform/RaspberryPi/RPi4)
-
-## RISC-V
-### SiFive
-* [Sifive U5 Series](Platform/SiFive/U5SeriesPkg) Refer to Platform/SiFive/U5Series/Readme.md on edk2-platform repository.
-* [Freedom U500 VC707 FPGA](Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board)
-* [Freedom U540 HiFive Unleashed](Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard)
-
-## NXP
-* [LS1043aRdb](Platform/NXP/LS1043aRdbPkg)
-
-## Qemu
-* [SBSA](Platform/Qemu/SbsaQemu)
-
-# Retired platforms
-
-## AMD
-* [Cello](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/LeMaker/CelloBoard)
-* [Overdrive](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/AMD/OverdriveBoard)
-* [Overdrive 1000](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/SoftIron/Overdrive1000Board)
-
-## Hisilicon
-* [D03](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D03)
-* [D05](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D05)
-* [D06](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/D06)
-* [HiKey](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey)
-* [HiKey960](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Hisilicon/HiKey960)
-
-## Intel
-* [Galileo](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Intel/QuarkPlatformPkg)
-
-## Socionext
-* [SynQuacer](https://github.com/tianocore/edk2-platforms/tree/202502-before-platform-removals/Platform/Socionext/DeveloperBox)
 
 # Maintainers
 
