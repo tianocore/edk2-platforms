@@ -17,6 +17,7 @@
 // The Library classes this module consumes
 //
 #include <Library/DebugLib.h>
+#include <Library/FdtLib.h>
 #include <Library/HobLib.h>
 #include <Library/IoLib.h>
 #include <Library/MemoryAllocationLib.h>
@@ -29,7 +30,6 @@
 #include <Library/QemuFwCfgLib.h>
 #include <Library/MmuLib.h>
 #include <Guid/FdtHob.h>
-#include <libfdt.h>
 #include <Ppi/MasterBootMode.h>
 
 #include "Platform.h"
@@ -177,17 +177,17 @@ GetSerialConsolePortAddress (
   CONST CHAR8   *NodeStatus;
   CONST UINT64  *RegProperty;
 
-  if ((Fdt == NULL) || (fdt_check_header (Fdt) != 0)) {
+  if ((Fdt == NULL) || (FdtCheckHeader (Fdt) != 0)) {
     return EFI_INVALID_PARAMETER;
   }
 
   // The "chosen" node resides at the root of the DT. Fetch it.
-  ChosenNode = fdt_path_offset (Fdt, "/chosen");
+  ChosenNode = FdtPathOffset (Fdt, "/chosen");
   if (ChosenNode < 0) {
     return EFI_NOT_FOUND;
   }
 
-  Prop = fdt_getprop (Fdt, ChosenNode, "stdout-path", &PropSize);
+  Prop = FdtGetProp (Fdt, ChosenNode, "stdout-path", &PropSize);
   if (PropSize < 0) {
     return EFI_NOT_FOUND;
   }
@@ -202,28 +202,28 @@ GetSerialConsolePortAddress (
 
   // Aliases cannot start with a '/', so it must be the actual path.
   if (Prop[0] == '/') {
-    SerialConsoleNode = fdt_path_offset_namelen (Fdt, Prop, PathLen);
+    SerialConsoleNode = FdtPathOffsetNameLen (Fdt, Prop, PathLen);
   } else {
     // Lookup the alias, as this contains the actual path.
-    Path = fdt_get_alias_namelen (Fdt, Prop, PathLen);
+    Path = FdtGetAliasNameLen (Fdt, Prop, PathLen);
     if (Path == NULL) {
       return EFI_NOT_FOUND;
     }
 
-    SerialConsoleNode = fdt_path_offset (Fdt, Path);
+    SerialConsoleNode = FdtPathOffset (Fdt, Path);
   }
 
-  NodeStatus = fdt_getprop (Fdt, SerialConsoleNode, "status", &Len);
+  NodeStatus = FdtGetProp (Fdt, SerialConsoleNode, "status", &Len);
   if ((NodeStatus != NULL) && (AsciiStrCmp (NodeStatus, "okay") != 0)) {
     return EFI_NOT_FOUND;
   }
 
-  RegProperty = fdt_getprop (Fdt, SerialConsoleNode, "reg", &Len);
+  RegProperty = FdtGetProp (Fdt, SerialConsoleNode, "reg", &Len);
   if (Len != 16) {
     return EFI_INVALID_PARAMETER;
   }
 
-  *SerialConsoleAddress = fdt64_to_cpu (ReadUnaligned64 (RegProperty));
+  *SerialConsoleAddress = Fdt64ToCpu (ReadUnaligned64 (RegProperty));
 
   return EFI_SUCCESS;
 }
@@ -257,13 +257,13 @@ GetRtcAddress (
   CONST UINT64      *RegProp;
   EFI_STATUS         Status;
 
-  if ((Fdt == NULL) || (fdt_check_header (Fdt) != 0)) {
+  if ((Fdt == NULL) || (FdtCheckHeader (Fdt) != 0)) {
     return EFI_INVALID_PARAMETER;
   }
 
   Status = EFI_NOT_FOUND;
   for (Prev = 0;; Prev = Node) {
-    Node = fdt_next_node (Fdt, Prev, NULL);
+    Node = FdtNextNode (Fdt, Prev, NULL);
     if (Node < 0) {
       break;
     }
@@ -271,7 +271,7 @@ GetRtcAddress (
     //
     // Check for memory node
     //
-    Type = fdt_getprop (Fdt, Node, "compatible", &Len);
+    Type = FdtGetProp (Fdt, Node, "compatible", &Len);
     if ((Type)
       && (AsciiStrnCmp (Type, "loongson,ls7a-rtc", Len) == 0))
     {
@@ -279,7 +279,7 @@ GetRtcAddress (
       // Get the 'reg' property of this node. For now, we will assume
       // two 8 byte quantities for base and size, respectively.
       //
-      RegProp = fdt_getprop (Fdt, Node, "reg", &Len);
+      RegProp = FdtGetProp (Fdt, Node, "reg", &Len);
       if ((RegProp != 0)
         && (Len == (2 * sizeof (UINT64))))
       {
@@ -355,11 +355,11 @@ AddFdtHob (VOID)
     return;
   }
 
-  FdtSize = fdt_totalsize (Base) + PcdGet32 (PcdDeviceTreePadding);
+  FdtSize  = FdtTotalSize (Base) + PcdGet32 (PcdDeviceTreePadding);
   FdtPages = EFI_SIZE_TO_PAGES (FdtSize);
   NewBase = AllocatePages (FdtPages);
   ASSERT (NewBase != NULL);
-  fdt_open_into (Base, NewBase, EFI_PAGES_TO_SIZE (FdtPages));
+  FdtOpenInto (Base, NewBase, EFI_PAGES_TO_SIZE (FdtPages));
 
   FdtHobData = BuildGuidHob (&gFdtHobGuid, sizeof *FdtHobData);
   ASSERT (FdtHobData != NULL);
