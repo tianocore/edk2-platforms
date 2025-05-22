@@ -358,7 +358,7 @@
   #
   # Network Pcds
   #
-!include NetworkPkg/NetworkPcds.dsc.inc
+!include NetworkPkg/NetworkFixedPcds.dsc.inc
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize         | 0x40000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize         | 0x40000
