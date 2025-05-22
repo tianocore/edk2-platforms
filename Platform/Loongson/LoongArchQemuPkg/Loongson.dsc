@@ -401,11 +401,7 @@
   # PCD and PcdPciDisableBusEnumeration above have not been assigned yet
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress                    |0xFFFFFFFFFFFFFFFF
 
-  #
-  # IPv4 and IPv6 PXE Boot support.
-  #
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport                       | 0x01
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport                       | 0x01
+!include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
   #
   # SMBIOS entry point version
