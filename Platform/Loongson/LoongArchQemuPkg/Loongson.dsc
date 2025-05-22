@@ -159,6 +159,18 @@
   FileExplorerLib                  | MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
   ImagePropertiesRecordLib         | MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
 
+  #
+  # CryptoPkg libraries needed by multiple firmware features
+  #
+  IntrinsicLib                     | CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+!if $(NETWORK_TLS_ENABLE) == TRUE
+  OpensslLib                       | CryptoPkg/Library/OpensslLib/OpensslLib.inf
+!else
+  OpensslLib                       | CryptoPkg/Library/OpensslLib/OpensslLibCrypto.inf
+!endif
+  BaseCryptLib                     | CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  RngLib                           | MdeModulePkg/Library/BaseRngLibTimerLib/BaseRngLibTimerLib.inf
+
 !include OvmfPkg/Include/Dsc/ShellLibs.dsc.inc
 
 !if $(HTTP_BOOT_ENABLE) == TRUE
@@ -479,7 +491,10 @@
   # Variable
   #
   OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
-  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf {
+    <LibraryClasses>
+      NULL|EmbeddedPkg/Library/NvVarStoreFormattedLib/NvVarStoreFormattedLib.inf
+  }
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
