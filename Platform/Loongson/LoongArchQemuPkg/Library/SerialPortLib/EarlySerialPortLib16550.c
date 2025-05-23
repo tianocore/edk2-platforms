@@ -155,7 +155,7 @@ GetSerialConsolePortAddress (
   }
 
   // Determine the actual path length, as a colon terminates the path.
-  Path = ScanMem8 (Prop, ':', PropSize);
+  Path = ScanMem8 (Prop, PropSize, (UINT8)':');
   if (Path == NULL) {
     PathLen = AsciiStrLen (Prop);
   } else {

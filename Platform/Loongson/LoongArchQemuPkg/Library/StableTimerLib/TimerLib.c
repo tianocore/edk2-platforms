@@ -68,6 +68,7 @@ GetFreq (
   if (StableTimerFreq) {
   } else {
     StableTimerFreq = CalcConstFreq ();
+    return CalcConstFreq ();
   }
 
   return StableTimerFreq;
