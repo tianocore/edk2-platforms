@@ -17,3 +17,7 @@
 
 [Guids]
   gUefiRiscVPlatformSG2042PkgTokenSpaceGuid = {0xD0D80952, 0x8371, 0x4D8D, { 0x8E, 0x65, 0x27, 0x52, 0x63, 0xF3, 0xD9, 0x27 }}
+
+[PcdsFixedAtBuild]
+  gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdSerialPortSendDelay|500000|UINT32|0x01000010
+  gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdUartClkInHz|24000000|UINT32|0x0100001F

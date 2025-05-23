@@ -57,5 +57,5 @@ SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize                  = 0
 SET gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSG2042SDIOBase          = 0x704002B000
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase              = 0x7040000000
 SET gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate                   = 115200
-SET gHisiTokenSpaceGuid.PcdSerialPortSendDelay                        = 10000000
-SET gHisiTokenSpaceGuid.PcdUartClkInHz                                = 500000000
+SET gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdSerialPortSendDelay                        = 10000000
+SET gUefiRiscVPlatformSG2042PkgTokenSpaceGuid.PcdUartClkInHz                                = 500000000

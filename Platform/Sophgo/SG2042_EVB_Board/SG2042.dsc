@@ -410,10 +410,6 @@
   }
 
   ArmVirtPkg/CloudHvPlatformHasAcpiDtDxe/CloudHvHasAcpiDtDxe.inf
-  EmbeddedPkg/Drivers/FdtClientDxe/FdtClientDxe.inf {
-    <LibraryClasses>
-      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
-  }
   OvmfPkg/Fdt/HighMemDxe/HighMemDxe.inf
 
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
@@ -445,7 +441,7 @@
   #
   Platform/SiFive/U5SeriesPkg/Universal/Dxe/RamFvbServicesRuntimeDxe/FvbServicesRuntimeDxe.inf {
     <LibraryClasses>
-      SerialPortLib|Silicon/Hisilicon/Library/Dw8250SerialPortLib/Dw8250SerialPortLib.inf
+      SerialPortLib|Silicon/Sophgo/SG2042Pkg/Library/SerialPortLib.inf
   }
   Silicon/Sophgo/SG2042Pkg/Drivers/MmcDxe/MmcDxe.inf
   Silicon/Sophgo/SG2042Pkg/Drivers/SdHostDxe/SdHostDxe.inf
