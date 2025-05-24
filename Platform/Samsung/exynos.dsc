@@ -17,7 +17,7 @@
 ################################################################################
 
 [Defines]
-  SOC_PLATFORM            = tensor
+  SOC_PLATFORM            = exynos2100
   USE_PHYSICAL_TIMER      = TRUE
 
 !include Silicon/Google/GooglePkg/GoogleCommonDsc.inc
