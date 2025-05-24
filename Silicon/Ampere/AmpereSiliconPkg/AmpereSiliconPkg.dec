@@ -90,6 +90,8 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0xFF|UINT8|0x00000005
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0xFF|UINT8|0x00000006
 
+  gAmpereTokenSpaceGuid.PcdFirmwareVersionNumber|0x00000000|UINT32|0x00000012
+
   #
   # I2C PCDs for SMBUS
   #

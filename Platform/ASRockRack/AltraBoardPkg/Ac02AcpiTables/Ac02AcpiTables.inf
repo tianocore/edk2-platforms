@@ -1,0 +1,20 @@
+## @file
+#
+# Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = Ac02AcpiTables
+  FILE_GUID                      = 5CA064B6-5AA4-4E29-ABDC-8BF3B34DBF9E
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+
+[Sources]
+  Dsdt.asl
+
+[Packages]
+  MdePkg/MdePkg.dec
