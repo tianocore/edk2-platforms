@@ -19,7 +19,7 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeLib.h>
 
-#define I2cSync()  { asm volatile ("dmb ish" : : : "memory"); }
+#define I2cSync()  { __asm__ __volatile__ ("dmb ish" : : : "memory"); }
 
 //
 // Runtime needs to be 64K alignment
