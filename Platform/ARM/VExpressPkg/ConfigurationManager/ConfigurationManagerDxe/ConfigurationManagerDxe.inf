@@ -73,6 +73,8 @@
   # PCI Root complex specific PCDs
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit
 
   gArmTokenSpaceGuid.PcdPciBusMin
   gArmTokenSpaceGuid.PcdPciBusMax
