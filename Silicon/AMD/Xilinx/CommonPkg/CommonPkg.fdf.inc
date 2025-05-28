@@ -27,8 +27,14 @@ INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
 #
 # SD/MMC support
 #
-INF Silicon/AMD/Xilinx/CommonPkg/Drivers/ArasanMmcHostDxe/ArasanMmcHostDxe.inf
-INF EmbeddedPkg/Universal/MmcDxe/MmcDxe.inf
+INF MdeModulePkg/Bus/Pci/SdMmcPciHcDxe/SdMmcPciHcDxe.inf
+INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+INF MdeModulePkg/Bus/Sd/SdDxe/SdDxe.inf
+
+#
+# Xilinx common initialization
+#
+INF Silicon/AMD/Xilinx/CommonPkg/Drivers/XilinxDxe/XilinxDxe.inf
 
 #
 # FAT filesystem + GPT/MBR partitioning

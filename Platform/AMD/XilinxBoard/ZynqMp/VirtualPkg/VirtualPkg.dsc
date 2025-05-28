@@ -58,19 +58,6 @@
   # So, no need to change the default value of:
   # gXilinxTokenSpaceGuid.PcdSdhciBase
 
-  # Write protection detection is enabled.
-  # By default, WP detection is disabled.
-  gXilinxTokenSpaceGuid.PcdEnableMmcWPDetection|TRUE
-
-  # Mmc driver delays are also kept as default,
-  # so no need to tweak the values of:
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterCmdSend
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterResponseReceive
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterDataWrite
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterDataRead
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterRegisterWrite
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterRetry
-
   # Extra memory
   # This board only has base 2GB DDR. So, extra
   # memory is disabled. By default, another 2GB
