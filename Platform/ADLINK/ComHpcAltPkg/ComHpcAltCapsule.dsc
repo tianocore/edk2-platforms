@@ -26,5 +26,6 @@
   # Defines for default states.  These can be changed on the command line.
   # -D FLAG=VALUE
   #
-  DEFINE UEFI_TFA_IMAGE          = Build/ComHpcAlt/comhpcalt_tfa_uefi.bin
-  DEFINE SCP_IMAGE               = altra_scp_signed_2.10.20230517.slim
+  DEFINE INCLUDE_TFA_FW          = TRUE
+  DEFINE UEFI_IMAGE              = Build/ComHpcAlt/comhpcalt_uefi.bin
+  DEFINE TFA_UEFI_IMAGE          = Build/ComHpcAlt/comhpcalt_tfa_uefi.bin
