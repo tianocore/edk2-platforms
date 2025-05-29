@@ -234,7 +234,7 @@
   }
   Platform/ARM/SgiPkg/Library/SgiPlatformPei/SgiPlatformPei.inf {
     <LibraryClasses>
-      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+      FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
   }
 
   #

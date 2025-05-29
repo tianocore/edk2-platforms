@@ -9,12 +9,13 @@
 #include <PiDxe.h>
 
 #include <Library/BaseLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DxeServicesLib.h>
+#include <Library/FdtLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
-#include <libfdt.h>
 #include <Protocol/RpiFirmware.h>
 #include <Guid/Fdt.h>
 #include <ConfigVars.h>
@@ -41,13 +42,13 @@ FixEthernetAliases (
   //
   // Look up the 'ethernet[0]' aliases
   //
-  Aliases = fdt_path_offset (mFdtImage, "/aliases");
+  Aliases = FdtPathOffset (mFdtImage, "/aliases");
   if (Aliases < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate '/aliases'\n", __func__));
     return EFI_NOT_FOUND;
   }
-  Ethernet = fdt_getprop (mFdtImage, Aliases, "ethernet", NULL);
-  Ethernet0 = fdt_getprop (mFdtImage, Aliases, "ethernet0", NULL);
+  Ethernet = FdtGetProp (mFdtImage, Aliases, "ethernet", NULL);
+  Ethernet0 = FdtGetProp (mFdtImage, Aliases, "ethernet0", NULL);
   Alias = Ethernet ? Ethernet : Ethernet0;
   if (!Alias) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet[0]' alias\n", __func__));
@@ -55,7 +56,7 @@ FixEthernetAliases (
   }
 
   //
-  // Create copy for fdt_setprop
+  // Create copy for FdtSetProp
   //
   CopySize = AsciiStrSize (Alias);
   Copy = AllocateCopyPool (CopySize, Alias);
@@ -69,7 +70,7 @@ FixEthernetAliases (
   //
   Status = EFI_SUCCESS;
   if (!Ethernet) {
-    Retval = fdt_setprop (mFdtImage, Aliases, "ethernet", Copy, CopySize);
+    Retval = FdtSetProp (mFdtImage, Aliases, "ethernet", Copy, CopySize);
     if (Retval != 0) {
       Status = EFI_NOT_FOUND;
       DEBUG ((DEBUG_ERROR, "%a: failed to create 'ethernet' alias (%d)\n",
@@ -78,7 +79,7 @@ FixEthernetAliases (
     DEBUG ((DEBUG_INFO, "%a: created 'ethernet' alias '%a'\n", __func__, Copy));
   }
   if (!Ethernet0) {
-    Retval = fdt_setprop (mFdtImage, Aliases, "ethernet0", Copy, CopySize);
+    Retval = FdtSetProp (mFdtImage, Aliases, "ethernet0", Copy, CopySize);
     if (Retval != 0) {
       Status = EFI_NOT_FOUND;
       DEBUG ((DEBUG_ERROR, "%a: failed to create 'ethernet0' alias (%d)\n",
@@ -105,7 +106,7 @@ UpdateMacAddress (
   //
   // Locate the node that the 'ethernet' alias refers to
   //
-  Node = fdt_path_offset (mFdtImage, "ethernet");
+  Node = FdtPathOffset (mFdtImage, "ethernet");
   if (Node < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate 'ethernet' alias\n", __func__));
     return EFI_NOT_FOUND;
@@ -120,7 +121,7 @@ UpdateMacAddress (
     return Status;
   }
 
-  Retval = fdt_setprop (mFdtImage, Node, "mac-address", MacAddress,
+  Retval = FdtSetProp (mFdtImage, Node, "mac-address", MacAddress,
     sizeof MacAddress);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to create 'mac-address' property (%d)\n",
@@ -153,28 +154,28 @@ AddUsbCompatibleProperty (
   INTN          Retval;
 
   // Locate the node that the 'usb' alias refers to
-  Node = fdt_path_offset (mFdtImage, "usb");
+  Node = FdtPathOffset (mFdtImage, "usb");
   if (Node < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate 'usb' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
   // Get the property list. This is a list of NUL terminated strings.
-  List = fdt_getprop (mFdtImage, Node, "compatible", &ListSize);
+  List = FdtGetProp (mFdtImage, Node, "compatible", &ListSize);
   if (List == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate properties\n", __func__));
     return EFI_NOT_FOUND;
   }
 
   // Check if the compatible value we plan to add is already present
-  if (fdt_stringlist_contains (List, ListSize, NewProp)) {
+  if (FdtStringListContains (List, ListSize, NewProp)) {
     DEBUG ((DEBUG_INFO, "%a: property '%a' is already set.\n",
       __func__, NewProp));
     return EFI_SUCCESS;
   }
 
   // Make sure the compatible device is what we expect
-  if (!fdt_stringlist_contains (List, ListSize, Prop)) {
+  if (!FdtStringListContains (List, ListSize, Prop)) {
     DEBUG ((DEBUG_ERROR, "%a: property '%a' is missing!\n",
       __func__, Prop));
     return EFI_NOT_FOUND;
@@ -192,7 +193,7 @@ AddUsbCompatibleProperty (
   CopyMem (NewList, List, ListSize);
   CopyMem (&NewList[ListSize], NewProp, sizeof (NewProp));
 
-  Retval = fdt_setprop (mFdtImage, Node, "compatible", NewList,
+  Retval = FdtSetProp (mFdtImage, Node, "compatible", NewList,
              ListSize + sizeof (NewProp));
   FreePool (NewList);
   if (Retval != 0) {
@@ -213,7 +214,7 @@ CleanMemoryNodes (
   INTN Node;
   INT32 Retval;
 
-  Node = fdt_path_offset (mFdtImage, "/memory");
+  Node = FdtPathOffset (mFdtImage, "/memory");
   if (Node < 0) {
     return EFI_SUCCESS;
   }
@@ -223,7 +224,7 @@ CleanMemoryNodes (
    * OS go crazy and ignore the UEFI map.
    */
   DEBUG ((DEBUG_INFO, "Removing bogus /memory\n"));
-  Retval = fdt_del_node (mFdtImage, Node);
+  Retval = FdtDelNode (mFdtImage, Node);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "Failed to remove /memory\n"));
     return EFI_NOT_FOUND;
@@ -242,15 +243,15 @@ SanitizePSCI (
   INTN Root;
   INT32 Retval;
 
-  Root = fdt_path_offset (mFdtImage, "/");
+  Root = FdtPathOffset (mFdtImage, "/");
   ASSERT (Root >= 0);
   if (Root < 0) {
     return EFI_NOT_FOUND;
   }
 
-  Node = fdt_path_offset (mFdtImage, "/psci");
+  Node = FdtPathOffset (mFdtImage, "/psci");
   if (Node < 0) {
-    Node = fdt_add_subnode (mFdtImage, Root, "psci");
+    Node = FdtAddSubnode (mFdtImage, Root, "psci");
   }
 
   ASSERT (Node >= 0);
@@ -259,33 +260,33 @@ SanitizePSCI (
     return EFI_NOT_FOUND;
   }
 
-  Retval = fdt_setprop_string (mFdtImage, Node, "compatible", "arm,psci-1.0");
+  Retval = FdtSetPropString (mFdtImage, Node, "compatible", "arm,psci-1.0");
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "Couldn't set /psci compatible property\n"));
     return EFI_NOT_FOUND;
   }
 
-  Retval = fdt_setprop_string (mFdtImage, Node, "method", "smc");
+  Retval = FdtSetPropString (mFdtImage, Node, "method", "smc");
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "Couldn't set /psci method property\n"));
     return EFI_NOT_FOUND;
   }
 
-  Root = fdt_path_offset (mFdtImage, "/cpus");
+  Root = FdtPathOffset (mFdtImage, "/cpus");
   if (Root < 0) {
     DEBUG ((DEBUG_ERROR, "No CPUs to update with PSCI enable-method?\n"));
     return EFI_NOT_FOUND;
   }
 
-  Node = fdt_first_subnode (mFdtImage, Root);
+  Node = FdtFirstSubnode (mFdtImage, Root);
   while (Node >= 0) {
-    if (fdt_setprop_string (mFdtImage, Node, "enable-method", "psci") != 0) {
+    if (FdtSetPropString (mFdtImage, Node, "enable-method", "psci") != 0) {
       DEBUG ((DEBUG_ERROR, "Failed to update enable-method for a CPU\n"));
       return EFI_NOT_FOUND;
     }
 
-    fdt_delprop (mFdtImage, Node, "cpu-release-addr");
-    Node = fdt_next_subnode (mFdtImage, Node);
+    FdtDelProp (mFdtImage, Node, "cpu-release-addr");
+    Node = FdtNextSubnode (mFdtImage, Node);
   }
   return EFI_SUCCESS;
 }
@@ -303,7 +304,7 @@ CleanSimpleFramebuffer (
    * Should look for nodes by kind and remove aliases
    * by matching against device.
    */
-  Node = fdt_path_offset (mFdtImage, "display0");
+  Node = FdtPathOffset (mFdtImage, "display0");
   if (Node < 0) {
     return EFI_SUCCESS;
   }
@@ -313,19 +314,19 @@ CleanSimpleFramebuffer (
    * doesn't reflect the framebuffer built by UEFI.
    */
   DEBUG ((DEBUG_INFO, "Removing bogus display0\n"));
-  Retval = fdt_del_node (mFdtImage, Node);
+  Retval = FdtDelNode (mFdtImage, Node);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "Failed to remove display0\n"));
     return EFI_NOT_FOUND;
   }
 
-  Node = fdt_path_offset (mFdtImage, "/aliases");
+  Node = FdtPathOffset (mFdtImage, "/aliases");
   if (Node < 0) {
     DEBUG ((DEBUG_ERROR, "Couldn't find /aliases to remove display0\n"));
     return EFI_NOT_FOUND;
   }
 
-  Retval = fdt_delprop (mFdtImage, Node, "display0");
+  Retval = FdtDelProp (mFdtImage, Node, "display0");
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "Failed to remove display0 alias\n"));
     return EFI_NOT_FOUND;
@@ -345,20 +346,20 @@ SyncPcie (
   INTN          Retval;
   UINT32        DmaRanges[7];
 
-  Node = fdt_path_offset (mFdtImage, "pcie0");
+  Node = FdtPathOffset (mFdtImage, "pcie0");
   if (Node < 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate 'pcie0' alias\n", __func__));
     return EFI_NOT_FOUND;
   }
 
   // non translated 32-bit DMA window with a limit of 0xc0000000
-  DmaRanges[0] = cpu_to_fdt32 (0x02000000);
-  DmaRanges[1] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[2] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[3] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[4] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[5] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[6] = cpu_to_fdt32 (0xc0000000);
+  DmaRanges[0] = CpuToFdt32 (0x02000000);
+  DmaRanges[1] = CpuToFdt32 (0x00000000);
+  DmaRanges[2] = CpuToFdt32 (0x00000000);
+  DmaRanges[3] = CpuToFdt32 (0x00000000);
+  DmaRanges[4] = CpuToFdt32 (0x00000000);
+  DmaRanges[5] = CpuToFdt32 (0x00000000);
+  DmaRanges[6] = CpuToFdt32 (0xc0000000);
 
   DEBUG ((DEBUG_INFO, "%a: Updating PCIe dma-ranges\n",  __func__));
 
@@ -367,7 +368,7 @@ SyncPcie (
    * around a failure in Linux and OpenBSD to reset the PCIe/XHCI correctly
    * when in DT mode.
    */
-  Retval = fdt_setprop (mFdtImage, Node, "dma-ranges",
+  Retval = FdtSetProp (mFdtImage, Node, "dma-ranges",
                         DmaRanges,  sizeof DmaRanges);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate PCIe 'dma-ranges' property (%d)\n",
@@ -376,20 +377,20 @@ SyncPcie (
   }
 
   // move the MMIO window too
-  DmaRanges[0] = cpu_to_fdt32 (0x02000000); // non prefetchable 32-bit
-  DmaRanges[1] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) >> 32); // bus addr @ 0x0f8000000
-  DmaRanges[2] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) & MAX_UINT32);
-  DmaRanges[3] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) >> 32); // cpu addr @ 0x600000000
-  DmaRanges[4] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) & MAX_UINT32);
-  DmaRanges[5] = cpu_to_fdt32 (0x00000000);
-  DmaRanges[6] = cpu_to_fdt32 (FixedPcdGet32 (PcdBcm27xxPciBusMmioLen) + 1); // len = 0x4000 0000
+  DmaRanges[0] = CpuToFdt32 (0x02000000); // non prefetchable 32-bit
+  DmaRanges[1] = CpuToFdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) >> 32); // bus addr @ 0x0f8000000
+  DmaRanges[2] = CpuToFdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) & MAX_UINT32);
+  DmaRanges[3] = CpuToFdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) >> 32); // cpu addr @ 0x600000000
+  DmaRanges[4] = CpuToFdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) & MAX_UINT32);
+  DmaRanges[5] = CpuToFdt32 (0x00000000);
+  DmaRanges[6] = CpuToFdt32 (FixedPcdGet32 (PcdBcm27xxPciBusMmioLen) + 1); // len = 0x4000 0000
 
   DEBUG ((DEBUG_INFO, "%a: Updating PCIe ranges\n",  __func__));
 
   /*
    * Match ranges (BAR/MMIO) with the EDK2+ACPI setup we are using.
    */
-  Retval = fdt_setprop (mFdtImage, Node, "ranges",
+  Retval = FdtSetProp (mFdtImage, Node, "ranges",
                         DmaRanges,  sizeof DmaRanges);
   if (Retval != 0) {
     DEBUG ((DEBUG_ERROR, "%a: failed to locate PCIe MMIO 'ranges' property (%d)\n",
@@ -414,12 +415,12 @@ SyncPcie (
    * triggering the mailbox by removing the node.
    */
 
-  Node = fdt_path_offset (mFdtImage, "/scb/pcie@7d500000/pci");
+  Node = FdtPathOffset (mFdtImage, "/scb/pcie@7d500000/pci");
   if (Node < 0) {
     // This can happen on CM4/etc which doesn't have an onboard XHCI
     DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci\n", __func__));
   } else {
-    Retval = fdt_del_node (mFdtImage, Node);
+    Retval = FdtDelNode (mFdtImage, Node);
     if (Retval != 0) {
       DEBUG ((DEBUG_ERROR, "Failed to remove /scb/pcie@7d500000/pci\n"));
       return EFI_NOT_FOUND;
@@ -462,7 +463,7 @@ FdtDxeInitialize (
   ASSERT_EFI_ERROR (Status);
 
   FdtImage = (VOID*)(UINTN)PcdGet32 (PcdFdtBaseAddress);
-  Retval = fdt_check_header (FdtImage);
+  Retval = FdtCheckHeader (FdtImage);
   if (Retval != 0) {
     /*
      * Any one of:
@@ -473,7 +474,7 @@ FdtDxeInitialize (
     return EFI_NOT_FOUND;
   }
 
-  FdtSize = fdt_totalsize (FdtImage);
+  FdtSize = FdtTotalSize (FdtImage);
   DEBUG ((DEBUG_INFO, "Devicetree passed via config.txt (0x%lx bytes)\n", FdtSize));
 
   /*
@@ -487,9 +488,9 @@ FdtDxeInitialize (
     goto out;
   }
 
-  Retval = fdt_open_into (FdtImage, mFdtImage, FdtSize);
+  Retval = FdtOpenInto (FdtImage, mFdtImage, FdtSize);
   if (Retval != 0) {
-     DEBUG ((DEBUG_ERROR, "fdt_open_into failed: %d\n", Retval));
+     DEBUG ((DEBUG_ERROR, "FdtOpenInto failed: %d\n", Retval));
      goto out;
   }
 

@@ -10,11 +10,12 @@
 
 #include <Uefi.h>
 #include <Library/BaseLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/FdtLib.h>
 #include <Library/UefiDriverEntryPoint.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/HobLib.h>
-#include <libfdt.h>
 
 #include <Guid/FdtHob.h>
 
@@ -37,7 +38,7 @@ GetNodeProperty (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Prop != NULL);
 
-  *Prop = fdt_getprop (mDeviceTreeBase, Node, PropertyName, &Len);
+  *Prop = FdtGetProp (mDeviceTreeBase, Node, PropertyName, &Len);
   if (*Prop == NULL) {
     return EFI_NOT_FOUND;
   }
@@ -62,7 +63,7 @@ SetNodeProperty (
 
   ASSERT (mDeviceTreeBase != NULL);
 
-  Ret = fdt_setprop (mDeviceTreeBase, Node, PropertyName, Prop, PropSize);
+  Ret = FdtSetProp (mDeviceTreeBase, Node, PropertyName, Prop, PropSize);
   if (Ret != 0) {
     return EFI_DEVICE_ERROR;
   }
@@ -85,7 +86,7 @@ FindCompatibleNode (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  Offset = fdt_node_offset_by_compatible (mDeviceTreeBase, PrevNode, CompatibleString);
+  Offset = FdtNodeOffsetByCompatible (mDeviceTreeBase, PrevNode, CompatibleString);
 
   if (Offset < 0) {
     return EFI_NOT_FOUND;
@@ -108,10 +109,10 @@ GetOrInsertChosenNode (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  NewNode = fdt_path_offset (mDeviceTreeBase, "/chosen");
+  NewNode = FdtPathOffset (mDeviceTreeBase, "/chosen");
 
   if (NewNode < 0) {
-    NewNode = fdt_add_subnode (mDeviceTreeBase, 0, "/chosen");
+    NewNode = FdtAddSubnode (mDeviceTreeBase, 0, "/chosen");
   }
 
   if (NewNode < 0) {
@@ -131,7 +132,7 @@ GetNodeDepth (
   OUT INT32                     *Depth
 )
 {
-  *Depth = fdt_node_depth (mDeviceTreeBase, Node);
+  *Depth = FdtNodeDepth (mDeviceTreeBase, Node);
 
   if (*Depth < 0) {
     return EFI_NOT_FOUND;
@@ -148,7 +149,7 @@ GetParentNode (
   OUT FDT_HANDLE                *Parent
 )
 {
-  *Parent = fdt_parent_offset (mDeviceTreeBase, Node);
+  *Parent = FdtParentOffset (mDeviceTreeBase, Node);
 
   if (*Parent < 0) {
     return EFI_NOT_FOUND;
@@ -165,7 +166,7 @@ GetNode (
   OUT FDT_HANDLE                *Node
 )
 {
-  *Node = fdt_path_offset (mDeviceTreeBase, Path);
+  *Node = FdtPathOffset (mDeviceTreeBase, Path);
 
   if (*Node < 0) {
     return EFI_NOT_FOUND;
@@ -185,7 +186,7 @@ GetNodePath (
 {
   INT32 Result;
 
-  Result = fdt_get_path (mDeviceTreeBase, Node, Path, Size);
+  Result = FdtGetPath (mDeviceTreeBase, Node, Path, Size);
 
   if (Result < 0) {
     return EFI_NOT_FOUND;
@@ -210,7 +211,7 @@ GetNodeByPropertyValue (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  Offset = fdt_node_offset_by_prop_value (mDeviceTreeBase, StartNode,
+  Offset = FdtNodeOffsetByPropValue (mDeviceTreeBase, StartNode,
                                           Property, Value,
                                           Size);
 
@@ -242,10 +243,10 @@ GetSubnodeByPropertyValue(
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  Offset = fdt_first_subnode (mDeviceTreeBase, Parent);
+  Offset = FdtFirstSubnode (mDeviceTreeBase, Parent);
 
   while (Offset > 0) {
-    Property = fdt_getprop (mDeviceTreeBase, Offset, PropertyName, &Length);
+    Property = FdtGetProp (mDeviceTreeBase, Offset, PropertyName, &Length);
 
     if ((Property != NULL) &&
         (PropertyLength == Length) &&
@@ -254,7 +255,7 @@ GetSubnodeByPropertyValue(
       return EFI_SUCCESS;
     }
 
-    Offset = fdt_next_subnode(mDeviceTreeBase, Offset);
+    Offset = FdtNextSubnode(mDeviceTreeBase, Offset);
   }
 
   return EFI_NOT_FOUND;
@@ -273,7 +274,7 @@ GetNodeByPHandle (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  Offset = fdt_node_offset_by_phandle (mDeviceTreeBase, PHandle);
+  Offset = FdtNodeOffsetByPhandle (mDeviceTreeBase, PHandle);
 
   if (Offset < 0) {
     DEBUG ((DEBUG_ERROR, "Result: %d\n", Offset));
@@ -298,7 +299,7 @@ GetFirstSubnode (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Node != NULL);
 
-  Offset = fdt_first_subnode (mDeviceTreeBase, Parent);
+  Offset = FdtFirstSubnode (mDeviceTreeBase, Parent);
 
   if (Offset < 0) {
     DEBUG ((DEBUG_ERROR, "Result: %d\n", Offset));
@@ -323,7 +324,7 @@ GetNextSubnode (
   ASSERT (mDeviceTreeBase != NULL);
   ASSERT (Next != NULL);
 
-  Offset = fdt_next_subnode (mDeviceTreeBase, Subnode);
+  Offset = FdtNextSubnode (mDeviceTreeBase, Subnode);
 
   if (Offset < 0) {
     DEBUG ((DEBUG_ERROR, "Result: %d\n", Offset));
@@ -369,7 +370,7 @@ InitializeFdtClientDxe (
 
   DeviceTreeBase = GET_GUID_HOB_DATA (Hob);
   mDeviceTreeBase = (VOID *)*(UINT64 *)DeviceTreeBase;
-  if (fdt_check_header (mDeviceTreeBase)) {
+  if (FdtCheckHeader (mDeviceTreeBase)) {
     DEBUG ((DEBUG_ERROR, "No DTB found @ 0x%p\n", DeviceTreeBase));
     return EFI_NOT_FOUND;
   }

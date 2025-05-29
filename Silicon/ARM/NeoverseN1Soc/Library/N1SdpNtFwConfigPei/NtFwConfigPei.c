@@ -6,10 +6,10 @@
 **/
 
 #include <Library/DebugLib.h>
+#include <Library/FdtLib.h>
 #include <Library/HobLib.h>
 #include <Library/PeiServicesLib.h>
 
-#include <libfdt.h>
 #include <NeoverseN1Soc.h>
 
 STATIC EFI_PEI_PPI_DESCRIPTOR  mPpi;
@@ -60,7 +60,7 @@ NtFwConfigPeEntryPoint (
   }
 
   FdtBase = ParamPpi->NtFwConfig;
-  if (fdt_check_header (FdtBase) != 0) {
+  if (FdtCheckHeader (FdtBase) != 0) {
     DEBUG ((DEBUG_ERROR, "Invalid DTB file %p passed\n", FdtBase));
     return EFI_INVALID_PARAMETER;
   }
@@ -78,43 +78,43 @@ NtFwConfigPeEntryPoint (
     return EFI_OUT_OF_RESOURCES;
   }
 
-  Offset = fdt_subnode_offset (FdtBase, 0, "platform-info");
+  Offset = FdtSubnodeOffset (FdtBase, 0, "platform-info");
   if (Offset == -FDT_ERR_NOTFOUND) {
     DEBUG ((DEBUG_ERROR, "Invalid DTB : platform-info node not found\n"));
     return EFI_NOT_FOUND;
   }
 
-  Property = fdt_getprop (FdtBase, Offset, "local-ddr-size", NULL);
+  Property = FdtGetProp (FdtBase, Offset, "local-ddr-size", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "local-ddr-size property not found\n"));
     return EFI_NOT_FOUND;
   }
 
-  PlatInfo->LocalDdrSize = fdt32_to_cpu (*Property);
+  PlatInfo->LocalDdrSize = Fdt32ToCpu (*Property);
 
-  Property = fdt_getprop (FdtBase, Offset, "remote-ddr-size", NULL);
+  Property = FdtGetProp (FdtBase, Offset, "remote-ddr-size", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "remote-ddr-size property not found\n"));
     return EFI_NOT_FOUND;
   }
 
-  PlatInfo->RemoteDdrSize = fdt32_to_cpu (*Property);
+  PlatInfo->RemoteDdrSize = Fdt32ToCpu (*Property);
 
-  Property = fdt_getprop (FdtBase, Offset, "secondary-chip-count", NULL);
+  Property = FdtGetProp (FdtBase, Offset, "secondary-chip-count", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "secondary-chip-count property not found\n"));
     return EFI_NOT_FOUND;
   }
 
-  PlatInfo->SecondaryChipCount = fdt32_to_cpu (*Property);
+  PlatInfo->SecondaryChipCount = Fdt32ToCpu (*Property);
 
-  Property = fdt_getprop (FdtBase, Offset, "multichip-mode", NULL);
+  Property = FdtGetProp (FdtBase, Offset, "multichip-mode", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "multichip-mode property not found\n"));
     return EFI_NOT_FOUND;
   }
 
-  PlatInfo->MultichipMode = fdt32_to_cpu (*Property);
+  PlatInfo->MultichipMode = Fdt32ToCpu (*Property);
 
   mPpi.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI
                | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
