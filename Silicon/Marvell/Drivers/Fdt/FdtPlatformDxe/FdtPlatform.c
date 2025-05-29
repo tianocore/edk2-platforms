@@ -12,6 +12,7 @@
 #include <Uefi.h>
 #include <Library/PcdLib.h>
 #include <Library/BdsLib.h>
+#include <Library/FdtLib.h>
 #include <Pi/PiBootMode.h>
 #include <Pi/PiHob.h>
 #include <Library/HobLib.h>
@@ -21,7 +22,6 @@
 #include <Library/UefiBootServicesTableLib.h>
 
 #include <Guid/FdtHob.h>
-#include <libfdt.h>
 
 //
 // Internal variables
@@ -44,37 +44,37 @@ DeleteFdtNode (
   }
 
   if (NodePath != NULL) {
-    Offset = fdt_path_offset (FdtAddr, NodePath);
+    Offset = FdtPathOffset (FdtAddr, NodePath);
 
     DEBUG ((DEBUG_INFO, "Offset: %d\n", Offset));
 
     if (Offset < 0) {
       DEBUG ((DEBUG_ERROR, "Error getting the device node %a offset: %a\n",
-              NodePath, fdt_strerror (Offset)));
+              NodePath, FdtStrerror (Offset)));
       return EFI_NOT_FOUND;
     }
   }
 
   if (Compatible != NULL) {
-    Offset = fdt_node_offset_by_compatible (FdtAddr, -1, Compatible);
+    Offset = FdtNodeOffsetByCompatible (FdtAddr, -1, Compatible);
 
     DEBUG ((DEBUG_INFO, "Offset: %d\n", Offset));
 
     if (Offset < 0) {
       DEBUG ((DEBUG_ERROR, "Error getting the device node for %a offset: %a\n",
-              Compatible, fdt_strerror (Offset)));
+              Compatible, FdtStrerror (Offset)));
       return EFI_NOT_FOUND;
     }
   }
 
   if (Offset >= 0) {
-    Return = fdt_del_node (FdtAddr, Offset);
+    Return = FdtDelNode (FdtAddr, Offset);
 
     DEBUG ((DEBUG_INFO, "Return: %d\n", Return));
 
     if (Return < 0) {
       DEBUG ((DEBUG_ERROR, "Error deleting the device node %a: %a\n",
-              NodePath, fdt_strerror (Return)));
+              NodePath, FdtStrerror (Return)));
       return EFI_NOT_FOUND;
     }
   }
@@ -92,11 +92,11 @@ DeleteRtcNode (
   CONST CHAR8 *Name;
 
   Found = FALSE;
-  for (Offset = fdt_next_node(FdtAddr, 0, NULL);
+  for (Offset = FdtNextNode(FdtAddr, 0, NULL);
     Offset >= 0;
-    Offset = fdt_next_node(FdtAddr, Offset, NULL)) {
+    Offset = FdtNextNode(FdtAddr, Offset, NULL)) {
 
-    Name = fdt_get_name(FdtAddr, Offset, &NameLen);
+    Name = FdtGetName(FdtAddr, Offset, &NameLen);
     if (!Name) {
       continue;
     }
@@ -108,7 +108,7 @@ DeleteRtcNode (
   }
 
   if (Found == TRUE) {
-    Return = fdt_del_node (FdtAddr, Offset);
+    Return = FdtDelNode (FdtAddr, Offset);
 
     if (Return < 0) {
       DEBUG ((DEBUG_ERROR, "Error deleting the device node %a\n", Name));
@@ -134,7 +134,7 @@ FdtFixup(
     Status |= DeleteRtcNode (FdtAddr);
 
     if (!EFI_ERROR(Status)) {
-      fdt_pack(FdtAddr);
+      FdtPack(FdtAddr);
     }
   }
 
@@ -225,13 +225,13 @@ FdtPlatformEntryPoint (
   if (GuidHob != NULL) {
     Status = EFI_SUCCESS;
     mFdtBlobBase = (VOID *)*(UINT64 *)(GET_GUID_HOB_DATA (GuidHob));
-    FdtBlobSize = fdt_totalsize((VOID *)mFdtBlobBase);
+    FdtBlobSize = FdtTotalSize((VOID *)mFdtBlobBase);
 
     //
     // Ensure that the FDT header is valid and that the Size of the Device Tree
     // is smaller than the size of the read file
     //
-    if (fdt_check_header (mFdtBlobBase)) {
+    if (FdtCheckHeader (mFdtBlobBase)) {
         DEBUG ((DEBUG_ERROR, "InstallFdt() - FDT blob seems to be corrupt\n"));
         mFdtBlobBase = NULL;
         Status = EFI_LOAD_ERROR;
