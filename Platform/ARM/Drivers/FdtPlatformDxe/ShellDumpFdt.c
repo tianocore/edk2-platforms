@@ -8,9 +8,18 @@
 
 #include "FdtPlatform.h"
 
+#include <Library/FdtLib.h>
+
 #define ALIGN(x, a)     (((x) + ((a) - 1)) & ~((a) - 1))
 #define PALIGN(p, a)    ((void *)(ALIGN ((unsigned long)(p), (a))))
-#define GET_CELL(p)     (p += 4, *((const uint32_t *)(p-4)))
+#define GET_CELL(p)     (p += 4, *((const UINT32 *)(p-4)))
+
+#define FDT_BEGIN_NODE  0x1             /* Start node: full name */
+#define FDT_END_NODE    0x2             /* End node */
+#define FDT_PROP        0x3             /* Property: name off,
+                                           size, content */
+#define FDT_NOP         0x4             /* nop */
+#define FDT_END         0x9
 
 STATIC
 UINTN
@@ -64,7 +73,7 @@ PrintData (
   } else if ((len % 4) == 0) {
     Print (L" = <");
     for (i = 0; i < len; i += 4) {
-      Print (L"0x%08x%a", fdt32_to_cpu (GET_CELL (p)), i < (len - 4) ? " " : "");
+      Print (L"0x%08x%a", Fdt32ToCpu (GET_CELL (p)), i < (len - 4) ? " " : "");
     }
     Print (L">");
   } else {
@@ -81,7 +90,7 @@ DumpFdt (
   IN VOID*                FdtBlob
   )
 {
-  struct fdt_header *bph;
+  FDT_HEADER *bph;
   UINT32 off_dt;
   UINT32 off_str;
   CONST CHAR8* p_struct;
@@ -97,12 +106,12 @@ DumpFdt (
 
   {
     // Can 'memreserve' be printed by below code?
-    INTN num = fdt_num_mem_rsv (FdtBlob);
+    INTN num = FdtGetNumberOfReserveMapEntries (FdtBlob);
     INTN i, err;
     UINT64 addr = 0, size = 0;
 
     for (i = 0; i < num; i++) {
-      err = fdt_get_mem_rsv (FdtBlob, i, &addr, &size);
+      err = FdtGetReserveMapEntry (FdtBlob, i, &addr, &size);
       if (err) {
         DEBUG ((DEBUG_ERROR, "Error (%d) : Cannot get memreserve section (%d)\n", err, i));
       }
@@ -116,14 +125,14 @@ DumpFdt (
   shift = 4;
 
   bph = FdtBlob;
-  off_dt = fdt32_to_cpu (bph->off_dt_struct);
-  off_str = fdt32_to_cpu (bph->off_dt_strings);
+  off_dt = Fdt32ToCpu (bph->OffsetDtStruct);
+  off_str = Fdt32ToCpu (bph->OffsetDtStrings);
   p_struct = (CONST CHAR8*)FdtBlob + off_dt;
   p_strings = (CONST CHAR8*)FdtBlob + off_str;
-  version = fdt32_to_cpu (bph->version);
+  version = Fdt32ToCpu (bph->Version);
 
   p = p_struct;
-  while ((tag = fdt32_to_cpu (GET_CELL (p))) != FDT_END) {
+  while ((tag = Fdt32ToCpu (GET_CELL (p))) != FDT_END) {
     if (tag == FDT_BEGIN_NODE) {
       s = p;
       p = PALIGN (p + AsciiStrLen (s) + 1, 4);
@@ -153,8 +162,8 @@ DumpFdt (
       Print (L"%*s ** Unknown tag 0x%08x\n", depth * shift, L" ", tag);
       break;
     }
-    sz = fdt32_to_cpu (GET_CELL (p));
-    s = p_strings + fdt32_to_cpu (GET_CELL (p));
+    sz = Fdt32ToCpu (GET_CELL (p));
+    s = p_strings + Fdt32ToCpu (GET_CELL (p));
     if (version < 16 && sz >= 8)
             p = PALIGN (p, 8);
     t = p;

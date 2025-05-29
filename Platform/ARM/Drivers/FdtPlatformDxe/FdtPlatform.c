@@ -9,7 +9,9 @@
 #include "FdtPlatform.h"
 
 #include <Library/PcdLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DevicePathLib.h>
+#include <Library/FdtLib.h>
 #include <Library/BdsLib.h>
 
 #include <Protocol/DevicePath.h>
@@ -92,8 +94,8 @@ InstallFdt (
   // Ensure that the FDT header is valid and that the Size of the Device Tree
   // is smaller than the size of the read file
   //
-  if (fdt_check_header ((VOID*)(UINTN)FdtBlobBase) != 0 ||
-      (UINTN)fdt_totalsize ((VOID*)(UINTN)FdtBlobBase) > FdtBlobSize) {
+  if (FdtCheckHeader ((VOID*)(UINTN)FdtBlobBase) != 0 ||
+      (UINTN)FdtTotalSize ((VOID*)(UINTN)FdtBlobBase) > FdtBlobSize) {
     DEBUG ((DEBUG_ERROR, "InstallFdt() - loaded FDT binary image seems corrupt\n"));
     Status = EFI_LOAD_ERROR;
     goto Error;

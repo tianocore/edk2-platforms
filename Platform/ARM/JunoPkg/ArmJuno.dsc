@@ -405,7 +405,7 @@
   Platform/ARM/Drivers/FdtPlatformDxe/FdtPlatformDxe.inf {
     <LibraryClasses>
       BdsLib|Platform/ARM/Library/BdsLib/BdsLib.inf
-      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
+      FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
   }
 
   # SCMI Driver

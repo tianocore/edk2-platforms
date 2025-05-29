@@ -26,8 +26,6 @@
 
 #include <Guid/Fdt.h>
 
-#include <libfdt.h>
-
 extern EFI_HANDLE mFdtPlatformDxeHiiHandle;
 
 /**
