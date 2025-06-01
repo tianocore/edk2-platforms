@@ -4,7 +4,7 @@
 # Builds BIOS using configuration files and dynamically
 # imported functions from board directory
 #
-# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2025, Intel Corporation. All rights reserved.<BR>
 # Copyright (c) 2021, American Megatrends International LLC.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -182,6 +182,16 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
         if config.get("EDK_TOOLS_BIN") is not None:
             del config["EDK_TOOLS_BIN"]
 
+    if os.name == 'nt' and toolchain is not None and \
+        toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
+        config['BASETOOLS_MINGW_BUILD'] = 'TRUE'
+        if config.get("EDK_SETUP_OPTION"):
+            config["EDK_SETUP_OPTION"] = config["EDK_SETUP_OPTION"].strip() + " " + "Mingw-w64"
+        else:
+            config["EDK_SETUP_OPTION"] = "Mingw-w64"
+        config["PATH"] = os.path.join(config["BASETOOLS_MINGW_PATH"],
+                                    "bin") + os.pathsep + config["PATH"]
+
     # Run edk setup and  update config
     if os.name == 'nt':
         edk2_setup_cmd = [os.path.join(config["EFI_SOURCE"], "edksetup"),
@@ -220,11 +230,14 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
                                         "BinWrappers", "PosixLike") + \
                                             os.pathsep + config["PATH"]
 
-    # nmake BaseTools source
+    # Make BaseTools source
     # and enable BaseTools source build
     shell = True
     command = ["nmake", "-f", os.path.join(config["BASE_TOOLS_PATH"],
                                            "Makefile")]
+    if os.name == 'nt' and toolchain is not None and \
+        toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
+        command = ["mingw32-make", "-C", os.path.join(config["BASE_TOOLS_PATH"])]
     if os.name == "posix":  # linux
         shell = False
         command = ["make", "-C", os.path.join(config["BASE_TOOLS_PATH"])]
@@ -238,6 +251,10 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
             clean_command = ["nmake", "-f",
                             os.path.join(config["BASE_TOOLS_PATH"], "Makefile"),
                             "clean"]
+            if os.name == 'nt' and toolchain is not None and \
+                toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
+                clean_command = ["mingw32-make", "-C",
+                                os.path.join(config["BASE_TOOLS_PATH"], "clean")]
             if os.name == "posix":
                 clean_command = ["make", "-C",
                                 os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
@@ -258,6 +275,9 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
     config["WORKSPACE"] = os.path.join(config["WORKSPACE_SILICON"], "Tools")
 
     command = ["nmake"]
+    if os.name == 'nt' and toolchain is not None and \
+        toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
+        command = ["mingw32-make"]
     if os.name == "posix":  # linux
         command = ["make"]
         # add path to generated FitGen binary to
@@ -269,7 +289,22 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
     # build the silicon tools
     _, _, result, return_code = execute_script(command, config, shell=shell)
     if return_code != 0:
-        build_failed(config)
+        #
+        # If the BaseTools build fails, then run a clean build and retry
+        #
+        clean_command = ["nmake", "clean"]
+        if os.name == 'nt' and toolchain is not None and \
+            toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
+            clean_command = ["mingw32-make", "clean"]
+        if os.name == "posix":
+            clean_command = ["make", "clean"]
+        _, _, result, return_code = execute_script(clean_command, config,
+                                                shell=shell)
+        if return_code != 0:
+            build_failed(config)
+        _, _, result, return_code = execute_script(command, config, shell=shell)
+        if return_code != 0:
+            build_failed(config)
 
     # restore WORKSPACE environment variable
     config["WORKSPACE"] = saved_work_directory
