@@ -25,13 +25,13 @@ InitVirtioDevices (
 EFI_STATUS
 EFIAPI
 ArmMorelloEntryPoint (
-  IN EFI_HANDLE         ImageHandle,
-  IN EFI_SYSTEM_TABLE   *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS                 Status;
-  EFI_RAM_DISK_PROTOCOL      *RamDisk;
-  EFI_DEVICE_PATH_PROTOCOL   *DevicePath;
+  EFI_STATUS                Status;
+  EFI_RAM_DISK_PROTOCOL     *RamDisk;
+  EFI_DEVICE_PATH_PROTOCOL  *DevicePath;
 
   Status = EFI_SUCCESS;
 
@@ -41,11 +41,15 @@ ArmMorelloEntryPoint (
     Status = gBS->LocateProtocol (
                     &gEfiRamDiskProtocolGuid,
                     NULL,
-                    (VOID**)&RamDisk
+                    (VOID **)&RamDisk
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "Couldn't find the RAM Disk protocol %r\n",
-        __func__, Status));
+      DEBUG ((
+        DEBUG_ERROR,
+        "Couldn't find the RAM Disk protocol %r\n",
+        __func__,
+        Status
+        ));
       return Status;
     }
 
@@ -57,8 +61,12 @@ ArmMorelloEntryPoint (
                         &DevicePath
                         );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to register RAM Disk - %r\n",
-        __func__, Status));
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Failed to register RAM Disk - %r\n",
+        __func__,
+        Status
+        ));
     }
   }
 
