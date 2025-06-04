@@ -188,6 +188,7 @@
 
 [LibraryClasses.common.SEC]
   DebugAgentLib|ArmPkg/Library/DebugAgentSymbolsBaseLib/DebugAgentSymbolsBaseLib.inf
+  PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLibNull.inf
 
 !if $(EDK2_SKIP_PEICORE) == TRUE
   PrePiLib|EmbeddedPkg/Library/PrePiLib/PrePiLib.inf
