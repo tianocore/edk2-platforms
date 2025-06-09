@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 - 2024, Arm Limited. All rights reserved.
+#  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -64,15 +64,17 @@
 
   gArmSgiTokenSpaceGuid.PcdSmcCs0Base|0|UINT64|0x0000000C
   gArmSgiTokenSpaceGuid.PcdSmcCs1Base|0|UINT64|0x0000000D
-  gArmSgiTokenSpaceGuid.PcdSmcCs2Base|0|UINT64|0x00001000
+  gArmSgiTokenSpaceGuid.PcdSmcCs2Base|0|UINT64|0x00000030
   gArmSgiTokenSpaceGuid.PcdSysPeriphBase|0x00000000|UINT64|0x0000000E
   gArmSgiTokenSpaceGuid.PcdSysPeriphSysRegBase|0x0|UINT64|0x0000000F
 
   # Counter, Timer and Watchdog
-  gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv|0|UINT32|0x00000011
-  gArmSgiTokenSpaceGuid.PcdGtFrame1Gsiv|0|UINT32|0x00000012
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Base|0|UINT32|0x00000015
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Size|0|UINT32|0x00000016
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Gsiv|0|UINT32|0x00000011
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Gsiv|0|UINT32|0x00000012
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base|0|UINT32|0x00000015
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Size|0|UINT32|0x00000016
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base|0|UINT32|0x00000035
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Size|0|UINT32|0x00000036
   gArmSgiTokenSpaceGuid.PcdTimerControlBase|0|UINT32|0x00000017
   gArmSgiTokenSpaceGuid.PcdTimerControlSize|0|UINT32|0x00000018
   gArmSgiTokenSpaceGuid.PcdTimerCounterReadBase|0|UINT32|0x00000019
@@ -104,8 +106,15 @@
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|0x0|UINT64|0x00000027
 
   # IO virtualization block
+  gArmSgiTokenSpaceGuid.PcdIoVirtBlkCountPerChip|0|UINT32|0x00000037
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base|0|UINT64|0x0000002B
   gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable|0|UINT32|0x0000002C
+
+  # Second Dram Block
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0|0|UINT64|0x00000031
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip1|0|UINT64|0x00000032
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip2|0|UINT64|0x00000033
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip3|0|UINT64|0x00000034
 
 [Ppis]
   gNtFwConfigDtInfoPpiGuid     = { 0x6f606eb3, 0x9123, 0x4e15, { 0xa8, 0x9b, 0x0f, 0xac, 0x66, 0xef, 0xd0, 0x17 } }
