@@ -6,6 +6,7 @@
 **/
 
 #include <Library/DebugLib.h>
+#include <Library/FdtLib.h>
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PeiServicesLib.h>
@@ -13,7 +14,6 @@
 #include <Guid/FdtHob.h>
 
 #include <MorelloPlatform.h>
-#include <libfdt.h>
 
 /**
   The entrypoint of the module, it will pass the FDT via a HOB.
@@ -63,7 +63,7 @@ Load (
     return EFI_SUCCESS;
   }
 
-  if (fdt_check_header (ParamPpi->HwConfig) != 0) {
+  if (FdtCheckHeader (ParamPpi->HwConfig) != 0) {
     DEBUG ((
       DEBUG_ERROR,
       "[%a]: invalid FDT in HW_CONFIG\n",
@@ -72,7 +72,7 @@ Load (
     return EFI_UNSUPPORTED;
   }
 
-  FdtSize    = fdt_totalsize (ParamPpi->HwConfig);
+  FdtSize    = FdtTotalSize (ParamPpi->HwConfig);
   FdtPages   = EFI_SIZE_TO_PAGES (FdtSize);
   FdtNewBase = AllocatePages (FdtPages);
   if (FdtNewBase == NULL) {
@@ -84,7 +84,7 @@ Load (
     return EFI_OUT_OF_RESOURCES;
   }
 
-  fdt_open_into (ParamPpi->HwConfig, FdtNewBase, EFI_PAGES_TO_SIZE (FdtPages));
+  FdtOpenInto (ParamPpi->HwConfig, FdtNewBase, EFI_PAGES_TO_SIZE (FdtPages));
 
   FdtHobData = BuildGuidHob (&gFdtHobGuid, sizeof (*FdtHobData));
   if (FdtHobData == NULL) {

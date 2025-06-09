@@ -11,7 +11,8 @@
 #include <Library/PeiServicesLib.h>
 
 #include <MorelloPlatform.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
+#include <Library/BaseMemoryLib.h>
 
 STATIC EFI_PEI_PPI_DESCRIPTOR  gPpi;
 
@@ -69,7 +70,7 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
-  if (fdt_check_header (ParamPpi->NtFwConfig) != 0) {
+  if (FdtCheckHeader (ParamPpi->NtFwConfig) != 0) {
     DEBUG ((
       DEBUG_ERROR,
       "[%a]: invalid NT_FW_CONFIG DTB\n",
@@ -79,7 +80,7 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
-  Offset = fdt_subnode_offset (ParamPpi->NtFwConfig, 0, "platform-info");
+  Offset = FdtSubnodeOffset (ParamPpi->NtFwConfig, 0, "platform-info");
   if (Offset == -FDT_ERR_NOTFOUND) {
     DEBUG ((
       DEBUG_ERROR,
@@ -89,7 +90,7 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
-  DdrProperty = fdt_getprop (
+  DdrProperty = FdtGetProp (
                   ParamPpi->NtFwConfig,
                   Offset,
                   "local-ddr-size",
@@ -104,7 +105,7 @@ Load (
     return EFI_INVALID_PARAMETER;
   }
 
-  PlatInfo->LocalDdrSize = fdt64_to_cpu (ReadUnaligned64 (DdrProperty));
+  PlatInfo->LocalDdrSize = Fdt64ToCpu (ReadUnaligned64 (DdrProperty));
 
   gPpi.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI
                | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
