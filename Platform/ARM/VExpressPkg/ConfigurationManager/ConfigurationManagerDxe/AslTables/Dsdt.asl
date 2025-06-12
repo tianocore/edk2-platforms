@@ -11,6 +11,30 @@
 
 DefinitionBlock("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARM-VEXP", 1) {
   Scope(_SB) {
+    //
+    // Processor declaration
+    //
+    Method (_OSC, 4, Serialized)  { // _OSC: Operating System Capabilities
+      CreateDWordField (Arg3, 0x00, STS0)
+      CreateDWordField (Arg3, 0x04, CAP0)
+      If ((Arg0 == ToUUID ("0811b06e-4a27-44f9-8d60-3cbbc22e7b48") /* Platform-wide Capabilities */)) {
+        If (!(Arg1 == One)) {
+          STS0 &= ~0x1F
+          STS0 |= 0x0A
+        } Else {
+          If ((CAP0 & 0x100)) {
+            CAP0 &= ~0x100 /* No support for OS Initiated LPI */
+            STS0 &= ~0x1F
+            STS0 |= 0x12
+          }
+        }
+      } Else {
+        STS0 &= ~0x1F
+        STS0 |= 0x06
+      }
+      Return (Arg3)
+    }
+
     // SMC91X
     Device (NET0) {
       Name (_HID, "LNRO0003")
