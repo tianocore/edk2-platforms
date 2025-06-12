@@ -84,6 +84,13 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtCpuTopology),
       NULL
     },
+    // PPTT Table
+    {
+      EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,
+      EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdPptt),
+      NULL
+    },
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
@@ -455,6 +462,464 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
   // Embedded Trace device info
   {
     ArmEtTypeEte
+  },
+
+  // Processor Hierarchy Nodes
+  {
+    // Package
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[0]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      CM_NULL_TOKEN,
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      CM_NULL_TOKEN,
+      // UINT32  NoOfPrivateResources
+      PACKAGE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (PackageResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      CM_NULL_TOKEN
+    },
+    // Cluster 0
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[1]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      CM_NULL_TOKEN,
+      // UINT32  NoOfPrivateResources
+      CLUSTER0_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster0Resources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
+    },
+    // Cluster 1
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[2]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[0]), // -> Package
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      CM_NULL_TOKEN,
+      // UINT32  NoOfPrivateResources
+      CLUSTER1_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster1Resources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
+    },
+    // Eight cores
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[3]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> Cluster 0
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[0]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER0_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster0CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[4]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> Cluster 0
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[1]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER0_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster0CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[5]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> Cluster 0
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[2]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER0_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster0CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[6]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> Cluster 0
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[3]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER0_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster0CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[7]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> Cluster 1
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[4]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER1_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster1CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[8]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> Cluster 1
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[5]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER1_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster1CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[9]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> Cluster 1
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[6]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER1_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster1CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    },
+    {
+      // CM_OBJECT_TOKEN  Token
+      REFERENCE_TOKEN (ProcHierarchyInfo[10]),
+      // UINT32  Flags
+      PROC_NODE_FLAGS (
+        EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
+        EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+      ),
+      // CM_OBJECT_TOKEN  ParentToken
+      REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> Cluster 1
+      // CM_OBJECT_TOKEN  AcpiIdObjectToken
+      REFERENCE_TOKEN (GicCInfo[7]),
+      // UINT32  NoOfPrivateResources
+      CLUSTER1_CORE_RESOURCE_COUNT,
+      // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      REFERENCE_TOKEN (Cluster1CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
+    }
+  },
+
+
+  // Cache information
+  {
+    // L3 cache
+    {
+      REFERENCE_TOKEN (CacheInfo[0]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x400000,                        // UINT32  Size
+      4096,                            // UINT32  NumberOfSets
+      16,                              // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+    // L2 cache
+    {
+      REFERENCE_TOKEN (CacheInfo[1]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x80000,                         // UINT32  Size
+      512,                             // UINT32  NumberOfSets
+      16,                              // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+    // L1 instruction cache
+    {
+      REFERENCE_TOKEN (CacheInfo[2]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x8000,                          // UINT32  Size
+      256,                             // UINT32  NumberOfSets
+      2,                               // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+    // L1 data cache
+    {
+      REFERENCE_TOKEN (CacheInfo[3]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x8000,                          // UINT32  Size
+      256,                             // UINT32  NumberOfSets
+      2,                               // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+
+    // L2 cache
+    {
+      REFERENCE_TOKEN (CacheInfo[4]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x80000,                         // UINT32  Size
+      512,                             // UINT32  NumberOfSets
+      16,                              // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+    // L1 instruction cache
+    {
+      REFERENCE_TOKEN (CacheInfo[5]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x8000,                          // UINT32  Size
+      256,                             // UINT32  NumberOfSets
+      2,                               // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    },
+    // L1 data cache
+    {
+      REFERENCE_TOKEN (CacheInfo[6]),  // CM_OBJECT_TOKEN  Token
+      CM_NULL_TOKEN,                   // CM_OBJECT_TOKEN  NextLevelOfCacheToken
+      0x8000,                          // UINT32  Size
+      256,                             // UINT32  NumberOfSets
+      2,                               // UINT32  Associativity
+      CACHE_ATTRIBUTES (               // UINT8   Attributes
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,
+        EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
+      ),
+      64                               // UINT16  LineSize
+    }
+  },
+
+  // Resources private to the package (shared among clusters)
+  {
+    { REFERENCE_TOKEN (CacheInfo[0]) }  // -> package's L3 cache
+  },
+  // Resources private to cluster 0 (shared among cores)
+  {
+    { REFERENCE_TOKEN (CacheInfo[1]) }  // -> cluster 1's L2 cache
+  },
+  // Resources private to each individual cluster 0 core instance
+  {
+    { REFERENCE_TOKEN (CacheInfo[2]) }, // -> cluster 0 core's L1 I-cache
+    { REFERENCE_TOKEN (CacheInfo[3]) }  // -> cluster 0 core's L1 D-cache
+  },
+  // Resources private to cluster 1 (shared among cores)
+  {
+    { REFERENCE_TOKEN (CacheInfo[4]) }  // -> cluster 2's L2 cache
+  },
+  // Resources private to each individual cluster 1 core instance
+  {
+    { REFERENCE_TOKEN (CacheInfo[5]) }, // -> cluster 1 core's L1 I-cache
+    { REFERENCE_TOKEN (CacheInfo[6]) }  // -> cluster 1 core's L1 D-cache
+  },
+
+
+  // Low Power Idle state information (LPI) for all cores/clusters
+  // This structure currently contains dummy values
+  {
+    { // LpiInfo[0] -> Clusters CluPwrDn
+      2500,         // MinResidency
+      1150,         // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      100,          // ResCntFreq
+      0,            // EnableParentState
+      TRUE,         // IsInteger
+      0x01000000,   // IntegerEntryMethod
+      // RegisterEntryMethod (NULL, use IntegerEntryMethod)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "CluPwrDn" // StateName
+    },
+    // LpiInfo[1] -> Cores WFI
+    {
+      1,            // MinResidency
+      1,            // WorstCaseWakeLatency
+      1,            // Flags
+      0,            // ArchFlags
+      100,          // ResCntFreq
+      0,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+        EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+        0x20, // RegisterBitWidth
+        0x00, // RegisterBitOffset
+        0x03, // AccessSize
+        0xFFFFFFFF // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "WFI" // StateName
+    },
+    // LpiInfo[2] -> Cores CorePwrDn
+    {
+      150,          // MinResidency
+      350,          // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      100,          // ResCntFreq
+      1,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+          EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+          0x20, // RegisterBitWidth
+          0x00, // RegisterBitOffset
+          0x03, // AccessSize
+          0x00010000 // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "CorePwrDn" // StateName
+    },
+  },
+  // Cluster Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[0]) }
+  },
+  // Cores Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[1]) },
+    { REFERENCE_TOKEN (LpiInfo[2]) },
   }
 };
 
@@ -657,6 +1122,55 @@ InitializePlatformRepository (
   }
 
   return EFI_SUCCESS;
+}
+
+/** Return Lpi State Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_LPI_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetLpiInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->LpiInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->LpiInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->LpiInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->LpiInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
 }
 
 /** Return a GT Block timer frame info list.
@@ -885,6 +1399,55 @@ GetPciInterruptMapInfo (
   return EFI_NOT_FOUND;
 }
 
+/** Return GIC CPU Interface Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARM_GICC_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetGicCInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->GicCInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->GicCInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->GicCInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->GicCInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
 /** Return a list of Configuration Manager object references pointed to by the
     given input token.
 
@@ -928,6 +1491,48 @@ GetCmObjRefs (
     CmObject->Size = sizeof (PlatformRepo->PciInterruptMapRef);
     CmObject->Data = (VOID*)&PlatformRepo->PciInterruptMapRef;
     CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PackageResources) {
+    CmObject->Size = sizeof (PlatformRepo->PackageResources);
+    CmObject->Data = (VOID*)&PlatformRepo->PackageResources;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->PackageResources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->Cluster0Resources) {
+    CmObject->Size = sizeof (PlatformRepo->Cluster0Resources);
+    CmObject->Data = (VOID*)&PlatformRepo->Cluster0Resources;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->Cluster0Resources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->Cluster0CoreResources) {
+    CmObject->Size = sizeof (PlatformRepo->Cluster0CoreResources);
+    CmObject->Data = (VOID*)&PlatformRepo->Cluster0CoreResources;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->Cluster0CoreResources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->Cluster1Resources) {
+    CmObject->Size = sizeof (PlatformRepo->Cluster1Resources);
+    CmObject->Data = (VOID*)&PlatformRepo->Cluster1Resources;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->Cluster1Resources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->Cluster1CoreResources) {
+    CmObject->Size = sizeof (PlatformRepo->Cluster1CoreResources);
+    CmObject->Data = (VOID*)&PlatformRepo->Cluster1CoreResources;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->Cluster1CoreResources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->ClustersLpiRef) {
+    CmObject->Size = sizeof (PlatformRepo->ClustersLpiRef);
+    CmObject->Data = (VOID*)&PlatformRepo->ClustersLpiRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->ClustersLpiRef);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->CoresLpiRef) {
+    CmObject->Size = sizeof (PlatformRepo->CoresLpiRef);
+    CmObject->Data = (VOID*)&PlatformRepo->CoresLpiRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->CoresLpiRef);
     return EFI_SUCCESS;
   }
 
@@ -1145,6 +1750,39 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
+    case EArchCommonObjLpiInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 NULL,
+                 0,
+                 0,
+                 Token,
+                 GetLpiInfo,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjProcHierarchyInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->ProcHierarchyInfo,
+                 sizeof (PlatformRepo->ProcHierarchyInfo),
+                 ARRAY_SIZE (PlatformRepo->ProcHierarchyInfo),
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjCacheInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->CacheInfo,
+                 sizeof (PlatformRepo->CacheInfo),
+                 ARRAY_SIZE (PlatformRepo->CacheInfo),
+                 CmObject
+                 );
+      break;
+
     default: {
       Status = EFI_NOT_FOUND;
       DEBUG ((
@@ -1269,11 +1907,14 @@ GetArmNameSpaceObject (
       break;
 
     case EArmObjGicCInfo:
-      Status = HandleCmObject (
+      Status = HandleCmObjectRefByToken (
+                 This,
                  CmObjectId,
                  PlatformRepo->GicCInfo,
                  sizeof (PlatformRepo->GicCInfo),
                  ARRAY_SIZE (PlatformRepo->GicCInfo),
+                 Token,
+                 GetGicCInfo,
                  CmObject
                  );
       break;
