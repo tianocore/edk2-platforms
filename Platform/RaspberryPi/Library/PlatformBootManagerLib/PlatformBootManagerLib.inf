@@ -51,9 +51,6 @@
   UefiBootServicesTableLib
   UefiLib
 
-[FeaturePcd]
-  gEfiMdePkgTokenSpaceGuid.PcdUgaConsumeSupport
-
 [FixedPcd]
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits
