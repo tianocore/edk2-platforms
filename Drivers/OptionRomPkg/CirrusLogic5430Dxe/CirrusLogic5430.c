@@ -175,7 +175,7 @@ CirrusLogic5430ControllerDriverSupported (
       if (RemainingDevicePath != NULL) {
         Node = (EFI_DEV_PATH *) RemainingDevicePath;
         //
-        // Check if RemainingDevicePath is the End of Device Path Node, 
+        // Check if RemainingDevicePath is the End of Device Path Node,
         // if yes, return EFI_SUCCESS
         //
         if (!IsDevicePathEnd (Node)) {
@@ -316,47 +316,45 @@ CirrusLogic5430ControllerDriverStart (
     goto Error;
   }
 
-  if (FeaturePcdGet (PcdSupportGop)) {
-    //
-    // Set Gop Device Path
-    //
-    if (RemainingDevicePath == NULL) {
-      ZeroMem (&AcpiDeviceNode, sizeof (ACPI_ADR_DEVICE_PATH));
-      AcpiDeviceNode.Header.Type = ACPI_DEVICE_PATH;
-      AcpiDeviceNode.Header.SubType = ACPI_ADR_DP;
-      AcpiDeviceNode.ADR = ACPI_DISPLAY_ADR (1, 0, 0, 1, 0, ACPI_ADR_DISPLAY_TYPE_VGA, 0, 0);
-      SetDevicePathNodeLength (&AcpiDeviceNode.Header, sizeof (ACPI_ADR_DEVICE_PATH));
+  //
+  // Set Gop Device Path
+  //
+  if (RemainingDevicePath == NULL) {
+    ZeroMem (&AcpiDeviceNode, sizeof (ACPI_ADR_DEVICE_PATH));
+    AcpiDeviceNode.Header.Type = ACPI_DEVICE_PATH;
+    AcpiDeviceNode.Header.SubType = ACPI_ADR_DP;
+    AcpiDeviceNode.ADR = ACPI_DISPLAY_ADR (1, 0, 0, 1, 0, ACPI_ADR_DISPLAY_TYPE_VGA, 0, 0);
+    SetDevicePathNodeLength (&AcpiDeviceNode.Header, sizeof (ACPI_ADR_DEVICE_PATH));
 
-      Private->GopDevicePath = AppendDevicePathNode (
-                                          ParentDevicePath,
-                                          (EFI_DEVICE_PATH_PROTOCOL *) &AcpiDeviceNode
-                                          );
-    } else if (!IsDevicePathEnd (RemainingDevicePath)) {
-      //
-      // If RemainingDevicePath isn't the End of Device Path Node, 
-      // only scan the specified device by RemainingDevicePath
-      //
-      Private->GopDevicePath = AppendDevicePathNode (ParentDevicePath, RemainingDevicePath);
-    } else {
-      //
-      // If RemainingDevicePath is the End of Device Path Node, 
-      // don't create child device and return EFI_SUCCESS
-      //
-      Private->GopDevicePath = NULL;
-    }
-      
-    if (Private->GopDevicePath != NULL) {
-      //
-      // Creat child handle and device path protocol firstly
-      //
-      Private->Handle = NULL;
-      Status = gBS->InstallMultipleProtocolInterfaces (
-                      &Private->Handle,
-                      &gEfiDevicePathProtocolGuid,
-                      Private->GopDevicePath,
-                      NULL
-                      );
-    }
+    Private->GopDevicePath = AppendDevicePathNode (
+                                        ParentDevicePath,
+                                        (EFI_DEVICE_PATH_PROTOCOL *) &AcpiDeviceNode
+                                        );
+  } else if (!IsDevicePathEnd (RemainingDevicePath)) {
+    //
+    // If RemainingDevicePath isn't the End of Device Path Node,
+    // only scan the specified device by RemainingDevicePath
+    //
+    Private->GopDevicePath = AppendDevicePathNode (ParentDevicePath, RemainingDevicePath);
+  } else {
+    //
+    // If RemainingDevicePath is the End of Device Path Node,
+    // don't create child device and return EFI_SUCCESS
+    //
+    Private->GopDevicePath = NULL;
+  }
+
+  if (Private->GopDevicePath != NULL) {
+    //
+    // Creat child handle and device path protocol firstly
+    //
+    Private->Handle = NULL;
+    Status = gBS->InstallMultipleProtocolInterfaces (
+                    &Private->Handle,
+                    &gEfiDevicePathProtocolGuid,
+                    Private->GopDevicePath,
+                    NULL
+                    );
   }
 
   //
@@ -367,57 +365,32 @@ CirrusLogic5430ControllerDriverStart (
     goto Error;
   }
 
-  if (FeaturePcdGet (PcdSupportUga)) {
+
+  if (Private->GopDevicePath == NULL) {
     //
-    // Start the UGA Draw software stack.
+    // If RemainingDevicePath is the End of Device Path Node,
+    // don't create child device and return EFI_SUCCESS
     //
-    Status = CirrusLogic5430UgaDrawConstructor (Private);
+    Status = EFI_SUCCESS;
+  } else {
+
+    //
+    // Start the GOP software stack.
+    //
+    Status = CirrusLogic5430GraphicsOutputConstructor (Private);
     ASSERT_EFI_ERROR (Status);
 
-    Private->UgaDevicePath = ParentDevicePath;
     Status = gBS->InstallMultipleProtocolInterfaces (
-                    &Controller,
-                    &gEfiUgaDrawProtocolGuid,
-                    &Private->UgaDraw,
-                    &gEfiDevicePathProtocolGuid,
-                    Private->UgaDevicePath,
+                    &Private->Handle,
+                    &gEfiGraphicsOutputProtocolGuid,
+                    &Private->GraphicsOutput,
+                    &gEfiEdidDiscoveredProtocolGuid,
+                    &Private->EdidDiscovered,
+                    &gEfiEdidActiveProtocolGuid,
+                    &Private->EdidActive,
                     NULL
                     );
-
-  } else if (FeaturePcdGet (PcdSupportGop)) {
-    if (Private->GopDevicePath == NULL) {
-      //
-      // If RemainingDevicePath is the End of Device Path Node, 
-      // don't create child device and return EFI_SUCCESS
-      //
-      Status = EFI_SUCCESS;
-    } else {
-  
-      //
-      // Start the GOP software stack.
-      //
-      Status = CirrusLogic5430GraphicsOutputConstructor (Private);
-      ASSERT_EFI_ERROR (Status);
-  
-      Status = gBS->InstallMultipleProtocolInterfaces (
-                      &Private->Handle,
-                      &gEfiGraphicsOutputProtocolGuid,
-                      &Private->GraphicsOutput,
-                      &gEfiEdidDiscoveredProtocolGuid,
-                      &Private->EdidDiscovered,
-                      &gEfiEdidActiveProtocolGuid,
-                      &Private->EdidActive,
-                      NULL
-                      );
-    }
-  } else {
-    //
-    // This driver must support eithor GOP or UGA or both.
-    //
-    ASSERT (FALSE);
-    Status = EFI_UNSUPPORTED;
   }
-
 
 Error:
   if (EFI_ERROR (Status)) {
@@ -470,85 +443,38 @@ CirrusLogic5430ControllerDriverStop (
   IN EFI_HANDLE                     *ChildHandleBuffer
   )
 {
-  EFI_UGA_DRAW_PROTOCOL           *UgaDraw;
   EFI_GRAPHICS_OUTPUT_PROTOCOL    *GraphicsOutput;
 
   EFI_STATUS                      Status;
   CIRRUS_LOGIC_5430_PRIVATE_DATA  *Private;
 
-  if (FeaturePcdGet (PcdSupportUga)) {
-    Status = gBS->OpenProtocol (
-                    Controller,
-                    &gEfiUgaDrawProtocolGuid,
-                    (VOID **) &UgaDraw,
-                    This->DriverBindingHandle,
-                    Controller,
-                    EFI_OPEN_PROTOCOL_GET_PROTOCOL
-                    );
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-    //
-    // Get our private context information
-    //
-    Private = CIRRUS_LOGIC_5430_PRIVATE_DATA_FROM_UGA_DRAW_THIS (UgaDraw);
-    CirrusLogic5430UgaDrawDestructor (Private);
-
-    if (FeaturePcdGet (PcdSupportGop)) {
-      CirrusLogic5430GraphicsOutputDestructor (Private);
-      //
-      // Remove the UGA and GOP protocol interface from the system
-      //
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Private->Handle,
-                      &gEfiUgaDrawProtocolGuid,
-                      &Private->UgaDraw,
-                      &gEfiGraphicsOutputProtocolGuid,
-                      &Private->GraphicsOutput,
-                      NULL
-                      );
-    } else {
-      //
-      // Remove the UGA Draw interface from the system
-      //
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Private->Handle,
-                      &gEfiUgaDrawProtocolGuid,
-                      &Private->UgaDraw,
-                      NULL
-                      );
-    }
-  } else {
-    Status = gBS->OpenProtocol (
-                    Controller,
-                    &gEfiGraphicsOutputProtocolGuid,
-                    (VOID **) &GraphicsOutput,
-                    This->DriverBindingHandle,
-                    Controller,
-                    EFI_OPEN_PROTOCOL_GET_PROTOCOL
-                    );
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-
-    //
-    // Get our private context information
-    //
-    Private = CIRRUS_LOGIC_5430_PRIVATE_DATA_FROM_GRAPHICS_OUTPUT_THIS (GraphicsOutput);
-
-    CirrusLogic5430GraphicsOutputDestructor (Private);
-    //
-    // Remove the GOP protocol interface from the system
-    //
-    Status = gBS->UninstallMultipleProtocolInterfaces (
-                    Private->Handle,
-                    &gEfiUgaDrawProtocolGuid,
-                    &Private->UgaDraw,
-                    &gEfiGraphicsOutputProtocolGuid,
-                    &Private->GraphicsOutput,
-                    NULL
-                    );
+  Status = gBS->OpenProtocol (
+                  Controller,
+                  &gEfiGraphicsOutputProtocolGuid,
+                  (VOID **) &GraphicsOutput,
+                  This->DriverBindingHandle,
+                  Controller,
+                  EFI_OPEN_PROTOCOL_GET_PROTOCOL
+                  );
+  if (EFI_ERROR (Status)) {
+    return Status;
   }
+
+  //
+  // Get our private context information
+  //
+  Private = CIRRUS_LOGIC_5430_PRIVATE_DATA_FROM_GRAPHICS_OUTPUT_THIS (GraphicsOutput);
+
+  CirrusLogic5430GraphicsOutputDestructor (Private);
+  //
+  // Remove the GOP protocol interface from the system
+  //
+  Status = gBS->UninstallMultipleProtocolInterfaces (
+                  Private->Handle,
+                  &gEfiGraphicsOutputProtocolGuid,
+                  &Private->GraphicsOutput,
+                  NULL
+                  );
 
   if (EFI_ERROR (Status)) {
     return Status;
@@ -579,20 +505,6 @@ CirrusLogic5430ControllerDriverStop (
   //
   gBS->FreePool (Private);
 
-  return EFI_SUCCESS;
-}
-
-/**
-  CirrusLogic5430UgaDrawDestructor
-
-  TODO:    Private - add argument and description to function comment
-  TODO:    EFI_SUCCESS - add return value to function comment
-**/
-EFI_STATUS
-CirrusLogic5430UgaDrawDestructor (
-  CIRRUS_LOGIC_5430_PRIVATE_DATA  *Private
-  )
-{
   return EFI_SUCCESS;
 }
 

@@ -15,7 +15,6 @@
 
 
 #include <Uefi.h>
-#include <Protocol/UgaDraw.h>
 #include <Protocol/GraphicsOutput.h>
 #include <Protocol/PciIo.h>
 #include <Protocol/DriverSupportedEfiVersion.h>
@@ -86,12 +85,10 @@ typedef struct {
   EFI_HANDLE                            Handle;
   EFI_PCI_IO_PROTOCOL                   *PciIo;
   UINT64                                OriginalPciAttributes;
-  EFI_UGA_DRAW_PROTOCOL                 UgaDraw;
   EFI_GRAPHICS_OUTPUT_PROTOCOL          GraphicsOutput;
   EFI_EDID_DISCOVERED_PROTOCOL          EdidDiscovered;
   EFI_EDID_ACTIVE_PROTOCOL              EdidActive;
   EFI_DEVICE_PATH_PROTOCOL              *GopDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL              *UgaDevicePath;
   UINTN                                 CurrentMode;
   UINTN                                 MaxMode;
   CIRRUS_LOGIC_5430_MODE_DATA           ModeData[CIRRUS_LOGIC_5430_MODE_COUNT];
@@ -111,9 +108,6 @@ typedef struct {
   UINT16  *SeqSettings;
   UINT8   MiscSetting;
 } CIRRUS_LOGIC_5430_VIDEO_MODES;
-
-#define CIRRUS_LOGIC_5430_PRIVATE_DATA_FROM_UGA_DRAW_THIS(a) \
-  CR(a, CIRRUS_LOGIC_5430_PRIVATE_DATA, UgaDraw, CIRRUS_LOGIC_5430_PRIVATE_DATA_SIGNATURE)
 
 #define CIRRUS_LOGIC_5430_PRIVATE_DATA_FROM_GRAPHICS_OUTPUT_THIS(a) \
   CR(a, CIRRUS_LOGIC_5430_PRIVATE_DATA, GraphicsOutput, CIRRUS_LOGIC_5430_PRIVATE_DATA_SIGNATURE)
@@ -151,19 +145,6 @@ extern EFI_DRIVER_SUPPORTED_EFI_VERSION_PROTOCOL  gCirrusLogic5430DriverSupporte
 #define DAC_PIXEL_MASK_REGISTER 0x3c6
 #define PALETTE_INDEX_REGISTER  0x3c8
 #define PALETTE_DATA_REGISTER   0x3c9
-
-//
-// UGA Draw Hardware abstraction internal worker functions
-//
-EFI_STATUS
-CirrusLogic5430UgaDrawConstructor (
-  CIRRUS_LOGIC_5430_PRIVATE_DATA  *Private
-  );
-
-EFI_STATUS
-CirrusLogic5430UgaDrawDestructor (
-  CIRRUS_LOGIC_5430_PRIVATE_DATA  *Private
-  );
 
 //
 // Graphics Output Hardware abstraction internal worker functions
