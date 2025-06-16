@@ -7,10 +7,10 @@
 **/
 
 #include <Library/DebugLib.h>
+#include <Library/FdtLib.h>
 #include <Library/HobLib.h>
 #include <Library/PeimEntryPoint.h>
 #include <Library/PeiServicesLib.h>
-#include <libfdt.h>
 #include <Ppi/SgiPlatformId.h>
 #include <SgiPlatform.h>
 
@@ -48,39 +48,39 @@ GetSgiSystemId (
   }
 
   NtFwCfgDtBlob = (VOID *)(UINTN)NtFwConfigInfoPpi->NtFwConfigDtAddr;
-  if (fdt_check_header (NtFwCfgDtBlob) != 0) {
+  if (FdtCheckHeader (NtFwCfgDtBlob) != 0) {
     DEBUG ((DEBUG_ERROR, "Invalid DTB file %p passed\n", NtFwCfgDtBlob));
     return EFI_INVALID_PARAMETER;
   }
 
-  Offset = fdt_subnode_offset (NtFwCfgDtBlob, 0, "system-id");
+  Offset = FdtSubnodeOffset (NtFwCfgDtBlob, 0, "system-id");
   if (Offset == -FDT_ERR_NOTFOUND) {
     DEBUG ((DEBUG_ERROR, "Invalid DTB : system-id node not found\n"));
     return EFI_INVALID_PARAMETER;
   }
 
-  Property = fdt_getprop (NtFwCfgDtBlob, Offset, "platform-id", NULL);
+  Property = FdtGetProp (NtFwCfgDtBlob, Offset, "platform-id", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "platform-id property not found\n"));
     return EFI_INVALID_PARAMETER;
   }
 
-  HobData->PlatformId = fdt32_to_cpu (*Property);
+  HobData->PlatformId = Fdt32ToCpu (*Property);
 
-  Property = fdt_getprop (NtFwCfgDtBlob, Offset, "config-id", NULL);
+  Property = FdtGetProp (NtFwCfgDtBlob, Offset, "config-id", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_ERROR, "config-id property not found\n"));
     return EFI_INVALID_PARAMETER;
   }
 
-  HobData->ConfigId = fdt32_to_cpu (*Property);
+  HobData->ConfigId = Fdt32ToCpu (*Property);
 
-  Property = fdt_getprop (NtFwCfgDtBlob, Offset, "multi-chip-mode", NULL);
+  Property = FdtGetProp (NtFwCfgDtBlob, Offset, "multi-chip-mode", NULL);
   if (Property == NULL) {
     DEBUG ((DEBUG_WARN, "multi-chip-mode property not found\n"));
     HobData->MultiChipMode = 0;
   } else {
-    HobData->MultiChipMode = fdt32_to_cpu (*Property);
+    HobData->MultiChipMode = Fdt32ToCpu (*Property);
   }
 
   return EFI_SUCCESS;
