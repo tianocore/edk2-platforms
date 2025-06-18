@@ -1,0 +1,25 @@
+## @file
+#
+#  Device tree description of the Hifive Unleashed platform
+#
+#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION    = 0x0001001A
+  BASE_NAME      = U740DeviceTree
+  FILE_GUID      = 0FFA746F-9B5D-48F7-A561-E47D555C5E3E
+  MODULE_TYPE    = USER_DEFINED
+  VERSION_STRING = 1.0
+
+[Sources]
+  gpio.h
+  hifive-unleashed-a00.dts
+  fu540-c000.dtsi
+  sifive-fu540-prci.h
+
+[Packages]
+  MdePkg/MdePkg.dec
