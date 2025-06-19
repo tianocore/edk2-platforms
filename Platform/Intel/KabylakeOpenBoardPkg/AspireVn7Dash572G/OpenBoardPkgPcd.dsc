@@ -112,8 +112,6 @@
   ######################################
   gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreImageLoaderSearchTeSectionFirst|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE  # Deprecated, only use GOP
-  gEfiMdePkgTokenSpaceGuid.PcdUgaConsumeSupport|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdPs2KbdExtendedVerification|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdPs2MouseExtendedVerification|FALSE  # TODO/TEST
   gEfiMdeModulePkgTokenSpaceGuid.PcdHiiOsRuntimeSupport|FALSE
