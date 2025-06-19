@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2018-2024, Arm Limited. All rights reserved.
+*  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -64,7 +64,7 @@ ArmPlatformGetVirtualMemoryMap (
   BuildResourceDescriptorHob (
     EFI_RESOURCE_SYSTEM_MEMORY,
     ResourceAttributes,
-    FixedPcdGet64 (PcdDramBlock2Base),
+    DRAM_BLOCK2_BASE (0),
     FixedPcdGet64 (PcdDramBlock2Size));
 
 #if (FixedPcdGet32 (PcdChipCount) > 1)
@@ -77,7 +77,7 @@ ArmPlatformGetVirtualMemoryMap (
    BuildResourceDescriptorHob (
      EFI_RESOURCE_SYSTEM_MEMORY,
      ResourceAttributes,
-     DRAM_BLOCK2_BASE_REMOTE (1),
+     DRAM_BLOCK2_BASE (1),
      FixedPcdGet64 (PcdDramBlock2Size));
 
 #if (FixedPcdGet32 (PcdChipCount) > 2)
@@ -90,7 +90,7 @@ ArmPlatformGetVirtualMemoryMap (
    BuildResourceDescriptorHob (
      EFI_RESOURCE_SYSTEM_MEMORY,
      ResourceAttributes,
-     DRAM_BLOCK2_BASE_REMOTE (2),
+     DRAM_BLOCK2_BASE (2),
      FixedPcdGet64 (PcdDramBlock2Size));
 
 #if (FixedPcdGet32 (PcdChipCount) > 3)
@@ -103,7 +103,7 @@ ArmPlatformGetVirtualMemoryMap (
    BuildResourceDescriptorHob (
      EFI_RESOURCE_SYSTEM_MEMORY,
      ResourceAttributes,
-     DRAM_BLOCK2_BASE_REMOTE (3),
+     DRAM_BLOCK2_BASE (3),
      FixedPcdGet64 (PcdDramBlock2Size));
 #endif
 #endif
@@ -162,9 +162,9 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // Sub System Peripherals - Timer Base0
-  VirtualMemoryTable[++Index].PhysicalBase  = FixedPcdGet32 (PcdTimerBase0Base);
-  VirtualMemoryTable[Index].VirtualBase     = FixedPcdGet32 (PcdTimerBase0Base);
-  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdTimerBase0Size);
+  VirtualMemoryTable[++Index].PhysicalBase  = FixedPcdGet32 (PcdTimerFrame0Base);
+  VirtualMemoryTable[Index].VirtualBase     = FixedPcdGet32 (PcdTimerFrame0Base);
+  VirtualMemoryTable[Index].Length          = FixedPcdGet32 (PcdTimerFrame0Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // Sub System Peripherals - SMMU
@@ -217,8 +217,8 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
   // DDR - Second Block
-  VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdDramBlock2Base);
-  VirtualMemoryTable[Index].VirtualBase     = PcdGet64 (PcdDramBlock2Base);
+  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE (0);
+  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE (0);
   VirtualMemoryTable[Index].Length          = PcdGet64 (PcdDramBlock2Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
@@ -230,8 +230,8 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
   // Chip 1 DDR Block 2 - (6GB)
-  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE_REMOTE (1),
-  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE_REMOTE (1),
+  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE (1),
+  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE (1),
   VirtualMemoryTable[Index].Length          = PcdGet64 (PcdDramBlock2Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
@@ -243,8 +243,8 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
   // Chip 2 DDR Block 2 - (6GB)
-  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE_REMOTE (2),
-  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE_REMOTE (2),
+  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE (2),
+  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE (2),
   VirtualMemoryTable[Index].Length          = PcdGet64 (PcdDramBlock2Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
@@ -256,8 +256,8 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
   // Chip 3 DDR Block 2 - (6GB)
-  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE_REMOTE (3),
-  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE_REMOTE (3),
+  VirtualMemoryTable[++Index].PhysicalBase  = DRAM_BLOCK2_BASE (3),
+  VirtualMemoryTable[Index].VirtualBase     = DRAM_BLOCK2_BASE (3),
   VirtualMemoryTable[Index].Length          = PcdGet64 (PcdDramBlock2Size);
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 #endif
