@@ -1,7 +1,7 @@
 ## @file
 #  Platform DXE driver for Morello FVP Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -20,16 +20,23 @@
   VirtioDevices.c
 
 [Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   OvmfPkg/OvmfPkg.dec
   Platform/ARM/Morello/MorelloPlatform.dec
 
 [LibraryClasses]
+  HobLib
   UefiDriverEntryPoint
   VirtioMmioDeviceLib
 
 [Protocols]
+  gEfiGraphicsOutputProtocolGuid
   gEfiRamDiskProtocolGuid
+
+[Guids]
+  gEdkiiPlatformHasDeviceTreeGuid                    ## PRODUCES ## PROTOCOL
+  gFdtHobGuid
 
 [FeaturePcd]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported
