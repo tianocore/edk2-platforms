@@ -169,9 +169,6 @@
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
 
-  # SBSA Generic Watchdog
-  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|59
-
   ## PL031 RealTimeClock
   gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x1C170000
 
@@ -179,7 +176,6 @@
   gArmPlatformTokenSpaceGuid.PcdWatchdogCount|1
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase|0x2a440000
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase|0x2a450000
-  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|59
 
 !ifdef EDK2_ENABLE_PL111
   ## PL111 Versatile Express Motherboard controller
@@ -196,6 +192,8 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x2f000000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x2f100000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
+
+  gArmTokenSpaceGuid.PcdGicIrsConfigFrameBase|0x2f1a0000
 
   #
   # PCI Root Complex
@@ -216,6 +214,11 @@
   # ACPI Table Version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
+
+[PcdsDynamicDefault.common]
+  # ARM Generic Watchdog Interrupt number for GIC pre-v5
+  # This will be overwritten when GICv5 is in use
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|59
 
 ################################################################################
 #
@@ -324,10 +327,14 @@
   ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+
 !ifdef EDK2_ENABLE_PL111
   ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 !endif
-  ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+  ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf {
+    <LibraryClasses>
+      NULL|Platform/ARM/VExpressPkg/Library/ArmVExpressWatchdogLib/ArmVExpressWatchdogLib.inf
+  }
 
   # SMBIOS Support
 

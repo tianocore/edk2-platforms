@@ -228,7 +228,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // The physical base address of the SBSA Watchdog refresh frame
     FixedPcdGet64 (PcdGenericWatchdogRefreshBase),
     // The watchdog interrupt
-    FixedPcdGet32 (PcdGenericWatchdogEl2IntrNum),
+    0,
     // The watchdog flags
     FVP_SBSA_WATCHDOG_FLAGS
   },
@@ -1094,6 +1094,11 @@ InitializePlatformRepository (
 
   PlatformRepo = This->PlatRepoInfo;
 
+  if (ArmHasGicV5SystemRegisters ()) {
+    DEBUG ((DEBUG_ERROR, "ConfigurationManager: GICv5 not supported.\n"));
+    return EFI_UNSUPPORTED;
+  }
+
   PlatformRepo->SysId = MmioRead32 (ARM_VE_SYS_ID_REG);
   if ((PlatformRepo->SysId & ARM_FVP_SYS_ID_REV_MASK) ==
       ARM_FVP_BASE_REVC_REV)
@@ -1128,6 +1133,9 @@ InitializePlatformRepository (
     PlatformRepo->GicCInfo[Index].TrbeInterrupt = TrbeInterrupt;
     PlatformRepo->GicCInfo[Index].EtToken       = EtToken;
   }
+
+  // Retrieve interrupts stored in PCDs
+  PlatformRepo->Watchdog.TimerGSIV = PcdGet32 (PcdGenericWatchdogEl2IntrNum);
 
   return EFI_SUCCESS;
 }
