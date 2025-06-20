@@ -59,7 +59,6 @@
 
   # SBSA Generic Watchdog
   gArmTokenSpaceGuid.PcdGenericWatchdogControlBase
-  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
   gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase
 
   gArmTokenSpaceGuid.PcdGicDistributorBase
@@ -77,6 +76,7 @@
   gArmTokenSpaceGuid.PcdPciBusMax
 
 [Pcd]
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
 
 [Depex]
-  TRUE
+  gEfiTimerArchProtocolGuid
