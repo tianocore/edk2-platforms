@@ -1,6 +1,13 @@
 ## @file
 # Standalone MM Platform.
 #
+# Note:
+# Although StandaloneMm in ArmJuno supports
+# ENABLE_UEFI_SECURE_VARIABLE build option,
+# the Flash on Juno hardware is accessible from Normal world.
+# The purpose of enabling StandaloneMM support for Juno is to
+# demonstrate the functionality on real hardware.
+#
 # Copyright (c) 2025, Arm Limited. All rights reserved.<BR>
 #
 #    SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -35,8 +42,6 @@
 # Library Class section - list of all Library Classes needed by this Platform.
 #
 ################################################################################
-
-!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses]
   # STMM for Variable runtime service.
