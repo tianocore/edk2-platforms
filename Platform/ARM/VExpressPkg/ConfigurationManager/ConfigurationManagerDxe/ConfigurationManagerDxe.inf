@@ -31,10 +31,12 @@
   DynamicTablesPkg/DynamicTablesPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
+  SecurityPkg/SecurityPkg.dec
   Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
 
 [LibraryClasses]
   ArmLib
+  ArmFfaLib
   ArmPlatformLib
   BaseLib
   HiiLib
@@ -45,8 +47,12 @@
   UefiDriverEntryPoint
   UefiRuntimeServicesTableLib
 
+[Guids]
+  gTpm2ServiceFfaGuid
+
 [Protocols]
   gEdkiiConfigurationManagerProtocolGuid
+  gEfiMmCommunication2ProtocolGuid
 
 [FixedPcd]
   ## PL011 Serial Debug UART
@@ -79,6 +85,9 @@
 
   gArmTokenSpaceGuid.PcdPciBusMin
   gArmTokenSpaceGuid.PcdPciBusMax
+
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize
 
 [Pcd]
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum

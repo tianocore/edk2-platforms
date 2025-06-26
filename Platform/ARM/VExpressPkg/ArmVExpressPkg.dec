@@ -69,3 +69,6 @@
 
   # ISP1761 USB OTG Controller
   gArmVExpressTokenSpaceGuid.PcdIsp1761BaseAddress|0|UINT32|0x00000029
+
+  gArmVExpressTokenSpaceGuid.PcdTpmSipSmcId|0xC2000103|UINT32|0x00000030
+  gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc|FALSE|BOOLEAN|0x00000031
