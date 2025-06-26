@@ -53,3 +53,6 @@
   # Nv storage memory base address and size for TPM
   gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase|0x00|UINT64|0x00000005
   gPlatformArmTokenSpaceGuid.PcdTpmNvMemorySize|0x4000|UINT64|0x00000006
+
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0x00|UINT64|0x0000000d
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbSize|0x1000|UINT64|0x0000000e
