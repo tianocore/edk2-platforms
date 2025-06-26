@@ -52,6 +52,36 @@ extern CHAR8  dsdt_aml_code[];
     EnergyEfficiency          /* UINT8   ProcessorPowerEfficiencyClass*/ \
     }
 
+/** A helper macro for populating the Processor Hierarchy Node flags
+*/
+#define PROC_NODE_FLAGS(                                                \
+          PhysicalPackage,                                              \
+          AcpiProcessorIdValid,                                         \
+          ProcessorIsThread,                                            \
+          NodeIsLeaf,                                                   \
+          IdenticalImplementation                                       \
+          )                                                             \
+  (                                                                     \
+    PhysicalPackage |                                                   \
+    (AcpiProcessorIdValid << 1) |                                       \
+    (ProcessorIsThread << 2) |                                          \
+    (NodeIsLeaf << 3) |                                                 \
+    (IdenticalImplementation << 4)                                      \
+  )
+
+/** A helper macro for populating the Cache Type Structure's attributes
+*/
+#define CACHE_ATTRIBUTES(                                               \
+          AllocationType,                                               \
+          CacheType,                                                    \
+          WritePolicy                                                   \
+          )                                                             \
+  (                                                                     \
+    AllocationType |                                                    \
+    (CacheType << 2) |                                                  \
+    (WritePolicy << 4)                                                  \
+  )
+
 /** A function that prepares Configuration Manager Objects for returning.
 
   @param [in]  This        Pointer to the Configuration Manager Protocol.
@@ -88,7 +118,7 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT       10
+#define PLAT_ACPI_TABLE_COUNT       11
 
 /** The number of platform generic timer blocks
 */
@@ -112,6 +142,57 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 #define PCI_SS_IO       1
 #define PCI_SS_M32      2
 #define PCI_SS_M64      3
+
+/** The number of Processor Hierarchy Nodes
+    - one package node
+    - two cluster nodes
+    - eight cores
+*/
+#define PLAT_PROC_HIERARCHY_NODE_COUNT  11
+
+/** The number of unique cache structures:
+    - L1 instruction cache
+    - L1 data cache
+    - L2 cache
+    - L3 cache
+*/
+#define PLAT_CACHE_COUNT                7
+
+/** The number of resources private to the package
+    - L3 cache
+*/
+#define PACKAGE_RESOURCE_COUNT  1
+
+/** The number of resources private to Cluster 0
+    - L2 cache
+*/
+#define CLUSTER0_RESOURCE_COUNT  1
+
+/** The number of resources private to each Cluster 0 core instance
+    - L1 data cache
+    - L1 instruction cache
+*/
+#define CLUSTER0_CORE_RESOURCE_COUNT  2
+
+/** The number of resources private to Cluster 1
+    - L2 cache
+*/
+#define CLUSTER1_RESOURCE_COUNT  1
+
+/** The number of resources private to each Cluster 1 core instance
+    - L1 data cache
+    - L1 instruction cache
+*/
+#define CLUSTER1_CORE_RESOURCE_COUNT  2
+
+/** The number of Lpi states for the platform:
+    - two for the cores
+    - one for the clusters
+*/
+#define CORES_LPI_STATE_COUNT           2
+#define CLUSTERS_LPI_STATE_COUNT        1
+#define LPI_STATE_COUNT                 (CORES_LPI_STATE_COUNT +              \
+                                         CLUSTERS_LPI_STATE_COUNT)
 
 /** A structure describing the platform configuration
     manager repository information
@@ -198,6 +279,36 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_PCI_INTERRUPT_MAP_INFO PciInterruptMapInfo[PCI_INTERRUPT_MAP_COUNT];
 
   CM_ARM_ET_INFO                        EtInfo;
+
+  // Processor topology information
+  CM_ARCH_COMMON_PROC_HIERARCHY_INFO    ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT];
+
+  // Cache information
+  CM_ARCH_COMMON_CACHE_INFO             CacheInfo[PLAT_CACHE_COUNT];
+
+  // package private resources
+  CM_ARCH_COMMON_OBJ_REF                PackageResources[PACKAGE_RESOURCE_COUNT];
+
+  // cluster 0 private resources
+  CM_ARCH_COMMON_OBJ_REF                Cluster0Resources[CLUSTER0_RESOURCE_COUNT];
+
+  // cluster 0 core private resources
+  CM_ARCH_COMMON_OBJ_REF                Cluster0CoreResources[CLUSTER0_CORE_RESOURCE_COUNT];
+
+  // cluster 1 private resources
+  CM_ARCH_COMMON_OBJ_REF                Cluster1Resources[CLUSTER1_RESOURCE_COUNT];
+
+  // cluster 1 core private resources
+  CM_ARCH_COMMON_OBJ_REF                Cluster1CoreResources[CLUSTER1_CORE_RESOURCE_COUNT];
+
+  // Low Power Idle state information (LPI) for all cores/clusters
+  CM_ARCH_COMMON_LPI_INFO               LpiInfo[LPI_STATE_COUNT];
+
+  // Clusters Low Power Idle state references (LPI)
+  CM_ARCH_COMMON_OBJ_REF                ClustersLpiRef[CLUSTERS_LPI_STATE_COUNT];
+
+  // Cores Low Power Idle state references (LPI)
+  CM_ARCH_COMMON_OBJ_REF                CoresLpiRef[CORES_LPI_STATE_COUNT];
 
   /// System ID
   UINT32                                SysId;
