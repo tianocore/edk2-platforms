@@ -28,7 +28,10 @@
   # To allow the use of ueif secure variable feature, set this to TRUE.
   DEFINE ENABLE_UEFI_SECURE_VARIABLE = FALSE
 
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  # Enable TPM2 service
+  DEFINE ENABLE_TPM              = FALSE
+
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE || $(ENABLE_TPM) == TRUE
   DEFINE ENABLE_STMM             = TRUE
 !else
   DEFINE ENABLE_STMM             = FALSE
@@ -45,6 +48,7 @@
 !endif
 
 [LibraryClasses.common]
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/ARM/JunoPkg/Library/ArmJunoLib/ArmJunoLib.inf
@@ -78,6 +82,16 @@
 
 !if $(ENABLE_STMM) == TRUE
   MmUnblockMemoryLib|MdePkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLibNull.inf
+!endif
+
+!if $(ENABLE_TPM) == TRUE
+  HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+  Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterDxe.inf
+  TpmCommLib|SecurityPkg/Library/TpmCommLib/TpmCommLib.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
 !endif
 
 [LibraryClasses.common.SEC]
@@ -118,6 +132,9 @@
   GCC:*_*_*_CC_FLAGS = -DENABLE_UEFI_SECURE_VARIABLE
 !endif
 
+!if $(ENABLE_TPM) == TRUE
+  GCC:*_*_*_CC_FLAGS = -DENABLE_TPM
+!endif
 
 ################################################################################
 #
@@ -284,6 +301,20 @@
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
+!if $(ENABLE_TPM) == TRUE
+  #
+  # Normal pseudo crbs which locality from 0 to 3 are allocated
+  # at the start of System Memory.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13FFF
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+
+!ifdef DYNAMIC_TABLES_FRAMEWORK
+  gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdGenTpm2DeviceTable|TRUE
+!endif
+!endif
+
 [PcdsFixedAtBuild.ARM]
   gArmTokenSpaceGuid.PcdVFPEnabled|1
 
@@ -304,6 +335,14 @@
   # Not all Juno platforms support PCI. This dynamic PCD disables or enable
   # PCI support.
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|TRUE
+
+!if $(ENABLE_TPM) == TRUE
+  #
+  # TPM2 Device Instance for Tpm2DeviceRouterLib
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{GUID("17b862a4-1806-4faf-86b3-089a58353861")}|VOID*|0x10
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|0x00000002
+!endif
 
 ################################################################################
 #
@@ -333,7 +372,18 @@
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+
+!if $(ENABLE_TPM) == TRUE
+  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
+    <LibraryClasses>
+      RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+      NULL|SecurityPkg/Library/DxeImageAuthenticationStatusLib/DxeImageAuthenticationStatusLib.inf
+      NULL|SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.inf
+  }
+!else
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+!endif
+
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   MdeModulePkg/Universal/Metronome/Metronome.inf
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
@@ -498,6 +548,20 @@
     <LibraryClasses>
       NULL|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
   }
+!endif
+
+  #
+  # Trust Platform Module
+  #
+!if $(ENABLE_TPM) == TRUE
+  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterDxe.inf
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
+  SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
 !endif
 
 [Components.AARCH64]
