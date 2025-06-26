@@ -10,12 +10,19 @@
     - Obj or OBJ - Object
 **/
 
+#include <IndustryStandard/ArmFfaSvc.h>
 #include <IndustryStandard/DebugPort2Table.h>
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
+#include <IndustryStandard/Tpm2Acpi.h>
+#include <IndustryStandard/Tpm20.h>
+#include <IndustryStandard/TpmPtp.h>
+#include <Guid/Tpm2ServiceFfa.h>
 #include <Library/ArmLib.h>
 #include <Library/BaseLib.h>
+#include <Library/ArmFfaLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HiiLib.h>
 #include <Library/IoLib.h>
@@ -121,6 +128,14 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       NULL,
       SIGNATURE_64 ('S', 'S', 'D', 'T', '-', 'P', 'C', 'I')
     },
+#ifdef ENABLE_TPM
+    {
+      EFI_ACPI_6_5_TRUSTED_COMPUTING_PLATFORM_2_TABLE_SIGNATURE,
+      EFI_TPM2_ACPI_TABLE_REVISION_5,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdTpm2),
+      NULL,
+    },
+#endif
   },
 
   { // SMBIOS
@@ -1162,6 +1177,202 @@ CopyString (
   return EFI_SUCCESS;
 }
 
+#ifdef ENABLE_TPM
+STATIC
+EFI_STATUS
+EFIAPI
+GetFfaCrbTpmPartId (
+  OUT UINT16 *TpmPartId
+  )
+{
+  EFI_STATUS Status;
+  UINT16                  PartId;
+  VOID                    *TxBuffer;
+  UINT64                  TxBufferSize;
+  VOID                    *RxBuffer;
+  UINT64                  RxBufferSize;
+  EFI_FFA_PART_INFO_DESC  *TpmPartInfo;
+  UINT32                  Count;
+  UINT32                  Size;
+  EFI_GUID                *ServiceGuid;
+  DIRECT_MSG_ARGS         TpmArgs;
+
+  Status = ArmFfaLibPartitionIdGet (&PartId);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to get partition id. Status: %r\n",
+      Status
+      ));
+    return Status;
+  }
+
+  Status = ArmFfaLibGetRxTxBuffers (
+             &TxBuffer,
+             &TxBufferSize,
+             &RxBuffer,
+             &RxBufferSize
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to get Rx/Tx Buffer. Status: %r\n",
+      Status
+      ));
+    return Status;
+  }
+
+  ServiceGuid = &gTpm2ServiceFfaGuid;
+
+  Status = ArmFfaLibPartitionInfoGet (
+             ServiceGuid,
+             FFA_PART_INFO_FLAG_TYPE_DESC,
+             &Count,
+             &Size
+             );
+  if (EFI_ERROR (Status)) {
+    ArmFfaLibRxRelease (PartId);
+    // Fallback to StandaloneMm Partition.
+    ServiceGuid = &gEfiMmCommunication2ProtocolGuid;
+    Status = ArmFfaLibPartitionInfoGet (
+               ServiceGuid,
+               FFA_PART_INFO_FLAG_TYPE_DESC,
+               &Count,
+               &Size
+               );
+  }
+
+  if (EFI_ERROR (Status) || (Count != 1) ||
+      (Size < sizeof (EFI_FFA_PART_INFO_DESC))) {
+    ArmFfaLibRxRelease (PartId);
+    Status = EFI_INVALID_PARAMETER;
+    DEBUG ((
+      DEBUG_ERROR,
+      "Invalid partition Info(%g). Count: %d, Size: %d\n",
+      ServiceGuid,
+      Count,
+      Size
+      ));
+    goto ErrorHandler;
+  }
+
+  TpmPartInfo = (EFI_FFA_PART_INFO_DESC *)RxBuffer;
+  if ((TpmPartInfo->PartitionProps & FFA_PART_PROP_RECV_DIRECT_REQ2) == 0x00) {
+    Status = EFI_UNSUPPORTED;
+    DEBUG ((DEBUG_ERROR, "Tpm Service doesn't support DIRECT_MSG_RESP...\n"));
+    goto ErrorHandler;
+  }
+  *TpmPartId = TpmPartInfo->PartitionId;
+  ArmFfaLibRxRelease (PartId);
+
+  ZeroMem (&TpmArgs, sizeof (DIRECT_MSG_ARGS));
+  TpmArgs.Arg0 = TPM2_FFA_GET_INTERFACE_VERSION;
+  Status = ArmFfaLibMsgSendDirectReq2 (*TpmPartId, &gTpm2ServiceFfaGuid, &TpmArgs);
+  if (EFI_ERROR (Status) || TpmArgs.Arg0 != TPM2_FFA_SUCCESS_OK_RESULTS_RETURNED) {
+    DEBUG ((DEBUG_ERROR, "Tpm Service is not implemented...\n"));
+    return EFI_NOT_FOUND;
+  }
+
+ErrorHandler:
+  ArmFfaLibRxRelease (PartId);
+  return Status;
+}
+
+STATIC
+EFI_STATUS
+EFIAPI
+PopulatePlatformTpmInfoFfa (
+  IN EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  )
+{
+  EFI_STATUS Status;
+  CM_ARCH_COMMON_TPM2_INTERFACE_INFO *TpmInfo;
+  CM_ARCH_COMMON_TPM2_DEVICE_INFO    *TpmDevInfo;
+  EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_FFA Tpm2ArmFfaParam;
+  EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC Tpm2ArmSmcParam;
+  UINT16 TpmPartId;
+
+  Status = GetFfaCrbTpmPartId (&TpmPartId);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  TpmInfo = &PlatformRepo->TpmInfo;
+
+  // Client platform.
+  TpmInfo->PlatformClass = 0x00;
+  // Kernel uses only locality 0. set locality 0's crb control request address.
+  TpmInfo->AddressOfControlArea =
+    FixedPcdGet64 (PcdTpmBaseAddress) + OFFSET_OF (PTP_CRB_REGISTERS, CrbControlRequest);
+
+  // Temporary, no event log right now before UEFI boot...
+  TpmInfo->Laml = 0x00;
+  TpmInfo->Lasa = 0x00;
+
+  TpmDevInfo = &PlatformRepo->TpmDevInfo;
+  TpmDevInfo->Tpm2DeviceBaseAddress =  FixedPcdGet64 (PcdTpmBaseAddress);
+  TpmDevInfo->Tpm2DeviceSize = PcdGet32 (PcdTpmCrbRegionSize);
+
+  if (!FixedPcdGetBool (PcdTpmUseSipSmc)) {
+    ZeroMem (
+      &Tpm2ArmFfaParam,
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_FFA)
+      );
+
+    // Not support notification.
+    Tpm2ArmFfaParam.Flags = 0x00;
+    Tpm2ArmFfaParam.Attributes = (
+        (EFI_TPM2_ACPI_TABLE_ARM_FFA_PARAMETER_ATTR_MEM_TYPE_NOT_CACHABLE <<
+        EFI_TPM2_ACPI_TABLE_ARM_FFA_PARAMETER_ATTR_MEM_TYPE_SHIFT) |
+        (EFI_TPM2_ACPI_TABLE_ARM_FFA_PARAMETER_ATTR_CRB_REGION_SIZE_4KB <<
+        EFI_TPM2_ACPI_TABLE_ARM_FFA_PARAMETER_ATTR_CRB_REGION_SIZE_SHIFT)
+        );
+    Tpm2ArmFfaParam.PartitionId = TpmPartId;
+
+    TpmInfo->StartMethodParametersSize =
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_FFA);
+    CopyMem (
+      &TpmInfo->StartMethodParameters,
+      &Tpm2ArmFfaParam,
+      TpmInfo->StartMethodParametersSize
+      );
+    TpmInfo->StartMethod =
+      EFI_TPM2_ACPI_TABLE_START_METHOD_COMMAND_RESPONSE_BUFFER_INTERFACE_WITH_FFA;
+  } else {
+    ZeroMem (
+      &Tpm2ArmSmcParam,
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC)
+      );
+
+    Tpm2ArmSmcParam.Interrupt = 0x00;
+
+    /*
+     * BIT0 == 0: Interrupt not supported
+     * BIT1 == 0: Use SMC conduit
+     * BIT2 == 1: Attributes field contains valid data
+     */
+    Tpm2ArmSmcParam.Flags = BIT2;
+
+    /*
+     * BIT0 == 0: CRB interface only support Ready and Execution
+     */
+    Tpm2ArmSmcParam.OperationFlags = 0;
+    Tpm2ArmSmcParam.SmcFunctionId = FixedPcdGet32 (PcdTpmSipSmcId);
+
+    TpmInfo->StartMethodParametersSize =
+      sizeof (EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC);
+    CopyMem (
+      &TpmInfo->StartMethodParameters,
+      &Tpm2ArmSmcParam,
+      TpmInfo->StartMethodParametersSize
+      );
+    TpmInfo->StartMethod =
+      EFI_TPM2_ACPI_TABLE_START_METHOD_COMMAND_RESPONSE_BUFFER_INTERFACE_WITH_SMC;
+  }
+
+  return EFI_SUCCESS;
+}
+
 STATIC
 EFI_STATUS
 InitialiseProcStrings (
@@ -1180,6 +1391,32 @@ InitialiseProcStrings (
 
   return Status;
 }
+
+/** Initialize the platform TPM information.
+
+  @param [in]  This        Pointer to the Configuration Manager Protocol.
+
+  @retval
+    EFI_SUCCESS   Success
+**/
+STATIC
+EFI_STATUS
+EFIAPI
+PopulatePlatformTpmInfo (
+  IN EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  )
+{
+  EFI_STATUS Status;
+
+  if (IsFfaSupported ()) {
+    Status = PopulatePlatformTpmInfoFfa (PlatformRepo);
+  } else {
+    Status = EFI_NOT_FOUND;
+  }
+
+  return Status;
+}
+#endif
 
 /** Initialize the platform configuration repository.
 
@@ -1256,7 +1493,13 @@ InitializePlatformRepository (
 
   InitialiseProcStrings ();
 
-  return EFI_SUCCESS;
+#ifdef ENABLE_TPM
+  Status = PopulatePlatformTpmInfo (PlatformRepo);
+#else
+  Status = EFI_SUCCESS;
+#endif
+
+  return Status;
 }
 
 /** Return Lpi State Info.
@@ -1941,6 +2184,28 @@ GetArchCommonNameSpaceObject (
                  CmObject
                  );
       break;
+
+#ifdef ENABLE_TPM
+    case EArchCommonObjTpm2InterfaceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->TpmInfo,
+                 sizeof (PlatformRepo->TpmInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjTpm2DeviceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->TpmDevInfo,
+                 sizeof (PlatformRepo->TpmDevInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+#endif
 
     default:
     {
