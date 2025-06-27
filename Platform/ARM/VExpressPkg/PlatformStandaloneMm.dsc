@@ -120,8 +120,13 @@
 #
 ################################################################################
 [PcdsFixedAtBuild]
+!if $(TARGET) == RELEASE
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
+!else
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
+!endif
+
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8000008F
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xff
   gEfiMdePkgTokenSpaceGuid.PcdDebugClearMemoryValue|0xAF
 
   ## PL011 - Serial Terminal.
