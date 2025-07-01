@@ -22,3 +22,8 @@ INF  MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
 
 INF  MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
+!if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+  !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
+    INF  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
+  !endif
+!endif
