@@ -173,6 +173,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ArmPlatformLib|ArmPlatformPkg/Library/ArmPlatformLibNull/ArmPlatformLibNull.inf
 
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  VirtNorFlashDeviceLib|OvmfPkg/Library/VirtNorFlashDeviceLib/VirtNorFlashDeviceLib.inf
   VirtNorFlashPlatformLib|Silicon/Qemu/SbsaQemu/Library/SbsaQemuNorFlashLib/SbsaQemuNorFlashLib.inf
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
