@@ -40,6 +40,8 @@ usage () {
   echo "  -l <kern>, --linuxboot <kern>    Build LinuxBoot firmware instead of full EDK2 with UEFI Shell, specifying path to flashkernel"
   echo "  -f, --flash                      Copy firmware to BMC and flash firmware (keeping EFI variables and NVPARAMs) after building"
   echo "  -F, --full-flash                 Copy firmware to BMC and flash full EEPROM (resetting EFI variables and NVPARAMs) after building"
+  echo "  -s, --silent                     Print less messages."
+  echo "  -v, --verbose                    Print more messages."
   echo ""
   echo "  Note: flash options require bmc.sh file with env vars BMC_HOST, BMC_USER and BMC_PASS defined"
   echo ""
@@ -103,6 +105,8 @@ RESET_NV_STORAGE=0
 TOOLCHAIN=GCC
 BLDTYPE=RELEASE
 BUILD_THREADS=$(getconf _NPROCESSORS_ONLN)
+SILENT=0
+VERBOSE=0
 
 export PYTHON_COMMAND=python3
 export WORKSPACE=$PWD
@@ -146,7 +150,7 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
-OPTIONS=$(${GETOPT_COMMAND} -o t:b:fFhl:m:p: --long toolchain:,build:,linuxboot:,manufacturer:,platform:,flash,full-flash,help -- "$@")
+OPTIONS=$(${GETOPT_COMMAND} -o t:b:fFsvhl:m:p: --long toolchain:,build:,linuxboot:,manufacturer:,platform:,flash,full-flash,silent,verbose,help -- "$@")
 eval set -- "$OPTIONS"
 
 while true; do
@@ -165,6 +169,10 @@ while true; do
       MANUFACTURER=$2; shift 2;;
     -p|--platform)
       BOARD_NAME=$2;  shift 2;;
+    -s|--silent)
+      SILENT=1; shift;;
+    -v|--verbose)
+      VERBOSE=1; shift;;
     -h|--help)
       usage; shift;;
     --) shift; break;;
@@ -277,6 +285,15 @@ fi
 
 if [ -n "${LINUXBOOT}" ] && [ "${LINUXBOOT_FILE_IN_UEFI_EXTRA}" = "TRUE" ]; then
   EXTRA_BUILD_FLAGS+=" -D LINUXBOOT_FILE_IN_UEFI_EXTRA=TRUE"
+fi
+
+if [ "${SILENT}" = 1 ]; then
+  EXTRA_BUILD_FLAGS+=" --silent --quiet"
+  MAKE_FLAGS="--quiet"
+fi
+
+if [ "${VERBOSE}" = 1 ]; then
+  EXTRA_BUILD_FLAGS+=" --verbose"
 fi
 
 UPD720202_ROM_FILE="K2026090.mem"
