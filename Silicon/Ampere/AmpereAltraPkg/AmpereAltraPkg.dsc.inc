@@ -344,7 +344,6 @@
   # created by ConsplitterDxe. It could be set FALSE to save size.
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
 
 [PcdsFixedAtBuild.common]
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000

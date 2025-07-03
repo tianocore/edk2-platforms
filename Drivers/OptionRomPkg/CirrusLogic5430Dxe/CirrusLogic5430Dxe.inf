@@ -43,7 +43,6 @@
 [Sources]
   ComponentName.c
   DriverSupportedEfiVersion.c
-  CirrusLogic5430UgaDraw.c
   CirrusLogic5430GraphicsOutput.c
   CirrusLogic5430.c
   CirrusLogic5430.h
@@ -67,18 +66,12 @@
 
 [Protocols]
   gEfiDriverSupportedEfiVersionProtocolGuid     # PROTOCOL ALWAYS_PRODUCED
-  gEfiUgaDrawProtocolGuid                       # PROTOCOL BY_START
   gEfiGraphicsOutputProtocolGuid                # PROTOCOL BY_START
   gEfiEdidDiscoveredProtocolGuid                # PROTOCOL BY_START
   gEfiEdidActiveProtocolGuid                    # PROTOCOL BY_START
   gEfiDevicePathProtocolGuid                    # PROTOCOL BY_START
   gEfiPciIoProtocolGuid                         # PROTOCOL TO_START
   gEfiEdidOverrideProtocolGuid                  # PROTOCOL TO_START
-
-
-[FeaturePcd]
-  gOptionRomPkgTokenSpaceGuid.PcdSupportGop
-  gOptionRomPkgTokenSpaceGuid.PcdSupportUga
 
 [Pcd]
   gOptionRomPkgTokenSpaceGuid.PcdDriverSupportedEfiVersion

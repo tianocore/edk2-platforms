@@ -57,6 +57,7 @@
   DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
   UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
   UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
+  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
 ################################################################################
 #

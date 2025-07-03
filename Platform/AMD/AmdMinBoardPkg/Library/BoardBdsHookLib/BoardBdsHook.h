@@ -21,7 +21,6 @@
 #include <Protocol/LoadedImage.h>
 #include <Protocol/DiskInfo.h>
 #include <Protocol/GraphicsOutput.h>
-#include <Protocol/UgaDraw.h>
 #include <Protocol/GenericMemoryTest.h>
 #include <Protocol/DevicePathToText.h>
 #include <Protocol/FirmwareVolume2.h>
