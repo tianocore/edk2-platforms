@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2018 - 2024, Arm Limited. All rights reserved.
+*  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -55,6 +55,22 @@
 #define RD_V3_PART_NUM                            0x7EE
 #define RD_V3_CONF_ID                             0x1
 
+// RD-V3-Cfg1 Platform Identification values
+#define RD_V3_CFG1_PART_NUM                       0x7F9
+#define RD_V3_CFG1_CONF_ID                        0x0
+
+// RD-V3-Cfg2 Platform Identification values
+#define RD_V3_CFG2_PART_NUM                       0x7EE
+#define RD_V3_CFG2_CONF_ID                        0x2
+
+// RD-V3-R1 Platform Identification values
+#define RD_V3_R1_PART_NUM                         0x7C5
+#define RD_V3_R1_CONF_ID                          0x0
+
+// RD-V3-R1-Cfg1 Platform Identification values
+#define RD_V3_R1_CFG1_PART_NUM                    0x7C5
+#define RD_V3_R1_CFG1_CONF_ID                     0x1
+
 #define SGI_CONFIG_MASK                           0x0F
 #define SGI_CONFIG_SHIFT                          0x1C
 #define SGI_PART_NUM_MASK                         0xFFF
@@ -70,9 +86,9 @@
 #define SYSTEM_MEMORY_BASE_REMOTE(ChipId) \
           (SGI_REMOTE_CHIP_MEM_OFFSET (ChipId) + FixedPcdGet64 (PcdSystemMemoryBase))
 
-// Base address of the DRAM2 block in a remote chip
-#define DRAM_BLOCK2_BASE_REMOTE(ChipId) \
-          (SGI_REMOTE_CHIP_MEM_OFFSET (ChipId) + FixedPcdGet64 (PcdDramBlock2Base))
+// Base address of the DRAM2 block in a chip
+#define DRAM_BLOCK2_BASE(ChipId) \
+          (FixedPcdGet64(PcdDramBlock2AddrChip##ChipId))
 
 // ARM platform description data.
 typedef struct {
@@ -95,6 +111,10 @@ typedef enum {
   RdN2Cfg2,
   RdV2,
   RdV3,
+  RdV3Cfg1,
+  RdV3Cfg2,
+  RdV3R1,
+  RdV3R1Cfg1,
 } ARM_RD_PRODUCT_ID;
 
 // Arm ProductId look-up table

@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 - 2024, Arm Limited. All rights reserved.
+#  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -54,6 +54,11 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
 
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip1
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip2
+  gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip3
+
   gArmSgiTokenSpaceGuid.PcdChipCount
 
   gArmTokenSpaceGuid.PcdGicDistributorBase
@@ -76,8 +81,8 @@
   gArmSgiTokenSpaceGuid.PcdSmmuBase
   gArmSgiTokenSpaceGuid.PcdSmmuSize
   gArmSgiTokenSpaceGuid.PcdSysPeriphBase
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Base
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Size
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Size
   gArmSgiTokenSpaceGuid.PcdTimerControlBase
   gArmSgiTokenSpaceGuid.PcdTimerControlSize
   gArmSgiTokenSpaceGuid.PcdTimerCounterReadBase
