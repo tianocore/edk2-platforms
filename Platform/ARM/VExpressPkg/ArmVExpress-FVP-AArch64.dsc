@@ -126,10 +126,12 @@
   # by MM_COMMUNICATE for communication between the
   # Normal world edk2 and the StandaloneMm image at S-EL0.
   # This buffer is allocated in TF-A.
+  # This value based on TF-A !ENABLE_RME where Normal shared area
+  # is located in (2GB - 17MB) as much as 1MB.
   #
 !if $(ENABLE_STMM) == TRUE
   ## MM Communicate
-  gArmTokenSpaceGuid.PcdMmBufferBase|0xFF600000
+  gArmTokenSpaceGuid.PcdMmBufferBase|0xFEF00000
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
@@ -140,9 +142,27 @@
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top
   # of the 32bit address space) is reserved for four-world support in TF-A.
-  # Therefore, set the default System Memory size to (2GB - 64MB).
+  # And Normal shared area with Secure world is reserved 1MB from
+  # (2GB - 65MB).
+  # Therefore, set the default System Memory size to (2GB - 65MB).
+  #
+  # +-------------------------------------+ 0x80000000 (PcdSystemMemoryBase)
+  # |                                     |
+  # |                                     |
+  # |                                     |
+  # |     System Memory  (2GB - 65MB)     |
+  # |                                     |
+  # |                                     |
+  # +-------------------------------------+ 0xfbf00000 (PcdSystemMemoryBase + PcdSystemMemorySize)
+  # |   Reserved for normal world (1MB)   |
+  # |   (NS buffer, pesudo CRB and etc)   |
+  # +-------------------------------------+ 0xfc000000
+  # |   Reserved for secure world (64MB)  |
+  # |     (RME, StandaloneMm and etc)     |
+  # +-------------------------------------+ 0xffffffff
+  #
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7C000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7BF00000
 
   # Size of the region used by UEFI in permanent memory (Reserved 64MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x04000000
