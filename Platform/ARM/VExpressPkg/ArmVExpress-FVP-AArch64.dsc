@@ -129,7 +129,7 @@
   #
 !if $(ENABLE_STMM) == TRUE
   ## MM Communicate
-  gArmTokenSpaceGuid.PcdMmBufferBase|0xFF600000
+  gArmTokenSpaceGuid.PcdMmBufferBase|0xFEF00000
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
@@ -140,9 +140,11 @@
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top
   # of the 32bit address space) is reserved for four-world support in TF-A.
-  # Therefore, set the default System Memory size to (2GB - 64MB).
+  # And Normal shared area with Secure world is reserved 1MB from
+  # (2GB - 65MB).
+  # Therefore, set the default System Memory size to (2GB - 65MB).
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7C000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7BF00000
 
   # Size of the region used by UEFI in permanent memory (Reserved 64MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x04000000
