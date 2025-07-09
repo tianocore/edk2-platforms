@@ -17,6 +17,7 @@
     containing the AML bytecode array.
 */
 extern CHAR8  dsdt_aml_code[];
+extern CHAR8  dsdtgicv5_aml_code[];
 
 /** The configuration manager version.
 */
@@ -33,7 +34,7 @@ extern CHAR8  dsdt_aml_code[];
           Mpidr,                                                         \
           PmuIrq,                                                        \
           VGicIrq,                                                       \
-          EnergyEfficiency                                               \
+          EnergyEfficiency                                              \
           ) {                                                            \
     CPUInterfaceNumber,       /* UINT32  CPUInterfaceNumber           */ \
     CPUInterfaceNumber,       /* UINT32  AcpiProcessorUid             */ \
@@ -49,7 +50,17 @@ extern CHAR8  dsdt_aml_code[];
     VGicIrq,                  /* UINT32  VGICMaintenanceInterrupt     */ \
     0,                        /* UINT64  GICRBaseAddress              */ \
     Mpidr,                    /* UINT64  MPIDR                        */ \
-    EnergyEfficiency          /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    EnergyEfficiency,         /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    0,                        /* UINT16  SpeOverflowInterrupt         */ \
+    0,                        /* UINT32  ProximityDomain              */ \
+    0,                        /* UINT32  ClockDomain                  */ \
+    0,                        /* UINT32  AffinityFlags                */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN CpcToken             */ \
+    0,                        /* UINT16  TrbeInterrupt                */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN EtToken              */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN PsdToken             */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN ProximityDomainToken */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN ClockDomainToken     */ \
     }
 
 /** A helper macro for populating the Processor Hierarchy Node flags
@@ -251,6 +262,18 @@ typedef struct PlatformRepositoryInfo {
   /// GIC ITS information
   CM_ARM_GIC_ITS_INFO                   GicItsInfo;
 
+  /// GIC ITSv5 information
+  CM_ARM_GIC_ITSV5_INFO                 GicItsV5Info;
+
+  /// GIC ITSv5 Translate Frame information
+  CM_ARM_GIC_ITSV5_TRANSLATE_FRAME_INFO GicItsV5TransFrameInfo[1];
+
+  /// GIC IRS information
+  CM_ARM_GIC_IRS_INFO                   GicIrsInfo;
+
+  /// GIC IWB information
+  CM_ARM_GIC_IWB_INFO                   GicIwbInfo;
+
   // FVP RevC components
   /// SMMUv3 node
   CM_ARM_SMMUV3_NODE                    SmmuV3Info;
@@ -265,7 +288,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_ROOT_COMPLEX_NODE              RootComplexInfo;
 
   /// Array of DeviceID mapping
-  CM_ARM_ID_MAPPING                     DeviceIdMapping[2];
+  CM_ARM_ID_MAPPING                     DeviceIdMapping[4];
 
   /// PCI configuration space information
   CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo;
@@ -316,6 +339,8 @@ typedef struct PlatformRepositoryInfo {
 
   /// System ID
   UINT32                                SysId;
+
+  BOOLEAN                               HasGicV5;
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
 #endif // CONFIGURATION_MANAGER_H__
