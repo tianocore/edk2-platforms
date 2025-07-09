@@ -1,7 +1,7 @@
 /** @file
   eSPI SMI implementation
 
-  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2021 - 2025, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -565,6 +565,7 @@ InsertEspiRecord (
   @param[in]  DispatchHandle  Used to determine which source have been triggered
 **/
 VOID
+EFIAPI
 EspiSmiCallback (
   IN  EFI_HANDLE                      DispatchHandle
   )

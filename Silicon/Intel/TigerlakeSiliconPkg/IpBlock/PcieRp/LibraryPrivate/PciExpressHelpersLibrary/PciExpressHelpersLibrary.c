@@ -1,7 +1,7 @@
 /** @file
   This file contains routines that support PCI Express initialization
 
-  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2021 - 2025, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 #include "PciExpressHelpersLibrary.h"
@@ -511,7 +511,7 @@ GetOverrideL1ssCapsOffset (
     if (((Override->Table[Index].OverrideConfig & PchPcieL1SubstatesOverride) == PchPcieL1SubstatesOverride) &&
         (Override->Table[Index].VendorId == VendorId) &&
         (Override->Table[Index].DeviceId == DeviceId) &&
-        (Override->Table[Index].RevId == Revision || Override->Table[Index].RevId == 0xFFFF)) {
+        (Override->Table[Index].RevId == Revision || Override->Table[Index].RevId == 0xFF)) {
       return Override->Table[Index].L1SubstatesCapOffset;
     }
   }

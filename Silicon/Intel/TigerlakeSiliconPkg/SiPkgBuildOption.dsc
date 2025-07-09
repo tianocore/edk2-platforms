@@ -1,7 +1,7 @@
 ## @file
 #  Silicon build option configuration file.
 #
-#  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2025, Intel Corporation. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -116,7 +116,7 @@ MSFT:  *_*_X64_ASLCC_FLAGS    = $(DSC_SIPKG_FEATURE_BUILD_OPTIONS)
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support page level protection of runtime modules
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
-  MSFT:  *_*_*_DLINK_FLAGS      = /ALIGN:4096
-  GCC:   *_GCC*_*_DLINK_FLAGS   = -z common-page-size=0x1000
-
-
+  MSFT:       *_*_*_DLINK_FLAGS     = /ALIGN:4096 /FILEALIGN:4096
+  GCC:        *_GCC*_*_DLINK_FLAGS  = -z common-page-size=0x1000
+  CLANGPDB:   *_*_*_DLINK_FLAGS     = /ALIGN:4096 /FILEALIGN:4096
+  CLANGDWARF: *_*_*_DLINK_FLAGS     = -z common-page-size=0x1000
