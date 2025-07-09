@@ -1,6 +1,6 @@
 /** @file
 
-   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+   Copyright (c) 2022 - 2025, Intel Corporation. All rights reserved.<BR>
    SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -74,5 +74,5 @@ SiliconPolicyUpdateLate (
   DEBUG ((DEBUG_INFO, "SystemAgent Dxe Platform Policy Initialization status: %r\n", Status));
   ASSERT_EFI_ERROR (Status);
 
-  return EFI_SUCCESS;
+  return NULL;
 }
