@@ -9,7 +9,7 @@
   versions of CpuMpPei do not produce it. This PEIM will check if CpuMpPei
   creates gMpInformation2HobGuid and if it does not it creates it.
 
-Copyright (c) 2024, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2024 - 2025, Intel Corporation. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -220,6 +220,7 @@ MpInfo2HobPeiEntryPoint (
   EDKII_PEI_MP_SERVICES2_PPI  *CpuMpPpi2;
   EFI_HOB_GUID_TYPE           *GuidHob;
 
+  Status = EFI_SUCCESS;
   GuidHob = GetFirstGuidHob (&gMpInformation2HobGuid);
   if (GuidHob == NULL) {
     DEBUG ((DEBUG_INFO, "gMpInformation2HobGuid was not created by CpuMpPei, creating now\n"));
