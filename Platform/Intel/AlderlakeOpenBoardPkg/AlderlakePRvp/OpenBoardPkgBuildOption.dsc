@@ -147,16 +147,16 @@ MSFT:  *_*_X64_ASLCC_FLAGS    = $(DSC_PLTPKG_FEATURE_BUILD_OPTIONS)
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support page level protection
 [BuildOptions.common.EDKII.DXE_SMM_DRIVER, BuildOptions.common.EDKII.SMM_CORE]
-  MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096
+  MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096
   GCC:*_GCC*_*_DLINK_FLAGS      = -z common-page-size=0x1000
-  CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096
+  CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096 /FILEALIGN:4096
   CLANGDWARF:*_*_*_DLINK_FLAGS  = -z common-page-size=0x1000
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support MemoryAttribute table
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
-  MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096
+  MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096
   GCC:*_GCC*_*_DLINK_FLAGS      = -z common-page-size=0x1000
-  CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096
+  CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096 /FILEALIGN:4096
   CLANGDWARF:*_*_*_DLINK_FLAGS  = -z common-page-size=0x1000
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support NX protection
