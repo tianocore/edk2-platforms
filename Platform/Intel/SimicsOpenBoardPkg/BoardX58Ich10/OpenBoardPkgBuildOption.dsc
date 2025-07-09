@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2019 - 2025 Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -78,5 +78,7 @@
 #  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
 
 [BuildOptions.common.EDKII.MM_CORE_STANDALONE, BuildOptions.common.EDKII.MM_STANDALONE]
-  MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096 /FILEALIGN:4096
-  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000 /FILEALIGN:4096
+  MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096
+  GCC:*_GCC*_*_DLINK_FLAGS      = -z common-page-size=0x1000
+  CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096 /FILEALIGN:4096
+  CLANGDWARF:*_*_*_DLINK_FLAGS  = -z common-page-size=0x1000
