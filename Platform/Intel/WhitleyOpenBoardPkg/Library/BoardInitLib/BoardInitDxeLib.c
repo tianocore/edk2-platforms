@@ -2,7 +2,7 @@
 Library for Board Init.
 
 @copyright
-Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2017 - 2025, Intel Corporation. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -169,6 +169,7 @@ EnableAntiFlashWearout (
   @param[in] Context    Pointer to the context data registered to the Event.
 **/
 VOID
+EFIAPI
 BdsBoardBeforeConsoleAfterTrustedConsoleCallback (
   IN EFI_EVENT          Event,
   IN VOID               *Context

@@ -2,7 +2,7 @@
 # Includable build options
 #
 # @copyright
-# Copyright (C) 2008 Intel Corporation.
+# Copyright (C) 2008 - 2025 Intel Corporation.
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -142,7 +142,9 @@ DEFINE EDKII_DSC_FEATURE_BUILD_OPTIONS = $(EDKII_DSC_FEATURE_BUILD_OPTIONS) $(ME
 # !!!!!!!!  InsertImageRecord - Section Alignment(0x20) is not 4K  !!!!!!!!
 #
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER, BuildOptions.common.EDKII.DXE_SMM_DRIVER, BuildOptions.common.EDKII.SMM_CORE]
-   MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096
+   MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096
+   GCC:*_GCC*_*_DLINK_FLAGS      = -z common-page-size=0x1000
+   CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096 /FILEALIGN:4096
 
 [BuildOptions]
   GCC:*_GCC5_*_CC_FLAGS = -mabi=ms

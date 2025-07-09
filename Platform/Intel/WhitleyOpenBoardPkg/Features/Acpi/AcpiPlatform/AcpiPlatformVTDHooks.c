@@ -2,7 +2,7 @@
   ACPI Platform Driver VT-D Hooks
 
   @copyright
-  Copyright 2012 - 2021 Intel Corporation. <BR>
+  Copyright 2012 - 2025 Intel Corporation. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -558,11 +558,11 @@ AcpiVtdIntRemappingEnable (
         // For each VT-d unit in the platform, program interrupt-remap-table address and enable extended-interrupt-mode as follows
         //
         IRTA  = (UINT64 *)((UINT64)VtdBarAddress + R_VTD_IRTA_REG);
-        Value = *(volatile UINT32 *)((UINT64)VtdBarAddress+ R_VTD_GSTS_REG);
+        Value = *(volatile UINT32 *)((UINT64)VtdBarAddress + R_VTD_GSTS_REG);
         //
         // *(volatile UINT64*)IRTA = 04  + 0x800 + (UINT64)xApicAddr ;   // [0:3] size = 2 Power (X+1). Bit11 =1 Xapic mode Bit[12:63] address
         //
-        if (DmarPrivateData->Dmar->Flags && EFI_ACPI_DMAR_FLAGS_X2APIC_OPT_OUT) {
+        if ((DmarPrivateData->Dmar->Flags & EFI_ACPI_DMAR_FLAGS_X2APIC_OPT_OUT) != 0) {
           *(volatile UINT64*)IRTA = 07 + (UINT64)xApicAddr ;   // [0:3] size = 2 Power (X+1). Bit11 =1 Xapic mode Bit[12:63] address
           *(volatile UINT32 *)((UINT64)VtdBarAddress+ R_VTD_GCMD_REG) = (UINT32)(Value | BIT23);
         } else {

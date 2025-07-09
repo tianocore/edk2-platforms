@@ -2,7 +2,7 @@
   ACPI Platform Driver Hooks
 
   @copyright
-  Copyright 1996 - 2020 Intel Corporation. <BR>
+  Copyright 1996 - 2025 Intel Corporation. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -154,6 +154,7 @@ UpdateApicIdMap (
   @retval None
 **/
 VOID
+EFIAPI
 GetThreadIdMsrValue (
   VOID
   )
