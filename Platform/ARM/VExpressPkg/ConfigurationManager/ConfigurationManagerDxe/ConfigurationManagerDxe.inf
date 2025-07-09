@@ -24,6 +24,7 @@
   ConfigurationManager.c
   ConfigurationManager.uni
   AslTables/Dsdt.asl
+  AslTables/DsdtGicV5.asl                                                                  # [CODE_FIRST] 10000
 
 [Packages]
   ArmPkg/ArmPkg.dec
