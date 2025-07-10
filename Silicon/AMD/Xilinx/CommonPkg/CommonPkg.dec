@@ -19,19 +19,5 @@
 [Protocols]
 
 [PcdsFixedAtBuild]
-  # SDHCI
-  # Write Protection Detection (By default, this is disabled)
-  gXilinxTokenSpaceGuid.PcdEnableMmcWPDetection|FALSE|BOOLEAN|0x00000008
-
-  # Delay configurations (in micro seconds)
-  # The user can override these values. However, smaller delays
-  # might cause Mmc transfer errors
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterCmdSend|200|UINT64|0x00000009
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterResponseReceive|50|UINT64|0x0000000A
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataWrite|200|UINT64|0x0000000B
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterDataRead|50|UINT64|0x0000000C
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterRegisterWrite|20|UINT64|0x0000000D
-  gXilinxTokenSpaceGuid.PcdMmcStallAfterRetry|10|UINT64|0x0000000E
-
-  # Base address (By default, this is SD controller address, as eMMC is not supported yet)
+  # SDHCI base address
   gXilinxTokenSpaceGuid.PcdSdhciBase|0xFF170000|UINT64|0x0000000F

@@ -27,8 +27,7 @@
 ################################################################################
 [PcdsFixedAtBuild.common]
   # Stacks for MPCores in Normal World
-  gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x71000000
-  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
 
   # System Memory
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00000000

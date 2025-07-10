@@ -1,0 +1,35 @@
+#  @file
+#
+#  Copyright (c) 2025, Linaro Ltd. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = XilinxDxe
+  FILE_GUID                      = E2ACF2B8-9ED0-4F89-B6F7-A055C7D7089E
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = XilinxEntryPoint
+
+[Sources.common]
+  XilinxDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/AMD/Xilinx/CommonPkg/CommonPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseLib
+  DebugLib
+  NonDiscoverableDeviceRegistrationLib
+  PcdLib
+
+[FixedPcd]
+  gXilinxTokenSpaceGuid.PcdSdhciBase
+
+[Depex]
+  TRUE

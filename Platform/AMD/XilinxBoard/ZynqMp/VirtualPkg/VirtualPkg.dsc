@@ -40,11 +40,12 @@
   gZynqMpTokenSpaceGuid.PcdSerialRegisterBase|0xFF010000
 
   # TF-A
-  # In this case, it's located in DRAM,
-  # so we need to reserve memory.
-  gZynqMpTokenSpaceGuid.PcdTfaInDram|TRUE
-  gZynqMpTokenSpaceGuid.PcdTfaMemoryBase|0x7FFFD000
-  gZynqMpTokenSpaceGuid.PcdTfaMemorySize|0x00003000
+  # In this case, it's located in OCM.
+  # So, no need to reserve memory by overriding
+  # default values of:
+  # gZynqMpTokenSpaceGuid.PcdTfaInDram
+  # gZynqMpTokenSpaceGuid.PcdTfaMemoryBase
+  # gZynqMpTokenSpaceGuid.PcdTfaMemorySize
 
   # OP-TEE
   # In this case, it's not enabled.
@@ -57,19 +58,6 @@
   # This board uses SD controller at 0xFF170000.
   # So, no need to change the default value of:
   # gXilinxTokenSpaceGuid.PcdSdhciBase
-
-  # Write protection detection is enabled.
-  # By default, WP detection is disabled.
-  gXilinxTokenSpaceGuid.PcdEnableMmcWPDetection|TRUE
-
-  # Mmc driver delays are also kept as default,
-  # so no need to tweak the values of:
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterCmdSend
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterResponseReceive
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterDataWrite
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterDataRead
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterRegisterWrite
-  # gXilinxTokenSpaceGuid.PcdMmcStallAfterRetry
 
   # Extra memory
   # This board only has base 2GB DDR. So, extra
