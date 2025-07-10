@@ -40,11 +40,12 @@
   gZynqMpTokenSpaceGuid.PcdSerialRegisterBase|0xFF010000
 
   # TF-A
-  # In this case, it's located in DRAM,
-  # so we need to reserve memory.
-  gZynqMpTokenSpaceGuid.PcdTfaInDram|TRUE
-  gZynqMpTokenSpaceGuid.PcdTfaMemoryBase|0x7FFFD000
-  gZynqMpTokenSpaceGuid.PcdTfaMemorySize|0x00003000
+  # In this case, it's located in OCM.
+  # So, no need to reserve memory by overriding
+  # default values of:
+  # gZynqMpTokenSpaceGuid.PcdTfaInDram
+  # gZynqMpTokenSpaceGuid.PcdTfaMemoryBase
+  # gZynqMpTokenSpaceGuid.PcdTfaMemorySize
 
   # OP-TEE
   # In this case, it's not enabled.
