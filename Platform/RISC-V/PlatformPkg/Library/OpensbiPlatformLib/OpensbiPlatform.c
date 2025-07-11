@@ -12,7 +12,7 @@
 
  */
 
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 #include <Library/RiscVSpecialPlatformLib.h>
 
 #include <sbi/riscv_asm.h>
@@ -101,14 +101,14 @@ fw_platform_init (
   u32         hartid, hart_count = 0;
   int         rc, root_offset, cpus_offset, cpu_offset, len;
 
-  root_offset = fdt_path_offset (fdt, "/");
+  root_offset = FdtPathOffset (fdt, "/");
   if (root_offset < 0) {
     goto fail;
   }
 
   fw_platform_lookup_special (fdt, root_offset);
 
-  model = fdt_getprop (fdt, root_offset, "model", &len);
+  model = FdtGetProp (fdt, root_offset, "model", &len);
   if (model) {
     sbi_strncpy (platform.name, model, sizeof (platform.name));
   }
@@ -117,12 +117,12 @@ fw_platform_init (
     platform.features = generic_plat->features (generic_plat_match);
   }
 
-  cpus_offset = fdt_path_offset (fdt, "/cpus");
+  cpus_offset = FdtPathOffset (fdt, "/cpus");
   if (cpus_offset < 0) {
     goto fail;
   }
 
-  fdt_for_each_subnode (cpu_offset, fdt, cpus_offset) {
+  FdtForEachSubnode (cpu_offset, fdt, cpus_offset) {
     rc = fdt_parse_hart_id (fdt, cpu_offset, &hartid);
     if (rc) {
       continue;
