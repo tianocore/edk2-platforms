@@ -1,0 +1,41 @@
+#/** @file
+#
+#  Copyright (c) 2011, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2025, Ventana Micro Systems Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PlatformPei
+  FILE_GUID                      = 6e39a078-0717-42e5-8219-1d41844a124d
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+
+  ENTRY_POINT                    = InitializePlatformPeim
+
+[Sources]
+  PlatformPeim.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  HobLib
+  PeiServicesLib
+  PlatformSecLib
+
+[Ppis]
+  gEfiPeiMasterBootModePpiGuid                  # PPI ALWAYS_PRODUCED
+  gEfiSecHobDataPpiGuid                         # ALWAYS_CONSUMED
+
+[Depex]
+  TRUE
