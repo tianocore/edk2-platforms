@@ -32,10 +32,10 @@
 # PCD Section - list of EDK II PCD Entries modified by the feature.
 #
 ################################################################################
-[PcdsFixedAtBuild]
+[PcdsFixedAtBuild.$(DXE_ARCH)]
   !include NetworkPkg/NetworkFixedPcds.dsc.inc
 
-[PcdsDynamicDefault]
+[PcdsDynamicDefault.$(DXE_ARCH)]
   !include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
 ################################################################################
