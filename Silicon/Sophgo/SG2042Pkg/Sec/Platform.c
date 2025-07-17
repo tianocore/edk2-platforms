@@ -13,7 +13,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Include/Library/PrePiLib.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 #include <Guid/FdtHob.h>
 
 /**
@@ -62,15 +62,15 @@ PopulateIoResources (
   UINT64  *Reg;
   INT32   Node, LenP;
 
-  Node = fdt_node_offset_by_compatible (FdtBase, -1, Compatible);
+  Node = FdtNodeOffsetByCompatible (FdtBase, -1, Compatible);
   while (Node != -FDT_ERR_NOTFOUND) {
-    Reg = (UINT64 *)fdt_getprop (FdtBase, Node, "reg", &LenP);
+    Reg = (UINT64 *)FdtGetProp (FdtBase, Node, "reg", &LenP);
     if (Reg) {
       ASSERT (LenP == (2 * sizeof (UINT64)));
       AddIoMemoryBaseSizeHob (SwapBytes64 (Reg[0]), SwapBytes64 (Reg[1]));
     }
 
-    Node = fdt_node_offset_by_compatible (FdtBase, Node, Compatible);
+    Node = FdtNodeOffsetByCompatible (FdtBase, Node, Compatible);
   }
 }
 
@@ -98,12 +98,12 @@ PlatformPeimInitialization (
 
   DEBUG ((DEBUG_INFO, "%a: Build FDT HOB - FDT at address: 0x%x \n", __func__, DeviceTreeAddress));
   Base = DeviceTreeAddress;
-  if (fdt_check_header (Base) != 0) {
+  if (FdtCheckHeader (Base) != 0) {
     DEBUG ((DEBUG_ERROR, "%a: Corrupted DTB\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
-  FdtSize  = fdt_totalsize (Base);
+  FdtSize  = FdtTotalSize (Base);
   FdtPages = EFI_SIZE_TO_PAGES (FdtSize);
   NewBase  = AllocatePages (FdtPages);
   if (NewBase == NULL) {
@@ -111,7 +111,7 @@ PlatformPeimInitialization (
     return EFI_UNSUPPORTED;
   }
 
-  fdt_open_into (Base, NewBase, EFI_PAGES_TO_SIZE (FdtPages));
+  FdtOpenInto (Base, NewBase, EFI_PAGES_TO_SIZE (FdtPages));
 
   FdtHobData = BuildGuidHob (&gFdtHobGuid, sizeof *FdtHobData);
   if (FdtHobData == NULL) {
