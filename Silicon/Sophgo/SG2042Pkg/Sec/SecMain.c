@@ -8,7 +8,19 @@
 
 **/
 
+#include <Guid/RiscVSecHobData.h>
 #include "SecMain.h"
+
+//
+// Size temporary region to store SEC handoff data for PEI
+//
+#define SEC_HANDOFF_DATA_RESERVE_SIZE  SIZE_4KB
+
+typedef struct {
+  EFI_HOB_GUID_TYPE         HobGuidHeader;
+  RISCV_SEC_HANDOFF_DATA    SecHandoffData;
+  EFI_HOB_GENERIC_HEADER    HobEnd;
+} SEC_HOBLIST_DATA;
 
 /**
   Initialize the memory and CPU, setting the boot mode, and platform
@@ -38,6 +50,15 @@ SecInitializePlatform (
   return EFI_SUCCESS;
 }
 
+STATIC
+VOID *
+GetSecHobData (
+  VOID
+  )
+{
+  return (VOID *)(FixedPcdGet32 (PcdTemporaryRamBase) + FixedPcdGet32 (PcdTemporaryRamSize) - SEC_HANDOFF_DATA_RESERVE_SIZE);
+}
+
 /**
 
   Entry point to the C language phase of SEC. After the SEC assembly
@@ -57,7 +78,7 @@ SecStartup (
   )
 {
   EFI_HOB_HANDOFF_INFO_TABLE  *HobList;
-  EFI_RISCV_FIRMWARE_CONTEXT  FirmwareContext;
+  SEC_HOBLIST_DATA            *SecHobList;
   EFI_STATUS                  Status;
   UINT64                      UefiMemoryBase;
   UINT64                      StackBase;
@@ -76,8 +97,12 @@ SecStartup (
     DeviceTreeAddress
     ));
 
-  FirmwareContext.BootHartId          = BootHartId;
-  SetFirmwareContextPointer (&FirmwareContext);
+  //
+  // Set hob list data that will be passed to PEI
+  //
+  SecHobList                            = (SEC_HOBLIST_DATA *)GetSecHobData ();
+  SecHobList->SecHandoffData.BootHartId = BootHartId;
+  SecHobList->SecHandoffData.FdtPointer = DeviceTreeAddress;
 
   StackBase      = (UINT64)FixedPcdGet32 (PcdTemporaryRamBase);
   StackSize      = FixedPcdGet32 (PcdTemporaryRamSize);
