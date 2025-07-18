@@ -1,0 +1,48 @@
+#/* @file
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#*/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = KodiakLib
+  FILE_GUID                      = 3e28d572-377a-4efb-8267-4faa58304a53
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+
+[Sources]
+  KodiakMem.c
+  KodiakLib.c
+  KodiakHelper.S
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Qualcomm/KodiakPkg/KodiakPkg.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdFdBaseAddress
+  gArmTokenSpaceGuid.PcdFdSize
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
