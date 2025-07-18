@@ -1,0 +1,33 @@
+#/** @file
+#  VExpress library for ARM's WatchdogDxe
+#
+#  Copyright (c) 2025 Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ArmVExpressWatchdogLib
+  FILE_GUID                      = 5274EF8E-0B4E-4DD5-91F7-328D42913A4F
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmVExpressWatchdogLib|DXE_DRIVER
+  CONSTRUCTOR                    = ArmVExpressWatchdogLibConstructor
+
+[Sources]
+  ArmVExpressWatchdogLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  PcdLib
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
