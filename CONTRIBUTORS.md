@@ -57,6 +57,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Sai Chaganty           | rangasai.v.chaganty@intel.com    | [@SaiChaganty](https://github.com/SaiChaganty)       |
 | Saloni Kasbekar        | saloni.kasbekar@intel.com        | [@SaloniKasbekar](https://github.com/SaloniKasbekar) |
 | Sami Mujawar           | sami.mujawar@arm.com             | [@samimujawar](https://github.com/samimujawar)       |
+| Sumit Garg             | sumit.garg@oss.qualcomm.com      | [@b49020](https://github.com/b49020)                 |
 | Sunil V L              | sunilvl@ventanamicro.com         | [@vlsunil](https://github.com/vlsunil)               |
 | Theo Jehl              | theojehl76@gmail.com             | [@theomacx86](https://github.com/theomacx86)         |
 | Thomas Abraham         | thomas.abraham@arm.com           |                                                      |
