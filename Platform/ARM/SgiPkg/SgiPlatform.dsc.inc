@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 - 2024, Arm Limited. All rights reserved.
+#  Copyright (c) 2018 - 2025, Arm Limited. All rights reserved.
 #  (C) Copyright 2021 Hewlett Packard Enterprise Development LP<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -192,8 +192,10 @@
   gArmSgiTokenSpaceGuid.PcdVirtioNetSize|0x10000
 
   # Counter, Timer and Watchdog
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Base|0x2A830000
-  gArmSgiTokenSpaceGuid.PcdTimerBase0Size|0x00010000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Base|0x2A830000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Base|0x2A820000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame0Size|0x00010000
+  gArmSgiTokenSpaceGuid.PcdTimerFrame1Size|0x00010000
   gArmSgiTokenSpaceGuid.PcdTimerControlBase|0x2A810000
   gArmSgiTokenSpaceGuid.PcdTimerControlSize|0x00010000
   gArmSgiTokenSpaceGuid.PcdTimerCounterReadBase|0x2A800000
