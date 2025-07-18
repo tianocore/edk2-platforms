@@ -26,7 +26,7 @@ Size          = 0x00AC0000|gArmTokenSpaceGuid.PcdFdSize         # The size in by
 ErasePolarity = 1
 
 # This one is tricky, it must be: BlockSize * NumBlocks = Size
-BlockSize     = 0x10000
+BlockSize     = 0x10000|gAmpereTokenSpaceGuid.PcdFvBlockSize
 NumBlocks     = 0xAC
 
 ################################################################################
@@ -170,6 +170,8 @@ APRIORI DXE {
   #
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf
 
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/UefiExtraRuntimeDxe/UefiExtraRuntimeDxe.inf
+
   #
   # LinuxBoot
 !if $(LINUXBOOT_FILE_IN_UEFI_EXTRA) != TRUE
@@ -294,6 +296,11 @@ FvNameGuid         = 9a66974a-02cc-4455-bd51-7fec7abc78a3
       SECTION FV_IMAGE = UEFIEXTRAFVMAIN
     }
   }
+!else
+
+SET gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress  = 0x93100000
+SET gAmpereTokenSpaceGuid.PcdUefiExtraFdSize         = 0
+SET gAmpereTokenSpaceGuid.PcdUefiExtraFlashSize      = 0x00900000
 !endif
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc
