@@ -1,0 +1,31 @@
+#/** @file
+# GENI Serial port lib
+#
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = GeniSerialPortLib
+  FILE_GUID                      = 08dce9bc-87dc-4e76-9c38-1cfe6bae68ce
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SerialPortLib
+
+[Sources.common]
+  GeniSerialPortLib.c
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  TimerLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
