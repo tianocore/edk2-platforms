@@ -191,6 +191,8 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
             config["EDK_SETUP_OPTION"] = "Mingw-w64"
         config["PATH"] = os.path.join(config["BASETOOLS_MINGW_PATH"],
                                     "bin") + os.pathsep + config["PATH"]
+        del config["CLANG_BIN"]
+        del config["CLANG_HOST_BIN"]
 
     # Run edk setup and  update config
     if os.name == 'nt':
@@ -216,19 +218,9 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
             config["PYTHON_COMMAND"] = sys.executable
 
         # Add BaseTools shell wrappers to the PATH
-        command = [sys.executable, "-c", "import edk2basetools"]
-        _, _, result, return_code = execute_script(command,
-                                                   config,
-                                                   enable_std_pipe=True,
-                                                   shell=False)
-        if return_code == 0:
-            config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
-                                        "BinPipWrappers", "PosixLike") + \
-                                            os.pathsep + config["PATH"]
-        else:
-            config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
-                                        "BinWrappers", "PosixLike") + \
-                                            os.pathsep + config["PATH"]
+        config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
+                                    "BinPipWrappers", "PosixLike") + \
+                                        os.pathsep + config["PATH"]
 
     # Make BaseTools source
     # and enable BaseTools source build
