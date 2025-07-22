@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2025, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -8,29 +8,26 @@
 
 [Defines]
   INF_VERSION                    = 0x0001001B
-  BASE_NAME                      = SystemFirmwareUpdateDxe
-  FILE_GUID                      = 1151E10C-76B9-4A22-83DC-660A5FD1E9A6
+  BASE_NAME                      = UefiExtraRuntimeDxe
+  FILE_GUID                      = ba8bf7cd-82da-4eaf-98f5-85c1923310bb
   MODULE_TYPE                    = DXE_RUNTIME_DRIVER
   VERSION_STRING                 = 1.0
-  ENTRY_POINT                    = SystemFirmwareUpdateDxeInitialize
+  ENTRY_POINT                    = UefiExtraRuntimeDxeInitialize
 
 [Sources]
-  SystemFirmwareUpdateDxe.h
-  SystemFirmwareUpdateDxe.c
+  UefiExtraRuntimeDxe.c
 
 [Packages]
   ArmPkg/ArmPkg.dec
-  MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
   Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
   Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
 
 [LibraryClasses]
-  DebugLib
   BaseLib
+  DebugLib
   FlashLib
-  FirmwareUpdateLib
-  PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiLib
@@ -40,12 +37,11 @@
 [FixedPcd]
   gAmpereTokenSpaceGuid.PcdUefiExtraFdBaseAddress
   gAmpereTokenSpaceGuid.PcdUefiExtraFdSize
-
-[Protocols]
-  gEfiMmCommunication2ProtocolGuid        ## CONSUMES
+  gAmpereTokenSpaceGuid.PcdUefiExtraFlashSize
+  gAmpereTokenSpaceGuid.PcdFvBlockSize
 
 [Guids]
-  gAmpereFWUpgradeGuid
+  gAmpereUefiExtraRuntimeGuid
   gEfiEventVirtualAddressChangeGuid
 
 [Depex]
