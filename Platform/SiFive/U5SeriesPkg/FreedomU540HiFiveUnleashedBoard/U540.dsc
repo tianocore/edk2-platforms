@@ -25,6 +25,11 @@
   FLASH_DEFINITION               = Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard/U540.fdf
 
   #
+  # Option to enable PEI booting.
+  #
+  DEFINE RISCV_PEI_BOOTING   = TRUE
+
+  #
   # Enable below options may cause build error or may not work on
   # the initial version of RISC-V package
   # Defines for default states.  These can be changed on the command line.
@@ -43,6 +48,9 @@
   DEFINE NETWORK_ISCSI_ENABLE     = FALSE
 
 [BuildOptions]
+!if $(RISCV_PEI_BOOTING) == TRUE
+  GCC:*_*_*_CC_FLAGS             = -DRISCV_PEI_BOOTING
+!endif
   GCC:RELEASE_*_*_CC_FLAGS       = -DMDEPKG_NDEBUG
 !ifdef $(SOURCE_DEBUG_ENABLE)
   GCC:*_*_RISCV64_GENFW_FLAGS    = --keepexceptiontable

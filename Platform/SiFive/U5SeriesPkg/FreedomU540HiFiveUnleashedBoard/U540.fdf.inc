@@ -33,5 +33,6 @@ DEFINE VARS_FTW_WORKING_SIZE         = 0x00040000
 DEFINE VARS_FTW_SPARE_OFFSET         = $(VARS_FTW_WORKING_OFFSET) + $(VARS_FTW_WORKING_SIZE)
 DEFINE VARS_FTW_SPARE_SIZE           = 0x00040000
 
+SET gUefiCpuPkgTokenSpaceGuid.PcdPeiTemporaryRamStackSize = 0x10000
 SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase = 0x84FF0000
 SET gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize = 0x02000000
