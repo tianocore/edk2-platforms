@@ -13,6 +13,7 @@
   # ARM Architectural Libraries
   #
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
+  ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
   ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
