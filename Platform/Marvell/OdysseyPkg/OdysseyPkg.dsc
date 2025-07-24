@@ -38,6 +38,7 @@
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
+  ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
 
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf # used by SpiNorDxe
 
