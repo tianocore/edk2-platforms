@@ -6,7 +6,7 @@
   memory attached to the two chips on this platform and its affinity to the
   chips on its respective chips is listed in this table.
 
-  Copyright (c) 2022, Arm Limited. All rights reserved.
+  Copyright (c) 2022 - 2025, Arm Limited. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -50,7 +50,7 @@ EFI_ACPI_STATIC_RESOURCE_AFFINITY_TABLE Srat = {
       0x0, FixedPcdGet64 (PcdSystemMemoryBase),
       FixedPcdGet64 (PcdSystemMemorySize), 0x00000001),
     EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE_INIT (
-      0x0, FixedPcdGet64 (PcdDramBlock2Base),
+      0x0, DRAM_BLOCK2_BASE (0),
       FixedPcdGet64 (PcdDramBlock2Size), 0x00000001),
 
     // Chip 1 (2GB and 6GB)
@@ -58,7 +58,7 @@ EFI_ACPI_STATIC_RESOURCE_AFFINITY_TABLE Srat = {
       0x1, SYSTEM_MEMORY_BASE_REMOTE(1),
       FixedPcdGet64 (PcdSystemMemorySize), 0x00000001),
     EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE_INIT (
-      0x1, DRAM_BLOCK2_BASE_REMOTE(1),
+      0x1, DRAM_BLOCK2_BASE (1),
       FixedPcdGet64 (PcdDramBlock2Size), 0x00000001),
 
     // Chip 2 (2GB and 6GB)
@@ -66,7 +66,7 @@ EFI_ACPI_STATIC_RESOURCE_AFFINITY_TABLE Srat = {
       0x2, SYSTEM_MEMORY_BASE_REMOTE(2),
       FixedPcdGet64 (PcdSystemMemorySize), 0x00000001),
     EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE_INIT (
-      0x2, DRAM_BLOCK2_BASE_REMOTE(2),
+      0x2, DRAM_BLOCK2_BASE (2),
       FixedPcdGet64 (PcdDramBlock2Size), 0x00000001),
 
     // Chip 3 (2GB and 6GB)
@@ -74,7 +74,7 @@ EFI_ACPI_STATIC_RESOURCE_AFFINITY_TABLE Srat = {
       0x3, SYSTEM_MEMORY_BASE_REMOTE(3),
       FixedPcdGet64 (PcdSystemMemorySize), 0x00000001),
     EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE_INIT(
-      0x3, DRAM_BLOCK2_BASE_REMOTE(3),
+      0x3, DRAM_BLOCK2_BASE (3),
       FixedPcdGet64 (PcdDramBlock2Size), 0x00000001),
   },
   // Processor Affinity

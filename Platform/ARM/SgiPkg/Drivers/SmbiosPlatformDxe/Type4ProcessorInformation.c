@@ -6,7 +6,7 @@
   family, processor id, maximum operating frequency, and other information
   related to the processor.
 
-  Copyright (c) 2021 - 2024, Arm Limited. All rights reserved.
+  Copyright (c) 2021 - 2025, Arm Limited. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
@@ -56,7 +56,12 @@
   "7B6-1\0"                                             \
   "7B7-1\0"                                             \
   "7F2-1\0"                                             \
-  "7EE-1\0"
+  "7EE-1\0"                                             \
+  "7F9-0\0"                                             \
+  "7EE-2\0"                                             \
+  "7C5-0\0"                                             \
+  "7C5-1\0"
+
 
 typedef enum {
   PartNumber = 1,
@@ -184,6 +189,7 @@ InstallType4ProcessorInformation (
   case RdN2Cfg1:
   case RdV2:
   case RdV3:
+  case RdV3Cfg1:
     mArmRdSmbiosType4.Base.CoreCount = CoreCount;
     mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount;
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount;
@@ -197,6 +203,9 @@ InstallType4ProcessorInformation (
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     break;
   case RdN2Cfg2:
+  case RdV3Cfg2:
+  case RdV3R1:
+  case RdV3R1Cfg1:
     mArmRdSmbiosType4.Base.CoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
