@@ -1,0 +1,37 @@
+#/** @file
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001B
+  PACKAGE_NAME                   = KodiakPkg
+  PACKAGE_GUID                   = f03dda69-0570-4036-b97d-05d1f90d5d99
+  PACKAGE_VERSION                = 0.1
+
+[Guids.common]
+  gQcomKodiakPlatformTokenSpaceGuid   = { 0xa83c5e77, 0x7334, 0x4b9d, { 0xb1, 0xf3, 0x4c, 0xaa, 0x35, 0x10, 0xdb, 0x38 } }
+
+[PcdsDynamic.common]
+  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemManufacturer|L""|VOID*|0x00000110
+  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemSerialNumber|L""|VOID*|0x00000111
+  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemSKU|L""|VOID*|0x00000112
+  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemFamily|L""|VOID*|0x00000113
+
+  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardAssetTag|L""|VOID*|0x00000114
+  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardSerialNumber|L""|VOID*|0x00000115
+  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardManufacturer|L""|VOID*|0x00000116
+  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardSKU|L""|VOID*|0x00000117
+  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardLocation|L""|VOID*|0x00000118
+
+  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisSerialNumber|L""|VOID*|0x00000119
+  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisVersion|L""|VOID*|0x0000011A
+  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisManufacturer|L""|VOID*|0x0000011B
+  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisAssetTag|L""|VOID*|0x0000011C
+  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisSKU|L""|VOID*|0x0000011D
+
+  gQcomKodiakPlatformTokenSpaceGuid.PcdPlatformVersionMajor|0x0|UINT32|0x0000011E
+  gQcomKodiakPlatformTokenSpaceGuid.PcdPlatformVersionMinor|0x0|UINT32|0x0000011F
