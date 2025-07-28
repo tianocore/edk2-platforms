@@ -69,6 +69,7 @@
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   SynchronizationLib|MdePkg/Library/BaseSynchronizationLib/BaseSynchronizationLib.inf
   CpuLib|MdePkg/Library/BaseCpuLib/BaseCpuLib.inf
@@ -145,13 +146,13 @@
   # RISC-V Architectural Libraries
   RiscVSbiLib|MdePkg/Library/BaseRiscVSbiLib/BaseRiscVSbiLib.inf
   RiscVMmuLib|UefiCpuPkg/Library/BaseRiscVMmuLib/BaseRiscVMmuLib.inf
-  CpuExceptionHandlerLib|UefiCpuPkg/Library/BaseRiscV64CpuExceptionHandlerLib/BaseRiscV64CpuExceptionHandlerLib.inf
 
   TimerLib|UefiCpuPkg/Library/BaseRiscV64CpuTimerLib/BaseRiscV64CpuTimerLib.inf
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
   RealTimeClockLib|EmbeddedPkg//Library/VirtualRealTimeClockLib/VirtualRealTimeClockLib.inf
 
 [LibraryClasses.common.SEC]
+  CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/SecPeiCpuExceptionHandlerLib.inf
 !ifdef $(DEBUG_ON_SERIAL_PORT)
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
 !else
@@ -170,6 +171,7 @@
 !endif
 
 [LibraryClasses.common.DXE_CORE]
+  CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/DxeCpuExceptionHandlerLib.inf
   HobLib|MdePkg/Library/DxeCoreHobLib/DxeCoreHobLib.inf
   DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
   MemoryAllocationLib|MdeModulePkg/Library/DxeCoreMemoryAllocationLib/DxeCoreMemoryAllocationLib.inf
@@ -185,6 +187,7 @@
 !endif
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
+  CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/DxeCpuExceptionHandlerLib.inf
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
@@ -204,6 +207,7 @@
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
 [LibraryClasses.common.UEFI_DRIVER]
+  CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/DxeCpuExceptionHandlerLib.inf
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
@@ -218,6 +222,7 @@
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
+  CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/DxeCpuExceptionHandlerLib.inf
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
@@ -407,7 +412,6 @@
       HobLib|EmbeddedPkg/Library/PrePiHobLib/PrePiHobLib.inf
       PrePiHobListPointerLib|OvmfPkg/RiscVVirt/Library/PrePiHobListPointerLib/PrePiHobListPointerLib.inf
       MemoryAllocationLib|EmbeddedPkg/Library/PrePiMemoryAllocationLib/PrePiMemoryAllocationLib.inf
-      FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf  # Map to deprecated library for this module only
   }
 
   #
@@ -467,10 +471,7 @@
   #
   # RISC-V Platform module
   #
-  Platform/SiFive/U5SeriesPkg/Universal/Dxe/RamFvbServicesRuntimeDxe/FvbServicesRuntimeDxe.inf {
-    <LibraryClasses>
-      SerialPortLib|Silicon/Hisilicon/Library/Dw8250SerialPortLib/Dw8250SerialPortLib.inf
-  }
+  Platform/SiFive/U5SeriesPkg/Universal/Dxe/RamFvbServicesRuntimeDxe/FvbServicesRuntimeDxe.inf
 
   #
   # RISC-V Core module
