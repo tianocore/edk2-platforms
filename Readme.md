@@ -62,7 +62,7 @@ W: https://github.com/tianocore/tianocore.github.io/wiki/Security
 # How to build (Linux Environment)
 
 ## Prerequisites
-The build tools themselves depend on Python (2) and libuuid. Most Linux systems
+The build tools themselves depend on Python (3) and libuuid. Most Linux systems
 will come with a Python environment installed by default, but you usually need
 to install uuid-dev (or uuid-devel, depending on distribution) manually.
 
@@ -145,10 +145,6 @@ target-specific binutils. These are included with any prepackaged GCC toolchain
 
    `make -C edk2/BaseTools`
 
-   (BaseTools can currently not be built in parallel, so do not specify any `-j`
-   option, either on the command line or in a **MAKEFLAGS** environment
-   variable.)
-
 ### Build options
 There are a number of options that can (or must) be specified at the point of
 building. Their default values are set in `edk2/Conf/target.txt`. If we are
@@ -171,21 +167,11 @@ After a successful build, the resulting images can be found in
 `Build/{Platform Name}/{TARGET}_{TOOL_CHAIN_TAG}/FV`.
 
 ### Build a platform
-The main build process _can_ run in parallel - so figure out how many threads we
-have available.
-
+The main build process runs in parallel natively. For the toolchain tag, use
+GCC for gcc version 5 or later, GCC4x for earlier versions, or
+CLANGPDB/CLANGDWARF as appropriate when building with clang.
 ```
-$ getconf _NPROCESSORS_ONLN
-8
-```
-OK, so we have 8 CPUs - let's tell the build to use a little more than that:
-```
-$ NUM_CPUS=$((`getconf _NPROCESSORS_ONLN` + 2))
-```
-For the toolchain tag, use GCC5 for gcc version 5 or later, GCC4x for
-earlier versions, or CLANG35/CLANG38 as appropriate when building with clang.
-```
-$ build -n $NUM_CPUS -a AARCH64 -t GCC5 -p Platform/ARM/JunoPkg/ArmJuno.dsc
+$ build -a AARCH64 -t GCC -p Platform/ARM/JunoPkg/ArmJuno.dsc
 ```
 (Note that the description file gets resolved by the build command through
 searching in all locations specified in **PACKAGES_PATH**.)
@@ -195,9 +181,9 @@ When cross-compiling, or building with a different version of the compiler than
 the default `gcc` or `clang`(/binutils), we additionally need to inform the
 build command which toolchain to use. We do this by setting the environment
 variable `{TOOL_CHAIN_TAG}_{TARGET_ARCH}_PREFIX` - in the case above,
-**GCC5_AARCH64_PREFIX**.
+**GCC_AARCH64_PREFIX**.
 
-So, referring to the cross compiler toolchain table above, we should prepend the `build` command line with `GCC5_AARCH64_PREFIX=aarch64-linux-gnu-`.
+So, referring to the cross compiler toolchain table above, we should prepend the `build` command line with `GCC_AARCH64_PREFIX=aarch64-linux-gnu-`.
 
 ## Using uefi-tools helper scripts
 uefi-tools is a completely unofficial set of helper-scripts developed by Linaro.
