@@ -212,7 +212,7 @@
   # size of this buffer from ATF, hard-code it here
   #
   ## MM Communicate
-  gArmTokenSpaceGuid.PcdMmBufferBase|0xFF600000
+  gArmTokenSpaceGuid.PcdMmBufferBase|0xFEF00000
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 
 ################################################################################

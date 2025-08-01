@@ -73,10 +73,12 @@
   gArmSgiTokenSpaceGuid.PcdGpioController0Size|0x00010000
   gArmSgiTokenSpaceGuid.PcdGpioController0Interrupt|136
 
-  # System Memory (1GB - 16MB of Trusted DRAM at the top of the
-  # 32bit address space)
+  # System Memory (2GB - 16MB of Trusted DRAM at the top of the
+  # 32bit address space) and Normal shared area with
+  # Secure world is reserved 1MB from (2GB - 16MB).
+  # Therefore, set the default System Memory size to (2GB - 17MB)
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7EF00000
 
   #Second DRAM Block Addresses
   gArmSgiTokenSpaceGuid.PcdDramBlock2AddrChip0|0x08080000000
