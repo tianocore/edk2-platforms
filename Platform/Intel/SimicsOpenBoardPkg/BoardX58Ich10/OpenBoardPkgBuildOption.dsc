@@ -79,6 +79,6 @@
 
 [BuildOptions.common.EDKII.MM_CORE_STANDALONE, BuildOptions.common.EDKII.MM_STANDALONE]
   MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096
-  GCC:*_GCC*_*_DLINK_FLAGS      = -z common-page-size=0x1000
+  GCC:*_*_*_DLINK_FLAGS      = -z common-page-size=0x1000
   CLANGPDB:*_*_*_DLINK_FLAGS    = /ALIGN:4096 /FILEALIGN:4096
   CLANGDWARF:*_*_*_DLINK_FLAGS  = -z common-page-size=0x1000
