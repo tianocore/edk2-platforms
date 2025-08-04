@@ -1,7 +1,7 @@
 /** @file
   Memory Detection for Virtual Machines.
 
-  Copyright (c) 2006 - 2023 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2006 - 2025 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -25,7 +25,6 @@
 #include <Library/CmosAccessLib.h>
 #include <SimicsPlatforms.h>
 #include <Guid/SmramMemoryReserve.h>
-#include <Library/SmmAccessLib.h>
 
 #include <CmosMap.h>
 
@@ -483,8 +482,6 @@ InitializeRamRegions (
   VOID
   )
 {
-  EFI_STATUS     Status;
-
   QemuInitializeRam ();
 
   if (mS3Supported && mBootMode != BOOT_ON_S3_RESUME) {
@@ -557,10 +554,4 @@ InitializeRamRegions (
         );
     }
   }
-
-  //
-  // Install EFI_PEI_MM_ACCESS_PPI for S3 resume case
-  //
-  Status = PeiInstallSmmAccessPpi ();
-  ASSERT_EFI_ERROR (Status);
 }

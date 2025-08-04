@@ -2,7 +2,7 @@
 #  Platform PEI driver
 #
 #  This module provides platform specific function to detect boot mode.
-# Copyright (c) 2006 - 2024 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2006 - 2025 Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -58,7 +58,6 @@
   PcdLib
   CmosAccessLib
   SmmControlLib
-  SmmAccessLib
   SmmRelocationLib
 
 [Pcd]
