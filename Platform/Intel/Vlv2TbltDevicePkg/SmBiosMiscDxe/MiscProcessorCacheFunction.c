@@ -103,15 +103,15 @@ MISC_SMBIOS_TABLE_FUNCTION(MiscProcessorCache)
     //
     switch (CacheParamsEax.Bits.CacheLevel) {
     case 1:
-      SmbiosRecord->InstalledSize      = (UINT16)(Size >> 10);
-      SmbiosRecord->MaximumCacheSize   = SmbiosRecord->InstalledSize;
+      SmbiosRecord->InstalledSize.Size      = (UINT16)(Size >> 10);
+      SmbiosRecord->MaximumCacheSize.Size   = SmbiosRecord->InstalledSize.Size;
       SmbiosRecord->SystemCacheType    = SystemCacheType;
       SmbiosRecord->Associativity      = CacheAssociativity8Way;
       SmbiosRecord->CacheConfiguration = 0x0180;
       break;
     case 2:
-      SmbiosRecord->InstalledSize      = (UINT16)(Size >> 10);
-      SmbiosRecord->MaximumCacheSize   = SmbiosRecord->InstalledSize;
+      SmbiosRecord->InstalledSize.Size      = (UINT16)(Size >> 10);
+      SmbiosRecord->MaximumCacheSize.Size   = SmbiosRecord->InstalledSize.Size;
       SmbiosRecord->SystemCacheType    = SystemCacheType;
       SmbiosRecord->Associativity      = CacheAssociativity16Way;
       SmbiosRecord->CacheConfiguration = 0x0281;
