@@ -244,8 +244,7 @@ SMBIOS_TABLE_TYPE4 mProcessorInfoType4 = {
   ProcessorFamilyIndicatorFamily2, // ProcessorFamily;        ///< The enumeration value from PROCESSOR_FAMILY2_DATA.
   2,                               // ProcessorManufacture String;
   {                                // ProcessorId;
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 }
+    0x00, 0x00, 0x00, 0x00
   },
   3,                    // ProcessorVersion String;
   {                     // Voltage;
@@ -311,11 +310,11 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1I = {
        //Operational Mode   :2  (Unknown)
        //Reserved           :6
 #if (RPI_MODEL == 4)
-  0x0030,                   // Maximum Size (RPi4: 48KB)
-  0x0030,                   // Install Size (RPi4: 48KB)
+  {0x0030, 0},              // Maximum Size (RPi4: 48KB)
+  {0x0030, 0},              // Install Size (RPi4: 48KB)
 #else
-  0x0010,                   // Maximum Size (RPi3: 16KB)
-  0x0010,                   // Install Size (RPi3: 16KB)
+  {0x0010, 0},              // Maximum Size (RPi3: 16KB)
+  {0x0010, 0},              // Install Size (RPi3: 16KB)
 #endif
   {                         // Supported SRAM Type
     0,  //Other             :1
@@ -359,11 +358,11 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1D = {
        //Operational Mode   :2  (WB)
        //Reserved           :6
 #if (RPI_MODEL == 4)
-  0x0020,                   // Maximum Size (RPi4: 32KB)
-  0x0020,                   // Install Size (RPi4: 32KB)
+  {0x0020, 0},              // Maximum Size (RPi4: 32KB)
+  {0x0020, 0},              // Install Size (RPi4: 32KB)
 #else
-  0x0010,                   // Maximum Size (RPi3: 16KB)
-  0x0010,                   // Install Size (RPi3: 16KB)
+  {0x0010, 0},              // Maximum Size (RPi3: 16KB)
+  {0x0010, 0},              // Install Size (RPi3: 16KB)
 #endif
   {                         // Supported SRAM Type
     0,  //Other             :1
@@ -411,11 +410,11 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L2 = {
        //Operational Mode   :2  (WB)
        //Reserved           :6
 #if (RPI_MODEL == 4)
-  0x0400,                   // Maximum Size (RPi4: 1MB)
-  0x0400,                   // Install Size (RPi4: 1MB)
+  {0x0400, 0},              // Maximum Size (RPi4: 1MB)
+  {0x0400, 0},              // Install Size (RPi4: 1MB)
 #else
-  0x0200,                   // Maximum Size (RPi3: 512KB)
-  0x0200,                   // Install Size (RPi3: 512KB)
+  {0x0200, 0},              // Maximum Size (RPi3: 512KB)
+  {0x0200, 0},              // Install Size (RPi3: 512KB)
 #endif
   {                         // Supported SRAM Type
     0,  //Other             :1
