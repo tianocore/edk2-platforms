@@ -111,6 +111,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x00004000
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFfaSkipRxTxMapping|TRUE
 
   # The BFV is not located in the Flash area but is loaded in the RAM
   # by optee's stmm_sp.c instead, therefore no shadow copy is needed.
