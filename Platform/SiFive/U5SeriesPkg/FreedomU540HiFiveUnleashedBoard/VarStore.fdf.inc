@@ -9,7 +9,7 @@
 #
 ##
 
-$(VARS_OFFSET)|$(VARS_SIZE)
+$(VARS_OFFSET)|$(VARS_LIVE_SIZE)
 gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 #
 # NV_VARIABLE_STORE
@@ -57,9 +57,9 @@ DATA = {
 }
 
 $(VARS_FTW_WORKING_OFFSET)|$(VARS_FTW_WORKING_SIZE)
-gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwWorkingBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 #
-#NV_FTW_WROK
+#NV_FTW_WORK
 #
 DATA = {
   # EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER->Signature = gEdkiiWorkingBlockSignatureGuid         =
@@ -73,6 +73,6 @@ DATA = {
 }
 
 $(VARS_FTW_SPARE_OFFSET)|$(VARS_FTW_SPARE_SIZE)
-gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 #
 #NV_FTW_SPARE

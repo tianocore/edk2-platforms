@@ -123,13 +123,13 @@
 # RPMB driver for OP-TEE
 /Drivers/OpTee/OpteeRpmbPkg/** @apalos @samimujawar
 
-/Platform/RISC-V/PlatformPkg/** @vlsunil
+/Platform/RISC-V/** @vlsunil
 
-/Platform/SiFive/U5SeriesPkg/** @JohnAZoidberg
+/Platform/SiFive/U5SeriesPkg/** @vlsunil
 
-/Silicon/RISC-V/ProcessorPkg/** @vlsunil
+/Silicon/RISC-V/** @vlsunil
 
-/Silicon/SiFive/** @JohnAZoidberg
+/Silicon/SiFive/** @vlsunil
 
 # Sophgo platforms and silicon
 /Platform/Sophgo/** @vlsunil
