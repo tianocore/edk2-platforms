@@ -1,0 +1,43 @@
+## @file
+# Initialize a RamDisk with a fixed memory region
+#
+# Copyright (c) 2025, Ventana Micro Systems Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = FixedRamDiskDxe
+  FILE_GUID                      = 242708e4-5da0-4a55-9290-182884b7a415
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeFixedRamDisk
+
+[Sources]
+  FixedRamDiskDxe.c
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  DevicePathLib
+  PcdLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gEfiVirtualDiskGuid
+
+[Protocols]
+  gEfiRamDiskProtocolGuid
+
+[Pcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskBase
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskSize
+
+[Depex]
+  gEfiRamDiskProtocolGuid

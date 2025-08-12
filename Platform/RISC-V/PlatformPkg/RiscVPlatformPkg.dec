@@ -49,6 +49,9 @@
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdForceNoAcpi|TRUE|BOOLEAN|0x00001103
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVPeiBootEnable|FALSE|BOOLEAN|0x00001104
 
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskBase|0x0|UINT64|0x00001105
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskSize|0x0|UINT32|0x00001106
+
   #
   # PCI configuration info
   #
