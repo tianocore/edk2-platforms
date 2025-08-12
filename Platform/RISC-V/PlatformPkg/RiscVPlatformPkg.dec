@@ -23,10 +23,15 @@
   gUefiRiscVPlatformPkgTokenSpaceGuid  = {0x6A67AF99, 0x4592, 0x40F8, { 0xB6, 0xBE, 0x62, 0xBC, 0xA1, 0x0D, 0xA1, 0xEC}}
 
 [PcdsFixedAtBuild]
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase|0x0|UINT32|0x00001004
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize|0x0|UINT32|0x00001005
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionBaseAddress|0x0|UINT32|0x0000100c
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionSize|0x0|UINT32|0x0000100d
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase|0x0|UINT32|0x00001000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize|0x0|UINT32|0x00001001
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionBaseAddress|0x0|UINT32|0x00001002
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionSize|0x0|UINT32|0x00001003
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeMemFvBase|0x0|UINT32|0x00001004
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeMemFvSize|0x0|UINT32|0x00001005
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFdBaseAddress64|0|UINT64|0x00001006
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFirmwareFdSize|0|UINT32|0x00001007
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeMemFvBase64|0x0|UINT64|0x00001008
 #
 # Definition of EFI Variable region
 #
@@ -37,6 +42,12 @@
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwWorkingBase|0|UINT32|0x00001044
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwSpareBase|0|UINT32|0x00001045
 
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase|0|UINT32|0x00001100
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize|0|UINT32|0x00001101
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase64|0|UINT64|0x00001102
+
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdForceNoAcpi|TRUE|BOOLEAN|0x00001103
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVPeiBootEnable|FALSE|BOOLEAN|0x00001104
 
   #
   # PCI configuration info
