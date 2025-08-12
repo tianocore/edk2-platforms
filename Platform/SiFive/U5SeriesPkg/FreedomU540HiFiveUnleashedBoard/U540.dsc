@@ -72,9 +72,9 @@
 
   # Use emulator variable for now
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable | TRUE
-  gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdFixedRamdiskBase|0x90000000
-  gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdFixedRamdiskSize|0x2000000
 
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskBase|0x90000000
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFixedRamdiskSize|0x2000000
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeUseMemory|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeUseSerial|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
@@ -238,3 +238,5 @@
 #
 ################################################################################
 [Components]
+  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+  Platform/RISC-V/PlatformPkg/Drivers/FixedRamDiskDxe/FixedRamDiskDxe.inf
