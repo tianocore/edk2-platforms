@@ -235,7 +235,7 @@ OemGetChassisType (
   VOID
   )
 {
-  return MiscChassisTypeRackMountChassis;
+  return MiscChassisTypeUnknown;
 }
 
 /** Returns whether the specified processor is present or not.
