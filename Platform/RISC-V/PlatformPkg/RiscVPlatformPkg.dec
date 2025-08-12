@@ -18,28 +18,13 @@
   Include
 
 [LibraryClasses]
-  FirmwareContextProcessorSpecificLib|Include/Library/FirmwareContextProcessorSpecificLib.h
-  RiscVPlatformTempMemoryInitLib|Include/Library/RiscVPlatformTempMemoryInitLib.h
-  Edk2OpensbiPlatformWrapperLib|Include/Library/Edk2OpensbiPlatformWrapperLib.h
-  RiscVSpecialPlatformLib|Include/Library/RiscVSpecialPlatformLib.h
-  PlatformSecPpiLib|Include/Library/PlatformSecPpiLib.h
 
 [Guids]
   gUefiRiscVPlatformPkgTokenSpaceGuid  = {0x6A67AF99, 0x4592, 0x40F8, { 0xB6, 0xBE, 0x62, 0xBC, 0xA1, 0x0D, 0xA1, 0xEC}}
 
 [PcdsFixedAtBuild]
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVSecFvBase|0x0|UINT32|0x00001000
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVSecFvSize|0x0|UINT32|0x00001001
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVPeiFvBase|0x0|UINT32|0x00001002
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVPeiFvSize|0x0|UINT32|0x00001003
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvBase|0x0|UINT32|0x00001004
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize|0x0|UINT32|0x00001005
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDtbFvBase|0x0|UINT32|0x00001006
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDtbFvSize|0x0|UINT32|0x00001007
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRootFirmwareDomainBaseAddress|0x0|UINT32|0x00001008
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRootFirmwareDomainSize|0x0|UINT32|0x00001009
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFirmwareDomainBaseAddress|0x0|UINT32|0x0000100a
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdFirmwareDomainSize|0x0|UINT32|0x0000100b
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionBaseAddress|0x0|UINT32|0x0000100c
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFirmwareRegionSize|0x0|UINT32|0x0000100d
 #
@@ -52,37 +37,6 @@
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwWorkingBase|0|UINT32|0x00001044
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwSpareBase|0|UINT32|0x00001045
 
-#
-# Definition of RISC-V Hart
-#
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdHartCount|0|UINT32|0x00001083
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdBootHartId|0|UINT32|0x00001084
-#
-# The bootable hart core number, which incorporates with OpenSBI platform hart_index2id value.
-# PcdBootableHartNumber = 0 means the number of bootable hart comes from Device Tree.
-# Otherwise the number assigned in PcdBootableHartNumber overwrite it.
-#
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdBootableHartNumber|0|UINT32|0x00001085
-#
-# PcdBootableHartIndexToId is valid if PcdBootableHartNumber != 0.
-# If PcdBootableHartNumber != 0, then PcdBootableHartIndexToId is an array of
-# bootable hart ID.
-# For example,
-# if PcdBootableHartNumber == 3 then PcdBootableHartIndexToId could be defined
-# as {0x1, 0x2, 0x3}.
-#
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdBootableHartIndexToId|NULL|VOID*|0x00001086
-#
-# Definitions for OpenSbi
-#
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdScratchRamBase|0|UINT32|0x00001100
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdScratchRamSize|0|UINT32|0x00001101
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdOpenSbiStackSize|0|UINT32|0x00001102
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase|0|UINT32|0x00001103
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize|0|UINT32|0x00001104
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPeiCorePrivilegeMode|0|UINT32|0x00001105
-
-  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdDeviceTreeAddress|0|UINT32|0x00001106
 
   #
   # PCI configuration info
