@@ -34,6 +34,8 @@
 
 UINTN  mProcessorIndex = 0xFF;
 
+#define MHZ_SCALE_FACTOR 1000000
+
 UINT32
 GetCacheConfig (
   IN UINT32   CacheLevel,
@@ -131,8 +133,8 @@ OemGetProcessorInformation (
   ProcessorCharacteristics->ProcessorReserved2              = 0;
 
   MiscProcessorData->Voltage      = CpuGetVoltage (ProcessorIndex);
-  MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex);
-  MiscProcessorData->MaxSpeed     = CpuGetMaxFreq (ProcessorIndex);
+  MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex) / MHZ_SCALE_FACTOR;
+  MiscProcessorData->MaxSpeed     = CpuGetMaxFreq (ProcessorIndex) / MHZ_SCALE_FACTOR;
   MiscProcessorData->CoreCount    = GetMaximumNumberOfCores ();
   MiscProcessorData->ThreadCount  = GetMaximumNumberOfCores ();
   MiscProcessorData->CoresEnabled = GetNumberOfActiveCoresPerSocket (ProcessorIndex);

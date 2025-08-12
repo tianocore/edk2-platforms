@@ -34,6 +34,8 @@
 
 #define SCP_VERSION_STRING_MAX_LENGTH  32
 
+#define MHZ_SCALE_FACTOR  1000000
+
 UINTN  mProcessorIndex = 0xFF;
 
 UINT32
@@ -129,8 +131,8 @@ OemGetProcessorInformation (
   ProcessorCharacteristics->ProcessorReserved2              = 0;
 
   MiscProcessorData->Voltage      = CpuGetVoltage (ProcessorIndex);
-  MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex);
-  MiscProcessorData->MaxSpeed     = CpuGetMaxFreq (ProcessorIndex);
+  MiscProcessorData->CurrentSpeed = CpuGetCurrentFreq (ProcessorIndex) / MHZ_SCALE_FACTOR;
+  MiscProcessorData->MaxSpeed     = CpuGetMaxFreq (ProcessorIndex) / MHZ_SCALE_FACTOR;
   MiscProcessorData->CoreCount    = GetMaximumNumberOfCores ();
   MiscProcessorData->ThreadCount  = GetMaximumNumberOfCores ();
   MiscProcessorData->CoresEnabled = GetNumberOfActiveCoresPerSocket (ProcessorIndex);
