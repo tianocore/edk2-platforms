@@ -282,7 +282,7 @@ STATIC CONST ARM_TYPE4 mArmDefaultType4_a72 = {
     3, //processor type CPU
     ProcessorFamilyIndicatorFamily2, //processor family, acquire from field2
     2, //manufactuer
-    {{0,},{0.}}, //processor id
+    {0, 0, 0, 0}, //processor id
     5, //version
     {0,0,0,0,0,1}, //voltage
     0, //external clock
@@ -316,7 +316,7 @@ STATIC CONST ARM_TYPE4 mArmDefaultType4_a57 = {
     3, //processor type CPU
     ProcessorFamilyIndicatorFamily2, //processor family, acquire from field2
     2, //manufactuer
-    {{0,},{0.}}, //processor id
+    {0, 0, 0, 0}, //processor id
     3, //version
     {0,0,0,0,0,1}, //voltage
     0, //external clock
@@ -350,7 +350,7 @@ STATIC CONST ARM_TYPE4 mArmDefaultType4_a53 = {
     3, //processor type CPU
     ProcessorFamilyIndicatorFamily2, //processor family, acquire from field2
     2, //manufactuer
-    {{0,},{0.}}, //processor id
+    {0, 0, 0, 0}, //processor id
     4, //version
     {0,0,0,0,0,1}, //voltage
     0, //external clock
@@ -383,8 +383,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a57_l1i = {
     },
     1,
     0x380, //L1 enabled, unknown WB
-    48, //48k i cache max
-    48, //48k installed
+    {48,0}, //48k i cache max
+    {48,0}, //48k installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
@@ -404,8 +404,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a53_l1i = {
     },
     1,
     0x380, //L1 enabled, unknown WB
-    32, //32k i cache max
-    32, //32k installed
+    {32,0}, //32k i cache max
+    {32,0}, //32k installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
@@ -425,8 +425,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a57_l1d = {
     },
     2,
     0x180, //L1 enabled, WB
-    32, //32k d cache max
-    32, //32k installed
+    {32,0}, //32k d cache max
+    {32,0}, //32k installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
@@ -446,8 +446,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a53_l1d = {
     },
     2,
     0x180, //L1 enabled, WB
-    32, //32k d cache max
-    32, //32k installed
+    {32,0}, //32k d cache max
+    {32,0}, //32k installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
@@ -467,8 +467,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a57_l2 = {
     },
     3,
     0x181, //L2 enabled, WB
-    2048, //2M d cache max
-    2048, //2M installed
+    {2048,0}, //2M d cache max
+    {2048,0}, //2M installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
@@ -488,8 +488,8 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a53_l2 = {
     },
     3,
     0x181, //L2 enabled, WB
-    1024, //1M D cache max
-    1024, //1M installed
+    {1024,0}, //1M D cache max
+    {1024,0}, //1M installed
     {0,1}, //SRAM type
     {0,1}, //SRAM type
     0, //unkown speed
