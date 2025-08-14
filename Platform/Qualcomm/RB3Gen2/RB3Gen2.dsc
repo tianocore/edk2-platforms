@@ -145,7 +145,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
 
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
-  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
+  ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
 
   ArmPlatformLib|Silicon/Qualcomm/KodiakPkg/Library/KodiakLib/KodiakLib.inf
