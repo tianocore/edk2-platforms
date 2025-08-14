@@ -93,7 +93,7 @@ STATIC ARM_RD_SMBIOS_TYPE4 mArmRdSmbiosType4 = {
     ProcessorFamilyIndicatorFamily2,
                              // Use Processor Family 2 field
     ManufacturerName,        // Manufacturer string number
-    {{0}, {0}},              // Processor id, update dynamically
+    {0, 0, 0, 0},            // Processor id, update dynamically
     ProcessorVersionBase,    // Processor version, update dynamically
     {0, 0, 0, 0, 0, 1},      // Non legacy mode for processor voltage
     0,                       // External clock frequency unknown

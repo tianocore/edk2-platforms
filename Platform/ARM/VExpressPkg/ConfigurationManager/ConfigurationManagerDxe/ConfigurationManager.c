@@ -15,9 +15,13 @@
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
 #include <Library/ArmLib.h>
+#include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
+#include <Library/HiiLib.h>
 #include <Library/IoLib.h>
+#include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
+#include <Library/SmbiosSmcLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Protocol/AcpiTable.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
@@ -25,6 +29,9 @@
 #include "ArmPlatform.h"
 #include "ConfigurationManager.h"
 #include "Platform.h"
+
+STATIC EFI_HII_HANDLE  mHiiHandle;
+extern UINT8           ConfigurationManagerDxeStrings[];
 
 /** The platform configuration repository information.
 */
@@ -114,6 +121,19 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       NULL,
       SIGNATURE_64 ('S', 'S', 'D', 'T', '-', 'P', 'C', 'I')
     },
+  },
+
+  { // SMBIOS
+    {
+      SMBIOS_TYPE_CACHE_INFORMATION,
+      CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType07),
+      NULL
+    },
+    {
+      SMBIOS_TYPE_PROCESSOR_INFORMATION,
+      CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType04),
+      NULL
+    }
   },
 
   // Boot architecture information
@@ -730,7 +750,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      0,                               // UINT32  CacheId
+      2                                // UINT32  CacheLevel
     },
     // L2 cache
     {
@@ -745,7 +767,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      1,                               // UINT32  CacheId
+      1                                // UINT32  CacheLevel
     },
     // L1 instruction cache
     {
@@ -760,7 +784,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      2,                               // UINT32  CacheId
+      0                                // UINT32  CacheLevel
     },
     // L1 data cache
     {
@@ -775,7 +801,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      3,                               // UINT32  CacheId
+      0                                // UINT32  CacheLevel
     },
 
     // L2 cache
@@ -791,7 +819,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      4,                               // UINT32  CacheId
+      1                                // UINT32  CacheLevel
     },
     // L1 instruction cache
     {
@@ -806,7 +836,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      5,                               // UINT32  CacheId
+      0                                // UINT32  CacheLevel
     },
     // L1 data cache
     {
@@ -821,7 +853,9 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,
         EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK
         ),
-      64                               // UINT16  LineSize
+      64,                              // UINT16  LineSize
+      6,                               // UINT32  CacheId
+      0                                // UINT32  CacheLevel
     }
   },
 
@@ -1073,6 +1107,80 @@ HandleCmObjectSearchPlatformRepo (
   return Status;
 }
 
+#define STRING_MAPPING(Token, String) \
+  { Token, String, sizeof (String) }
+
+STATIC struct {
+  EFI_STRING_ID    Src;
+  CHAR8            *Dest;
+  UINTN            Length;
+} StringMapping[] = {
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_DESIGNATOR),    VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_MANUFACTURER),  VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].ProcessorManufacturer),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_VERSION),       VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].ProcessorVersion),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_SERIAL_NUMBER), VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].SerialNumber),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_ASSET_TAG),     VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].AssetTag),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_PART_NUMBER),   VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].PartNumber),
+  STRING_MAPPING (STRING_TOKEN (STR_SOCKET0_SOCKET_TYPE),   VExpressPlatRepositoryInfo.ProcHierarchyInfo[0].SocketType),
+
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L3),      VExpressPlatRepositoryInfo.CacheInfo[0].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L2),      VExpressPlatRepositoryInfo.CacheInfo[1].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L1),      VExpressPlatRepositoryInfo.CacheInfo[2].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L1),      VExpressPlatRepositoryInfo.CacheInfo[3].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L2),      VExpressPlatRepositoryInfo.CacheInfo[4].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L1),      VExpressPlatRepositoryInfo.CacheInfo[5].SocketDesignation),
+  STRING_MAPPING (STRING_TOKEN (STR_CACHE_SOCKET0_L1),      VExpressPlatRepositoryInfo.CacheInfo[6].SocketDesignation)
+};
+
+/** Copy HII string to buffer, converting from Unicode to ASCII.
+
+  @param [in]  Id        Id of string to copy.
+  @param [in]  Dest      Pointer to buffer to copy string to.
+  @param [in]  Length    Length of destination buffer, in bytes.
+
+  @retval EFI_SUCCESS            Success
+  @retval EFI_INVALID_PARAMETER  Destination buffer is not long enough for string
+*/
+STATIC
+EFI_STATUS
+CopyString (
+  EFI_STRING_ID  Id,
+  CHAR8          *Dest,
+  UINTN          Length
+  )
+{
+  EFI_STRING  String;
+
+  String = HiiGetPackageString (&gEfiCallerIdGuid, Id, NULL);
+
+  if (StrLen (String) >= Length) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  UnicodeStrToAsciiStrS (String, Dest, StrLen (String) + 1);
+
+  return EFI_SUCCESS;
+}
+
+STATIC
+EFI_STATUS
+InitialiseProcStrings (
+  )
+{
+  EFI_STATUS  Status;
+  UINTN       Index;
+
+  for (Index = 0; Index < ARRAY_SIZE (StringMapping); Index++) {
+    Status = CopyString (StringMapping[Index].Src, StringMapping[Index].Dest, StringMapping[Index].Length);
+
+    if (Status != EFI_SUCCESS) {
+      break;
+    }
+  }
+
+  return Status;
+}
+
 /** Initialize the platform configuration repository.
 
   @param [in]  This        Pointer to the Configuration Manager Protocol.
@@ -1091,6 +1199,8 @@ InitializePlatformRepository (
   UINTN                           Index;
   UINT16                          TrbeInterrupt;
   CM_OBJECT_TOKEN                 EtToken;
+  UINT64                          SocId;
+  EFI_STATUS                      Status;
 
   PlatformRepo = This->PlatRepoInfo;
 
@@ -1136,6 +1246,15 @@ InitializePlatformRepository (
 
   // Retrieve interrupts stored in PCDs
   PlatformRepo->Watchdog.TimerGSIV = PcdGet32 (PcdGenericWatchdogEl2IntrNum);
+
+  Status = SmbiosSmcGetSocId (&SocId);
+  if (!EFI_ERROR (Status)) {
+    for (Index = 0; Index < PLAT_PROC_HIERARCHY_NODE_COUNT; Index++) {
+      PlatformRepo->ProcHierarchyInfo[Index].ProcessorId = SocId;
+    }
+  }
+
+  InitialiseProcStrings ();
 
   return EFI_SUCCESS;
 }
@@ -1589,6 +1708,7 @@ GetStandardNameSpaceObject (
   EFI_STATUS                      Status;
   EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
   UINTN                           AcpiTableCount;
+  UINTN                           SmbiosTableCount;
 
   Status = EFI_SUCCESS;
   if ((This == NULL) || (CmObject == NULL)) {
@@ -1599,6 +1719,7 @@ GetStandardNameSpaceObject (
 
   Status         = EFI_NOT_FOUND;
   AcpiTableCount = ARRAY_SIZE (PlatformRepo->CmAcpiTableList);
+  SmbiosTableCount = ARRAY_SIZE (PlatformRepo->SmbiosTableList);
   PlatformRepo   = This->PlatRepoInfo;
 
   if ((PlatformRepo->SysId & ARM_FVP_SYS_ID_REV_MASK) !=
@@ -1626,6 +1747,16 @@ GetStandardNameSpaceObject (
                  &PlatformRepo->CmAcpiTableList,
                  sizeof (PlatformRepo->CmAcpiTableList),
                  AcpiTableCount,
+                 CmObject
+                 );
+      break;
+
+    case EStdObjSmbiosTableList:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->SmbiosTableList,
+                 sizeof (PlatformRepo->SmbiosTableList),
+                 SmbiosTableCount,
                  CmObject
                  );
       break;
@@ -2231,6 +2362,24 @@ ConfigurationManagerDxeInitialize (
   )
 {
   EFI_STATUS  Status;
+
+  mHiiHandle = HiiAddPackages (
+                 &gEfiCallerIdGuid,
+                 NULL,
+                 ConfigurationManagerDxeStrings,
+                 NULL,
+                 NULL
+                 );
+  if (mHiiHandle == NULL) {
+    Status = EFI_OUT_OF_RESOURCES;
+    DEBUG ((
+      DEBUG_ERROR,
+      "ERROR: Failed to get add strings to HII database." \
+      " Status = %r\n",
+      Status
+      ));
+    return Status;
+  }
 
   Status = InitializePlatformRepository (
              &VExpressPlatformConfigManagerProtocol
