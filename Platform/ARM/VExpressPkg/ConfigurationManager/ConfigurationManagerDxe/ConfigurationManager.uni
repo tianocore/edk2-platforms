@@ -1,0 +1,22 @@
+// /** @file
+//
+//
+//  Copyright (c) 2025, Arm Ltd. All rights reserved.<BR>
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// **/
+
+#langdef   en-US "English"
+
+#string STR_SOCKET0_DESIGNATOR     #language en-US "Socket 0"
+#string STR_SOCKET0_MANUFACTURER   #language en-US "Arm Limited"
+#string STR_SOCKET0_VERSION        #language en-US "Versatile Express"
+#string STR_SOCKET0_SERIAL_NUMBER  #language en-US "01234567-89abcdef"
+#string STR_SOCKET0_ASSET_TAG      #language en-US "To be filled in by O.E.M."
+#string STR_SOCKET0_PART_NUMBER    #language en-US "00000001"
+#string STR_SOCKET0_SOCKET_TYPE    #language en-US "N/A"
+
+#string STR_CACHE_SOCKET0_L1       #language en-US "Socket 0 Level 1 cache"
+#string STR_CACHE_SOCKET0_L2       #language en-US "Socket 0 Level 2 cache"
+#string STR_CACHE_SOCKET0_L3       #language en-US "Socket 0 Level 3 cache"
