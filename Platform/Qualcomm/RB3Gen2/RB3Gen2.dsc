@@ -100,6 +100,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   CpuExceptionHandlerLib|ArmPkg/Library/ArmExceptionLib/ArmExceptionLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmHvcLib|ArmPkg/Library/ArmHvcLib/ArmHvcLib.inf
+  ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
   ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerVirtCounterLib/ArmGenericTimerVirtCounterLib.inf
 
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
@@ -145,7 +146,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
 
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
-  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
+  ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
 
   ArmPlatformLib|Silicon/Qualcomm/KodiakPkg/Library/KodiakLib/KodiakLib.inf
