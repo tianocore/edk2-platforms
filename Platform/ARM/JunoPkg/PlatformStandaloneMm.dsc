@@ -1,7 +1,14 @@
 ## @file
 # Standalone MM Platform.
 #
-# Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+# Note:
+# Although StandaloneMm in ArmJuno supports
+# ENABLE_UEFI_SECURE_VARIABLE build option,
+# the Flash on Juno hardware is accessible from Normal world.
+# The purpose of enabling StandaloneMM support for Juno is to
+# demonstrate the functionality on real hardware.
+#
+# Copyright (c) 2025, Arm Limited. All rights reserved.<BR>
 #
 #    SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -14,19 +21,20 @@
 ################################################################################
 [Defines]
   PLATFORM_NAME                  = StandaloneMm
-  PLATFORM_GUID                  = 9A4BBA60-B4F9-47C7-9258-3BD77CAE9322
+  PLATFORM_GUID                  = 667ffb82-9128-11ef-8299-cfafe2cc85b5
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001C
 !ifdef $(EDK2_OUT_DIR)
   OUTPUT_DIRECTORY               = $(EDK2_OUT_DIR)
 !else
-  OUTPUT_DIRECTORY               = Build/ArmVExpress-FVP-AArch64
+  OUTPUT_DIRECTORY               = Build/ArmJuno
 !endif
-  SUPPORTED_ARCHITECTURES        = AARCH64|ARM
+  SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = Platform/ARM/VExpressPkg/PlatformStandaloneMm.fdf
+  FLASH_DEFINITION               = Platform/ARM/JunoPkg/PlatformStandaloneMm.fdf
   DEFINE DEBUG_MESSAGE           = TRUE
+
 
 !include Platform/ARM/VExpressPkg/PlatformStandaloneMm.dsc.inc
 
@@ -40,7 +48,7 @@
   # STMM for Variable runtime service.
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
-  NorFlashPlatformLib|Platform/ARM/VExpressPkg/Library/NorFlashArmVExpressLib/NorFlashStMmLib.inf
+  NorFlashPlatformLib|Platform/ARM/JunoPkg/Library/NorFlashJunoLib/NorFlashJunoStMmLib.inf
 !endif
 
 ################################################################################
@@ -49,45 +57,43 @@
 #
 ################################################################################
 [PcdsFixedAtBuild]
-!if $(TARGET) == RELEASE
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
-!else
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
-!endif
-
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8000008F
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xff
   gEfiMdePkgTokenSpaceGuid.PcdDebugClearMemoryValue|0xAF
 
-  ## PL011 - Serial Terminal.
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x1c090000
-  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
+  ## PL011 - Serial Terminal
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x7FF80000
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
+  gArmPlatformTokenSpaceGuid.PL011UartClkInHz|7372800
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|115
+
   gEfiMdePkgTokenSpaceGuid.PcdMaximumGuidedExtractHandler|0x2
+
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  #
+  # NV Storage PCDs.
+  # Use its base last 256KB block for NOR0 flash.
+  # NOR0 base is 0x08000000 for and its size 64MB.
+  # Therefore, 0x08000000 + 0x04000000 (64MB) - 0x40000 (256KB) = 0x0FFC0000.
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|0x0BFC0000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x00010000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0x0BFD0000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x00010000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0x0BFE0000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x00010000
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
-
-  #
-  # NV Storage PCDs.
-  # Use its base last 256KB block for NOR1 flash.
-  # NOR1 base is 0x0C000000 for and its size 64MB.
-  # Therefore, 0x0C000000 + 0x04000000 (64MB) - 0x40000 (256KB) = 0x0FFC0000.
-  #
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|0x0FFC0000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x00010000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0x0FFD0000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x00010000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0x0FFE0000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x00010000
 !endif
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFfaLibConduitSmc|FALSE
 
-  #
+  gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x1C170000
+
   # The BFV is not located in the Flash area but is loaded in the RAM
   # by TF-A instead, therefore no shadow copy is needed. So disable
   # shadow copy of boot firmware volume while loading StMM drivers.
-  #
   gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
 
 ###################################################################################################
@@ -121,9 +127,5 @@
 ###################################################################################################
 [BuildOptions.AARCH64]
   GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000 -march=armv8-a+nofp -mstrict-align
-  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/RTSM
+  GCC:*_*_AARCH64_PLATFORM_FLAGS == -I$(WORKSPACE)/Platform/ARM/JunoPkg/Include
   GCC:*_*_*_CC_FLAGS = -mstrict-align
-
-[BuildOptions.ARM]
-  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000 -march=armv7-a
-  GCC:*_*_*_CC_FLAGS = -fno-stack-protector
