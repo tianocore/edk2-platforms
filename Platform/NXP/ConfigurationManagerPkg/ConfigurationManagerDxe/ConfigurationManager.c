@@ -3,6 +3,7 @@
 
   Copyright 2020 NXP
   Copyright 2020 Puresoftware Ltd
+  Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -472,6 +473,89 @@ GetStandardNameSpaceObject (
   return Status;
 }
 
+/** Return an Arch Common namespace object.
+
+  @param [in]      This        Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId  The Configuration Manager Object ID.
+  @param [in]      Token       An optional token identifying the object. If
+                               unused this must be CM_NULL_TOKEN.
+  @param [in, out] CmObject    Pointer to the Configuration Manager Object
+                               descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS           Success.
+  @retval EFI_INVALID_PARAMETER A parameter is invalid.
+  @retval EFI_NOT_FOUND         The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetArchCommonNameSpaceObject (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EFI_STATUS                        Status;
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = EFI_NOT_FOUND;
+  PlatformRepo = This->PlatRepoInfo;
+
+  switch (GET_CM_OBJECT_ID (CmObjectId)) {
+    case EArchCommonObjPowerManagementProfileInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->PmProfileInfo,
+                 sizeof (PlatformRepo->PmProfileInfo),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjConsolePortInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->SpcrSerialPort,
+                 sizeof (PlatformRepo->SpcrSerialPort),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjPciConfigSpaceInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PciConfigInfo,
+                 sizeof (PlatformRepo->PciConfigInfo),
+                 ARRAY_SIZE (PlatformRepo->PciConfigInfo),
+                 Token,
+                 GetPciConfigInfo,
+                 CmObject
+                 );
+      break;
+
+      default: {
+      Status = EFI_NOT_FOUND;
+      DEBUG ((
+        DEBUG_INFO,
+        "INFO: Object 0x%x. Status = %r\n",
+        CmObjectId,
+        Status
+        ));
+      break;
+    }
+  } //switch
+
+  return Status;
+}
+
 /** Return an ARM namespace object.
 
   @param [in]      This        Pointer to the Configuration Manager Protocol.
@@ -511,16 +595,6 @@ GetArmNameSpaceObject (
                  CmObjectId,
                  &PlatformRepo->BootArchInfo,
                  sizeof (PlatformRepo->BootArchInfo),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPowerManagementProfileInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->PmProfileInfo,
-                 sizeof (PlatformRepo->PmProfileInfo),
                  1,
                  CmObject
                  );
@@ -608,29 +682,6 @@ GetArmNameSpaceObject (
                  &PlatformRepo->GicItsInfo,
                  sizeof (PlatformRepo->GicItsInfo),
                  PLAT_GIC_ITS_COUNT,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjSerialConsolePortInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->SpcrSerialPort,
-                 sizeof (PlatformRepo->SpcrSerialPort),
-                 1,
-                 CmObject
-                 );
-      break;
-
-    case EArmObjPciConfigSpaceInfo:
-      Status = HandleCmObjectRefByToken (
-                 This,
-                 CmObjectId,
-                 PlatformRepo->PciConfigInfo,
-                 sizeof (PlatformRepo->PciConfigInfo),
-                 ARRAY_SIZE (PlatformRepo->PciConfigInfo),
-                 Token,
-                 GetPciConfigInfo,
                  CmObject
                  );
       break;
@@ -732,6 +783,9 @@ FslPlatformGetObject (
   switch (GET_CM_NAMESPACE_ID (CmObjectId)) {
     case EObjNameSpaceStandard:
       Status = GetStandardNameSpaceObject (This, CmObjectId, Token, CmObject);
+      break;
+    case EObjNameSpaceArchCommon:
+      Status = GetArchCommonNameSpaceObject (This, CmObjectId, Token, CmObject);
       break;
     case EObjNameSpaceArm:
       Status = GetArmNameSpaceObject (This, CmObjectId, Token, CmObject);

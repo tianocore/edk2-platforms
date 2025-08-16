@@ -3,6 +3,7 @@
 
   Copyright 2020 NXP
   Copyright 2020 Puresoftware Ltd
+  Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -80,7 +81,7 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_BOOT_ARCH_INFO                     BootArchInfo;
 
   /// Power management profile information
-  CM_ARM_POWER_MANAGEMENT_PROFILE_INFO      PmProfileInfo;
+  CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
 
   /// Generic timer information
   CM_ARM_GENERIC_TIMER_INFO                 GenericTimerInfo;
@@ -107,10 +108,10 @@ typedef struct PlatformRepositoryInfo {
   CM_ARM_GIC_ITS_INFO                       GicItsInfo;
 
   /// PCI configuration space information
-  CM_ARM_PCI_CONFIG_SPACE_INFO              PciConfigInfo[PLAT_PCI_CONFG_COUNT];
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO      PciConfigInfo[PLAT_PCI_CONFG_COUNT];
 
   /// Serial port information for serial port console redirection port
-  CM_ARM_SERIAL_PORT_INFO                   SpcrSerialPort;
+  CM_ARCH_COMMON_SERIAL_PORT_INFO           SpcrSerialPort;
 
   /// Fsl Board Revision
   UINT32                                    FslBoardRevision;
