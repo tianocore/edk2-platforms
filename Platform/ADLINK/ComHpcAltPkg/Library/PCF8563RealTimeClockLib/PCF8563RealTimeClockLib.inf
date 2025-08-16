@@ -24,6 +24,7 @@
   ArmPlatformPkg/ArmPlatformPkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
   Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
 
