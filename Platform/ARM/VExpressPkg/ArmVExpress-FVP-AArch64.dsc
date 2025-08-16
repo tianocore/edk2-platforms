@@ -248,6 +248,15 @@
 [Components.common]
 
   #
+  # Firmware Performance Data Table (FPDT)
+  #
+  MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf {
+    <LibraryClasses>
+      LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
+  }
+
+  #
   # PEI Phase modules
   #
 !if $(EDK2_SKIP_PEICORE) == TRUE
