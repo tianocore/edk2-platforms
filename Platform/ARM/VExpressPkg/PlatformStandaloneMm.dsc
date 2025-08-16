@@ -204,7 +204,7 @@
   Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
     <LibraryClasses>
-      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
       NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLibStandaloneMm.inf
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
