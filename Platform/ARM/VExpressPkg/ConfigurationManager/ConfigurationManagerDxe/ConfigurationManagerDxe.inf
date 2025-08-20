@@ -79,4 +79,7 @@
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
 
 [Depex]
-  gEfiTimerArchProtocolGuid
+  gEfiTimerArchProtocolGuid AND gEfiVariableArchProtocolGuid
+
+[Guids]
+  gArmVExpressPlatformConfigGuid
