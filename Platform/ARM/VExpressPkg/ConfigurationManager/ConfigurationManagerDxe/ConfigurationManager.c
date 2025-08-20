@@ -19,12 +19,26 @@
 #include <Library/IoLib.h>
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Protocol/AcpiTable.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
+#include <Guid/ArmVExpressPlatformConfig.h>
+#include <PlatformConfigStructs.h>
 
 #include "ArmPlatform.h"
 #include "ConfigurationManager.h"
 #include "Platform.h"
+
+#define STA_CPU_ENABLED  (                \
+  ACPI_AML_STA_DEVICE_STATUS_PRESET |     \
+  ACPI_AML_STA_DEVICE_STATUS_ENABLED |    \
+  ACPI_AML_STA_DEVICE_STATUS_UI |         \
+  ACPI_AML_STA_DEVICE_STATUS_FUNCTIONING)
+
+#define STA_CPU_DISABLED  (               \
+  ACPI_AML_STA_DEVICE_STATUS_PRESET |     \
+  ACPI_AML_STA_DEVICE_STATUS_UI |         \
+  ACPI_AML_STA_DEVICE_STATUS_FUNCTIONING)
 
 /** The platform configuration repository information.
 */
@@ -128,20 +142,20 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
   { EFI_ACPI_6_5_PM_PROFILE_ENTERPRISE_SERVER },    // PowerManagement Profile
 
   /* GIC CPU Interface information
-     GIC_ENTRY (CPUInterfaceNumber, Mpidr, PmuIrq, VGicIrq, EnergyEfficiency)
+     GIC_ENTRY (CPUInterfaceNumber, Mpidr, PmuIrq, VGicIrq, EnergyEfficiency, StaToken)
      Note: The MPIDR is fixed up in InitializePlatformRepository() if the
            platform is FVP RevC.
   */
   {
-    GICC_ENTRY (0, GET_MPID (0, 0), 92, 25, 0),
-    GICC_ENTRY (1, GET_MPID (0, 1), 93, 25, 0),
-    GICC_ENTRY (2, GET_MPID (0, 2), 94, 25, 0),
-    GICC_ENTRY (3, GET_MPID (0, 3), 95, 25, 0),
+    GICC_ENTRY (0, GET_MPID (0, 0), 92, 25, 0, REFERENCE_TOKEN (StaInfo[0])),
+    GICC_ENTRY (1, GET_MPID (0, 1), 93, 25, 0, REFERENCE_TOKEN (StaInfo[1])),
+    GICC_ENTRY (2, GET_MPID (0, 2), 94, 25, 0, REFERENCE_TOKEN (StaInfo[2])),
+    GICC_ENTRY (3, GET_MPID (0, 3), 95, 25, 0, REFERENCE_TOKEN (StaInfo[3])),
 
-    GICC_ENTRY (4, GET_MPID (1, 0), 96, 25, 0),
-    GICC_ENTRY (5, GET_MPID (1, 1), 97, 25, 0),
-    GICC_ENTRY (6, GET_MPID (1, 2), 98, 25, 0),
-    GICC_ENTRY (7, GET_MPID (1, 3), 99, 25, 0)
+    GICC_ENTRY (4, GET_MPID (1, 0), 96, 25, 0, REFERENCE_TOKEN (StaInfo[4])),
+    GICC_ENTRY (5, GET_MPID (1, 1), 97, 25, 0, REFERENCE_TOKEN (StaInfo[5])),
+    GICC_ENTRY (6, GET_MPID (1, 2), 98, 25, 0, REFERENCE_TOKEN (StaInfo[6])),
+    GICC_ENTRY (7, GET_MPID (1, 3), 99, 25, 0, REFERENCE_TOKEN (StaInfo[7]))
   },
 
   // GIC Distributor Info
@@ -925,6 +939,17 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
   {
     { REFERENCE_TOKEN (LpiInfo[1]) },
     { REFERENCE_TOKEN (LpiInfo[2]) },
+  },
+  // StaInfo
+  {
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED },
+    { STA_CPU_ENABLED }
   }
 };
 
@@ -1091,6 +1116,11 @@ InitializePlatformRepository (
   UINTN                           Index;
   UINT16                          TrbeInterrupt;
   CM_OBJECT_TOKEN                 EtToken;
+  PLATFORM_CONFIG_DATA            PlatformConfig;
+  UINTN                           BufferSize;
+  EFI_STATUS                      Status;
+  UINT64                          Mpidr;
+  UINTN                           BootCpu;
 
   PlatformRepo = This->PlatRepoInfo;
 
@@ -1129,6 +1159,8 @@ InitializePlatformRepository (
     EtToken = (CM_OBJECT_TOKEN)&PlatformRepo->EtInfo;
   }
 
+  STATIC_ASSERT (PLAT_CPU_COUNT <= MAX_CPUS);
+
   for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
     PlatformRepo->GicCInfo[Index].TrbeInterrupt = TrbeInterrupt;
     PlatformRepo->GicCInfo[Index].EtToken       = EtToken;
@@ -1136,6 +1168,31 @@ InitializePlatformRepository (
 
   // Retrieve interrupts stored in PCDs
   PlatformRepo->Watchdog.TimerGSIV = PcdGet32 (PcdGenericWatchdogEl2IntrNum);
+
+  BufferSize = sizeof (PLATFORM_CONFIG_DATA);
+  Status     = gRT->GetVariable (L"PlatformConfig", &gArmVExpressPlatformConfigGuid, NULL, &BufferSize, &PlatformConfig);
+  if (!EFI_ERROR (Status)) {
+    for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
+      if (PlatformConfig.CpuEnable[Index]) {
+        PlatformRepo->GicCInfo[Index].Flags      |= EFI_ACPI_6_2_GIC_ENABLED;
+        PlatformRepo->StaInfo[Index].DeviceStatus = STA_CPU_ENABLED;
+      } else {
+        PlatformRepo->GicCInfo[Index].Flags      &= ~EFI_ACPI_6_2_GIC_ENABLED;
+        PlatformRepo->StaInfo[Index].DeviceStatus = STA_CPU_DISABLED;
+      }
+    }
+
+    // Boot CPU is always enabled
+    Mpidr = ArmReadMpidr();
+
+    BootCpu = GET_MPIDR_AFF1(Mpidr) + GET_MPIDR_AFF2(Mpidr) * 4;
+    ASSERT (BootCpu < MAX_CPUS);
+
+    if (BootCpu < MAX_CPUS) {
+      PlatformRepo->GicCInfo[BootCpu].Flags      |= EFI_ACPI_6_2_GIC_ENABLED;
+      PlatformRepo->StaInfo[BootCpu].DeviceStatus = STA_CPU_ENABLED;
+    }
+  }
 
   return EFI_SUCCESS;
 }
@@ -1797,6 +1854,16 @@ GetArchCommonNameSpaceObject (
                  PlatformRepo->ProcHierarchyInfo,
                  sizeof (PlatformRepo->ProcHierarchyInfo),
                  ARRAY_SIZE (PlatformRepo->ProcHierarchyInfo),
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjStaInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->StaInfo,
+                 sizeof (PlatformRepo->StaInfo),
+                 PLAT_CPU_COUNT,
                  CmObject
                  );
       break;
