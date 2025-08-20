@@ -1,28 +1,28 @@
 ## @file
 # KCS instance of Manageability Transport Library
 #
-# Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 
 [Defines]
   INF_VERSION                    = 0x0001001B
-  BASE_NAME                      = DxeManageabilityTransportKcs
+  BASE_NAME                      = ManageabilityTransportKcs
   MODULE_UNI_FILE                = ManageabilityTransportKcs.uni
-  FILE_GUID                      = FCCC8B34-145A-4927-9F08-553ADC579AF7
-  MODULE_TYPE                    = DXE_DRIVER
+  FILE_GUID                      = 1D13D1F8-82DC-408D-9979-9E7D7CDFCD04
+  MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = ManageabilityTransportLib
+  LIBRARY_CLASS                  = ManageabilityTransportLib|PEIM DXE_DRIVER
 
 #
 #  VALID_ARCHITECTURES           = IA32 X64 ARM AARCH64
 #
 
 [Sources]
-  ../ManageabilityTransportKcs.c
-  ../KcsCommon.c
-  ../ManageabilityTransportKcs.h
+  ManageabilityTransportKcs.c
+  KcsCommon.c
+  ManageabilityTransportKcs.h
 
 [Packages]
   ManageabilityPkg/ManageabilityPkg.dec
