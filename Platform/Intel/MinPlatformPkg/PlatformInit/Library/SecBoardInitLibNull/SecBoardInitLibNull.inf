@@ -22,9 +22,7 @@
   SecBoardInitLib.c
 
 [Packages]
-  MinPlatformPkg/MinPlatformPkg.dec
   MdePkg/MdePkg.dec
-  IntelFsp2Pkg/IntelFsp2Pkg.dec
 
 [LibraryClasses]
   BaseLib
