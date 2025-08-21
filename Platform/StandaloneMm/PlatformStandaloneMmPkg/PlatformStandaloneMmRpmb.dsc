@@ -55,6 +55,7 @@
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLib.inf
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
   PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
+  MmServicesTableLib|MdePkg/Library/StandaloneMmServicesTableLib/StandaloneMmServicesTableLib.inf
 
   #
   # Entry point
@@ -79,7 +80,6 @@
 
 [LibraryClasses.common.MM_STANDALONE]
   HobLib|StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
-  MmServicesTableLib|MdePkg/Library/StandaloneMmServicesTableLib/StandaloneMmServicesTableLib.inf
   MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
 
   IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
@@ -157,7 +157,7 @@
     <LibraryClasses>
       AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
       BaseCryptLib|CryptoPkg/Library/BaseCryptLibMbedTls/SmmCryptLib.inf
-      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
       VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
       NULL|Drivers/OpTee/OpteeRpmbPkg/FixupPcd.inf
