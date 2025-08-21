@@ -463,6 +463,8 @@
   gArmPlatformTokenSpaceGuid.PL011UartClkInHz|1843200
   gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x62
 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPcieResizableBarSupport|TRUE
+
   #
   # PL011 - Serial Debug UART
   # Ampere Altra UART2
