@@ -134,6 +134,20 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Application/UiApp/UiApp.inf
 
   #
+  # Generic non-discoverable pcie used for many soc devices
+  #
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+
+  #
+  # Ufs
+  #
+  INF Silicon/Qualcomm/Drivers/QcomUfsHcDxe/QcomUfsHcDxe.inf
+  INF MdeModulePkg/Bus/Pci/UfsPciHcDxe/UfsPciHcDxe.inf
+  INF MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+  #
   # SMBIOS support
   #
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf

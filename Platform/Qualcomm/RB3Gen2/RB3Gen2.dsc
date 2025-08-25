@@ -102,6 +102,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ArmHvcLib|ArmPkg/Library/ArmHvcLib/ArmHvcLib.inf
   ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
   ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerVirtCounterLib/ArmGenericTimerVirtCounterLib.inf
+  DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
 
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
   MemoryInitPeiLib|ArmPlatformPkg/MemoryInitPei/MemoryInitPeiLib.inf
@@ -365,6 +366,10 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   # Qcom GENI - Serial Terminal
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x994000
 
+  # Ufs
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress|0x1D84000
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize|0x3000
+
   gArmTokenSpaceGuid.PcdSystemProductName|L"Qualcomm Dragonwing RB3 Gen 2"
   gArmTokenSpaceGuid.PcdSystemVersion|L"1.0"
   gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"Thundercomm"
@@ -547,6 +552,20 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
       NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
   }
+
+  #
+  # Generic non-discoverable pcie used for many soc devices
+  #
+  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+
+  #
+  # Ufs
+  #
+  Silicon/Qualcomm/Drivers/QcomUfsHcDxe/QcomUfsHcDxe.inf
+  MdeModulePkg/Bus/Pci/UfsPciHcDxe/UfsPciHcDxe.inf
+  MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 
   #
   # SMBIOS support
