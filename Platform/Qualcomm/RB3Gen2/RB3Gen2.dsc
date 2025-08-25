@@ -554,6 +554,14 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   }
 
   #
+  # DTB support
+  #
+  EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf {
+    <LibraryClasses>
+      DtPlatformDtbLoaderLib|EmbeddedPkg/Library/DxeDtPlatformDtbLoaderLibDefault/DxeDtPlatformDtbLoaderLibDefault.inf
+  }
+
+  #
   # Generic non-discoverable pcie used for many soc devices
   #
   MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
