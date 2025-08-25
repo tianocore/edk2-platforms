@@ -134,6 +134,16 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Application/UiApp/UiApp.inf
 
   #
+  # DTB support
+  #
+!if $(USER_PROVIDED_DTB) == TRUE
+  INF RuleOverride = DTB Platform/Qualcomm/RB3Gen2/DeviceTree/UserDTB.inf
+!else
+  INF RuleOverride = DTB Platform/Qualcomm/RB3Gen2/DeviceTree/DummyDeviceTree.inf
+!endif
+  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
+
+  #
   # Generic non-discoverable pcie used for many soc devices
   #
   INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
@@ -196,3 +206,8 @@ READ_LOCK_STATUS   = TRUE
   }
 
 !include ArmVirtPkg/ArmVirtRules.fdf.inc
+
+[Rule.Common.USER_DEFINED.DTB]
+  FILE FREEFORM = $(NAMED_GUID) {
+    RAW BIN                |.dtb
+  }

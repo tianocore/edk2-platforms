@@ -1,0 +1,17 @@
+/*  @file
+ *
+ *  Empty dts file that's only used as an example to build a RB3Gen2 platform.
+ *  User can override this with USER_PROVIDED_DTB=true option.
+ *
+ *  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ */
+
+/dts-v1/;
+
+/ {
+    model = "Qualcomm Technologies, Inc. Robotics RB3gen2";
+    compatible = "qcom,qcs6490-rb3gen2", "qcom,qcm6490";
+};

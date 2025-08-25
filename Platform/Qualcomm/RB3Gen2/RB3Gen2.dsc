@@ -26,6 +26,7 @@
   #
 
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
+  DEFINE USER_PROVIDED_DTB       = FALSE
 
 #
 # Network definition
@@ -551,6 +552,17 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
       NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
+  }
+
+  #
+  # DTB support
+  #
+!if $(USER_PROVIDED_DTB) == FALSE
+  Platform/Qualcomm/RB3Gen2/DeviceTree/DummyDeviceTree.inf
+!endif
+  EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf {
+    <LibraryClasses>
+      DtPlatformDtbLoaderLib|EmbeddedPkg/Library/DxeDtPlatformDtbLoaderLibDefault/DxeDtPlatformDtbLoaderLibDefault.inf
   }
 
   #

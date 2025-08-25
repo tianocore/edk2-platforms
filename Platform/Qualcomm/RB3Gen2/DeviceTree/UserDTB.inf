@@ -1,0 +1,18 @@
+#/** @file
+#    UserDTB.inf
+#
+#    Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = UserDTB
+  FILE_GUID                      = 25462CDA-221F-47DF-AC1D-259CFAA4E326 # Same value for gDtPlatformDefaultDtbFileGuid
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+
+[Binaries]
+  BIN|qcs6490-rb3gen2.dtb

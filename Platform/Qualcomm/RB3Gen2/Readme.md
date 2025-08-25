@@ -43,10 +43,17 @@ provide their own packaged cross-toolchains.
    $ cd edk2-platforms && git submodule update --init && cd $WORKSPACE
    ```
 
-3. Set up a **PACKAGES_PATH** to point to the locations of these three
+3. Provide devicetree blob (DTB) corresponding to the Qualcomm target like for
+   RB3Gen2:
+   ```
+   $ mkdir -p devicetree
+   $ cp <kernel-build-path-to-dtb>/qcs6490-rb3gen2.dtb devicetree/
+   ```
+
+4. Set up a **PACKAGES_PATH** to point to the locations of these three
    repositories:
 
-   `$ export PACKAGES_PATH=$PWD/edk2:$PWD/edk2-platforms`
+   `$ export PACKAGES_PATH=$PWD/edk2:$PWD/edk2-platforms:$PWD/devicetree`
 
 ## Manual building
 
@@ -61,6 +68,15 @@ provide their own packaged cross-toolchains.
    `make -C edk2/BaseTools`
 
 ### Build for RB3Gen2 platform
+
+Build with user provided DTB:
+
+```
+$ build -b RELEASE -a AARCH64 -t GCC -D USER_PROVIDED_DTB=true -p Platform/Qualcomm/RB3Gen2/RB3Gen2.dsc
+```
+
+Or build with dummy DTB just for test purpose:
+
 ```
 $ build -b RELEASE -a AARCH64 -t GCC -p Platform/Qualcomm/RB3Gen2/RB3Gen2.dsc
 ```
