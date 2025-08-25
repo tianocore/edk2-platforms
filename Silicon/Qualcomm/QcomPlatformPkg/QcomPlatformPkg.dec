@@ -1,0 +1,20 @@
+#/** @file
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010019
+  PACKAGE_NAME                   = QcomPlatformPkg
+  PACKAGE_GUID                   = 1201b766-3423-498a-8f73-dcadb1672200
+  PACKAGE_VERSION                = 0.1
+
+[Guids.common]
+  gQcomPlatformTokenSpaceGuid      = { 0x512a66e6, 0x74c6, 0x4a5a,  { 0xad, 0x01, 0x49, 0x2c, 0x5f, 0x3b, 0xab, 0x3b }}
+
+[PcdsFixedAtBuild.common]
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress|0x0|UINT32|0x00000001
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize|0x0|UINT32|0x00000002

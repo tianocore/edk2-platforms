@@ -1,0 +1,40 @@
+#/** @file
+# Qcom UFS HC platform DXE driver
+#
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = QcomUfsHcDxe
+  FILE_GUID                      = 9be976cc-5deb-4ea4-91f1-decdef6f492b
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = QcomUfsHcDriverEntry
+
+[Sources]
+  QcomUfsHcDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Qualcomm/QcomPlatformPkg/QcomPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  NonDiscoverableDeviceRegistrationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEdkiiUfsHcPlatformProtocolGuid
+
+[Pcd]
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress
+  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize
+
+[Depex]
+  TRUE
