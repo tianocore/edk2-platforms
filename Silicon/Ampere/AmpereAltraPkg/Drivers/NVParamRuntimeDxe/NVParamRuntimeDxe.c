@@ -194,7 +194,7 @@ NVParamRuntimeGetVariable (
 
   Status = NVParamGet (
              (UINT32)mOffset,
-             NV_PERM_ATF | NV_PERM_BIOS |
+             NV_PERM_TFA | NV_PERM_BIOS |
              NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
@@ -283,7 +283,7 @@ NVParamRuntimeSetVariable (
 
     Status = NVParamSet (
                (UINT32)mOffset,
-               NV_PERM_ATF | NV_PERM_BIOS |
+               NV_PERM_TFA | NV_PERM_BIOS |
                NV_PERM_MANU |NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                *((UINT32 *)Data)

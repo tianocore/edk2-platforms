@@ -288,7 +288,7 @@ IsBertEnabled (
 
   Status = NVParamGet (
              NV_SI_RAS_BERT_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
@@ -375,7 +375,7 @@ IsSdeiEnabled (
 
   Status = NVParamGet (
              NV_SI_RAS_SDEI_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {

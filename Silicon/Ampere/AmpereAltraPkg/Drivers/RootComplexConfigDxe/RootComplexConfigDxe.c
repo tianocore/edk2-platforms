@@ -167,7 +167,7 @@ ExtractConfig (
 
     Status = NVParamGet (
                NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                &Value
                );
     ASSERT_EFI_ERROR (Status);
@@ -177,7 +177,7 @@ ExtractConfig (
 
     Status = NVParamGet (
                NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                &Value
                );
     ASSERT_EFI_ERROR (Status);
@@ -363,7 +363,7 @@ RouteConfig (
       //
       Status = NVParamSet (
                  NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-                 NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                 NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                  NV_PERM_BIOS | NV_PERM_MANU,
                  Value
                  );
@@ -374,7 +374,7 @@ RouteConfig (
       //
       Status = NVParamSet (
                  NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-                 NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                 NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                  NV_PERM_BIOS | NV_PERM_MANU,
                  Value
                  );
@@ -971,7 +971,7 @@ NVParamVarstoreInit (
   UserSettingValid = FALSE;
   Status           = NVParamGet (
                        NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-                       NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                       NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                        &UserValue
                        );
   if (!EFI_ERROR (Status)) {
@@ -984,7 +984,7 @@ NVParamVarstoreInit (
   BoardSettingValid = FALSE;
   Status            = NVParamGet (
                         NV_SI_RO_BOARD_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-                        NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                        NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                         &InitValue
                         );
   if (!EFI_ERROR (Status) && (InitValue > 0)) {
@@ -1004,7 +1004,7 @@ NVParamVarstoreInit (
   if (Update) {
     Status = NVParamSet (
                NV_SI_MESH_S0_CXG_RC_STRONG_ORDERING_EN,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                InitValue
                );
@@ -1017,7 +1017,7 @@ NVParamVarstoreInit (
   UserSettingValid = FALSE;
   Status           = NVParamGet (
                        NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-                       NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                       NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                        &UserValue
                        );
   if (!EFI_ERROR (Status)) {
@@ -1030,7 +1030,7 @@ NVParamVarstoreInit (
   BoardSettingValid = FALSE;
   Status            = NVParamGet (
                         NV_SI_RO_BOARD_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-                        NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                        NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                         &InitValue
                         );
   if (!EFI_ERROR (Status) && (InitValue > 0)) {
@@ -1050,7 +1050,7 @@ NVParamVarstoreInit (
   if (Update) {
     Status = NVParamSet (
                NV_SI_MESH_S1_CXG_RC_STRONG_ORDERING_EN,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                InitValue
                );

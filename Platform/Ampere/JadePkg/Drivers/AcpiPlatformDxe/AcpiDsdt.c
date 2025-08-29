@@ -474,13 +474,13 @@ AcpiPatchPcieAerFwFirst (
   //
   Status = NVParamGet (
              NV_SI_RAS_PCIE_AER_FW_FIRST,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &AerFwFirstConfigValue
              );
   if (EFI_ERROR (Status)) {
     Status = NVParamGet (
                NV_SI_RO_BOARD_PCIE_AER_FW_FIRST,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                &AerFwFirstConfigValue
                );
     if (EFI_ERROR (Status)) {

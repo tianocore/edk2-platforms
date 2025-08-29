@@ -10,14 +10,14 @@
 #define SYSTEM_FIRMWARE_UPDATE_DXE_H_
 
 #define  FWU_IMG_STR_SCP                           "SCP"
-#define  FWU_IMG_STR_ATFUEFI                       "ATFUEFI"
+#define  FWU_IMG_STR_TFAUEFI                       "ATFUEFI"
 #define  FWU_IMG_STR_CFGUEFI                       "CFGUEFI"
 #define  FWU_IMG_STR_UEFI                          "UEFI"
 #define  FWU_IMG_STR_UEFI_EXTRA                    "UEFI_EXTRA"
-#define  FWU_IMG_STR_SINGLE_ATFUEFI_FULL_FLASH     "SINGLE_IMG_FULL_FLASH"
-#define  FWU_IMG_STR_SINGLE_ATFUEFI_CLEAR_SETTING  "SINGLE_IMG_FW_ONLY"
-#define  FWU_IMG_STR_SINGLE_ATFUEFI_FW             "SINGLE_IMG_CLEAR_SETTING"
-#define  FWU_IMG_STR_SINGLE_ATFUEFI_UNKNOWN        "SINGLE_IMG_UNKNOWN"
+#define  FWU_IMG_STR_SINGLE_TFAUEFI_FULL_FLASH     "SINGLE_IMG_FULL_FLASH"
+#define  FWU_IMG_STR_SINGLE_TFAUEFI_CLEAR_SETTING  "SINGLE_IMG_FW_ONLY"
+#define  FWU_IMG_STR_SINGLE_TFAUEFI_FW             "SINGLE_IMG_CLEAR_SETTING"
+#define  FWU_IMG_STR_SINGLE_TFAUEFI_UNKNOWN        "SINGLE_IMG_UNKNOWN"
 #define  FWU_IMG_STR_UNKNOWN                       "UNKNOWN"
 #define  FWU_IMG_STR_NULL                          "NULL"
 
@@ -33,7 +33,7 @@
 #define FWU_VARIABLE_SETUP_LOAD_OFFSET                 L"UpgradeSetUploadOffset"
 #define FWU_VARIABLE_CONTINUE_UPLOAD                   L"UpgradeContinueUpload"
 #define FWU_VARIABLE_SCP_REQUEST                       L"UpgradeSCPRequest"
-#define FWU_VARIABLE_ATFUEFI_REQUEST                   L"UpgradeATFUEFIRequest"
+#define FWU_VARIABLE_TFAUEFI_REQUEST                   L"UpgradeATFUEFIRequest"
 #define FWU_VARIABLE_CFGUEFI_REQUEST                   L"UpgradeCFGUEFIRequest"
 #define FWU_VARIABLE_UEFI_REQUEST                      L"UpgradeUEFIRequest"
 #define FWU_VARIABLE_SINGLE_IMG_FULL_FLASH_REQUEST     L"UpgradeSingleImageFullFlashRequest"

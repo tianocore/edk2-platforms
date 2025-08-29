@@ -63,10 +63,10 @@ typedef struct {
 //
 // The ARM Trusted Firmware (ATF) defined image types to support updating
 // various firmware via SMC Firmware Update service.
-// The value of definition here must be the same in ATF code.
+// The value of definition here must be the same in TF-A code.
 //
 #define FWU_IMG_TYPE_INVALID  0
-#define FWU_IMG_TYPE_ATFBIOS  2  // ARM Trusted Firmware and UEFI Image
+#define FWU_IMG_TYPE_TFABIOS  2  // ARM Trusted Firmware and UEFI Image
 #define FWU_IMG_TYPE_MAX      5
 
 //

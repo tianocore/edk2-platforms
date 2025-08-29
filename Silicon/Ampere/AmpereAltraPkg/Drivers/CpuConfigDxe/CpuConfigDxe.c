@@ -76,7 +76,7 @@ CpuNvParamGet (
 
   Status = NVParamGet (
              NV_SI_SUBNUMA_MODE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
@@ -102,7 +102,7 @@ CpuNvParamSet (
 
   Status = NVParamGet (
              NV_SI_SUBNUMA_MODE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   ASSERT_EFI_ERROR (Status);
@@ -110,7 +110,7 @@ CpuNvParamSet (
   if (EFI_ERROR (Status) || (Value != Configuration->CpuSubNumaMode)) {
     Status = NVParamSet (
                NV_SI_SUBNUMA_MODE,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Configuration->CpuSubNumaMode
                );
@@ -138,13 +138,13 @@ SetupDefaultSettings (
   //
   Status = NVParamGet (
              NV_SI_SUBNUMA_MODE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Status = NVParamSet (
                NV_SI_SUBNUMA_MODE,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                NV_SI_SUBNUMA_MODE_DEFAULT
                );
@@ -158,7 +158,7 @@ SetupDefaultSettings (
   //
   Status = NVParamSet (
              NV_SI_ERRATUM_1542419_WA,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              WA_ERRATUM_1542419_DEFAULT
              );
@@ -171,7 +171,7 @@ SetupDefaultSettings (
   //
   Status = NVParamSet (
              NV_SI_NEAR_ATOMIC_DISABLE,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              NEAR_ATOMIC_DISABLE_DEFAULT
              );
@@ -184,7 +184,7 @@ SetupDefaultSettings (
   //
   Status = NVParamSet (
              NV_SI_HNF_AUX_CTL_32_63,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              CPU_SLC_REPLACE_POLICY
              );

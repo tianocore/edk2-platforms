@@ -1,5 +1,5 @@
 /** @file
-  Provides functions for communication with System Firmware (SMpro/PMpro and ATF).
+  Provides functions for communication with System Firmware (SMpro/PMpro and TF-A).
 
   Copyright (c) 2021 - 2024, Ampere Computing LLC. All rights reserved.<BR>
 

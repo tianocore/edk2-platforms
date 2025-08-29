@@ -70,7 +70,7 @@ CheckSlcCache (
 
     Status = NVParamGet (
                NV_SI_SUBNUMA_MODE,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                &NumaMode
                );
     if (EFI_ERROR (Status)) {

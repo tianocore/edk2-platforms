@@ -22,7 +22,7 @@
   Perform firmware update
 
   @param[in] ImageId                Image ID to update
-  @param[in] SubId                  Subfunction to update for FWU_IMG_ID_SINGLE_ATFUEFI
+  @param[in] SubId                  Subfunction to update for FWU_IMG_ID_SINGLE_TFAUEFI
                                       0x02 – Full Image update
                                       0x04 – Update settings only
                                       0x06 – Update FW image only
@@ -65,7 +65,7 @@ FWUpdateProcess (
   MmData[1] = Resume ? 0 : DataLen;
   MmData[2] = Resume ? 0 : (UINT64)Data;   // Physical address
   MmData[3] = MM_FWU_ENABLE_UPDATE_REPORT; // MM yield for progress reporting
-  if (ImageId == FWU_IMG_ID_SINGLE_ATFUEFI) {
+  if (ImageId == FWU_IMG_ID_SINGLE_TFAUEFI) {
     MmData[3] |= SubId;
   }
 

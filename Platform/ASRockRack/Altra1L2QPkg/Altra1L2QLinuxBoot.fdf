@@ -200,7 +200,7 @@ APRIORI PEI {
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF UefiCpuPkg/CpuIoPei/CpuIoPei.inf
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/TFAHobPei/TFAHobPeim.inf
   INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
 #  INF Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
   INF ArmPkg/Drivers/CpuPei/CpuPei.inf

@@ -472,7 +472,7 @@
       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   }
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-  Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
+  Silicon/Ampere/AmpereAltraPkg/Drivers/TFAHobPei/TFAHobPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf

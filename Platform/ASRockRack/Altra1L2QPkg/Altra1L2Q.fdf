@@ -152,7 +152,7 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/TFAHobPei/TFAHobPeim.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
   INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
@@ -170,7 +170,7 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTablePei/FirmwarePerformancePei.inf
 !endif
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/TFAHobPei/TFAHobPeim.inf
   INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/BootProgress/BootProgressPeim/BootProgressPeim.inf

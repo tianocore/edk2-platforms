@@ -98,8 +98,8 @@ SystemFirmwareUpdateGetVariable (
       case FWU_IMG_ID_SCP:
         AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SCP);
         break;
-      case FWU_IMG_ID_ATFUEFI:
-        AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_ATFUEFI);
+      case FWU_IMG_ID_TFAUEFI:
+        AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_TFAUEFI);
         break;
       case FWU_IMG_ID_CFGUEFI:
         AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_CFGUEFI);
@@ -107,19 +107,19 @@ SystemFirmwareUpdateGetVariable (
       case FWU_IMG_ID_UEFI:
         AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_UEFI);
         break;
-      case FWU_IMG_ID_SINGLE_ATFUEFI:
+      case FWU_IMG_ID_SINGLE_TFAUEFI:
         switch (mUpdateFWSubId) {
-          case FWU_IMG_SUBID_SINGLE_ATFUEFI_FULL_FLASH:
-            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_ATFUEFI_FULL_FLASH);
+          case FWU_IMG_SUBID_SINGLE_TFAUEFI_FULL_FLASH:
+            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_TFAUEFI_FULL_FLASH);
             break;
-          case FWU_IMG_SUBID_SINGLE_ATFUEFI_FW:
-            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_ATFUEFI_CLEAR_SETTING);
+          case FWU_IMG_SUBID_SINGLE_TFAUEFI_FW:
+            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_TFAUEFI_CLEAR_SETTING);
             break;
-          case FWU_IMG_SUBID_SINGLE_ATFUEFI_CLEAR_SETTING:
-            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_ATFUEFI_FW);
+          case FWU_IMG_SUBID_SINGLE_TFAUEFI_CLEAR_SETTING:
+            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_TFAUEFI_FW);
             break;
           default:
-            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_ATFUEFI_UNKNOWN);
+            AsciiSPrint (AsciiStrType, sizeof (AsciiStrType), FWU_IMG_STR_SINGLE_TFAUEFI_UNKNOWN);
             break;
         }
 
@@ -303,21 +303,21 @@ SystemFirmwareUpdateSetVariable (
 
   if (StrCmp (VariableName, FWU_VARIABLE_SCP_REQUEST) == 0) {
     ImageId = FWU_IMG_ID_SCP;
-  } else if (StrCmp (VariableName, FWU_VARIABLE_ATFUEFI_REQUEST) == 0) {
-    ImageId = FWU_IMG_ID_ATFUEFI;
+  } else if (StrCmp (VariableName, FWU_VARIABLE_TFAUEFI_REQUEST) == 0) {
+    ImageId = FWU_IMG_ID_TFAUEFI;
   } else if (StrCmp (VariableName, FWU_VARIABLE_CFGUEFI_REQUEST) == 0) {
     ImageId = FWU_IMG_ID_CFGUEFI;
   } else if (StrCmp (VariableName, FWU_VARIABLE_UEFI_REQUEST) == 0) {
     ImageId = FWU_IMG_ID_UEFI;
   } else if (StrCmp (VariableName, FWU_VARIABLE_SINGLE_IMG_FULL_FLASH_REQUEST) == 0) {
-    ImageId = FWU_IMG_ID_SINGLE_ATFUEFI;
-    SubId   = FWU_IMG_SUBID_SINGLE_ATFUEFI_FULL_FLASH;
+    ImageId = FWU_IMG_ID_SINGLE_TFAUEFI;
+    SubId   = FWU_IMG_SUBID_SINGLE_TFAUEFI_FULL_FLASH;
   } else if (StrCmp (VariableName, FWU_VARIABLE_SINGLE_IMG_FWONLY_REQUEST) == 0) {
-    ImageId = FWU_IMG_ID_SINGLE_ATFUEFI;
-    SubId   = FWU_IMG_SUBID_SINGLE_ATFUEFI_FW;
+    ImageId = FWU_IMG_ID_SINGLE_TFAUEFI;
+    SubId   = FWU_IMG_SUBID_SINGLE_TFAUEFI_FW;
   } else if (StrCmp (VariableName, FWU_VARIABLE_SINGLE_IMG_CLEAR_SETTING_REQUEST) == 0) {
-    ImageId = FWU_IMG_ID_SINGLE_ATFUEFI;
-    SubId   = FWU_IMG_SUBID_SINGLE_ATFUEFI_CLEAR_SETTING;
+    ImageId = FWU_IMG_ID_SINGLE_TFAUEFI;
+    SubId   = FWU_IMG_SUBID_SINGLE_TFAUEFI_CLEAR_SETTING;
   } else {
     return EFI_INVALID_PARAMETER;
   }
