@@ -433,12 +433,7 @@ ARM_TYPE4 ProcessorInfo_Type4 = {
     ProcessorFamilyIndicatorFamily2,            //ProcessorFamily
     2,                                          //ProcessorManufacture
     {                                           //ProcessorId
-      {                                         //Signature
-        0
-      },
-      {                                         //FeatureFlags
-        0
-      }
+      0, 0, 0, 0
     },
     3,                                          //ProcessorVersion
     {                                           //Voltage
@@ -480,8 +475,8 @@ ARM_TYPE7_L1DATA L1Data_Type7 = {
     },
     1,                                              //SocketDesignation
     0x0180,                                         //CacheConfiguration
-    0,                                              //MaximumCacheSize
-    0,                                              //InstalledSize
+    {0, 0},                                         //MaximumCacheSize
+    {0, 0},                                         //InstalledSize
     {                                               //SupportedSRAMType
       0, 0, 0, 0, 0, 1, 0, 0
     },
@@ -508,8 +503,8 @@ ARM_TYPE7_L1INS L1Ins_Type7 = {
     },
     1,                                              //SocketDesignation
     0x0180,                                         //CacheConfiguration
-    0,                                              //MaximumCacheSize
-    0,                                              //InstalledSize
+    {0, 0},                                         //MaximumCacheSize
+    {0, 0},                                         //InstalledSize
     {                                               //SupportedSRAMType
       0, 0, 0, 0, 0, 1, 0, 0
     },
@@ -536,8 +531,8 @@ ARM_TYPE7_L2 L2_Type7 = {
     },
     1,                                              //SocketDesignation
     0x0281,                                         //CacheConfiguration
-    0,                                              //MaximumCacheSize
-    0,                                              //InstalledSize
+    {0, 0},                                         //MaximumCacheSize
+    {0, 0},                                         //InstalledSize
     {                                               //SupportedSRAMType
        0, 0, 0, 0, 0, 1, 0, 0
     },
@@ -564,8 +559,8 @@ ARM_TYPE7_L3 L3_Type7 = {
     },
     1,                                              //SocketDesignation
     0x0281,                                         //CacheConfiguration
-    0,                                              //MaximumCacheSize
-    0,                                              //InstalledSize
+    {0, 0},                                         //MaximumCacheSize
+    {0, 0},                                         //InstalledSize
     {                                               //SupportedSRAMType
        0, 0, 0, 0, 0, 1, 0, 0
     },
