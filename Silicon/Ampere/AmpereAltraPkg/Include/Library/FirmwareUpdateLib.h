@@ -12,14 +12,14 @@
 #define FIRMWARE_UPDATE_MAX_SIZE  SIZE_32MB
 
 #define  FWU_IMG_ID_SCP             1
-#define  FWU_IMG_ID_ATFUEFI         2
+#define  FWU_IMG_ID_TFAUEFI         2
 #define  FWU_IMG_ID_CFGUEFI         3
 #define  FWU_IMG_ID_UEFI            4
-#define  FWU_IMG_ID_SINGLE_ATFUEFI  5
+#define  FWU_IMG_ID_SINGLE_TFAUEFI  5
 
-#define  FWU_IMG_SUBID_SINGLE_ATFUEFI_FULL_FLASH     2
-#define  FWU_IMG_SUBID_SINGLE_ATFUEFI_CLEAR_SETTING  4
-#define  FWU_IMG_SUBID_SINGLE_ATFUEFI_FW             6
+#define  FWU_IMG_SUBID_SINGLE_TFAUEFI_FULL_FLASH     2
+#define  FWU_IMG_SUBID_SINGLE_TFAUEFI_CLEAR_SETTING  4
+#define  FWU_IMG_SUBID_SINGLE_TFAUEFI_FW             6
 
 #define  FWU_STATE_NOT_STARTED        0
 #define  FWU_STATE_UPLOADING_STARTED  1
@@ -35,7 +35,7 @@
   Perform firmware update
 
   @param[in] ImageId                Image ID to update
-  @param[in] SubId                  Subfunction to update for FWU_IMG_ID_SINGLE_ATFUEFI
+  @param[in] SubId                  Subfunction to update for FWU_IMG_ID_SINGLE_TFAUEFI
                                       0x02 – Full Image update
                                       0x04 – Update settings only
                                       0x06 – Update FW image only

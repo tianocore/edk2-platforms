@@ -8,14 +8,14 @@
 
 [Defines]
   INF_VERSION                   = 0x0001001B
-  BASE_NAME                     = ATFHobPeim
+  BASE_NAME                     = TFAHobPeim
   FILE_GUID                     = B1975734-77C2-4827-9617-914883F3B578
   MODULE_TYPE                   = PEIM
   VERSION_STRING                = 1.0
-  ENTRY_POINT                   = InitializeATFHobPeim
+  ENTRY_POINT                   = InitializeTFAHobPeim
 
 [Sources]
-  ATFHobPeim.c
+  TFAHobPeim.c
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase

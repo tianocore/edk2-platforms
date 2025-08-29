@@ -20,7 +20,7 @@ usage () {
 	echo "  -y, --yes                        Don't show warning about BMC compatibility requirements"
 	echo "  -h, --help                       This help message"
 	echo ""
-	echo "Note: TF-A (Trusted Firmware for ARMv8-A) is the same as ATF (ARM Trusted Firmware)."
+	echo "Note: TF-A (Trusted Firmware for ARMv8-A) is the same as TF-A (ARM Trusted Firmware)."
 	exit 1
 }
 

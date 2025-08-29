@@ -136,7 +136,7 @@ also updated in ACPI DSDT and MCFG tables.
 
 `Silicon/Ampere/AmpereAltraPkg/Library/PcieHotPlugLib` is the base library that
 supports the function calls to start PCIe Hot-Plug service including the SPCI callings
-to ATF to set hot-plug port map, and GPIO or I2C for PCIe reset. There are two functions
+to TF-A to set hot-plug port map, and GPIO or I2C for PCIe reset. There are two functions
 in this library that a custom board can use to change the hot-plug configuration
 if it is different from Mt. Jade platform: `PcieHotPlugSetPortMap()` and
 `PcieHotplugSetGpioMap()`. By default, the configuration of Ampere Mt. Jade 2U platform
@@ -147,7 +147,7 @@ the default PCDs used by these two functions with the custom configuration in `N
 
 Function `PcieHotplugSetPortMap()` passes hot-plug configuration to Trusted Firmware-A (TF-A)
 to update/customize port map entries such as I2C address, RCA port, RCA sub-port, etc.
-It uses SPCI PORTMAP_SET_CMD to send that information to ATF.
+It uses SPCI PORTMAP_SET_CMD to send that information to TF-A.
 Refer to the document titled Altra ATF Interface Specification for more details on this function.
 
 A custom platform that does not use the same Hot-Plug PortMap configuration with
@@ -224,7 +224,7 @@ gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[36]|{ 0xFF, 0, 0, 0, 0,
 **PcieHotplugSetGpioMap()**
 
 Function `PcieHotplugSetGpioMap()` is used to limit the number of GPIO[16:21] pins or
-use I2C instead of GPIO for PCIe reset. It uses SPCI GPIOMAP_CMD to send information to ATF.
+use I2C instead of GPIO for PCIe reset. It uses SPCI GPIOMAP_CMD to send information to TF-A.
 Ampere EDK2 defines `gPcieHotPlugGpioResetMap` PCD to allow user to define a custom GPIO Map.
 In `NewBoard.dsc`, user should set the new PCD indicating the GPIO Map for PCIe Hot-Plug.
 Below is the GPIO Reset Map PCD definition for Ampere Mt. Jade platform.
@@ -253,9 +253,9 @@ update correspondingly with the following points:
     * UART3: non-use
   * Add or remove UART devices based on the platform configuration.
 * DSDT/MHPP for Memory Hot-Plug Port Mapping
-  * This is a shared DRAM memory region between ATF and UEFI to indicate a PCIe hot-plug event action.
+  * This is a shared DRAM memory region between TF-A and UEFI to indicate a PCIe hot-plug event action.
     An item of this MHPP region is used to reflect a hot-plug event action of each PCIe port.
-    Whenever there is a PCIe hot-plug event, ATF will update the action value to each item of MHPP region,
+    Whenever there is a PCIe hot-plug event, TF-A will update the action value to each item of MHPP region,
     and UEFI will handle the hot-plug ejection/insertion accordingly
   * An item of MHPP is 24-bytes in size and is named by a 4-character word (mnemonic) to represent a PCIe Root Port device.
     The name format is <root_complex_A/B><socket><root_complex_number><root_complex_port>.
@@ -341,7 +341,7 @@ for detailed porting instructions.
 
 No change is needed.
 
-It's important that the ATF running on the new platform must comply with the Ampere Altra Interface Firmware Requirements.
+It's important that the TF-A running on the new platform must comply with the Ampere Altra Interface Firmware Requirements.
 
 ### Secure Boot and Update
 No change is needed. The new platform can inherit the required libraries and modules to support this feature.
@@ -352,7 +352,7 @@ User can change the UEFI secure boot keys using UEFI Menu Setup.
 If the DBB/DBU secure keys are deployed, requires to boot and update EDK2 firmware via capsule using the signed firmware image.
 
 Users can run firmware update at run-time OS without reboot using
-[amp_fwupgrade](https://github.com/AmpereComputing/amp-fwupgrade) utility to update signed ATF-UEFI EDK2 image and signed SCP image.
+[amp_fwupgrade](https://github.com/AmpereComputing/amp-fwupgrade) utility to update signed TF-A-UEFI EDK2 image and signed SCP image.
 
 ---
 

@@ -563,7 +563,7 @@ GetNumberOfConfiguredCPMs (
   for (Param = ParamStart; Param < ParamEnd; Param += NV_PARAM_ENTRYSIZE) {
     Status = NVParamGet (
                Param,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                &Value
                );
     if (EFI_ERROR (Status)) {
@@ -716,7 +716,7 @@ SetNumberOfConfiguredCPMs (
     } else {
       Status = NVParamSet (
                  Param,
-                 NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+                 NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                  NV_PERM_BIOS | NV_PERM_MANU,
                  Value
                  );

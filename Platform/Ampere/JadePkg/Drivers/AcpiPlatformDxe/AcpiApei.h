@@ -67,7 +67,7 @@ typedef struct {
   UINT8                   S1PmproRegisters[PMPRO_CRASH_SIZE];
   UINT8                   S1SmproRegisters[SMPRO_CRASH_SIZE];
   UINT8                   S1RasIpRegisters[RASIP_CRASH_SIZE];
-  UINT8                   AtfDump[PLATFORM_CPU_MAX_NUM_CORES * PLAT_CRASH_ITERATOR_SIZE];
+  UINT8                   TFADump[PLATFORM_CPU_MAX_NUM_CORES * PLAT_CRASH_ITERATOR_SIZE];
 } APEI_CRASH_DUMP_DATA;
 
 typedef struct {

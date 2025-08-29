@@ -1010,7 +1010,7 @@ MeasurePreUefiFirmwareComponents (
   PreUefiEventLength = mPlatformTpm2Config.EventLogLength;
 
   //
-  // In ATF, the last event, "Post SCP TPM Extend" (PSTE), is already extended to the TPM PCR[0/1]
+  // In TF-A, the last event, "Post SCP TPM Extend" (PSTE), is already extended to the TPM PCR[0/1]
   // for the final vPCR Hash. Therefore, to avoid to mismatch between the expected PCR values that calculated
   // by using the event log and the final TPM PCR values, the pre-UEFI event should be logged in reverse order.
   //
@@ -1091,7 +1091,7 @@ MeasurePreUefiFirmwareComponents (
       if (AsciiStrCmp ((CHAR8 *)Event->Event, "PSTE") == 0) {
         //
         // The "Post SCP TPM Extend" (PSTE) event is an event log for Virtual PCR (VPCR)
-        // that has been done extending to the TPM hardware in the ATF.
+        // that has been done extending to the TPM hardware in the TF-A.
         // To avoid to extend twice, skip the extend in UEFI for the PSTE events.
         //
         Status = LogHashEvent (

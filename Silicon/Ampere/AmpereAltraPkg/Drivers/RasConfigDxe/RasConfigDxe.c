@@ -81,7 +81,7 @@ IsDdrCeWindowEnabled (
 
   Status = NVParamGet (
              NV_SI_RO_BOARD_RAS_DDR_CE_WINDOW,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &DdrCeWindow
              );
   if (EFI_ERROR (Status)) {
@@ -90,7 +90,7 @@ IsDdrCeWindowEnabled (
 
   Status = NVParamGet (
              NV_SI_RO_BOARD_RAS_DDR_CE_THC,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &DdrCeControl
              );
   if (EFI_ERROR (Status)) {
@@ -110,14 +110,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_HARDWARE_EINJ,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_HARDWARE_EINJ_SUPPORT;
     Status = NVParamSet (
                NV_SI_HARDWARE_EINJ,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -132,14 +132,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_RAS_PCIE_AER_FW_FIRST,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_PCIE_AER_FW_FIRST;
     Status = NVParamSet (
                NV_SI_RAS_PCIE_AER_FW_FIRST,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -154,14 +154,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_RAS_BERT_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_BERT_SUPPORT;
     Status = NVParamSet (
                NV_SI_RAS_BERT_ENABLED,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -176,14 +176,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_RAS_SDEI_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_SDEI_SUPPORT;
     Status = NVParamSet (
                NV_SI_RAS_SDEI_ENABLED,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -198,14 +198,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_DDR_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_DDR_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_DDR_CE_RAS_THRESHOLD,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -220,14 +220,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_2P_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_2P_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_2P_CE_RAS_THRESHOLD,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -242,14 +242,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_CPM_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_PROCESSOR_CE_THRESHOLD;
     Status = NVParamSet (
                NV_SI_CPM_CE_RAS_THRESHOLD,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -264,14 +264,14 @@ RasConfigNvParamGet (
 
   Status = NVParamGet (
              NV_SI_LINK_ERR_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              &Value
              );
   if (EFI_ERROR (Status)) {
     Value  = RAS_DEFAULT_DDR_LINK_ERROR_THRESHOLD;
     Status = NVParamSet (
                NV_SI_LINK_ERR_THRESHOLD,
-               NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+               NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
                NV_PERM_BIOS | NV_PERM_MANU,
                Value
                );
@@ -296,7 +296,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_HARDWARE_EINJ,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasHardwareEinj
              );
@@ -304,7 +304,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_RAS_PCIE_AER_FW_FIRST,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasPcieAerFwFirstEnabled
              );
@@ -312,7 +312,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_RAS_BERT_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasBertEnabled
              );
@@ -320,7 +320,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_RAS_SDEI_ENABLED,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasSdeiEnabled
              );
@@ -328,7 +328,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_DDR_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasDdrCeThreshold
              );
@@ -336,7 +336,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_2P_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->Ras2pCeThreshold
              );
@@ -344,7 +344,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_CPM_CE_RAS_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasCpmCeThreshold
              );
@@ -352,7 +352,7 @@ RasConfigNvParamSet (
 
   Status = NVParamSet (
              NV_SI_LINK_ERR_THRESHOLD,
-             NV_PERM_ATF | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
+             NV_PERM_TFA | NV_PERM_BIOS | NV_PERM_MANU | NV_PERM_BMC,
              NV_PERM_BIOS | NV_PERM_MANU,
              Configuration->RasLinkErrThreshold
              );

@@ -24,7 +24,7 @@ BuildPlatformInformationHob (
 {
   VOID  *Hob;
 
-  /* The ATF HOB handoff base is at PcdSystemMemoryBase */
+  /* The TF-A HOB handoff base is at PcdSystemMemoryBase */
   Hob = GetNextGuidHob (
           &gPlatformInfoHobGuid,
           (CONST VOID *)FixedPcdGet64 (PcdSystemMemoryBase)
@@ -40,7 +40,7 @@ BuildPlatformInformationHob (
 
 EFI_STATUS
 EFIAPI
-InitializeATFHobPeim (
+InitializeTFAHobPeim (
   IN       EFI_PEI_FILE_HANDLE  FileHandle,
   IN CONST EFI_PEI_SERVICES     **PeiServices
   )
