@@ -73,8 +73,7 @@ Ext4InitialiseUnicodeCollationInternal (
   UINTN                           Idx;
   CHAR8                           *BestLanguage;
 
-  Iso639Language = (BOOLEAN)(ProtocolGuid == &gEfiUnicodeCollationProtocolGuid);
-  RetStatus      = EFI_UNSUPPORTED;
+  RetStatus = EFI_UNSUPPORTED;
   GetEfiGlobalVariable2 (VariableName, (VOID **)&Language, NULL);
 
   Status = gBS->LocateHandleBuffer (
@@ -104,7 +103,7 @@ Ext4InitialiseUnicodeCollationInternal (
 
     BestLanguage = GetBestLanguage (
                      Uci->SupportedLanguages,
-                     Iso639Language,
+                     FALSE,
                      (Language == NULL) ? "" : Language,
                      DefaultLanguage,
                      NULL
@@ -149,7 +148,7 @@ Ext4InitialiseUnicodeCollation (
   }
 
   //
-  // First try to use RFC 4646 Unicode Collation 2 Protocol.
+  //  Use RFC 4646 Unicode Collation 2 Protocol.
   //
   Status = Ext4InitialiseUnicodeCollationInternal (
              DriverHandle,
@@ -157,18 +156,6 @@ Ext4InitialiseUnicodeCollation (
              L"PlatformLang",
              (CONST CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLang)
              );
-  //
-  // If the attempt to use Unicode Collation 2 Protocol fails, then we fall back
-  // on the ISO 639-2 Unicode Collation Protocol.
-  //
-  if (EFI_ERROR (Status)) {
-    Status = Ext4InitialiseUnicodeCollationInternal (
-               DriverHandle,
-               &gEfiUnicodeCollationProtocolGuid,
-               L"Lang",
-               (CONST CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultLang)
-               );
-  }
 
   return Status;
 }
