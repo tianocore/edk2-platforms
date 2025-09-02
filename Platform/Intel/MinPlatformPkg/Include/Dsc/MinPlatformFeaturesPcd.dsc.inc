@@ -25,3 +25,6 @@
  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable             |FALSE
 
  gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable            |FALSE
+
+[PcdsFixedAtBuild]
+ gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode            |FALSE
