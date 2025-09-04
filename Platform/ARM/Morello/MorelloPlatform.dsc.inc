@@ -126,9 +126,25 @@
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize|0x18000000
 
   # PCIe
+  # PCIe PCDs defaults are for SoC and FVP overrides it
+  gArmTokenSpaceGuid.PcdPciBusMin|0
+  gArmTokenSpaceGuid.PcdPciBusMax|255
+  gArmTokenSpaceGuid.PcdPciBusCount|256
+  gArmTokenSpaceGuid.PcdPciIoBase|0x0
+  gArmTokenSpaceGuid.PcdPciIoSize|0x00400000
+  gArmTokenSpaceGuid.PcdPciIoMaxBase|0x003FFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x6F000000
+  gArmTokenSpaceGuid.PcdPciMmio32Base|0x60000000
+  gArmTokenSpaceGuid.PcdPciMmio32Size|0x0F000000
+  gArmTokenSpaceGuid.PcdPciMmio32MaxBase|0x6EFFFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x0
+  gArmTokenSpaceGuid.PcdPciMmio64Base|0x900000000
+  gArmTokenSpaceGuid.PcdPciMmio64MaxBase|0x28BFFFFFFF
+  gArmTokenSpaceGuid.PcdPciMmio64Size|0x1FC0000000
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x28C0000000
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
 
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|0
