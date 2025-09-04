@@ -154,6 +154,7 @@
   !endif
 
   # MdeModulePkg
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwarePerformanceDataTableS3Support|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDegradeResourceForOptionRom|FALSE
   gEfiMdePkgTokenSpaceGuid.PcdComponentName2Disable|TRUE

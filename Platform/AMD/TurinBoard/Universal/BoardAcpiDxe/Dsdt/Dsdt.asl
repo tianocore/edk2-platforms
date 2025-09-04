@@ -67,6 +67,7 @@ DefinitionBlock (
         // Save Capabilities DWord2 & 3
         Store (CDW2, SUPP)
         Store (CDW3 ,CTRL)
+        Store (Zero, Local0)
         // Only allow native hot plug control if OS supports:
         // \* ASPM
         // \* Clock PM
@@ -316,6 +317,19 @@ DefinitionBlock (
 
       Return(Zero) //Not Support
     } // end CDSM
+
+    Device (HPET)
+    {
+      Name (_HID, EisaId ("PNP0103") /* HPET System Timer */)  // _HID: Hardware ID
+      Name (_UID, Zero)  // _UID: Unique ID
+      Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+      {
+        Memory32Fixed (ReadOnly,
+          0xFED00000,         // Address Base
+          0x00000400,         // Address Length
+          )
+      })
+    }
   }
 
   Include ("FchBreithorn.asi")

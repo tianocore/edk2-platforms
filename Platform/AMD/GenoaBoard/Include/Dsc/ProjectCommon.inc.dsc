@@ -432,7 +432,7 @@ AmdCpmPkg/Addendum/Oem/$(PLATFORM_CRB)/Dxe/ServerHotplugDxe/ServerHotplugDxe.inf
   !include ManageabilityPkg/Include/Manageability.dsc
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf {
     <LibraryClasses>
-      ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportKcsLib/BaseManageabilityTransportKcs.inf
+      ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportKcsLib/Dxe/DxeManageabilityTransportKcs.inf
   }
 
   #

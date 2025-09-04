@@ -240,7 +240,7 @@ Transaction (
     Status = FchSpiControllerNotBusy (Instance);
     if (!EFI_ERROR (Status)) {
       MmioWrite8 (
-          HcAddress + FCH_SPI_MMIO_REG48_TX_BYTECOUNT,
+          HcAddress + FCH_SPI_MMIO_REG48_TXBYTECOUNT,
           (UINT8)WriteBytes
           );
       MmioWrite8 (

@@ -24,6 +24,7 @@ SetCacheMtrr (
   )
 {
   EFI_STATUS  Status;
+  UINT64      TOM;
 
   Status = MtrrSetMemoryAttribute (
              0,
@@ -64,16 +65,18 @@ SetCacheMtrr (
       ));
   }
 
+  TOM = AsmReadMsr64 (0xC001001A);
   Status = MtrrSetMemoryAttribute (
              0x100000,
-             0xAFF00000,
+             TOM - 0x100000,
              CacheWriteBack
              );
   if (EFI_ERROR (Status)) {
     DEBUG ((
       DEBUG_ERROR,
-      "Error(%r) in setting CacheWriteBack for 0x100000-0xAFFFFFFF\n",
-      Status
+      "Error(%r) in setting CacheWriteBack for 0x100000-0x%lX\n",
+      Status,
+      TOM - 1
       ));
   }
 

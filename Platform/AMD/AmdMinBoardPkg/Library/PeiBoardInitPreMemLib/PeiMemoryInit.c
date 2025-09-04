@@ -11,7 +11,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 /**
   A Callback routine only AmdMemoryInfoHob is ready.
 
-  @retval EFI_SUCCESS   Platform Pre Memory initialization is successfull.
+  @retval EFI_SUCCESS   Platform Pre Memory initialization is successful.
           EFI_STATUS    Various failure from underlying routine calls.
 **/
 EFI_STATUS
