@@ -1,0 +1,94 @@
+///** @file
+//
+//    Versatile Express platform configuration formset.
+//
+// Copyright (c) 2025, Arm Limited. All rights reserved.
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+//**/
+
+
+#include <Uefi/UefiMultiPhase.h>
+#include <Guid/HiiPlatformSetupFormset.h>
+#include <Guid/HiiFormMapMethodGuid.h>
+#include <Guid/ArmVExpressPlatformConfig.h>
+#include "PlatformConfigStructs.h"
+
+formset
+  guid      = ARM_VEXPRESS_PLATFORM_CONFIG_GUID,
+  title     = STRING_TOKEN(STR_FORM_SET_TITLE),
+  help      = STRING_TOKEN(STR_FORM_SET_TITLE_HELP),
+  classguid = EFI_HII_PLATFORM_SETUP_FORMSET_GUID,
+
+  //
+  // Notes: VfrCompiler will insert a Standard Default Storage declaration
+  // after the formset declaration.    >00000040: 5C 06 00 00 00 00.
+  // So we don't need to declare the Standard Default.
+  // Please check the vfr.lst file for details.
+  // To enable list file for VFR, add "-l" to VfrCompile <Command> in [Build.Visual-Form-Representation-File] as follows:
+  //          VfrCompile -l --no-pre-processing --output-directory ${d_path} $(OUTPUT_DIR)(+)${s_dir}(+)${s_base}.iii
+  //
+
+  varstore PLATFORM_CONFIG_DATA,            // This is the data structure type
+    varid = CONFIGURATION_VARSTORE_ID,      // Optional VarStore ID
+    name  = PlatformConfig,                 // Define referenced name in vfr
+    guid  = ARM_VEXPRESS_PLATFORM_CONFIG_GUID;  // GUID of this buffer storage
+
+  //
+  // Define a Form (EFI_IFR_FORM)
+  //
+  form formid = 1,                                // Form ID
+       title  = STRING_TOKEN(STR_FORM1_TITLE);    // Form title
+
+    goto 2,
+      prompt = STRING_TOKEN(STR_GOTO_CPU_ENABLE), //SecondSetupPage  // this too has no end-op and basically it's a jump to a form ONLY
+      help   = STRING_TOKEN(STR_GOTO_CPU_ENABLE_HELP);
+
+  endform;
+
+  form formid = 2, title = STRING_TOKEN(STR_FORM2_TITLE);
+    checkbox varid   = PlatformConfig.CpuEnable[0],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU0),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[1],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU1),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[2],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU2),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[3],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU3),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[4],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU4),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[5],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU5),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[6],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU6),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+    checkbox varid   = PlatformConfig.CpuEnable[7],
+             prompt   = STRING_TOKEN(STR_CHECK_BOX_CPU7),
+             help     = STRING_TOKEN(STR_CHECK_BOX_HELP),
+             flags    = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+    endcheckbox;
+
+  endform;
+
+endformset;
