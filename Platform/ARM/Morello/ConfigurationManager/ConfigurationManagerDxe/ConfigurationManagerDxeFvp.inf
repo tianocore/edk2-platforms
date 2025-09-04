@@ -44,22 +44,24 @@
   gEdkiiConfigurationManagerProtocolGuid
 
 [FixedPcd]
+  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdPciBusMin
+  gArmTokenSpaceGuid.PcdPciIoBase
+  gArmTokenSpaceGuid.PcdPciIoSize
+  gArmTokenSpaceGuid.PcdPciMmio32Base
+  gArmTokenSpaceGuid.PcdPciMmio32Size
+  gArmTokenSpaceGuid.PcdPciMmio64Base
+  gArmTokenSpaceGuid.PcdPciMmio64Size
+
   gArmMorelloTokenSpaceGuid.PcdPciBusCount
-  gArmMorelloTokenSpaceGuid.PcdPciBusMax
-  gArmMorelloTokenSpaceGuid.PcdPciBusMin
-  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress
-  gArmMorelloTokenSpaceGuid.PcdPciIoBase
   gArmMorelloTokenSpaceGuid.PcdPciIoMaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciIoSize
-  gArmMorelloTokenSpaceGuid.PcdPciIoTranslation
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Base
   gArmMorelloTokenSpaceGuid.PcdPciMmio32MaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Size
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Translation
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Base
   gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Translation
+
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation
 
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkBaseAddress
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkInterrupt

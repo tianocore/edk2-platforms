@@ -162,8 +162,8 @@ ArmPlatformGetVirtualMemoryMap (
   LOG_MEM ("Expansion Peripherals           : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
   // PCI Configuration Space
-  VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdPciExpressBaseAddress);
-  VirtualMemoryTable[Index].VirtualBase    = PcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet64 (PcdPciExpressBaseAddress);
   VirtualMemoryTable[Index].Length         = (FixedPcdGet32 (PcdPciBusMax) -
                                               FixedPcdGet32 (PcdPciBusMin) + 1) *
                                              SIZE_1MB;
@@ -171,17 +171,17 @@ ArmPlatformGetVirtualMemoryMap (
   LOG_MEM ("PCI Configuration Space         : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
   // PCI MMIO32/IO Space
-  VirtualMemoryTable[++Index].PhysicalBase = PcdGet32 (PcdPciMmio32Base);
-  VirtualMemoryTable[Index].VirtualBase    = PcdGet32 (PcdPciMmio32Base);
-  VirtualMemoryTable[Index].Length         = PcdGet32 (PcdPciMmio32Size) +
-                                             PcdGet32 (PcdPciIoSize);
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet32 (PcdPciMmio32Base);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet32 (PcdPciMmio32Base);
+  VirtualMemoryTable[Index].Length         = FixedPcdGet32 (PcdPciMmio32Size) +
+                                             FixedPcdGet32 (PcdPciIoSize);
   VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   LOG_MEM ("PCI MMIO32 & IO Region          : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
   // PCI MMIO64 Space
-  VirtualMemoryTable[++Index].PhysicalBase = PcdGet64 (PcdPciMmio64Base);
-  VirtualMemoryTable[Index].VirtualBase    = PcdGet64 (PcdPciMmio64Base);
-  VirtualMemoryTable[Index].Length         = PcdGet64 (PcdPciMmio64Size);
+  VirtualMemoryTable[++Index].PhysicalBase = FixedPcdGet64 (PcdPciMmio64Base);
+  VirtualMemoryTable[Index].VirtualBase    = FixedPcdGet64 (PcdPciMmio64Base);
+  VirtualMemoryTable[Index].Length         = FixedPcdGet64 (PcdPciMmio64Size);
   VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   LOG_MEM ("PCI MMIO64 Region               : 0x%016lx - 0x%016lx [ 0x%016lx ] { %a }\n");
 
