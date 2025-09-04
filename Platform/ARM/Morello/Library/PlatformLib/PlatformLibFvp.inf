@@ -31,14 +31,14 @@
 
 [FixedPcd]
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
-  gArmMorelloTokenSpaceGuid.PcdPciBusMax
-  gArmMorelloTokenSpaceGuid.PcdPciBusMin
-  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress
-  gArmMorelloTokenSpaceGuid.PcdPciIoSize
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Base
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Size
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Base
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size
+  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdPciBusMin
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gArmTokenSpaceGuid.PcdPciIoSize
+  gArmTokenSpaceGuid.PcdPciMmio32Base
+  gArmTokenSpaceGuid.PcdPciMmio32Size
+  gArmTokenSpaceGuid.PcdPciMmio64Base
+  gArmTokenSpaceGuid.PcdPciMmio64Size
 
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
