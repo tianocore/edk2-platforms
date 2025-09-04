@@ -74,8 +74,8 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
             0,                                        // AddressGranularity
             FixedPcdGet32 (PcdPciBusMin),             // AddressMinimum - Minimum Bus Number
             FixedPcdGet32 (PcdPciBusMax),             // AddressMaximum - Maximum Bus Number
-            0,                                        // AddressTranslation - Set to 0
-            FixedPcdGet32 (PcdPciBusCount)            // RangeLength - Number of Busses
+            0,                                                                 // AddressTranslation - Set to 0
+            (FixedPcdGet32 (PcdPciBusMax) - FixedPcdGet32 (PcdPciBusMin) + 1)  // RangeLength - Number of Busses
           )
 
           DWordMemory (                               // 32-bit BAR Windows
