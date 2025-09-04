@@ -46,4 +46,4 @@
 
 [Pcd]
   gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress  ## CONSUMES
-  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress  ## CONSUMES
