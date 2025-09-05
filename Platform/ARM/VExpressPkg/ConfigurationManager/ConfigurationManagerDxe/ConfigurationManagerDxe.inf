@@ -22,6 +22,7 @@
 
 [Sources]
   ConfigurationManager.c
+  ConfigurationManager.uni
   AslTables/Dsdt.asl
 
 [Packages]
@@ -35,7 +36,11 @@
 [LibraryClasses]
   ArmLib
   ArmPlatformLib
+  BaseLib
+  HiiLib
+  MemoryAllocationLib
   PrintLib
+  SmbiosSmcLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiRuntimeServicesTableLib
