@@ -134,6 +134,26 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Application/UiApp/UiApp.inf
 
   #
+  # DTB support
+  #
+  INF RuleOverride = DTB Platform/Qualcomm/RB3Gen2/DeviceTree/DTB.inf
+  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
+
+  #
+  # Generic non-discoverable pcie used for many soc devices
+  #
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+
+  #
+  # Ufs
+  #
+  INF Silicon/Qualcomm/Drivers/QcomUfsHcDxe/QcomUfsHcDxe.inf
+  INF MdeModulePkg/Bus/Pci/UfsPciHcDxe/UfsPciHcDxe.inf
+  INF MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+  #
   # SMBIOS support
   #
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
@@ -182,3 +202,8 @@ READ_LOCK_STATUS   = TRUE
   }
 
 !include ArmVirtPkg/ArmVirtRules.fdf.inc
+
+[Rule.Common.USER_DEFINED.DTB]
+  FILE FREEFORM = $(NAMED_GUID) {
+    RAW BIN                |.dtb
+  }
