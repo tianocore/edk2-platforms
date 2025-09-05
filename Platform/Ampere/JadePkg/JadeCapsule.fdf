@@ -23,9 +23,9 @@
 [FD.JADE_HOST_FIRMWARE_CAPSULE]
 BaseAddress   = 0x00000000  # The base address of the Firmware in NOR Flash.
 !if $(INCLUDE_TFA_FW) == TRUE
-  Size        = 0x00C10000
+  Size        = 0x00D10000
 !else
-  Size        = 0x00A10000
+  Size        = 0x00B10000
 !endif
 ErasePolarity = 1
 
@@ -33,10 +33,10 @@ ErasePolarity = 1
 FILE = $(WORKSPACE)/$(OUTPUT_DIRECTORY)/$(TARGET)_$(TOOL_CHAIN_TAG)/FV/SYSTEMFIRMWAREDESCRIPTOR.Fv
 
 !if $(INCLUDE_TFA_FW) == TRUE
-  0x00010000|0x00C00000
+  0x00010000|0x00D00000
   FILE = $(TFA_UEFI_IMAGE)
 !else
-  0x00010000|0x00A00000
+  0x00010000|0x00B00000
   FILE = $(UEFI_IMAGE)
 !endif
 

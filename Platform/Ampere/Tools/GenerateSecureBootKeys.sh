@@ -41,6 +41,8 @@ fi
 
 pushd "${SECUREBOOT_DIR}" || exit 1
 
+FWUGUID="4796d3b0-1bbb-4680-b471-a49b49b2390e"
+
 if [ -z "${USE_EXISTING_SB_KEYS}" ]; then
     mkdir keys   || true
     mkdir certs  || true
@@ -63,9 +65,9 @@ if [ -z "${USE_EXISTING_SB_KEYS}" ]; then
     ln -isv ${OPENSSL_CNF_FILE} openssl.cnf
 
     echo "unique_subject = no" > index.txt.attr
-    openssl req -config openssl.cnf -new -x509 -newkey rsa:2048 -subj "/CN=${BOARD_NAME} Platform Key/" -keyout keys/platform_key.priv -outform DER -out certs/platform_key.der -days 7300 -nodes -sha256
+    openssl req -config openssl.cnf -new -x509 -newkey rsa:4096 -subj "/CN=${BOARD_NAME} Platform Key/" -keyout keys/platform_key.priv -outform DER -out certs/platform_key.der -days 7300 -nodes -sha384
     openssl x509 -inform DER -in certs/platform_key.der -outform PEM -out certs/platform_key.pem
-    openssl req -config openssl.cnf -new -x509 -newkey rsa:2048 -subj "/CN=${BOARD_NAME} Update Key/" -keyout keys/update_key.priv -outform DER -out certs/update_key.der -days 7300 -nodes -sha256
+    openssl req -config openssl.cnf -new -x509 -newkey rsa:4096 -subj "/CN=${BOARD_NAME} Update Key/" -keyout keys/update_key.priv -outform DER -out certs/update_key.der -days 7300 -nodes -sha384
     openssl x509 -inform DER -in certs/update_key.der -outform PEM -out certs/update_key.pem
 
     # Root Certificate
@@ -93,6 +95,20 @@ if [ -z "${USE_EXISTING_SB_KEYS}" ]; then
 
     openssl pkcs12 -export -out certs/user.pfx -inkey keys/user.priv -in certs/user.crt -passin pass:"${CERT_PASSWORD}" -passout pass:"${CERT_PASSWORD}"
     openssl pkcs12 -in certs/user.pfx -nodes -out certs/user.pem -passin pass:"${CERT_PASSWORD}"
+
+    TIMESTAMP="$(date --date='1 second' +'%Y-%m-%d %H:%M:%S')"
+    echo "${FWUGUID}" > certs/dbu_guid.txt
+    cert-to-efi-sig-list -g "${FWUGUID}" certs/update_key.pem certs/dbu.esl
+    sign-efi-sig-list -g "${FWUGUID}" -t "${TIMESTAMP}" \
+      -k keys/update_key.priv -c certs/update_key.pem dbu certs/dbu.esl certs/dbukey.auth
+    sign-efi-sig-list -g "${FWUGUID}" -t "${TIMESTAMP}" \
+      -k keys/update_key.priv -c certs/update_key.pem dbu /dev/null certs/del_dbukey.auth
+
+    cert-to-efi-sig-list -g "${FWUGUID}" certs/platform_key.pem certs/dbb.esl
+    sign-efi-sig-list -g "${FWUGUID}" -t "${TIMESTAMP}" \
+      -k keys/platform_key.priv -c certs/platform_key.pem dbb certs/dbb.esl certs/dbbkey.auth
+    sign-efi-sig-list -g "${FWUGUID}" -t "${TIMESTAMP}" \
+      -k keys/platform_key.priv -c certs/platform_key.pem dbb /dev/null certs/del_dbbkey.auth
 fi
 
 python3 ${WORKSPACE}/edk2/BaseTools/Scripts/BinToPcd.py -i certs/root.der -p gEfiSecurityPkgTokenSpaceGuid.PcdPkcs7CertBuffer -o ${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/root.cer.gEfiSecurityPkgTokenSpaceGuid.PcdPkcs7CertBuffer.inc
