@@ -1,0 +1,33 @@
+## @file
+#  LcdPlatformLib implementing Morello FVP Platform GOP details
+#
+#  Copyright (c) 2022, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = LcdPlatformLibMorelloFvp
+  FILE_GUID                      = AC00015E-0056-437B-8E5A-878F55BA14B4
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = LcdPlatformLib
+
+[Sources.common]
+  Common.c
+  Fvp.c
+
+[Packages]
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  PcdLib
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize

@@ -12,12 +12,12 @@
 
 #pragma pack (1)
 typedef struct {
-  VENDOR_DEVICE_PATH                  VendorDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL            End;
+  VENDOR_DEVICE_PATH          VendorDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL    End;
 } VIRTIO_DEVICE_PATH;
 #pragma pack ()
 
-STATIC VIRTIO_DEVICE_PATH mVirtioBlockDevicePath =
+STATIC VIRTIO_DEVICE_PATH  mVirtioBlockDevicePath =
 {
   {
     {
@@ -40,7 +40,7 @@ STATIC VIRTIO_DEVICE_PATH mVirtioBlockDevicePath =
   }
 };
 
-STATIC VIRTIO_DEVICE_PATH mVirtioNetDevicePath =
+STATIC VIRTIO_DEVICE_PATH  mVirtioNetDevicePath =
 {
   {
     {
@@ -72,16 +72,15 @@ InitVirtioDevices (
   VOID
   )
 {
-  EFI_STATUS Status;
-  EFI_HANDLE mVirtIoBlkController;
-  EFI_HANDLE mVirtIoNetController;
+  EFI_STATUS  Status;
+  EFI_HANDLE  mVirtIoBlkController;
+  EFI_HANDLE  mVirtIoNetController;
 
   mVirtIoBlkController = NULL;
   mVirtIoNetController = NULL;
 
   // Install protocol interface for storage device
   if (FeaturePcdGet (PcdVirtioBlkSupported)) {
-
     Status = gBS->InstallProtocolInterface (
                     &mVirtIoBlkController,
                     &gEfiDevicePathProtocolGuid,
@@ -89,9 +88,13 @@ InitVirtioDevices (
                     &mVirtioBlockDevicePath
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to install EFI_DEVICE_PATH protocol "
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Failed to install EFI_DEVICE_PATH protocol "
         "for Virtio Block device (Status = %r)\n",
-        __func__, Status));
+        __func__,
+        Status
+        ));
     } else {
       // Declare the Virtio BlockIo device
       Status = VirtioMmioInstallDevice (
@@ -99,23 +102,30 @@ InitVirtioDevices (
                  mVirtIoBlkController
                  );
       if (EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_ERROR, "%a: Unable to find Virtio Block MMIO device "
-          "(Status = %r)\n", __func__, Status));
+        DEBUG ((
+          DEBUG_ERROR,
+          "%a: Unable to find Virtio Block MMIO device "
+          "(Status = %r)\n",
+          __func__,
+          Status
+          ));
         gBS->UninstallProtocolInterface (
                mVirtIoBlkController,
                &gEfiDevicePathProtocolGuid,
                &mVirtioBlockDevicePath
                );
       } else {
-        DEBUG ((DEBUG_INIT, "%a: Installed Virtio Block device\n",
-          __func__));
+        DEBUG ((
+          DEBUG_INIT,
+          "%a: Installed Virtio Block device\n",
+          __func__
+          ));
       }
     }
   }
 
   // Install protocol interface for network device
   if (FeaturePcdGet (PcdVirtioNetSupported)) {
-
     Status = gBS->InstallProtocolInterface (
                     &mVirtIoNetController,
                     &gEfiDevicePathProtocolGuid,
@@ -123,9 +133,13 @@ InitVirtioDevices (
                     &mVirtioNetDevicePath
                     );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to install EFI_DEVICE_PATH protocol "
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Failed to install EFI_DEVICE_PATH protocol "
         "for Virtio Net (Status = %r)\n",
-        __func__, Status));
+        __func__,
+        Status
+        ));
     } else {
       // Declare the Virtio Net device
       Status = VirtioMmioInstallDevice (
@@ -133,8 +147,13 @@ InitVirtioDevices (
                  mVirtIoNetController
                  );
       if (EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_ERROR, "%a: Unable to find Virtio Block MMIO device "
-          "(Status == %r)\n", __func__, Status));
+        DEBUG ((
+          DEBUG_ERROR,
+          "%a: Unable to find Virtio Block MMIO device "
+          "(Status == %r)\n",
+          __func__,
+          Status
+          ));
         gBS->UninstallProtocolInterface (
                mVirtIoNetController,
                &gEfiDevicePathProtocolGuid,
