@@ -27,6 +27,7 @@ EFI_EVENT                 mEfiIpmiProtocolEvent;
 
 **/
 EFI_STATUS
+EFIAPI
 NotifyIpmiTransportCallback (
   IN CONST EFI_GUID                *Protocol,
   IN VOID                          *Interface,
