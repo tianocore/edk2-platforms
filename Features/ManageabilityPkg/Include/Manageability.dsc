@@ -13,8 +13,7 @@
 [LibraryClasses.common.DXE_DRIVER]
   PldmProtocolLib|ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
 
-[LibraryClasses.ARM, LibraryClasses.AARCH64]
-  ArmSoftFloatLib|ArmPkg/Library/ArmSoftFloatLib/ArmSoftFloatLib.inf
+[LibraryClasses.AARCH64]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
 

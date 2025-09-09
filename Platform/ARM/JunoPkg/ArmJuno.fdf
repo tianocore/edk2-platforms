@@ -312,21 +312,9 @@ READ_LOCK_STATUS   = TRUE
 # ArmPlatformPkg/PrePi is declared as a SEC module to make GenFv patch the
 # UEFI Firmware to jump to ArmPlatformPkg/PrePi entrypoint
 #
-[Rule.ARM.SEC]
-  FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED {
-    TE  TE    Align = 32                $(INF_OUTPUT)/$(MODULE_NAME).efi
-  }
-
 [Rule.AARCH64.SEC]
   FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED FIXED {
     TE  TE    Align = Auto              $(INF_OUTPUT)/$(MODULE_NAME).efi
-  }
-
-# A shim specific rule is required to ensure the alignment is 4K.
-# Otherwise BaseTools pick up the AArch32 alignment (ie: 32)
-[Rule.ARM.SEC.SHIM]
-  FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED {
-    TE  TE    Align = 4K                $(INF_OUTPUT)/$(MODULE_NAME).efi
   }
 
 [Rule.Common.PEI_CORE]

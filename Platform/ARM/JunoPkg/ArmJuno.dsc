@@ -20,7 +20,7 @@
 !else
   OUTPUT_DIRECTORY               = Build/ArmJuno
 !endif
-  SUPPORTED_ARCHITECTURES        = AARCH64|ARM
+  SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/ARM/JunoPkg/ArmJuno.fdf
@@ -220,9 +220,6 @@
   # Juno Support Trng. Override PcdEnforceSecureRngAlgorithms.
   #
   gEfiMdePkgTokenSpaceGuid.PcdEnforceSecureRngAlgorithms|TRUE
-
-[PcdsFixedAtBuild.ARM]
-  gArmTokenSpaceGuid.PcdVFPEnabled|1
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)

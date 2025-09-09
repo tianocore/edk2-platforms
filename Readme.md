@@ -74,7 +74,6 @@ but the reverse may not always be true.
 Target architecture | Cross compilation prefix
 --------------------|-------------------------
 AARCH64             | aarch64-linux-gnu-
-ARM                 | arm-linux-gnueabihf-
 IA32                | i?86-linux-gnu-* _or_ x86_64-linux-gnu-
 IPF                 | ia64-linux-gnu
 X64                 | x86_64-linux-gnu-
@@ -84,7 +83,7 @@ LOONGARCH64         | loongarch64-unknown-linux-
 \* i386, i486, i586 or i686
 
 ### GCC
-Arm provides GCC toolchains for aarch64-linux-gnu and arm-linux-gnueabihf at
+Arm provides a GCC toolchain for aarch64-linux-gnu at
 [GNU Toolchain for the A-profile Architecture](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads)
 compiled to run on x86_64/i686 Linux and i686 Windows. Some Linux distributions
 provide their own packaged cross-toolchains.

@@ -59,7 +59,7 @@ typedef BOOLEAN (*BDS_FILE_LOADER_SUPPORT) (
  *                      This device path generally comes from the boot entry (ie: Boot####).
  *                      This path is also defined as 'OUT' as there are some device paths that
  *                      might not be completed such as EFI path for removable device. In these
- *                      cases, it is expected the loader to add \EFI\BOOT\BOOT(ARM|AA64).EFI
+ *                      cases, it is expected the loader to add \EFI\BOOT\BOOTAA64.EFI
  * @param Handle        Handle of the driver supporting the device path
  * @param RemainingDevicePath   Part of the EFI Device Path that has not been resolved during
  *                      the Device Path discovery

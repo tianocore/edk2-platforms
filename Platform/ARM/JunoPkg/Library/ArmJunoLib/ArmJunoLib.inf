@@ -34,9 +34,6 @@
 [Sources.AARCH64]
   AArch64/ArmJunoHelper.S
 
-[Sources.ARM]
-  Arm/ArmJunoHelper.S     | GCC
-
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize

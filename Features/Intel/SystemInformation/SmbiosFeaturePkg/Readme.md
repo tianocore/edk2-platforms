@@ -10,8 +10,8 @@ More Information:
 System Management BIOS (SMBIOS) is an industry standard for delivering management information via system firmware.
 SMBIOS provides a standard format to present management information across various environments including OS-present,
 OS-absent, and pre-OS environments. SMBIOS was originally designed for Intel&reg; processor architecture systems, SMBIOS
-now includes support for IA-32 (x86), x64 (x86-64, Intel64, AMD64, EM64T), Intel&reg; Itanium&reg; architecture, 32-bit
-ARM (Aarch32) and 64-bit ARM (Aarch64).
+now includes support for IA-32 (x86), x64 (x86-64, Intel64, AMD64, EM64T), Intel&reg; Itanium&reg; architecture, and
+64-bit ARM (Aarch64).
 
 The SMBIOS feature includes generic firmware functionality to implement the SMBIOS reference specification. Since the
 information required by these modules is very platform/board-specific by nature this feature requires a high-level of

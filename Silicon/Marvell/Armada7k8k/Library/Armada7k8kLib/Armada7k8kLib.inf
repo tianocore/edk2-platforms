@@ -31,12 +31,7 @@
 [Sources.common]
   Armada7k8kLib.c
   Armada7k8kLibMem.c
-
-[Sources.AArch64]
   AArch64/ArmPlatformHelper.S
-
-[Sources.ARM]
-  ARM/ArmPlatformHelper.S
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase

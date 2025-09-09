@@ -17,7 +17,7 @@
   UNLOAD_IMAGE                   = UnloadImage
 
 #
-#  VALID_ARCHITECTURES           = AARCH64 ARM EBC IA32 IPF X64
+#  VALID_ARCHITECTURES           = AARCH64 EBC IA32 IPF X64
 #
 
 [Sources]

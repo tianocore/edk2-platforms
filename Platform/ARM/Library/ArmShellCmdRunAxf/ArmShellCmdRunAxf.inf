@@ -30,9 +30,6 @@
 [Sources.AARCH64]
   AArch64/Pivot.S
 
-[Sources.ARM]
-  Arm/Pivot.S
-
 [Packages]
   ArmPkg/ArmPkg.dec
   MdeModulePkg/MdeModulePkg.dec
