@@ -14,7 +14,7 @@
 ################################################################################
 [PcdsFixedAtBuild.common]
   ######################################
-  # Key Boot Stage and FSP configuration
+  # Key Boot Stage
   ######################################
   #
   # Please select the Boot Stage here.
@@ -25,6 +25,27 @@
   # Stage 5 - boot to OS with security boot enabled
   #
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
+
+  ######################################
+  # Platform Configuration
+  ######################################
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+
+  #
+  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
+  #
+  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
+
+[PcdsFixedAtBuild.common]
+  ######################################
+  # FSP configuration
+  ######################################
 
   gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x400
 
@@ -50,24 +71,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
-
-  ######################################
-  # Platform Configuration
-  ######################################
-  #
-  # MinPlatform common include for required feature PCD
-  # These PCD must be set before the core include files, CoreCommonLib,
-  # CorePeiLib, and CoreDxeLib.
-  # Optional MinPlatformPkg features should be enabled after this
-  #
-  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
-
   gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
-
-  #
-  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
-  #
-  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
   ######################################
   # Silicon Configuration

@@ -15,7 +15,7 @@
 
 [PcdsFixedAtBuild.common]
   ######################################
-  # Key Boot Stage and FSP configuration
+  # Key Boot Stage
   ######################################
   #
   # Please select the Boot Stage here.
@@ -28,6 +28,26 @@
   #
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
 
+  ######################################
+  # Platform Configuration
+  ######################################
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+
+  #
+  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
+  #
+  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
+
+[PcdsFixedAtBuild.common]
+  ######################################
+  # FSP configuration
+  ######################################
   #
   # 0: FSP Wrapper is running in Dispatch mode.
   # 1: FSP Wrapper is running in API mode.
@@ -159,22 +179,6 @@
   gSiPkgTokenSpaceGuid.PcdSoftwareGuardEnable|TRUE
   gSiPkgTokenSpaceGuid.PcdSsaFlagEnable|FALSE
   gSiPkgTokenSpaceGuid.PcdTraceHubEnable|TRUE
-
-  ######################################
-  # Platform Configuration
-  ######################################
-  #
-  # MinPlatform common include for required feature PCD
-  # These PCD must be set before the core include files, CoreCommonLib,
-  # CorePeiLib, and CoreDxeLib.
-  # Optional MinPlatformPkg features should be enabled after this
-  #
-  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
-
-  #
-  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
-  #
-  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
   ######################################
   # Board Configuration

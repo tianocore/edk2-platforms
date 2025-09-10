@@ -14,7 +14,7 @@
 
 [PcdsFixedAtBuild.common]
   ######################################
-  # Key Boot Stage and FSP configuration
+  # Key Boot Stage
   ######################################
   #
   # Please select the Boot Stage here.
@@ -26,6 +26,22 @@
   # Stage 6 - boot with advanced features enabled
   #
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|4
+
+  ######################################
+  # Platform Configuration
+  ######################################
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+
+  #
+  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
+  #
+  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
 [PcdsFeatureFlag.common]
   gPlatformTokenSpaceGuid.PcdLockCsrSsidSvidRegister|FALSE
@@ -57,22 +73,6 @@
 
   ## This PCD specified whether ACPI SDT protocol is installed.
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
-
-  ######################################
-  # Platform Configuration
-  ######################################
-  #
-  # MinPlatform common include for required feature PCD
-  # These PCD must be set before the core include files, CoreCommonLib,
-  # CorePeiLib, and CoreDxeLib.
-  # Optional MinPlatformPkg features should be enabled after this
-  #
-  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
-
-  #
-  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
-  #
-  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
 [PcdsFeatureFlag.X64]
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmStackGuard|FALSE
