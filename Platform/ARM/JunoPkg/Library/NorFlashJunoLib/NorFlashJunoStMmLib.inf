@@ -1,21 +1,22 @@
 #/** @file
 #
-#  Copyright (c) 2011 - 2024, Arm Ltd. All rights reserved.<BR>
+#  Copyright (c) 2024, Arm Ltd. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 #**/
 
 [Defines]
-  INF_VERSION                    = 0x00010005
+  INF_VERSION                    = 0x0001001A
   BASE_NAME                      = NorFlashJunoLib
-  FILE_GUID                      = 3eb6cbc4-ce95-11e2-b1bd-00241d0c1ba8
-  MODULE_TYPE                    = DXE_DRIVER
+  FILE_GUID                      = 7129f758-9124-11ef-b7d6-d769423b49d7
+  MODULE_TYPE                    = MM_STANDALONE
   VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
   LIBRARY_CLASS                  = NorFlashPlatformLib
 
 [Sources.common]
   NorFlashJuno.c
-  NorFlashJunoInfo.c
+  NorFlashJunoStMmInfo.c
 
 [Packages]
   MdePkg/MdePkg.dec
