@@ -70,6 +70,8 @@
 
   DtPlatformDtbLoaderLib|Platform/ARM/VExpressPkg/Library/ArmVExpressDtPlatformDtbLoaderLib/ArmVExpressDtPlatformDtbLoaderLib.inf
 
+  SmbiosSmcLib|DynamicTablesPkg/Library/Smbios/Arm/SmbiosSmcLib/SmbiosSmcLib.inf
+
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   ArmPlatformSysConfigLib|Platform/ARM/VExpressPkg/Library/ArmVExpressSysConfigRuntimeLib/ArmVExpressSysConfigRuntimeLib.inf

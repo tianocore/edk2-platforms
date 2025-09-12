@@ -20,8 +20,8 @@
 
 #define MAX_CACHE_LEVEL  2
 
-#define SLC_SIZE(x)    (UINT16)(0x8000 | (((x) * (1 << 20)) / (64 * (1 << 10))))
-#define SLC_SIZE_2(x)  (0x80000000 | (((x) * (1 << 20)) / (64 * (1 << 10))))
+#define SLC_SIZE(x)    (UINT16)((((x) * (1 << 20)) / (64 * (1 << 10))))
+#define SLC_SIZE_2(x)  ((((x) * (1 << 20)) / (64 * (1 << 10))))
 
 typedef enum {
   CacheModeWriteThrough = 0,  ///< Cache is write-through
@@ -106,15 +106,18 @@ ConfigSlcArchitectureInformation (
     //
     // Altra's SLC size is 32MB
     //
-    InputData->MaximumCacheSize  = SLC_SIZE (32);
-    InputData->MaximumCacheSize2 = SLC_SIZE_2 (32);
+    InputData->MaximumCacheSize.Size  = SLC_SIZE (32);
+    InputData->MaximumCacheSize2.Size = SLC_SIZE_2 (32);
   } else {
     //
     // Altra Max's SLC size is 16MB
     //
-    InputData->MaximumCacheSize  = SLC_SIZE (16);
-    InputData->MaximumCacheSize2 = SLC_SIZE_2 (16);
+    InputData->MaximumCacheSize.Size  = SLC_SIZE (16);
+    InputData->MaximumCacheSize2.Size = SLC_SIZE_2 (16);
   }
+
+  InputData->MaximumCacheSize.Granularity64K  = 1;
+  InputData->MaximumCacheSize2.Granularity64K = 1;
 
   InputData->InstalledSize  = InputData->MaximumCacheSize;
   InputData->InstalledSize2 = InputData->MaximumCacheSize2;

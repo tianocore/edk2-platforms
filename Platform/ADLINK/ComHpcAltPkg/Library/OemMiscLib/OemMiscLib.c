@@ -158,10 +158,10 @@ OemGetCacheInformation (
   IN OUT SMBIOS_TABLE_TYPE7  *SmbiosCacheTable
   )
 {
-  UINT16  CacheSize16;
-  UINT32  CacheSize32;
-  UINT64  CacheSize64;
-  UINT8   Granularity32;
+  SMBIOS_CACHE_SIZE   CacheSize16;
+  SMBIOS_CACHE_SIZE2  CacheSize32;
+  UINT64              CacheSize64;
+  UINT8               Granularity32;
 
   SmbiosCacheTable->CacheConfiguration  = CacheLevel - 1;
   SmbiosCacheTable->CacheConfiguration |= (1 << 7); // Enable
@@ -182,28 +182,35 @@ OemGetCacheInformation (
   CacheSize16 = SmbiosCacheTable->MaximumCacheSize;
   CacheSize32 = SmbiosCacheTable->MaximumCacheSize2;
 
-  Granularity32 = CacheSize32 >> 31;
+  Granularity32 = SmbiosCacheTable->MaximumCacheSize2.Granularity64K;
   if (Granularity32 == 0) {
-    CacheSize64 = CacheSize32;
+    CacheSize64 = CacheSize32.Size;
   } else {
-    CacheSize64 = (CacheSize32 & (~BIT31)) * 64;
+    CacheSize64 = CacheSize32.Size * 64;
   }
 
   CacheSize64 *= GetNumberOfActiveCoresPerSocket (ProcessorIndex);
   if (CacheSize64 < MAX_INT16) {
-    CacheSize16 = CacheSize64;
-    CacheSize32 = CacheSize16;
+    CacheSize16.Size           = CacheSize64;
+    CacheSize16.Granularity64K = 0;
+    CacheSize32.Size           = CacheSize64;
+    CacheSize32.Granularity64K = 0;
   } else if ((CacheSize64 / 64) < MAX_INT16) {
-    CacheSize16 = (UINT16)(BIT15 | (CacheSize64 / 64));
-    CacheSize32 = (UINT32)(BIT31 | (CacheSize64 / 64));
+    CacheSize16.Size           = (UINT16)(CacheSize64 / 64);
+    CacheSize16.Granularity64K = 1;
+    CacheSize32.Size           = (UINT32)(CacheSize64 / 64);
+    CacheSize32.Granularity64K = 1;
   } else {
     if ((CacheSize64 / 1024) <= 2047) {
-      CacheSize32 = CacheSize64;
+      CacheSize32.Size           = CacheSize64;
+      CacheSize32.Granularity64K = 0;
     } else {
-      CacheSize32 = (UINT32)(BIT31 | (CacheSize64 / 64));
+      CacheSize32.Size           = (UINT32)(CacheSize64 / 64);
+      CacheSize32.Granularity64K = 1;
     }
 
-    CacheSize16 = 0xFFFF;
+    CacheSize16.Size           = 0x7FFF;
+    CacheSize16.Granularity64K = 1;
   }
 
   SmbiosCacheTable->MaximumCacheSize  = CacheSize16;

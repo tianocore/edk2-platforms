@@ -177,7 +177,7 @@ STATIC SMBIOS_TABLE_TYPE4 mArmadaDefaultType4 = {
   3, //processor type CPU
   ProcessorFamilyIndicatorFamily2, //processor family, acquire from field2
   2,             //manufactuer
-  {{0,},{0.}},   //processor id
+  {0,0,0,0},     //processor id
   3,             //version
   {0,0,0,0,0,1}, //voltage
   0,             //external clock
@@ -218,8 +218,8 @@ STATIC SMBIOS_TABLE_TYPE7 mArmadaDefaultType7_a72_l1i = {
   },
   1,
   0x380, //L1 enabled, unknown WB
-  48,    //48k I-cache max
-  48,    //48k installed
+  {48,0},//48k I-cache max
+  {48,0},//48k installed
   {0,1}, //SRAM type
   {0,1}, //SRAM type
   0,     //speed unknown
@@ -239,8 +239,8 @@ STATIC SMBIOS_TABLE_TYPE7 mArmadaDefaultType7_a72_l1d = {
   },
   2,
   0x380, //L1 enabled, unknown WB
-  32,    //32k D-cache max
-  32,    //32k installed
+  {32,0},//32k D-cache max
+  {32,0},//32k installed
   {0,1}, //SRAM type
   {0,1}, //SRAM type
   0,     //speed unknown
@@ -260,8 +260,8 @@ STATIC SMBIOS_TABLE_TYPE7 mArmadaDefaultType7_a72_l2 = {
   },
   3,
   0x181, //L2 enabled, WB
-  512,   //512k D-cache max
-  512,   //512k installed
+  {512,0},//512k D-cache max
+  {512,0},//512k installed
   {0,1}, //SRAM type
   {0,1}, //SRAM type
   0,     //speed unknown
@@ -281,8 +281,8 @@ STATIC SMBIOS_TABLE_TYPE7 mArmadaDefaultType7_l3 = {
   },
   4,
   0x182, //L3 enabled, WB
-  1024,  //1M cache max
-  1024,  //1M installed
+  {1024,0},//1M cache max
+  {1024,0},//1M installed
   {0,1}, //SRAM type
   {0,1}, //SRAM type
   0,     //speed unknown

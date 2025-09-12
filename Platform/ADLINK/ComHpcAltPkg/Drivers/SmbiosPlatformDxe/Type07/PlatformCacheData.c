@@ -22,8 +22,8 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE7, PlatformCache) = {
     },
     ADDITIONAL_STR_INDEX_1,                 // Socket Designation
     0x182,                                  // Write Back, Enabled, Internal, Not Socketed, Cache Level 3
-    0x8010,                                 // Maximum Cache Size: 1M
-    0x8010,                                 // Installed Size: 1M
+    {0x0010, 1},                            // Maximum Cache Size: 1M
+    {0x0010, 1},                            // Installed Size: 1M
     { 0, 0, 0, 0, 0, 1},                    // Supported SRAM Type: Synchronous
     { 0, 0, 0, 0, 0, 1},                    // Current SRAM Type: Synchronous
     0,                                      // Cache Speed
