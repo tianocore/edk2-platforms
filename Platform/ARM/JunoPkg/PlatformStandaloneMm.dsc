@@ -160,6 +160,13 @@
 
   gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x1C170000
 
+  #
+  # The BFV is not located in the Flash area but is loaded in the RAM
+  # by TF-A instead, therefore no shadow copy is needed. So disable
+  # shadow copy of boot firmware volume while loading StMM drivers.
+  #
+  gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
+
 ###################################################################################################
 #
 # Components Section - list of the modules and components that will be processed by compilation
