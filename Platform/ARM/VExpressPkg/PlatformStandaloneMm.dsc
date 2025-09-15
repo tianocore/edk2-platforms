@@ -28,11 +28,7 @@
   FLASH_DEFINITION               = Platform/ARM/VExpressPkg/PlatformStandaloneMm.fdf
   DEFINE DEBUG_MESSAGE           = TRUE
 
-  # To allow the use of ueif secure variable feature, set this to TRUE.
-  DEFINE ENABLE_UEFI_SECURE_VARIABLE = FALSE
-
-  # LzmaF86
-  DEFINE COMPRESSION_TOOL_GUID   = D42AE6BD-1352-4bfb-909A-CA72A6EAE889
+!include Platform/ARM/VExpressPkg/PlatformStandaloneMm.dsc.inc
 
 ################################################################################
 #
@@ -40,77 +36,11 @@
 #
 ################################################################################
 
-!include MdePkg/MdeLibs.dsc.inc
-
 [LibraryClasses]
-  #
-  # Basic
-  #
-  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
-  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-
-  CacheMaintenanceLib|MdePkg/Library/BaseCacheMaintenanceLib/BaseCacheMaintenanceLib.inf
-  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-  DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
-  ExtractGuidedSectionLib|StandaloneMmPkg/Library/StandaloneMmExtractGuidedSectionLib/StandaloneMmExtractGuidedSectionLib.inf
-  FvLib|StandaloneMmPkg/Library/FvLib/FvLib.inf
-  HobLib|StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
-  HobPrintLib|MdeModulePkg/Library/HobPrintLib/HobPrintLib.inf
-  IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
-  MemLib|StandaloneMmPkg/Library/StandaloneMmMemLib/StandaloneMmMemLib.inf
-  MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmCoreMemoryAllocationLib/StandaloneMmCoreMemoryAllocationLib.inf
-  MmServicesTableLib|MdePkg/Library/StandaloneMmServicesTableLib/StandaloneMmServicesTableLib.inf
-  PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
-  PeCoffExtraActionLib|MdePkg/Library/BasePeCoffExtraActionLibNull/BasePeCoffExtraActionLibNull.inf
-  PeCoffLib|MdePkg/Library/BasePeCoffLib/BasePeCoffLib.inf
-  PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
-  ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
-  StandaloneMmCoreEntryPoint|ArmPkg/Library/ArmStandaloneMmCoreEntryPoint/ArmStandaloneMmCoreEntryPoint.inf
-  StandaloneMmDriverEntryPoint|MdePkg/Library/StandaloneMmDriverEntryPoint/StandaloneMmDriverEntryPoint.inf
-  VariableMmDependency|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
-  PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
-
-  # ARM PL011 UART Driver
-  PL011UartClockLib|ArmPlatformPkg/Library/PL011UartClockLib/PL011UartClockLib.inf
-  PL011UartLib|ArmPlatformPkg/Library/PL011UartLib/PL011UartLib.inf
-  SerialPortLib|ArmPlatformPkg/Library/PL011SerialPortLib/PL011SerialPortLib.inf
-
-  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
-  PeCoffGetEntryPointLib|MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
-
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
-  StandaloneMmMmuLib|ArmPkg/Library/StandaloneMmMmuLib/ArmMmuStandaloneMmLib.inf
-  ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
-  ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
-  ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
-  CacheMaintenanceLib|ArmPkg/Library/ArmCacheMaintenanceLib/ArmCacheMaintenanceLib.inf
-  PeCoffExtraActionLib|StandaloneMmPkg/Library/StandaloneMmPeCoffExtraActionLib/StandaloneMmPeCoffExtraActionLib.inf
-
-[LibraryClasses.common.MM_CORE_STANDALONE]
-  HobLib|StandaloneMmPkg/Library/StandaloneMmCoreHobLib/StandaloneMmCoreHobLib.inf
-  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaStandaloneMmCoreLib.inf
-
-[LibraryClasses.common.MM_STANDALONE]
-  MemoryAllocationLib|StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
-
-  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/SmmCryptLib.inf
-  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
-  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
-  RngLib|MdePkg/Library/BaseRngLibTimerLib/BaseRngLibTimerLib.inf
-  PlatformSecureLib|SecurityPkg/Library/PlatformSecureLibNull/PlatformSecureLibNull.inf
-  SynchronizationLib|MdePkg/Library/BaseSynchronizationLib/BaseSynchronizationLib.inf
-  TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
-  SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
-
   # STMM for Variable runtime service.
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/VExpressPkg/Library/NorFlashArmVExpressLib/NorFlashStMmLib.inf
-  # NOR flash identification support
-  NorFlashInfoLib|EmbeddedPkg/Library/NorFlashInfoLib/NorFlashInfoLib.inf
-  VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
-  VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
-  AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
 !endif
 
 ################################################################################
@@ -179,38 +109,6 @@
 #
 ###################################################################################################
 [Components.common]
-  #
-  # MM Core
-  #
-  ArmPkg/Library/ArmStandaloneMmCoreEntryPoint/ArmStandaloneMmCoreEntryPoint.inf
-  StandaloneMmPkg/Core/StandaloneMmCore.inf {
-    <LibraryClasses>
-      NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
-  }
-  StandaloneMmPkg/Library/FvLib/FvLib.inf
-  StandaloneMmPkg/Library/StandaloneMmCoreHobLib/StandaloneMmCoreHobLib.inf
-  StandaloneMmPkg/Library/StandaloneMmCoreMemoryAllocationLib/StandaloneMmCoreMemoryAllocationLib.inf
-  StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
-  StandaloneMmPkg/Library/StandaloneMmMemLib/StandaloneMmMemLib.inf
-  StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
-  StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
-
-  ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
-  StandaloneMmPkg/Library/StandaloneMmPeCoffExtraActionLib/StandaloneMmPeCoffExtraActionLib.inf
-
-!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
-  Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
-    <LibraryClasses>
-      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
-      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
-      NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLibStandaloneMm.inf
-      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-      VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLib.inf
-      VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
-  }
-  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
-!endif
 
 ###################################################################################################
 #
