@@ -43,6 +43,7 @@
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   NorFlashDeviceLib|Platform/ARM/Library/P30NorFlashDeviceLib/P30NorFlashDeviceLib.inf
   NorFlashPlatformLib|Platform/ARM/JunoPkg/Library/NorFlashJunoLib/NorFlashJunoStMmLib.inf
+!endif
 
 ################################################################################
 #

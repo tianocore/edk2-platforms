@@ -45,7 +45,6 @@
 !endif
 
 [LibraryClasses.common]
-  ArmFfaLib|ArmPkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Platform/ARM/JunoPkg/Library/ArmJunoLib/ArmJunoLib.inf
