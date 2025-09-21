@@ -11,6 +11,7 @@
 #include <PeiIpmiHooks.h>
 
 EFI_STATUS
+EFIAPI
 PeiIpmiSendCommand (
   IN      PEI_IPMI_TRANSPORT_PPI  *This,
   IN      UINT8                   NetFunction,
@@ -71,6 +72,7 @@ Returns:
 } // IpmiSendCommand()
 
 EFI_STATUS
+EFIAPI
 PeiIpmiSendCommand2 (
   IN      IPMI_TRANSPORT2  *This,
   IN      UINT8            NetFunction,
@@ -189,6 +191,7 @@ Returns:
 } // IpmiSendCommand()
 
 EFI_STATUS
+EFIAPI
 PeiIpmiSendCommand2Ex (
   IN      IPMI_TRANSPORT2        *This,
   IN      UINT8                  NetFunction,
