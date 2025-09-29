@@ -409,6 +409,7 @@
       NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
   }
+  Platform/ARM/VExpressPkg/Drivers/ArmVExpressPlatformConfigDxe/ArmVExpressPlatformConfigDxe.inf
 
 !if $(DT_SUPPORT) == TRUE
   #
