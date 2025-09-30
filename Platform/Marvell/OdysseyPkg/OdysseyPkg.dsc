@@ -142,6 +142,7 @@
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       # SoC specific implementation of ArmPlatformLib
       ArmPlatformLib|Silicon/Marvell/OdysseyPkg/Library/OdysseyLib/OdysseyLib.inf
+      PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLibNull.inf
   }
 
   #
