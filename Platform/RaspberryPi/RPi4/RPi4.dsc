@@ -592,6 +592,7 @@
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       SerialPortLib|Platform/RaspberryPi/Library/DualSerialPortLib/DualSerialPortLib.inf
+      PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLibNull.inf
   }
 
   #
