@@ -161,7 +161,7 @@ OemGetCacheInformation (
   )
 {
   SMBIOS_CACHE_SIZE   CacheSize16;
-  SMBIOS_CACHE_SIZE2  CacheSize32;
+  SMBIOS_CACHE_SIZE_2 CacheSize32;
   UINT64              CacheSize64;
   UINT8               Granularity32;
 
