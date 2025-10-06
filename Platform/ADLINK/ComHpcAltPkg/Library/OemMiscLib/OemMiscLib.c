@@ -158,10 +158,10 @@ OemGetCacheInformation (
   IN OUT SMBIOS_TABLE_TYPE7  *SmbiosCacheTable
   )
 {
-  SMBIOS_CACHE_SIZE   CacheSize16;
-  SMBIOS_CACHE_SIZE2  CacheSize32;
-  UINT64              CacheSize64;
-  UINT8               Granularity32;
+  SMBIOS_CACHE_SIZE    CacheSize16;
+  SMBIOS_CACHE_SIZE_2  CacheSize32;
+  UINT64               CacheSize64;
+  UINT8                Granularity32;
 
   SmbiosCacheTable->CacheConfiguration  = CacheLevel - 1;
   SmbiosCacheTable->CacheConfiguration |= (1 << 7); // Enable
