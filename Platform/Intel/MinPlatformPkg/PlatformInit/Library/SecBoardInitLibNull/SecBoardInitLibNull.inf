@@ -25,7 +25,6 @@
   MdePkg/MdePkg.dec
 
 [LibraryClasses]
-  BaseLib
 
 [Guids]
 
