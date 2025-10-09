@@ -1,7 +1,7 @@
 ## @file
 #  Configuration Manager Dxe
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021-2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -44,22 +44,24 @@
   gEdkiiConfigurationManagerProtocolGuid
 
 [FixedPcd]
-  gArmMorelloTokenSpaceGuid.PcdPciBusCount
-  gArmMorelloTokenSpaceGuid.PcdPciBusMax
-  gArmMorelloTokenSpaceGuid.PcdPciBusMin
-  gArmMorelloTokenSpaceGuid.PcdPciExpressBaseAddress
-  gArmMorelloTokenSpaceGuid.PcdPciIoBase
-  gArmMorelloTokenSpaceGuid.PcdPciIoMaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciIoSize
-  gArmMorelloTokenSpaceGuid.PcdPciIoTranslation
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Base
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32MaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Size
-  gArmMorelloTokenSpaceGuid.PcdPciMmio32Translation
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Base
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Size
-  gArmMorelloTokenSpaceGuid.PcdPciMmio64Translation
+  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdPciBusMin
+  gArmTokenSpaceGuid.PcdPciBusCount
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gArmTokenSpaceGuid.PcdPciIoBase
+  gArmTokenSpaceGuid.PcdPciIoMaxBase
+  gArmTokenSpaceGuid.PcdPciIoSize
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+  gArmTokenSpaceGuid.PcdPciMmio32Base
+  gArmTokenSpaceGuid.PcdPciMmio32MaxBase
+  gArmTokenSpaceGuid.PcdPciMmio32Size
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
+  gArmTokenSpaceGuid.PcdPciMmio64Base
+  gArmTokenSpaceGuid.PcdPciMmio64MaxBase
+  gArmTokenSpaceGuid.PcdPciMmio64Size
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation
+
+  gArmMorelloTokenSpaceGuid.PcdOscLpiEnable
 
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkBaseAddress
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkInterrupt
