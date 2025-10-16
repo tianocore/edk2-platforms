@@ -221,12 +221,16 @@ SavePasswordToVariable (
   EFI_STATUS                        Status;
   USER_PASSWORD_VAR_STRUCT          UserPasswordVarStruct;
   BOOLEAN                           HashOk;
+  BOOLEAN                           SaltGenerated;
 
   //
   // If password is NULL, it means we want to clean password field saved in variable region.
   //
   if (Password != NULL) {
-    KeyLibGenerateSalt (UserPasswordVarStruct.PasswordSalt, sizeof(UserPasswordVarStruct.PasswordSalt));
+    SaltGenerated = KeyLibGenerateSalt (UserPasswordVarStruct.PasswordSalt, sizeof(UserPasswordVarStruct.PasswordSalt));
+    if (!SaltGenerated) {
+      return EFI_OUT_OF_RESOURCES;
+    }
     HashOk = KeyLibGeneratePBKDF2Hash (
                HASH_TYPE_SHA256,
                (UINT8 *)Password,
