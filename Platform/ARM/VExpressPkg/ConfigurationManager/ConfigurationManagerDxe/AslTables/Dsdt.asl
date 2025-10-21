@@ -52,7 +52,7 @@ DefinitionBlock("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARM-VEXP", 1) {
       Name (_UID, 0)
 
       Name (_CRS, ResourceTemplate() {
-        Memory32Fixed (ReadWrite, 0x1c130000, 0x1000)
+        Memory32Fixed (ReadWrite, 0x1c130000, 0x10000)
         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x4A}
       })
     }
