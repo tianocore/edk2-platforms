@@ -43,6 +43,7 @@
   MemoryAllocationLib
   BaseCryptLib
   PlatformPasswordLib
+  RngLib
 
 [Guids]
   gUserAuthenticationGuid                       ## CONSUMES  ## GUID

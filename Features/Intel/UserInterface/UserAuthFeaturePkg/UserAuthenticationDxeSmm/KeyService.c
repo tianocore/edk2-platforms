@@ -11,6 +11,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/BaseCryptLib.h>
 #include "KeyService.h"
+#include <Library/RngLib.h>
 
 /**
   Compares the contents of two buffers with slow algorithm
@@ -75,10 +76,15 @@ KeyLibGenerateSalt (
   IN UINTN      SaltSize
   )
 {
+  UINT32        RandomNumber;
+
   if (SaltValue == NULL) {
     return FALSE;
   }
-  if (!RandomSeed (NULL, 0)) {
+  if (!GetRandomNumber32 (&RandomNumber)) {
+    return FALSE;
+  }
+  if (!RandomSeed((UINT8 *)&RandomNumber, sizeof(RandomNumber))){
     return FALSE;
   }
   if (!RandomBytes(SaltValue, SaltSize)) {
