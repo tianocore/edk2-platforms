@@ -18,6 +18,7 @@
 
 [LibraryClasses]
   BaseLib
+  CpuLib
   DebugLib
   SmmServicesTableLib
   MemoryAllocationLib

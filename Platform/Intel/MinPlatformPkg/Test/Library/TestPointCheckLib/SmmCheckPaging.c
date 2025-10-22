@@ -12,11 +12,15 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/CpuLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Guid/MemoryAttributesTable.h>
 #include <Register/SmramSaveStateMap.h>
 #include <Register/StmApi.h>
 #include <Register/Msr.h>
+#include <Register/Intel/Cpuid.h>
+#include <Register/Amd/Cpuid.h>
+#include <Register/Amd/Msr.h>
 
 #define NEXT_MEMORY_DESCRIPTOR(MemoryDescriptor, Size) \
   ((EFI_MEMORY_DESCRIPTOR *)((UINT8 *)(MemoryDescriptor) + (Size)))
@@ -191,7 +195,12 @@ GetSmBaseOnCurrentProcessor (
   SMBASE_SHARED_BUFFER  *SmBaseBuffer;
 
   SmBaseBuffer = Buffer;
-  SmBaseBuffer->SmBase = AsmReadMsr64 (MSR_IA32_SMBASE);
+  if (StandardSignatureIsAuthenticAMD ()) {
+    SmBaseBuffer->SmBase = AsmReadMsr64 (AMD_64_SMM_BASE);
+  }
+  else {
+    SmBaseBuffer->SmBase = AsmReadMsr64 (MSR_IA32_SMBASE);
+  }
   SmBaseBuffer->Valid = TRUE;
 }
 
