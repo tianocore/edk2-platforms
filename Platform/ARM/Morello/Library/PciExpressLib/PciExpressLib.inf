@@ -1,0 +1,49 @@
+## @file
+#  Instance of PCI Express Library using the 256 MB PCI Express MMIO window.
+#
+#  PCI Express Library that uses the 256 MB PCI Express MMIO window to perform
+#  PCI Configuration cycles. Layers on top of an I/O Library instance.
+#
+#  Copyright (c) 2007 - 2019, Intel Corporation. All rights reserved.<BR>
+#
+#  This library is inherited from MdePkg/Library/BasePciExpressLib to work with
+#  non-contiguous ECAM regions for the two supported PCIe root ports. The
+#  base PCI Express library expects the ECAM space for all the available root
+#  ports to be contiguous and hence exposes only a single hook(variable) to
+#  hold the ECAM base address informaion in.
+
+#  This library reinterprets the ECAM accesses and routes them to the
+#  appropriate Root Port Config based on the PCIe segment number in the
+#  incoming PCIe address.
+#
+#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PciExpressLib
+  MODULE_UNI_FILE                = PciExpressLib.uni
+  FILE_GUID                      = 795fad20-e353-45f8-b77f-c59eb7907370
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciExpressLib
+
+[Sources]
+  PciExpressLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  IoLib
+  PcdLib
+
+[Pcd]
+  gArmMorelloTokenSpaceGuid.PcdCcixExpressBaseAddress  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress  ## CONSUMES
