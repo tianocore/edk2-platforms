@@ -460,7 +460,7 @@ SmmPasswordHandler (
 
   if (TempCommBufferSize < sizeof (SMM_PASSWORD_COMMUNICATE_HEADER)) {
     DEBUG ((DEBUG_ERROR, "SmmPasswordHandler: SMM communication buffer size invalid!\n"));
-    return EFI_SUCCESS;
+    return EFI_INVALID_PARAMETER;
   }
 
   CommBufferPayloadSize = TempCommBufferSize - sizeof (SMM_PASSWORD_COMMUNICATE_HEADER);
