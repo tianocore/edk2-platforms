@@ -18,7 +18,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/PcdLib.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 #include "QemuFwCfgLibInternal.h"
 
 STATIC UINTN mFwCfgSelectorAddress;
@@ -411,10 +411,10 @@ QemuFwCfgInitialize (
   //
   // Make sure we have a valid device tree blob
   //
-  ASSERT (fdt_check_header (DeviceTreeBase) == 0);
+  ASSERT (FdtCheckHeader (DeviceTreeBase) == 0);
 
   for (Prev = 0;; Prev = Node) {
-    Node = fdt_next_node (DeviceTreeBase, Prev, NULL);
+    Node = FdtNextNode (DeviceTreeBase, Prev, NULL);
     if (Node < 0) {
       break;
     }
@@ -422,7 +422,7 @@ QemuFwCfgInitialize (
     //
     // Check for memory node
     //
-    Type = fdt_getprop (DeviceTreeBase, Node, "compatible", &Len);
+    Type = FdtGetProp (DeviceTreeBase, Node, "compatible", &Len);
     if ((Type)
       && (AsciiStrnCmp (Type, "qemu,fw-cfg-mmio", Len) == 0))
     {
@@ -430,7 +430,7 @@ QemuFwCfgInitialize (
       // Get the 'reg' property of this node. For now, we will assume
       // two 8 byte quantities for base and size, respectively.
       //
-      RegProp = fdt_getprop (DeviceTreeBase, Node, "reg", &Len);
+      RegProp = FdtGetProp (DeviceTreeBase, Node, "reg", &Len);
       if ((RegProp != 0)
         && (Len == (2 * sizeof (UINT64))))
       {

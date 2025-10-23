@@ -14,7 +14,7 @@
 #include <Library/PlatformHookLib.h>
 #include <Library/BaseLib.h>
 #include <Guid/FdtHob.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 
 //
 // PCI Defintions.
@@ -139,17 +139,17 @@ GetSerialConsolePortAddress (
   CONST CHAR8   *NodeStatus;
   CONST UINT64  *RegProperty;
 
-  if ((Fdt == NULL) || (fdt_check_header (Fdt) != 0)) {
+  if ((Fdt == NULL) || (FdtCheckHeader (Fdt) != 0)) {
     return EFI_INVALID_PARAMETER;
   }
 
   // The "chosen" node resides at the root of the DT. Fetch it.
-  ChosenNode = fdt_path_offset (Fdt, "/chosen");
+  ChosenNode = FdtPathOffset (Fdt, "/chosen");
   if (ChosenNode < 0) {
     return EFI_NOT_FOUND;
   }
 
-  Prop = fdt_getprop (Fdt, ChosenNode, "stdout-path", &PropSize);
+  Prop = FdtGetProp (Fdt, ChosenNode, "stdout-path", &PropSize);
   if (PropSize < 0) {
     return EFI_NOT_FOUND;
   }
@@ -164,28 +164,28 @@ GetSerialConsolePortAddress (
 
   // Aliases cannot start with a '/', so it must be the actual path.
   if (Prop[0] == '/') {
-    SerialConsoleNode = fdt_path_offset_namelen (Fdt, Prop, PathLen);
+    SerialConsoleNode = FdtPathOffset_namelen (Fdt, Prop, PathLen);
   } else {
     // Lookup the alias, as this contains the actual path.
-    Path = fdt_get_alias_namelen (Fdt, Prop, PathLen);
+    Path = FdtGetAliasNameLen (Fdt, Prop, PathLen);
     if (Path == NULL) {
       return EFI_NOT_FOUND;
     }
 
-    SerialConsoleNode = fdt_path_offset (Fdt, Path);
+    SerialConsoleNode = FdtPathOffset (Fdt, Path);
   }
 
-  NodeStatus = fdt_getprop (Fdt, SerialConsoleNode, "status", &Len);
+  NodeStatus = FdtGetProp (Fdt, SerialConsoleNode, "status", &Len);
   if ((NodeStatus != NULL) && (AsciiStrCmp (NodeStatus, "okay") != 0)) {
     return EFI_NOT_FOUND;
   }
 
-  RegProperty = fdt_getprop (Fdt, SerialConsoleNode, "reg", &Len);
+  RegProperty = FdtGetProp (Fdt, SerialConsoleNode, "reg", &Len);
   if (Len != 16) {
     return EFI_INVALID_PARAMETER;
   }
 
-  *SerialConsoleAddress = fdt64_to_cpu (ReadUnaligned64 (RegProperty));
+  *SerialConsoleAddress = Fdt64ToCpu (ReadUnaligned64 (RegProperty));
 
   return EFI_SUCCESS;
 }

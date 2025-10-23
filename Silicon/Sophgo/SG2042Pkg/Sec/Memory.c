@@ -22,7 +22,7 @@ Module Name:
 #include <Library/ResourcePublicationLib.h>
 #include <Register/RiscV64/RiscVEncoding.h>
 #include <Library/PrePiLib.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 #include <Guid/FdtHob.h>
 
 VOID
@@ -114,7 +114,7 @@ GetNumCells (
   INT32        Len;
   UINT32       Val;
 
-  Prop = fdt_getprop (Fdt, Node, Name, &Len);
+  Prop = FdtGetProp (Fdt, Node, Name, &Len);
   if (Prop == NULL) {
     return Len;
   }
@@ -156,11 +156,11 @@ AddReservedMemoryMap (
   INTN                  NumRsv, i;
   INT32                 NumAddrCells, NumSizeCells;
 
-  NumRsv = fdt_num_mem_rsv (FdtPointer);
+  NumRsv = FdtGetNumberOfReserveMapEntries (FdtPointer);
 
   /* Look for an existing entry and add it to the efi mem map. */
   for (i = 0; i < NumRsv; i++) {
-    if (fdt_get_mem_rsv (FdtPointer, i, &Addr, &Size) != 0) {
+    if (FdtGetReserveMapEntry (FdtPointer, i, &Addr, &Size) != 0) {
       continue;
     }
 
@@ -172,7 +172,7 @@ AddReservedMemoryMap (
   }
 
   /* process reserved-memory */
-  Node = fdt_subnode_offset (FdtPointer, 0, "reserved-memory");
+  Node = FdtSubnodeOffset (FdtPointer, 0, "reserved-memory");
   if (Node >= 0) {
     NumAddrCells = GetNumCells (FdtPointer, Node, "#address-cells");
     if (NumAddrCells <= 0) {
@@ -184,8 +184,8 @@ AddReservedMemoryMap (
       return;
     }
 
-    fdt_for_each_subnode (SubNode, FdtPointer, Node) {
-      RegProp = fdt_getprop (FdtPointer, SubNode, "reg", &Len);
+    FdtForEachSubnode (SubNode, FdtPointer, Node) {
+      RegProp = FdtGetProp (FdtPointer, SubNode, "reg", &Len);
 
       if ((RegProp != 0) && (Len == ((NumAddrCells + NumSizeCells) * sizeof (INT32)))) {
         Addr = fdt32_to_cpu (RegProp[0]);
@@ -210,7 +210,7 @@ AddReservedMemoryMap (
           ));
 
         // OpenSBI 1.3/1.3.1 should be used which fixed its no-map issue.
-        if (fdt_getprop (FdtPointer, SubNode, "no-map", &Len)) {
+        if (FdtGetProp (FdtPointer, SubNode, "no-map", &Len)) {
           BuildMemoryAllocationHob (
             Addr,
             Size,
@@ -262,20 +262,20 @@ MemoryPeimInitialization (
 
   // Look for the lowest memory node
   for (Prev = 0; ; Prev = Node) {
-    Node = fdt_next_node (DeviceTreeAddress, Prev, NULL);
+    Node = FdtNextNode (DeviceTreeAddress, Prev, NULL);
     if (Node < 0) {
       break;
     }
 
     // Check for memory node
-    Type = fdt_getprop (DeviceTreeAddress, Node, "device_type", &Len);
+    Type = FdtGetProp (DeviceTreeAddress, Node, "device_type", &Len);
     if (Type && (AsciiStrnCmp (Type, "memory", Len) == 0)) {
       // Get the 'reg' property of this node. For now, we will assume
       // two 8 byte quantities for base and size, respectively.
-      RegProp = fdt_getprop (DeviceTreeAddress, Node, "reg", &Len);
+      RegProp = FdtGetProp (DeviceTreeAddress, Node, "reg", &Len);
       if ((RegProp != 0) && (Len == (2 * sizeof (UINT64)))) {
-        CurBase = fdt64_to_cpu (ReadUnaligned64 (RegProp));
-        CurSize = fdt64_to_cpu (ReadUnaligned64 (RegProp + 1));
+        CurBase = Fdt64ToCpu (ReadUnaligned64 (RegProp));
+        CurSize = Fdt64ToCpu (ReadUnaligned64 (RegProp + 1));
 
         DEBUG ((
           DEBUG_INFO,

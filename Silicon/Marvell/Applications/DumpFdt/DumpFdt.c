@@ -20,7 +20,7 @@
 #include <Protocol/Shell.h>
 #include <Library/ShellLib.h>
 #include <Library/ShellCommandLib.h>
-#include <libfdt.h>
+#include <Library/FdtLib.h>
 
 #define CMD_NAME_STRING       L"dumpfdt"
 
@@ -101,7 +101,7 @@ DumpFdt (
   IN VOID*                FdtBlob
   )
 {
-  struct fdt_header *bph;
+  struct FDT_HEADER *bph;
   UINT32 off_dt;
   UINT32 off_str;
   CONST CHAR8* p_struct;
@@ -117,12 +117,12 @@ DumpFdt (
 
   {
     // Can 'memreserve' be printed by below code?
-    INTN num = fdt_num_mem_rsv (FdtBlob);
+    INTN num = FdtGetNumberOfReserveMapEntries (FdtBlob);
     INTN i, err;
     UINT64 addr = 0, size = 0;
 
     for (i = 0; i < num; i++) {
-      err = fdt_get_mem_rsv (FdtBlob, i, &addr, &size);
+      err = FdtGetReserveMapEntry (FdtBlob, i, &addr, &size);
       if (err) {
         DEBUG ((DEBUG_ERROR, "Error (%d) : Cannot get memreserve section (%d)\n", err, i));
       }
@@ -263,7 +263,7 @@ InstallFdt (
     // Ensure that the FDT header is valid and that the Size of the Device Tree
     // is smaller than the size of the read file
     //
-    if (fdt_check_header (mFdtBlobBase)) {
+    if (FdtCheckHeader (mFdtBlobBase)) {
         DEBUG ((DEBUG_ERROR, "InstallFdt() - FDT blob seems to be corrupt\n"));
         mFdtBlobBase = NULL;
         Status = EFI_LOAD_ERROR;
