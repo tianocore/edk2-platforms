@@ -119,9 +119,9 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 /** The number of ACPI tables to install
 */
 #ifdef ENABLE_TPM
-#define PLAT_ACPI_TABLE_COUNT       12
+#define PLAT_ACPI_TABLE_COUNT       13
 #else
-#define PLAT_ACPI_TABLE_COUNT       11
+#define PLAT_ACPI_TABLE_COUNT       12
 #endif
 
 #define PLAT_SMBIOS_TABLE_COUNT     2
