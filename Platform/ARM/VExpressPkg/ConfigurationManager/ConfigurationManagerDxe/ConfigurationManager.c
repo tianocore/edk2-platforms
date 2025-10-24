@@ -98,6 +98,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdPptt),
       NULL
     },
+    // SRAT Table
+    {
+      EFI_ACPI_6_7_SYSTEM_RESOURCE_AFFINITY_TABLE_SIGNATURE,
+      EFI_ACPI_6_7_SYSTEM_RESOURCE_AFFINITY_TABLE_REVISION,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSrat),
+      NULL
+    },
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
