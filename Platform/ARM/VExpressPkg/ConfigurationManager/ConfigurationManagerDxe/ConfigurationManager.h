@@ -118,7 +118,7 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT       11
+#define PLAT_ACPI_TABLE_COUNT       12                                                           // [CODE_FIRST] 11148
 
 #define PLAT_SMBIOS_TABLE_COUNT     2
 
