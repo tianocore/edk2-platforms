@@ -1,0 +1,31 @@
+// *++
+//
+// Copyright (c) 2025, Arm Limited. All rights reserved.
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+// --*/
+
+
+/=#
+
+#langdef en-US  "English"
+#langdef x-UEFI-ns "UefiNameSpace"
+
+
+#string STR_FORM_SET_TITLE             #language en-US "Platform Configuration"
+#string STR_FORM_SET_TITLE_HELP        #language en-US "Versatile Express platform configuration"
+#string STR_FORM1_TITLE                #language en-US "Platform Configuration"
+#string STR_FORM2_TITLE                #language en-US "CPU enable"
+#string STR_CHECK_BOX_CPU0             #language en-US "Enable CPU #0"
+#string STR_CHECK_BOX_CPU1             #language en-US "Enable CPU #1"
+#string STR_CHECK_BOX_CPU2             #language en-US "Enable CPU #2"
+#string STR_CHECK_BOX_CPU3             #language en-US "Enable CPU #3"
+#string STR_CHECK_BOX_CPU4             #language en-US "Enable CPU #4"
+#string STR_CHECK_BOX_CPU5             #language en-US "Enable CPU #5"
+#string STR_CHECK_BOX_CPU6             #language en-US "Enable CPU #6"
+#string STR_CHECK_BOX_CPU7             #language en-US "Enable CPU #7"
+#string STR_CHECK_BOX_HELP             #language en-US "Select whether CPU is enabled on boot"
+#string STR_GOTO_CPU_ENABLE            #language en-US "CPU Enable"
+#string STR_GOTO_CPU_ENABLE_HELP       #language en-US "Select CPUs to enable on boot"
+
