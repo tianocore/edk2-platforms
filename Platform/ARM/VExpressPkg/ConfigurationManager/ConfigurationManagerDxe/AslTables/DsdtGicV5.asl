@@ -22,8 +22,9 @@ DefinitionBlock("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARM-VEXP", 1) {
           STS0 &= ~0x1F
           STS0 |= 0x0A
         } Else {
-          If ((CAP0 & 0x100)) {
-            CAP0 &= ~0x100 /* No support for OS Initiated LPI */
+          // Currently, PC-LPI (0x80) isn't supported with GicV5.
+          If ((CAP0 & 0x180)) {
+            CAP0 &= ~0x180 /* No support for OS Initiated LPI and PC-LPI */
             STS0 &= ~0x1F
             STS0 |= 0x12
           }
