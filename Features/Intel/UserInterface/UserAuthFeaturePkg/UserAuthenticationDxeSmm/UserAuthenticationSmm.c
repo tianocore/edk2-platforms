@@ -623,6 +623,8 @@ EXIT:
     }
   }
   SmmFunctionHeader->ReturnStatus = Status;
+  ZeroMem(&SmmCommunicateSetPassword, sizeof(SmmCommunicateSetPassword));
+  ZeroMem(&SmmCommunicateVerifyPassword, sizeof(SmmCommunicateVerifyPassword));
 
   return EFI_SUCCESS;
 }
