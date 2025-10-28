@@ -64,10 +64,6 @@
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform
 #
 ################################################################################
-[PcdsFeatureFlag]
-  gOptionRomPkgTokenSpaceGuid.PcdSupportScsiPassThru|TRUE
-  gOptionRomPkgTokenSpaceGuid.PcdSupportExtScsiPassThru|TRUE
-
 [PcdsFixedAtBuild]
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x27
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000042

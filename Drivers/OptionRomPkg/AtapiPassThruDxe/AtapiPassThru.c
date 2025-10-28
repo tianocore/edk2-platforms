@@ -311,60 +311,27 @@ Returns:
 --*/
 {
   EFI_STATUS                      Status;
-  EFI_SCSI_PASS_THRU_PROTOCOL     *ScsiPassThru;
   EFI_EXT_SCSI_PASS_THRU_PROTOCOL *ExtScsiPassThru;
   ATAPI_SCSI_PASS_THRU_DEV        *AtapiScsiPrivate;
 
-  if (FeaturePcdGet (PcdSupportScsiPassThru)) {
-    Status = gBS->OpenProtocol (
-                    Controller,
-                    &gEfiScsiPassThruProtocolGuid,
-                    (VOID **) &ScsiPassThru,
-                    This->DriverBindingHandle,
-                    Controller,
-                    EFI_OPEN_PROTOCOL_GET_PROTOCOL
-                    );
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-    AtapiScsiPrivate = ATAPI_SCSI_PASS_THRU_DEV_FROM_THIS (ScsiPassThru);
-    if (FeaturePcdGet (PcdSupportExtScsiPassThru)) {
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Controller,
-                      &gEfiScsiPassThruProtocolGuid,
-                      &AtapiScsiPrivate->ScsiPassThru,
-                      &gEfiExtScsiPassThruProtocolGuid,
-                      &AtapiScsiPrivate->ExtScsiPassThru,
-                      NULL
-                      );
-    } else {
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Controller,
-                      &gEfiScsiPassThruProtocolGuid,
-                      &AtapiScsiPrivate->ScsiPassThru,
-                      NULL
-                      );
-    }
-  } else {
-    Status = gBS->OpenProtocol (
-                    Controller,
-                    &gEfiExtScsiPassThruProtocolGuid,
-                    (VOID **) &ExtScsiPassThru,
-                    This->DriverBindingHandle,
-                    Controller,
-                    EFI_OPEN_PROTOCOL_GET_PROTOCOL
-                    );
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-    AtapiScsiPrivate = ATAPI_EXT_SCSI_PASS_THRU_DEV_FROM_THIS (ExtScsiPassThru);
-    Status = gBS->UninstallMultipleProtocolInterfaces (
-                    Controller,
-                    &gEfiExtScsiPassThruProtocolGuid,
-                    &AtapiScsiPrivate->ExtScsiPassThru,
-                    NULL
-                    );
+  Status = gBS->OpenProtocol (
+                  Controller,
+                  &gEfiExtScsiPassThruProtocolGuid,
+                  (VOID **) &ExtScsiPassThru,
+                  This->DriverBindingHandle,
+                  Controller,
+                  EFI_OPEN_PROTOCOL_GET_PROTOCOL
+                  );
+  if (EFI_ERROR (Status)) {
+    return Status;
   }
+  AtapiScsiPrivate = ATAPI_EXT_SCSI_PASS_THRU_DEV_FROM_THIS (ExtScsiPassThru);
+  Status = gBS->UninstallMultipleProtocolInterfaces (
+                  Controller,
+                  &gEfiExtScsiPassThruProtocolGuid,
+                  &AtapiScsiPrivate->ExtScsiPassThru,
+                  NULL
+                  );
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -3313,49 +3280,24 @@ InstallScsiPassThruProtocols (
   )
 {
   EFI_STATUS                        Status;
-  EFI_SCSI_PASS_THRU_PROTOCOL       *ScsiPassThru;
   EFI_EXT_SCSI_PASS_THRU_PROTOCOL   *ExtScsiPassThru;
 
-  ScsiPassThru = &AtapiScsiPrivate->ScsiPassThru;
   ExtScsiPassThru = &AtapiScsiPrivate->ExtScsiPassThru;
 
-  if (FeaturePcdGet (PcdSupportScsiPassThru)) {
-    ScsiPassThru = CopyMem (ScsiPassThru, &gScsiPassThruProtocolTemplate, sizeof (*ScsiPassThru));
-    if (FeaturePcdGet (PcdSupportExtScsiPassThru)) {
-      ExtScsiPassThru = CopyMem (ExtScsiPassThru, &gExtScsiPassThruProtocolTemplate, sizeof (*ExtScsiPassThru));
-      Status = gBS->InstallMultipleProtocolInterfaces (
-                      ControllerHandle,
-                      &gEfiScsiPassThruProtocolGuid,
-                      ScsiPassThru,
-                      &gEfiExtScsiPassThruProtocolGuid,
-                      ExtScsiPassThru,
-                      NULL
-                      );
-    } else {
-      Status = gBS->InstallMultipleProtocolInterfaces (
-                      ControllerHandle,
-                      &gEfiScsiPassThruProtocolGuid,
-                      ScsiPassThru,
-                      NULL
-                      );
-    }
-  } else {
-    if (FeaturePcdGet (PcdSupportExtScsiPassThru)) {
-      ExtScsiPassThru = CopyMem (ExtScsiPassThru, &gExtScsiPassThruProtocolTemplate, sizeof (*ExtScsiPassThru));
-      Status = gBS->InstallMultipleProtocolInterfaces (
-                      ControllerHandle,
-                      &gEfiExtScsiPassThruProtocolGuid,
-                      ExtScsiPassThru,
-                      NULL
-                      );
-    } else {
-      //
-      // This driver must support either ScsiPassThru or
-      // ExtScsiPassThru protocols
-      //
-      ASSERT (FALSE);
-      Status = EFI_UNSUPPORTED;
-    }
+  ExtScsiPassThru = CopyMem (ExtScsiPassThru, &gExtScsiPassThruProtocolTemplate, sizeof (*ExtScsiPassThru));
+  Status = gBS->InstallMultipleProtocolInterfaces (
+                  ControllerHandle,
+                  &gEfiExtScsiPassThruProtocolGuid,
+                  ExtScsiPassThru,
+                  NULL
+                  );
+
+  if (EFI_ERROR (Status)) {
+    //
+    // This driver must support ExtScsiPassThru protocol
+    //
+    ASSERT (FALSE);
+    return Status;
   }
 
   return Status;

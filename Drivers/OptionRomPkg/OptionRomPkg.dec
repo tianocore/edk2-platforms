@@ -33,10 +33,6 @@
   ## GUID for RenesasFirmwarePD720202 firmware image
   gRenesasFirmwarePD720202ImageId = {0xA059EBC4, 0xD73D, 0x4279, {0x81,0xBF,0xE4,0xA8,0x93,0x08,0xB9,0x23}}
 
-[PcdsFeatureFlag]
-  gOptionRomPkgTokenSpaceGuid.PcdSupportScsiPassThru|TRUE|BOOLEAN|0x00010001
-  gOptionRomPkgTokenSpaceGuid.PcdSupportExtScsiPassThru|TRUE|BOOLEAN|0x00010002
-
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   gOptionRomPkgTokenSpaceGuid.PcdDriverSupportedEfiVersion|0x0002000a|UINT32|0x00010003
 

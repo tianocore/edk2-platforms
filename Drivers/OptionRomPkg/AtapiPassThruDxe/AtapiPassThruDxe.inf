@@ -56,14 +56,9 @@
 
 
 [Protocols]
-  gEfiScsiPassThruProtocolGuid                  # PROTOCOL BY_START
   gEfiExtScsiPassThruProtocolGuid               # PROTOCOL BY_START
   gEfiPciIoProtocolGuid                         # PROTOCOL TO_START
   gEfiDriverSupportedEfiVersionProtocolGuid     # PROTOCOL ALWAYS_PRODUCED
-
-[FeaturePcd]
-  gOptionRomPkgTokenSpaceGuid.PcdSupportScsiPassThru
-  gOptionRomPkgTokenSpaceGuid.PcdSupportExtScsiPassThru
 
 [Pcd]
   gOptionRomPkgTokenSpaceGuid.PcdDriverSupportedEfiVersion

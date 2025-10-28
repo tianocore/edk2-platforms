@@ -13,7 +13,6 @@
 
 #include <Uefi.h>
 
-#include <Protocol/ScsiPassThru.h>
 #include <Protocol/ScsiPassThruExt.h>
 #include <Protocol/PciIo.h>
 #include <Protocol/DriverSupportedEfiVersion.h>
