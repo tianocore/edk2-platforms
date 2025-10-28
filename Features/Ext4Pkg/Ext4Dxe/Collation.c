@@ -66,7 +66,6 @@ Ext4InitialiseUnicodeCollationInternal (
   UINTN                           NumHandles;
   EFI_HANDLE                      *Handles;
   EFI_UNICODE_COLLATION_PROTOCOL  *Uci;
-  BOOLEAN                         Iso639Language;
   CHAR8                           *Language;
   EFI_STATUS                      RetStatus;
   EFI_STATUS                      Status;
