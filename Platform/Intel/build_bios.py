@@ -219,7 +219,7 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
 
         # Add BaseTools shell wrappers to the PATH
         config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
-                                    "BinPipWrappers", "PosixLike") + \
+                                    "BinWrappers", "PosixLike") + \
                                         os.pathsep + config["PATH"]
 
     # Make BaseTools source
