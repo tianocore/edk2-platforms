@@ -1,0 +1,66 @@
+## @file
+#  Platform DXE driver for Morello SoC Platform
+#
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PlatformDxe
+  FILE_GUID                      = D75DB98F-5750-47C8-A46F-3140965537FC
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ArmMorelloEntryPoint
+
+[Sources.common]
+  I2cBusHdmi.c
+  I2cBusHdmi.h
+  PlatformDxeSoc.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  OvmfPkg/OvmfPkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  DebugLib
+  HobLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEfiRamDiskProtocolGuid
+  gEfiI2cIoProtocolGuid                              ## CONSUMES
+  gEfiI2cMasterProtocolGuid                          ## CONSUMES
+  gArmMorelloPlatformGopTda19988Guid                 ## PRODUCES
+  gCadenceI2cGuid                                    ## PRODUCES
+  gEfiI2cBusConfigurationManagementProtocolGuid      ## PRODUCES
+  gEfiI2cEnumerateProtocolGuid                       ## PRODUCES
+  gTda19988ProtocolGuid                              ## NOTIFY
+
+[FeaturePcd]
+  gArmMorelloTokenSpaceGuid.PcdRamDiskSupported
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerInputClk
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusCadanceControllerIoBase
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Cec
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusDeviceAddrTda19988Hdmi
+  gArmMorelloTokenSpaceGuid.PcdHdmiI2cBusSpeed
+  gArmMorelloTokenSpaceGuid.PcdRamDiskBase
+  gArmMorelloTokenSpaceGuid.PcdRamDiskSize
+
+[Depex]
+  gEfiDriverBindingProtocolGuid AND gEfiRamDiskProtocolGuid
+
+[Guids]
+  gEdkiiPlatformHasDeviceTreeGuid                    ## PRODUCES ## PROTOCOL
+  gEfiVirtualCdGuid                                  ## SOMETIMES_CONSUMES   ## GUID
+  gFdtHobGuid
+  gTda19988Guid

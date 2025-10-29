@@ -1,23 +1,32 @@
 ## @file
 #  Component description file for Morello Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
+[Defines]
+  NETWORK_TLS_ENABLE             = FALSE
+  NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
+  DEFINE LPI_EN                  = TRUE
+
+  !include NetworkPkg/Network.dsc.inc
+  !include Platform/ARM/Morello/MorelloCap.dsc.inc
+
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLib.inf
   ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
   BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
 
   # Ramdisk Support
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
+  OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
 
 [LibraryClasses.common.SEC]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -48,9 +57,7 @@
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
 
 [LibraryClasses.common.DXE_DRIVER]
-  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
-  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
-  PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
+  FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
@@ -73,12 +80,23 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
+
+  !if $(LPI_EN) == TRUE
+    # Allow use of LPI in the response to _OSC method call
+    gArmMorelloTokenSpaceGuid.PcdOscLpiEnable|1
+  !endif
+
+  # Size == 0 means to disable the GOP
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize|0x1000000
+
+  # System Memory (2GB - 16MB - The GOP frame-buffer)
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000 - gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferSize
+
+  gArmMorelloTokenSpaceGuid.PcdPlatformGopBufferBase|gArmTokenSpaceGuid.PcdSystemMemoryBase + gArmTokenSpaceGuid.PcdSystemMemorySize
+
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-
-  # System Memory (2GB - 16MB)
-  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x7F000000
 
   # Secondary DDR memory
   gArmMorelloTokenSpaceGuid.PcdDramBlock2Base|0x8080000000
@@ -98,7 +116,7 @@
   # PL011 Serial Debug UART (DBG2)
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1C0A0000
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|50000000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
 
   # SBSA Watchdog
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|93
@@ -116,20 +134,39 @@
   # ACPI Table Version
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
 
-  # Runtime Variable storage
-  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
-  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+  # Firmware revision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000000
+
+  # SMBIOS entry point version
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0305
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
 
   # RAM Disk
   gArmMorelloTokenSpaceGuid.PcdRamDiskBase|0x88000000
   gArmMorelloTokenSpaceGuid.PcdRamDiskSize|0x18000000
 
   # PCIe
+  # PCIe PCDs defaults are for SoC and FVP overrides it
+  gArmTokenSpaceGuid.PcdPciBusMin|0
+  gArmTokenSpaceGuid.PcdPciBusMax|255
+  gArmTokenSpaceGuid.PcdPciBusCount|256
+  gArmTokenSpaceGuid.PcdPciIoBase|0x0
+  gArmTokenSpaceGuid.PcdPciIoSize|0x00400000
+  gArmTokenSpaceGuid.PcdPciIoMaxBase|0x003FFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x6F000000
+  gArmTokenSpaceGuid.PcdPciMmio32Base|0x60000000
+  gArmTokenSpaceGuid.PcdPciMmio32Size|0x0F000000
+  gArmTokenSpaceGuid.PcdPciMmio32MaxBase|0x6EFFFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation|0x0
+  gArmTokenSpaceGuid.PcdPciMmio64Base|0x900000000
+  gArmTokenSpaceGuid.PcdPciMmio64MaxBase|0x28BFFFFFFF
+  gArmTokenSpaceGuid.PcdPciMmio64Size|0x1FC0000000
+  gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation|0x0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x28C0000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceSize|0x10000000
+  gArmTokenSpaceGuid.PcdPciConfigurationSpaceLimit|0x28CFFFFFFF
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
 
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|0
@@ -155,6 +192,7 @@
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
+  Platform/ARM/Morello/Drivers/MorelloHwConfigPei/MorelloHwConfigPei.inf
 
   # DXE
   MdeModulePkg/Core/Dxe/DxeMain.inf {
@@ -182,11 +220,9 @@
   MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
-    <LibraryClasses>
-      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
-      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  }
+
+  # Platform driver
+  EmbeddedPkg/Drivers/FdtClientDxe/FdtClientDxe.inf
 
   # ACPI Support
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
@@ -221,8 +257,8 @@
   # PCI Support
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
   MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf {
-    <PcdsFixedAtBuild>
-      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8010004F
+   <PcdsFixedAtBuild>
+     gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8010004F
   }
 
   # AHCI Support
@@ -231,3 +267,7 @@
 
   # SATA Controller
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  # Network tools
+  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
