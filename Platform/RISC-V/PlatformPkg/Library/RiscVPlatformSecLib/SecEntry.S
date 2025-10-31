@@ -5,6 +5,7 @@
 
  */
 
+#include <Library/RiscVPlatformSecLib.h>
 #include <Register/RiscV64/RiscVImpl.h>
 
 ASM_FUNC (_ModuleEntryPoint)
@@ -12,7 +13,7 @@ ASM_FUNC (_ModuleEntryPoint)
 li    a2, FixedPcdGet64 (PcdTemporaryRamBase64)
 li    a3, FixedPcdGet32 (PcdTemporaryRamSize)
 
-/* Reserve region to store handoff data
+/* Reserve region to store handoff data */
 li    a4, SEC_HANDOFF_DATA_RESERVE_SIZE
 sub   a3, a3, a4
 
