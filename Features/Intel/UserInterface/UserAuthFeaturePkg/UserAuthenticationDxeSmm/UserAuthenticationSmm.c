@@ -363,6 +363,7 @@ IsPasswordStrong (
   HasUpperCase = FALSE;
   HasNumber = FALSE;
   HasSymbol = FALSE;
+  PrevChar = '\0';
   for (Index = 0; Index < PasswordSize - 1; Index++) {
     if (Password[Index] >= 'a' && Password[Index] <= 'z') {
       HasLowerCase = TRUE;
