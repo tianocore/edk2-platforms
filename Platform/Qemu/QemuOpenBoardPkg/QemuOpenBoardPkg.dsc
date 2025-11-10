@@ -142,17 +142,21 @@
   DebugLib                | MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
   PciCf8Lib               | MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
   TimerLib                | OvmfPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
+  AmdSvsmLib|UefiCpuPkg/Library/AmdSvsmLibNull/AmdSvsmLibNull.inf
 
 [LibraryClasses.Common.DXE_CORE]
   TimerLib                | OvmfPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
 
 [LibraryClasses.Common.DXE_DRIVER, LibraryClasses.Common.DXE_RUNTIME_DRIVER, LibraryClasses.Common.DXE_SMM_DRIVER, LibraryClasses.Common.UEFI_DRIVER, LibraryClasses.Common.UEFI_APPLICATION, LibraryClasses.Common.SMM_CORE]
   TimerLib                | OvmfPkg/Library/AcpiTimerLib/DxeAcpiTimerLib.inf
+  AcpiPlatformLib         | OvmfPkg/Library/AcpiPlatformLib/DxeAcpiPlatformLib.inf
   QemuFwCfgLib            | OvmfPkg/Library/QemuFwCfgLib/QemuFwCfgDxeLib.inf
+  QemuFwCfgSimpleParserLib| OvmfPkg/Library/QemuFwCfgSimpleParserLib/QemuFwCfgSimpleParserLib.inf
   MemEncryptSevLib        | OvmfPkg/Library/BaseMemEncryptSevLib/DxeMemEncryptSevLib.inf
   MemEncryptTdxLib        | OvmfPkg/Library/BaseMemEncryptTdxLib/BaseMemEncryptTdxLibNull.inf
   Tcg2PhysicalPresenceLib | OvmfPkg/Library/Tcg2PhysicalPresenceLibNull/DxeTcg2PhysicalPresenceLib.inf
   ResetSystemLib          | OvmfPkg/Library/ResetSystemLib/DxeResetSystemLib.inf
+  PlatformBootManagerCommonLib | OvmfPkg/Library/PlatformBootManagerCommonLib/PlatformBootManagerCommonLib.inf
 
 [LibraryClasses.Common.SEC]
   DebugLib                | OvmfPkg/Library/PlatformDebugLibIoPort/PlatformRomDebugLibIoPort.inf
