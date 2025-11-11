@@ -69,3 +69,8 @@
 
   # Platform driver
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeFvp.inf
+
+  #
+  # Semi-hosting filesystem
+  #
+  ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
