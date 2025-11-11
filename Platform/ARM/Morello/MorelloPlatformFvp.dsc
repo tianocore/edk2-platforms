@@ -55,12 +55,12 @@
 [PcdsFixedAtBuild.common]
   # Virtio Disk
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkBaseAddress|0x1C170000
-  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSize|0x200
+  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSize|0x10000
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkInterrupt|128
 
   # Virtio Net
   gArmMorelloTokenSpaceGuid.PcdVirtioNetBaseAddress|0x1C180000
-  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x200
+  gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x10000
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|134
 
 [Components.common]
