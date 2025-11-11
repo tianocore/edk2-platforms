@@ -156,6 +156,10 @@
   #
   gArmMorelloTokenSpaceGuid.PcdCsComponentSize|0x1000|UINT32|0x00000058
 
+  #shell
+  gEfiShellPkgTokenSpaceGuid.PcdShellDefaultDelay|0|UINT32|0x00000059
+  gEfiShellPkgTokenSpaceGuid.PcdPlatformBootTimeOut|0|UINT32|0x0000005A
+
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdRamDiskSupported|FALSE|BOOLEAN|0x0000002F
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|FALSE|BOOLEAN|0x00000030

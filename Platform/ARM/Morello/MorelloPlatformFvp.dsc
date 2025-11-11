@@ -81,6 +81,8 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
+  gEfiShellPkgTokenSpaceGuid.PcdShellDefaultDelay|0x0
+  gEfiShellPkgTokenSpaceGuid.PcdPlatformBootTimeOut|0x0
 
 [Components.common]
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
