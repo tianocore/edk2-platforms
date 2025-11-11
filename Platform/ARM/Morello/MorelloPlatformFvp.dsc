@@ -120,3 +120,8 @@
 
   # SATA Controller
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  #
+  # Semi-hosting filesystem
+  #
+  ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
