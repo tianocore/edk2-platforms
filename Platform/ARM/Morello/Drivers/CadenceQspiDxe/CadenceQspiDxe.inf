@@ -1,0 +1,71 @@
+## @file
+#  NOR flash DXE
+#
+#  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = CadenceQspiDxe
+  FILE_GUID                      = 45F7D21F-CD6F-4566-BC5B-C72E97E6897D
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 0.1
+  ENTRY_POINT                    = NorFlashInitialise
+
+[Sources]
+  CadenceQspiDxe.c
+  NorFlash.c
+  NorFlash.h
+  NorFlashFvb.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/ARM.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  DxeServicesTableLib
+  HobLib
+  IoLib
+  MemoryAllocationLib
+  NorFlashInfoLib
+  NorFlashPlatformLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeLib
+  UefiRuntimeServicesTableLib
+
+[Guids]
+  gEdkiiNvVarStoreFormattedGuid
+  gEfiAuthenticatedVariableGuid
+  gEfiEventVirtualAddressChangeGuid
+  gEfiSystemNvDataFvGuid
+  gEfiVariableGuid
+  gEfiGlobalVariableGuid
+
+[Protocols]
+  gEfiDevicePathProtocolGuid
+  gEfiFirmwareVolumeBlockProtocolGuid
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdCadenceQspiDxeRegBaseAddress
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+
+[Depex]
+  gEfiCpuArchProtocolGuid

@@ -1,0 +1,57 @@
+## @file
+#  PCI Host Bridge Library instance for ARM Morello SoC platform.
+#
+#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PciHostBridgeLib
+  FILE_GUID                      = 82f5bd18-4e07-11ec-81d3-0242ac130003
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+#
+# The following information is for reference only and not required by the build
+# tools.
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  PciHostBridgeLibSoc.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdPciBusMax
+  gArmTokenSpaceGuid.PcdPciBusMin
+  gArmTokenSpaceGuid.PcdPciIoBase
+  gArmTokenSpaceGuid.PcdPciIoSize
+  gArmTokenSpaceGuid.PcdPciMmio32Base
+  gArmTokenSpaceGuid.PcdPciMmio32Size
+  gArmTokenSpaceGuid.PcdPciMmio64Base
+  gArmTokenSpaceGuid.PcdPciMmio64Size
+
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMin
+  gArmMorelloTokenSpaceGuid.PcdCcixBusMax
+  gArmMorelloTokenSpaceGuid.PcdCcixIoBase
+  gArmMorelloTokenSpaceGuid.PcdCcixIoSize
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Base
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio32Size
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Base
+  gArmMorelloTokenSpaceGuid.PcdCcixMmio64Size
+
+[Protocols]
+  gEfiCpuIo2ProtocolGuid          ## CONSUMES
+
+[Depex]
+  gEfiCpuIo2ProtocolGuid

@@ -1,0 +1,65 @@
+## @file
+#  This driver installs SMBIOS information for Arm Morello System
+#  Development Platform
+#  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = SmbiosPlatformDxe
+  FILE_GUID                      = 86e0aa8b-4f8d-44a5-a140-1f693d529c76
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmbiosTableEntryPoint
+
+[Sources]
+  SmbiosPlatformDxe.c
+  Type0BiosInformation.c
+  Type1SystemInformation.c
+  Type3SystemEnclosure.c
+  Type4ProcessorInformation.c
+  Type7CacheInformation.c
+  Type16PhysicalMemoryArray.c
+  Type17MemoryDevice.c
+  Type19MemoryArrayMappedAddress.c
+  Type32SystemBootInformation.c
+  Type45FirmwareInventoryInformation.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  ArmLib
+  ArmSmcLib
+  DebugLib
+  HobLib
+  PrintLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gArmMorelloFirmwareVersionGuid
+  gArmMorelloPlatformInfoDescriptorGuid
+  gEfiGlobalVariableGuid
+
+[FixedPcd]
+  gArmPlatformTokenSpaceGuid.PcdClusterCount
+  gArmPlatformTokenSpaceGuid.PcdCoreCount
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+  gArmMorelloTokenSpaceGuid.PcdDramBlock2Base
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                      # PROTOCOL ALWAYS_CONSUMED
+
+[Guids]
+
+[Depex]
+  gEfiSmbiosProtocolGuid
