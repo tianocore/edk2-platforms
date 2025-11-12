@@ -164,6 +164,9 @@ READ_LOCK_STATUS   = TRUE
   # SATA Controller
   INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
+  #Semi-hosting file system
+  INF ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
 BlockSize          = 0x1000

@@ -57,7 +57,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Name(_UID, 1)
 
       Name(_CRS, ResourceTemplate() {
-        Memory32Fixed(ReadWrite, 0x1C180000, 0x00000200)
+        Memory32Fixed(ReadWrite, 0x1C180000, 0x00010000)
         Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 134 }
       })
     }
@@ -68,7 +68,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Name(_UID, 2)
 
       Name(_CRS, ResourceTemplate() {
-        Memory32Fixed(ReadWrite, 0x1C190000, 0x00000200)
+        Memory32Fixed(ReadWrite, 0x1C190000, 0x00010000)
         Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 133 }
       })
     }
@@ -79,7 +79,7 @@ DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "MORELLO", CFG_MGR_OEM_REVISION
       Name(_UID, 3)
 
       Name(_CRS, ResourceTemplate() {
-        Memory32Fixed(ReadWrite, 0x1C1A0000, 0x00000200)
+        Memory32Fixed(ReadWrite, 0x1C1A0000, 0x00010000)
         Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 135 }
       })
     }
