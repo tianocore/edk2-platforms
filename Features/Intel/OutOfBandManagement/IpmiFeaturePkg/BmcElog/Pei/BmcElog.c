@@ -42,6 +42,7 @@ EFI_PEI_NOTIFY_DESCRIPTOR  mNotifyList[] = {
 
 **/
 EFI_STATUS
+EFIAPI
 EfiSetBmcElogData (
   IN  EFI_SM_ELOG_REDIR_PPI  *This,
   IN  UINT8                  *ElogData,
@@ -85,6 +86,7 @@ EfiSetBmcElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiGetBmcElogData (
   IN EFI_SM_ELOG_REDIR_PPI  *This,
   IN OUT UINT8              *ElogData,
@@ -121,6 +123,7 @@ EfiGetBmcElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiEraseBmcElogData (
   IN EFI_SM_ELOG_REDIR_PPI  *This,
   IN EFI_SM_ELOG_TYPE       DataType,
@@ -162,6 +165,7 @@ EfiEraseBmcElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiActivateBmcElog (
   IN EFI_SM_ELOG_REDIR_PPI  *This,
   IN EFI_SM_ELOG_TYPE       DataType,
