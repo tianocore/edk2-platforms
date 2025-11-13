@@ -16,7 +16,7 @@
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT  10
+#define PLAT_ACPI_TABLE_COUNT  11
 
 /** A helper macro for mapping a reference token
 */

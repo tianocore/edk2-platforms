@@ -205,6 +205,15 @@ HandleCmObjectRefByToken (
 */
 #define SOC_RESOURCE_COUNT  1
 
+/** The number of Lpi states for the platform:
+    - two for the cores
+    - one for the clusters
+*/
+#define CORES_LPI_STATE_COUNT           2
+#define CLUSTERS_LPI_STATE_COUNT        1
+#define LPI_STATE_COUNT                 (CORES_LPI_STATE_COUNT +              \
+                                         CLUSTERS_LPI_STATE_COUNT)
+
 /** A structure describing the platform configuration
     manager repository information
 */
@@ -266,6 +275,15 @@ typedef struct CommonPlatformRepositoryInfo {
 
   // SoC Resources
   CM_ARCH_COMMON_OBJ_REF                          SocResources[SOC_RESOURCE_COUNT];
+
+  // Low Power Idle state information (LPI) for all cores/clusters
+  CM_ARCH_COMMON_LPI_INFO                         LpiInfo[LPI_STATE_COUNT];
+
+  // Clusters Low Power Idle state references (LPI)
+  CM_ARCH_COMMON_OBJ_REF                          ClustersLpiRef[CLUSTERS_LPI_STATE_COUNT];
+
+  // Cores Low Power Idle state references (LPI)
+  CM_ARCH_COMMON_OBJ_REF                          CoresLpiRef[CORES_LPI_STATE_COUNT];
 } EDKII_COMMON_PLATFORM_REPOSITORY_INFO;
 
 #endif // CONFIGURATION_MANAGER_H_
