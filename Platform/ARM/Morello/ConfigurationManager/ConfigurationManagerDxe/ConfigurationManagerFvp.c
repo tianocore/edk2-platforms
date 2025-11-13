@@ -80,6 +80,14 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO  MorelloFvpRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdIort),
       NULL
     },
+    // SSDT Table (CPU Topology)
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtCpuTopology),
+      NULL,
+      SIGNATURE_64 ('C','P','U','-','T','O','P','O')
+    },
     // PCI MCFG Table
     {
       EFI_ACPI_6_3_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,

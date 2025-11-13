@@ -169,7 +169,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  Flags
       PROC_NODE_FLAGS (
         EFI_ACPI_6_3_PPTT_PACKAGE_PHYSICAL,
-        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
         EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
@@ -181,7 +181,9 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       SOC_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (SocResources)
+      REFERENCE_TOKEN (SocResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      CM_NULL_TOKEN
     },
 
     // Cluster0
@@ -191,7 +193,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  Flags
       PROC_NODE_FLAGS (
         EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
-        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
         EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
@@ -203,7 +205,9 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (ClusterResources)
+      REFERENCE_TOKEN (ClusterResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
     },
     // Cluster1
     {
@@ -212,7 +216,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  Flags
       PROC_NODE_FLAGS (
         EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
-        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,
+        EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,
         EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
@@ -224,7 +228,9 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CLUSTER_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (ClusterResources)
+      REFERENCE_TOKEN (ClusterResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
     },
     // Cluster0 - Cpu0
     {
@@ -236,7 +242,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
         EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
-        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
         ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
@@ -245,7 +251,9 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (CoreResources)
+      REFERENCE_TOKEN (CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     // Cluster0 - Cpu1
     {
@@ -257,7 +265,7 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
         EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
-        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
         ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[1]), // -> 'cluster in Cluster0
@@ -266,19 +274,21 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (CoreResources)
+      REFERENCE_TOKEN (CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     // Cluster1 - Cpu0
     {
       // CM_OBJECT_TOKEN  Token
-      REFERENCE_TOKEN (ProcHierarchyInfo[3]),
+      REFERENCE_TOKEN (ProcHierarchyInfo[5]),
       // UINT32  Flags
       PROC_NODE_FLAGS (
         EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
         EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
-        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
         ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
@@ -287,20 +297,22 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (CoreResources)
+      REFERENCE_TOKEN (CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
 
     // Cluster1 - Cpu1
     {
       // CM_OBJECT_TOKEN  Token
-      REFERENCE_TOKEN (ProcHierarchyInfo[4]),
+      REFERENCE_TOKEN (ProcHierarchyInfo[6]),
       // UINT32  Flags
       PROC_NODE_FLAGS (
         EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,
         EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,
         EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,
         EFI_ACPI_6_3_PPTT_NODE_IS_LEAF,
-        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_NOT_IDENTICAL
+        EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL
         ),
       // CM_OBJECT_TOKEN  ParentToken
       REFERENCE_TOKEN (ProcHierarchyInfo[2]), // -> 'cluster in Cluster1
@@ -309,7 +321,9 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
       // UINT32  NoOfPrivateResources
       CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (CoreResources)
+      REFERENCE_TOKEN (CoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
   },
 
@@ -404,6 +418,84 @@ EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo = {
   // Resources private to the SoC
   {
     { REFERENCE_TOKEN (CacheInfo[4]) }  // -> slc for SoC
+  },
+
+  // Low Power Idle state information (LPI) for all cores/clusters
+  {
+    { // LpiInfo[0] -> Clusters CluPwrDn
+      2500,         // MinResidency
+      1150,         // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      0,            // ResCntFreq
+      0,            // EnableParentState
+      TRUE,         // IsInteger
+      0x00000020,   // IntegerEntryMethod
+      // RegisterEntryMethod (NULL, use IntegerEntryMethod)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "LPI2-Cluster" // StateName
+    },
+    // LpiInfo[1] -> Cores WFI
+    {
+      1,            // MinResidency
+      1,            // WorstCaseWakeLatency
+      1,            // Flags
+      0,            // ArchFlags
+      0,            // ResCntFreq
+      0,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+        EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+        32,         // RegisterBitWidth
+        0,          // RegisterBitOffset
+        3,          // AccessSize
+        0xFFFFFFFF  // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "LPI1-Core" // StateName
+    },
+    // LpiInfo[2] -> Cores CorePwrDn
+    {
+      150,          // MinResidency
+      350,          // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      0,            // ResCntFreq
+      1,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+          EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+          32,        // RegisterBitWidth
+          0,         // RegisterBitOffset
+          3,         // AccessSize
+          0x40000002 // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "LPI3-Core" // StateName
+    },
+  },
+  // Cluster Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[0]) }
+  },
+  // Cores Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[1]) },
+    { REFERENCE_TOKEN (LpiInfo[2]) },
   },
 };
 
@@ -655,6 +747,52 @@ GetGicCInfo (
   return EFI_NOT_FOUND;
 }
 
+/** Return Lpi State Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_LPI_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetLpiInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_COMMON_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
+
+  for (ObjIndex = 0; ObjIndex < LPI_STATE_COUNT; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->LpiInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->LpiInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->LpiInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
 /** Return a list of Configuration Manager object references pointed to by the
     given input token.
 
@@ -706,6 +844,19 @@ GetCmObjRefs (
     CmObject->Size  = sizeof (CommonPlatRepo->SocResources);
     CmObject->Data  = (VOID *)&CommonPlatRepo->SocResources;
     CmObject->Count = ARRAY_SIZE (CommonPlatRepo->SocResources);
+    return EFI_SUCCESS;
+  }
+
+  if (SearchToken == (CM_OBJECT_TOKEN)&CommonPlatRepo->ClustersLpiRef) {
+    CmObject->Size = sizeof (CommonPlatRepo->ClustersLpiRef);
+    CmObject->Data = (VOID*)&CommonPlatRepo->ClustersLpiRef;
+    CmObject->Count = ARRAY_SIZE (CommonPlatRepo->ClustersLpiRef);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&CommonPlatRepo->CoresLpiRef) {
+    CmObject->Size = sizeof (CommonPlatRepo->CoresLpiRef);
+    CmObject->Data = (VOID*)&CommonPlatRepo->CoresLpiRef;
+    CmObject->Count = ARRAY_SIZE (CommonPlatRepo->CoresLpiRef);
     return EFI_SUCCESS;
   }
 
@@ -881,6 +1032,19 @@ GetArchCommonNameSpaceObject (
                    CmObject
                    );
         break;
+
+    case EArchCommonObjLpiInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 NULL,
+                 0,
+                 0,
+                 Token,
+                 GetLpiInfo,
+                 CmObject
+                 );
+      break;
 
       case EArchCommonObjCacheInfo:
         Status = HandleCmObject (
