@@ -2,7 +2,7 @@
   IPMI Command - NetFnChassis.
 
   Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -10,7 +10,7 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IpmiLib.h>
-
+#include <Library/MemoryAllocationLib.h>
 #include <IndustryStandard/Ipmi.h>
 
 /**
@@ -277,4 +277,140 @@ IpmiGetSystemBootOptions (
              &ResponseDataSize
              );
   return Status;
+}
+
+/**
+  Write data to the IPMI boot initiator mailbox helper function.
+  This function calls the IpmiSetSystemBootOptions function with
+  parameter 7 to write a maximum of 16 bytes to a selector block
+  in the boot initiator mailbox.
+
+  @param[in] SetSelector    Set selector to write to
+  @param[in] Data           Data to write to the mailbox
+  @param[in] Size           Size of Data buffer in bytes
+
+  @retval EFI_SUCCESS   On successfull IPMI transaction
+  @retval EFI_INVALID   Data or Size is not valid
+  @retval Other         On failing IPMI transaction
+**/
+EFI_STATUS
+EFIAPI
+IpmiWriteBootInitiatorMailbox (
+  IN UINT8  SetSelector,
+  IN UINT8  *Data,
+  IN UINTN  Size
+  )
+{
+  UINT8                           *SetBootOptionsBuffer;
+  IPMI_SET_BOOT_OPTIONS_REQUEST   *SetBootOptionsRequest;
+  IPMI_SET_BOOT_OPTIONS_RESPONSE  SetBootOptionsResponse;
+  EFI_STATUS                      Status;
+
+  if ((Data == NULL) || (Size == 0) || (Size > 16)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  ZeroMem (&SetBootOptionsResponse, sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE));
+
+  SetBootOptionsBuffer = (UINT8 *)AllocateZeroPool (sizeof (*SetBootOptionsRequest) + sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7));
+  if (SetBootOptionsBuffer == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  SetBootOptionsBuffer[sizeof (*SetBootOptionsRequest)] = SetSelector;
+  CopyMem (&SetBootOptionsBuffer[sizeof (*SetBootOptionsRequest) + 1], Data, Size);
+
+  SetBootOptionsRequest                                           = (IPMI_SET_BOOT_OPTIONS_REQUEST *)&SetBootOptionsBuffer[0];
+  SetBootOptionsRequest->ParameterValid.Bits.ParameterSelector    = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_MAILBOX;
+  SetBootOptionsRequest->ParameterValid.Bits.MarkParameterInvalid = 0; // mark as valid parameter
+
+  Status = IpmiSetSystemBootOptions (SetBootOptionsRequest, &SetBootOptionsResponse);
+  DEBUG ((DEBUG_INFO, "IpmiBootInitiator mailbox WRITE completion code 0x%X\n", SetBootOptionsResponse.CompletionCode));
+
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Writing IPMI Boot Initiator mailbox unsuccessfull, Status - %r\n", Status));
+  }
+
+  FreePool (SetBootOptionsBuffer);
+  return Status;
+}
+
+/**
+  Read data from the IPMI boot initiator mailbox helper function.
+  This function calls the IpmiGetSystemBootOptions function with
+  parameter 7 to read a 16 byte selector block in the boot initiator
+  mailbox. ReadData is a 16 byte array and is required to be freed
+  by the caller.
+
+  @param[in]  SetSelector    Set selector to read from
+  @param[out] ReadData       Data read from the Boot Initiator Mailbox
+
+  @retval EFI_SUCCESS   On successfull IPMI transaction
+  @retval EFI_INVALID   ReadData is NULL
+  @retval Other         On failing IPMI transaction
+**/
+EFI_STATUS
+EFIAPI
+IpmiReadBootInitiatorMailbox (
+  IN UINT8   SetSelector,
+  OUT UINT8  **ReadData
+  )
+{
+  UINT8                                   *GetBootOptionsBuffer;
+  IPMI_GET_BOOT_OPTIONS_REQUEST           BootOptionsRequest;
+  IPMI_GET_BOOT_OPTIONS_RESPONSE          *BootOptionsResponse;
+  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7  *BootOptionsParameterData;
+  UINT8                                   *BlockData;
+  EFI_STATUS                              Status;
+  UINT8                                   Count;
+
+  if (ReadData == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  ZeroMem (&BootOptionsRequest, sizeof (IPMI_GET_BOOT_OPTIONS_REQUEST));
+  GetBootOptionsBuffer = AllocateZeroPool (sizeof (BootOptionsResponse) + sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7));
+  if (GetBootOptionsBuffer == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  BlockData = AllocateZeroPool (sizeof (BootOptionsParameterData->BlockData));
+  if (BlockData == NULL) {
+    FreePool (GetBootOptionsBuffer);
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  // setup parameter data
+  BootOptionsRequest.ParameterSelector.Bits.ParameterSelector = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_MAILBOX;
+  BootOptionsRequest.SetSelector                              = SetSelector;
+  BootOptionsResponse                                         = (IPMI_GET_BOOT_OPTIONS_RESPONSE *)&GetBootOptionsBuffer[0];
+  Status                                                      = IpmiGetSystemBootOptions (&BootOptionsRequest, BootOptionsResponse);
+
+  BootOptionsParameterData = (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7 *)BootOptionsResponse->ParameterData;
+
+  // A parameter is invalid when a value of 1 is returned
+  if (EFI_ERROR (Status) || BootOptionsResponse->ParameterValid.Bits.ParameterValid) {
+    DEBUG ((
+      DEBUG_INFO,
+      "Reading IPMI Boot Initiator mailbox unsuccessful, Status - %r Parameter Valid = %d\n",
+      Status,
+      BootOptionsResponse->ParameterValid.Bits.ParameterValid
+      ));
+    FreePool (BlockData);
+    FreePool (GetBootOptionsBuffer);
+    return Status;
+  }
+
+  DEBUG ((DEBUG_VERBOSE, "IPMI Mailbox Read Data: "));
+  for (Count = 0; Count < 16; Count++) {
+    DEBUG ((DEBUG_VERBOSE, "%x ", BootOptionsParameterData->BlockData[Count]));
+  }
+
+  DEBUG ((DEBUG_VERBOSE, "\n"));
+
+  // Copy data over to buffer and return this
+  CopyMem (BlockData, BootOptionsParameterData->BlockData, sizeof (BootOptionsParameterData->BlockData));
+  *ReadData = BlockData;
+  FreePool (GetBootOptionsBuffer);
+  return EFI_SUCCESS;
 }
