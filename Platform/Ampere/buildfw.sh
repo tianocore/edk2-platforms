@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 ##
 # @file
 #  Build script for platforms with an Altra(R) CPU from Ampere(R).
@@ -9,7 +9,6 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
-
 set -o errexit
 
 tfa_usage () {
@@ -24,6 +23,21 @@ tfa_usage () {
   echo "  ${MAKE_COMMAND} fiptool"
   echo "  ${MAKE_COMMAND} certtool"
   echo "  export PATH=\$PWD/tools/cert_create:\$PWD/tools/fiptool:\$PATH"
+  echo "  popd"
+  exit 1
+}
+
+efitools_usage () {
+  echo -n "cert-to-efi-sig-list or sign-efi-sig-list could not be found. If running on a "
+  echo -n "Debian-based distro (e.g. Ubuntu) you can get them by "
+  echo    "installing the efitools package."
+  echo -n "Otherwise, you can build them and add them to the \$PATH by "
+  echo    "running the following commands:"
+  echo
+  echo "  git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/jejb/efitools.git"
+  echo "  pushd efitools"
+  echo "  ${MAKE_COMMAND}"
+  echo "  export PATH=\$PWD/cert-to-efi-sig-list:\$PWD/sign-efi-sig-list:\$PATH"
   echo "  popd"
   exit 1
 }
@@ -84,11 +98,11 @@ ctrl_c() {
   popd
 }
 
-TFA_VERSION=2.10.20230517
-SCP_VERSION=2.10.20230517
+TFA_VERSION=${TFA_VERSION:-2.10.20230517}
+SCP_VERSION=${SCP_VERSION:-2.10.20230517}
 
-TFA_SLIM=$PWD/altra_atf_signed_${TFA_VERSION}.slim
-SCP_SLIM=$PWD/altra_scp_signed_${SCP_VERSION}.slim
+TFA_SLIM=${TFA_SLIM:-$PWD/altra_atf_signed_${TFA_VERSION}.slim}
+SCP_SLIM=${SCP_SLIM:-$PWD/altra_scp_signed_${SCP_VERSION}.slim}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 ROOT_DIR=$(realpath ${SCRIPT_DIR}/../../..)
@@ -145,6 +159,14 @@ if ! command -v fiptool >/dev/null 2>&1; then
   tfa_usage
 fi
 
+if ! command -v cert-to-efi-sig-list >/dev/null 2>&1; then
+  efitools_usage
+fi
+
+if ! command -v sign-efi-sig-list >/dev/null 2>&1; then
+  efitools_usage
+fi
+
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Could not find python3. Please install the python3 package."
   exit 1
@@ -184,6 +206,7 @@ eval set -- ""
 
 BOARD_SETTINGS_CFG=edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}BoardSetting.cfg
 OUTPUT_BIN_DIR=$PWD/Build/${BOARD_NAME}
+EDK2_BUILD_DIR=$PWD/Build/${BOARD_NAME}
 OUTPUT_BOARD_SETTINGS_BIN=${OUTPUT_BIN_DIR}/$(basename ${BOARD_SETTINGS_CFG}).bin
 
 export PACKAGES_PATH=$PWD:$PWD/edk2:$PWD/edk2-non-osi:$PWD/edk2-platforms:$PWD/edk2-platforms/Features/Intel/Debugging:$PWD/edk2-platforms/Features:$PWD/edk2-platforms/Features/Intel
@@ -255,6 +278,15 @@ EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-TRUE}
 EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-TRUE}
 LINUXBOOT_FILE_IN_UEFI_EXTRA=${LINUXBOOT_FILE_IN_UEFI_EXTRA:-FALSE}
 
+if [ -z "${AMPERE_PLATFORM_DBB_KEY}" ]; then
+  AMPERE_PLATFORM_DBB_KEY="${SECUREBOOT_DIR}/keys/platform_key.priv"
+  export AMPERE_PLATFORM_DBB_KEY
+fi
+if [ -z "${AMPERE_PLATFORM_DBU_KEY}" ]; then
+  AMPERE_PLATFORM_DBU_KEY="${SECUREBOOT_DIR}/keys/update_key.priv"
+  export AMPERE_PLATFORM_DBU_KEY
+fi
+
 if [ "${BLDTYPE}" = "RELEASE" ]; then
   EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-FALSE}
 else
@@ -311,10 +343,10 @@ echo "#define CURRENT_FIRMWARE_VERSION_STRING L\"${FW_STR}\"" >> "${WORKSPACE}/e
 echo "#define LOWEST_SUPPORTED_FIRMWARE_VERSION 0x00000000" >> "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
 
 if [ -f "${SCP_SLIM}" ]; then
-  cp -vf "${SCP_SLIM}" "Build/${BOARD_NAME}/altra_scp.slim"
+  cp -vf "${SCP_SLIM}" "${OUTPUT_BIN_DIR}/altra_scp.slim"
 fi
 if [ -f "${TFA_SLIM}" ]; then
-  cp -vf "${TFA_SLIM}" "Build/${BOARD_NAME}/altra_atf.slim"
+  cp -vf "${TFA_SLIM}" "${OUTPUT_BIN_DIR}/altra_atf.slim"
 fi
 
 # shellcheck disable=SC2086
@@ -335,23 +367,37 @@ build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS}              
         -D HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE}                             \
         -D X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE}                         \
         -D SHELL_ENABLE=${EDK2_SHELL_ENABLE}                                       \
-        -Y COMPILE_INFO -y BuildReport.log                                         \
+        -y BuildReport.log                                         \
         -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}${LINUXBOOT}.dsc \
         ${EXTRA_BUILD_FLAGS}
 
 OUTPUT_BASENAME=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}
 
-OUTPUT_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_uefi_${BLDTYPE,,}_${VER}.bin
-OUTPUT_TFA_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}.bin
-OUTPUT_SPINOR_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_rom_${BLDTYPE,,}_${VER}.bin
+OUTPUT_UEFI_IMAGE=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_uefi_${BLDTYPE,,}_${VER}.bin
+OUTPUT_TFA_UEFI_IMAGE=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_tfa_uefi_${BLDTYPE,,}_${VER}.bin
+OUTPUT_UEFI_IMAGE_SIGNED="${OUTPUT_UEFI_IMAGE/'bin'/'dbu.sig.bin'}"
+OUTPUT_TFA_UEFI_IMAGE_SIGNED="${OUTPUT_TFA_UEFI_IMAGE/'bin'/'dbu.sig.bin'}"
+echo "OUTPUT_TFA_UEFI_IMAGE_SIGNED=${OUTPUT_TFA_UEFI_IMAGE_SIGNED}"
+OUTPUT_SPINOR_IMAGE=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_rom_${BLDTYPE,,}_${VER}.bin
 
-cp -v "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/BL33_${BOARD_NAME^^}_UEFI.fd" "${OUTPUT_UEFI_IMAGE}"
-cp -vf "${OUTPUT_UEFI_IMAGE}" "Build/${BOARD_NAME}/${BOARD_NAME,,}_uefi.bin"
+cp -v "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/BL33_${BOARD_NAME^^}_UEFI.fd" "${OUTPUT_UEFI_IMAGE}.unsigned"
+
+# Create BL33 content certificate
+cert_create -n --ntfw-nvctr 0 --key-alg rsa     \
+  --hash-alg sha384                             \
+  --nt-fw-key "${AMPERE_PLATFORM_DBB_KEY}"      \
+  --nt-fw-cert "${OUTPUT_UEFI_IMAGE}.crt"       \
+  --nt-fw "${OUTPUT_UEFI_IMAGE}.unsigned"
+# Create BL33 fip image
+fiptool --verbose create --nt-fw-cert "${OUTPUT_UEFI_IMAGE}.crt" --nt-fw  "${OUTPUT_UEFI_IMAGE}.unsigned" "${OUTPUT_UEFI_IMAGE}"
+rm -fr "${OUTPUT_UEFI_IMAGE}.crt" "${OUTPUT_UEFI_IMAGE}.unsigned"
+
+cp -vf "${OUTPUT_UEFI_IMAGE}" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_uefi.bin"
 
 if [ -n "${LINUXBOOT}" ] && [ "${LINUXBOOT_FILE_IN_UEFI_EXTRA}" = "TRUE" ]; then
-  OUTPUT_LINUXBOOT_UEFI_IMAGE=Build/${BOARD_NAME}/${BOARD_NAME,,}_linuxboot_uefiextra_${BLDTYPE,,}_${VER}.bin
-  if [ -f "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/LINUXBOOT_UEFI_EXTRA.fd" ]; then
-    cp -fv "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/LINUXBOOT_UEFI_EXTRA.fd" "${OUTPUT_LINUXBOOT_UEFI_IMAGE}"
+  OUTPUT_LINUXBOOT_UEFI_IMAGE=${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_linuxboot_uefiextra_${BLDTYPE,,}_${VER}.bin
+  if [ -f "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/LINUXBOOT_UEFI_EXTRA.fd" ]; then
+    cp -fv "${OUTPUT_BIN_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/LINUXBOOT_UEFI_EXTRA.fd" "${OUTPUT_LINUXBOOT_UEFI_IMAGE}"
   fi
 fi
 
@@ -359,6 +405,16 @@ if [ -f "${TFA_SLIM}" ]; then
   # Create a 2MB file with 0xff
   dd bs=1024 count=2048 if=/dev/zero | tr "\000" "\377" > "${OUTPUT_TFA_UEFI_IMAGE}"
   dd bs=1024 conv=notrunc if="${TFA_SLIM}" of="${OUTPUT_TFA_UEFI_IMAGE}"
+
+  # Create TFA certificate
+  cert_create -n --ntfw-nvctr 0 --key-alg rsa   \
+    --hash-alg sha384                           \
+    --nt-fw-key "${AMPERE_PLATFORM_DBB_KEY}"    \
+    --nt-fw-cert "${TFA_SLIM}.crt"              \
+    --nt-fw "${TFA_SLIM}"
+  dd bs=1 seek=1572864 conv=notrunc if="${TFA_SLIM}.crt" of="${OUTPUT_TFA_UEFI_IMAGE}"
+  rm -fr "${TFA_SLIM}.crt"
+
   dd bs=1 seek=2031616 conv=notrunc if="${OUTPUT_BOARD_SETTINGS_BIN}" of="${OUTPUT_TFA_UEFI_IMAGE}"
 fi
 
@@ -373,8 +429,28 @@ if [ -f "${TFA_SLIM}" ]; then
   dd bs=1M count=${SPI_SIZE_MB} if=/dev/zero | tr "\000" "\377" > "${OUTPUT_SPINOR_IMAGE}"
   # Write the code (TF-A+UEFI) area
   dd bs=1M seek=4 conv=notrunc if="${OUTPUT_TFA_UEFI_IMAGE}" of="${OUTPUT_SPINOR_IMAGE}"
+  # Write LinuxBoot FD at Uefi Extra region
+  if [ -n "${LINUXBOOT}" ] && [ "${LINUXBOOT_FILE_IN_UEFI_EXTRA}" = "TRUE" ] && \
+     [ -f "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/LINUXBOOT_UEFI_EXTRA.fd" ]; then
+    dd bs=1M seek=23 conv=notrunc if="${OUTPUT_LINUXBOOT_UEFI_IMAGE}" of="${OUTPUT_SPINOR_IMAGE}"
+  fi
 
-  cp -vf "${OUTPUT_TFA_UEFI_IMAGE}" "Build/${BOARD_NAME}/${BOARD_NAME,,}_tfa_uefi.bin"
+  dd bs=512 count=26623 if=/dev/zero | tr "\000" "\377" > "${OUTPUT_TFA_UEFI_IMAGE}.append"
+  dd bs=1024 seek=0 conv=notrunc if="${OUTPUT_TFA_UEFI_IMAGE}" of="${OUTPUT_TFA_UEFI_IMAGE}.append"
+  openssl dgst -sha384 -sign "${AMPERE_PLATFORM_DBU_KEY}" -out "${OUTPUT_TFA_UEFI_IMAGE}.sig" "${OUTPUT_TFA_UEFI_IMAGE}.append"
+  cat "${OUTPUT_TFA_UEFI_IMAGE}.sig" "${OUTPUT_TFA_UEFI_IMAGE}.append" > "${OUTPUT_TFA_UEFI_IMAGE}.signed"
+  cp -vf "${OUTPUT_TFA_UEFI_IMAGE}.signed" "${OUTPUT_TFA_UEFI_IMAGE_SIGNED}"
+  rm -f "${OUTPUT_TFA_UEFI_IMAGE}.signed" "${OUTPUT_TFA_UEFI_IMAGE}.append" "${OUTPUT_TFA_UEFI_IMAGE}.sig"
+  cp -vf "${OUTPUT_TFA_UEFI_IMAGE_SIGNED}" "${EDK2_BUILD_DIR}/${BOARD_NAME,,}_tfa_uefi.bin"
+else
+  echo "Create UEFI.fip signature with DBU key"
+  dd bs=1024 count=11264 if=/dev/zero | tr "\000" "\377" > "${OUTPUT_UEFI_IMAGE}.append"
+  dd bs=1024 seek=0 conv=notrunc if="${OUTPUT_UEFI_IMAGE}" of="${OUTPUT_UEFI_IMAGE}.append"
+  openssl dgst -sha384 -sign "${AMPERE_PLATFORM_DBU_KEY}" -out "${OUTPUT_UEFI_IMAGE}.sig" "${OUTPUT_UEFI_IMAGE}.append"
+  cat "${OUTPUT_UEFI_IMAGE}.sig" "${OUTPUT_UEFI_IMAGE}.append" > "${OUTPUT_UEFI_IMAGE}.signed"
+  cp -vf "${OUTPUT_UEFI_IMAGE}.signed" "${OUTPUT_UEFI_IMAGE_SIGNED}"
+  rm -f "${OUTPUT_UEFI_IMAGE}.signed" "${OUTPUT_UEFI_IMAGE}.append" "${OUTPUT_UEFI_IMAGE}.sig"
+  cp -vf "${OUTPUT_UEFI_IMAGE_SIGNED}" "${EDK2_BUILD_DIR}/${BOARD_NAME,,}_uefi.bin"
 fi
 
 if [ -f "${TFA_SLIM}" ]; then
@@ -394,20 +470,21 @@ if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
       -D MAJOR_VER=${MAJOR_VER}  \
       -D MINOR_VER=${MINOR_VER}  \
       -D INCLUDE_TFA_FW=${INCLUDE_TFA_FW} \
+      -y BuildReportCapsule.log                                         \
       -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
 
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
-  cp -vf "Build/${BOARD_NAME}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "Build/${BOARD_NAME}/"
-  mkdir Build/${BOARD_NAME}/Cab || true
-  rm -f Build/${BOARD_NAME}/Cab/*
-  METAINFO_FILE="Build/${BOARD_NAME}/Cab/firmware.metainfo.xml"
+  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
+  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "${OUTPUT_BIN_DIR}/"
+  mkdir ${OUTPUT_BIN_DIR}/Cab || true
+  rm -f ${OUTPUT_BIN_DIR}/Cab/*
+  METAINFO_FILE="${OUTPUT_BIN_DIR}/Cab/firmware.metainfo.xml"
   cp -vf "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/firmware.metainfo.xml" "${METAINFO_FILE}"
-  cp -vf "Build/${BOARD_NAME}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "Build/${BOARD_NAME}/Cab/firmware.bin"
+  cp -vf "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "${OUTPUT_BIN_DIR}/Cab/firmware.bin"
   sed -i "s/{URGENCY}/high/g" "${METAINFO_FILE}"
   sed -i "s/{FW_VERSION}/$(printf '%d' ${VER_HEX})/g" "${METAINFO_FILE}"
   sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
   sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
-  pushd "Build/${BOARD_NAME}/Cab"
+  pushd "${OUTPUT_BIN_DIR}/Cab"
   gcab -c -z -v "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab" ./*
   popd
 fi
@@ -423,7 +500,7 @@ if [ ! -e "${TFA_SLIM}" ]; then
   echo "Warning: the TF-A (Trusted Firmware) binary wasn't found. Only the UEFI firmware was built."
 fi
 
-echo "Done. Firmware is in Build/${BOARD_NAME}/"
+echo "Done. Firmware is in ${OUTPUT_BIN_DIR}/"
 
 if [ "${FLASHFW}" = "1" ]; then
     echo "Copying firmware to BMC and flashing host."
