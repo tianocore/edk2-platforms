@@ -21,7 +21,7 @@
 #include "ConfigurationManagerFvp.h"
 #include "Platform.h"
 
-EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
+EDKII_FVP_PLATFORM_REPOSITORY_INFO  MorelloFvpRepositoryInfo = {
   // ACPI Table List
   {
     // FADT Table
@@ -57,7 +57,7 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
       EFI_ACPI_6_3_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
       0, // Unused
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdDsdt),
-      (EFI_ACPI_DESCRIPTION_HEADER*)dsdtfvp_aml_code
+      (EFI_ACPI_DESCRIPTION_HEADER *)dsdtfvp_aml_code
     },
     // DBG2 Table
     {
@@ -80,6 +80,14 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdIort),
       NULL
     },
+    // SSDT Table (CPU Topology)
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtCpuTopology),
+      NULL,
+      SIGNATURE_64 ('C','P','U','-','T','O','P','O')
+    },
     // PCI MCFG Table
     {
       EFI_ACPI_6_3_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
@@ -92,7 +100,7 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
       EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
       0, // Unused
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdt),
-      (EFI_ACPI_DESCRIPTION_HEADER*)ssdtpcifvp_aml_code
+      (EFI_ACPI_DESCRIPTION_HEADER *)ssdtpcifvp_aml_code
     },
   },
 
@@ -104,7 +112,7 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
       0,
       // The physical address for the Interrupt Translation Service
       0x30060000,
-      //Proximity Domain
+      // Proximity Domain
       0
     },
     // GIC ITS - PCIe RC
@@ -113,7 +121,7 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
       1,
       // The physical address for the Interrupt Translation Service
       0x300A0000,
-      //Proximity Domain
+      // Proximity Domain
       0
     },
   },
@@ -265,14 +273,14 @@ EDKII_FVP_PLATFORM_REPOSITORY_INFO MorelloFvpRepositoryInfo = {
     // PCIe ECAM
     {
       FixedPcdGet64 (PcdPciExpressBaseAddress),  // Base Address
-      0x0,                                        // Segment Group Number
+      0x0,                                       // Segment Group Number
       FixedPcdGet32 (PcdPciBusMin),              // Start Bus Number
       FixedPcdGet32 (PcdPciBusMax)               // End Bus Number
     },
   },
 };
 
-EDKII_PLATFORM_REPOSITORY_INFO MorelloRepositoryInfo = {
+EDKII_PLATFORM_REPOSITORY_INFO  MorelloRepositoryInfo = {
   &CommonPlatformInfo,
   &MorelloFvpRepositoryInfo
 };
@@ -292,14 +300,14 @@ EDKII_PLATFORM_REPOSITORY_INFO MorelloRepositoryInfo = {
 EFI_STATUS
 EFIAPI
 GetDeviceIdMappingArray (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO     * PlatformRepo;
-  UINTN                                    Count;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
+  UINTN                               Count;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -315,18 +323,19 @@ GetDeviceIdMappingArray (
     Count = 2;
     DEBUG ((DEBUG_INFO, "DeviceIdMapping - Found DeviceIdMapping[0][0]\n"));
   } else if (Token ==
-             (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[1][0]) {
-    Count  = 1;
+             (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[1][0])
+  {
+    Count = 1;
     DEBUG ((DEBUG_INFO, "DeviceIdMapping - Found DeviceIdMapping[1][0]\n"));
   } else {
     DEBUG ((DEBUG_INFO, "DeviceIdMapping - Not Found\n"));
     return EFI_NOT_FOUND;
   }
 
-  CmObject->Data = (VOID*)Token;
+  CmObject->Data     = (VOID *)Token;
   CmObject->ObjectId = CmObjectId;
-  CmObject->Count = Count;
-  CmObject->Size = Count * sizeof (CM_ARM_ID_MAPPING);
+  CmObject->Count    = Count;
+  CmObject->Size     = Count * sizeof (CM_ARM_ID_MAPPING);
 
   return EFI_SUCCESS;
 }
@@ -346,15 +355,15 @@ GetDeviceIdMappingArray (
 EFI_STATUS
 EFIAPI
 GetItsIdentifierArray (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO     * PlatformRepo;
-  UINTN                                    Count;
-  UINTN                                    Index;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
+  UINTN                               Count;
+  UINTN                               Index;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -369,9 +378,9 @@ GetItsIdentifierArray (
   for (Index = 0; Index < Count; Index++) {
     if (Token == (CM_OBJECT_TOKEN)&PlatformRepo->ItsIdentifierArray[Index]) {
       CmObject->ObjectId = CmObjectId;
-      CmObject->Size = sizeof (PlatformRepo->ItsIdentifierArray[0]);
-      CmObject->Data = (VOID*)&PlatformRepo->ItsIdentifierArray[Index];
-      CmObject->Count = 1;
+      CmObject->Size     = sizeof (PlatformRepo->ItsIdentifierArray[0]);
+      CmObject->Data     = (VOID *)&PlatformRepo->ItsIdentifierArray[Index];
+      CmObject->Count    = 1;
       return EFI_SUCCESS;
     }
   }
@@ -394,15 +403,15 @@ GetItsIdentifierArray (
 EFI_STATUS
 EFIAPI
 GetItsGroupInfo (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO     * PlatformRepo;
-  UINTN                                    Count;
-  UINTN                                    Index;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
+  UINTN                               Count;
+  UINTN                               Index;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -417,9 +426,9 @@ GetItsGroupInfo (
   for (Index = 0; Index < Count; Index++) {
     if (Token == (CM_OBJECT_TOKEN)&PlatformRepo->ItsGroupInfo[Index]) {
       CmObject->ObjectId = CmObjectId;
-      CmObject->Size = sizeof (PlatformRepo->ItsGroupInfo[0]);
-      CmObject->Data = (VOID*)&PlatformRepo->ItsGroupInfo[Index];
-      CmObject->Count = 1;
+      CmObject->Size     = sizeof (PlatformRepo->ItsGroupInfo[0]);
+      CmObject->Data     = (VOID *)&PlatformRepo->ItsGroupInfo[Index];
+      CmObject->Count    = 1;
       return EFI_SUCCESS;
     }
   }
@@ -443,14 +452,14 @@ GetItsGroupInfo (
 EFI_STATUS
 EFIAPI
 GetArchCommonNameSpaceObjectPlat (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EFI_STATUS                            Status;
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  EFI_STATUS                          Status;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -458,7 +467,7 @@ GetArchCommonNameSpaceObjectPlat (
     return EFI_INVALID_PARAMETER;
   }
 
-  Status = EFI_NOT_FOUND;
+  Status       = EFI_NOT_FOUND;
   PlatformRepo = This->PlatRepoInfo->FvpPlatRepoInfo;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -472,8 +481,8 @@ GetArchCommonNameSpaceObjectPlat (
                  );
       break;
 
-      default:
-        break;
+    default:
+      break;
   }
 
   return Status;
@@ -495,22 +504,23 @@ GetArchCommonNameSpaceObjectPlat (
 EFI_STATUS
 EFIAPI
 GetArmNameSpaceObjectPlat (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EFI_STATUS                            Status;
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  EFI_STATUS                          Status;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
     ASSERT (CmObject != NULL);
     return EFI_INVALID_PARAMETER;
   }
+
   PlatformRepo = This->PlatRepoInfo->FvpPlatRepoInfo;
-  Status = EFI_NOT_FOUND;
+  Status       = EFI_NOT_FOUND;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
     case EArmObjGicItsInfo:
@@ -582,10 +592,12 @@ GetArmNameSpaceObjectPlat (
                  );
       break;
 
-    default: {
+    default:
+    {
       break;
     }
-  }//switch
+  }// switch
+
   return Status;
 }
 
@@ -605,14 +617,14 @@ GetArmNameSpaceObjectPlat (
 EFI_STATUS
 EFIAPI
 GetStandardNameSpaceObjectPlat (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   )
 {
-  EFI_STATUS                            Status;
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  EFI_STATUS                          Status;
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
 
   if ((This == NULL) || (CmObject == NULL)) {
     ASSERT (This != NULL);
@@ -620,7 +632,7 @@ GetStandardNameSpaceObjectPlat (
     return EFI_INVALID_PARAMETER;
   }
 
-  Status = EFI_NOT_FOUND;
+  Status       = EFI_NOT_FOUND;
   PlatformRepo = This->PlatRepoInfo->FvpPlatRepoInfo;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -634,7 +646,8 @@ GetStandardNameSpaceObjectPlat (
                  );
       break;
 
-    default: {
+    default:
+    {
       break;
     }
   }

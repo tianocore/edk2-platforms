@@ -16,7 +16,7 @@
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT       10
+#define PLAT_ACPI_TABLE_COUNT  11
 
 /** A helper macro for mapping a reference token
 */
@@ -35,45 +35,42 @@ extern CHAR8  ssdtpcifvp_aml_code[];
 */
 typedef struct FvpPlatformRepositoryInfo {
   /// List of ACPI tables
-  CM_STD_OBJ_ACPI_TABLE_INFO            CmAcpiTableList[PLAT_ACPI_TABLE_COUNT];
+  CM_STD_OBJ_ACPI_TABLE_INFO              CmAcpiTableList[PLAT_ACPI_TABLE_COUNT];
 
   /// GIC ITS information
-  CM_ARM_GIC_ITS_INFO                   GicItsInfo[2];
+  CM_ARM_GIC_ITS_INFO                     GicItsInfo[2];
 
   /// ITS Group node
-  CM_ARM_ITS_GROUP_NODE                 ItsGroupInfo[2];
+  CM_ARM_ITS_GROUP_NODE                   ItsGroupInfo[2];
 
   /// ITS Identifier array
-  CM_ARM_ITS_IDENTIFIER                 ItsIdentifierArray[2];
+  CM_ARM_ITS_IDENTIFIER                   ItsIdentifierArray[2];
 
   /// SMMUv3 node
-  CM_ARM_SMMUV3_NODE                    SmmuV3Info[1];
+  CM_ARM_SMMUV3_NODE                      SmmuV3Info[1];
 
   /// PCI Root complex node
-  CM_ARM_ROOT_COMPLEX_NODE              RootComplexInfo[1];
+  CM_ARM_ROOT_COMPLEX_NODE                RootComplexInfo[1];
 
   /// Array of DeviceID mapping
-  CM_ARM_ID_MAPPING                     DeviceIdMapping[2][2];
+  CM_ARM_ID_MAPPING                       DeviceIdMapping[2][2];
 
   /// PCI configuration space information
-  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO  PciConfigInfo[1];
-
+  CM_ARCH_COMMON_PCI_CONFIG_SPACE_INFO    PciConfigInfo[1];
 } EDKII_FVP_PLATFORM_REPOSITORY_INFO;
 
 /** A structure describing the platform configuration
     manager repository information
 */
 typedef struct PlatformRepositoryInfo {
-
   /// Common information
-  EDKII_COMMON_PLATFORM_REPOSITORY_INFO   * CommonPlatRepoInfo;
+  EDKII_COMMON_PLATFORM_REPOSITORY_INFO    *CommonPlatRepoInfo;
 
   /// FVP Platform specific information
-  EDKII_FVP_PLATFORM_REPOSITORY_INFO      * FvpPlatRepoInfo;
-
+  EDKII_FVP_PLATFORM_REPOSITORY_INFO       *FvpPlatRepoInfo;
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
-extern EDKII_COMMON_PLATFORM_REPOSITORY_INFO CommonPlatformInfo;
+extern EDKII_COMMON_PLATFORM_REPOSITORY_INFO  CommonPlatformInfo;
 
 /** Return platform specific arch common namespace object.
 
@@ -113,10 +110,10 @@ GetArchCommonNameSpaceObjectPlat (
 EFI_STATUS
 EFIAPI
 GetArmNameSpaceObjectPlat (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   );
 
 /** Return platform specific standard namespace object.
@@ -135,10 +132,10 @@ GetArmNameSpaceObjectPlat (
 EFI_STATUS
 EFIAPI
 GetStandardNameSpaceObjectPlat (
-  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
   IN  CONST CM_OBJECT_ID                                  CmObjectId,
   IN  CONST CM_OBJECT_TOKEN                               Token OPTIONAL,
-  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
   );
 
 #endif // FVP_CONFIGURATION_MANAGER_H_

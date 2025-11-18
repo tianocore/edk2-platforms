@@ -1,7 +1,7 @@
 ## @file
 #  Compoenent description file specific for Morello FVP Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -39,14 +39,18 @@
 !include Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerFvp.dsc.inc
 
 [LibraryClasses.common]
+  # Platform Library
+  ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLibFvp.inf
+
   # Virtio Support
   VirtioLib|OvmfPkg/Library/VirtioLib/VirtioLib.inf
   VirtioMmioDeviceLib|OvmfPkg/Library/VirtioMmioDeviceLib/VirtioMmioDeviceLib.inf
-  FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
-  OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   PciHostBridgeLib|Platform/ARM/Morello/Library/PciHostBridgeLib/PciHostBridgeLibFvp.inf
+  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+  PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
 
 [PcdsFeatureFlag.common]
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkSupported|TRUE
@@ -55,7 +59,7 @@
 [PcdsFixedAtBuild.common]
   # Virtio Disk
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkBaseAddress|0x1C170000
-  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSize|0x200
+  gArmMorelloTokenSpaceGuid.PcdVirtioBlkSize|0x10000
   gArmMorelloTokenSpaceGuid.PcdVirtioBlkInterrupt|128
 
   # Virtio Net
@@ -63,9 +67,63 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x200
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|134
 
+  # Runtime Variable storage
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+
+  #FVP Specific PCD values for PCIe
+  gArmTokenSpaceGuid.PcdPciBusMax|15
+  gArmTokenSpaceGuid.PcdPciBusCount|16
+  gArmTokenSpaceGuid.PcdPciMmio64Size|0x2000000000
+  gArmTokenSpaceGuid.PcdPciMmio64MaxBase|0x28FFFFFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
+  gEfiShellPkgTokenSpaceGuid.PcdShellDefaultDelay|0x0
+  gEfiShellPkgTokenSpaceGuid.PcdPlatformBootTimeOut|0x0
+
 [Components.common]
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
   OvmfPkg/VirtioNetDxe/VirtioNet.inf
 
   # Platform driver
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeFvp.inf
+  # PEI Phase modules
+  Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Fvp.inf
+
+  # Runtime Variable support
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
+
+  ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
+    <LibraryClasses>
+      LcdHwLib|Platform/ARM/Morello/Library/LcdHwMaliDxxLib/LcdHwMaliDxxLib.inf
+      LcdPlatformLib|Platform/ARM/Morello/Library/LcdPlatformLibMorello/LcdPlatformLibMorelloFvp.inf
+  }
+
+  # Required by PCI
+  ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+
+  # PCI Support
+  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf {
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8010004F
+  }
+
+  # AHCI Support
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  # SATA Controller
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  #
+  # Semi-hosting filesystem
+  #
+  ArmPkg/Filesystem/SemihostFs/SemihostFs.inf

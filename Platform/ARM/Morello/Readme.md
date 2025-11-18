@@ -7,6 +7,10 @@ The platform port in UEFI firmware provides ARMv8-A architecture enablement.
 
 Platform code is located at Platform/ARM/Morello.
 
+The following platforms are supported
+
+- Morello FVP
+
 # Documentation
 
 Further information on Morello Platform is available at this [page](https://developer.arm.com/architectures/cpu-architecture/a-profile/morello).
@@ -26,9 +30,10 @@ Please refer to the `edk2-platforms/Readme.md` for build instructions.
 
 # Dependencies
 
-Once the FVP is running, the SCP will be the first to boot and will bring the AP
-core out of reset. The AP core will start executing Trusted Firmware-A at BL31
-and once it completes the execution, it will start executing UEFI.
+The SCP will be the first to boot and will bring the AP core out of reset. The AP
+core will start executing Trusted Firmware-A at BL1. BL1 authenticates and then loads
+BL2 and starts executing it. BL2 authenticates and loads BL31. Once BL31 finishes
+execution BL2 authenticates and loads BL33 (UEFI) and passes control to it.
 
 The SCP and TF-A binaries are required to boot to the UEFI Shell.
 

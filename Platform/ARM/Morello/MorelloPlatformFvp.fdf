@@ -1,7 +1,7 @@
 ## @file
 #  FDF file of Morello FVP platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021-2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -94,12 +94,18 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
+  # PEI Phase modules
+  INF Platform/ARM/Morello/Drivers/MorelloHwConfigPei/MorelloHwConfigPei.inf
+
   # ACPI Support
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
   # Configuration Manager
   INF Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxeFvp.inf
+
+  # GOP
+  INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 
   # Dynamic Table fdf
   !include DynamicTablesPkg/DynamicTables.fdf.inc
@@ -122,6 +128,8 @@ READ_LOCK_STATUS   = TRUE
 
   # Networking stack
   !include NetworkPkg/Network.fdf.inc
+  INF ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
+  INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 
   # Virtio Net support
   INF OvmfPkg/VirtioNetDxe/VirtioNet.inf
@@ -164,6 +172,9 @@ READ_LOCK_STATUS   = TRUE
   # SATA Controller
   INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
+  #Semi-hosting file system
+  INF ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
 BlockSize          = 0x1000
@@ -192,6 +203,7 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+  INF Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Fvp.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
     SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
