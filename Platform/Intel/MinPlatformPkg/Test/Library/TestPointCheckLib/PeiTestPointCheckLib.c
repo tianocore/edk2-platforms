@@ -11,6 +11,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/TestPointLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/TestPointCheckDmaProtectionLib.h>
 
 EFI_STATUS
 TestPointCheckMtrr (
@@ -44,11 +45,6 @@ TestPointCheckSmmInfoPei (
 
 EFI_STATUS
 TestPointCheckPciBusMaster (
-  VOID
-  );
-
-EFI_STATUS
-TestPointVtdEngine (
   VOID
   );
 

@@ -34,12 +34,12 @@
   PciSegmentLib
   PciSegmentInfoLib
   SafeIntLib
+  TestPointCheckDmaProtectionLib
 
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  IntelSiliconPkg/IntelSiliconPkg.dec
 
 [Sources]
   DxeTestPointCheckLib.c
@@ -68,7 +68,6 @@
   DxeCheckPiSignedFvBoot.c
   DxeCheckTcgTrustedBoot.c
   DxeCheckTcgMor.c
-  DxeCheckDmaProtection.c
   TestPointHelp.c
   TestPointInternal.h
 
