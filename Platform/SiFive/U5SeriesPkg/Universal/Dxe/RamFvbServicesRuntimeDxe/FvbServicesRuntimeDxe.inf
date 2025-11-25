@@ -46,6 +46,7 @@
   DebugLib
   DevicePathLib
   DxeServicesTableLib
+  IoLib
   MemoryAllocationLib
   PcdLib
   UefiBootServicesTableLib
