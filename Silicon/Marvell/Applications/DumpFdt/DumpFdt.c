@@ -84,7 +84,7 @@ PrintData (
   } else if ((len % 4) == 0) {
     Print (L" = <");
     for (i = 0; i < len; i += 4) {
-      Print (L"0x%08x%a", fdt32_to_cpu (GET_CELL (p)), i < (len - 4) ? " " : "");
+      Print (L"0x%08x%a", Fdt32ToCpu (GET_CELL (p)), i < (len - 4) ? " " : "");
     }
     Print (L">");
   } else {
@@ -136,14 +136,14 @@ DumpFdt (
   shift = 4;
 
   bph = FdtBlob;
-  off_dt = fdt32_to_cpu (bph->off_dt_struct);
-  off_str = fdt32_to_cpu (bph->off_dt_strings);
+  off_dt = Fdt32ToCpu (bph->off_dt_struct);
+  off_str = Fdt32ToCpu (bph->off_dt_strings);
   p_struct = (CONST CHAR8*)FdtBlob + off_dt;
   p_strings = (CONST CHAR8*)FdtBlob + off_str;
-  version = fdt32_to_cpu (bph->version);
+  version = Fdt32ToCpu (bph->version);
 
   p = p_struct;
-  while ((tag = fdt32_to_cpu (GET_CELL (p))) != FDT_END) {
+  while ((tag = Fdt32ToCpu (GET_CELL (p))) != FDT_END) {
     if (tag == FDT_BEGIN_NODE) {
       s = p;
       p = PALIGN (p + AsciiStrLen (s) + 1, 4);
@@ -173,8 +173,8 @@ DumpFdt (
       Print (L"%*s ** Unknown tag 0x%08x\n", depth * shift, L" ", tag);
       break;
     }
-    sz = fdt32_to_cpu (GET_CELL (p));
-    s = p_strings + fdt32_to_cpu (GET_CELL (p));
+    sz = Fdt32ToCpu (GET_CELL (p));
+    s = p_strings + Fdt32ToCpu (GET_CELL (p));
     if (version < 16 && sz >= 8)
             p = PALIGN (p, 8);
     t = p;
