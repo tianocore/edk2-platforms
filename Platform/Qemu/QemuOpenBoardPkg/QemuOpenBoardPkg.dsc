@@ -142,6 +142,11 @@
   DebugLib                | MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
   PciCf8Lib               | MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
   TimerLib                | OvmfPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
+!if $(DEBUG_TO_MEM)
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogDxeLib.inf
+!else
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogLibNull.inf
+!endif
   AmdSvsmLib|UefiCpuPkg/Library/AmdSvsmLibNull/AmdSvsmLibNull.inf
 
 [LibraryClasses.Common.DXE_CORE]
@@ -160,6 +165,25 @@
 
 [LibraryClasses.Common.SEC]
   DebugLib                | OvmfPkg/Library/PlatformDebugLibIoPort/PlatformRomDebugLibIoPort.inf
+!if $(DEBUG_TO_MEM)
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogSecLib.inf
+!else
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogLibNull.inf
+!endif
+
+[LibraryClasses.Common.PEI_CORE]
+!if $(DEBUG_TO_MEM)
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogPeiCoreLib.inf
+!else
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogLibNull.inf
+!endif
+
+[LibraryClasses.Common.DXE_RUNTIME_DRIVER]
+!if $(DEBUG_TO_MEM)
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogRtLib.inf
+!else
+  MemDebugLogLib          | OvmfPkg/Library/MemDebugLogLib/MemDebugLogLibNull.inf
+!endif
 
 [Components.$(DXE_ARCH)]
   MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
