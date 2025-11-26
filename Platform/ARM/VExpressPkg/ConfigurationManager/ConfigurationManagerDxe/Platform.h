@@ -124,10 +124,9 @@
 #define FVP_GICV5_SMMU3_GERR_IRQ              (GICV5_INTERRUPT_TYPE_SPI | 0x4f)                   // [CODE_FIRST] 11148
 #define FVP_GICV5_SMMU3_SYNC_IRQ              (GICV5_INTERRUPT_TYPE_SPI | 0x4d)                   // [CODE_FIRST] 11148
                                                                                                   // [CODE_FIRST] 11148
-#define FVP_GICV5_PCIE_PRT0_IRQ               (GICV5_INTERRUPT_TYPE_SPI | 0xa8)                   // [CODE_FIRST] 11148
-#define FVP_GICV5_PCIE_PRT1_IRQ               (GICV5_INTERRUPT_TYPE_SPI | 0xa9)                   // [CODE_FIRST] 11148
-#define FVP_GICV5_PCIE_PRT2_IRQ               (GICV5_INTERRUPT_TYPE_SPI | 0xaa)                   // [CODE_FIRST] 11148
-#define FVP_GICV5_PCIE_PRT3_IRQ               (GICV5_INTERRUPT_TYPE_SPI | 0xab)                   // [CODE_FIRST] 11148
+#define FVP_GICV5_PCIE_PRT0_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xa8)                    // [CODE_FIRST] 11148
+#define FVP_GICV5_PCIE_PRT1_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xa9)                    // [CODE_FIRST] 11148
+#define FVP_GICV5_PCIE_PRT2_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xaa)                    // [CODE_FIRST] 11148
+#define FVP_GICV5_PCIE_PRT3_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xab)                    // [CODE_FIRST] 11148
                                                                                                   // [CODE_FIRST] 11148
 #endif // PLATFORM_H__
-

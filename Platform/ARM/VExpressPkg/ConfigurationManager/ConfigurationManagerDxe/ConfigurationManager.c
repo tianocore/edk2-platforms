@@ -558,7 +558,11 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     { REFERENCE_TOKEN (PciInterruptMapInfo[0]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[1]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[2]) },
-    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) }
+    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[4]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[5]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[6]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[7]) },                                                 // [CODE_FIRST] 11148
   },
 
   // PCI device legacy interrupts mapping information
@@ -599,6 +603,42 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         0x0  // Flags
       }
     },
+    {    // PciInterruptMapInfo[0] -> Device 31, INTA                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      0, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT0_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[1] -> Device 31, INTB                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      1, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT1_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[2] -> Device 31, INTC                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      2, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT2_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[3] -> Device 31, INTD                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      3, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT3_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
   },
 
   // Embedded Trace device info
@@ -1683,7 +1723,11 @@ GetPciInterruptMapInfo (
 
   PlatformRepo = This->PlatRepoInfo;
 
-  TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);
+  if (PlatformRepo->HasGicV5) {                                                                   // [CODE_FIRST] 11148
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);                             // [CODE_FIRST] 11148
+  } else {                                                                                        // [CODE_FIRST] 11148
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo) / 2;                         // [CODE_FIRST] 11148
+  }                                                                                               // [CODE_FIRST] 11148
 
   for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
     if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapInfo[ObjIndex]) {
@@ -1790,7 +1834,11 @@ GetCmObjRefs (
   if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapRef) {
     CmObject->Size  = sizeof (PlatformRepo->PciInterruptMapRef);
     CmObject->Data  = (VOID *)&PlatformRepo->PciInterruptMapRef;
-    CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    if (PlatformRepo->HasGicV5) {                                                                 // [CODE_FIRST] 11148
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);                            // [CODE_FIRST] 11148
+    } else {                                                                                      // [CODE_FIRST] 11148
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef) / 2;                        // [CODE_FIRST] 11148
+    }                                                                                             // [CODE_FIRST] 11148
     return EFI_SUCCESS;
   }
 

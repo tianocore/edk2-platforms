@@ -147,7 +147,7 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
                                                                                                   // [CODE_FIRST] 11148
 /** Count of PCI device legacy interrupt mapping struct.                                          // [CODE_FIRST] 11148
 */                                                                                                // [CODE_FIRST] 11148
-#define PCI_INTERRUPT_MAP_COUNT     4                                                             // [CODE_FIRST] 11148
+#define PCI_INTERRUPT_MAP_COUNT     8                                                             // [CODE_FIRST] 11148
                                                                                                   // [CODE_FIRST] 11148
 /** PCI space codes.                                                                              // [CODE_FIRST] 11148
 */                                                                                                // [CODE_FIRST] 11148
