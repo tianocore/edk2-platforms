@@ -584,7 +584,11 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     { REFERENCE_TOKEN (PciInterruptMapInfo[0]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[1]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[2]) },
-    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) }
+    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[4]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[5]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[6]) },
+    { REFERENCE_TOKEN (PciInterruptMapInfo[7]) },
   },
 
   // PCI device legacy interrupts mapping information
@@ -622,6 +626,42 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       3, // PciInterrupt
       {
         203, // Interrupt
+        0x0  // Flags
+      }
+    },
+    {    // PciInterruptMapInfo[4] -> Interrupt Wired Bridge (IWB) Device 31, INTA
+      0, // PciBus
+      0x1f, // PciDevice
+      0, // PciInterrupt
+      {
+        FVP_GICV5_PCIE_IWB0_IRQ, // Interrupt
+        0x0  // Flags
+      }
+    },
+    {    // PciInterruptMapInfo[5] -> Interrupt Wired Bridge (IWB) Device 31, INTB
+      0, // PciBus
+      0x1f, // PciDevice
+      1, // PciInterrupt
+      {
+        FVP_GICV5_PCIE_IWB1_IRQ, // Interrupt
+        0x0  // Flags
+      }
+    },
+    {    // PciInterruptMapInfo[6] -> Interrupt Wired Bridge (IWB) Device 31, INTC
+      0, // PciBus
+      0x1f, // PciDevice
+      2, // PciInterrupt
+      {
+        FVP_GICV5_PCIE_IWB2_IRQ, // Interrupt
+        0x0  // Flags
+      }
+    },
+    {    // PciInterruptMapInfo[7] -> Interrupt Wired Bridge (IWB) Device 31, INTD
+      0, // PciBus
+      0x1f, // PciDevice
+      3, // PciInterrupt
+      {
+        FVP_GICV5_PCIE_IWB3_IRQ, // Interrupt
         0x0  // Flags
       }
     },
@@ -2004,7 +2044,15 @@ GetPciInterruptMapInfo (
 
   PlatformRepo = This->PlatRepoInfo;
 
-  TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);
+  if (PlatformRepo->HasGicV5) {
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);
+  } else {
+      ///
+      /// From PciInterruptMapInfo[4] to PciInterruptMapInfo[7] for
+      /// IWB device when GiCv5 is present. Truncate it.
+      ///
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo) / 2;
+  }
 
   for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
     if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapInfo[ObjIndex]) {
@@ -2111,7 +2159,15 @@ GetCmObjRefs (
   if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapRef) {
     CmObject->Size  = sizeof (PlatformRepo->PciInterruptMapRef);
     CmObject->Data  = (VOID *)&PlatformRepo->PciInterruptMapRef;
-    CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    if (PlatformRepo->HasGicV5) {
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    } else {
+      ///
+      /// From PciInterruptMapRef[4] to PciInterruptMapRef[7] for
+      /// IWB device when GiCv5 is present. Truncate it.
+      ///
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef) / 2;
+    }
     return EFI_SUCCESS;
   }
 

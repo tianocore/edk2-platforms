@@ -135,5 +135,10 @@
 #define FVP_GICV5_PCIE_PRT2_IRQ               (FVP_GICV5_INTERRUPT_TYPE_SPI | 0xaa)
 #define FVP_GICV5_PCIE_PRT3_IRQ               (FVP_GICV5_INTERRUPT_TYPE_SPI | 0xab)
 
+#define FVP_GICV5_PCIE_IWB0_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xa8)
+#define FVP_GICV5_PCIE_IWB1_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xa9)
+#define FVP_GICV5_PCIE_IWB2_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xaa)
+#define FVP_GICV5_PCIE_IWB3_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xab)
+
 #endif // PLATFORM_H__
 
