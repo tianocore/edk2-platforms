@@ -147,7 +147,7 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** Count of PCI device legacy interrupt mapping struct.
 */
-#define PCI_INTERRUPT_MAP_COUNT     4
+#define PCI_INTERRUPT_MAP_COUNT     8
 
 /** PCI space codes.
 */
