@@ -1,0 +1,24 @@
+## @file DxeTestPointCheckDmaProtectionLib
+#
+# Implementation of TestPointCheckDmaProtection Library for DXE_DRIVER.
+#
+# Copyright (c) Microsoft Corporation.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DxeTestPointCheckDmaProtection
+  FILE_GUID                      = C0569448-C3B8-43BE-87FD-7CFFA5778356
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = TestPointCheckDmaProtection
+
+[Sources]
+  DxeTestPointCheckDmaProtectionLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+

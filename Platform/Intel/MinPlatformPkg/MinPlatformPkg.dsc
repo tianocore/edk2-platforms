@@ -98,6 +98,7 @@
   TestPointLib|MinPlatformPkg/Test/Library/TestPointLib/PeiTestPointLib.inf
   SetCacheMtrrLib|MinPlatformPkg/Library/SetCacheMtrrLib/SetCacheMtrrLibNull.inf
   MmUnblockMemoryLib|UefiCpuPkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLib.inf
+  TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   #
@@ -107,6 +108,7 @@
   FspWrapperPlatformLib|MinPlatformPkg/FspWrapper/Library/DxeFspWrapperPlatformLib/DxeFspWrapperPlatformLib.inf
   TestPointCheckLib|MinPlatformPkg/Test/Library/TestPointCheckLib/DxeTestPointCheckLib.inf
   TestPointLib|MinPlatformPkg/Test/Library/TestPointLib/DxeTestPointLib.inf
+  TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/DxeTestPointCheckDmaProtectionLib.inf
 
 [LibraryClasses.common.DXE_SMM_DRIVER]
   TestPointCheckLib|MinPlatformPkg/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
@@ -213,6 +215,9 @@
   MinPlatformPkg/Library/BaseLargeVariableLib/BaseLargeVariableWriteLib.inf
 
   MinPlatformPkg/Acpi/Library/PhatAcpiLib/DxePhatAcpiLib.inf
+  MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLibNull/TestPointCheckDmaProtectionLibNull.inf
+  MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/DxeTestPointCheckDmaProtectionLib.inf
+  MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
 
 [BuildOptions]
   *_*_*_CC_FLAGS = -D DISABLE_NEW_DEPRECATED_INTERFACES
