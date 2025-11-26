@@ -676,10 +676,12 @@ STATIC CONST VOID *DefaultCommonTables[]=
   &mArmDefaultType1,
   &mArmDefaultType2,
   &mArmDefaultType3,
+#ifndef DYNAMIC_TABLES_FRAMEWORK
   &mArmDefaultType7_a53_l1i,
   &mArmDefaultType7_a53_l1d,
   &mArmDefaultType7_a53_l2,
   &mArmDefaultType4_a53,
+#endif
   &mArmDefaultType9_0,
   &mArmDefaultType9_1,
   &mArmDefaultType9_2,
@@ -813,8 +815,10 @@ InstallAllStructures (
   Status=InstallStructures (Smbios,DefaultCommonTables);
   ASSERT_EFI_ERROR (Status);
 
+#ifndef DYNAMIC_TABLES_FRAMEWORK
   Status=InstallStructures (Smbios,ExtraTables);
   ASSERT_EFI_ERROR (Status);
+#endif
 
   // Generate memory descriptors for the two memory ranges we know about
   Status = InstallMemoryStructure ( Smbios, PcdGet64 (PcdSystemMemoryBase), PcdGet64 (PcdSystemMemorySize));
