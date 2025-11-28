@@ -141,6 +141,10 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 */
 #define PLAT_ACPI_TABLE_COUNT   11
 
+/** The number of SMBIOS tables to install
+*/
+#define PLAT_SMBIOS_TABLE_COUNT     2
+
 /** The number of platform generic timer blocks
 */
 #define PLAT_GTBLOCK_COUNT          1
@@ -222,6 +226,9 @@ typedef struct PlatformRepositoryInfo {
 
   /// List of ACPI tables
   CM_STD_OBJ_ACPI_TABLE_INFO            CmAcpiTableList[PLAT_ACPI_TABLE_COUNT];
+
+  /// List of SMBIOS tables
+  CM_STD_OBJ_SMBIOS_TABLE_INFO          SmbiosTableList[PLAT_SMBIOS_TABLE_COUNT];
 
   /// Boot architecture information
   CM_ARM_BOOT_ARCH_INFO                 BootArchInfo;

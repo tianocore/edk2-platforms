@@ -120,6 +120,19 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
     },
   },
 
+  { // SMBIOS
+    {
+      SMBIOS_TYPE_CACHE_INFORMATION,
+      CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType07),
+      NULL
+    },
+    {
+      SMBIOS_TYPE_PROCESSOR_INFORMATION,
+      CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType04),
+      NULL
+    }
+  },
+
   // Boot architecture information
   { EFI_ACPI_6_2_ARM_PSCI_COMPLIANT },      // BootArchFlags
 
@@ -1596,6 +1609,17 @@ GetStandardNameSpaceObject (
                  CmObjectId,
                  PlatformRepo->CmAcpiTableList,
                  (sizeof (PlatformRepo->CmAcpiTableList[0]) * TableCount),
+                 TableCount,
+                 CmObject
+                 );
+      break;
+
+    case EStdObjSmbiosTableList:
+      TableCount = ARRAY_SIZE (PlatformRepo->SmbiosTableList);
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->SmbiosTableList,
+                 sizeof (PlatformRepo->SmbiosTableList),
                  TableCount,
                  CmObject
                  );
