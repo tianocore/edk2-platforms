@@ -124,21 +124,25 @@ TestPointCheckSmiHandlerInstrument (
   );
 
 EFI_STATUS
+EFIAPI
 TestPointCheckUefiSecureBoot (
   VOID
   );
 
 EFI_STATUS
+EFIAPI
 TestPointCheckPiSignedFvBoot (
   VOID
   );
 
 EFI_STATUS
+EFIAPI
 TestPointCheckTcgTrustedBoot (
   VOID
   );
 
 EFI_STATUS
+EFIAPI
 TestPointCheckTcgMor (
   VOID
   );
