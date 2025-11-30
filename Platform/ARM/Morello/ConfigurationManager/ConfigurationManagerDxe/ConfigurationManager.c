@@ -791,7 +791,6 @@ GetArchCommonNameSpaceObject (
   )
 {
   EFI_STATUS                             Status;
-  EDKII_PLATFORM_REPOSITORY_INFO         *PlatformRepo;
   EDKII_COMMON_PLATFORM_REPOSITORY_INFO  *CommonPlatRepo;
 
   if ((This == NULL) || (CmObject == NULL)) {
@@ -801,7 +800,6 @@ GetArchCommonNameSpaceObject (
   }
 
   Status = EFI_NOT_FOUND;
-  PlatformRepo = This->PlatRepoInfo;
   CommonPlatRepo = This->PlatRepoInfo->CommonPlatRepoInfo;
 
   // Search for the FVP platform specific Arch Common namespace objects
