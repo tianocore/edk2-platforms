@@ -382,6 +382,12 @@ OemUpdateSmbiosInfo (
   switch (Field) {
     case ProductNameType01:
       AsciiString = IpmiFruInfoGet (FruProductName);
+      DEBUG ((DEBUG_INFO, "%a: Product Name: %a\n", __func__, AsciiString));
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        AsciiString = IpmiFruInfoGet (FruBoardProductName);
+        DEBUG ((DEBUG_INFO, "%a: (2) Product Name: %a\n", __func__, AsciiString));
+      }
+
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
