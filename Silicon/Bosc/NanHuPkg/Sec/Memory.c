@@ -123,7 +123,7 @@ GetNumCells (
     return -FDT_ERR_BADNCELLS;
   }
 
-  Val = fdt32_to_cpu (*Prop);
+  Val = Fdt32ToCpu (*Prop);
   if (Val > FDT_MAX_NCELLS) {
     return -FDT_ERR_BADNCELLS;
   }
@@ -188,17 +188,17 @@ AddReservedMemoryMap (
       RegProp = FdtGetProp (FdtPointer, SubNode, "reg", &Len);
 
       if ((RegProp != 0) && (Len == ((NumAddrCells + NumSizeCells) * sizeof (INT32)))) {
-        Addr = fdt32_to_cpu (RegProp[0]);
+        Addr = Fdt32ToCpu (RegProp[0]);
 
         if (NumAddrCells > 1) {
-          Addr = (Addr << 32) | fdt32_to_cpu (RegProp[1]);
+          Addr = (Addr << 32) | Fdt32ToCpu (RegProp[1]);
         }
 
         RegProp += NumAddrCells;
-        Size     = fdt32_to_cpu (RegProp[0]);
+        Size     = Fdt32ToCpu (RegProp[0]);
 
         if (NumSizeCells > 1) {
-          Size = (Size << 32) | fdt32_to_cpu (RegProp[1]);
+          Size = (Size << 32) | Fdt32ToCpu (RegProp[1]);
         }
 
         DEBUG ((
