@@ -85,6 +85,16 @@
   gEfiImageSecurityDatabaseGuid
   gSmiHandlerProfileGuid
   gEdkiiPiSmmCommunicationRegionTableGuid
+  gEfiTtyTermGuid
+  gEfiPcAnsiGuid
+  gEfiVT100Guid
+  gEfiVT100PlusGuid
+  gEfiVTUTF8Guid
+  gEfiTtyTermGuid
+  gEdkiiLinuxTermGuid
+  gEdkiiXtermR6Guid
+  gEdkiiVT400Guid
+  gEdkiiSCOTermGuid
 
 [Protocols]
   gEfiPciIoProtocolGuid
