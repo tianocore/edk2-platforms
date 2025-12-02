@@ -164,7 +164,7 @@ DefinitionBlock (
       Store(0, SUPF)
       // check for GUID and revision match
       If (LEqual (Arg0, ToUUID("E5C937D0-3553-4D7A-9117-EA4D19C3434D"))) {
-        If (LEqual(Arg1, 0x05)) {
+        If (OR(LEqual(Arg1, 0x05), LEqual(Arg1, 0x06))) {
           Store (Arg2, DIDX)
           Store (0x00, DFIN)
           If (LEqual(Arg2, 0x0C)) {

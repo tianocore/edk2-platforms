@@ -305,7 +305,7 @@
     # IdsDebugPrint Filter. Refer to Library/IdsLib.h for details.
     # 0x100401008A30042C (GNB_TRACE | PCIE_MISC | NB_MISC | GFX_MISC  | CPU_TRACE | MEM_FLOW |
     #                     MEM_STATUS | MEM_PMU | FCH_TRACE | MAIN_FLOW | TEST_POINT | PSP_TRACE)
-    gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintFilter|0x0000000300000000
+    gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintFilter|0x0004000300000000
     gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintEnable|TRUE
       gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintSerialPortEnable|TRUE
     gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintSerialPortDetectCableConnection|FALSE
