@@ -365,7 +365,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuCoreCrystalClockFrequency|50000000
 
 [PcdsFixedAtBuild.common]
-  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSDIOBase|0x704002B000
+  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSG2042SDIOBase|0x704002B000
   gSophgoTokenSpaceGuid.PcdSDIOTransmissionClockFrequency|25000000
   gSophgoTokenSpaceGuid.PcdSDIOSourceClockFrequency|100000000
 
