@@ -24,7 +24,7 @@
   gSophgoSG2042PlatformPkgTokenSpaceGuid  = {0x779E9346, 0x3C24, 0x478C, { 0xB1, 0x60, 0xB6, 0x09, 0xFC, 0xED, 0xA0, 0x72 }}
 
 [PcdsFixedAtBuild]
-  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSDIOBase|0x0|UINT64|0x00001001
+  gSophgoSG2042PlatformPkgTokenSpaceGuid.PcdSG2042SDIOBase|0x0|UINT64|0x00001001
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0|UINT64|0x00001004
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|0x0|UINT64|0x00001005
   gHisiTokenSpaceGuid.PcdSerialPortSendDelay|0x0|UINT32|0x00001006
