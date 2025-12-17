@@ -112,6 +112,29 @@ typedef struct {
   UINT8     ExtFamilyMask     : 4;  ///< Processor extended family field mask.
 } FIT_TYPE_02_VERSION_200_ENTRY;
 
+typedef struct {
+  UINT16    IndexPort;   // IO port (0x70 typically)
+  UINT16    DataPort;    // IO port (0x71 typically)
+  UINT8     AccessWidth; // 1, 2, or 4 bytes
+  UINT8     BitPosition; // Bit position within the CMOS byte (e.g. 15 => Bit 15)
+  UINT16    CmosIndex;   // CMOS index (e.g., 0x2A)
+} INDEX_IO_ADDRESS;
+
+typedef union {
+  UINT64              MemoryAddress;  // Must be under 4 GB. BIT0 at the addrress holds the TXT Configuration Policy.
+  INDEX_IO_ADDRESS    IoAddress;      // IO port address information to read the TXT Configuration Policy.
+} TXT_POLICY_PTR;
+
+typedef struct {
+  TXT_POLICY_PTR    Address;     // Address pointer to the TXT Policy structure
+  UINT8             Size[3];     // Optional, often 0x00 for Type A
+  UINT8             Reserved;    // Reserved must be set to 0
+  UINT16            Version;     // Version field (usually 0x0000)
+  UINT8             Type : 7;    // FIT entry type = 0x0A (TXT Policy)
+  UINT8             Cv   : 1;    // C_V[7], checksum/flags in some docs
+  UINT8             Checksum;    // Checksum for FIT entry
+} FIT_TYPE_0A_ENTRY;
+
 #pragma pack ()
 
 #endif
