@@ -128,6 +128,13 @@ UpdatePlatformInfoScreen (
 
   PlatformHob = (PLATFORM_INFO_HOB *)GET_GUID_HOB_DATA (Hob);
 
+  HiiSetString (
+    HiiHandle,
+    STRING_TOKEN (STR_PLATFORM_INFO_BOARD_VALUE),
+    (CHAR16 *)PcdGetPtr (PcdBaseBoardProductName),
+    NULL
+    );
+
   /* SCP Version */
   AsciiStrToUnicodeStrS ((const CHAR8 *)PlatformHob->SmPmProVer, Str, MAX_STRING_SIZE);
   HiiSetString (

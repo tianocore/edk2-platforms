@@ -202,6 +202,10 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
 
+  gArmTokenSpaceGuid.PcdSystemProductName|L"ALTRAD8UD-1L2T"
+  gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"ASRock Rack"
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"ALTRAD8UD-1L2T"
+
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
   # presence of the 32-bit entry point anyway (because many AARCH64 systems
