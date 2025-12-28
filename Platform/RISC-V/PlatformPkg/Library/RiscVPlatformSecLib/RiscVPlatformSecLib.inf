@@ -36,6 +36,7 @@
   PcdLib
   PrePiLib
   SerialPortLib
+  PeiServicesLib
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec
