@@ -395,6 +395,8 @@ IpmiGetSystemUuid (
       (VOID *)&GetSystemUuidResponse.SystemUuid,
       sizeof (EFI_GUID)
       );
+  } else {
+    return EFI_DEVICE_ERROR;
   }
 
   return Status;
