@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -x
+
+set -o errexit
+
 ##
 # @file
 #  Build script for platforms with an Altra(R) CPU from Ampere(R).
