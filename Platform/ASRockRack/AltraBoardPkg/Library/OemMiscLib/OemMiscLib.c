@@ -30,7 +30,7 @@
 #define PROCESSOR_VERSION_ALTRA      L"Ampere(R) Altra(R) Processor"
 #define PROCESSOR_VERSION_ALTRA_MAX  L"Ampere(R) Altra(R) Max Processor"
 
-#define PLACEHOLDER_SMBIOS_STRING  "To be filled by O.E.M"
+#define PLACEHOLDER_SMBIOS_STRING  "Not Set"
 
 #define SCP_VERSION_STRING_MAX_LENGTH  32
 
@@ -362,9 +362,14 @@ OemUpdateSmbiosInfo (
   )
 {
   EFI_STRING  UnicodeString;
+  BOOLEAN     FreeUniString;
   UINT8       StringLength;
   CHAR8       *AsciiString;
   UINT32      *Ecid;
+
+  // Default to assuming UnicodeString is dynamically allocated.
+  // This is set to FALSE in places it's from a PCD.
+  FreeUniString = TRUE;
 
   StringLength  = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
   UnicodeString = AllocatePool (StringLength);
@@ -382,10 +387,8 @@ OemUpdateSmbiosInfo (
   switch (Field) {
     case ProductNameType01:
       AsciiString = IpmiFruInfoGet (FruProductName);
-      DEBUG ((DEBUG_INFO, "%a: Product Name: %a\n", __func__, AsciiString));
       if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
         AsciiString = IpmiFruInfoGet (FruBoardProductName);
-        DEBUG ((DEBUG_INFO, "%a: (2) Product Name: %a\n", __func__, AsciiString));
       }
 
       if (AsciiString != NULL) {
@@ -397,13 +400,17 @@ OemUpdateSmbiosInfo (
 
     case SystemManufacturerType01:
       AsciiString = IpmiFruInfoGet (FruProductManufacturerName);
-      DEBUG ((DEBUG_INFO, "%a: Product Manufacturer: %a\n", __func__, AsciiString));
       if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
         AsciiString = IpmiFruInfoGet (FruBoardManufacturerName);
-        DEBUG ((DEBUG_INFO, "%a: (2) Product Manufacturer: %a\n", __func__, AsciiString));
       }
 
-      if (AsciiString != NULL) {
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        UnicodeSPrint(
+          UnicodeString,
+          StringLength,
+          L"ASRock Rack"
+        );
+	  } else {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
       }
@@ -421,10 +428,8 @@ OemUpdateSmbiosInfo (
 
     case SerialNumType01:
       AsciiString = IpmiFruInfoGet (FruProductSerialNumber);
-      DEBUG ((DEBUG_INFO, "%a: Product Serial: %a\n", __func__, AsciiString));
       if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
         AsciiString = IpmiFruInfoGet (FruBoardSerialNumber);
-        DEBUG ((DEBUG_INFO, "%a: (2) Product Serial: %a\n", __func__, AsciiString));
       }
 
       if (AsciiString != NULL) {
@@ -457,6 +462,9 @@ OemUpdateSmbiosInfo (
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
+      } else {
+        UnicodeString = (CHAR16 *)PcdGetPtr (PcdBaseBoardProductName);
+        FreeUniString = FALSE;
       }
 
       break;
@@ -490,11 +498,13 @@ OemUpdateSmbiosInfo (
 
     case BoardManufacturerType02:
       AsciiString = IpmiFruInfoGet (FruBoardManufacturerName);
-      if (AsciiString != NULL) {
+      if (AsciiString != NULL && (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) != 0)) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
+      } else {
+        UnicodeString = (CHAR16 *)PcdGetPtr (PcdBaseBoardManufacturer);
+        FreeUniString = FALSE;
       }
-
       break;
 
     case ChassisLocationType02:
@@ -623,7 +633,9 @@ OemUpdateSmbiosInfo (
   HiiSetString (HiiHandle, TokenToUpdate, UnicodeString, NULL);
 
 Exit:
-  FreePool (UnicodeString);
+  if (FreeUniString) {
+    FreePool (UnicodeString);
+  }
 }
 
 /** Fetches the Type 32 boot information status.
@@ -833,6 +845,7 @@ OemGetSystemUuid (
   Status = IpmiGetSystemUuid (&Uuid);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a %d Can not get System UUID!\n", __func__, __LINE__));
+    ZeroMem (&Uuid, sizeof (EFI_GUID));
   }
 
   ConvertIpmiGuidToSmbiosGuid ((UINT8 *)SystemUuid, (UINT8 *)&Uuid);
