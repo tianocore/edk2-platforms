@@ -57,9 +57,9 @@
 
   DEFINE FIRMWARE_VER            = 00.01.01-00
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
-  DEFINE CAPSULE_ENABLE          = TRUE
+  DEFINE CAPSULE_ENABLE          = FALSE
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = FALSE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -78,11 +78,6 @@
   DEFINE X86_EMULATOR_ENABLE                 = FALSE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
   DEFINE HEAP_GUARD_ENABLE                   = FALSE
-
-!if $(CAPSULE_ENABLE) == TRUE
-  DEFINE UEFI_IMAGE              = Build/Altra1L2T/altra1l2q_uefi.bin
-  DEFINE TFA_UEFI_IMAGE          = Build/Altra1L2T/altra1l2q_tfa_uefi.bin
-!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -275,9 +270,11 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString|L"MM/DD/YYYY"
 
 [PcdsDynamicExDefault.common.DEFAULT]
+!if $(CAPSULE_ENABLE) == TRUE
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("731cbc77-cce1-4ec2-b79a-265470b332f1")}|VOID*|0x10
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("a4c7d17d-491f-4be6-a261-ed5d9d36de42")}|VOID*|0x10
+!endif
 
   # Default Video Resolution
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum

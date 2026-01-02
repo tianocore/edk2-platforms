@@ -478,6 +478,7 @@ APRIORI DXE {
   }
 !endif
 
+!if $(CAPSULE_ENABLE) == TRUE
 [FV.SystemFirmwareDescriptor]
 FvAlignment        = 8
 ERASE_POLARITY     = 1
@@ -517,5 +518,6 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
   INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+!endif
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc
