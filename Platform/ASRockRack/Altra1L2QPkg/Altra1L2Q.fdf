@@ -426,6 +426,7 @@ APRIORI DXE {
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  INF Platform/ASRockRack/Altra1L2QPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
   INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 
   #

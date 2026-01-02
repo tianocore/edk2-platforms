@@ -8,4 +8,4 @@
 
 /=#
 
-#string STR_PLATFORM_DXE_STRING_1  #language en-US  "BMC_DIS: 1-2 BMC Enabled (default); 2-3 BMC Disabled"
+#string STR_PLATFORM_DXE_JUMPER_STRING_1  #language en-US  "BMC_DIS: 1-2 BMC Enabled (default); 2-3 BMC Disabled"

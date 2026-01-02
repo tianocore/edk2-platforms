@@ -154,7 +154,7 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/TFAHobPei/TFAHobPeim.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
-  INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+#  INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 }
@@ -187,8 +187,8 @@ APRIORI PEI {
   #
   # IPMI SSIF
   #
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
-  INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+  #INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcPei.inf
+  #INF ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
 
   #
   # Print platform information before passing control into the Driver Execution Environment (DXE) phase
@@ -366,8 +366,8 @@ APRIORI DXE {
   #
   # IPMI SSIF
   #
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcDxe.inf
-  INF ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+#  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SmbusHc/SmbusHcDxe.inf
+#  INF ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
 
   #
   # UEFI application (Shell Embedded Boot Loader)
@@ -400,7 +400,7 @@ APRIORI DXE {
   INF MdeModulePkg/Application/UiApp/UiApp.inf
   INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
   INF Silicon/Ampere/AmpereSiliconPkg/Drivers/PlatformBootManagerDxe/PlatformBootManagerDxe.inf
-  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/IpmiBootDxe/IpmiBootDxe.inf
+#  INF Silicon/Ampere/AmpereSiliconPkg/Drivers/IpmiBootDxe/IpmiBootDxe.inf
 
   #
   # Networking stack
@@ -426,7 +426,8 @@ APRIORI DXE {
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
-  INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
+  INF Platform/ASRockRack/Altra1L2TPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
+#  INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 
   #
   # Firmware Capsule Update

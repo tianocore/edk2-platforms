@@ -14,7 +14,7 @@
 SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE12, PlatformJumperString) = {
   {                                 // Table 1
     {                               // Header
-      EFI_SMBIOS_TYPE_OEM_STRINGS,  // Type
+      SMBIOS_TYPE_SYSTEM_CONFIGURATION_OPTIONS,  // Type
       sizeof (SMBIOS_TABLE_TYPE12), // Length
       SMBIOS_HANDLE_PI_RESERVED     // Handle
     },
@@ -35,7 +35,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE12, PlatformJumperString) = {
 SMBIOS_PLATFORM_DXE_STRING_TOKEN_DATA (PlatformJumperString) = {
   {                                               // Table 1
     {                                             // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_STRING_1)
+      STRING_TOKEN (STR_PLATFORM_DXE_JUMPER_STRING_1)
     },
     ADDITIONAL_STR_INDEX_1                        // Size of Tokens array
   }

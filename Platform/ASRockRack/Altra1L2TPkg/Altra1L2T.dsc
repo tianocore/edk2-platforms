@@ -120,8 +120,6 @@
   #
   BoardPcieLib|Platform/ASRockRack/AltraBoardPkg/Library/BoardPcieLib/BoardPcieLib.inf
 
-  IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
-
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
 
@@ -354,6 +352,7 @@
   ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  Platform/ASRockRack/Altra1L2TPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
   ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
   Features/ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf 
 
