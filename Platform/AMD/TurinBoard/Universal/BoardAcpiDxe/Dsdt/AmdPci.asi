@@ -11,6 +11,11 @@ External (PCI3, DeviceObj)
 External (\_SB.PCI3.RP71, DeviceObj)
 External (POSS, FieldUnitObj)
 External (POSC, FieldUnitObj)
+External (UT0E, FieldUnitObj)
+External (UT1E, FieldUnitObj)
+External (UT0I, FieldUnitObj)
+External (UT1I, FieldUnitObj)
+External (TSOS, IntObj)
 
 Name (SS1, Zero)
 Name (SS2, Zero)
@@ -108,7 +113,16 @@ Scope (PCI0) {
     Name (_UID, Zero)
     Method (_STA) {
       Store (^^AL2A.USTA (_UID), Local0)
-      Return (Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+        if (LEqual(UT0E, one)) {
+          if (LEqual(Local0, 0) ) {Return (0)} //if legacy uart enabled, hide it.
+          if (LEqual(UT0I, one) ) {Return (0)}
+          Return (0x0F)
+        }
+        Return (0x00)
+      } Else {
+        Return (0x00)
+      }
     }
     Name (_CRS, ResourceTemplate () {
       Memory32Fixed (ReadWrite, 0xFEDC9000, 0x1000)
@@ -122,7 +136,16 @@ Scope (PCI0) {
     Name (_UID, One)
     Method (_STA) {
       Store (^^AL2A.USTA (_UID), Local0)
-      Return (Local0)
+      If (LGreaterEqual(TSOS, 0x70)) {
+        if (LEqual(UT1E, one)) {
+          if (LEqual(Local0, 0) ) {Return (0)} //if legacy uart enabled, hide it.
+          if (LEqual(UT1I, one) ) {Return (0)}
+          Return (0x0F)
+        }
+        Return (0x00)
+      } Else {
+        Return (0x00)
+      }
     }
     Name (_CRS, ResourceTemplate () {
       Memory32Fixed (ReadWrite, 0xFEDCA000, 0x1000)
