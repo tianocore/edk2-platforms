@@ -192,6 +192,7 @@
 !if $(TPM2_ENABLE) == TRUE
   Tpm2DeviceLib|Silicon/Ampere/AmpereAltraPkg/Library/Tpm2DeviceLibArmCrb/Tpm2DeviceLibArmCrb.inf
   Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  Tpm2HelpLib|SecurityPkg/Library/Tpm2HelpLib/Tpm2HelpLib.inf
   Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
   TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
 !else
