@@ -45,5 +45,9 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
 
+  gArmTokenSpaceGuid.PcdSystemProductName
+  gArmTokenSpaceGuid.PcdBaseBoardManufacturer
+  gArmTokenSpaceGuid.PcdBaseBoardProductName
+
 [Depex]
   TRUE
