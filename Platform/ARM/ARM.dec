@@ -1,6 +1,6 @@
 #/** @file
 #
-#  Copyright (c) 2011-2017, ARM Limited. All rights reserved.
+#  Copyright (c) 2011-2025, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -19,6 +19,7 @@
   BdsLib|Include/Library/BdsLib.h
   NorFlashDeviceLib|Include/Library/NorFlashDeviceLib.h
   NorFlashPlatformLib|Include/Library/NorFlashPlatformLib.h
+  FwsPlatformLib|Include/Library/FwsPlatformLib.h
 
 [Guids]
   gPlatformArmTokenSpaceGuid  = { 0x7a5e0def, 0xd3c3, 0x44f3, { 0x8d, 0x69, 0x70, 0xfc, 0x8f, 0xd6, 0x4f, 0xdf } }
@@ -29,3 +30,16 @@
 
 [PcdsFixedAtBuild.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress|0x0|UINT32|0x00000002
+
+  # For Firmware Update Storage
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase|0x00|UINT32|0x00000007
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize|0x00|UINT32|0x00000008
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuBase64|0x00|UINT32|0x00000009
+  gPlatformArmTokenSpaceGuid.PcdFlashNvStorageFwuSize64|0x00|UINT32|0x0000000a
+
+  # Firmware Update Banks and Images
+  gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks|0|UINT32|0x0000000b
+  gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank|0|UINT32|0x0000000c
+
+  # PCDs for System Firmware FMP instance
+  gPlatformArmTokenSpaceGuid.PcdSystemFirmwareImageTypeGuid|{0x90, 0x7d, 0x75, 0x49, 0x22, 0x6c, 0xee, 0x11, 0xa5, 0x56, 0x17, 0x57, 0xeb, 0xa0, 0x42, 0x0c}|VOID*|0x00000003
