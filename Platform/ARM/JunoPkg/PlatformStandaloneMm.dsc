@@ -92,6 +92,38 @@
   #
   gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
 
+!if $(ENABLE_TPM) == TRUE
+  #
+  # fTPM uses a significant amount of stack memory when handling TPM commands,
+  # for example during cryptographic operations.
+  # Therefore, the stack size should be increased when fTPM is enabled.
+  #
+  gArmTokenSpaceGuid.PcdStMmStackSize|0x4000
+
+  #
+  # Normal pseudo crbs which locality from 0 to 3 are allocated
+  # at the start of System Memory.
+  # These regions are reserved by TF-A.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13FFF
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+
+  #
+  # Secure pseudo crb is allocated at the end of StandaloneMm's memory area
+  # as much as PcdTpmSecureCrbSize which default is 0x1000.
+  # This region is reserved by TF-A.
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0xffbfe000
+
+  #
+  # The second last 256KB block is used for TPM storage in norflash0.
+  # The end of norflash1 device address is 0x0c000000.
+  # Therefore 0x0c000000 - 0x400000 (512KB) = 0x0BF80000
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase|0x0bf80000
+!endif
+
 ###################################################################################################
 #
 # Components Section - list of the modules and components that will be processed by compilation
@@ -110,6 +142,8 @@
 #       generated for it, but the binary will not be put into any firmware volume.
 #
 ###################################################################################################
+[Components.common]
+
 ###################################################################################################
 #
 # BuildOptions Section - Define the module specific tool chain flags that should be used as
