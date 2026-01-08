@@ -1,0 +1,39 @@
+## @file
+#  This FDT Peim driver is used to pass the device tree to DXE phase.
+#
+#  Copyright (c) 2023, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = MorelloHwConfigPei
+  FILE_GUID                      = A30935A2-EE4A-42D1-834B-46E3D37D2929
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = MorelloHwConfigEntry
+
+[Sources]
+  MorelloHwConfigPei.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  DebugLib
+  FdtLib
+  HobLib
+  PeimEntryPoint
+
+[Ppis]
+  gArmMorelloParameterPpiGuid
+
+[Guids]
+  gFdtHobGuid   ## PRODUCES
+
+[Depex]
+  gArmMorelloParameterPpiGuid

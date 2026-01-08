@@ -1,0 +1,37 @@
+## @file
+#  Component information file for LcdHwLib implementation for ARM Mali Dxx
+#  display controller family
+#
+#  Copyright (c) 2022, Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = LcdHwMaliDxxLib
+  FILE_GUID                      = C2205A26-3A9A-4DD5-8DE2-E571F5447498
+  MODULE_TYPE                    = BASE
+  LIBRARY_CLASS                  = LcdHwLib
+
+[Sources.common]
+  Driver.c
+  RegisterMap.h
+
+[Packages]
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  Platform/ARM/Morello/MorelloPlatform.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  LcdPlatformLib
+  PcdLib
+  TimerLib
+  UefiBootServicesTableLib
+
+[FixedPcd]
+  gArmMorelloTokenSpaceGuid.PcdArmMaliDxxBase
