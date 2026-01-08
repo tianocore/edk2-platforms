@@ -20,6 +20,7 @@
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
   Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
+  SecurityPkg/SecurityPkg.dec
 
 [LibraryClasses]
   IoLib
@@ -59,6 +60,9 @@
 
   gArmTokenSpaceGuid.PcdPciMmio64Base
   gArmTokenSpaceGuid.PcdPciMmio64Size
+
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize
 
 [Ppis]
   gArmMpCoreInfoPpiGuid
