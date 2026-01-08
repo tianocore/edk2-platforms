@@ -77,4 +77,9 @@
 #define FVP_REVC_SMMUV3_BASE                    0x2B400000
 #define FVP_REVC_SMMUV3_SIZE                    SIZE_1MB
 
+#ifdef ENABLE_TPM
+#define FVP_TPM_CRB_BASE                        (PcdGet64 (PcdTpmBaseAddress))
+#define FVP_TPM_CRB_SIZE                        (PcdGet32 (PcdTpmCrbRegionSize))
+#endif
+
 #endif
