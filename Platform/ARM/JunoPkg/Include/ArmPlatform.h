@@ -59,6 +59,12 @@
 #define ARM_JUNO_EXTRA_SYSTEM_MEMORY_BASE     0x0880000000
 #define ARM_JUNO_EXTRA_SYSTEM_MEMORY_SZ       (SIZE_2GB + SIZE_4GB)
 
+// TPM CRB address space
+#ifdef ENABLE_TPM
+#define ARM_JUNO_TPM_CRB_BASE                 (PcdGet64 (PcdTpmBaseAddress))
+#define ARM_JUNO_TPM_CRB_SZ                   (PcdGet32 (PcdTpmCrbRegionSize))
+#endif
+
 //
 // ACPI table information used to initialize tables.
 //

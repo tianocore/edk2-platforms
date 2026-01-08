@@ -1,6 +1,13 @@
 ## @file
 # Standalone MM Platform.
 #
+# Note:
+# Although StandaloneMm in ArmJuno supports
+# ENABLE_UEFI_SECURE_VARIABLE build option,
+# the Flash on Juno hardware is accessible from Normal world.
+# The purpose of enabling StandaloneMM support for Juno is to
+# demonstrate the functionality on real hardware.
+#
 # Copyright (c) 2025, Arm Limited. All rights reserved.<BR>
 #
 #    SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -35,8 +42,6 @@
 # Library Class section - list of all Library Classes needed by this Platform.
 #
 ################################################################################
-
-!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses]
   # STMM for Variable runtime service.
@@ -92,6 +97,41 @@
   #
   gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
 
+!if $(ENABLE_TPM) == TRUE
+  #
+  # fTPM uses a significant amount of stack memory when handling TPM commands,
+  # for example during cryptographic operations.
+  # Therefore, the stack size should be increased when fTPM is enabled.
+  #
+  gArmTokenSpaceGuid.PcdStMmStackSize|0x4000
+
+  #
+  # Normal pseudo crbs which locality from 0 to 3 are allocated
+  # at the start of System Memory.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13FFF
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+
+  #
+  # Secure pseudo crb is allocated at the end of StandaloneMm's memory area
+  # as much as PcdTpmSecureCrbSize which default is 0x1000.
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0xffbfe000
+
+  #
+  # The second last 256KB block is used for TPM storage in norflash0.
+  # The end of norflash1 device address is 0x0c000000.
+  # Therefore 0x0c000000 - 0x400000 (512KB) = 0x0BF80000
+  #
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase|0x0bf80000
+!endif
+
+  # The BFV is not located in the Flash area but is loaded in the RAM
+  # by TF-A instead, therefore no shadow copy is needed. So disable
+  # shadow copy of boot firmware volume while loading StMM drivers.
+  gStandaloneMmPkgTokenSpaceGuid.PcdShadowBfv|FALSE
+
 ###################################################################################################
 #
 # Components Section - list of the modules and components that will be processed by compilation
@@ -110,6 +150,8 @@
 #       generated for it, but the binary will not be put into any firmware volume.
 #
 ###################################################################################################
+[Components.common]
+
 ###################################################################################################
 #
 # BuildOptions Section - Define the module specific tool chain flags that should be used as

@@ -18,7 +18,11 @@
 #define FRAME_BUFFER_DESCRIPTOR ((FixedPcdGet32 (PcdArmLcdDdrFrameBufferBase) != 0) ? 1 : 0)
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
+#ifdef ENABLE_TPM
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS (17 + FRAME_BUFFER_DESCRIPTOR)
+#else
 #define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS (16 + FRAME_BUFFER_DESCRIPTOR)
+#endif
 
 // DDR attributes
 #define DDR_ATTRIBUTES_CACHED           ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
@@ -161,6 +165,14 @@ ArmPlatformGetVirtualMemoryMap (
     // an un-cached, un-buffered but allows buffering and reordering.
     VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
   }
+
+#ifdef ENABLE_TPM
+  // Juno TPM CRB address space
+  VirtualMemoryTable[++Index].PhysicalBase  = ARM_JUNO_TPM_CRB_BASE;
+  VirtualMemoryTable[Index].VirtualBase     = ARM_JUNO_TPM_CRB_BASE;
+  VirtualMemoryTable[Index].Length          = ARM_JUNO_TPM_CRB_SZ;
+  VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+#endif
 
   // DDR - 2GB
   VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdSystemMemoryBase);
