@@ -76,8 +76,9 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
 !endif
-
-
+!if $(ENABLE_TPM) == TRUE
+  INF Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf
+!endif
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
