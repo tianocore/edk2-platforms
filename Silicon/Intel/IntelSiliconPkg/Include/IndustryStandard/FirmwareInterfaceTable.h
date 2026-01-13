@@ -120,9 +120,17 @@ typedef struct {
   UINT16    CmosIndex;   // CMOS index (e.g., 0x2A)
 } INDEX_IO_ADDRESS;
 
+typedef struct {
+  UINT32    TpmNvIndexHandle;     // TPM NV index handle
+  UINT8     FieldWidthInBytes;    // = 1 - 1-byte width, = 2 - 2-byte width
+  UINT8     StartingBitPosition;  // e.g. = 7 - BIT7
+  UINT16    ByteOffset;           // Offset within NV index, e.g. = 1 - byte 1
+} INDEX_TPM_ADDRESS;
+
 typedef union {
-  UINT64              MemoryAddress;  // Must be under 4 GB. BIT0 at the addrress holds the TXT Configuration Policy.
-  INDEX_IO_ADDRESS    IoAddress;      // IO port address information to read the TXT Configuration Policy.
+  UINT64               MemoryAddress; // Must be under 4 GB. BIT0 at the address holds the TXT Configuration Policy.
+  INDEX_IO_ADDRESS     IoAddress;     // IO port address information to read the TXT Configuration Policy.
+  INDEX_TPM_ADDRESS    TpmAddress;    // TPM NV index address information to read the TXT Configuration Policy.
 } TXT_POLICY_PTR;
 
 typedef struct {
