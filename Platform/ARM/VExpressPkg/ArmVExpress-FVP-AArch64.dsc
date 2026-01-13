@@ -150,7 +150,11 @@
 
   # Non-Trusted SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
+!if $(TARGET) != RELEASE
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x8000
+!else
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x4000
+!endif
 
   # System Memory
   # When RME is supported by the FVP the top 64MB of DRAM1 (i.e. at the top
