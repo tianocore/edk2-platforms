@@ -418,3 +418,198 @@ FVP RevC model with Standalone MM.
   -C bp.secure_memory=1
   -C bp.secure_only_flash1=1
 ```
+
+## GICv5 support with FVP RevC model.
+
+Arm FVP Base Model Platform supports boot with GICv5 with some limitations:
+
+  - LPI idle state is not supported.
+  - StandaloneMm is not supported since SPD is not supported with
+    GICv5 option in TF-A.
+
+However, the same binary built for FVP RevC with GICv5 works for
+FVP RevC with GICv3 and FVP AEM.
+
+To build firmware for Arm FVP Base Model platform, please follow the same
+step "Build the firmware for Arm FVP Base Model platform".
+
+### Download FVP RevC model with GICv5
+
+You can download FVP RevC model with GICv5 in [here](https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms/Arm%20Architecture%20FVPs).
+
+### Building TF-A with GICv5
+
+TF-A should be built with the following additional build flags:
+```
+  FVP_USE_GIC_DRIVER=FVP_GICV5
+```
+e.g.
+```
+cd tf-a
+make all PLAT=fvp CROSS_COMPILE={cross_compile_prefix} DEBUG=1 V=1 \
+         CSS_NON_SECURE_UART=1 EXTRA_EL2_INIT=0 FVP_FAKE_TRNG_SUPPORT=1 \
+         FVP_USE_GIC_DRIVER=FVP_GICV5 ENABLE_SME2_FOR_NS=0 ENABLE_SME_FOR_NS=0 \
+         ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_AARCH32_REGS=0
+```
+
+Please check [TF-A documents for GICv5 for FVP platform](https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/arm/fvp/fvp-specific-configs.rst#gicv5-support).
+
+
+#### Building the FIP image with GICv5
+The FIP image should be generated with the following additional for GICv5:
+```
+   --hw-config  $TF_A_DIR/build/fvp/<debug|release>/fdts/fvp-base-gicv5-psci.dtb
+```
+
+e.g.
+```
+cd tf-a
+./tools/fiptool/fiptool --verbose update \
+   --tb-fw $TF_A_DIR/build/fvp/debug/bl2.bin \
+   --soc-fw $TF_A_DIR/build/fvp/debug/bl31.bin \
+   --tos-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/BL32_AP_MM.fd \
+   --nt-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/FVP_AARCH64_EFI.fd \
+   --hw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp-base-gicv3-psci.dtb \
+   --tos-fw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp_stmm_manifest.dtb \
+   fip_fvp.bin
+
+   --tb-fw $TF_A_DIR/build/fvp/debug/bl2.bin \
+   --soc-fw $TF_A_DIR/build/fvp/debug/bl31.bin \
+   --nt-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/FVP_AARCH64_EFI.fd \
+   --hw-config $TF_A_DIR/build/fvp/debug/fdts/fvp-base-gicv5-psci.dtb \
+   --fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_fw_config.dtb \
+   --nt-fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_nt_fw_config.dtb \
+   --soc-fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_soc_fw_config.dtb \
+   --tb-fw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp_tb_fw_config.dtb
+   fip_fvp.bin
+```
+
+### How to run FVP RevC model with GICv5
+
+#### Command to run Model and parameters
+```
+TFA=/gicv5/tfa-repo
+FS=/gicv5/fs
+CONF=/gicv5/conf
+LINUX=/gicv5/linux
+
+FVP_Base_RevC-2xAEMvA_GICV5	\
+		-C pctl.startup=0.0.0.0 \
+		-C bp.virtio_rng.enabled=1 \
+		-C cluster0.NUM_CORES=4 \
+		-C cluster0.has_delayed_sysreg=0 \
+		-C cluster1.NUM_CORES=4 \
+		-C cluster1.has_delayed_sysreg=0 \
+		-C cache_state_modelled=0 \
+		-C bp.secure_memory=0 \
+		-C bp.pl011_uart0.uart_enable=1 \
+		-C bp.pl011_uart0.untimed_fifos=1 \
+		-C bp.pl011_uart0.unbuffered_output=1 \
+		-C bp.secureflashloader.fname=$TFA/build/fvp/debug/bl1.bin \
+		-C bp.flashloader0.fname=$TFA/build/fvp/debug/fip.bin \
+		--data cluster0.cpu0=$LINUX/Image@0x84000000 \
+		-C pci.pcie_rc.ahci0.ahci.image_path=$FS/rootfs.ext3 \
+		-C bp.virtioblockdevice.image_path=$FS/diskvio.ext3 \
+		-C gicv5_config_file=$CONF/gicv5.yaml
+```
+
+#### gicv5.yaml
+```
+---
+  name: gicv5_config
+  version: 1
+
+  GIC_TOP:
+    - pa_range: 6 # 0b0110   52 bits, 4PB (should match the 'System' PA size)
+
+      IWB:
+        - name: "iwb0"
+          config_frame_base_address: 0x2F000000
+          target_itsid: 0
+          num_wires: 64        # 16 bit value
+          device_id: 64        # 16 bit value
+          domains: 7
+
+      ITS:
+        - name: "its0"
+          itsid: 0
+          target_irsid: 0
+          device_id_bits: 20                          # The maximum permitted value of this field is 32 (dec).
+          event_id_bits: 0x10                         # The maximum permitted value of this field is 32 (dec).
+          device_table_levels: 0x01                   # 0b00 - linear DT only. 0b01 linear and 2-level DT supported.
+          interrupt_translation_table_levels: 0x01    # 0b00 - linear ITT only. 0b01 linear and 2-level ITT supported.
+          has_swerr_reporting: false
+          domains:
+              - type: Non_Secure
+                config_frame_base_address: 0x2F120000
+                translate_frame_base_addresses: [0x2F130000]
+              - type: Secure
+                config_frame_base_address: 0x2F100000
+                translate_frame_base_addresses: [0x2F110000]
+              - type: EL3
+                config_frame_base_address: 0x2F140000
+                translate_frame_base_addresses: [0x2F150000]
+
+      IRS:
+        COMMON:
+          spi_range: 256                        # SPI range supported across all the IRSs.
+          support_setlpi_frame: true            # Implement set LPI register frame.
+          min_lpi_id_bits: 0                    # The minimum number of LPI ID Bits supported. (The maximum value supported for this field is 14.)
+          max_lpi_id_bits: 24                   # The maximum number of LPI ID Bits supported. (The maximum value supported for this field is 24.)
+          ist_levels: 2                         # Levels supported for the IST, possible values [1 - 2], '1' is the default, '2' means 2-level structure is supported.
+          istmd: false                          # Reports whether the IRS stores metadata in the level 2 ISTEs, default is 'false' which means that IST entries don't require storage for metadata.
+          ist_splits: 7                         # Supported split values when a 2-level IST structure is used. possible values are from 1 to 7, '1' is default means Level 2 IST sizes supported:4KB
+          istmd_sz: 0                           # Minimum number of LPI ID bits which requires a level 2 ISTE size of 16 bytes to store metadata.
+        INSTANCES:
+          - name: "irs0"
+            irsid: 0
+            spi_irs_range: 256                  # SPI range supported for this IRS instance.
+            spi_base: 0                         # The minimum SPI ID implemented for this IRS instance.
+            domains:
+              - config_frame_base_address: 0x2F1A0000
+                lpi_frame_base_address: 0x2F1B0000
+                type: Non_Secure
+              - config_frame_base_address: 0x2F180000
+                lpi_frame_base_address: 0x2F190000
+                type: Secure
+              - config_frame_base_address: 0x2F1C0000
+                lpi_frame_base_address: 0x2F1D0000
+                type: EL3
+            # The affinities of the PEs connected to this IRS instance [ the order should be matching the platform connections in the LISA file].
+            processing_element_affinities: [0, 1, 2, 3, 4, 5, 6, 7]
+
+
+  CPU_INTERFACE:
+    - core_id: 0  # Core ID of the Core implementing the CPUIF (starting from 0)
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0    # Number of non-architected PPIs to be implemented starting from the PPI ID 64.
+    - core_id: 1
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 2
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 3
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 4
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 5
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 6
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+    - core_id: 7
+      has_gicv5_legacy: false
+      supported_int_id_bits: 16
+      number_of_non_arch_ppis_implemented: 0
+```
