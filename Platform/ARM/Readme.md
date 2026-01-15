@@ -418,3 +418,67 @@ FVP RevC model with Standalone MM.
   -C bp.secure_memory=1
   -C bp.secure_only_flash1=1
 ```
+
+## GICv5 support with FVP RevC model.
+
+Arm FVP Base Model Platform supports boot with GICv5 with some limitations:
+
+  - LPI idle state doesn't support.
+  - StandaloneMm doesn't support.
+
+To build firmware for Arm FVP Base Model platform, please follow the same
+step "Build the firmware for Arm FVP Base Model platform".
+
+### Download FVP RevC model with GICv5
+
+You can download FVP RevC model with GICv5 in [here](https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms/Arm%20Architecture%20FVPs).
+
+### Building TF-A with GICv5
+
+TF-A should be built with the following additional build flags:
+```
+  FVP_USE_GIC_DRIVER=FVP_GICV5
+```
+e.g.
+```
+cd tf-a
+make all PLAT=fvp CROSS_COMPILE={cross_compile_prefix} DEBUG=1 V=1 \
+         CSS_NON_SECURE_UART=1 EXTRA_EL2_INIT=0 FVP_FAKE_TRNG_SUPPORT=1 \
+         FVP_USE_GIC_DRIVER=FVP_GICV5 ENABLE_SME2_FOR_NS=0 ENABLE_SME_FOR_NS=0 \
+         ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_AARCH32_REGS=0
+```
+
+Please check [TF-A documents for GICv5 for FVP platform](https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/arm/fvp/fvp-specific-configs.rst#gicv5-support).
+
+
+#### Building the FIP image with GICv5
+The FIP image should be generated with the following additional for GICv5:
+```
+   --hw-config  $TF_A_DIR/build/fvp/<debug|release>/fdts/fvp-base-gicv5-psci.dtb"
+```
+
+e.g.
+```
+cd tf-a
+./tools/fiptool/fiptool --verbose update \
+   --tb-fw $TF_A_DIR/build/fvp/debug/bl2.bin \
+   --soc-fw $TF_A_DIR/build/fvp/debug/bl31.bin \
+   --tos-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/BL32_AP_MM.fd \
+   --nt-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/FVP_AARCH64_EFI.fd \
+   --hw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp-base-gicv3-psci.dtb \
+   --tos-fw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp_stmm_manifest.dtb \
+   fip_fvp.bin
+
+   --tb-fw $TF_A_DIR/build/fvp/debug/bl2.bin \
+   --soc-fw $TF_A_DIR/build/fvp/debug/bl31.bin \
+   --nt-fw ${WORKSPACE}/Build/ArmVExpress-FVP-AArch64/DEBUG_GCC/FV/FVP_AARCH64_EFI.fd \
+   --hw-config $TF_A_DIR/build/fvp/debug/fdts/fvp-base-gicv5-psci.dtb \
+   --fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_fw_config.dtb \
+   --nt-fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_nt_fw_config.dtb \
+   --soc-fw-config $TF_A_DIR/build/fvp/debug/fdts/fvp_soc_fw_config.dtb \
+   --tb-fw-config  $TF_A_DIR/build/fvp/debug/fdts/fvp_tb_fw_config.dtb
+   fip_fvp.bin
+```
+
+### How to run FVP RevC model with GICv5
+Please check how to run FVP_RevC model with GICv5 in [here](https://linaro.atlassian.net/wiki/spaces/KWG/pages/30048321545/GICv5+Linux+software+enablement).
