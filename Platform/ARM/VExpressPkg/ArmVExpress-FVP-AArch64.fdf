@@ -221,6 +221,11 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
 
+!if $(ENABLE_TPM) == TRUE
+  INF SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
+  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+!endif
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
@@ -248,8 +253,18 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   INF ArmPkg/Drivers/CpuPei/CpuPei.inf
   INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+!if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
+  INF ArmPkg/Drivers/MmCommunicationPei/MmCommunicationPei.inf
+  INF MdeModulePkg/Universal/Variable/MmVariablePei/MmVariablePei.inf
+!else
+  INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+!endif
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+!if $(ENABLE_TPM) == TRUE
+  INF SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigFfaPei.inf
+  INF SecurityPkg/Tcg/Tcg2Pei/Tcg2Pei.inf
+!endif
 !endif
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {

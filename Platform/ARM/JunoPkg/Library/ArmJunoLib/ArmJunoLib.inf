@@ -19,6 +19,7 @@
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
   Platform/ARM/JunoPkg/ArmJuno.dec
+  SecurityPkg/SecurityPkg.dec
 
 [LibraryClasses]
   IoLib
@@ -60,6 +61,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultParity
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultStopBits
+
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize
 
 [Pcd]
   gArmTokenSpaceGuid.PcdPciMmio32Base

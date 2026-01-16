@@ -2,7 +2,6 @@
 
   Copyright (c) 2011 - 2024, Arm Limited. All rights reserved.<BR>
   Copyright (c) 2020, Linaro, Ltd. All rights reserved.<BR>
-
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -13,6 +12,15 @@
 #include <Library/NorFlashInfoLib.h>
 
 #include "NorFlashCommon.h"
+
+//
+// Norflash Instance Type.
+//
+typedef enum {
+  INSTANCE_TYPE_VARIABLE,
+  INSTANCE_TYPE_TPM,
+  INSTANCE_TYPE_UNKOWN,
+} INSTANCE_TYPE;
 
 //
 // Global variable declarations
@@ -34,10 +42,10 @@ NOR_FLASH_INSTANCE  mNorFlashInstanceTemplate = {
   {
     EFI_BLOCK_IO_PROTOCOL_REVISION2, // Revision
     NULL,                            // Media ... NEED TO BE FILLED
-    NULL,                            // Reset;
-    NULL,                            // ReadBlocks
-    NULL,                            // WriteBlocks
-    NULL                             // FlushBlocks
+    NorFlashBlockIoReset,            // Reset;
+    NorFlashBlockIoReadBlocks,       // ReadBlocks
+    NorFlashBlockIoWriteBlocks,      // WriteBlocks
+    NorFlashBlockIoFlushBlocks,      // FlushBlocks
   }, // BlockIoProtocol
 
   {
@@ -93,15 +101,17 @@ NOR_FLASH_INSTANCE  mNorFlashInstanceTemplate = {
   }   // DevicePath
 };
 
+STATIC
 EFI_STATUS
-NorFlashCreateInstance (
+EFIAPI
+NorFlashCreateInstanceType (
   IN UINTN                HostControllerBase,
   IN UINTN                NorFlashDeviceBase,
   IN UINTN                NorFlashRegionBase,
   IN UINTN                NorFlashSize,
   IN UINT32               Index,
   IN UINT32               BlockSize,
-  IN BOOLEAN              SupportFvb,
+  IN INSTANCE_TYPE        InstanceType,
   OUT NOR_FLASH_INSTANCE  **NorFlashInstance
   )
 {
@@ -109,8 +119,14 @@ NorFlashCreateInstance (
   NOR_FLASH_INSTANCE  *Instance;
   NOR_FLASH_INFO      *FlashInfo;
   UINT8               JedecId[6];
+  EFI_GUID            *ProtocolGuid;
+  VOID                *Interface;
 
   ASSERT (NorFlashInstance != NULL);
+
+  if (InstanceType >= INSTANCE_TYPE_UNKOWN) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   Instance = AllocateRuntimeCopyPool (sizeof (NOR_FLASH_INSTANCE), &mNorFlashInstanceTemplate);
   if (Instance == NULL) {
@@ -123,6 +139,7 @@ NorFlashCreateInstance (
   Instance->Size                      = NorFlashSize;
 
   Instance->BlockIoProtocol.Media = &Instance->Media;
+
   Instance->Media.MediaId         = Index;
   Instance->Media.BlockSize       = BlockSize;
   Instance->Media.LastBlock       = (NorFlashSize / BlockSize)-1;
@@ -133,13 +150,13 @@ NorFlashCreateInstance (
   Instance->ShadowBuffer = AllocateRuntimePool (BlockSize);
   if (Instance->ShadowBuffer == NULL) {
     Status = EFI_OUT_OF_RESOURCES;
-    goto error_handler1;
+    goto ErrorHandler1;
   }
 
   Status = NorFlashReadId (Instance, JedecId);
   if (EFI_ERROR (Status)) {
     if (Status != EFI_UNSUPPORTED) {
-      goto error_handler2;
+      goto ErrorHandler2;
     }
   } else {
     Status = NorFlashGetInfo (JedecId, &FlashInfo, FALSE);
@@ -151,31 +168,37 @@ NorFlashCreateInstance (
     }
   }
 
-  if (SupportFvb) {
+  if (InstanceType == INSTANCE_TYPE_VARIABLE) {
+    ProtocolGuid = &gEfiSmmFirmwareVolumeBlockProtocolGuid;
+    Interface = &Instance->FvbProtocol;
     NorFlashFvbInitialize (Instance);
+  } else if (InstanceType == INSTANCE_TYPE_TPM) {
+    ProtocolGuid = &gEdkiiTpmBlockIoProtocolGuid;
+    Interface = &Instance->BlockIoProtocol;
+  }
 
-    Status = gMmst->MmInstallProtocolInterface (
-                      &Instance->Handle,
-                      &gEfiSmmFirmwareVolumeBlockProtocolGuid,
-                      EFI_NATIVE_INTERFACE,
-                      &Instance->FvbProtocol
-                      );
-    if (EFI_ERROR (Status)) {
-      goto error_handler2;
-    }
-  } else {
-    DEBUG ((DEBUG_ERROR, "standalone MM NOR Flash driver only support FVB.\n"));
-    Status = EFI_UNSUPPORTED;
-    goto error_handler2;
+  Status = gMmst->MmInstallProtocolInterface (
+                    &Instance->Handle,
+                    ProtocolGuid,
+                    EFI_NATIVE_INTERFACE,
+                    Interface
+                    );
+ if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to install Norflash protocol(%g)... Status:%r\n",
+      ProtocolGuid,
+      Status));
+    goto ErrorHandler2;
   }
 
   *NorFlashInstance = Instance;
   return Status;
 
-error_handler2:
+ErrorHandler2:
   FreePool (Instance->ShadowBuffer);
 
-error_handler1:
+ErrorHandler1:
   FreePool (Instance);
   return Status;
 }
@@ -191,6 +214,8 @@ NorFlashInitialise (
   UINT32                 Index;
   NOR_FLASH_DESCRIPTION  *NorFlashDevices;
   BOOLEAN                ContainVariableStorage;
+  BOOLEAN                ContainTpmStorage;
+  INSTANCE_TYPE          InstanceType;
 
   Status = NorFlashPlatformInitialization ();
   if (EFI_ERROR (Status)) {
@@ -205,10 +230,10 @@ NorFlashInitialise (
   }
 
   mNorFlashInstances = AllocatePool (sizeof (NOR_FLASH_INSTANCE *) * mNorFlashDeviceCount);
+  ASSERT(mNorFlashInstances);
 
   for (Index = 0; Index < mNorFlashDeviceCount; Index++) {
     // Check if this NOR Flash device contain the variable storage region
-
     if (FixedPcdGet64 (PcdFlashNvStorageVariableBase64) != 0) {
       ContainVariableStorage =
         (NorFlashDevices[Index].RegionBaseAddress <= FixedPcdGet64 (PcdFlashNvStorageVariableBase64)) &&
@@ -221,14 +246,33 @@ NorFlashInitialise (
          NorFlashDevices[Index].RegionBaseAddress + NorFlashDevices[Index].Size);
     }
 
-    Status = NorFlashCreateInstance (
+    // Check if this NOR Flash device contain Tpm storage region.
+    if (!FixedPcdGetBool (PcdTpmEmuNvMemory) && FixedPcdGet64 (PcdTpmNvMemoryBase) != 0) {
+      ContainTpmStorage =
+        (NorFlashDevices[Index].RegionBaseAddress <= FixedPcdGet64 (PcdTpmNvMemoryBase)) &&
+        (FixedPcdGet64 (PcdTpmNvMemoryBase) + FixedPcdGet64 (PcdTpmNvMemorySize) <=
+         NorFlashDevices[Index].RegionBaseAddress + NorFlashDevices[Index].Size);
+    } else {
+      ContainTpmStorage = FALSE;
+    }
+
+    if (ContainVariableStorage) {
+      InstanceType = INSTANCE_TYPE_VARIABLE;
+    } else if (ContainTpmStorage) {
+      InstanceType = INSTANCE_TYPE_TPM;
+    } else {
+      DEBUG ((DEBUG_INFO, "NorFlashInitialise: Skip to create instance for NorFlash[%d]\n", Index));
+      continue;
+    }
+
+    Status = NorFlashCreateInstanceType (
                PcdGet32 (PcdNorFlashRegBaseAddress),
                NorFlashDevices[Index].DeviceBaseAddress,
                NorFlashDevices[Index].RegionBaseAddress,
                NorFlashDevices[Index].Size,
                Index,
                NorFlashDevices[Index].BlockSize,
-               ContainVariableStorage,
+               InstanceType,
                &mNorFlashInstances[Index]
                );
     if (EFI_ERROR (Status)) {

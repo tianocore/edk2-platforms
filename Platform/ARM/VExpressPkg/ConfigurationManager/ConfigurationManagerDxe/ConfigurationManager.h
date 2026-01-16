@@ -118,7 +118,11 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** The number of ACPI tables to install
 */
+#ifdef ENABLE_TPM
+#define PLAT_ACPI_TABLE_COUNT       12
+#else
 #define PLAT_ACPI_TABLE_COUNT       11
+#endif
 
 #define PLAT_SMBIOS_TABLE_COUNT     2
 
@@ -316,6 +320,14 @@ typedef struct PlatformRepositoryInfo {
 
   /// System ID
   UINT32                                SysId;
+
+#ifdef ENABLE_TPM
+  /// TPM2 Interface Information
+  CM_ARCH_COMMON_TPM2_INTERFACE_INFO    TpmInfo;
+
+  /// TPM2 Device Information
+  CM_ARCH_COMMON_TPM2_DEVICE_INFO       TpmDevInfo;
+#endif
 } EDKII_PLATFORM_REPOSITORY_INFO;
 
 #endif // CONFIGURATION_MANAGER_H__
