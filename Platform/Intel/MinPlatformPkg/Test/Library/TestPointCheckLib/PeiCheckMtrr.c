@@ -1,6 +1,7 @@
 /** @file
 
 Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -13,6 +14,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/HobLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/MtrrLib.h>
+#include <Library/CpuLib.h>
 
 #define MEMORY_ATTRIBUTE_MASK (EFI_RESOURCE_ATTRIBUTE_PRESENT | \
                                EFI_RESOURCE_ATTRIBUTE_INITIALIZED | \
@@ -177,6 +179,10 @@ TestPointMtrrConvert (
   UINTN          Index;
   UINTN          VariableMtrrIndex;
   UINTN          VariableMtrrCount;
+  UINT64         Tom2;
+  UINT64         MsrSysCfg;
+  UINT64         BaseAddr;
+  BOOLEAN        IsAmdCpu;
 
   AsmCpuid (0x80000000, &RegEax, NULL, NULL, NULL);
   if (RegEax >= 0x80000008) {
@@ -260,6 +266,45 @@ TestPointMtrrConvert (
         VariableMtrr[VariableMtrrIndex].Length,
         VariableMtrr[VariableMtrrIndex].Type
         ));
+    }
+  }
+
+  IsAmdCpu = StandardSignatureIsAuthenticAMD();
+
+  if(IsAmdCpu) {
+    MsrSysCfg = AsmReadMsr64(0xC0010010);
+    Tom2 = AsmReadMsr64(0xC001001D);
+
+    // If TOM2 enabled and Tom2ForceMemTypeWB enabled
+    if((MsrSysCfg & (BIT21 | BIT22)) == (BIT21 | BIT22)) {
+      BaseAddr = BASE_4GB;
+      for (VariableMtrrIndex = 0; VariableMtrrIndex < VariableMtrrCount; VariableMtrrIndex++) {
+        if (!VariableMtrr[VariableMtrrIndex].Valid)
+          continue;
+
+        // WB
+        if (VariableMtrr[VariableMtrrIndex].Type == 6)
+          continue;
+
+        // Skip any overrap
+        if (VariableMtrr[VariableMtrrIndex].BaseAddress > BaseAddr) {
+          DEBUG ((DEBUG_INFO, "CACHE(TOM2) - 0x%016lx 0x%016lx %d\n",
+            BaseAddr,
+            VariableMtrr[VariableMtrrIndex].BaseAddress,
+            6
+            ));
+        }
+        BaseAddr = VariableMtrr[VariableMtrrIndex].BaseAddress + VariableMtrr[VariableMtrrIndex].Length;
+      }
+
+      if(BaseAddr != Tom2)
+      {
+        DEBUG ((DEBUG_INFO, "CACHE(TOM2) - 0x%016lx 0x%016lx %d\n",
+              BaseAddr,
+              Tom2,
+              6
+              ));
+      }
     }
   }
 }
@@ -368,6 +413,9 @@ TestPointCheckMtrr (
   UINTN          VariableMtrrCount;
   BOOLEAN        Result;
   VARIABLE_MTRR  VariableMtrr[MTRR_NUMBER_OF_VARIABLE_MTRR];
+  UINT64         Tom2;
+  UINT64         MsrSysCfg;
+  BOOLEAN        IsAmdCpu;
 
   DEBUG ((DEBUG_INFO, "==== TestPointCheckMtrr - Enter\n"));
 
@@ -387,6 +435,16 @@ TestPointCheckMtrr (
       ));
   }
   DEBUG ((DEBUG_INFO, "\n"));
+
+  IsAmdCpu = StandardSignatureIsAuthenticAMD();
+  if(IsAmdCpu) {
+    Tom2 = AsmReadMsr64(0xC001001D);
+    MsrSysCfg = AsmReadMsr64(0xC0010010);
+    DEBUG ((DEBUG_INFO, "MsrSysCfg: = %lx\n", MsrSysCfg));
+    DEBUG ((DEBUG_INFO, "Tom2     : = %lx\n", Tom2));
+    DEBUG ((DEBUG_INFO, "\n"));
+  }
+
   DEBUG ((DEBUG_INFO, "==== TestPointCheckMtrr - Exit\n"));
   
   //
