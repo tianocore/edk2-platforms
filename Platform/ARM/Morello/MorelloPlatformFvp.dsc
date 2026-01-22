@@ -1,7 +1,7 @@
 ## @file
 #  Compoenent description file specific for Morello FVP Platform
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -39,6 +39,9 @@
 !include Platform/ARM/Morello/ConfigurationManager/ConfigurationManagerFvp.dsc.inc
 
 [LibraryClasses.common]
+  # Platform Library
+  ArmPlatformLib|Platform/ARM/Morello/Library/PlatformLib/PlatformLibFvp.inf
+
   # Virtio Support
   VirtioLib|OvmfPkg/Library/VirtioLib/VirtioLib.inf
   VirtioMmioDeviceLib|OvmfPkg/Library/VirtioMmioDeviceLib/VirtioMmioDeviceLib.inf
@@ -63,14 +66,40 @@
   gArmMorelloTokenSpaceGuid.PcdVirtioNetSize|0x10000
   gArmMorelloTokenSpaceGuid.PcdVirtioNetInterrupt|134
 
+  # Runtime Variable storage
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvStoreReserved|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x2800
+
+  #FVP Specific PCD values for PCIe
+  gArmTokenSpaceGuid.PcdPciBusMax|15
+  gArmTokenSpaceGuid.PcdPciMmio64Size|0x2000000000
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase|0x28FFFFFFFF
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x20000000
+
 [Components.common]
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
   OvmfPkg/VirtioNetDxe/VirtioNet.inf
 
   # Platform driver
   Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeFvp.inf
+  # PEI Phase modules
+  Platform/ARM/Morello/Drivers/MorelloNtFwConfigPei/Fvp.inf
 
   #
   # Semi-hosting filesystem
   #
   ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
+  # Runtime Variable support
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
+
+  ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
+    <LibraryClasses>
+      LcdHwLib|Platform/ARM/Morello/Library/LcdHwMaliDxxLib/LcdHwMaliDxxLib.inf
+      LcdPlatformLib|Platform/ARM/Morello/Library/LcdPlatformLibMorello/LcdPlatformLibMorelloFvp.inf
+  }
