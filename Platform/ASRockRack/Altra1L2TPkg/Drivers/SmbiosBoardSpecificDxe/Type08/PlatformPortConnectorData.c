@@ -6,12 +6,12 @@
 
 **/
 
-#include "SmbiosPlatformDxe.h"
+#include "SmbiosBoardSpecificDxe.h"
 
 //
 // Define data for SMBIOS Type 8 Table.
 //
-SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE8, PlatformPortConnector) = {
+SMBIOS_BOARD_SPECIFIC_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE8, PlatformPortConnector) = {
   {                                               // Table 1
     {                                             // Header
       EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // Type
@@ -117,7 +117,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE8, PlatformPortConnector) = {
     ADDITIONAL_STR_INDEX_1,                       // Internal Reference Designator
     PortConnectorTypeNone,                        // Internal Connector Type
     ADDITIONAL_STR_INDEX_2,                       // External Reference Designator
-    PortConnectorTypeOther,                       // External Connector Type
+    PortConnectorTypeRJ45 ,                       // External Connector Type
     PortTypeNetworkPort                           // Port Type
   },
   {                                               // Table 10
@@ -129,7 +129,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE8, PlatformPortConnector) = {
     ADDITIONAL_STR_INDEX_1,                       // Internal Reference Designator
     PortConnectorTypeNone,                        // Internal Connector Type
     ADDITIONAL_STR_INDEX_2,                       // External Reference Designator
-    PortConnectorTypeOther,                       // External Connector Type
+    PortConnectorTypeRJ45,                        // External Connector Type
     PortTypeNetworkPort                           // Port Type
   },
   {                                               // Table 11
@@ -156,81 +156,81 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE8, PlatformPortConnector) = {
 //
 // Define string Tokens for additional strings.
 //
-SMBIOS_PLATFORM_DXE_STRING_TOKEN_DATA (PlatformPortConnector) = {
+SMBIOS_BOARD_SPECIFIC_DXE_STRING_TOKEN_DATA (PlatformPortConnector) = {
   {                                                                                  // Table 1
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_1),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_1)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_1),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_1)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 2
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_2),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_2)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_2),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_2)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 3
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_3),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_3)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_3),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_3)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 4
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_4),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_4)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_4),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_4)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 5
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_5),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_5)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_5),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_5)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 6
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_6),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_6) 
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_6),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_6)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 7
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_7),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_7)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_7),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_7)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 8
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_8),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_8)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_8),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_8)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 9
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_9),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_9)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_9),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_9)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 10
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_10),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_10)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_10),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_EXTERNAL_REFERENCE_DESIGNATOR_10)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   },
   {                                                                                  // Table 11
     {                                                                                // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_11),
-      STRING_TOKEN (STR_PLATFORM_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_11)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_11),
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_PORT_CONNECTOR_INTERNAL_REFERENCE_DESIGNATOR_11)
     },
     ADDITIONAL_STR_INDEX_2                                                           // Size of Tokens array
   }
