@@ -139,7 +139,11 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** The number of ACPI tables to install
 */
+#ifdef ENABLE_TPM
+#define PLAT_ACPI_TABLE_COUNT   12
+#else
 #define PLAT_ACPI_TABLE_COUNT   11
+#endif
 
 /** The number of SMBIOS tables to install
 */
@@ -316,6 +320,14 @@ typedef struct PlatformRepositoryInfo {
 
   // Cpc info (1 for each PSD domain)
   CM_ARCH_COMMON_CPC_INFO               CpcInfo[PSD_DOMAIN_COUNT];
+
+#ifdef ENABLE_TPM
+  /// TPM2 Interface Information
+  CM_ARCH_COMMON_TPM2_INTERFACE_INFO    TpmInfo;
+
+  /// TPM2 Device Information
+  CM_ARCH_COMMON_TPM2_DEVICE_INFO       TpmDevInfo;
+#endif
 
   /// Juno Board Revision
   UINT32                                JunoRevision;

@@ -17,7 +17,11 @@
 #define DP_BASE_DESCRIPTOR      ((FixedPcdGet64 (PcdArmMaliDpBase) != 0) ? 1 : 0)
 
 // Number of Virtual Memory Map Descriptors
+#ifdef ENABLE_TPM
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS (15 + DP_BASE_DESCRIPTOR)
+#else
 #define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS (14 + DP_BASE_DESCRIPTOR)
+#endif
 
 // DDR attributes
 #define DDR_ATTRIBUTES_CACHED   ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
@@ -200,6 +204,13 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].VirtualBase = SBSA_WATCHDOG_BASE;
   VirtualMemoryTable[Index].Length = SBSA_WATCHDOG_SIZE;
   VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+
+#ifdef ENABLE_TPM
+  VirtualMemoryTable[++Index].PhysicalBase = FVP_TPM_CRB_BASE;
+  VirtualMemoryTable[Index].VirtualBase = FVP_TPM_CRB_BASE;
+  VirtualMemoryTable[Index].Length = FVP_TPM_CRB_SIZE;
+  VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+#endif
 
   // End of Table
   VirtualMemoryTable[++Index].PhysicalBase = 0;

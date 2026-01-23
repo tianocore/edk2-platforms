@@ -22,6 +22,7 @@
   NorFlashFvb.c
   NorFlashCommon.h
   NorFlashStandaloneMm.c
+  NorFlashBlockIoDxe.c
 
 [Packages]
   EmbeddedPkg/EmbeddedPkg.dec
@@ -48,6 +49,7 @@
 
 [Protocols]
   gEfiSmmFirmwareVolumeBlockProtocolGuid
+  gEdkiiTpmBlockIoProtocolGuid
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64
@@ -59,6 +61,9 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+  gPlatformArmTokenSpaceGuid.PcdTpmEmuNvMemory
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemoryBase
+  gPlatformArmTokenSpaceGuid.PcdTpmNvMemorySize
 
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress
 
