@@ -29,6 +29,7 @@
 
 [LibraryClasses.Common.PEI_CORE, LibraryClasses.Common.PEIM]
   TestPointCheckLib       | MinPlatformPkg/Test/Library/TestPointCheckLib/PeiTestPointCheckLib.inf
+  TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
   TestPointLib            | MinPlatformPkg/Test/Library/TestPointLib/PeiTestPointLib.inf
   TimerLib                | MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
 
