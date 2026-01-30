@@ -14,24 +14,24 @@
 ################################################################################
 
 [LibraryClasses]
-  PciSegmentInfoLib       | MinPlatformPkg/Pci/Library/PciSegmentInfoLibSimple/PciSegmentInfoLibSimple.inf
-  BoardInitLib            | QemuOpenBoardPkg/Library/BoardInitLib/BoardInitLib.inf
-  SetCacheMtrrLib         | MinPlatformPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
-  ReportCpuHobLib         | MinPlatformPkg/PlatformInit/Library/ReportCpuHobLib/ReportCpuHobLib.inf
-  SiliconPolicyInitLib    | MinPlatformPkg/PlatformInit/Library/SiliconPolicyInitLibNull/SiliconPolicyInitLibNull.inf
-  SiliconPolicyUpdateLib  | MinPlatformPkg/PlatformInit/Library/SiliconPolicyUpdateLibNull/SiliconPolicyUpdateLibNull.inf
-  ReportFvLib             | QemuOpenBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
-  PciLib                  | MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
+  PciSegmentInfoLib              | MinPlatformPkg/Pci/Library/PciSegmentInfoLibSimple/PciSegmentInfoLibSimple.inf
+  BoardInitLib                   | QemuOpenBoardPkg/Library/BoardInitLib/BoardInitLib.inf
+  SetCacheMtrrLib                | MinPlatformPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
+  ReportCpuHobLib                | MinPlatformPkg/PlatformInit/Library/ReportCpuHobLib/ReportCpuHobLib.inf
+  SiliconPolicyInitLib           | MinPlatformPkg/PlatformInit/Library/SiliconPolicyInitLibNull/SiliconPolicyInitLibNull.inf
+  SiliconPolicyUpdateLib         | MinPlatformPkg/PlatformInit/Library/SiliconPolicyUpdateLibNull/SiliconPolicyUpdateLibNull.inf
+  ReportFvLib                    | QemuOpenBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  PciLib                         | MdePkg/Library/BasePciLibCf8/BasePciLibCf8.inf
 
 [LibraryClasses.Common.SEC]
-  TestPointCheckLib       | MinPlatformPkg/Test/Library/TestPointCheckLib/SecTestPointCheckLib.inf
-  TimerLib                | MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
+  TestPointCheckLib              | MinPlatformPkg/Test/Library/TestPointCheckLib/SecTestPointCheckLib.inf
+  TimerLib                       | MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
 
 [LibraryClasses.Common.PEI_CORE, LibraryClasses.Common.PEIM]
-  TestPointCheckLib       | MinPlatformPkg/Test/Library/TestPointCheckLib/PeiTestPointCheckLib.inf
-  TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
-  TestPointLib            | MinPlatformPkg/Test/Library/TestPointLib/PeiTestPointLib.inf
-  TimerLib                | MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
+  TestPointCheckLib              | MinPlatformPkg/Test/Library/TestPointCheckLib/PeiTestPointCheckLib.inf
+  TestPointCheckDmaProtectionLib | MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
+  TestPointLib                   | MinPlatformPkg/Test/Library/TestPointLib/PeiTestPointLib.inf
+  TimerLib                       | MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
 
 [Components.$(PEI_ARCH)]
   UefiCpuPkg/SecCore/SecCore.inf
