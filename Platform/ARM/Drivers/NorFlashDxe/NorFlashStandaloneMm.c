@@ -2,7 +2,6 @@
 
   Copyright (c) 2011 - 2024, Arm Limited. All rights reserved.<BR>
   Copyright (c) 2020, Linaro, Ltd. All rights reserved.<BR>
-
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -13,6 +12,15 @@
 #include <Library/NorFlashInfoLib.h>
 
 #include "NorFlashCommon.h"
+
+//
+// Norflash Instance Type.
+//
+typedef enum {
+  InstanceTypeVariable,
+  InstanceTypeFwu,
+  InstanceTypeUnknown,
+} INSTANCE_TYPE;
 
 //
 // Global variable declarations
@@ -34,10 +42,10 @@ NOR_FLASH_INSTANCE  mNorFlashInstanceTemplate = {
   {
     EFI_BLOCK_IO_PROTOCOL_REVISION2, // Revision
     NULL,                            // Media ... NEED TO BE FILLED
-    NULL,                            // Reset;
-    NULL,                            // ReadBlocks
-    NULL,                            // WriteBlocks
-    NULL                             // FlushBlocks
+    NorFlashBlockIoReset,            // Reset;
+    NorFlashBlockIoReadBlocks,       // ReadBlocks
+    NorFlashBlockIoWriteBlocks,      // WriteBlocks
+    NorFlashBlockIoFlushBlocks,      // FlushBlocks
   }, // BlockIoProtocol
 
   {
@@ -93,15 +101,213 @@ NOR_FLASH_INSTANCE  mNorFlashInstanceTemplate = {
   }   // DevicePath
 };
 
+/**
+  Check region is belonged to variable storage.
+
+  @param [in]   NorFlashRegionBase        Start address of one single region
+  @param [in]   NorFlashSize              Size of Device.
+
+  @return TRUE                            Variable storage region.
+  @return FALSE                           Other region
+**/
+STATIC
+BOOLEAN
+EFIAPI
+IsVariableStorageRegion (
+  IN UINTN                RegionBaseAddress,
+  IN UINTN                Size
+  )
+{
+  BOOLEAN ContainVariableStorage;
+
+  if (FixedPcdGet64 (PcdFlashNvStorageVariableBase64) != 0) {
+    ContainVariableStorage =
+      (RegionBaseAddress <= FixedPcdGet64 (PcdFlashNvStorageVariableBase64)) &&
+      (FixedPcdGet64 (PcdFlashNvStorageVariableBase64) + FixedPcdGet32 (PcdFlashNvStorageVariableSize) <=
+       RegionBaseAddress + Size);
+  } else {
+    ContainVariableStorage =
+      (RegionBaseAddress <= FixedPcdGet32 (PcdFlashNvStorageVariableBase)) &&
+      (FixedPcdGet32 (PcdFlashNvStorageVariableBase) + FixedPcdGet32 (PcdFlashNvStorageVariableSize) <=
+       RegionBaseAddress + Size);
+  }
+
+  return ContainVariableStorage;
+}
+
+/**
+  Check region is belonged to firmware update storage.
+
+  @param [in]   NorFlashRegionBase        Start address of one single region.
+  @param [in]   NorFlashSize              Size of Device.
+
+  @return TRUE                            Firmware update storage region.
+  @return FALSE                           Other region.
+**/
+STATIC
+BOOLEAN
+EFIAPI
+IsFirmwareUpdateStorageRegion (
+  IN UINTN                RegionBaseAddress,
+  IN UINTN                Size
+  )
+{
+  BOOLEAN ContainFwuStorage;
+
+  if (FixedPcdGet64 (PcdFlashNvStorageFwuBase64) != 0) {
+    ContainFwuStorage =
+      (RegionBaseAddress <= FixedPcdGet64 (PcdFlashNvStorageFwuBase64)) &&
+      (FixedPcdGet64 (PcdFlashNvStorageFwuBase64) + FixedPcdGet32 (PcdFlashNvStorageFwuSize) <=
+       RegionBaseAddress + Size);
+  } else {
+    ContainFwuStorage =
+      (RegionBaseAddress <= FixedPcdGet32 (PcdFlashNvStorageFwuBase)) &&
+      (FixedPcdGet32 (PcdFlashNvStorageFwuBase) + FixedPcdGet32 (PcdFlashNvStorageFwuSize) <=
+       RegionBaseAddress + Size);
+  }
+
+  return ContainFwuStorage;
+}
+
+/**
+  Free NorFlash device Instance.
+
+  @param [in]   Instance                 NorFlash Instance.
+
+**/
+STATIC
+VOID
+EFIAPI
+NorFlashFreeInstance (
+  IN NOR_FLASH_INSTANCE *Instance
+  )
+{
+  if (Instance != NULL) {
+    if (Instance->ShadowBuffer != NULL) {
+      FreePool (Instance->ShadowBuffer);
+      Instance->ShadowBuffer = NULL;
+    }
+
+    FreePool (Instance);
+  }
+}
+
+
+/**
+  Allocate NorFlash device Instance.
+
+  @param [in]   NorFlashDeviceBase        Start address of Device Base Address.
+  @param [in]   NorFlashRegionBase        Start address of one single region
+  @param [in]   NorFlashSize              Size of Device.
+  @param [in]   Index                     Index among NorFlash Devices.
+  @param [in]   BlockSize                 BlockSize.
+
+  @return Other                           Allocated NorflashDevice Instance.
+  @return NULL                            Failed to allocate.
+**/
+STATIC
+NOR_FLASH_INSTANCE *
+EFIAPI
+NorFlashAllocInstance (
+  IN UINTN                HostControllerBase,
+  IN UINTN                NorFlashDeviceBase,
+  IN UINTN                NorFlashRegionBase,
+  IN UINTN                NorFlashSize,
+  IN UINT32               Index,
+  IN UINT32               BlockSize
+  )
+{
+  NOR_FLASH_INSTANCE *Instance;
+
+  Instance = AllocateRuntimeCopyPool (sizeof (NOR_FLASH_INSTANCE), &mNorFlashInstanceTemplate);
+  if (Instance == NULL) {
+    return NULL;
+  }
+
+  Instance->HostControllerBaseAddress = HostControllerBase;
+  Instance->DeviceBaseAddress = NorFlashDeviceBase;
+  Instance->RegionBaseAddress = NorFlashRegionBase;
+  Instance->Size              = NorFlashSize;
+
+  Instance->BlockIoProtocol.Media = &Instance->Media;
+
+  Instance->Media.MediaId         = Index;
+  Instance->Media.BlockSize       = BlockSize;
+  Instance->Media.LastBlock       = (NorFlashSize / BlockSize) - 1;
+
+  CopyGuid (&Instance->DevicePath.Vendor.Guid, &gEfiCallerIdGuid);
+  Instance->DevicePath.Index = (UINT8)Index;
+
+  Instance->ShadowBuffer = AllocateRuntimePool (BlockSize);
+  if (Instance->ShadowBuffer == NULL) {
+    FreePool (Instance);
+
+    return NULL;
+  }
+
+  return Instance;
+}
+
+/**
+  Destory NorFlash device Instance.
+
+  @param [in]   Instance                  NorFlash Instance.
+
+**/
+STATIC
+VOID
+EFIAPI
+NorFlashDestoryInstance (
+  IN NOR_FLASH_INSTANCE *Instance
+  )
+{
+  if (Instance == NULL) {
+    return ;
+  }
+
+  if (IsVariableStorageRegion (Instance->RegionBaseAddress, Instance->Size)) {
+    gMmst->MmUninstallProtocolInterface (
+             Instance->Handle,
+             &gEfiSmmFirmwareVolumeBlockProtocolGuid,
+             &Instance->FvbProtocol
+             );
+  } else {
+    gMmst->MmUninstallProtocolInterface (
+             Instance->Handle,
+             &gEfiBlockIoProtocolGuid,
+             &Instance->BlockIoProtocol
+             );
+  }
+
+  NorFlashFreeInstance (Instance);
+}
+
+/**
+  Create NorFlash device Instance.
+
+  @param [in]   NorFlashDeviceBase        Start address of Device Base Address.
+  @param [in]   NorFlashRegionBase        Start address of one single region
+  @param [in]   NorFlashSize              Size of Device.
+  @param [in]   Index                     Index among NorFlash Devices.
+  @param [in]   BlockSize                 BlockSize.
+  @param [in]   InstanceType              Instance type.
+  @param [out]  NorFlashinstance          NorFlash Instance.
+
+  @return EFI_SUCCESS                     Success.
+  @return EFI_OUT_RESOURCES               Out of memory.
+  @return Others                          Fail to install BlockIo Protocol.
+**/
+STATIC
 EFI_STATUS
-NorFlashCreateInstance (
+EFIAPI
+NorFlashCreateInstanceType (
   IN UINTN                HostControllerBase,
   IN UINTN                NorFlashDeviceBase,
   IN UINTN                NorFlashRegionBase,
   IN UINTN                NorFlashSize,
   IN UINT32               Index,
   IN UINT32               BlockSize,
-  IN BOOLEAN              SupportFvb,
+  IN INSTANCE_TYPE        InstanceType,
   OUT NOR_FLASH_INSTANCE  **NorFlashInstance
   )
 {
@@ -109,37 +315,30 @@ NorFlashCreateInstance (
   NOR_FLASH_INSTANCE  *Instance;
   NOR_FLASH_INFO      *FlashInfo;
   UINT8               JedecId[6];
+  EFI_GUID            *ProtocolGuid;
+  VOID                *Interface;
 
   ASSERT (NorFlashInstance != NULL);
 
-  Instance = AllocateRuntimeCopyPool (sizeof (NOR_FLASH_INSTANCE), &mNorFlashInstanceTemplate);
-  if (Instance == NULL) {
-    return EFI_OUT_OF_RESOURCES;
+  if (InstanceType >= InstanceTypeUnknown) {
+    return EFI_INVALID_PARAMETER;
   }
 
-  Instance->HostControllerBaseAddress = HostControllerBase;
-  Instance->DeviceBaseAddress         = NorFlashDeviceBase;
-  Instance->RegionBaseAddress         = NorFlashRegionBase;
-  Instance->Size                      = NorFlashSize;
-
-  Instance->BlockIoProtocol.Media = &Instance->Media;
-  Instance->Media.MediaId         = Index;
-  Instance->Media.BlockSize       = BlockSize;
-  Instance->Media.LastBlock       = (NorFlashSize / BlockSize)-1;
-
-  CopyGuid (&Instance->DevicePath.Vendor.Guid, &gEfiCallerIdGuid);
-  Instance->DevicePath.Index = (UINT8)Index;
-
-  Instance->ShadowBuffer = AllocateRuntimePool (BlockSize);
-  if (Instance->ShadowBuffer == NULL) {
-    Status = EFI_OUT_OF_RESOURCES;
-    goto error_handler1;
+  Instance = NorFlashAllocInstance (
+               HostControllerBase,
+               NorFlashDeviceBase,
+               NorFlashRegionBase,
+               NorFlashSize,
+               Index,
+               BlockSize);
+  if (Instance == NULL) {
+    return EFI_OUT_OF_RESOURCES;
   }
 
   Status = NorFlashReadId (Instance, JedecId);
   if (EFI_ERROR (Status)) {
     if (Status != EFI_UNSUPPORTED) {
-      goto error_handler2;
+      goto ErrorHandler;
     }
   } else {
     Status = NorFlashGetInfo (JedecId, &FlashInfo, FALSE);
@@ -151,32 +350,44 @@ NorFlashCreateInstance (
     }
   }
 
-  if (SupportFvb) {
+  if (InstanceType == InstanceTypeVariable) {
+    /**
+     * For variable storage.
+     */
+    ProtocolGuid = &gEfiSmmFirmwareVolumeBlockProtocolGuid;
+    Interface = &Instance->FvbProtocol;
     NorFlashFvbInitialize (Instance);
 
-    Status = gMmst->MmInstallProtocolInterface (
-                      &Instance->Handle,
-                      &gEfiSmmFirmwareVolumeBlockProtocolGuid,
-                      EFI_NATIVE_INTERFACE,
-                      &Instance->FvbProtocol
-                      );
-    if (EFI_ERROR (Status)) {
-      goto error_handler2;
-    }
-  } else {
-    DEBUG ((DEBUG_ERROR, "standalone MM NOR Flash driver only support FVB.\n"));
-    Status = EFI_UNSUPPORTED;
-    goto error_handler2;
+  } else if (InstanceType == InstanceTypeFwu) {
+    /**
+     * For firmware update stoarge.
+     */
+    ProtocolGuid = &gEfiBlockIoProtocolGuid;
+    Interface = &Instance->BlockIoProtocol;
+  }
+
+  Status = gMmst->MmInstallProtocolInterface (
+                    &Instance->Handle,
+                    ProtocolGuid,
+                    EFI_NATIVE_INTERFACE,
+                    Interface
+                    );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to install Norflash protocol(%g)... Status:%r\n",
+      ProtocolGuid,
+      Status));
+    goto ErrorHandler;
   }
 
   *NorFlashInstance = Instance;
-  return Status;
 
-error_handler2:
-  FreePool (Instance->ShadowBuffer);
+  return EFI_SUCCESS;
 
-error_handler1:
-  FreePool (Instance);
+ErrorHandler:
+  NorFlashFreeInstance (Instance);
+
   return Status;
 }
 
@@ -190,7 +401,8 @@ NorFlashInitialise (
   EFI_STATUS             Status;
   UINT32                 Index;
   NOR_FLASH_DESCRIPTION  *NorFlashDevices;
-  BOOLEAN                ContainVariableStorage;
+  UINT32                 Idx;
+  INSTANCE_TYPE          InstanceType;
 
   Status = NorFlashPlatformInitialization ();
   if (EFI_ERROR (Status)) {
@@ -204,37 +416,57 @@ NorFlashInitialise (
     return Status;
   }
 
-  mNorFlashInstances = AllocatePool (sizeof (NOR_FLASH_INSTANCE *) * mNorFlashDeviceCount);
+  mNorFlashInstances = AllocateZeroPool (sizeof (NOR_FLASH_INSTANCE *) * mNorFlashDeviceCount);
+  if (mNorFlashInstances == NULL) {
+    DEBUG ((DEBUG_ERROR, "NorFlashInitialise: Failed to allocate nor flash instance\n"));
+    return EFI_OUT_OF_RESOURCES;
+  }
 
   for (Index = 0; Index < mNorFlashDeviceCount; Index++) {
-    // Check if this NOR Flash device contain the variable storage region
+    InstanceType = InstanceTypeUnknown;
 
-    if (FixedPcdGet64 (PcdFlashNvStorageVariableBase64) != 0) {
-      ContainVariableStorage =
-        (NorFlashDevices[Index].RegionBaseAddress <= FixedPcdGet64 (PcdFlashNvStorageVariableBase64)) &&
-        (FixedPcdGet64 (PcdFlashNvStorageVariableBase64) + FixedPcdGet32 (PcdFlashNvStorageVariableSize) <=
-         NorFlashDevices[Index].RegionBaseAddress + NorFlashDevices[Index].Size);
-    } else {
-      ContainVariableStorage =
-        (NorFlashDevices[Index].RegionBaseAddress <= FixedPcdGet32 (PcdFlashNvStorageVariableBase)) &&
-        (FixedPcdGet32 (PcdFlashNvStorageVariableBase) + FixedPcdGet32 (PcdFlashNvStorageVariableSize) <=
-         NorFlashDevices[Index].RegionBaseAddress + NorFlashDevices[Index].Size);
+    // Check if this NOR Flash device contain the variable storage region
+    if (IsVariableStorageRegion (
+          NorFlashDevices[Index].RegionBaseAddress,
+          NorFlashDevices[Index].Size)) {
+      InstanceType = InstanceTypeVariable;
+
+    // Check if this NOR Flash device contain the firmware update storage region
+    } else if (IsFirmwareUpdateStorageRegion (
+                NorFlashDevices[Index].RegionBaseAddress,
+                NorFlashDevices[Index].Size)) {
+      InstanceType = InstanceTypeFwu;
     }
 
-    Status = NorFlashCreateInstance (
+    if (InstanceType == InstanceTypeUnknown) {
+      DEBUG ((DEBUG_ERROR, "NorFlashInitialise: Not supported NorFlash[%d]... Skip\n", Index));
+      continue;
+    }
+
+    Status = NorFlashCreateInstanceType (
                PcdGet32 (PcdNorFlashRegBaseAddress),
                NorFlashDevices[Index].DeviceBaseAddress,
                NorFlashDevices[Index].RegionBaseAddress,
                NorFlashDevices[Index].Size,
                Index,
                NorFlashDevices[Index].BlockSize,
-               ContainVariableStorage,
+               InstanceType,
                &mNorFlashInstances[Index]
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "NorFlashInitialise: Fail to create instance for NorFlash[%d]\n", Index));
+      goto ErrorHandler;
     }
   }
+
+  return EFI_SUCCESS;
+
+ErrorHandler:
+  for (Idx = 0; Idx < Index; Idx++) {
+    NorFlashDestoryInstance (mNorFlashInstances[Idx]);
+    mNorFlashInstances[Idx] = NULL;
+  }
+
+  FreePool (mNorFlashInstances);
 
   return Status;
 }
