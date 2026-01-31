@@ -13,6 +13,9 @@
   PciHostBridgeUtilityLib | OvmfPkg/Library/PciHostBridgeUtilityLib/PciHostBridgeUtilityLib.inf
   DxeHardwareInfoLib      | OvmfPkg/Library/HardwareInfoLib/DxeHardwareInfoLib.inf
 
+[LibraryClasses.Common.PEI_CORE]
+  TimerLib                | OvmfPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
+
 [LibraryClasses.Common.PEIM]
   MpInitLib               | UefiCpuPkg/Library/MpInitLib/PeiMpInitLib.inf
   TimerLib                | OvmfPkg/Library/AcpiTimerLib/BaseAcpiTimerLib.inf
