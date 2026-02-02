@@ -408,7 +408,8 @@ def build(config):
             if re.search(pattern, item):
                 os.remove(os.path.join(file_dir, item))
 
-        command = [sys.executable, os.path.join(config['WORKSPACE_PLATFORM'],
+        command = [sys.executable, os.path.join(config['WORKSPACE'],
+                                'edk2-platforms', 'Features',
                                 config['PLATFORM_PACKAGE'],
                                 'Tools', 'Fsp',
                                 'RebaseFspBinBaseAddress.py'),
