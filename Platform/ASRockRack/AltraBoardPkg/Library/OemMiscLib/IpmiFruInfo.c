@@ -29,7 +29,7 @@
 //
 #define FRU_AREA_LENGTH_MAX  256
 
-#define FRU_FIELD_DATA_DEFAULT  "To be filled by O.E.M\0"
+#define FRU_FIELD_DATA_DEFAULT  "Not Set\0"
 
 //
 // FRU Chassis Information
