@@ -1,0 +1,57 @@
+## @file
+#
+# Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = FwsGptSystemFipLib
+  FILE_GUID                      = 6678dfd6-8299-4dec-a559-784b6a44d2cf
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  LIBRARY_CLASS                  = FwsPlatformLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  DiskGpt.h
+  DiskGpt.c
+  FwsMetadata.c
+  FwsMetadata.h
+  FwsMetadataV2Ops.c
+  FwsGptSystemFipLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+  Platform/ARM/ARM.dec
+  Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  StandaloneMmDriverEntryPoint
+
+[Guids]
+  gPsaFwuImageDirectoryGuid
+  gPsaFwuMetadataGuid
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemFirmwareFmpLowestSupportedVersion
+  gArmTokenSpaceGuid.PcdSystemFirmwareFmpVersion
+  gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks
+  gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank
+  gPlatformArmTokenSpaceGuid.PcdSystemFirmwareImageTypeGuid
