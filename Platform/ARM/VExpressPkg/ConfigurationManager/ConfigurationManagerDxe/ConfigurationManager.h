@@ -33,7 +33,8 @@ extern CHAR8  dsdt_aml_code[];
           Mpidr,                                                         \
           PmuIrq,                                                        \
           VGicIrq,                                                       \
-          EnergyEfficiency                                               \
+          EnergyEfficiency,                                              \
+          StaToken                                                       \
           ) {                                                            \
     CPUInterfaceNumber,       /* UINT32  CPUInterfaceNumber           */ \
     CPUInterfaceNumber,       /* UINT32  AcpiProcessorUid             */ \
@@ -49,7 +50,16 @@ extern CHAR8  dsdt_aml_code[];
     VGicIrq,                  /* UINT32  VGICMaintenanceInterrupt     */ \
     0,                        /* UINT64  GICRBaseAddress              */ \
     Mpidr,                    /* UINT64  MPIDR                        */ \
-    EnergyEfficiency          /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    EnergyEfficiency,         /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    0,                        /* UINT16  SpeOverflowInterrupt         */ \
+    0,                        /* UINT32  ProximityDomain              */ \
+    0,                        /* UINT32  ClockDomain                  */ \
+    0,                        /* UINT32  AffinityFlags                */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN  CpcToken            */ \
+    0,                        /* UINT16  TrbeInterrupt                */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN  EtToken             */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN  PsdToken            */ \
+    StaToken                  /* CM_OBJECT_TOKEN  StaToken            */ \
     }
 
 /** A helper macro for populating the Processor Hierarchy Node flags
@@ -313,6 +323,8 @@ typedef struct PlatformRepositoryInfo {
 
   // Cores Low Power Idle state references (LPI)
   CM_ARCH_COMMON_OBJ_REF                CoresLpiRef[CORES_LPI_STATE_COUNT];
+
+  CM_ARCH_COMMON_STA_INFO               StaInfo[PLAT_CPU_COUNT];
 
   /// System ID
   UINT32                                SysId;
