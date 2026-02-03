@@ -15,7 +15,6 @@
 #include <Guid/EventGroup.h>
 #include <Guid/PlatformInfoHob.h>
 #include <IndustryStandard/Acpi63.h>
-#include <Library/ArmLib/ArmLibPrivate.h>
 #include <Library/AcpiLib.h>
 #include <Library/AmpereCpuLib.h>
 #include <Library/BaseMemoryLib.h>

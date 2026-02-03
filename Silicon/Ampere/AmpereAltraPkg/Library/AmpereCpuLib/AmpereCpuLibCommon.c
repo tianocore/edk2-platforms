@@ -11,7 +11,6 @@
 
 #include <Guid/PlatformInfoHob.h>
 #include <Library/AmpereCpuLib.h>
-#include <Library/ArmLib/ArmLibPrivate.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IoLib.h>
