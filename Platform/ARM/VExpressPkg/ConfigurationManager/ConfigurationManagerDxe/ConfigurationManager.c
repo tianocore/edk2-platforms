@@ -58,8 +58,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     },
     // MADT Table
     {
-      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
-      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
+      EFI_ACPI_6_7_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,                                     // [CODE_FIRST] 11148
+      EFI_ACPI_6_7_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,                                      // [CODE_FIRST] 11148
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMadt),
       NULL
     },
@@ -98,11 +98,18 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdPptt),
       NULL
     },
+    // SRAT Table                                                                                 // [CODE_FIRST] 11148
+    {                                                                                             // [CODE_FIRST] 11148
+      EFI_ACPI_6_7_SYSTEM_RESOURCE_AFFINITY_TABLE_SIGNATURE,                                      // [CODE_FIRST] 11148
+      EFI_ACPI_6_7_SYSTEM_RESOURCE_AFFINITY_TABLE_REVISION,                                       // [CODE_FIRST] 11148
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSrat),                                         // [CODE_FIRST] 11148
+      NULL                                                                                        // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
       EFI_ACPI_6_3_IO_REMAPPING_TABLE_SIGNATURE,
-      EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00,
+      EFI_ACPI_IO_REMAPPING_TABLE_REVISION_07,                                                    // [CODE_FIRST] 11148
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdIort),
       NULL
     },
@@ -279,7 +286,83 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // The GIC ITS ID.
     0,
     // The physical address for the Interrupt Translation Service
-    0x2f020000
+    0x2f020000,                                                                                   // [CODE_FIRST] 11148
+    // The proximity domain                                                                       // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The proximity domain token                                                                 // [CODE_FIRST] 11148
+    CM_NULL_TOKEN,                                                                                // [CODE_FIRST] 11148
+  },                                                                                              // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+  // GIC ITSv5                                                                                    // [CODE_FIRST] 11148
+  // linked to N IWBs                                                                             // [CODE_FIRST] 11148
+  // IWB linked to 1 ITS                                                                          // [CODE_FIRST] 11148
+  {                                                                                               // [CODE_FIRST] 11148
+    // The GIC ITSv5 ID.                                                                          // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // Flags                                                                                      // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The physical address for the Interrupt Translation Service                                 // [CODE_FIRST] 11148
+    FVP_GICV5_ITS_CONF_FRAME_BASE,                                                                // [CODE_FIRST] 11148
+    // The proximity domain                                                                       // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The proximity domain token                                                                 // [CODE_FIRST] 11148
+    CM_NULL_TOKEN,                                                                                // [CODE_FIRST] 11148
+  },                                                                                              // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+  // GIC ITSv5 Translate Frame Information                                                        // [CODE_FIRST] 11148
+  {                                                                                               // [CODE_FIRST] 11148
+    {                                                                                             // [CODE_FIRST] 11148
+      // Linked GIC ITSv5 ID                                                                      // [CODE_FIRST] 11148
+      0,                                                                                          // [CODE_FIRST] 11148
+      // The GIC ITSv5 translate frame ID.                                                        // [CODE_FIRST] 11148
+      0,                                                                                          // [CODE_FIRST] 11148
+      // The physical address for the ITS Translate Frame                                         // [CODE_FIRST] 11148
+      FVP_GICV5_ITS_TRANS_FRAME_BASE,                                                             // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+  },                                                                                              // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+  // GIC IRS                                                                                      // [CODE_FIRST] 11148
+  // linked to N PEs                                                                              // [CODE_FIRST] 11148
+  // PE linked to 1 IRS                                                                           // [CODE_FIRST] 11148
+  {                                                                                               // [CODE_FIRST] 11148
+    // The GIC IRS ID                                                                             // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // Flags                                                                                      // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The physical address for the Configuration Frame                                           // [CODE_FIRST] 11148
+    FVP_GICV5_IRS_CONF_FRAME_BASE,                                                                // [CODE_FIRST] 11148
+    // The physical address for the Set LPI Frame                                                 // [CODE_FIRST] 11148
+    FVP_GICV5_IRS_SETLPI_FRAME_BASE,                                                              // [CODE_FIRST] 11148
+    // The proximity domain                                                                       // [CODE_FIRST] 11148
+    0                                                                                             // [CODE_FIRST] 11148
+  },                                                                                              // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+  // GIC IWB                                                                                      // [CODE_FIRST] 11148
+  // linked to ONE ITS                                                                            // [CODE_FIRST] 11148
+  // ITS linked to N IWBs                                                                         // [CODE_FIRST] 11148
+  {                                                                                               // [CODE_FIRST] 11148
+    // Reference token for this Iort node                                                         // [CODE_FIRST] 11148
+    REFERENCE_TOKEN (GicIwbInfo),                                                                 // [CODE_FIRST] 11148
+    // The GIC IWB ID                                                                             // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The GIC Linked ITS ID                                                                      // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // The physical address for the Configuration Frame                                           // [CODE_FIRST] 11148
+    FVP_GICV5_IWB_CONF_FRAME_BASE,                                                                // [CODE_FIRST] 11148
+    // The device ID                                                                              // [CODE_FIRST] 11148
+    64,                                                                                           // [CODE_FIRST] 11148
+    // The Base GSIV                                                                              // [CODE_FIRST] 11148
+    FVP_GICV5_IWB_GSIV_BASE,                                                                      // [CODE_FIRST] 11148
+    // The number of wires                                                                        // [CODE_FIRST] 11148
+    64,                                                                                           // [CODE_FIRST] 11148
+    // The proximity domain                                                                       // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // Object name                                                                                // [CODE_FIRST] 11148
+    "\\_SB_.IWB0",                                                                                // [CODE_FIRST] 11148
+    // Reference token for the ID mapping array                                                   // [CODE_FIRST] 11148
+    REFERENCE_TOKEN (DeviceIdMapping[3]),                                                         // [CODE_FIRST] 11148
+    // Unique identifier                                                                          // [CODE_FIRST] 11148
+    1                                                                                             // [CODE_FIRST] 11148
   },
 
   // SMMUv3 Node
@@ -322,10 +405,16 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // The number of ITS identifiers in the ITS node.
     1,
     // Reference token for the ITS identifier array
-    REFERENCE_TOKEN (ItsIdentifierArray)
+    REFERENCE_TOKEN (ItsIdentifierArray),                                                         // [CODE_FIRST] 11148
+    // Unique identifier for this node                                                            // [CODE_FIRST] 11148
+    4                                                                                             // [CODE_FIRST] 11148
   },
-  // ITS identifier array
+  // ITS identifier or ITS Translate ID array                                                     // [CODE_FIRST] 11148
   {
+    //                                                                                            // [CODE_FIRST] 11148
+    // Since, FVP RevC only have 1 ITS with 1 ITS translate frame,                                // [CODE_FIRST] 11148
+    // It's valid to set one ITS translate identifier with 0 with GicV5.                          // [CODE_FIRST] 11148
+    //                                                                                            // [CODE_FIRST] 11148
     {
       // The ITS Identifier
       0
@@ -339,7 +428,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // Number of ID mappings
     1,
     // Reference token for the ID mapping array
-    REFERENCE_TOKEN (DeviceIdMapping[1]),
+    REFERENCE_TOKEN (DeviceIdMapping[2]),                                                         // [CODE_FIRST] 11148
 
     // Memory access properties : Cache coherent attributes
     EFI_ACPI_IORT_MEM_ACCESS_PROP_CCA,
@@ -352,7 +441,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // PCI segment number
     0,
     // Memory Address Size Limit
-    64
+    64,                                                                                           // [CODE_FIRST] 11148
+    // PASID capabilities                                                                         // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // Flags                                                                                      // [CODE_FIRST] 11148
+    0,                                                                                            // [CODE_FIRST] 11148
+    // Unique identifier for this node                                                            // [CODE_FIRST] 11148
+    2                                                                                             // [CODE_FIRST] 11148
   },
 
   // Array of Device ID mappings
@@ -374,6 +469,20 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // Flags
       0
     },
+    // Additional SMMUv3 device ID mapping for GicV5                                              // [CODE_FIRST] 11148
+    // to describe MSI generated by the SMMU itself                                               // [CODE_FIRST] 11148
+    {                                                                                             // [CODE_FIRST] 11148
+      // Input base                                                                               // [CODE_FIRST] 11148
+      0x10000,                                                                                    // [CODE_FIRST] 11148
+      // Number of input IDs                                                                      // [CODE_FIRST] 11148
+      1,                                                                                          // [CODE_FIRST] 11148
+      // Output Base                                                                              // [CODE_FIRST] 11148
+      0x10000,                                                                                    // [CODE_FIRST] 11148
+      // Output reference                                                                         // [CODE_FIRST] 11148
+      REFERENCE_TOKEN (ItsGroupInfo),                                                             // [CODE_FIRST] 11148
+      // Flags                                                                                    // [CODE_FIRST] 11148
+      EFI_ACPI_IORT_ID_MAPPING_FLAGS_SINGLE                                                       // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
     // Device ID mapping for Root complex node
     {
       // Input base
@@ -386,7 +495,20 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       REFERENCE_TOKEN (SmmuV3Info),
       // Flags
       0
-    }
+    },
+    // Device ID mapping for Iwb node                                                             // [CODE_FIRST] 11148
+    {                                                                                             // [CODE_FIRST] 11148
+      // Input base                                                                               // [CODE_FIRST] 11148
+      0x0,                                                                                        // [CODE_FIRST] 11148
+      // Number of input IDs                                                                      // [CODE_FIRST] 11148
+      0x1,                                                                                        // [CODE_FIRST] 11148
+      // Output Base                                                                              // [CODE_FIRST] 11148
+      64, // IWB Device ID                                                                        // [CODE_FIRST] 11148
+      // Output reference token for the IORT node                                                 // [CODE_FIRST] 11148
+      REFERENCE_TOKEN (ItsGroupInfo),                                                             // [CODE_FIRST] 11148
+      // Flags                                                                                    // [CODE_FIRST] 11148
+      EFI_ACPI_IORT_ID_MAPPING_FLAGS_SINGLE                                                       // [CODE_FIRST] 11148
+    }                                                                                             // [CODE_FIRST] 11148
   },
 
   // PCI Configuration Space Info
@@ -436,7 +558,11 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     { REFERENCE_TOKEN (PciInterruptMapInfo[0]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[1]) },
     { REFERENCE_TOKEN (PciInterruptMapInfo[2]) },
-    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) }
+    { REFERENCE_TOKEN (PciInterruptMapInfo[3]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[4]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[5]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[6]) },                                                 // [CODE_FIRST] 11148
+    { REFERENCE_TOKEN (PciInterruptMapInfo[7]) },                                                 // [CODE_FIRST] 11148
   },
 
   // PCI device legacy interrupts mapping information
@@ -477,6 +603,42 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
         0x0  // Flags
       }
     },
+    {    // PciInterruptMapInfo[0] -> Device 31, INTA                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      0, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT0_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[1] -> Device 31, INTB                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      1, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT1_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[2] -> Device 31, INTC                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      2, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT2_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
+    {    // PciInterruptMapInfo[3] -> Device 31, INTD                                             // [CODE_FIRST] 11148
+      0, // PciBus                                                                                // [CODE_FIRST] 11148
+      0x1f, // PciDevice                                                                          // [CODE_FIRST] 11148
+      3, // PciInterrupt                                                                          // [CODE_FIRST] 11148
+      {                                                                                           // [CODE_FIRST] 11148
+        FVP_GICV5_PCIE_PRT3_IRQ, // Interrupt                                                     // [CODE_FIRST] 11148
+        0x0  // Flags                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+    },                                                                                            // [CODE_FIRST] 11148
   },
 
   // Embedded Trace device info
@@ -1204,10 +1366,7 @@ InitializePlatformRepository (
 
   PlatformRepo = This->PlatRepoInfo;
 
-  if (ArmHasGicV5SystemRegisters ()) {
-    DEBUG ((DEBUG_ERROR, "ConfigurationManager: GICv5 not supported.\n"));
-    return EFI_UNSUPPORTED;
-  }
+  PlatformRepo->HasGicV5 = ArmHasGicV5SystemRegisters();                                          // [CODE_FIRST] 11148
 
   PlatformRepo->SysId = MmioRead32 (ARM_VE_SYS_ID_REG);
   if ((PlatformRepo->SysId & ARM_FVP_SYS_ID_REV_MASK) ==
@@ -1244,6 +1403,41 @@ InitializePlatformRepository (
     PlatformRepo->GicCInfo[Index].EtToken       = EtToken;
   }
 
+  if (PlatformRepo->HasGicV5) {                                                                   // [CODE_FIRST] 11148
+    // GICv5 uses different interrupts to previous GICs                                           // [CODE_FIRST] 11148
+    for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {                                            // [CODE_FIRST] 11148
+      PlatformRepo->GicCInfo[Index].PerformanceInterruptGsiv = FVP_GICV5_PMU_IRQ;                 // [CODE_FIRST] 11148
+      PlatformRepo->GicCInfo[Index].VGICMaintenanceInterrupt = FVP_GICV5_VGIC_IRQ;                // [CODE_FIRST] 11148
+      PlatformRepo->GicCInfo[Index].IAffId = Index;                                               // [CODE_FIRST] 11148
+      PlatformRepo->GicCInfo[Index].IrsId = 0;                                                    // [CODE_FIRST] 11148
+    }                                                                                             // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->GenericTimerInfo.SecurePL1TimerGSIV    = FVP_GICV5_ARM_ARCH_S_TIMER_IRQ;        // [CODE_FIRST] 11148
+    PlatformRepo->GenericTimerInfo.NonSecurePL1TimerGSIV = FVP_GICV5_ARM_ARCH_NS_TIMER_IRQ;       // [CODE_FIRST] 11148
+    PlatformRepo->GenericTimerInfo.VirtualTimerGSIV      = FVP_GICV5_ARM_ARCH_VIRT_TIMER_IRQ;     // [CODE_FIRST] 11148
+    PlatformRepo->GenericTimerInfo.NonSecurePL2TimerGSIV = FVP_GICV5_ARM_ARCH_HYP_TIMER_IRQ;      // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->GTBlock0TimerInfo[0].PhysicalTimerGSIV = FVP_GT_BLOCK_FRAME0_GSIV_GICV5;        // [CODE_FIRST] 11148
+    PlatformRepo->GTBlock0TimerInfo[1].PhysicalTimerGSIV = FVP_GT_BLOCK_FRAME1_GSIV_GICV5;        // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->SpcrSerialPort.Interrupt = FVP_GICV5_SPCR_IRQ;                                  // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->DbgSerialPort.Interrupt = FVP_GICV5_DBG_IRQ;                                    // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->SmmuV3Info.IdMappingCount = 2;                                                  // [CODE_FIRST] 11148
+    PlatformRepo->SmmuV3Info.EventInterrupt = FVP_GICV5_SMMU3_EVENT_IRQ;                          // [CODE_FIRST] 11148
+    PlatformRepo->SmmuV3Info.PriInterrupt   = FVP_GICV5_SMMU3_PRI_IRQ;                            // [CODE_FIRST] 11148
+    PlatformRepo->SmmuV3Info.GerrInterrupt  = FVP_GICV5_SMMU3_GERR_IRQ;                           // [CODE_FIRST] 11148
+    PlatformRepo->SmmuV3Info.SyncInterrupt  = FVP_GICV5_SMMU3_SYNC_IRQ;                           // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->PciInterruptMapInfo[0].IntcInterrupt.Interrupt = FVP_GICV5_PCIE_PRT0_IRQ;       // [CODE_FIRST] 11148
+    PlatformRepo->PciInterruptMapInfo[1].IntcInterrupt.Interrupt = FVP_GICV5_PCIE_PRT1_IRQ;       // [CODE_FIRST] 11148
+    PlatformRepo->PciInterruptMapInfo[2].IntcInterrupt.Interrupt = FVP_GICV5_PCIE_PRT2_IRQ;       // [CODE_FIRST] 11148
+    PlatformRepo->PciInterruptMapInfo[3].IntcInterrupt.Interrupt = FVP_GICV5_PCIE_PRT3_IRQ;       // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    PlatformRepo->CmAcpiTableList[4].AcpiTableData = (EFI_ACPI_DESCRIPTION_HEADER*)dsdtgicv5_aml_code;  // [CODE_FIRST] 11148
+  }                                                                                               // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
   // Retrieve interrupts stored in PCDs
   PlatformRepo->Watchdog.TimerGSIV = PcdGet32 (PcdGenericWatchdogEl2IntrNum);
 
@@ -1425,15 +1619,24 @@ GetDeviceIdMappingArray (
   PlatformRepo = This->PlatRepoInfo;
 
   if ((Token != (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[0]) &&
-      (Token != (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[1]))
+      (Token != (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[2]) &&                            // [CODE_FIRST] 11148
+      (Token != (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[3]))                              // [CODE_FIRST] 11148
   {
     return EFI_NOT_FOUND;
   }
 
   CmObject->ObjectId = CmObjectId;
-  CmObject->Size     = sizeof (CM_ARM_ID_MAPPING);
   CmObject->Data     = (VOID *)Token;
-  CmObject->Count    = 1;
+
+  if (PlatformRepo->HasGicV5 &&                                                                   // [CODE_FIRST] 11148
+      (Token == (CM_OBJECT_TOKEN)&PlatformRepo->DeviceIdMapping[0])) {                            // [CODE_FIRST] 11148
+    CmObject->Size     = sizeof (CM_ARM_ID_MAPPING) * 2;                                          // [CODE_FIRST] 11148
+    CmObject->Count    = 2;                                                                       // [CODE_FIRST] 11148
+  } else {                                                                                        // [CODE_FIRST] 11148
+    CmObject->Size     = sizeof (CM_ARM_ID_MAPPING);                                              // [CODE_FIRST] 11148
+    CmObject->Count    = 1;                                                                       // [CODE_FIRST] 11148
+  }                                                                                               // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
   return EFI_SUCCESS;
 }
 
@@ -1520,7 +1723,11 @@ GetPciInterruptMapInfo (
 
   PlatformRepo = This->PlatRepoInfo;
 
-  TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);
+  if (PlatformRepo->HasGicV5) {                                                                   // [CODE_FIRST] 11148
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo);                             // [CODE_FIRST] 11148
+  } else {                                                                                        // [CODE_FIRST] 11148
+      TotalObjCount = ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo) / 2;                         // [CODE_FIRST] 11148
+  }                                                                                               // [CODE_FIRST] 11148
 
   for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
     if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapInfo[ObjIndex]) {
@@ -1627,7 +1834,11 @@ GetCmObjRefs (
   if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PciInterruptMapRef) {
     CmObject->Size  = sizeof (PlatformRepo->PciInterruptMapRef);
     CmObject->Data  = (VOID *)&PlatformRepo->PciInterruptMapRef;
-    CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);
+    if (PlatformRepo->HasGicV5) {                                                                 // [CODE_FIRST] 11148
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef);                            // [CODE_FIRST] 11148
+    } else {                                                                                      // [CODE_FIRST] 11148
+      CmObject->Count = ARRAY_SIZE (PlatformRepo->PciInterruptMapRef) / 2;                        // [CODE_FIRST] 11148
+    }                                                                                             // [CODE_FIRST] 11148
     return EFI_SUCCESS;
   }
 
@@ -2081,33 +2292,39 @@ GetArmNameSpaceObject (
       break;
 
     case EArmObjGicDInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->GicDInfo,
-                 sizeof (PlatformRepo->GicDInfo),
-                 1,
-                 CmObject
-                 );
+      if (!PlatformRepo->HasGicV5) {                                                              // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicDInfo,                                                       // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicDInfo),                                               // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
       break;
 
     case EArmObjGicRedistributorInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->GicRedistInfo,
-                 sizeof (PlatformRepo->GicRedistInfo),
-                 1,
-                 CmObject
-                 );
+      if (!PlatformRepo->HasGicV5) {                                                              // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicRedistInfo,                                                  // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicRedistInfo),                                          // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
       break;
 
     case EArmObjGicItsInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 &PlatformRepo->GicItsInfo,
-                 sizeof (PlatformRepo->GicItsInfo),
-                 1,
-                 CmObject
-                 );
+      if (!PlatformRepo->HasGicV5) {                                                              // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicItsInfo,                                                     // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicItsInfo),                                             // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
       break;
 
     case EArmObjSmmuV3:
@@ -2179,6 +2396,54 @@ GetArmNameSpaceObject (
 
       break;
 
+    case EArmObjGicIrsInfo:                                                                       // [CODE_FIRST] 11148
+      if (PlatformRepo->HasGicV5) {                                                               // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicIrsInfo,                                                     // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicIrsInfo),                                             // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+      break;                                                                                      // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    case EArmObjGicIwbInfo:                                                                       // [CODE_FIRST] 11148
+      if (PlatformRepo->HasGicV5) {                                                               // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicIwbInfo,                                                     // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicIwbInfo),                                             // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+      break;                                                                                      // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    case EArmObjGicItsV5Info:                                                                     // [CODE_FIRST] 11148
+      if (PlatformRepo->HasGicV5) {                                                               // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   &PlatformRepo->GicItsV5Info,                                                   // [CODE_FIRST] 11148
+                   sizeof (PlatformRepo->GicItsV5Info),                                           // [CODE_FIRST] 11148
+                   1,                                                                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+      break;                                                                                      // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
+    case EArmObjGicItsV5TranslateFrameInfo:                                                       // [CODE_FIRST] 11148
+      if (PlatformRepo->HasGicV5) {                                                               // [CODE_FIRST] 11148
+        Status = HandleCmObject (                                                                 // [CODE_FIRST] 11148
+                   CmObjectId,                                                                    // [CODE_FIRST] 11148
+                   PlatformRepo->GicItsV5TransFrameInfo,                                          // [CODE_FIRST] 11148
+                   sizeof (CM_ARM_GIC_ITSV5_TRANSLATE_FRAME_INFO),                                // [CODE_FIRST] 11148
+                   ARRAY_SIZE (PlatformRepo->GicItsV5TransFrameInfo),                             // [CODE_FIRST] 11148
+                   CmObject                                                                       // [CODE_FIRST] 11148
+                   );                                                                             // [CODE_FIRST] 11148
+      }                                                                                           // [CODE_FIRST] 11148
+      break;                                                                                      // [CODE_FIRST] 11148
+                                                                                                  // [CODE_FIRST] 11148
     default:
     {
       Status = EFI_NOT_FOUND;
