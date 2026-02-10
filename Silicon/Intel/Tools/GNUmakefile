@@ -7,22 +7,37 @@
 ##
 
 MAKEROOT = $(EDK_TOOLS_PATH)/Source/C
+ifneq ($(WORKSPACE),)
+  BUILDROOT=$(WORKSPACE)/BaseTools/Build/Source/C
+else
+  BUILDROOT=$(abspath $(MAKEROOT))
+endif
+
+ifeq (Windows, $(findstring Windows,$(OS)))
+  SEP:=$(shell echo \)
+else
+  SEP:=/
+endif
+
+GNU_MAKE_UTILS_PY := $(PYTHON_COMMAND) $(MAKEROOT)$(SEP)Makefiles$(SEP)GnuMakeUtils.py
+MD := $(GNU_MAKE_UTILS_PY) md
 
 APPLICATIONS = \
   FitGen \
 
 SUBDIRS := $(APPLICATIONS)
 
-$(APPLICATIONS): $(MAKEROOT)/bin
+$(APPLICATIONS): $(BUILDROOT)/bin
 
 .PHONY: subdirs $(SUBDIRS)
 subdirs: $(SUBDIRS)
 $(SUBDIRS):
-	$(MAKE) -C $@
+	$(MD) $(BUILDROOT)/$@
+	$(MAKE) OBJDIR=$(BUILDROOT)/$@ BUILDROOT=$(BUILDROOT) -C $@
 
 .PHONY: $(patsubst %,%-clean,$(sort $(SUBDIRS)))
 $(patsubst %,%-clean,$(sort $(SUBDIRS))):
-	-$(MAKE) -C $(@:-clean=) clean
+	-$(MAKE) OBJDIR=$(BUILDROOT)/$(@:-clean=) BUILDROOT=$(BUILDROOT) -C $(@:-clean=) clean
 
 clean: $(patsubst %,%-clean,$(sort $(SUBDIRS)))
 

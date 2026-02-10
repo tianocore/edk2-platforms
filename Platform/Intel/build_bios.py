@@ -261,17 +261,15 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
     #
     # build platform silicon tools
     #
-    # save the current workspace
-    saved_work_directory = config["WORKSPACE"]
     # change the workspace to silicon tools directory
-    config["WORKSPACE"] = os.path.join(config["WORKSPACE_SILICON"], "Tools")
+    silicon_tools_directory = os.path.join(config["WORKSPACE_SILICON"], "Tools")
 
-    command = ["nmake"]
+    command = ["nmake", "-f", os.path.join(silicon_tools_directory, "Makefile")]
     if os.name == 'nt' and toolchain is not None and \
         toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
-        command = ["mingw32-make"]
+        command = ["mingw32-make", "-C", silicon_tools_directory]
     if os.name == "posix":  # linux
-        command = ["make"]
+        command = ["make", "-C", silicon_tools_directory]
         # add path to generated FitGen binary to
         # environment path variable
         config["PATH"] += os.pathsep + \
@@ -297,9 +295,6 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
         _, _, result, return_code = execute_script(command, config, shell=shell)
         if return_code != 0:
             build_failed(config)
-
-    # restore WORKSPACE environment variable
-    config["WORKSPACE"] = saved_work_directory
 
     config["SILENT_MODE"] = 'TRUE' if silent else 'FALSE'
 
