@@ -72,7 +72,7 @@ SsifWriteRequest (
 
   if (RequestDataSize > IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) {
     IsMultiPartWrite = TRUE;
-    MiddleCount      = ((RequestDataSize - 1) / IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) - 1;
+    MiddleCount      = (UINT8)(((RequestDataSize - 1) / IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) - 1);
 
     if (  ((MiddleCount == 0) && (mTransactionSupport == IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_SSIF_TRANSACTION_SUPPORT_SINGLE_PARTITION_RW))
        || ((MiddleCount > 0) && (mTransactionSupport != IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_SSIF_TRANSACTION_SUPPORT_MULTI_PARTITION_RW_WITH_MIDDLE)))
@@ -84,7 +84,7 @@ SsifWriteRequest (
 
   SsifCmd = IsMultiPartWrite ? IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_START
                                : IPMI_SSIF_SMBUS_CMD_SINGLE_PART_WRITE;
-  WriteLen = IsMultiPartWrite ? IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES : RequestDataSize;
+  WriteLen = (UINT8)(IsMultiPartWrite ? IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES : RequestDataSize);
 
   SmBusWriteBlock (
     SMBUS_LIB_ADDRESS (
@@ -123,7 +123,7 @@ SsifWriteRequest (
   //
   // Remain RequestData for END
   //
-  WriteLen = RequestDataSize - (MiddleCount + 1) * IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES;
+  WriteLen = (UINT8)(RequestDataSize - (MiddleCount + 1) * IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES);
   ASSERT (WriteLen > 0);
   SmBusWriteBlock (
     SMBUS_LIB_ADDRESS (
@@ -176,16 +176,16 @@ SsifReadResponse (
   Offset          = 2; // Ignore LUN and Command byte in return ResponseData
   Status          = EFI_SUCCESS;
 
-  ReadLen = SmBusReadBlock (
-              SMBUS_LIB_ADDRESS (
-                IPMI_SSIF_BMC_SLAVE_ADDR_7BIT,
-                IPMI_SSIF_SMBUS_CMD_SINGLE_PART_READ,
-                0,  // Max block size
-                mPecSupport
-                ),
-              ResponseTemp,
-              &Status
-              );
+  ReadLen = (UINT8)SmBusReadBlock (
+                     SMBUS_LIB_ADDRESS (
+                       IPMI_SSIF_BMC_SLAVE_ADDR_7BIT,
+                       IPMI_SSIF_SMBUS_CMD_SINGLE_PART_READ,
+                       0, // Max block size
+                       mPecSupport
+                       ),
+                     ResponseTemp,
+                     &Status
+                     );
 
   if (EFI_ERROR (Status)) {
     goto Exit;
@@ -209,7 +209,7 @@ SsifReadResponse (
   //
   ReadLen -= Offset;
   if (ReadLen > *ResponseDataSize) {
-    ReadLen = *ResponseDataSize;
+    ReadLen = (UINT8)(*ResponseDataSize);
   }
 
   CopyMem (ResponseData, &ResponseTemp[Offset], ReadLen);
@@ -217,16 +217,16 @@ SsifReadResponse (
 
   Offset = 1;  // Ignore block number
   while (IsMultiPartRead) {
-    ReadLen = SmBusReadBlock (
-                SMBUS_LIB_ADDRESS (
-                  IPMI_SSIF_BMC_SLAVE_ADDR_7BIT,
-                  IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_MIDDLE,
-                  0,
-                  mPecSupport
-                  ),
-                ResponseTemp,
-                &Status
-                );
+    ReadLen = (UINT8)SmBusReadBlock (
+                       SMBUS_LIB_ADDRESS (
+                         IPMI_SSIF_BMC_SLAVE_ADDR_7BIT,
+                         IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_MIDDLE,
+                         0,
+                         mPecSupport
+                         ),
+                       ResponseTemp,
+                       &Status
+                       );
 
     if (EFI_ERROR (Status)) {
       goto Exit;
@@ -240,7 +240,7 @@ SsifReadResponse (
 
     ReadLen -= Offset; // Ignore block number
     if (ReadLen > *ResponseDataSize - CopiedLen) {
-      ReadLen = *ResponseDataSize - CopiedLen;
+      ReadLen = (UINT8)(*ResponseDataSize - CopiedLen);
     }
 
     //

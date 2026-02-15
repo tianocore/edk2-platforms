@@ -3,6 +3,7 @@
   IPMI Blob Transfer driver
 
   Copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -429,7 +430,7 @@ IpmiBlobTransferOpen (
   //
   // Format send data
   //
-  SendDataSize = sizeof (((IPMI_BLOB_TRANSFER_BLOB_OPEN_SEND_DATA *)SendData)->Flags) + ((AsciiStrLen (BlobId)) * sizeof (CHAR8)) + sizeof (CHAR8);
+  SendDataSize = (UINT32)(sizeof (((IPMI_BLOB_TRANSFER_BLOB_OPEN_SEND_DATA *)SendData)->Flags) + ((AsciiStrLen (BlobId)) * sizeof (CHAR8)) + sizeof (CHAR8));
   SendData     = AllocateZeroPool (SendDataSize);
   if (SendData == NULL) {
     return EFI_OUT_OF_RESOURCES;
