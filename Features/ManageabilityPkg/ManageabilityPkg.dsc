@@ -3,7 +3,7 @@
 # This is the package provides edk2 drivers and libraries
 # those are related to the platform management.
 #
-# Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -116,4 +116,4 @@
   IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
   PlatformBmcReadyLib|ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
 
-!include Include/Manageability.dsc
+!include ManageabilityPkg/Include/Manageability.dsc
