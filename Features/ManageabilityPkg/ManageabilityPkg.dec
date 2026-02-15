@@ -25,17 +25,19 @@
   Include
 
 [LibraryClasses]
-  ##  @libraryclass IPMI command library
-  #   Provide the help functions to send IPMI commands.
-  IpmiCommandLib|Include/Library/IpmiCommandLib.h
-
   ##  @libraryclass Manageability Transport Library
   #   Manageability Transport Library definitions
   ManageabilityTransportLib|Include/Library/ManageabilityTransportLib.h
+  ManageabilityTransportLib|Include/Library/ManageabilityTransportIpmiLib.h
+  ManageabilityTransportLib|Include/Library/ManageabilityTransportMctpLib.h
 
   ##  @libraryclass Manageability Transport Helper Library
   #   Provide the help functions to use ManageabilityTransportLib
   ManageabilityTransportHelperLib|Include/Library/ManageabilityTransportHelperLib.h
+
+  ##  @libraryclass PLDM Protocol Library
+  #   PLDM Protocol Library Definitions
+  PldmProtocolLib|Include/Library/BasePldmProtocolLib.h
 
   ##  @libraryclass Platform BMC Ready Library
   #   Provide the help functions to check the BMC state
