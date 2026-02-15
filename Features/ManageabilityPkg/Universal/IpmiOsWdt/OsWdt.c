@@ -2,6 +2,7 @@
   IPMI Os watchdog timer Driver.
 
 Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -47,7 +48,7 @@ EnableEfiOsBootWdtHandler (
   DEBUG ((DEBUG_ERROR, "!!! EnableEfiOsBootWdtHandler()!!!\n"));
 
   //
-  // Make sure it processes once only. And proceess it only if OsWdtFlag==TRUE;
+  // Make sure it processes once only. And process it only if OsWdtFlag==TRUE;
   //
   if (OsWdtEventHandled || !mOsWdtFlag) {
     return;
@@ -78,11 +79,11 @@ EnableEfiOsBootWdtHandler (
 /*++
 
 Routine Description:
-  This is the standard EFI driver point. This function intitializes
+  This is the standard EFI driver point. This function initializes
   the private data required for creating ASRR Driver.
 
 Arguments:
-  As required for DXE driver enrty routine.
+  As required for DXE driver entry routine.
   ImageHandle - ImageHandle of the loaded driver
   SystemTable - Pointer to the System Table
 

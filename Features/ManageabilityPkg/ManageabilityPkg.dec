@@ -64,7 +64,7 @@
   # Manageability Protocol IPMI
   gManageabilityProtocolIpmiGuid    = { 0x36ACA47C, 0xCC80, 0x473B, { 0xAB, 0xEC, 0xF3, 0x98, 0xFF, 0x87, 0x74, 0x5B } }
   # Manageability Protocol MCTP
-  #  MCTP is a transport interface but also a protocol that can be trasmitted over other transport interfaces.
+  #  MCTP is a transport interface but also a protocol that can be transmitted over other transport interfaces.
   gManageabilityProtocolMctpGuid    = { 0x76FED8F1, 0x0BE5, 0x4269, { 0xA3, 0x1A, 0x38, 0x0F, 0x54, 0xF1, 0xA1, 0x8A } }
   # Manageability Protocol PLDM
   gManageabilityProtocolPldmGuid    = { 0x3958090D, 0x69DD, 0x4868, { 0x9C, 0x41, 0xC9, 0xAC, 0x31, 0xB5, 0x25, 0xC5 } }

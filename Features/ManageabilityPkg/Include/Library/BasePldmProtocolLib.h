@@ -2,7 +2,7 @@
 
   This file defines EDKII Pldm Protocol library and functions.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -10,11 +10,11 @@
 #define EDKII_PLDM_PROTOCOL_LIB_H_
 
 /**
-  This function sets the PLDM source termius and destination terminus
+  This function sets the PLDM source terminus and destination terminus
   ID for SMBIOS PLDM transfer.
 
-  @param[in]         SourceId       PLDM source teminus ID.
-  @param[in]         DestinationId  PLDM destination teminus ID.
+  @param[in]         SourceId       PLDM source terminus ID.
+  @param[in]         DestinationId  PLDM destination terminus ID.
 
   @retval EFI_SUCCESS            The terminus is set successfully.
   @retval EFI_INVALID_PARAMETER  The terminus is set unsuccessfully.

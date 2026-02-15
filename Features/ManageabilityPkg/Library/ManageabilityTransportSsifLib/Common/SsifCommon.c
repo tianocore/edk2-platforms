@@ -3,6 +3,7 @@
   SSIF instance of Manageability Transport Library
 
   Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -22,7 +23,7 @@
 extern MANAGEABILITY_TRANSPORT_SSIF                *mSingleSessionToken;
 extern MANAGEABILITY_TRANSPORT_SSIF_HARDWARE_INFO  mSsifHardwareInfo;
 
-// BMC slave address exluding read/write bit.
+// BMC slave address excluding read/write bit.
 #define IPMI_SSIF_BMC_SLAVE_ADDR_7BIT  SMBUS_LIB_SLAVE_ADDRESS (mSsifHardwareInfo.BmcSlaveAddress)
 
 #define IPMI_SSIF_REQUEST_RETRY_COUNT      (FixedPcdGet8 (PcdIpmiSsifRequestRetryCount))

@@ -1,7 +1,7 @@
 /** @file
   This file provides edk2 PLDM SMBIOS Transfer Protocol implementation.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -28,8 +28,8 @@ UINT32                         TransportMaximumPayload;
   @param[in]         This                       EDKII_PLDM_PROTOCOL instance.
   @param[in]         PldmType                   PLDM message type.
   @param[in]         Command                    PLDM Command of PLDM message type.
-  @param[in]         PldmTerminusSourceId       PLDM source teminus ID.
-  @param[in]         PldmTerminusDestinationId  PLDM destination teminus ID.
+  @param[in]         PldmTerminusSourceId       PLDM source terminus ID.
+  @param[in]         PldmTerminusDestinationId  PLDM destination terminus ID.
   @param[in]         RequestData                Command Request Data.
   @param[in]         RequestDataSize            Size of Command Request Data.
   @param[out]        ResponseData               Command Response Data. The completion code is the first byte of response data.

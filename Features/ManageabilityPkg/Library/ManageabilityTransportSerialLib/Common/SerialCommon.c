@@ -281,7 +281,7 @@ SerialTransportWrite (
     Buffer[BufferLength - 1] = CalculateCheckSum8 (&Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH], IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH);
   }
 
-  // Calculate escapted character count
+  // Calculate escaped character count
   EscapedCharacterCount = 0;
   for (Index = 0; Index < BufferLength; Index++) {
     if (IpmiSerialGetEscapedCharacter (Buffer[Index]) != Buffer[Index]) {
@@ -462,7 +462,7 @@ SerialTransportRead (
 }
 
 /**
-  This funciton checks the Serial response data according to
+  This function checks the Serial response data according to
   manageability protocol.
 
   @param[in]      ResponseData        Pointer to response data.
