@@ -359,7 +359,7 @@ HelperManageabilitySplitPayload (
                                                                         sizeof (MANAGEABILITY_TRANSMISSION_PACKAGE_ATTR) * NumberOfPackages
                                                                         );
   if (ThisMultiplePackages == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSMISSION_MULTI_PACKAGES\n"));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSMISSION_MULTI_PACKAGES\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 

@@ -309,12 +309,12 @@ SetSmbiosStructureTable (
                   (VOID **)&Smbios
                   );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: No Efi SMBIOS Protocol installed.\n"));
+    DEBUG ((DEBUG_ERROR, "%a: No Efi SMBIOS Protocol installed.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
   if (Smbios->MajorVersion < 3) {
-    DEBUG ((DEBUG_ERROR, "%a: We don't support SMBIOS spec version earlier than v3.0.\n"));
+    DEBUG ((DEBUG_ERROR, "%a: We don't support SMBIOS spec version earlier than v3.0.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -323,7 +323,7 @@ SetSmbiosStructureTable (
              (VOID **)&SmbiosEntry
              );
   if (Status != EFI_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to get system configuration table.\n"));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get system configuration table.\n", __func__));
     return Status;
   }
 
@@ -369,7 +369,7 @@ SetSmbiosStructureTable (
   RequestSize   = (UINT32)(sizeof (PLDM_SET_SMBIOS_STRUCTURE_TABLE_REQUEST) + TableLength + PaddingSize + sizeof (Crc32));
   RequestBuffer = (UINT8 *)AllocatePool (RequestSize);
   if (RequestBuffer == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: No memory resource for sending SetSmbiosStructureTable.\n"));
+    DEBUG ((DEBUG_ERROR, "%a: No memory resource for sending SetSmbiosStructureTable.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 

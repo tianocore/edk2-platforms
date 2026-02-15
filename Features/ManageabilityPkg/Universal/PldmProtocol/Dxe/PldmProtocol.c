@@ -107,7 +107,7 @@ PldmSubmitCommand (
     return EFI_INVALID_PARAMETER;
   }
 
-  DEBUG ((DEBUG_MANAGEABILITY, "%a: Source terminus ID: 0x%x, Destination terminus ID: 0x%x.\n"));
+  DEBUG ((DEBUG_MANAGEABILITY, "%a: Source terminus ID: 0x%x, Destination terminus ID: 0x%x.\n", __func__, PldmTerminusSourceId, PldmTerminusDestinationId));
   Status = CommonPldmSubmitCommand (
              mTransportToken,
              PldmType,

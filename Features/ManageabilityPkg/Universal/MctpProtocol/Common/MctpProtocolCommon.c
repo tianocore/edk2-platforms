@@ -2,7 +2,7 @@
 
   MCTP Manageability Protocol common file.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -295,7 +295,7 @@ CommonMctpSubmitMessage (
                     &MultiPackages
                     );
   if (EFI_ERROR (Status) || (MultiPackages == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __func__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __func__, Status));
     return Status;
   }
 
