@@ -1,9 +1,14 @@
 ## @file
 # Manageabilty Package
-# This is the package provides the edk2 drivers and libraries
-# those are related to the platform management.
+# This package provides the implementation of transport interfaces and
+# protocols of the system manageability industry standard, such as MCTP,
+# PLDM, IPMI, and etc. The design concept of this package is to provide a
+# flexble way to integrate a desired transport interface to the particular
+# manageability protocol. For example, KCS transport interface for either
+# IPMI protocol or MCTP protocol, or both. Refer to the Readme.md under
+# ManageabilityPkg.
 #
-# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
