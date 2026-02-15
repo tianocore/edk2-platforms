@@ -7,7 +7,7 @@
 #
 ##
 [LibraryClasses]
-	  IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
   PlatformBmcReadyLib|ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
