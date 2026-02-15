@@ -131,7 +131,7 @@ IpmiSmbiosTransferSendTables (
   SMBIOS_TABLE_3_0_ENTRY_POINT       *Smbios30Table;
   SMBIOS_TABLE_3_0_ENTRY_POINT       *Smbios30TableModified;
   EDKII_IPMI_BLOB_TRANSFER_PROTOCOL  *IpmiBlobTransfer;
-  UINT16                             Index;
+  UINT32                             Index;
   UINT16                             SessionId;
   UINT8                              *SendData;
   UINT32                             SendDataSize;

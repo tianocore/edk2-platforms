@@ -72,7 +72,15 @@ SsifWriteRequest (
 
   if (RequestDataSize > IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) {
     IsMultiPartWrite = TRUE;
-    MiddleCount      = (UINT8)(((RequestDataSize - 1) / IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) - 1);
+
+    // Minus by one for the maximum integer the data type of MiddleCount presents.
+    // Plus by two for the WRITE start and end.
+    if (RequestDataSize > IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES * ((1 << sizeof (MiddleCount) * 8) - 1 + 2)) {
+      DEBUG ((DEBUG_ERROR, "%a: The request data size exceeds the maximum transfer blocks: RequestDataSize = %d, maximum transfer blocks = %d.\n", __func__, RequestDataSize, (1 << sizeof (MiddleCount) * 8) - 1 + 2));
+      return EFI_INVALID_PARAMETER;
+    }
+
+    MiddleCount = (UINT8)(((RequestDataSize - 1) / IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES) - 1);
 
     if (  ((MiddleCount == 0) && (mTransactionSupport == IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_SSIF_TRANSACTION_SUPPORT_SINGLE_PARTITION_RW))
        || ((MiddleCount > 0) && (mTransactionSupport != IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_SSIF_TRANSACTION_SUPPORT_MULTI_PARTITION_RW_WITH_MIDDLE)))
@@ -80,11 +88,13 @@ SsifWriteRequest (
       DEBUG ((DEBUG_ERROR, "%a: Unsupported request transaction\n", __func__));
       return EFI_UNSUPPORTED;
     }
-  }
 
-  SsifCmd = IsMultiPartWrite ? IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_START
-                               : IPMI_SSIF_SMBUS_CMD_SINGLE_PART_WRITE;
-  WriteLen = (UINT8)(IsMultiPartWrite ? IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES : RequestDataSize);
+    WriteLen = IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES;
+    SsifCmd  = IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_START;
+  } else {
+    WriteLen = (UINT8)RequestDataSize;
+    SsifCmd  = IPMI_SSIF_SMBUS_CMD_SINGLE_PART_WRITE;
+  }
 
   SmBusWriteBlock (
     SMBUS_LIB_ADDRESS (
