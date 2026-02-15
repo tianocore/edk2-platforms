@@ -3,6 +3,7 @@
   Serial instance of Manageability Transport Library
 
   Copyright (c) 2024, ARM Limited. All rights reserved.<BR>
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 */
@@ -200,16 +201,16 @@ SerialTransportTransmitReceive (
   }
 
   Status = SerialTransportSendCommand (
-                                       TransferToken->TransmitHeader,
-                                       TransferToken->TransmitHeaderSize,
-                                       TransferToken->TransmitTrailer,
-                                       TransferToken->TransmitTrailerSize,
-                                       TransferToken->TransmitPackage.TransmitPayload,
-                                       TransferToken->TransmitPackage.TransmitSizeInByte,
-                                       TransferToken->ReceivePackage.ReceiveBuffer,
-                                       &TransferToken->ReceivePackage.ReceiveSizeInByte,
-                                       &AdditionalStatus
-                                       );
+             TransferToken->TransmitHeader,
+             TransferToken->TransmitHeaderSize,
+             TransferToken->TransmitTrailer,
+             TransferToken->TransmitTrailerSize,
+             TransferToken->TransmitPackage.TransmitPayload,
+             TransferToken->TransmitPackage.TransmitSizeInByte,
+             TransferToken->ReceivePackage.ReceiveBuffer,
+             &TransferToken->ReceivePackage.ReceiveSizeInByte,
+             &AdditionalStatus
+             );
 
   TransferToken->TransferStatus = Status;
   SerialTransportStatus (TransportToken, &TransferToken->TransportAdditionalStatus);
@@ -249,11 +250,11 @@ AcquireTransportSession (
   }
 
   Status = HelperManageabilityCheckSupportedSpec (
-                                                  &gManageabilityTransportSerialGuid,
-                                                  SupportedManageabilityProtocol,
-                                                  mNumberOfSupportedProtocol,
-                                                  ManageabilityProtocolSpec
-                                                  );
+             &gManageabilityTransportSerialGuid,
+             SupportedManageabilityProtocol,
+             mNumberOfSupportedProtocol,
+             ManageabilityProtocolSpec
+             );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Protocol is not supported on this transport interface.\n", __func__));
     return EFI_UNSUPPORTED;
@@ -324,9 +325,9 @@ GetTransportCapability (
 
   *TransportCapability = 0;
   if (CompareGuid (
-                   TransportToken->ManageabilityProtocolSpecification,
-                   &gManageabilityProtocolIpmiGuid
-                   ))
+        TransportToken->ManageabilityProtocolSpecification,
+        &gManageabilityProtocolIpmiGuid
+        ))
   {
     *TransportCapability |=
       (MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_BIT_POSITION);

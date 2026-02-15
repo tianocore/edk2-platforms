@@ -3,6 +3,7 @@
   Serial instance of Manageability Transport Library
 
   Copyright (c) 2024, ARM Limited. All rights reserved.<BR>
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -273,9 +274,9 @@ SerialTransportWrite (
   if ((RequestData != NULL) && (RequestDataSize > 0)) {
     CopyMem (HeaderPtr->Data, RequestData, RequestDataSize);
     Buffer[BufferLength - 1] = CalculateCheckSum8 (
-                                                   &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
-                                                   RequestDataSize + IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH
-                                                   );
+                                 &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
+                                 RequestDataSize + IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH
+                                 );
   } else {
     Buffer[BufferLength - 1] = CalculateCheckSum8 (&Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH], IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH);
   }
@@ -386,11 +387,11 @@ SerialReadResponse (
   // Parse IPMI Serial format request data
   BufferSize = sizeof (Buffer);
   Status     = IpmiSerialParseIncomingBuffer (
-                                              ReadBuffer,
-                                              ReadBytes,
-                                              Buffer,
-                                              &BufferSize
-                                              );
+                 ReadBuffer,
+                 ReadBytes,
+                 Buffer,
+                 &BufferSize
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Parse Response Error\n"));
     return Status;
@@ -404,9 +405,9 @@ SerialReadResponse (
 
   // Data checksum verify
   if (CalculateCheckSum8 (
-                          &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
-                          BufferSize - IPMI_SERIAL_CONNECTION_HEADER_LENGTH
-                          ) != 0)
+        &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
+        BufferSize - IPMI_SERIAL_CONNECTION_HEADER_LENGTH
+        ) != 0)
   {
     DEBUG ((DEBUG_ERROR, "Bad checksum - data byte\n"));
     return EFI_PROTOCOL_ERROR;
@@ -575,13 +576,13 @@ SerialTransportSendCommand (
 
   if ((TransmitHeader != NULL) || (RequestData != NULL)) {
     Status = SerialTransportWrite (
-                                   TransmitHeader,
-                                   TransmitHeaderSize,
-                                   TransmitTrailer,
-                                   TransmitTrailerSize,
-                                   RequestData,
-                                   RequestDataSize
-                                   );
+               TransmitHeader,
+               TransmitHeaderSize,
+               TransmitTrailer,
+               TransmitTrailerSize,
+               RequestData,
+               RequestDataSize
+               );
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "Serial Write Failed with Status(%r)\n", Status));
       return Status;
