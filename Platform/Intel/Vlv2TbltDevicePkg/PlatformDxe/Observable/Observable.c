@@ -1,16 +1,12 @@
-/*++
-  This file contains 'Framework Code' and is licensed as such
-  under the terms of your license agreement with Intel or your
-  vendor.  This file may not be modified, except as allowed by
-  additional terms of your license agreement.
---*/
-/*++
+
 
 Copyright (c)  2010  - 2014, Intel Corporation. All rights reserved
-                                                                                   
+                                                                                   
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-                                                                                   
+                                                                                   
+
 
 
 Module Name:
@@ -580,3 +576,4 @@ RemoveObservable (
 
   return EFI_SUCCESS;
 }
+
