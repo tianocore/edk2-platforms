@@ -1438,25 +1438,6 @@ PopulatePlatformTpmInfoFfa (
   return EFI_SUCCESS;
 }
 
-STATIC
-EFI_STATUS
-InitialiseProcStrings (
-  )
-{
-  EFI_STATUS  Status;
-  UINTN       Index;
-
-  for (Index = 0; Index < ARRAY_SIZE (StringMapping); Index++) {
-    Status = CopyString (StringMapping[Index].Src, StringMapping[Index].Dest, StringMapping[Index].Length);
-
-    if (Status != EFI_SUCCESS) {
-      break;
-    }
-  }
-
-  return Status;
-}
-
 /** Initialize the platform TPM information.
 
   @param [in]  This        Pointer to the Configuration Manager Protocol.
@@ -1482,6 +1463,25 @@ PopulatePlatformTpmInfo (
   return Status;
 }
 #endif
+
+STATIC
+EFI_STATUS
+InitialiseProcStrings (
+  )
+{
+  EFI_STATUS  Status;
+  UINTN       Index;
+
+  for (Index = 0; Index < ARRAY_SIZE (StringMapping); Index++) {
+    Status = CopyString (StringMapping[Index].Src, StringMapping[Index].Dest, StringMapping[Index].Length);
+
+    if (Status != EFI_SUCCESS) {
+      break;
+    }
+  }
+
+  return Status;
+}
 
 /** Initialize the platform configuration repository.
 
