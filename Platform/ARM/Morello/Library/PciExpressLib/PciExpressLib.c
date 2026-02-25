@@ -97,7 +97,7 @@ GetPciExpressAddress (
 
   if (GET_SEG_NUM (Address) == SEG0_PCI_ROOT_COMPLEX) {
     ConvAddress = PcdGet64 (PcdPciExpressBaseAddress) + (UINT32)Address;
-  } else if (GET_SEG_NUM (Address) == SEG0_CCIX_ROOT_COMPLEX) {
+  } else if (GET_SEG_NUM (Address) == SEG1_CCIX_ROOT_COMPLEX) {
     ConvAddress = PcdGet64 (PcdCcixExpressBaseAddress) + (UINT32)Address;
   } else {
     DEBUG ((DEBUG_ERROR, "PciExpressLib: Invalid PCIe Address.\n"));
