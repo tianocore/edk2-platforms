@@ -74,6 +74,7 @@
 
   #FVP Specific PCD values for PCIe
   gArmTokenSpaceGuid.PcdPciBusMax|15
+  gArmMorelloTokenSpaceGuid.PcdPciBusCount|16
   gArmTokenSpaceGuid.PcdPciIoBase|0x0
   gArmTokenSpaceGuid.PcdPciIoSize|0x00400000
   gArmTokenSpaceGuid.PcdPciMmio32Base|0x60000000
