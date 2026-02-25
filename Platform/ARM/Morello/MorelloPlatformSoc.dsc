@@ -53,8 +53,16 @@
 
 [PcdsFixedAtBuild.common]
   # PCIe
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
+  gArmTokenSpaceGuid.PcdPciBusMax|255
+  gArmTokenSpaceGuid.PcdPciMmio32Base|0x60000000
+  gArmTokenSpaceGuid.PcdPciMmio32Size|0x0F000000
+  gArmTokenSpaceGuid.PcdPciMmio64Base|0x900000000
+  gArmTokenSpaceGuid.PcdPciMmio64Size|0x1FC0000000
+  gArmTokenSpaceGuid.PcdPciIoSize|0x00400000
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x28C0000000
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x6F000000
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
 
 [Components.common]
   # Platform driver

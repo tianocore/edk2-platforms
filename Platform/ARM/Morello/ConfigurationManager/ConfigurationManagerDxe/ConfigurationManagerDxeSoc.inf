@@ -46,20 +46,21 @@
 [FixedPcd]
   gArmTokenSpaceGuid.PcdPciBusMax
   gArmTokenSpaceGuid.PcdPciBusMin
-  gArmTokenSpaceGuid.PcdPciBusCount
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gArmTokenSpaceGuid.PcdPciIoBase
-  gArmTokenSpaceGuid.PcdPciIoMaxBase
   gArmTokenSpaceGuid.PcdPciIoSize
   gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
   gArmTokenSpaceGuid.PcdPciMmio32Base
-  gArmTokenSpaceGuid.PcdPciMmio32MaxBase
   gArmTokenSpaceGuid.PcdPciMmio32Size
   gEfiMdePkgTokenSpaceGuid.PcdPciMmio32Translation
   gArmTokenSpaceGuid.PcdPciMmio64Base
-  gArmTokenSpaceGuid.PcdPciMmio64MaxBase
   gArmTokenSpaceGuid.PcdPciMmio64Size
   gEfiMdePkgTokenSpaceGuid.PcdPciMmio64Translation
+
+  gArmMorelloTokenSpaceGuid.PcdPciBusCount
+  gArmMorelloTokenSpaceGuid.PcdPciIoMaxBase
+  gArmMorelloTokenSpaceGuid.PcdPciMmio32MaxBase
+  gArmMorelloTokenSpaceGuid.PcdPciMmio64MaxBase
 
   gArmMorelloTokenSpaceGuid.PcdCcixBusCount
   gArmMorelloTokenSpaceGuid.PcdCcixBusMax
