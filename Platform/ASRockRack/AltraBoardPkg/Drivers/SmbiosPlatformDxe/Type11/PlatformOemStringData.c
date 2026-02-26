@@ -35,7 +35,7 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE11, PlatformOemString) = {
 SMBIOS_PLATFORM_DXE_STRING_TOKEN_DATA (PlatformOemString) = {
   {                                               // Table 1
     {                                             // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_STRING_1)
+      STRING_TOKEN (STR_PLATFORM_DXE_OEM_STRING_1)
     },
     ADDITIONAL_STR_INDEX_1                        // Size of Tokens array
   }

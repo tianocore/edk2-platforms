@@ -73,7 +73,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
     return EFI_OUT_OF_RESOURCES;
   }
 
-  if (HandleCount != GetNumberOfSupportedSockets ()) {
+  if (HandleCount != GetNumberOfActiveSockets ()) {
     DEBUG ((
       DEBUG_ERROR,
       "[%a]:[%dL] Failed to get Memory Array Handle\n",
@@ -84,7 +84,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryArrayMappedAddress) {
     return EFI_NOT_FOUND;
   }
 
-  for (Index = 0; Index < GetNumberOfSupportedSockets (); Index++) {
+  for (Index = 0; Index < GetNumberOfActiveSockets (); Index++) {
     InputData     = (SMBIOS_TABLE_TYPE19 *)RecordData;
     InputStrToken = (STR_TOKEN_INFO *)StrToken;
     while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {
