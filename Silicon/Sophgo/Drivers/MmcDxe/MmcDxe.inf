@@ -27,7 +27,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  Silicon/Sophgo/SG2042Pkg/SG2042Pkg.dec
+  Silicon/Sophgo/Sophgo.dec
 
 [LibraryClasses]
   BaseLib

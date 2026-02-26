@@ -246,8 +246,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l1i = {
   },
   1,
   0x380,                              // L1 enabled, unknown WB
-  {48, 0},                            // 48k I-cache max
-  {48, 0},                            // 48k installed
+  {
+    .Size = 48,
+    .Granularity64K = 0
+  },                                 // 48k I-cache max
+  {
+    .Size = 48,
+    .Granularity64K = 0
+  },                                 // 48k installed
   {0,1},                              // SRAM type
   {0,1},                              // SRAM type
   0,                                  // speed unknown
@@ -255,8 +261,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l1i = {
   CacheTypeInstruction,               // instruction cache
   CacheAssociativityOther,            // three way
   // SMBIOS 3.1.0 fields
-  {48, 0},                            //48k I-cache max
-  {48, 0},                            //48k installed
+  {
+    .Size = 48,
+    .Granularity64K = 0
+  },                                 //48k I-cache max
+  {
+    .Size = 48,
+    .Granularity64K = 0
+  },                                 //48k installed
 };
 
 STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l1d = {
@@ -267,8 +279,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l1d = {
   },
   2,
   0x380,                               // L1 enabled, unknown WB
-  {32, 0},                             // 32k D-cache max
-  {32, 0},                             // 32k installed
+  {
+    .Size = 32,
+    .Granularity64K = 0
+  },                                  // 32k D-cache max
+  {
+    .Size = 32,
+    .Granularity64K = 0
+  },                                  // 32k installed
   {0,1},                               // SRAM type
   {0,1},                               // SRAM type
   0,                                   // speed unknown
@@ -276,8 +294,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l1d = {
   CacheTypeData,                       // data cache
   CacheAssociativity2Way,              // two way
   // SMBIOS 3.1.0 fields
-  {32, 0},                             // 32k D-cache max
-  {32, 0},                             // 32k installed
+  {
+    .Size = 32,
+    .Granularity64K = 0
+  },                                  // 32k D-cache max
+  {
+    .Size = 32,
+    .Granularity64K = 0
+  },                                  // 32k installed
 };
 
 STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l2 = {
@@ -288,8 +312,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l2 = {
   },
   3,
   0x181,                               // L2 enabled, WB
-  {512, 0},                            // 512k D-cache max
-  {512, 0},                            // 512k installed
+  {
+    .Size = 512,
+    .Granularity64K = 0
+  },                                 // 512k D-cache max
+  {
+    .Size = 512,
+    .Granularity64K = 0
+  },                                 // 512k installed
   {0,1},                               // SRAM type
   {0,1},                               // SRAM type
   0,                                   // speed unknown
@@ -297,8 +327,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l2 = {
   CacheTypeUnified,                    // instruction cache
   CacheAssociativity16Way,             // 16 way associative
   // SMBIOS 3.1.0 fields
-  {512, 0},                            // 512k D-cache max
-  {512, 0},                            // 512k installed
+  {
+    .Size = 512,
+    .Granularity64K = 0
+  },                                 // 512k D-cache max
+  {
+    .Size = 512,
+    .Granularity64K = 0
+  },                                 // 512k installed
 };
 
 STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l3 = {
@@ -309,8 +345,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l3 = {
   },
   4,
   0x182,                               // L3 enabled, WB
-  {1024, 0},                           // 1M cache max
-  {1024, 0},                           // 1M installed
+  {
+    .Size = 1024,
+    .Granularity64K = 0
+  },                                // 1M cache max
+  {
+    .Size = 1024,
+    .Granularity64K = 0
+  },                                // 1M installed
   {0,1},                               // SRAM type
   {0,1},                               // SRAM type
   0,                                   // speed unknown
@@ -318,8 +360,14 @@ STATIC SMBIOS_TABLE_TYPE7 mSG2042EVBType7_l3 = {
   CacheTypeUnified,                    // instruction cache
   CacheAssociativity8Way,              // 8 way associative
   // SMBIOS 3.1.0 fields
-  {1024, 0},                           // 1M cache max
-  {1024, 0},                           // 1M installed
+  {
+    .Size = 1024,
+    .Granularity64K = 0
+  },                                // 1M cache max
+  {
+    .Size = 1024,
+    .Granularity64K = 0
+  },                                // 1M installed
 };
 
 STATIC CONST CHAR8 *mSG2042EVBType7Strings[] = {
