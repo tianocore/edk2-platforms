@@ -1,7 +1,7 @@
 /** @file
   Protocol of EDKII PLDM SMBIOS Transfer Protocol.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -28,11 +28,11 @@ typedef struct  _EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL EDKII_PLDM_SMBIOS_TRANSFER_
   PLDM terminus ID.
 
   @param [in]   This           EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL instance.
-  @param [in]   SourceId       PLDM source teminus ID.
+  @param [in]   SourceId       PLDM source terminus ID.
                                Set to PLDM_TERMINUS_ID_UNASSIGNED means use
                                platform default PLDM terminus ID.
                                (gManageabilityPkgTokenSpaceGuid.PcdPldmSourceTerminusId)
-  @param [in]   DestinationId  PLDM destination teminus ID.
+  @param [in]   DestinationId  PLDM destination terminus ID.
                                Set to PLDM_TERMINUS_ID_UNASSIGNED means use
                                platform default PLDM terminus ID.
                                (gManageabilityPkgTokenSpaceGuid.PcdPldmDestinationEndpointId)

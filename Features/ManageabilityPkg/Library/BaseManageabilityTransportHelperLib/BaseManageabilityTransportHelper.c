@@ -1,7 +1,7 @@
 /** @file
   Manageability Transport Helper Library
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -16,14 +16,14 @@
 // Make sure the global variables added here should be unchangeable.
 //
 MANAGEABILITY_SPECIFICATION_NAME  ManageabilitySpecNameTable[] = {
-  { &gManageabilityTransportKcsGuid,         L"KCS"      },
-  { &gManageabilityTransportSmbusI2cGuid,    L"SMBUS I2C"},
-  { &gManageabilityTransportPciVdmGuid,      L"PCI VDM"  },
-  { &gManageabilityTransportSerialGuid,      L"SERIAL"   },
-  { &gManageabilityTransportMctpGuid,        L"MCTP"     },
-  { &gManageabilityProtocolIpmiGuid,         L"IPMI"     },
-  { &gManageabilityProtocolMctpGuid,         L"MCTP"     },
-  { &gManageabilityProtocolPldmGuid,         L"PLDM"     }
+  { &gManageabilityTransportKcsGuid,      L"KCS"       },
+  { &gManageabilityTransportSmbusI2cGuid, L"SMBUS I2C" },
+  { &gManageabilityTransportPciVdmGuid,   L"PCI VDM"   },
+  { &gManageabilityTransportSerialGuid,   L"SERIAL"    },
+  { &gManageabilityTransportMctpGuid,     L"MCTP"      },
+  { &gManageabilityProtocolIpmiGuid,      L"IPMI"      },
+  { &gManageabilityProtocolMctpGuid,      L"MCTP"      },
+  { &gManageabilityProtocolPldmGuid,      L"PLDM"      }
 };
 
 UINT16  mManageabilitySpecNum = sizeof (ManageabilitySpecNameTable)/ sizeof (MANAGEABILITY_SPECIFICATION_NAME);
@@ -359,7 +359,7 @@ HelperManageabilitySplitPayload (
                                                                         sizeof (MANAGEABILITY_TRANSMISSION_PACKAGE_ATTR) * NumberOfPackages
                                                                         );
   if (ThisMultiplePackages == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSMISSION_MULTI_PACKAGES\n"));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSMISSION_MULTI_PACKAGES\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 

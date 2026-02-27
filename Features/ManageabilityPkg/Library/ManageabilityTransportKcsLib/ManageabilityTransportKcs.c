@@ -2,7 +2,7 @@
 
   KCS instance of Manageability Transport Library
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 */
@@ -84,7 +84,7 @@ KcsTransportInit (
 
   DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: KCS transport hardware for %s is:\n", __func__, ManageabilityProtocolName));
   if (mKcsHardwareInfo.MemoryMap) {
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Memory Map I/O\n", __func__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Memory Map I/O\n"));
     DEBUG ((DEBUG_MANAGEABILITY_INFO, "Base Memory Address : 0x%08x\n", mKcsHardwareInfo.IoBaseAddress.IoAddress32));
     DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data in Address     : 0x%08x\n", mKcsHardwareInfo.IoDataInAddress.IoAddress32));
     DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data out Address    : 0x%08x\n", mKcsHardwareInfo.IoDataOutAddress.IoAddress32));

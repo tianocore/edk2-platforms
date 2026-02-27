@@ -1,6 +1,6 @@
 # IPMI Blob Transfer Interface Driver
 
-This DXE module is a UEFI implementation of the Phorphor Blob Transfer Interface defined in OpenBMC
+This DXE module is a UEFI implementation of the Phosphor Blob Transfer Interface defined in OpenBMC
 https://github.com/openbmc/phosphor-ipmi-blobs
 
 ## OpenBMC implements this interface as a protocol, allowing UEFI and BMC to transfer blobs over IPMI.

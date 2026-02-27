@@ -4,6 +4,7 @@
 
   SPDX-FileCopyrightText: copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -130,7 +131,7 @@ IpmiSmbiosTransferSendTables (
   SMBIOS_TABLE_3_0_ENTRY_POINT       *Smbios30Table;
   SMBIOS_TABLE_3_0_ENTRY_POINT       *Smbios30TableModified;
   EDKII_IPMI_BLOB_TRANSFER_PROTOCOL  *IpmiBlobTransfer;
-  UINT16                             Index;
+  UINT32                             Index;
   UINT16                             SessionId;
   UINT8                              *SendData;
   UINT32                             SendDataSize;
@@ -243,7 +244,7 @@ IpmiSmbiosTransferSendTables (
       Status = IpmiBlobTransfer->BlobSessionStat (SessionId, &BlobState, NULL, NULL, NULL);
       if (!EFI_ERROR (Status)) {
         if ((BlobState & BLOB_TRANSFER_STAT_COMMITTED) != 0) {
-          DEBUG ((DEBUG_INFO, "%a: Blob committed %r\n", __func__));
+          DEBUG ((DEBUG_INFO, "%a: Blob committed %r\n", __func__, Status));
           break;
         }
 

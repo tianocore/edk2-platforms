@@ -2,7 +2,7 @@
 
     IPMI Manageability Protocol common header file.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -25,7 +25,7 @@
 ///
 /// IPMI SSIF hardware information.
 ///
-#define IPMI_SSIF_BMC_SLAVE_ADDRESS FixedPcdGet8 (PcdIpmiSsifSmbusSlaveAddr)
+#define IPMI_SSIF_BMC_SLAVE_ADDRESS  FixedPcdGet8 (PcdIpmiSsifSmbusSlaveAddr)
 
 ///
 /// IPMI Serial hardware information.
