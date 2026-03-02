@@ -270,6 +270,7 @@ STATIC CONST ARM_TYPE3 mArmDefaultType3 = {
   TYPE3_STRINGS
 };
 
+#ifndef DYNAMIC_TABLES_FRAMEWORK
 // Processor
 STATIC CONST ARM_TYPE4 mArmDefaultType4_a72 = {
   {
@@ -499,6 +500,7 @@ STATIC CONST ARM_TYPE7 mArmDefaultType7_a53_l2 = {
   },
   TYPE7_STRINGS
 };
+#endif
 
 // Slots
 STATIC CONST ARM_TYPE9 mArmDefaultType9_0 = {
@@ -693,6 +695,7 @@ STATIC CONST VOID *DefaultCommonTables[]=
   NULL
 };
 
+#ifndef DYNAMIC_TABLES_FRAMEWORK
 STATIC CONST VOID *DefaultTablesR0R1[]=
 {
   &mArmDefaultType7_a57_l1i,
@@ -710,7 +713,7 @@ STATIC CONST VOID *DefaultTablesR2[]=
   &mArmDefaultType4_a72,
   NULL
 };
-
+#endif
 
 /**
    Installs a memory descriptor (type19) for the given address range
@@ -792,8 +795,9 @@ InstallAllStructures (
 {
   EFI_STATUS                Status = EFI_SUCCESS;
   UINT32                    JunoRevision;
+#ifndef DYNAMIC_TABLES_FRAMEWORK
   VOID                      *ExtraTables = DefaultTablesR0R1;
-
+#endif
   GetJunoRevision(JunoRevision);
 
   // Fixup some table values
@@ -806,7 +810,9 @@ InstallAllStructures (
   else if ( JunoRevision == JUNO_REVISION_R2 )
   {
     mArmDefaultType2.Base.Version = 7;
+#ifndef DYNAMIC_TABLES_FRAMEWORK
     ExtraTables=DefaultTablesR2;
+#endif
   }
 
   //
