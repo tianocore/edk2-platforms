@@ -56,7 +56,6 @@
 /Platform/Intel/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/PurleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
-/Platform/Intel/CometlakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/WhitleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
