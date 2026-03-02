@@ -55,17 +55,10 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 ## Board Support
 * The `PurleyOpenBoardPkg` contains board implementations for Purley systems.
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
-* The `WhiskeylakeOpenBoardPkg` contains board implementations for WhiskeyLake systems.
 * The `AlderlakeOpenBoardPkg` contains board implementations for AlderLake systems.
 * The `WhitleyOpenBoardPkg` contains board implementations for Ice Lake-SP and Cooper Lake systems.
 
 ### **Supported Hardware**
-
-#### AAEON
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| UP Xtreme                             | Whiskey Lake                               | WhiskeylakeOpenBoardPkg      | UpXtreme           |
 
 #### Intel
 
@@ -73,7 +66,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| WHL-U DDR4 RVP                        | WhiskeyLake                                | WhiskeylakeOpenBoardPkg      | WhiskeylakeURvp    |
 | ADL-P DDR5 RVP                        | AlderLake                                  | AlderlakeOpenBoardPkg        | AlderlakePRvp      |
 | Wilson City RVP                       | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | WilsonCityRvp      |
 | Cooper City RVP                       | Copper Lake                                | WhitleyOpenBoardPkg          | CooperCityRvp      |
@@ -267,14 +259,6 @@ return back to the minimum platform caller.
           |       |        |               |---build_board.py: Board-specific pre-build,
           |       |        |                                   build, post-build and clean functions.
           |       |        |
-          |       |        |------WhiskeylakeOpenBoardPkg
-          |       |        |       |------UpXtreme
-          |       |        |       |       |---build_config.cfg: UpXtreme specific build
-          |       |        |       |                             settings environment variables.
-          |       |        |       |------WhiskeylakeURvp
-          |       |        |               |---build_config.cfg: WhiskeylakeURvp specific build
-          |       |        |                                     settings environment variables.
-          |       |        |
           |       |        |------AlderlakeOpenBoardPkg
           |       |        |       |------AlderlakePRvp
           |       |        |               |---build_config.cfg: AlderlakePRvp specific build
@@ -338,16 +322,6 @@ For PurleyOpenBoardPkg (TiogaPass)
 
 **SimicsOpenBoardPkg**
 1. This firmware project has only been tested booting to Microsoft Windows 10 x64 and Ubuntu 17.10 with AHCI mode.
-
-**WhiskeylakeOpenBoardPkg**
-1. This firmware project has mainly been tested booting to Microsoft Windows 10 x64 with AHCI mode and Integrated Graphic
-   Device.
-2. UP Xtreme boards might hang during Windows 10 boot.
-3. The UP Xtreme boards below boot to x64 windows 10 home edition and Ubuntu 18.04
-      * UP Xtreme Intel(R) Core(TM) i3-8145UE CPU @ 2.20GHz with 8GB RAM
-      * UP Xtreme Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz with 16GB RAM
-      * UP Xtreme Intel(R) Core(TM) i7-8665UE CPU @ 1.70GHz with 16GB RAM
-      * UP Xtreme Intel(R) Celeron(R) CPU 4305UE @ 2.00GHz with 4GB RAM
 
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
