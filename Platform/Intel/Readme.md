@@ -56,7 +56,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 * The `PurleyOpenBoardPkg` contains board implementations for Purley systems.
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
 * The `WhiskeylakeOpenBoardPkg` contains board implementations for WhiskeyLake systems.
-* The `CometlakeOpenBoardPkg` contains board implementations for CometLake systems.
 * The `AlderlakeOpenBoardPkg` contains board implementations for AlderLake systems.
 * The `WhitleyOpenBoardPkg` contains board implementations for Ice Lake-SP and Cooper Lake systems.
 
@@ -75,7 +74,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | WHL-U DDR4 RVP                        | WhiskeyLake                                | WhiskeylakeOpenBoardPkg      | WhiskeylakeURvp    |
-| CML-U LPDDR3 RVP                      | CometLake V1                               | CometlakeOpenBoardPkg        | CometlakeURvp      |
 | ADL-P DDR5 RVP                        | AlderLake                                  | AlderlakeOpenBoardPkg        | AlderlakePRvp      |
 | Wilson City RVP                       | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | WilsonCityRvp      |
 | Cooper City RVP                       | Copper Lake                                | WhitleyOpenBoardPkg          | CooperCityRvp      |
@@ -277,11 +275,6 @@ return back to the minimum platform caller.
           |       |        |               |---build_config.cfg: WhiskeylakeURvp specific build
           |       |        |                                     settings environment variables.
           |       |        |
-          |       |        |------CometlakeOpenBoardPkg
-          |       |        |       |------CometlakeURvp
-          |       |        |               |---build_config.cfg: CometlakeURvp specific build
-          |       |        |                                     settings environment variables.
-          |       |        |
           |       |        |------AlderlakeOpenBoardPkg
           |       |        |       |------AlderlakePRvp
           |       |        |               |---build_config.cfg: AlderlakePRvp specific build
@@ -355,10 +348,6 @@ For PurleyOpenBoardPkg (TiogaPass)
       * UP Xtreme Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz with 16GB RAM
       * UP Xtreme Intel(R) Core(TM) i7-8665UE CPU @ 1.70GHz with 16GB RAM
       * UP Xtreme Intel(R) Celeron(R) CPU 4305UE @ 2.00GHz with 4GB RAM
-
-**CometlakeOpenBoardPkg**
-1. This firmware project has been tested booting to Microsoft Windows 10 x64 with AHCI mode and External Graphic Device.
-2. This firmware project has been also tested booting to Ubuntu 17.10 with AHCI mode and Integrated Graphic Device.
 
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
