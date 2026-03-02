@@ -57,7 +57,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
 * The `WhiskeylakeOpenBoardPkg` contains board implementations for WhiskeyLake systems.
 * The `CometlakeOpenBoardPkg` contains board implementations for CometLake systems.
-* The `TigerlakeOpenBoardPkg` contains board implementations for TigerLake systems.
 * The `AlderlakeOpenBoardPkg` contains board implementations for AlderLake systems.
 * The `WhitleyOpenBoardPkg` contains board implementations for Ice Lake-SP and Cooper Lake systems.
 
@@ -77,7 +76,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | WHL-U DDR4 RVP                        | WhiskeyLake                                | WhiskeylakeOpenBoardPkg      | WhiskeylakeURvp    |
 | CML-U LPDDR3 RVP                      | CometLake V1                               | CometlakeOpenBoardPkg        | CometlakeURvp      |
-| TGL-U DDR4 RVP                        | TigerLake                                  | TigerlakeOpenBoardPkg        | TigerlakeURvp      |
 | ADL-P DDR5 RVP                        | AlderLake                                  | AlderlakeOpenBoardPkg        | AlderlakePRvp      |
 | Wilson City RVP                       | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | WilsonCityRvp      |
 | Cooper City RVP                       | Copper Lake                                | WhitleyOpenBoardPkg          | CooperCityRvp      |
@@ -284,11 +282,6 @@ return back to the minimum platform caller.
           |       |        |               |---build_config.cfg: CometlakeURvp specific build
           |       |        |                                     settings environment variables.
           |       |        |
-          |       |        |------TigerlakeOpenBoardPkg
-          |       |        |       |------TigerlakeURvp
-          |       |        |               |---build_config.cfg: TigerlakeURvp specific build
-          |       |        |                                     settings environment variables.
-          |       |        |
           |       |        |------AlderlakeOpenBoardPkg
           |       |        |       |------AlderlakePRvp
           |       |        |               |---build_config.cfg: AlderlakePRvp specific build
@@ -366,10 +359,6 @@ For PurleyOpenBoardPkg (TiogaPass)
 **CometlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 10 x64 with AHCI mode and External Graphic Device.
 2. This firmware project has been also tested booting to Ubuntu 17.10 with AHCI mode and Integrated Graphic Device.
-
-**TigerlakeOpenBoardPkg**
-1. This firmware project has been tested booting to Microsoft Windows 10 x64 with AHCI mode and Integrated Graphic Device.
-2. This firmware project has been also tested booting to Puppy Linux BionicPup64 8.0 with AHCI mode and Integrated Graphic Device.
 
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
