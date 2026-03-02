@@ -85,7 +85,6 @@ body:
         - Platform/Hisilicon/HiKey960
         - Platform/Intel/AlderlakeOpenBoardPkg
         - Platform/Intel/BoardModulePkg
-        - Platform/Intel/CometlakeOpenBoardPkg
         - Platform/Intel/MinPlatformPkg
         - Platform/Intel/PurleyOpenBoardPkg
         - Platform/Intel/QuarkPlatformPkg
