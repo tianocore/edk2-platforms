@@ -90,7 +90,6 @@ body:
         - Platform/Intel/PurleyOpenBoardPkg
         - Platform/Intel/QuarkPlatformPkg
         - Platform/Intel/SimicsOpenBoardPkg
-        - Platform/Intel/TigerlakeOpenBoardPkg
         - Platform/Intel/WhiskeylakeOpenBoardPkg
         - Platform/Intel/WhitleyOpenBoardPkg
         - Platform/LeMaker/CelloBoard
@@ -143,7 +142,6 @@ body:
         - Silicon/Intel/QuarkSocPkg
         - Silicon/Intel/SimicsIch10Pkg
         - Silicon/Intel/SimicsX58SktPkg
-        - Silicon/Intel/TigerlakeSiliconPkg
         - Silicon/Intel/Tools
         - Silicon/Intel/WhitleySiliconPkg
         - Silicon/Marvell/Applications
