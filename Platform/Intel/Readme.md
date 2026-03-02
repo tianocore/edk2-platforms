@@ -53,7 +53,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 
 
 ## Board Support
-* The `KabylakeOpenBoardPkg` contains board implementations for KabyLake systems.
 * The `PurleyOpenBoardPkg` contains board implementations for Purley systems.
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
 * The `WhiskeylakeOpenBoardPkg` contains board implementations for WhiskeyLake systems.
@@ -70,21 +69,12 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | UP Xtreme                             | Whiskey Lake                               | WhiskeylakeOpenBoardPkg      | UpXtreme           |
 
-#### Acer
-
-***Aspire VN7-572G Laptop***
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| Aspire VN7-572G                       | SkyLake                                    | KabylakeOpenBoardPkg         | AspireVn7Dash572G  |
-
 #### Intel
 
 ***Intel Reference and Validation Platform***
 
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| RVP 3                                 | SkyLake, KabyLake, KabyLake Refresh        | KabylakeOpenBoardPkg         | KabylakeRvp3       |
 | WHL-U DDR4 RVP                        | WhiskeyLake                                | WhiskeylakeOpenBoardPkg      | WhiskeylakeURvp    |
 | CML-U LPDDR3 RVP                      | CometLake V1                               | CometlakeOpenBoardPkg        | CometlakeURvp      |
 | TGL-U DDR4 RVP                        | TigerLake                                  | TigerlakeOpenBoardPkg        | TigerlakeURvp      |
@@ -109,15 +99,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | Simics Quick Start Package            | Nehalem                                    | SimicsOpenBoardPkg           | BoardX58Ich10      |
-
-#### System 76
-
-***Galago Pro Laptop***
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| galp2                                 | KabyLake                                   | KabylakeOpenBoardPkg         | GalagoPro3         |
-| galp3 & galp3-b                       | KabyLake Refresh                           | KabylakeOpenBoardPkg         | GalagoPro3         |
 
 ## Board Package Organization
 The board package follows the standard EDK II package structure with the following additional elements and guidelines:
@@ -251,16 +232,6 @@ return back to the minimum platform caller.
           |       |        |------build_bios.py: Main build script. Generic pre-build, build,
           |       |        |                     post-build, and clean functions.
           |       |        |
-          |       |        |------KabylakeOpenBoardPkg
-          |       |        |       |------GalagoPro3
-          |       |        |       |       |---build_config.cfg: System 76 Galago Pro 3 specific build
-          |       |        |       |                             settings environment variables.
-          |       |        |       |------KabylakeRvp3
-          |       |        |               |---build_config.cfg: KabylakeRvp3 specific
-          |       |        |               |                     build settings, environment variables.
-          |       |        |               |---build_board.py: Optional board-specific pre-build, build
-          |       |        |                                   and clean post-build functions.
-          |       |        |
           |       |        |------PurleyOpenBoardPkg
           |       |        |       |------BoardMtOlympus
           |       |        |       |       |---build_config.cfg: BoardMtOlympus specific
@@ -354,14 +325,6 @@ For PurleyOpenBoardPkg (TiogaPass)
 6. This BIOS image needs to be merged with SPS FW
 
 ### **Known limitations**
-
-**KabylakeOpenBoardPkg**
-*GalagoPro3*
-1. The firmware project has not been tested on the Galago Pro 3B.
-
-*KabylakeRvp3*
-1. This firmware project has only been tested for Microsoft Windows 10 x64 boot with AHCI mode and Integrated Graphic
-   Device.
 
 **PurleyOpenBoardPkg**
 1. This firmware project has only been tested booting to Microsoft Windows Server 2016 with NVME on M.2 slot.
