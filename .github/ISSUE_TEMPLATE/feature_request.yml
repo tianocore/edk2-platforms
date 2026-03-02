@@ -94,7 +94,6 @@ body:
         - Platform/Intel/PurleyOpenBoardPkg
         - Platform/Intel/QuarkPlatformPkg
         - Platform/Intel/SimicsOpenBoardPkg
-        - Platform/Intel/WhiskeylakeOpenBoardPkg
         - Platform/Intel/WhitleyOpenBoardPkg
         - Platform/LeMaker/CelloBoard
         - Platform/Loongson/LoongArchQemuPkg
@@ -140,7 +139,6 @@ body:
         - Silicon/HiSilicon/Hi6220
         - Silicon/HiSilicon/HisiPkg
         - Silicon/Intel/AlderlakeSiliconPkg
-        - Silicon/Intel/CoffeelakeSiliconPkg
         - Silicon/Intel/IntelSiliconPkg
         - Silicon/Intel/PurleyRefreshSiliconPkg
         - Silicon/Intel/QuarkSocPkg
