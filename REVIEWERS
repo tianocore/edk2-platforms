@@ -29,7 +29,6 @@
 /Features/Intel/UserInterface/** @lgao4
 
 /Platform/Intel/BoardModulePkg/** @lgao4
-/Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot5
 /Platform/Intel/MinPlatformPkg/** @lgao4 @ydong10
 /Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu
 /Platform/Intel/CometlakeOpenBoardPkg/** @dkethire @kesakkit
