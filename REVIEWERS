@@ -30,7 +30,6 @@
 
 /Platform/Intel/BoardModulePkg/** @lgao4
 /Platform/Intel/MinPlatformPkg/** @lgao4 @ydong10
-/Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu
 /Platform/Intel/AlderlakeOpenBoardPkg/** @SaloniKasbekar
 /Platform/Intel/Tools/** @YuweiChen1110
 

@@ -55,7 +55,6 @@
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
 /Platform/Intel/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/PurleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
-/Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/WhitleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
@@ -63,7 +62,6 @@
 
 /Silicon/Intel/** @nate-desimone @SaiChaganty
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
-/Silicon/Intel/CoffeelakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/PurleyRefreshSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/AlderlakeSiliconPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/WhitleySiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
