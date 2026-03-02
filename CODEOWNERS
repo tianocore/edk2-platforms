@@ -52,7 +52,6 @@
 /Features/ManageabilityPkg/** @changab
 
 /Platform/Intel/** @nate-desimone @SaiChaganty
-/Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone @SaiChaganty @yqian4
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
 /Platform/Intel/KabylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/KabylakeOpenBoardPkg/AspireVn7Dash572G/** @benjamindoron @nate-desimone @SaiChaganty
@@ -69,7 +68,6 @@
 
 /Silicon/Intel/** @nate-desimone @SaiChaganty
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
-/Silicon/Intel/Vlv2DeviceRefCodePkg/** @nate-desimone @SaiChaganty @yqian4
 /Silicon/Intel/CoffeelakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/KabylakeSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/PurleyRefreshSiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
