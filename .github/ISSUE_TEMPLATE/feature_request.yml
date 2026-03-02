@@ -91,7 +91,6 @@ body:
         - Platform/Intel/AlderlakeOpenBoardPkg
         - Platform/Intel/BoardModulePkg
         - Platform/Intel/CometlakeOpenBoardPkg
-        - Platform/Intel/KabylakeOpenBoardPkg
         - Platform/Intel/MinPlatformPkg
         - Platform/Intel/PurleyOpenBoardPkg
         - Platform/Intel/QuarkPlatformPkg
@@ -145,7 +144,6 @@ body:
         - Silicon/Intel/AlderlakeSiliconPkg
         - Silicon/Intel/CoffeelakeSiliconPkg
         - Silicon/Intel/IntelSiliconPkg
-        - Silicon/Intel/KabylakeSiliconPkg
         - Silicon/Intel/PurleyRefreshSiliconPkg
         - Silicon/Intel/QuarkSocPkg
         - Silicon/Intel/SimicsIch10Pkg
