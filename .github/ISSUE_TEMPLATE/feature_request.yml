@@ -93,7 +93,6 @@ body:
         - Platform/Intel/MinPlatformPkg
         - Platform/Intel/QuarkPlatformPkg
         - Platform/Intel/SimicsOpenBoardPkg
-        - Platform/Intel/WhitleyOpenBoardPkg
         - Platform/LeMaker/CelloBoard
         - Platform/Loongson/LoongArchQemuPkg
         - Platform/Marvell/Armada70x0Db
@@ -143,7 +142,6 @@ body:
         - Silicon/Intel/SimicsIch10Pkg
         - Silicon/Intel/SimicsX58SktPkg
         - Silicon/Intel/Tools
-        - Silicon/Intel/WhitleySiliconPkg
         - Silicon/Marvell/Applications
         - Silicon/Marvell/Armada7k8k
         - Silicon/Marvell/Documentation
