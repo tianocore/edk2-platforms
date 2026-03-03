@@ -24,9 +24,9 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x800000
   # The EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER in CommonNvStorageFtwWorking.fdf doesn't have size info.
   #
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
-  !include WhitleyOpenBoardPkg/Include/Fdf/NvStorage512K.fdf
+  !include QemuOpenBoardPkg/Include/Fdf/NvStorage512K.fdf
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonNvStorageFtwWorking.fdf
+  !include QemuOpenBoardPkg/Include/Fdf/CommonNvStorageFtwWorking.fdf
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
   DATA = { 0xFF } # Hack to ensure build doesn't treat the next PCD as Base/Size to be written
 
