@@ -55,14 +55,12 @@
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
 /Platform/Intel/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
-/Platform/Intel/WhitleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
 
 /Silicon/Intel/** @nate-desimone @SaiChaganty
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
 /Silicon/Intel/AlderlakeSiliconPkg/** @nate-desimone @SaiChaganty
-/Silicon/Intel/WhitleySiliconPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Silicon/Intel/SimicsX58SktPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/SimicsIch10Pkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
