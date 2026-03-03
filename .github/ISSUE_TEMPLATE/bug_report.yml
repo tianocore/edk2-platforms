@@ -86,7 +86,6 @@ body:
         - Platform/Intel/AlderlakeOpenBoardPkg
         - Platform/Intel/BoardModulePkg
         - Platform/Intel/MinPlatformPkg
-        - Platform/Intel/QuarkPlatformPkg
         - Platform/Intel/SimicsOpenBoardPkg
         - Platform/LeMaker/CelloBoard
         - Platform/Loongson/LoongArchQemuPkg
@@ -133,7 +132,6 @@ body:
         - Silicon/HiSilicon/HisiPkg
         - Silicon/Intel/AlderlakeSiliconPkg
         - Silicon/Intel/IntelSiliconPkg
-        - Silicon/Intel/QuarkSocPkg
         - Silicon/Intel/SimicsIch10Pkg
         - Silicon/Intel/SimicsX58SktPkg
         - Silicon/Intel/Tools
