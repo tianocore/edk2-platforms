@@ -55,7 +55,6 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 ## Board Support
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
 * The `AlderlakeOpenBoardPkg` contains board implementations for AlderLake systems.
-* The `WhitleyOpenBoardPkg` contains board implementations for Ice Lake-SP and Cooper Lake systems.
 
 ### **Supported Hardware**
 
@@ -66,18 +65,8 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | ADL-P DDR5 RVP                        | AlderLake                                  | AlderlakeOpenBoardPkg        | AlderlakePRvp      |
-| Wilson City RVP                       | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | WilsonCityRvp      |
-| Cooper City RVP                       | Copper Lake                                | WhitleyOpenBoardPkg          | CooperCityRvp      |
 
 *Note: RVP = Reference and Validation Platform*
-
-#### Open Compute Project (OCP)
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| Aowanda                               | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | Aowanda            |
-| Junction City                         | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | JunctionCity       |
-
 
 #### Simics
 
@@ -222,28 +211,6 @@ return back to the minimum platform caller.
           |       |        |               |---build_config.cfg: BoardX58Ich10 specific
           |       |        |                                     build settings, environment variables.
           |       |        |
-          |       |        |------WhitleyOpenBoardPkg
-          |       |        |       |------Aowanda
-          |       |        |       |       |---build_config.cfg: Aowanda  specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------CooperCityRvp
-          |       |        |       |       |---build_config.cfg: CooperCityRvp specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------JunctionCity
-          |       |        |       |       |---build_config.cfg: CooperCityRvp specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------WilsonCityRvp
-          |       |        |               |---build_config.cfg: WilsonCityRvp specific build
-          |       |        |               |                     settings environment variables.
-          |       |        |               |---build_board.py: Board-specific pre-build,
-          |       |        |                                   build, post-build and clean functions.
-          |       |        |
           |       |        |------AlderlakeOpenBoardPkg
           |       |        |       |------AlderlakePRvp
           |       |        |               |---build_config.cfg: AlderlakePRvp specific build
@@ -260,23 +227,6 @@ return back to the minimum platform caller.
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
 2. AlderlakeOpenBoardPkg/Acpi/MinDsdt has been modified from MinPlatformPkg/Acpi/MinDsdt to avoid hang on boot to Microsoft Windows 11 x64.
-
-**WhitleyOpenBoardPkg**
-1. This firmware project has been tested booting to UEFI shell with headless serial console
-
-**JunctionCity**
-1. This firmware project has been tested booting to UEFI shell
-2. Booted to RHEL 8.2, Ubuntu 18.04 using U2 NVME Disk
-3. Booted to Windows 2019 using M2 SSD Disk
-4. Booted to Ubuntu 18.04,Windows 2019, RHEL 8.3 using SATA HDD
-5. Connected PCIE Network card and made sure PCIE card detected in POST and in OS
-6. Verified TPM offboard chip detection
-
-**Aowanda**
-1. This firmware project has been tested booting to UEFI shell
-2. Installed and booted to RHEL 8.3 using M2 SSD disk
-3. Installed and booted to Windows 2019 using M2 SSD disk
-4. Verified TPM chip detection
 
 Note:
 For the network boot using the onboard Intel network card, please download the UEFI UNDI driver (E9712X3.efi) from https://www.intel.com/content/www/us/en/download/15755/intel-ethernet-connections-boot-utility-preboot-images-and-efi-drivers.html
