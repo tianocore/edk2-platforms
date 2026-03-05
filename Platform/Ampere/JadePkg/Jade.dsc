@@ -223,6 +223,8 @@
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"Mt. Jade"
+
 !if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   # Override the default values from SecurityPkg to ensure images
   # from all sources are verified in secure boot
