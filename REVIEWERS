@@ -31,7 +31,7 @@
 /Platform/Intel/Vlv2TbltDevicePkg/** @nate-desimone
 /Platform/Intel/BoardModulePkg/** @lgao4
 /Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot5
-/Platform/Intel/MinPlatformPkg/** @lgao4 @ydong10
+/Platform/MinPlatformPkg/** @lgao4 @ydong10
 /Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu
 /Platform/Intel/CometlakeOpenBoardPkg/** @dkethire @kesakkit
 # Add Heng Luo

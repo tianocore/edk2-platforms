@@ -57,7 +57,7 @@
 /Platform/Intel/KabylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/KabylakeOpenBoardPkg/AspireVn7Dash572G/** @benjamindoron @nate-desimone @SaiChaganty
 /Platform/Intel/KabylakeOpenBoardPkg/GalagoPro3/** @jackpot51
-/Platform/Intel/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
+/Platform/MinPlatformPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/PurleyOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/WhiskeylakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty
 /Platform/Intel/CometlakeOpenBoardPkg/** @ChaselChiu @nate-desimone @SaiChaganty

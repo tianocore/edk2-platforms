@@ -121,7 +121,8 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
                                                config["WORKSPACE_FSP_BIN"])
 
     # add to package path
-    config["PACKAGES_PATH"] = config["WORKSPACE_PLATFORM"]
+    config["PACKAGES_PATH"] = os.path.join(config["WORKSPACE"], "edk2-platforms", "Platform")
+    config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_PLATFORM"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON_BIN"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_FEATURES"]
@@ -408,7 +409,8 @@ def build(config):
             if re.search(pattern, item):
                 os.remove(os.path.join(file_dir, item))
 
-        command = [sys.executable, os.path.join(config['WORKSPACE_PLATFORM'],
+        command = [sys.executable, os.path.join(config['WORKSPACE'],
+                                'edk2-platforms', 'Platform',
                                 config['PLATFORM_PACKAGE'],
                                 'Tools', 'Fsp',
                                 'RebaseFspBinBaseAddress.py'),
