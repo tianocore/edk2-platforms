@@ -8,7 +8,12 @@
 
 **/
 
+#include <Guid/RiscVSecHobData.h>
 #include "SecMain.h"
+
+const EFI_GUID          SecHobDataGuid = RISCV_SEC_HANDOFF_HOB_GUID;
+
+#define SEC_HANDOFF_DATA_RESERVE_SIZE  SIZE_4KB
 
 /**
   Initialize the memory and CPU, setting the boot mode, and platform
@@ -57,11 +62,11 @@ SecStartup (
   )
 {
   EFI_HOB_HANDOFF_INFO_TABLE  *HobList;
-  EFI_RISCV_FIRMWARE_CONTEXT  FirmwareContext;
   EFI_STATUS                  Status;
   UINT64                      UefiMemoryBase;
   UINT64                      StackBase;
   UINT32                      StackSize;
+  RISCV_SEC_HANDOFF_DATA      *SecHandoffData;
 
   SerialPortInitialize ();
 
@@ -76,9 +81,6 @@ SecStartup (
     DeviceTreeAddress
     ));
 
-  FirmwareContext.BootHartId          = BootHartId;
-  SetFirmwareContextPointer (&FirmwareContext);
-
   StackBase      = (UINT64)FixedPcdGet32 (PcdTemporaryRamBase);
   StackSize      = FixedPcdGet32 (PcdTemporaryRamSize);
   UefiMemoryBase = StackBase + StackSize - SIZE_32MB;
@@ -91,6 +93,10 @@ SecStartup (
               (VOID *)StackBase // The top of the UEFI Memory is reserved for the stacks
               );
   PrePeiSetHobList (HobList);
+
+  SecHandoffData = BuildGuidHob (&SecHobDataGuid, sizeof (RISCV_SEC_HANDOFF_DATA));
+  SecHandoffData->BootHartId = BootHartId;
+  SecHandoffData->FdtPointer = DeviceTreeAddress;
 
   SecInitializePlatform (DeviceTreeAddress);
 

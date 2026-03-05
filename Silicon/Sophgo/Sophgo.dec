@@ -1,0 +1,35 @@
+## @file  Sophgo.dec
+# This Package provides modules and libraries.for SOPHGO platforms.
+#
+# Copyright (c) 2024, SOPHGO Inc. All rights reserved.
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010001
+  PACKAGE_NAME                   = SophgoPkg
+  PACKAGE_GUID                   = F6238AD6-3969-49E0-818D-5368F5F9F1D5
+  PACKAGE_VERSION                = 1.0
+
+[Protocols]
+  gSophgoMmcHostProtocolGuid = { 0x3E591C00, 0x9E4A, 0x11DF, { 0x92, 0x44, 0x00, 0x02, 0xA5, 0xF5, 0xF5, 0x1B } }
+  gSophgoSpiMasterProtocolGuid = { 0xB67F29A5, 0x7E7D, 0x48C6, { 0xA0, 0x00, 0xE8, 0xB5, 0x1D, 0x6D, 0x3A, 0xA8 } }
+  gSophgoNorFlashProtocolGuid = { 0xE9A39038, 0x1965, 0x4404, { 0xA5, 0x2A, 0xB9, 0xA3, 0xA1, 0xAE, 0xC2, 0xE4 } }
+
+[Guids]
+  gSophgoTokenSpaceGuid  = { 0xDA6ECA1D, 0x220A, 0x45D6, { 0xA7, 0x4D, 0x83, 0x64, 0x50, 0x90, 0x82, 0x1C } }
+
+[PcdsFixedAtBuild]
+  gSophgoTokenSpaceGuid.PcdSDIOBase|0x0|UINT64|0x00001001
+  gSophgoTokenSpaceGuid.PcdSPIFMC0Base|0x0|UINT64|0x00001002
+  gSophgoTokenSpaceGuid.PcdSPIFMC1Base|0x0|UINT64|0x00001003
+  gSophgoTokenSpaceGuid.PcdEfiMemoryBottom|0x0|UINT64|0x00001004
+  gSophgoTokenSpaceGuid.PcdSDIOSourceClockFrequency|0x0|UINT32|0x00001005
+  gSophgoTokenSpaceGuid.PcdSDIOTransmissionClockFrequency|0x0|UINT32|0x00001006
+  gSophgoTokenSpaceGuid.PcdFlashPartitionTableAddress|0x0|UINT64|0x00001007
+  gSophgoTokenSpaceGuid.PcdFdOffset|0x0|UINT64|0x00001008
+
+[PcdsDynamic]
+  gSophgoTokenSpaceGuid.PcdFlashVariableOffset|0x0|UINT64|0x00001009
