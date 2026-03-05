@@ -53,30 +53,10 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 
 
 ## Board Support
-* The `KabylakeOpenBoardPkg` contains board implementations for KabyLake systems.
-* The `PurleyOpenBoardPkg` contains board implementations for Purley systems.
 * The `SimicsOpenBoardPkg` contains board implementations for the Simics hardware simulator.
-* The `WhiskeylakeOpenBoardPkg` contains board implementations for WhiskeyLake systems.
-* The `CometlakeOpenBoardPkg` contains board implementations for CometLake systems.
-* The `TigerlakeOpenBoardPkg` contains board implementations for TigerLake systems.
 * The `AlderlakeOpenBoardPkg` contains board implementations for AlderLake systems.
-* The `WhitleyOpenBoardPkg` contains board implementations for Ice Lake-SP and Cooper Lake systems.
 
 ### **Supported Hardware**
-
-#### AAEON
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| UP Xtreme                             | Whiskey Lake                               | WhiskeylakeOpenBoardPkg      | UpXtreme           |
-
-#### Acer
-
-***Aspire VN7-572G Laptop***
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| Aspire VN7-572G                       | SkyLake                                    | KabylakeOpenBoardPkg         | AspireVn7Dash572G  |
 
 #### Intel
 
@@ -84,40 +64,15 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| RVP 3                                 | SkyLake, KabyLake, KabyLake Refresh        | KabylakeOpenBoardPkg         | KabylakeRvp3       |
-| WHL-U DDR4 RVP                        | WhiskeyLake                                | WhiskeylakeOpenBoardPkg      | WhiskeylakeURvp    |
-| CML-U LPDDR3 RVP                      | CometLake V1                               | CometlakeOpenBoardPkg        | CometlakeURvp      |
-| TGL-U DDR4 RVP                        | TigerLake                                  | TigerlakeOpenBoardPkg        | TigerlakeURvp      |
 | ADL-P DDR5 RVP                        | AlderLake                                  | AlderlakeOpenBoardPkg        | AlderlakePRvp      |
-| Wilson City RVP                       | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | WilsonCityRvp      |
-| Cooper City RVP                       | Copper Lake                                | WhitleyOpenBoardPkg          | CooperCityRvp      |
 
 *Note: RVP = Reference and Validation Platform*
-
-#### Open Compute Project (OCP)
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| Aowanda                               | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | Aowanda            |
-| Junction City                         | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | JunctionCity       |
-| Mt. Olympus                           | Purley                                     | PurleyOpenBoardPkg           | BoardMtOlympus     |
-| TiogaPass                             | Purley                                     | PurleyOpenBoardPkg           | BoardTiogaPass     |
-
 
 #### Simics
 
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | Simics Quick Start Package            | Nehalem                                    | SimicsOpenBoardPkg           | BoardX58Ich10      |
-
-#### System 76
-
-***Galago Pro Laptop***
-
-| Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
-----------------------------------------|--------------------------------------------|------------------------------|--------------------|
-| galp2                                 | KabyLake                                   | KabylakeOpenBoardPkg         | GalagoPro3         |
-| galp3 & galp3-b                       | KabyLake Refresh                           | KabylakeOpenBoardPkg         | GalagoPro3         |
 
 ## Board Package Organization
 The board package follows the standard EDK II package structure with the following additional elements and guidelines:
@@ -251,72 +206,10 @@ return back to the minimum platform caller.
           |       |        |------build_bios.py: Main build script. Generic pre-build, build,
           |       |        |                     post-build, and clean functions.
           |       |        |
-          |       |        |------KabylakeOpenBoardPkg
-          |       |        |       |------GalagoPro3
-          |       |        |       |       |---build_config.cfg: System 76 Galago Pro 3 specific build
-          |       |        |       |                             settings environment variables.
-          |       |        |       |------KabylakeRvp3
-          |       |        |               |---build_config.cfg: KabylakeRvp3 specific
-          |       |        |               |                     build settings, environment variables.
-          |       |        |               |---build_board.py: Optional board-specific pre-build, build
-          |       |        |                                   and clean post-build functions.
-          |       |        |
-          |       |        |------PurleyOpenBoardPkg
-          |       |        |       |------BoardMtOlympus
-          |       |        |       |       |---build_config.cfg: BoardMtOlympus specific
-          |       |        |       |       |                     build settings, environment variables.
-          |       |        |       |       |---build_board.py: Optional board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------BoardTiogaPass
-          |       |        |               |---build_config.cfg: BoardTiogaPass specific
-          |       |        |               |                     build settings, environment variables.
-          |       |        |               |---build_board.py: Optional board-specific pre-build,
-          |       |        |                                   build, post-build and clean functions.
-          |       |        |
           |       |        |------SimicsOpenBoardPkg
           |       |        |       |------BoardX58Ich10
           |       |        |               |---build_config.cfg: BoardX58Ich10 specific
           |       |        |                                     build settings, environment variables.
-          |       |        |
-          |       |        |------WhitleyOpenBoardPkg
-          |       |        |       |------Aowanda
-          |       |        |       |       |---build_config.cfg: Aowanda  specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------CooperCityRvp
-          |       |        |       |       |---build_config.cfg: CooperCityRvp specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------JunctionCity
-          |       |        |       |       |---build_config.cfg: CooperCityRvp specific build
-          |       |        |       |       |                     settings environment variables.
-          |       |        |       |       |---build_board.py: Board-specific pre-build,
-          |       |        |       |                           build, post-build and clean functions.
-          |       |        |       |------WilsonCityRvp
-          |       |        |               |---build_config.cfg: WilsonCityRvp specific build
-          |       |        |               |                     settings environment variables.
-          |       |        |               |---build_board.py: Board-specific pre-build,
-          |       |        |                                   build, post-build and clean functions.
-          |       |        |
-          |       |        |------WhiskeylakeOpenBoardPkg
-          |       |        |       |------UpXtreme
-          |       |        |       |       |---build_config.cfg: UpXtreme specific build
-          |       |        |       |                             settings environment variables.
-          |       |        |       |------WhiskeylakeURvp
-          |       |        |               |---build_config.cfg: WhiskeylakeURvp specific build
-          |       |        |                                     settings environment variables.
-          |       |        |
-          |       |        |------CometlakeOpenBoardPkg
-          |       |        |       |------CometlakeURvp
-          |       |        |               |---build_config.cfg: CometlakeURvp specific build
-          |       |        |                                     settings environment variables.
-          |       |        |
-          |       |        |------TigerlakeOpenBoardPkg
-          |       |        |       |------TigerlakeURvp
-          |       |        |               |---build_config.cfg: TigerlakeURvp specific build
-          |       |        |                                     settings environment variables.
           |       |        |
           |       |        |------AlderlakeOpenBoardPkg
           |       |        |       |------AlderlakePRvp
@@ -326,108 +219,14 @@ return back to the minimum platform caller.
           |------FSP
   </pre>
 
-**Building with the batch scripts**
-
-Only PurleyOpenBoardPkg still supports batch script build (in addition to Python build). Batch scripts are deprecated
-and will be removed from PurleyOpenBoardPkg in the future. All other board packages must only use the Python build
-infrastructure.
-
-For PurleyOpenBoardPkg
-1. Open command window, go to the workspace directory, e.g. c:\Edk2Workspace.
-2. Type "cd edk2-platforms\Platform\Intel\PurleyOpenBoardPkg\BoardMtOlympus".
-3. Type "GitEdk2MinMtOlympus.bat" to setup GIT environment.
-4. Type "bld" to build Purley Mt Olympus board UEFI firmware image, "bld release" for release build, "bld clean" to
-   remove intermediate files."bld cache-produce" Generate a cache of binary files in the specified directory,
-   "bld cache-consume" Consume a cache of binary files from the specified directory, BINARY_CACHE_PATH is empty,
-   used "BinCache" as default path.
-
-For PurleyOpenBoardPkg (TiogaPass)
-1. Open command window, go to the workspace directory, e.g. c:\Edk2Workspace.
-2. Type "cd edk2-platforms\Platform\Intel\PurleyOpenBoardPkg\BoardTiogaPass".
-3. Type "GitEdk2MinBoardTiogaPass.bat" to setup GIT environment.
-4. Type "bld" to build Purley BoardTiogaPass board UEFI firmware image, "bld release" for release build, "bld clean" to
-   remove intermediate files."bld cache-produce" Generate a cache of binary files in the specified directory,
-   "bld cache-consume" Consume a cache of binary files from the specified directory, BINARY_CACHE_PATH is empty,
-   used "BinCache" as default path.
-5. Final BIOS image will be Build\PurleyOpenBoardPkg\BoardTiagoPass\DEBUG_VS2015x86\FV\PLATFORM.fd or
-   Build\PurleyOpenBoardPkg\BoardTiagoPass\RELEASE_VS2015x86\FV\PLATFORM.fd, depending on bld batch script input.
-6. This BIOS image needs to be merged with SPS FW
-
 ### **Known limitations**
-
-**KabylakeOpenBoardPkg**
-*GalagoPro3*
-1. The firmware project has not been tested on the Galago Pro 3B.
-
-*KabylakeRvp3*
-1. This firmware project has only been tested for Microsoft Windows 10 x64 boot with AHCI mode and Integrated Graphic
-   Device.
-
-**PurleyOpenBoardPkg**
-1. This firmware project has only been tested booting to Microsoft Windows Server 2016 with NVME on M.2 slot.
-2. This firmware project does not build with the GCC compiler.
-3. The validated version of iASL compiler that can build MinPurley is 20180629. Older versions may generate ACPI build errors.
-
-**PurleyOpenBoardPkg Tioga Pass**
-1. This firmware project has only been tested on the Tioga Pass hardware.
-2. This firmware project build has only been tested using the Microsoft Visual Studio 2015 build tools.
-3. This firmware project does not build with the GCC compiler.
-4. The validated version of iASL compiler that can build MinPurley is 20180629. Older versions may generate ACPI build errors.
-5. Installed and booted to UEFI Windows 2016 on M.2 NVME slot
-6. Installed and booted to UEFI Windows 2019 on M.2 NVME slot and with SATA HDD.
-7. Installed and booted to UEFI RHEL 7.3 on SATA HDD
-8. Installed and booted to Ubuntu 18.04 on M.2 NVME slot.
-9. Verified Mellanox card detection during POST and OS
-10. LINUX Boot Support (PcdLinuxBootEnable needs to be enabled)
-
-1. Follow directions on http://osresearch.net/Building/ to compile the heads kernel and initrd for qemu-system_x86_64
-2. Copy the following built files
-(1) initrd.cpio.xz  to LinuxBootPkg/LinuxBinaries/initrd.cpio.xz
-(2) bzimage to LinuxBootPkg/LinuxBinaries/linux.efi
-
-
 
 **SimicsOpenBoardPkg**
 1. This firmware project has only been tested booting to Microsoft Windows 10 x64 and Ubuntu 17.10 with AHCI mode.
 
-**WhiskeylakeOpenBoardPkg**
-1. This firmware project has mainly been tested booting to Microsoft Windows 10 x64 with AHCI mode and Integrated Graphic
-   Device.
-2. UP Xtreme boards might hang during Windows 10 boot.
-3. The UP Xtreme boards below boot to x64 windows 10 home edition and Ubuntu 18.04
-      * UP Xtreme Intel(R) Core(TM) i3-8145UE CPU @ 2.20GHz with 8GB RAM
-      * UP Xtreme Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz with 16GB RAM
-      * UP Xtreme Intel(R) Core(TM) i7-8665UE CPU @ 1.70GHz with 16GB RAM
-      * UP Xtreme Intel(R) Celeron(R) CPU 4305UE @ 2.00GHz with 4GB RAM
-
-**CometlakeOpenBoardPkg**
-1. This firmware project has been tested booting to Microsoft Windows 10 x64 with AHCI mode and External Graphic Device.
-2. This firmware project has been also tested booting to Ubuntu 17.10 with AHCI mode and Integrated Graphic Device.
-
-**TigerlakeOpenBoardPkg**
-1. This firmware project has been tested booting to Microsoft Windows 10 x64 with AHCI mode and Integrated Graphic Device.
-2. This firmware project has been also tested booting to Puppy Linux BionicPup64 8.0 with AHCI mode and Integrated Graphic Device.
-
 **AlderlakeOpenBoardPkg**
 1. This firmware project has been tested booting to Microsoft Windows 11 x64 with M2 SSD Disk and Integrated Graphic Device.
 2. AlderlakeOpenBoardPkg/Acpi/MinDsdt has been modified from MinPlatformPkg/Acpi/MinDsdt to avoid hang on boot to Microsoft Windows 11 x64.
-
-**WhitleyOpenBoardPkg**
-1. This firmware project has been tested booting to UEFI shell with headless serial console
-
-**JunctionCity**
-1. This firmware project has been tested booting to UEFI shell
-2. Booted to RHEL 8.2, Ubuntu 18.04 using U2 NVME Disk
-3. Booted to Windows 2019 using M2 SSD Disk
-4. Booted to Ubuntu 18.04,Windows 2019, RHEL 8.3 using SATA HDD
-5. Connected PCIE Network card and made sure PCIE card detected in POST and in OS
-6. Verified TPM offboard chip detection
-
-**Aowanda**
-1. This firmware project has been tested booting to UEFI shell
-2. Installed and booted to RHEL 8.3 using M2 SSD disk
-3. Installed and booted to Windows 2019 using M2 SSD disk
-4. Verified TPM chip detection
 
 Note:
 For the network boot using the onboard Intel network card, please download the UEFI UNDI driver (E9712X3.efi) from https://www.intel.com/content/www/us/en/download/15755/intel-ethernet-connections-boot-utility-preboot-images-and-efi-drivers.html
