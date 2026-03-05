@@ -2,6 +2,7 @@
 # Component information file for Board Init Test Library
 #
 # Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -29,6 +30,7 @@
   PciSegmentLib
   PciSegmentInfoLib
   TestPointCheckDmaProtectionLib
+  CpuLib
 
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec
