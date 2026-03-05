@@ -22,6 +22,8 @@
   BOARD_DXE_FV_COMPONENTS        = Platform/ARM/SgiPkg/RdV3/RdV3.fdf.inc
   BUILD_NUMBER                   = 1
 
+  DEFINE PCIE_ENABLE             = TRUE
+
 # include common/basic libraries from MdePkg.
 !include MdePkg/MdeLibs.dsc.inc
 
