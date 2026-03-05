@@ -54,7 +54,7 @@
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE
-!include Platform/ARM/Features/Fwu/FmpSystemFipImage.dsc.inc
+!include Platform/ARM/Features/Fwu/FmpSystemFipImageRuntime.dsc.inc
 !endif
 
 [LibraryClasses.common]
@@ -129,6 +129,7 @@
   ## Disable Runtime Variable Cache.
   gEfiMdeModulePkgTokenSpaceGuid.PcdEnableVariableRuntimeCache|FALSE
 !endif
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportProcessCapsuleAtRuntime|TRUE
 
 [PcdsFixedAtBuild.common]
   # Only one core enters UEFI, and PSCI is implemented in EL3 by TF-A
