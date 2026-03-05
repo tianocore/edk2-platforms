@@ -2,6 +2,7 @@
   IPMI Serial Over Lan Driver.
 
 Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -25,7 +26,7 @@ Routine Description:
     This routine gets the SOL payload status or settings for a specific channel.
 
 Arguments:
-    Channel         - LAN channel naumber.
+    Channel         - LAN channel number.
     ParamSel        - Configuration parameter selection.
     Data            - Information returned from BMC.
 Returns:
@@ -81,7 +82,7 @@ Routine Description:
     This routine sets the SOL payload configuration parameters for a specific channel.
 
 Arguments:
-    Channel         - LAN channel naumber.
+    Channel         - LAN channel number.
     ParamSel        - Configuration parameter selection.
     Data            - Configuration parameter values.
 Returns:

@@ -1,9 +1,14 @@
 ## @file
 # Manageabilty Package
-# This is the package provides the edk2 drivers and libraries
-# those are related to the platform management.
+# This package provides the implementation of transport interfaces and
+# protocols of the system manageability industry standard, such as MCTP,
+# PLDM, IPMI, and etc. The design concept of this package is to provide a
+# flexble way to integrate a desired transport interface to the particular
+# manageability protocol. For example, KCS transport interface for either
+# IPMI protocol or MCTP protocol, or both. Refer to the Readme.md under
+# ManageabilityPkg.
 #
-# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -20,17 +25,19 @@
   Include
 
 [LibraryClasses]
-  ##  @libraryclass IPMI command library
-  #   Provide the help functions to send IPMI commands.
-  IpmiCommandLib|Include/Library/IpmiCommandLib.h
-
   ##  @libraryclass Manageability Transport Library
   #   Manageability Transport Library definitions
   ManageabilityTransportLib|Include/Library/ManageabilityTransportLib.h
+  ManageabilityTransportLib|Include/Library/ManageabilityTransportIpmiLib.h
+  ManageabilityTransportLib|Include/Library/ManageabilityTransportMctpLib.h
 
   ##  @libraryclass Manageability Transport Helper Library
   #   Provide the help functions to use ManageabilityTransportLib
   ManageabilityTransportHelperLib|Include/Library/ManageabilityTransportHelperLib.h
+
+  ##  @libraryclass PLDM Protocol Library
+  #   PLDM Protocol Library Definitions
+  PldmProtocolLib|Include/Library/BasePldmProtocolLib.h
 
   ##  @libraryclass Platform BMC Ready Library
   #   Provide the help functions to check the BMC state
@@ -57,7 +64,7 @@
   # Manageability Protocol IPMI
   gManageabilityProtocolIpmiGuid    = { 0x36ACA47C, 0xCC80, 0x473B, { 0xAB, 0xEC, 0xF3, 0x98, 0xFF, 0x87, 0x74, 0x5B } }
   # Manageability Protocol MCTP
-  #  MCTP is a transport interface but also a protocol that can be trasmitted over other transport interfaces.
+  #  MCTP is a transport interface but also a protocol that can be transmitted over other transport interfaces.
   gManageabilityProtocolMctpGuid    = { 0x76FED8F1, 0x0BE5, 0x4269, { 0xA3, 0x1A, 0x38, 0x0F, 0x54, 0xF1, 0xA1, 0x8A } }
   # Manageability Protocol PLDM
   gManageabilityProtocolPldmGuid    = { 0x3958090D, 0x69DD, 0x4868, { 0x9C, 0x41, 0xC9, 0xAC, 0x31, 0xB5, 0x25, 0xC5 } }

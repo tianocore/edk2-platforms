@@ -2,7 +2,7 @@
 
   KCS instance of Manageability Transport Library
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -383,7 +383,7 @@ KcsTransportRead (
 }
 
 /**
-  This funciton checks the KCS response data according to
+  This function checks the KCS response data according to
   manageability protocol.
 
   @param[in]      ResponseData        Pointer to response data.
@@ -466,7 +466,7 @@ KcsCheckResponseData (
 }
 
 /**
-  This funciton reads the KCS response header according to
+  This function reads the KCS response header according to
   manageability protocol. Caller has to free the memory
   allocated for response header.
 
@@ -515,7 +515,7 @@ KcsReadResponseHeader (
   } else {
     DEBUG ((
       DEBUG_ERROR,
-      "%a: Error! Unsupportted manageability protocol over KCS: %g.\n",
+      "%a: Error! Unsupported manageability protocol over KCS: %g.\n",
       __func__,
       mSingleSessionToken->Token.ManageabilityProtocolSpecification
       ));
@@ -549,7 +549,7 @@ KcsReadResponseHeader (
   if (ExpectedHeaderSize != RspHeaderSize) {
     DEBUG ((
       DEBUG_ERROR,
-      "The size (%d bytes) of returned resposne header is not the same as expection (%d bytes)!\n",
+      "The size (%d bytes) of returned response header is not the same as expection (%d bytes)!\n",
       RspHeaderSize,
       ExpectedHeaderSize
       ));

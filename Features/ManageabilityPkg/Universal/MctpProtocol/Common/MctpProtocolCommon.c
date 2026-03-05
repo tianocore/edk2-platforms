@@ -2,7 +2,7 @@
 
   MCTP Manageability Protocol common file.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -295,7 +295,7 @@ CommonMctpSubmitMessage (
                     &MultiPackages
                     );
   if (EFI_ERROR (Status) || (MultiPackages == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __func__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __func__, Status));
     return Status;
   }
 
@@ -439,6 +439,15 @@ CommonMctpSubmitMessage (
   }
 
   ResponseBuffer = (UINT8 *)AllocatePool (*ResponseDataSize + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER));
+  if (ResponseBuffer == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory to allocate MCTP transfer header.\n", __func__));
+    if (MultiPackages != NULL) {
+      FreePool (MultiPackages);
+    }
+
+    return EFI_OUT_OF_RESOURCES;
+  }
+
   // Receive packet.
   TransferToken.TransmitPackage.TransmitPayload             = NULL;
   TransferToken.TransmitPackage.TransmitSizeInByte          = 0;

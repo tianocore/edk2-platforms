@@ -3,7 +3,7 @@
 # This is the package provides edk2 drivers and libraries
 # those are related to the platform management.
 #
-# Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 # Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -41,15 +41,18 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSmbiosTransferEnable|TRUE
 
 [Components]
-  ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
+  ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
   ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
-  ManageabilityPkg/Library/ManageabilityTransportKcsLib/BaseManageabilityTransportKcs.inf
-  ManageabilityPkg/Library/ManageabilityTransportSerialLib/Dxe/DxeManageabilityTransportSerial.inf
-  ManageabilityPkg/Library/ManageabilityTransportSsifLib/Pei/PeiManageabilityTransportSsif.inf
-  ManageabilityPkg/Library/ManageabilityTransportSsifLib/Dxe/DxeManageabilityTransportSsif.inf
-  ManageabilityPkg/Library/ManageabilityTransportMctpLib/Dxe/DxeManageabilityTransportMctp.inf
-  ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
   ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLibPei.inf
+  ManageabilityPkg/Library/ManageabilityTransportKcsLib/Dxe/DxeManageabilityTransportKcs.inf
+  ManageabilityPkg/Library/ManageabilityTransportKcsLib/BaseManageabilityTransportKcs.inf
+  ManageabilityPkg/Library/ManageabilityTransportMctpLib/Dxe/DxeManageabilityTransportMctp.inf
+  ManageabilityPkg/Library/ManageabilityTransportSerialLib/Dxe/DxeManageabilityTransportSerial.inf
+  ManageabilityPkg/Library/ManageabilityTransportSsifLib/Dxe/DxeManageabilityTransportSsif.inf
+  ManageabilityPkg/Library/ManageabilityTransportSsifLib/Pei/PeiManageabilityTransportSsif.inf
+  ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
+  ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
 
   #
   # Generic EDKII Lib
@@ -112,8 +115,6 @@
   DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
 
 [LibraryClasses]
-  ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
   IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
-  PlatformBmcReadyLib|ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
 
-!include Include/Manageability.dsc
+!include ManageabilityPkg/Manageability.dsc.inc

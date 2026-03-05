@@ -3,6 +3,7 @@
   Serial instance of Manageability Transport Library
 
   Copyright (c) 2024, ARM Limited. All rights reserved.<BR>
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -218,7 +219,7 @@ SerialTransportWrite (
   UINT8               *Request;
   UINT32              RequestLength;
   UINT8               RetryCount;
-  UINT8               Index;
+  UINT32              Index;
   UINT8               Character;
   UINT8               EscapedCharacterCount;
   UINT8               NetFunction;
@@ -273,14 +274,14 @@ SerialTransportWrite (
   if ((RequestData != NULL) && (RequestDataSize > 0)) {
     CopyMem (HeaderPtr->Data, RequestData, RequestDataSize);
     Buffer[BufferLength - 1] = CalculateCheckSum8 (
-                                                   &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
-                                                   RequestDataSize + IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH
-                                                   );
+                                 &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
+                                 RequestDataSize + IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH
+                                 );
   } else {
     Buffer[BufferLength - 1] = CalculateCheckSum8 (&Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH], IPMI_SERIAL_REQUEST_DATA_HEADER_LENGTH);
   }
 
-  // Calculate escapted character count
+  // Calculate escaped character count
   EscapedCharacterCount = 0;
   for (Index = 0; Index < BufferLength; Index++) {
     if (IpmiSerialGetEscapedCharacter (Buffer[Index]) != Buffer[Index]) {
@@ -386,11 +387,11 @@ SerialReadResponse (
   // Parse IPMI Serial format request data
   BufferSize = sizeof (Buffer);
   Status     = IpmiSerialParseIncomingBuffer (
-                                              ReadBuffer,
-                                              ReadBytes,
-                                              Buffer,
-                                              &BufferSize
-                                              );
+                 ReadBuffer,
+                 ReadBytes,
+                 Buffer,
+                 &BufferSize
+                 );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Parse Response Error\n"));
     return Status;
@@ -404,9 +405,9 @@ SerialReadResponse (
 
   // Data checksum verify
   if (CalculateCheckSum8 (
-                          &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
-                          BufferSize - IPMI_SERIAL_CONNECTION_HEADER_LENGTH
-                          ) != 0)
+        &Buffer[IPMI_SERIAL_CONNECTION_HEADER_LENGTH],
+        BufferSize - IPMI_SERIAL_CONNECTION_HEADER_LENGTH
+        ) != 0)
   {
     DEBUG ((DEBUG_ERROR, "Bad checksum - data byte\n"));
     return EFI_PROTOCOL_ERROR;
@@ -461,7 +462,7 @@ SerialTransportRead (
 }
 
 /**
-  This funciton checks the Serial response data according to
+  This function checks the Serial response data according to
   manageability protocol.
 
   @param[in]      ResponseData        Pointer to response data.
@@ -575,13 +576,13 @@ SerialTransportSendCommand (
 
   if ((TransmitHeader != NULL) || (RequestData != NULL)) {
     Status = SerialTransportWrite (
-                                   TransmitHeader,
-                                   TransmitHeaderSize,
-                                   TransmitTrailer,
-                                   TransmitTrailerSize,
-                                   RequestData,
-                                   RequestDataSize
-                                   );
+               TransmitHeader,
+               TransmitHeaderSize,
+               TransmitTrailer,
+               TransmitTrailerSize,
+               RequestData,
+               RequestDataSize
+               );
     if (EFI_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "Serial Write Failed with Status(%r)\n", Status));
       return Status;

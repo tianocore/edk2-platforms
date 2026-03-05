@@ -2,7 +2,7 @@
 
   IPMI Manageability Protocol common file.
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -262,8 +262,13 @@ CommonIpmiSubmitCommand (
   TransferToken.TransmitPackage.TransmitTimeoutInMillisecond = MANAGEABILITY_TRANSPORT_NO_TIMEOUT;
 
   // Receive packet.
-  TransferToken.ReceivePackage.ReceiveBuffer                = ResponseData;
-  TransferToken.ReceivePackage.ReceiveSizeInByte            = *ResponseDataSize;
+  TransferToken.ReceivePackage.ReceiveBuffer = ResponseData;
+  if (ResponseDataSize != NULL) {
+    TransferToken.ReceivePackage.ReceiveSizeInByte = *ResponseDataSize;
+  } else {
+    TransferToken.ReceivePackage.ReceiveSizeInByte = 0;
+  }
+
   TransferToken.ReceivePackage.TransmitTimeoutInMillisecond = MANAGEABILITY_TRANSPORT_NO_TIMEOUT;
   TransportToken->Transport->Function.Version1_0->TransportTransmitReceive (
                                                     TransportToken,

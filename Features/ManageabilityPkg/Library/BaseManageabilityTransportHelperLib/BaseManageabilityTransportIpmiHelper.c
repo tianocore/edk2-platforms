@@ -1,7 +1,7 @@
 /** @file
   Manageability IPMI Helper Library
 
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023-2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -33,7 +33,7 @@ UINT8  IpmiCompletionCodeMappingEntries = sizeof (IpmiCompletionCodeMapping) / s
 
   @param [in]  CompletionCode     The Completion Code returned from KCS.
   @param [out] CompletionCodeStr  Human readable string of IPMI Completion Code.
-  @param [out] AdditionalStatus   Return the addtional status.
+  @param [out] AdditionalStatus   Return the additional status.
 
   @retval  EFI_SUCCESS            The information of Completion Code is returned.
   @retval  EFI_NOT_FOUND          No information of Completion Code is returned.
