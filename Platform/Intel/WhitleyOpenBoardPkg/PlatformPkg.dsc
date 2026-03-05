@@ -156,7 +156,11 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdHiiOsRuntimeSupport|FALSE
 
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable|FALSE
+
 [PcdsFixedAtBuild]
+  gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode|TRUE
+
   gEfiCpRcPkgTokenSpaceGuid.PcdRankSwitchFixOption|2
 
   ## MinPlatform Boot Stage Selector
