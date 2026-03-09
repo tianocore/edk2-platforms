@@ -110,6 +110,7 @@ Load (
   mNtFwConfigPpi.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI
                | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
   mNtFwConfigPpi.Guid = &gArmMorelloFvpPlatformInfoDescriptorPpiGuid;
+  mNtFwConfigPpi.Ppi = PlatInfo;
 
   Status = PeiServicesInstallPpi (&mNtFwConfigPpi);
   if (EFI_ERROR (Status)) {
