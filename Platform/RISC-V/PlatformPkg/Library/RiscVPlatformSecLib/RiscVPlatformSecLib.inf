@@ -30,6 +30,7 @@
   CpuLib
   DebugLib
   FdtLib
+  MemoryAllocationLib
   RiscVSbiLib
   HobLib
   StackCheckLib
