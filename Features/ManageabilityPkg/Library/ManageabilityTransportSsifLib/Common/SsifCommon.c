@@ -58,10 +58,10 @@ SsifWriteRequest (
 {
   EFI_STATUS  Status;
   BOOLEAN     IsMultiPartWrite;
-  UINT8       Index;
-  UINT8       MiddleCount;
+  UINTN       Index;
+  UINTN       MiddleCount;
   UINT8       SsifCmd;
-  UINT8       WriteLen;
+  UINTN       WriteLen;
 
   if ((RequestData == NULL) || (RequestDataSize == 0)) {
     return EFI_INVALID_PARAMETER;
@@ -160,10 +160,10 @@ SsifReadResponse (
 {
   EFI_STATUS  Status;
   BOOLEAN     IsMultiPartRead;
-  UINT32      CopiedLen;
+  UINTN       CopiedLen;
   UINT8       BlockNumber;
   UINT8       Offset;
-  UINT8       ReadLen;
+  UINTN       ReadLen;
   UINT8       ResponseTemp[IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES];
 
   if ((ResponseData == NULL) || (ResponseDataSize == NULL)) {
@@ -180,7 +180,7 @@ SsifReadResponse (
               SMBUS_LIB_ADDRESS (
                 IPMI_SSIF_BMC_SLAVE_ADDR_7BIT,
                 IPMI_SSIF_SMBUS_CMD_SINGLE_PART_READ,
-                0,  // Max block size
+                0, // Max block size
                 mPecSupport
                 ),
               ResponseTemp,
@@ -266,7 +266,7 @@ SsifReadResponse (
   }
 
 Exit:
-  *ResponseDataSize = CopiedLen;
+  *ResponseDataSize = (UINT32)CopiedLen;
 
   return Status;
 }

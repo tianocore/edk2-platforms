@@ -3,6 +3,7 @@
   IPMI Blob Transfer driver
 
   Copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -374,7 +375,7 @@ IpmiBlobTransferOpen (
   EFI_STATUS  Status;
   UINT8       *SendData;
   UINT8       *ResponseData;
-  UINT32      SendDataSize;
+  UINTN       SendDataSize;
   UINT32      ResponseDataSize;
   CHAR8       *BlobSearch;
   UINT32      NumBlobs;
@@ -440,7 +441,7 @@ IpmiBlobTransferOpen (
   // append null char to SendData
   SendData[SendDataSize - 1] = 0;
 
-  Status = IpmiBlobTransferSendIpmi (IpmiBlobTransferSubcommandOpen, SendData, SendDataSize, (UINT8 *)ResponseData, &ResponseDataSize);
+  Status = IpmiBlobTransferSendIpmi (IpmiBlobTransferSubcommandOpen, SendData, (UINT32)SendDataSize, (UINT8 *)ResponseData, &ResponseDataSize);
   if (!EFI_ERROR (Status)) {
     *SessionId = ((IPMI_BLOB_TRANSFER_BLOB_OPEN_RESPONSE *)ResponseData)->SessionId;
   }
