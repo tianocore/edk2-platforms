@@ -219,7 +219,7 @@ SerialTransportWrite (
   UINT8               *Request;
   UINT32              RequestLength;
   UINT8               RetryCount;
-  UINT8               Index;
+  UINT32              Index;
   UINT8               Character;
   UINT8               EscapedCharacterCount;
   UINT8               NetFunction;

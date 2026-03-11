@@ -439,6 +439,15 @@ CommonMctpSubmitMessage (
   }
 
   ResponseBuffer = (UINT8 *)AllocatePool (*ResponseDataSize + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER));
+  if (ResponseBuffer == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory to allocate MCTP transfer header.\n", __func__));
+    if (MultiPackages != NULL) {
+      FreePool (MultiPackages);
+    }
+
+    return EFI_OUT_OF_RESOURCES;
+  }
+
   // Receive packet.
   TransferToken.TransmitPackage.TransmitPayload             = NULL;
   TransferToken.TransmitPackage.TransmitSizeInByte          = 0;

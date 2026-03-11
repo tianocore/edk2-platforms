@@ -379,7 +379,7 @@ IpmiBlobTransferOpen (
   UINT32      ResponseDataSize;
   CHAR8       *BlobSearch;
   UINT32      NumBlobs;
-  UINT16      Index;
+  UINT32      Index;
   BOOLEAN     BlobFound;
 
   if ((BlobId == NULL) || (SessionId == NULL)) {
