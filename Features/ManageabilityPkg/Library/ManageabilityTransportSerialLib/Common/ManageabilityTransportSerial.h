@@ -40,10 +40,10 @@ typedef struct {
 ///
 /// Table of special characters
 ///
-struct IpmiSerialSpecialChar {
+typedef struct {
   UINT8    Character;
   UINT8    Escape;
-};
+} IPMI_SERIAL_SPECIAL_CHAR;
 
 /**
   This service communicates with BMC using Serial protocol.

@@ -6,7 +6,7 @@
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-  @Par: https://github.com/openbmc/phosphor-ipmi-blobs/blob/master/README.md
+  @par https://github.com/openbmc/phosphor-ipmi-blobs/blob/master/README.md
 **/
 
 #ifndef EDKII_IPMI_BLOB_TRANSFER_H_
@@ -27,11 +27,6 @@
 #define BLOB_TRANSFER_STAT_COMMIT_ERROR  BIT4
 // Bits 5-7 are reserved
 // Bits 8-15 are blob-specific definitions
-
-//
-// OpenBMC OEN code in little endian format
-//
-CONST UINT8  OpenBmcOen[] = { 0xCF, 0xC2, 0x00 };
 
 //
 //  Blob Transfer Function Prototypes

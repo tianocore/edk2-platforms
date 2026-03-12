@@ -14,6 +14,11 @@
 
 #define BLOB_TRANSFER_DEBUG  DEBUG_MANAGEABILITY
 
+//
+// OpenBMC OEN code in little endian format
+//
+CONST UINT8  OpenBmcOen[] = { 0xCF, 0xC2, 0x00 };
+
 STATIC CONST EDKII_IPMI_BLOB_TRANSFER_PROTOCOL  mIpmiBlobTransfer = {
   (EDKII_IPMI_BLOB_TRANSFER_PROTOCOL_GET_COUNT)*IpmiBlobTransferGetCount,
   (EDKII_IPMI_BLOB_TRANSFER_PROTOCOL_ENUMERATE)*IpmiBlobTransferEnumerate,
@@ -57,7 +62,7 @@ CalculateCrc16Ccitt (
     for (BitIndex = 0; BitIndex < 8; ++BitIndex) {
       XorFlag = (Crc & 0x8000) ? TRUE : FALSE;
       Crc   <<= 1;
-      if ((Index < DataSize) && (Data[Index] & (1 << (7 - BitIndex)))) {
+      if ((Index < DataSize) && ((Data[Index] & (1 << (7 - BitIndex))) != 0)) {
         Crc++;
       }
 
@@ -131,9 +136,9 @@ IpmiBlobTransferSendIpmi (
     return EFI_OUT_OF_RESOURCES;
   }
 
-  Header.OEN[0]     = OpenBmcOen[0];
-  Header.OEN[1]     = OpenBmcOen[1];
-  Header.OEN[2]     = OpenBmcOen[2];
+  Header.Oen[0]     = OpenBmcOen[0];
+  Header.Oen[1]     = OpenBmcOen[1];
+  Header.Oen[2]     = OpenBmcOen[2];
   Header.SubCommand = SubCommand;
   CopyMem (IpmiSendData, &Header, sizeof (IPMI_BLOB_TRANSFER_HEADER));
   if (SendDataSize > 0) {

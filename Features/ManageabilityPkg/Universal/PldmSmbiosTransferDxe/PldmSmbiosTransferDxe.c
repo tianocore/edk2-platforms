@@ -30,7 +30,6 @@ UINT32  SetSmbiosStructureTableHandle;
   This function sets PLDM SMBIOS transfer source and destination
   PLDM terminus ID.
 
-  @param [in]   This           EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL instance.
   @param [in]   SourceId       PLDM source terminus ID.
                                Set to PLDM_TERMINUS_ID_UNASSIGNED means use
                                platform default PLDM terminus ID.
@@ -57,10 +56,10 @@ SetPldmSmbiosTransferTerminusId (
 /**
   Get the full size of SMBIOS structure including optional strings that follow the formatted structure.
 
-  @param Head                   Pointer to the beginning of SMBIOS structure.
-  @param NumberOfStrings        The returned number of optional strings that follow the formatted structure.
+  @param [in]  Head                  Pointer to the beginning of SMBIOS structure.
+  @param [out] NumberOfStrings       The returned number of optional strings that follow the formatted structure.
 
-  @return Size                  The returned size.
+  @retval Size                  The returned size.
 **/
 UINTN
 GetSmbiosStructureSize (
@@ -120,10 +119,10 @@ GetSmbiosStructureSize (
 
   This function returns full SMBIOS table length.
 
-  @param  TableAddress      SMBIOS table based address
-  @param  TableMaximumSize  Maximum size of SMBIOS table
+  @param [in] TableAddress      SMBIOS table based address
+  @param [in] TableMaximumSize  Maximum size of SMBIOS table
 
-  @return SMBIOS table length
+  @retval SMBIOS table length
 
 **/
 UINTN
@@ -206,6 +205,7 @@ GetSmbiosStructureTableMetaData (
   This function sets SMBIOS table metadata.
 
   @param [in]   This         EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL instance.
+  @param [in]   Buffer       The buffer points to PLDM_SMBIOS_STRUCTURE_TABLE_METADATA.
 
   @retval       EFI_SUCCESS            Set SMBIOS table metadata Successfully.
   @retval       EFI_UNSUPPORTED        The function is unsupported by this

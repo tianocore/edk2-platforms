@@ -120,6 +120,7 @@ EfiActivateBmcElog (
 }
 
 /**
+  This function activates the Event Log.
 
   @retval  EFI_STATUS
 
@@ -140,7 +141,7 @@ SetElogRedirInstall (
 }
 
 /**
-  Entry point of BmcElog DXE driver
+  Entry point of BmcElog DXE driver.
 
   @param [in]  ImageHandle  ImageHandle of the loaded driver
   @param [in]  SystemTable  Pointer to the System Table

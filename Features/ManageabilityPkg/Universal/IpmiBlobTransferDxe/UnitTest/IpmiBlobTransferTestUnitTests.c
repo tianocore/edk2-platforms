@@ -1,10 +1,8 @@
 /** @file
-*
-*  Copyright (c) 2022-2024, NVIDIA CORPORATION. All rights reserved.
-*
-*  SPDX-FileCopyrightText: Copyright (c) 2022-2024 NVIDIA CORPORATION & AFFILIATES
-*  SPDX-License-Identifier: BSD-2-Clause-Patent
-*
+
+  Copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 #include <stdarg.h>
 #include <stddef.h>
@@ -76,10 +74,11 @@ GoodCrc (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  UINT8   Data[5] = { 0x12, 0x34, 0x56, 0x78, 0x90 };
+  UINT8   Data[5];
   UINTN   DataSize;
   UINT16  Crc;
 
+  Data     = { 0x12, 0x34, 0x56, 0x78, 0x90 };
   DataSize = sizeof (Data);
 
   Crc = CalculateCrc16Ccitt (Data, DataSize);
@@ -106,10 +105,11 @@ BadCrc (
   IN UNIT_TEST_CONTEXT  Context
   )
 {
-  UINT8   Data[5] = { 0x12, 0x34, 0x56, 0x78, 0x90 };
+  UINT8   Data[5];
   UINTN   DataSize;
   UINT16  Crc;
 
+  Data     = { 0x12, 0x34, 0x56, 0x78, 0x90 };
   DataSize = sizeof (Data);
 
   Crc = CalculateCrc16Ccitt (Data, DataSize);
@@ -139,7 +139,7 @@ SendIpmiBadCompletion (
   VOID        *ResponseData;
   UINT32      *ResponseDataSize;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (INVALID_COMPLETION_SIZE);
   ResponseDataSize    = (UINT32 *)AllocateZeroPool (sizeof (UINT32));
@@ -178,7 +178,7 @@ SendIpmiNoDataResponse (
   VOID        *ResponseData;
   UINT32      *ResponseDataSize;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (NO_DATA_RESPONSE_SIZE);
   ResponseDataSize    = (UINT32 *)AllocateZeroPool (sizeof (UINT32));
@@ -221,7 +221,7 @@ SendIpmiBadOenResponse (
   VOID        *ResponseData;
   UINT32      *ResponseDataSize;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (BAD_OEN_RESPONSE_SIZE);
   ResponseDataSize    = (UINT32 *)AllocateZeroPool (sizeof (UINT32));
@@ -263,7 +263,7 @@ SendIpmiBadCrcResponse (
   VOID        *ResponseData;
   UINT32      *ResponseDataSize;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (BAD_CRC_RESPONSE_SIZE));
   ResponseDataSize    = (UINT32 *)AllocateZeroPool (sizeof (UINT32));
@@ -313,7 +313,7 @@ SendIpmiValidCountResponse (
   UINT8       *ResponseData;
   UINT32      *ResponseDataSize;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_GET_COUNT_RESPONSE_SIZE));
   ResponseDataSize    = (UINT32 *)AllocateZeroPool (sizeof (UINT32));
@@ -354,10 +354,9 @@ GetCountValidCountResponse (
 {
   EFI_STATUS  Status;
   UINT32      Count;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
-  Count = 0;
-
+  Count               = 0;
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_GET_COUNT_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidGetCountResponse, VALID_GET_COUNT_RESPONSE_SIZE);
 
@@ -403,7 +402,7 @@ EnumerateValidResponse (
 {
   EFI_STATUS  Status;
   CHAR8       *BlobId;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_ENUMERATE_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidEnumerateResponse, VALID_ENUMERATE_RESPONSE_SIZE);
@@ -444,7 +443,7 @@ EnumerateInvalidBuffer (
 {
   CHAR8       *BlobId;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_ENUMERATE_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidEnumerateResponse, VALID_ENUMERATE_RESPONSE_SIZE);
@@ -492,11 +491,14 @@ OpenValidResponse (
   CHAR8       *BlobId;
   UINT16      Flags;
   UINT16      SessionId;
-  VOID        *MockResponseResults  = NULL;
-  VOID        *MockResponseResults2 = NULL;
-  VOID        *MockResponseResults3 = NULL;
+  VOID        *MockResponseResults;
+  VOID        *MockResponseResults2;
+  VOID        *MockResponseResults3;
 
-  Flags = BLOB_TRANSFER_STAT_OPEN_W;
+  MockResponseResults  = NULL;
+  MockResponseResults2 = NULL;
+  MockResponseResults3 = NULL;
+  Flags                = BLOB_TRANSFER_STAT_OPEN_W;
 
   //
   // An open call effectively leads to three IPMI commands
@@ -568,10 +570,11 @@ ReadValidResponse (
 {
   EFI_STATUS  Status;
   UINT8       *ResponseData;
-  UINT8       ExpectedDataResponse[4] = { 0x00, 0x01, 0x02, 0x03 };
-  VOID        *MockResponseResults    = NULL;
+  UINT8       ExpectedDataResponse[4];
+  VOID        *MockResponseResults;
 
-  MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_READ_RESPONSE_SIZE));
+  ExpectedDataResponse = { 0x00, 0x01, 0x02, 0x03 };
+  MockResponseResults  = (UINT8 *)AllocateZeroPool (sizeof (VALID_READ_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidReadResponse, VALID_READ_RESPONSE_SIZE);
   ResponseData = AllocateZeroPool (sizeof (ValidReadResponse));
 
@@ -609,7 +612,7 @@ ReadInvalidBuffer (
 {
   UINT8       *ResponseData;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_READ_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidReadResponse, VALID_READ_RESPONSE_SIZE);
@@ -645,9 +648,10 @@ WriteValidResponse (
   )
 {
   EFI_STATUS  Status;
-  UINT8       SendData[4]          = { 0x00, 0x01, 0x02, 0x03 };
-  VOID        *MockResponseResults = NULL;
+  UINT8       SendData[4];
+  VOID        *MockResponseResults;
 
+  SendData            = { 0x00, 0x01, 0x02, 0x03 };
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_NODATA_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidNoDataResponse, VALID_NODATA_RESPONSE_SIZE);
 
@@ -682,9 +686,10 @@ CommitValidResponse (
   )
 {
   EFI_STATUS  Status;
-  UINT8       SendData[4]          = { 0x00, 0x01, 0x02, 0x03 };
-  VOID        *MockResponseResults = NULL;
+  UINT8       SendData[4];
+  VOID        *MockResponseResults;
 
+  SendData            = { 0x00, 0x01, 0x02, 0x03 };
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_NODATA_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidNoDataResponse, VALID_NODATA_RESPONSE_SIZE);
 
@@ -719,7 +724,7 @@ CloseValidResponse (
   )
 {
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_NODATA_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidNoDataResponse, VALID_NODATA_RESPONSE_SIZE);
@@ -755,7 +760,7 @@ DeleteValidResponse (
   )
 {
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_NODATA_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidNoDataResponse, VALID_NODATA_RESPONSE_SIZE);
@@ -809,7 +814,7 @@ BlobStatValidResponse (
   UINT8       *Metadata;
   UINT8       *ExpectedMetadata;
   CHAR8       *BlobId;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   BlobState        = AllocateZeroPool (sizeof (UINT16));
   Size             = AllocateZeroPool (sizeof (UINT32));
@@ -861,7 +866,7 @@ BlobStatInvalidBuffer (
 {
   UINT8       *Metadata;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   Metadata = NULL;
 
@@ -903,7 +908,7 @@ SessionStatValidResponse (
   UINT8       *MetadataLength;
   UINT8       *Metadata;
   UINT8       *ExpectedMetadata;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   BlobState        = AllocateZeroPool (sizeof (UINT16));
   Size             = AllocateZeroPool (sizeof (UINT32));
@@ -954,7 +959,7 @@ SessionStatInvalidBuffer (
 {
   UINT8       *Metadata;
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   Metadata = NULL;
 
@@ -991,7 +996,7 @@ WriteMetaValidResponse (
   )
 {
   EFI_STATUS  Status;
-  VOID        *MockResponseResults = NULL;
+  VOID        *MockResponseResults;
 
   MockResponseResults = (UINT8 *)AllocateZeroPool (sizeof (VALID_NODATA_RESPONSE_SIZE));
   CopyMem (MockResponseResults, &ValidNoDataResponse, VALID_NODATA_RESPONSE_SIZE);
@@ -1089,6 +1094,13 @@ SetupAndRunUnitTests (
 /**
   Standard UEFI entry point for target based
   unit test execution from UEFI Shell.
+
+  @param  ImageHandle           The firmware allocated handle for the UEFI image.
+  @param  SystemTable           A pointer to the EFI System Table.
+
+  @retval EFI_SUCCESS           The operation completed successfully.
+  @retval Others                An unexpected error occurred.
+
 **/
 EFI_STATUS
 EFIAPI
@@ -1102,6 +1114,10 @@ BaseLibUnitTestAppEntry (
 
 /**
   Standard POSIX C entry point for host based unit test execution.
+
+  @param[in]  argc    Number of argument.
+  @param[in]  argv    Arguments.
+
 **/
 int
 main (

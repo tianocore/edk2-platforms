@@ -325,7 +325,7 @@ IpmiGetMessage (
   @param [in]   SendMessageRequest       Pointer to IPMI_SEND_MESSAGE_REQUEST.
   @param [in]   SendMessageRequestSize   Size of entire SendMessageRequestSize.
   @param [out]  SendMessageResponse      Pointer to receive IPMI_SEND_MESSAGE_RESPONSE.
-  @param [in]   SendMessageResponseSize  When in, which is the expected size of
+  @param [in, out]  SendMessageResponseSize  When in, which is the expected size of
                                          response. When out, which is the actual
                                          size returned.
 

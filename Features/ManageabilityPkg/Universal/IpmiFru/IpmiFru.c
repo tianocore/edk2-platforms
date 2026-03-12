@@ -13,22 +13,25 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/IpmiCommandLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-/*++
+/**
 
 Routine Description:
 
-  Initialize SM Redirection Fru Layer
+  Initialize SM Redirection Fru Layer.
 
 Arguments:
 
-  ImageHandle - ImageHandle of the loaded driver
-  SystemTable - Pointer to the System Table
+  @param[in] ImageHandle - Handle of this driver image
+  @param[in] SystemTable - Table containing standard EFI services
+
+  @retval EFI_SUCCESS    - IPMI FRU is initialized successfully.
+  @retval Otherwise      - Other errors.
 
 Returns:
 
   EFI_STATUS
 
---*/
+**/
 EFI_STATUS
 EFIAPI
 InitializeFru (

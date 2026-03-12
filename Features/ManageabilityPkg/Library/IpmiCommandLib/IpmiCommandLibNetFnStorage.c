@@ -47,7 +47,7 @@ IpmiGetFruInventoryAreaInfo (
   This function returns specified data from the FRU Inventory Info area.
 
   @param [in]  ReadFruDataRequest       Pointer to IPMI_READ_FRU_DATA_REQUEST.
-  @param [in]  ReadFruDataResponse      Pointer to IPMI_READ_FRU_DATA_RESPONSE.
+  @param [out] ReadFruDataResponse      Pointer to IPMI_READ_FRU_DATA_RESPONSE.
   @param [in, out] ReadFruDataResponseSize  Returns the size of ReadFruDataResponse.
 
   @retval EFI_STATUS   See the return values of IpmiSubmitCommand () function.
@@ -326,7 +326,7 @@ IpmiSetSelTime (
 /**
   This function returns the SDR command version for the SDR Repository
 
-  @param [out] ClearSelResponse      Pointer to receive IPMI_GET_SDR_REPOSITORY_INFO_RESPONSE.
+  @param [out] GetSdrRepositoryInfoResp      Pointer to receive IPMI_GET_SDR_REPOSITORY_INFO_RESPONSE.
 
   @retval EFI_STATUS   See the return values of IpmiSubmitCommand () function.
 

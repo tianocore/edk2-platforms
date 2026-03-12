@@ -1,7 +1,7 @@
-## @file
+## @file IpmiSmbiosTransferDxe.inf
 #  A simple implementation to transfer SMBIOS tables to a BMC
-
-#  SPDX-FileCopyrightText: copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+#
+#  Copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##

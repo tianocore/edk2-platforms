@@ -38,7 +38,7 @@ typedef enum {
   #pragma pack(1)
 
 typedef struct {
-  UINT8    OEN[3];
+  UINT8    Oen[3];
   UINT8    SubCommand;
 } IPMI_BLOB_TRANSFER_HEADER;
 

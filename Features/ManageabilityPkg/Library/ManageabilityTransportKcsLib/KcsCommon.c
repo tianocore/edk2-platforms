@@ -35,9 +35,10 @@ WaitStatusSet (
   IN  UINT8  Flag
   )
 {
-  UINT64  Timeout = 0;
+  UINT64  Timeout;
 
-  while (!(KcsRegisterRead8 (KCS_REG_STATUS) & Flag)) {
+  Timeout = 0;
+  while ((KcsRegisterRead8 (KCS_REG_STATUS) & Flag) != TRUE) {
     MicroSecondDelay (IPMI_KCS_TIMEOUT_1MS);
     Timeout = Timeout + IPMI_KCS_TIMEOUT_1MS;
     if (Timeout >= IPMI_KCS_TIMEOUT_5_SEC) {
@@ -62,8 +63,9 @@ WaitStatusClear (
   IN  UINT8  Flag
   )
 {
-  UINT64  Timeout = 0;
+  UINT64  Timeout;
 
+  Timeout = 0;
   while (KcsRegisterRead8 (KCS_REG_STATUS) & Flag) {
     MicroSecondDelay (IPMI_KCS_TIMEOUT_1MS);
     Timeout = Timeout + IPMI_KCS_TIMEOUT_1MS;
@@ -300,7 +302,7 @@ KcsTransportWrite (
   Algorithm is based on flow chart provided in IPMI spec 2.0
   Figure 9-7, KCS Interface BMC to SMS Read Transfer Flow Chart
 
-  @param [in]       DataBytes             Buffer to hold the read Data.
+  @param [out]      DataBytes             Buffer to hold the read Data.
   @param [in, out]  Length                Number of Bytes read from KCS port.
   @retval           EFI_SUCCESS           The command byte stream was
                                           successfully submit to the device and

@@ -24,7 +24,7 @@
 extern MANAGEABILITY_TRANSPORT_SERIAL_HARDWARE_INFO  mSerialHardwareInfo;
 extern MANAGEABILITY_TRANSPORT_SERIAL                *mSingleSessionToken;
 
-struct IpmiSerialSpecialChar  mIpmiSerialSpecialChar[] = {
+IPMI_SERIAL_SPECIAL_CHAR  mIpmiSerialSpecialChar[] = {
   { BASIC_MODE_START,     BASIC_MODE_START_ENCODED_BYTE     }, /* start */
   { BASIC_MODE_STOP,      BASIC_MODE_STOP_ENCODED_BYTE      }, /* stop */
   { BASIC_MODE_HANDSHAKE, BASIC_MODE_HANDSHAKE_ENCODED_BYTE }, /* packet handshake */
@@ -422,7 +422,7 @@ SerialReadResponse (
 /**
   This function sends/receives data from Serial port.
 
-  @param [in]       DataBytes             Buffer to hold the read Data.
+  @param [out       DataBytes             Buffer to hold the read Data.
   @param [in, out]  Length                Number of Bytes read from Serial port.
   @retval           EFI_SUCCESS           The command byte stream was
                                           successfully submit to the device and

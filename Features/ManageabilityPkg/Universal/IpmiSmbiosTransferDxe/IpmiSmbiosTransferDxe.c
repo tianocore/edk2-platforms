@@ -2,7 +2,7 @@
 
   A driver that sends SMBIOS tables to an OpenBMC receiver
 
-  SPDX-FileCopyrightText: copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-FileCopyrightText: Copyright (c) 2022-2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 
   Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -41,8 +41,8 @@
 **/
 BOOLEAN
 DetectSmbiosChange (
-  UINT8   *SmbiosData,
-  UINT32  SmbiosDataSize
+  IN UINT8   *SmbiosData,
+  IN UINT32  SmbiosDataSize
   )
 {
   BOOLEAN     DeleteVar;

@@ -1,11 +1,11 @@
-### @file
-# Component description file for IPMI Command Library.
+## @file
+# This is common IPMI Command Library for PEI driver.
 #
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-###
+##
 
 [Defines]
   INF_VERSION                    = 0x0001001E

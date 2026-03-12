@@ -1,9 +1,9 @@
 /** @file
   IPMI Os watchdog timer Driver.
 
-Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
-Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
-SPDX-License-Identifier: BSD-2-Clause-Patent
+  Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
@@ -14,24 +14,25 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/IpmiCommandLib.h>
 #include <IndustryStandard/Ipmi.h>
 
-BOOLEAN  mOsWdtFlag = FALSE;
+BOOLEAN  mOsWdtFlag        = FALSE;
+BOOLEAN  OsWdtEventHandled = FALSE;
 
 EFI_EVENT  mExitBootServicesEvent;
 
-/*++
+/**
 
 Routine Description:
   Enable the OS Boot Watchdog Timer.
   Is called only on legacy or EFI OS boot.
 
 Arguments:
-  Event    - Event type
-  *Context - Context for the event
+  @param [in] Event    - Event type
+  @param [in] Context - Context for the event
 
 Returns:
   None
 
---*/
+**/
 VOID
 EFIAPI
 EnableEfiOsBootWdtHandler (
@@ -43,7 +44,6 @@ EnableEfiOsBootWdtHandler (
   IPMI_SET_WATCHDOG_TIMER_REQUEST   SetWatchdogTimer;
   UINT8                             CompletionCode;
   IPMI_GET_WATCHDOG_TIMER_RESPONSE  GetWatchdogTimer;
-  static BOOLEAN                    OsWdtEventHandled = FALSE;
 
   DEBUG ((DEBUG_ERROR, "!!! EnableEfiOsBootWdtHandler()!!!\n"));
 
@@ -76,7 +76,7 @@ EnableEfiOsBootWdtHandler (
   return;
 }
 
-/*++
+/**
 
 Routine Description:
   This is the standard EFI driver point. This function initializes
@@ -84,14 +84,14 @@ Routine Description:
 
 Arguments:
   As required for DXE driver entry routine.
-  ImageHandle - ImageHandle of the loaded driver
-  SystemTable - Pointer to the System Table
 
-Returns:
-  @retval EFI_SUCCESS           Protocol successfully started and installed.
-  @retval EFI_OUT_OF_RESOURCES  The event could not be allocated.
+  @param[in] ImageHandle - Handle of this driver image
+  @param[in] SystemTable - Table containing standard EFI services
 
---*/
+  @retval EFI_SUCCESS    - IPMI FRU is initialized successfully.
+  @retval Otherwise      - Other errors.
+
+**/
 EFI_STATUS
 EFIAPI
 DriverInit (

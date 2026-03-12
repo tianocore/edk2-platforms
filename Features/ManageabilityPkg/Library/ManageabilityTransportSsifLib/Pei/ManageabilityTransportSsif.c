@@ -5,7 +5,7 @@
   Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-*/
+**/
 
 #include <Uefi.h>
 #include <IndustryStandard/IpmiSsif.h>
@@ -191,8 +191,6 @@ SsifTransportReset (
   @param [in]  TransferToken            The transfer token, see the definition of
                                         MANAGEABILITY_TRANSFER_TOKEN.
 
-  @retval      The EFI status is returned in MANAGEABILITY_TRANSFER_TOKEN.
-
 **/
 VOID
 EFIAPI
@@ -315,7 +313,7 @@ AcquireTransportSession (
 
   @param [in]   TransportToken             Transport token acquired from manageability
                                            transport library.
-  @param [out]  TransportFeature           Pointer to receive transport capabilities.
+  @param [out]  TransportCapability        Pointer to receive transport capabilities.
                                            See the definitions of
                                            MANAGEABILITY_TRANSPORT_CAPABILITY.
   @retval       EFI_SUCCESS                TransportCapability is returned successfully.

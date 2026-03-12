@@ -19,21 +19,21 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 #define SOL_CMD_RETRY_COUNT  10
 
-/*++
+/**
 
 Routine Description:
 
     This routine gets the SOL payload status or settings for a specific channel.
 
 Arguments:
-    Channel         - LAN channel number.
-    ParamSel        - Configuration parameter selection.
-    Data            - Information returned from BMC.
+    @param[in] Channel  LAN channel number.
+    @param[in] ParamSel Configuration parameter selection.
+    @param[in, out] Data     Information returned from BMC.
 Returns:
-    EFI_SUCCESS     - SOL configuration parameters are successfully read from BMC.
-    Others          - SOL configuration parameters could not be read from BMC.
+    @retval EFI_SUCCESS     SOL configuration parameters are successfully read from BMC.
+    @retval Others          SOL configuration parameters could not be read from BMC.
 
---*/
+**/
 EFI_STATUS
 GetSolStatus (
   IN UINT8      Channel,
@@ -41,12 +41,13 @@ GetSolStatus (
   IN OUT UINT8  *Data
   )
 {
-  EFI_STATUS                                      Status = EFI_SUCCESS;
+  EFI_STATUS                                      Status;
   IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST   GetConfigurationParametersRequest;
   IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE  GetConfigurationParametersResponse;
   UINT32                                          DataSize;
   UINT8                                           RetryCount;
 
+  Status = EFI_SUCCESS;
   for (RetryCount = 0; RetryCount < SOL_CMD_RETRY_COUNT; RetryCount++) {
     ZeroMem (&GetConfigurationParametersRequest, sizeof (GetConfigurationParametersRequest));
     GetConfigurationParametersRequest.ChannelNumber.Bits.ChannelNumber = Channel;
@@ -75,21 +76,21 @@ GetSolStatus (
   return Status;
 }
 
-/*++
+/**
 
 Routine Description:
 
     This routine sets the SOL payload configuration parameters for a specific channel.
 
 Arguments:
-    Channel         - LAN channel number.
-    ParamSel        - Configuration parameter selection.
-    Data            - Configuration parameter values.
+    @param[in] Channel   LAN channel number.
+    @param[in] ParamSel  Configuration parameter selection.
+    @param[in] Data      Configuration parameter values.
 Returns:
-    EFI_SUCCESS     - SOL configuration parameters are sent to BMC.
-    Others          - SOL configuration parameters could not be sent to BMC.
+    @retval EFI_SUCCESS     SOL configuration parameters are sent to BMC.
+    @retval Others          SOL configuration parameters could not be sent to BMC.
 
---*/
+**/
 EFI_STATUS
 SetSolParams (
   IN UINT8  Channel,
@@ -97,11 +98,12 @@ SetSolParams (
   IN UINT8  Data
   )
 {
-  EFI_STATUS                                     Status = EFI_SUCCESS;
+  EFI_STATUS                                     Status;
   IPMI_SET_SOL_CONFIGURATION_PARAMETERS_REQUEST  SetConfigurationParametersRequest;
   UINT8                                          CompletionCode;
   UINT8                                          RetryCount;
 
+  Status = EFI_SUCCESS;
   for (RetryCount = 0; RetryCount < SOL_CMD_RETRY_COUNT; RetryCount++) {
     ZeroMem (&SetConfigurationParametersRequest, sizeof (SetConfigurationParametersRequest));
     SetConfigurationParametersRequest.ChannelNumber.Bits.ChannelNumber = Channel;
@@ -126,21 +128,19 @@ SetSolParams (
   return Status;
 }
 
-/*++
+/**
 
   Routine Description:
     This is the standard EFI driver point. This function initializes
     the private data required for creating SOL Status Driver.
 
-  Arguments:
-    ImageHandle     - Handle for the image of this driver
-    SystemTable     - Pointer to the EFI System Table
+  @param[in] ImageHandle - Handle of this driver image
+  @param[in] SystemTable - Table containing standard EFI services
 
-  Returns:
-    EFI_SUCCESS     - Protocol successfully installed
-    EFI_UNSUPPORTED - Protocol can't be installed.
+  @retval EFI_SUCCESS    - SOL status is initialized successfully.
+  @retval Otherwise      - Other errors.
 
---*/
+**/
 EFI_STATUS
 EFIAPI
 SolStatusEntryPoint (
@@ -148,10 +148,12 @@ SolStatusEntryPoint (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS  Status = EFI_SUCCESS;
+  EFI_STATUS  Status;
   UINT8       Channel;
-  BOOLEAN     SolEnabled = FALSE;
+  BOOLEAN     SolEnabled;
 
+  Status     = EFI_SUCCESS;
+  SolEnabled = FALSE;
   for (Channel = 1; Channel <= PcdGet8 (PcdMaxSolChannels); Channel++) {
     Status = GetSolStatus (Channel, IPMI_SOL_CONFIGURATION_PARAMETER_SOL_ENABLE, &SolEnabled);
     if (Status == EFI_SUCCESS) {

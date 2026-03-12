@@ -36,7 +36,7 @@ AcquireTransportSession (
 
   @param [in]   TransportToken             Transport token acquired from manageability
                                            transport library.
-  @param [out]  TransportFeature           Pointer to receive transport capabilities.
+  @param [out]  TransportCapability        Pointer to receive transport capabilities.
                                            See the definitions of
                                            MANAGEABILITY_TRANSPORT_CAPABILITY.
   @retval       EFI_SUCCESS                TransportCapability is returned successfully.

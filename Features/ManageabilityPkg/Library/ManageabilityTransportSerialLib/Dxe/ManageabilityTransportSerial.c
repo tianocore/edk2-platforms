@@ -6,7 +6,7 @@
   Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
-*/
+**/
 
 #include <Uefi.h>
 #include <Library/BaseMemoryLib.h>
@@ -182,8 +182,6 @@ SerialTransportReset (
   @param [in]  TransferToken            The transfer token, see the definition of
                                         MANAGEABILITY_TRANSFER_TOKEN.
 
-  @retval      The EFI status is returned in MANAGEABILITY_TRANSFER_TOKEN.
-
 **/
 VOID
 EFIAPI
@@ -307,7 +305,7 @@ AcquireTransportSession (
 
   @param [in]   TransportToken             Transport token acquired from manageability
                                            transport library.
-  @param [out]  TransportFeature           Pointer to receive transport capabilities.
+  @param [out]  TransportCapability        Pointer to receive transport capabilities.
                                            See the definitions of
                                            MANAGEABILITY_TRANSPORT_CAPABILITY.
   @retval       EFI_SUCCESS                TransportCapability is returned successfully.

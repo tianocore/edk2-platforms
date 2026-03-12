@@ -1,13 +1,13 @@
-### @file
-# Component description file for IPMI FRB.
+## @file
+# IPMI Fault Resilient Booting DXE module.
 #
 # Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-###
+##
 
-[defines]
+[Defines]
   INF_VERSION          = 0x00010005
   BASE_NAME            = FrbDxe
   FILE_GUID            = A142CEE5-99D5-4ECF-943E-D8F0DE3052AA

@@ -1,13 +1,13 @@
-### @file
-# Component description file for IPMI FRB PEIM.
+## @file
+# IPMI Fault Resilient Booting PEI module.
 #
 # Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-###
+##
 
-[defines]
+[Defines]
   INF_VERSION          = 0x00010005
   BASE_NAME            = FrbPei
   FILE_GUID            = 7CAAE1A7-0B37-4EEA-A432-2F203DA6F288

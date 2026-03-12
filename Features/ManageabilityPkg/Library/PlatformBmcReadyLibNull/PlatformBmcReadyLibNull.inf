@@ -1,4 +1,5 @@
-## @file
+## @file PlatformBmcReadyLibNull.Inf
+#  NULL instance of PlatformBmcReadyLib library.
 #
 # Copyright (c) 2024, Ampere Computing LLC. All rights reserved.<BR>
 #

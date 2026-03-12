@@ -1,5 +1,5 @@
 /** @file
-  IPMI BMC ACPI.
+  IPMI BMC ACPI driver to update APCI SSDT table.
 
   Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -39,9 +39,9 @@
   FV protocol, then it will return the first FV that contains the ACPI table
   storage file.
 
-  @param [in] Protocol  The protocol to find.
-  @param [in] Instance  Return pointer to the first instance of the protocol.
-  @param [in] Type      The type of protocol to locate.
+  @param [in] Protocol   The protocol to find.
+  @param [out] Instance  Return pointer to the first instance of the protocol.
+  @param [in] Type       The type of protocol to locate.
 
   @retval EFI_SUCCESS           The function completed successfully.
   @retval EFI_NOT_FOUND         The protocol could not be located.
@@ -59,12 +59,13 @@ LocateSupportProtocol (
   EFI_HANDLE              *HandleBuffer;
   UINTN                   NumberOfHandles;
   EFI_FV_FILETYPE         FileType;
-  UINT32                  FvStatus = 0;
+  UINT32                  FvStatus;
   EFI_FV_FILE_ATTRIBUTES  Attributes;
   UINTN                   Size;
   UINTN                   Index;
 
-  Status = gBS->LocateHandleBuffer (ByProtocol, Protocol, NULL, &NumberOfHandles, &HandleBuffer);
+  FvStatus = 0;
+  Status   = gBS->LocateHandleBuffer (ByProtocol, Protocol, NULL, &NumberOfHandles, &HandleBuffer);
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -76,7 +77,7 @@ LocateSupportProtocol (
     Status = gBS->HandleProtocol (HandleBuffer[Index], Protocol, Instance);
     ASSERT (!EFI_ERROR (Status));
 
-    if (!Type) {
+    if (Type != TRUE) {
       //
       // Not looking for the FV protocol, so find the first instance of the
       // protocol.  There should not be any errors because our handle buffer
@@ -112,9 +113,9 @@ LocateSupportProtocol (
 }
 
 /**
-  Update ACPI SSDT for BMC IPMI KCS device
+  Update ACPI SSDT for BMC IPMI KCS device.
 
-  @param [in] Table  Pointer to ACPI SSDT
+  @param [in, out] Table  Pointer to ACPI SSDT
 
   @retval EFI_SUCCESS  SSDT is updated according to PCD settings
 **/
@@ -123,7 +124,7 @@ UpdateDeviceSsdtTable (
   IN OUT EFI_ACPI_COMMON_HEADER  *Table
   )
 {
-  EFI_ACPI_DESCRIPTION_HEADER  *TableHeader = NULL;
+  EFI_ACPI_DESCRIPTION_HEADER  *TableHeader;
   UINT64                       TempOemTableId;
   UINT8                        *DataPtr;
   EFI_ACPI_IO_PORT_DESCRIPTOR  *IoRsc;
@@ -192,9 +193,9 @@ BmcAcpiEntryPoint (
   EFI_STATUS  AcpiStatus;
 
   EFI_FIRMWARE_VOLUME2_PROTOCOL  *FwVol;
-  INTN                           Instance      = 0;
-  EFI_ACPI_COMMON_HEADER         *CurrentTable = NULL;
-  UINTN                          TableHandle   = 0;
+  INTN                           Instance;
+  EFI_ACPI_COMMON_HEADER         *CurrentTable;
+  UINTN                          TableHandle;
   UINT32                         FvStatus;
   UINT32                         Size;
 
