@@ -258,11 +258,11 @@ SetMemoryVdd (
 
   @retval MrcStatus value.
 **/
-UINT32
+MrcStatus
 CheckPoint (
-  VOID   *GlobalData,
-  UINT32 Command,
-  VOID   *Pointer
+  IN VOID                *GlobalData,
+  IN MrcOemStatusCommand OemStatusCommand,
+  IN VOID                *Pointer
   );
 
 /**
