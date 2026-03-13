@@ -159,6 +159,7 @@
   MtrrLib|UefiCpuPkg/Library/MtrrLib/MtrrLib.inf
   TpmCommLib|SecurityPkg/Library/TpmCommLib/TpmCommLib.inf
   Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  Tpm2HelpLib|SecurityPkg/Library/Tpm2HelpLib/Tpm2HelpLib.inf
   !if $(FTPM_ENABLE) == TRUE
     Tpm2DeviceLib|Override/edk2/SecurityPkg/Library/AmdFtpm/DxeTpm2DeviceLibFsp/Tpm2DeviceLibFtpm.inf
   !else
