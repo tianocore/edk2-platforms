@@ -121,16 +121,20 @@
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
   IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
-  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
   IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
   IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
-  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
-  IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
   IpmiFeaturePkg/GenericFru/GenericFru.inf
   IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf
+
+[Components.MM_STANDALONE]
+!if $(ARCH) == $(DXE_ARCH)
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
+  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
+  IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf
+!endif
