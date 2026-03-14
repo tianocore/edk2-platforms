@@ -45,7 +45,7 @@ top level edk2-platforms [Readme.md](https://github.com/tianocore/edk2-platforms
 Use below build command:
 
   ```
-  $ build -a AARCH64 -t GCC5 -b RELEASE -D CN9132 -D CAPSULE_ENABLE -D X64EMU_ENABLE -p Platform/Marvell/Cn913xDb/Cn913xDbA.dsc
+  $ build -a AARCH64 -t GCC5 -b RELEASE -D CN9132 -D X64EMU_ENABLE -p Platform/Marvell/Cn913xDb/Cn913xDbA.dsc
   ```
 
 ---
