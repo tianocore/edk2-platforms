@@ -194,16 +194,6 @@ FvNameGuid         = 5eda4200-2c5f-43cb-9da3-0baf74b1b30c
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
 
-!if $(CAPSULE_ENABLE)
-  # Firmware update
-  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-  FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
-     SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
-     SECTION UI = "Pkcs7TestRoot"
-  }
-!endif
-
   # DTB
   INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
 
@@ -249,9 +239,6 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   INF ArmPkg/Drivers/CpuPei/CpuPei.inf
-!if $(CAPSULE_ENABLE)
-  INF RuleOverride = FMP_IMAGE_DESC Silicon/Marvell/Armada7k8k/Feature/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-!endif
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
@@ -259,49 +246,6 @@ READ_LOCK_STATUS   = TRUE
       SECTION FV_IMAGE = FVMAIN
     }
   }
-
-!if $(CAPSULE_ENABLE)
-[FV.SystemFirmwareDescriptor]
-FvAlignment        = 8
-ERASE_POLARITY     = 1
-MEMORY_MAPPED      = TRUE
-STICKY_WRITE       = TRUE
-LOCK_CAP           = TRUE
-LOCK_STATUS        = TRUE
-WRITE_DISABLED_CAP = TRUE
-WRITE_ENABLED_CAP  = TRUE
-WRITE_STATUS       = TRUE
-WRITE_LOCK_CAP     = TRUE
-WRITE_LOCK_STATUS  = TRUE
-READ_DISABLED_CAP  = TRUE
-READ_ENABLED_CAP   = TRUE
-READ_STATUS        = TRUE
-READ_LOCK_CAP      = TRUE
-READ_LOCK_STATUS   = TRUE
-
-  INF RuleOverride = FMP_IMAGE_DESC Silicon/Marvell/Armada7k8k/Feature/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-
-[FV.CapsuleDispatchFv]
-FvAlignment        = 8
-ERASE_POLARITY     = 1
-MEMORY_MAPPED      = TRUE
-STICKY_WRITE       = TRUE
-LOCK_CAP           = TRUE
-LOCK_STATUS        = TRUE
-WRITE_DISABLED_CAP = TRUE
-WRITE_ENABLED_CAP  = TRUE
-WRITE_STATUS       = TRUE
-WRITE_LOCK_CAP     = TRUE
-WRITE_LOCK_STATUS  = TRUE
-READ_DISABLED_CAP  = TRUE
-READ_ENABLED_CAP   = TRUE
-READ_STATUS        = TRUE
-READ_LOCK_CAP      = TRUE
-READ_LOCK_STATUS   = TRUE
-
-  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
-
-!endif
 
 ################################################################################
 #
