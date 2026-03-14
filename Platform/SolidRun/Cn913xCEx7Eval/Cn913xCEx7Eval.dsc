@@ -23,7 +23,6 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Silicon/Marvell/Armada7k8k/Armada7k8k.fdf
   BOARD_DXE_FV_COMPONENTS        = Platform/SolidRun/Cn913xCEx7Eval/Cn913xCEx7Eval.fdf.inc
-  CAPSULE_ENABLE                 = TRUE
 
   #
   # Network definition

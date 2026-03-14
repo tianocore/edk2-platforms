@@ -48,7 +48,7 @@ top level edk2-platforms [Readme.md](https://github.com/tianocore/edk2-platforms
 Use below build command:
 
   ```
-  build -a AARCH64 -t GCC5 -b RELEASE -D CAPSULE_ENABLE -D X64EMU_ENABLE -p Platform/SolidRun/Cn913xCEx7Eval/Cn913xCEx7Eval.dsc
+  build -a AARCH64 -t GCC5 -b RELEASE -D X64EMU_ENABLE -p Platform/SolidRun/Cn913xCEx7Eval/Cn913xCEx7Eval.dsc
   ```
 
 ---
