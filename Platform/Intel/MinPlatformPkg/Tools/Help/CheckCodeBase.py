@@ -16,7 +16,7 @@ class FileChecker:
         # sourceRoot == WORKSPACE
         # sourceRoot != PACKAGES_PATH
         self.sourceRoot = ""
-        self.includeCoreList = ["\\CryptoPkg\\", "\\FatBinPkg\\", "\\FatPkg\\", "\\IntelFrameworkModulePkg\\", "\\IntelFrameworkPkg\\", "\\IntelFsp2Pkg\\", "\\IntelFsp2WrapperPkg\\", "\\IntelFspPkg\\", "\\IntelFspWrapperPkg\\", "\\IntelSiliconPkg\\", "\\MdeModulePkg\\", "\\MdePkg\\", "\\NetworkPkg\\", "\\PcAtChipsetPkg\\", "\\PerformancePkg\\", "\\SecurityPkg\\", "\\ShellBinPkg\\", "\\ShellPkg\\", "\\SignedCapsulePkg\\", "\\SourceLevelDebugPkg\\", "\\UefiCpuPkg\\"]
+        self.includeCoreList = ["\\CryptoPkg\\", "\\FatBinPkg\\", "\\FatPkg\\", "\\IntelFrameworkModulePkg\\", "\\IntelFrameworkPkg\\", "\\IntelFsp2Pkg\\", "\\IntelFsp2WrapperPkg\\", "\\IntelFspPkg\\", "\\IntelFspWrapperPkg\\", "\\IntelSiliconPkg\\", "\\MdeModulePkg\\", "\\MdePkg\\", "\\NetworkPkg\\", "\\PcAtChipsetPkg\\", "\\PerformancePkg\\", "\\SecurityPkg\\", "\\ShellBinPkg\\", "\\ShellPkg\\", "\\SourceLevelDebugPkg\\", "\\UefiCpuPkg\\"]
         self.includeList = self.includeCoreList
         self.excluseCoreList = ["\\BaseTools\\", "\\Conf\\", "\\Tools\\", "\\Build\\", "\\tool\\", "\\.svn", "\\.git", "\\Override\\", "\\SampleCode\\", "\\openssl"]
         self.excluseList = self.excluseCoreList
@@ -62,7 +62,7 @@ class FileChecker:
             return True
         else:
             return False
-            
+
     def IsLibraryFile(self, file):
         if (file.find ("Pkg\\Library") != -1):
             return True
@@ -115,7 +115,7 @@ class FileChecker:
             return finalDir.decode('gbk')
         else:
             return ""
-            
+
     def CheckUsedLibrary(self, file):
         if (cmp (file[-8:], "Makefile") == 0) and self.IsLibraryFile(file):
             finalDir = self.GetModulePathFromMakefile(file)
@@ -222,7 +222,7 @@ class FileChecker:
             if (result != -1):
                 return True
         return False
-        
+
     def IsUsedLibrary(self, file):
         for used in self.usedLibraryList:
             final = used + "\\"
@@ -238,7 +238,7 @@ class FileChecker:
             if (result != -1):
                 return True
         return False
-        
+
     def IsUnusedLibrary(self, file):
         for unused in self.unusedLibraryList:
             final = unused + "\\"
@@ -246,7 +246,7 @@ class FileChecker:
             if (result != -1):
                 return True
         return False
-        
+
     def IsUnusedPackage(self, file):
         for unused in self.unusedPackageList:
             final = unused + "\\"
@@ -263,7 +263,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUnusedLibrary(self, file):
         if os.path.isdir(file):
             if (self.IsInExclusiveList(file) == False) and self.IsFinalDir(file) and (self.IsInUsedLibraryList(file) == False) and self.IsLibraryFile(file):
@@ -272,7 +272,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckAllModule(self, file):
         if os.path.isdir(file):
             if (self.IsInExclusiveList(file) == False) and self.IsFinalDir(file) and (self.IsLibraryFile(file) == False):
@@ -281,7 +281,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckAllLibrary(self, file):
         if os.path.isdir(file):
             if (self.IsInExclusiveList(file) == False) and self.IsFinalDir(file) and self.IsLibraryFile(file):
@@ -290,7 +290,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckAllDir(self, file):
         if os.path.isdir(file):
             if (self.IsInExclusiveList(file) == False):
@@ -308,7 +308,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckAllLibraryFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and (self.IsUsedLibrary(file) or self.IsUnusedLibrary(file)) and self.IsLibraryFile(file):
@@ -317,7 +317,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckAllFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False):
@@ -326,7 +326,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUsedModuleFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and self.IsUsedModule(file):
@@ -335,7 +335,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUsedLibraryFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and self.IsUsedLibrary(file):
@@ -344,7 +344,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUnusedModuleFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and self.IsUnusedModule(file):
@@ -353,7 +353,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUnusedLibraryFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and self.IsUnusedLibrary(file):
@@ -362,7 +362,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def CheckUnusedPackageFile(self, file):
         if os.path.isfile(file):
             if (self.IsInExclusiveList(file) == False) and self.IsUnusedPackage(file):
@@ -371,7 +371,7 @@ class FileChecker:
                 return ""
         else:
             return ""
-            
+
     def GetFileList(self, dir, fileList, checkFunc):
         newDir = dir
         AppendName = checkFunc (dir)
@@ -379,10 +379,10 @@ class FileChecker:
             #print "AppendName = " + AppendName
             if AppendName not in fileList:
                 fileList.append(AppendName)
-        if os.path.isdir(dir):  
+        if os.path.isdir(dir):
             for sub in os.listdir(dir):
                 newDir = os.path.join(dir,sub)
-                self.GetFileList(newDir, fileList, checkFunc)  
+                self.GetFileList(newDir, fileList, checkFunc)
         return fileList
 
     def DeleteEmptyDir(self, dir):
@@ -391,12 +391,12 @@ class FileChecker:
         if os.path.isdir(dir):
             for sub in os.listdir(dir):
                 newDir = os.path.join(dir,sub)
-                if (os.path.isdir(newDir) == True):  
+                if (os.path.isdir(newDir) == True):
                     self.DeleteEmptyDir(newDir)
         if not os.listdir(dir):
             print "deleting empty " + dir
             os.rmdir(dir)
-            
+
     def DeleteEmptyDirList(self, fileList):
         for file in fileList:
             self.DeleteEmptyDir(file)
@@ -422,12 +422,12 @@ class FileChecker:
         print "ctime: " + str(statinfo.st_ctime) + " (" + str(strucctime.tm_year) + "." + str(strucctime.tm_mon) + "." + str(strucctime.tm_mday) + " " + str(strucctime.tm_hour) + ":" + str(strucctime.tm_min) + ":" + str(strucctime.tm_sec) + ")"
         strucmtime = time.localtime(statinfo.st_mtime)
         print "mtime: " + str(statinfo.st_mtime) + " (" + str(strucmtime.tm_year) + "." + str(strucmtime.tm_mon) + "." + str(strucmtime.tm_mday) + " " + str(strucmtime.tm_hour) + ":" + str(strucmtime.tm_min) + ":" + str(strucmtime.tm_sec) + ")"
-        
+
     def TouchFileTime(self, file):
         #currentTime = time.time()
         #os.utime(file, (currentTime, currentTime))
         os.utime(file, None)
-        
+
     def TouchFileListTime(self, fileList):
         for file in fileList:
             self.TouchFileTime(file)
@@ -439,7 +439,7 @@ class FileChecker:
 
     def SortFileList(self, fileList):
         fileList.sort()
-            
+
     def PrintFileListTime(self, fileList):
         for file in fileList:
             print file
@@ -449,7 +449,7 @@ class FileChecker:
         if (len(self.usedModuleList) == 0):
             self.usedModuleList = self.GetFileList(sys.argv[1], [], self.CheckUsedModule)
             self.SortFileList(self.usedModuleList)
-            
+
     def GetUsedLibraryList(self):
         if (len(self.usedLibraryList) == 0):
             self.usedLibraryList = self.GetFileList(sys.argv[1], [], self.CheckUsedLibrary)
@@ -477,7 +477,7 @@ class FileChecker:
 
             self.usedModuleFileList = self.GetFileList(self.sourceRoot, [], self.CheckUsedModuleFile)
             self.SortFileList(self.usedModuleFileList)
-            
+
     def GetUsedLibraryFileList(self):
         if (len(self.usedLibraryFileList) == 0):
             self.GetUsedLibraryList()
@@ -494,7 +494,7 @@ class FileChecker:
             for file in self.allFileList:
                 if (file not in self.unusedFileList) and self.IsInPackageList(file):
                     self.usedFileList.append(file)
-            
+
             self.SortFileList(self.usedFileList)
 
     def GetUsedPackageList(self):
@@ -509,7 +509,7 @@ class FileChecker:
 
             self.allModuleList = self.GetFileList(self.sourceRoot, [], self.CheckAllModule)
             self.SortFileList(self.allModuleList)
-            
+
     def GetAllLibraryList(self):
         if (len(self.allLibraryList) == 0):
             self.GetUsedLibraryList()
@@ -531,7 +531,7 @@ class FileChecker:
 
             self.allModuleFileList = self.GetFileList(self.sourceRoot, [], self.CheckAllModuleFile)
             self.SortFileList(self.allModuleFileList)
-            
+
     def GetAllLibraryFileList(self):
         if (len(self.allFileList) == 0):
             self.GetUsedLibraryList()
@@ -561,7 +561,7 @@ class FileChecker:
             self.GetUsedModuleList()
 
             self.unusedModuleList = self.GetFileList(self.sourceRoot, [], self.CheckUnusedModule)
-            
+
     def GetUnusedLibraryList(self):
         if (len(self.unusedLibraryList) == 0):
             self.GetUsedLibraryList()
@@ -607,7 +607,7 @@ class FileChecker:
             self.unusedFileList.extend(self.unusedIncludeFileList)
             self.unusedFileList.extend(self.unusedModuleFileList)
             self.unusedFileList.extend(self.unusedLibraryFileList)
-            
+
             for file in self.unusedPackageFileList:
                 if file not in self.unusedFileList:
                     self.unusedFileList.append(file)
@@ -666,7 +666,7 @@ def main():
         fileChecker.GetUsedModuleFileList()
         print "\n Used Module File List:"
         fileChecker.PrintFileList (fileChecker.usedModuleFileList)
-        
+
         fileChecker.GetUsedLibraryFileList()
         print "\n Used Library File List:"
         fileChecker.PrintFileList (fileChecker.usedLibraryFileList)
@@ -674,7 +674,7 @@ def main():
         fileChecker.GetUsedFileList()
         print "\n All Used File List:"
         fileChecker.PrintFileList (fileChecker.usedFileList)
-        
+
         fileChecker.GetUsedPackageList()
         print "\n Used Package List:"
         fileChecker.PrintFileList (fileChecker.usedPackageList)
@@ -699,19 +699,19 @@ def main():
         fileChecker.GetAllIncludeFileList()
         print "\n All Include File List:"
         fileChecker.PrintFileList (fileChecker.allIncludeFileList)
-        
+
         fileChecker.GetAllModuleFileList()
         print "\n All Module File List:"
         fileChecker.PrintFileList (fileChecker.allModuleFileList)
-        
+
         fileChecker.GetAllLibraryFileList()
         print "\n All Library File List:"
         fileChecker.PrintFileList (fileChecker.allLibraryFileList)
-        
+
         fileChecker.GetAllFileList()
         print "\n All File List:"
         fileChecker.PrintFileList (fileChecker.allFileList)
-        
+
         fileChecker.GetAllPackageList()
         print "\n All Package List:"
         fileChecker.PrintFileList (fileChecker.allPackageList)
@@ -723,12 +723,12 @@ def main():
         print "  Module File Count  - " + str(len(fileChecker.allModuleFileList))
         print "  Library File Count - " + str(len(fileChecker.allLibraryFileList))
         print "  All File Count     - " + str(len(fileChecker.allFileList))
-        
+
     elif cmp (sys.argv[2], "unused") == 0:
         fileChecker.GetUnusedModuleList()
         print "\n Unused Module List:"
         fileChecker.PrintFileList (fileChecker.unusedModuleList)
-        
+
         fileChecker.GetUnusedLibraryList()
         print "\n Unused Library List:"
         fileChecker.PrintFileList (fileChecker.unusedLibraryList)
@@ -740,7 +740,7 @@ def main():
         fileChecker.GetUnusedModuleFileList()
         print "\n Unused Module File List:"
         fileChecker.PrintFileList (fileChecker.unusedModuleFileList)
-        
+
         fileChecker.GetUnusedLibraryFileList()
         print "\n Unused Library File List:"
         fileChecker.PrintFileList (fileChecker.unusedLibraryFileList)
@@ -748,7 +748,7 @@ def main():
         fileChecker.GetUnusedFileList()
         print "\n Unused File List:"
         fileChecker.PrintFileList (fileChecker.unusedFileList)
-        
+
         fileChecker.GetUnusedPackageList()
         print "\n Unused Package List:"
         fileChecker.PrintFileList (fileChecker.unusedPackageList)
@@ -778,7 +778,7 @@ def main():
     elif cmp (sys.argv[2], "time") == 0:
         fileChecker.allDirList = fileChecker.GetFileList(sys.argv[1], [], fileChecker.CheckFile)
         fileChecker.PrintFileListTime(fileChecker.allDirList)
-        
+
     elif cmp (sys.argv[2], "touch") == 0:
         fileChecker.allDirList = fileChecker.GetFileList(sys.argv[1], [], fileChecker.CheckFile)
         fileChecker.TouchFileListTime(fileChecker.allDirList)
