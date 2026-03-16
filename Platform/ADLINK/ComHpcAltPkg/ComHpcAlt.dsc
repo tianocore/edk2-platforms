@@ -57,7 +57,6 @@
 
   DEFINE FIRMWARE_VER            = 00.01.01-00
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
-  DEFINE CAPSULE_ENABLE          = TRUE
   DEFINE INCLUDE_TFA_FW          = TRUE
   DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
   DEFINE TPM2_ENABLE             = TRUE
@@ -76,11 +75,6 @@
   DEFINE REDFISH_ENABLE                      = TRUE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
   DEFINE HEAP_GUARD_ENABLE                   = FALSE
-
-!if $(CAPSULE_ENABLE) == TRUE
-  DEFINE UEFI_IMAGE              = Build/ComHpcAlt/comhpcalt_uefi.bin
-  DEFINE TFA_UEFI_IMAGE          = Build/ComHpcAlt/comhpcalt_tfa_uefi.bin
-!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -286,9 +280,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString|L"MM/DD/YYYY"
 
 [PcdsDynamicExDefault.common.DEFAULT]
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("cdcdd0b7-8afb-4883-853a-ae9398077a0e")}|VOID*|0x10
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("074c21e5-7d17-48e9-808d-f0c85e52a7db")}|VOID*|0x10
 
   # Default Video Resolution
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum
@@ -364,7 +356,7 @@
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   Platform/ADLINK/ComHpcAltPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
   ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
-  Features/ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf 
+  Features/ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
 
   #
   # HII
@@ -376,32 +368,6 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/RootComplexConfigDxe/RootComplexConfigDxe.inf
   Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
-
-  #
-  # Firmware Capsule Update
-  #
-!if $(CAPSULE_ENABLE) == TRUE
-  Platform/ADLINK/ComHpcAltPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
-    <LibraryClasses>
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
-  }
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
-    <LibraryClasses>
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
-  }
-  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
-    <LibraryClasses>
-      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
-  }
-
-  #
-  # System Firmware Update
-  #
-  Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
-!endif
 
   # Redfish
   #
