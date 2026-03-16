@@ -54,7 +54,6 @@
   !endif
   DEFINE FIRMWARE_VER            = 00.01.01-01
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
-  DEFINE CAPSULE_ENABLE          = TRUE
   DEFINE INCLUDE_TFA_FW          = TRUE
   DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
   DEFINE TPM2_ENABLE             = TRUE
@@ -71,11 +70,6 @@
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
-
-!if $(CAPSULE_ENABLE) == TRUE
-  DEFINE UEFI_IMAGE                          = Build/Jade/jade_uefi.bin
-  DEFINE TFA_UEFI_IMAGE                      = BUild/Jade/jade_tfa_uefi.bin
-!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -234,9 +228,7 @@
 [PcdsDynamicDefault.common.DEFAULT]
 
 [PcdsDynamicExDefault.common.DEFAULT]
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("f08bca31-542e-4cea-8b48-8e54f9422594")}|VOID*|0x10
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("431c06ed-4fe2-438f-98a3-a9b1fd923019")}|VOID*|0x10
 
 [PcdsPatchableInModule]
   #
@@ -294,32 +286,6 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/AcpiConfigDxe/AcpiConfigDxe.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/RasConfigDxe/RasConfigDxe.inf
   Silicon/Ampere/AmpereSiliconPkg/Drivers/BmcConfigDxe/BmcConfigDxe.inf
-
-  #
-  # Firmware Capsule Update
-  #
-!if $(CAPSULE_ENABLE) == TRUE
-  Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
-    <LibraryClasses>
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
-  }
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
-    <LibraryClasses>
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
-  }
-  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
-    <LibraryClasses>
-      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
-  }
-
-  #
-  # System Firmware Update
-  #
-  Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
-!endif
 
   #
   # In-band NVPARAM Access

@@ -323,20 +323,6 @@ In order to enable the IPMI SSIF support:
    from the BMC slave address and the BMC_READY GPIO if the custom board uses BMC_READY GPIO to determine the status of BMC.
    * `gAmpereTokenSpaceGuid.PcdBmcReadyGpio`
 
-### Signed Capsule Update
-
-There are two types of the firmware image supported on the Ampere Mt. Jade platform:
-
-* The combination of Ampere Trusted Firmware-A (TF-A) FIP, Board Settings, and EDK2 FD.
-* Ampere System Firmware (SCP Firmware)
-
-In order to enable the capsule update feature, update the IMAGE_ID and IMAGE_ID_STRING
-to match the platform name in the `Platform/Ampere/NewBoardPkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.aslc` file.
-
-Please refer to
-[Capsule Based Firmware Update and Firmware Recovery](https://github.com/tianocore/tianocore.github.io/wiki/Capsule-Based-Firmware-Update-and-Firmware-Recovery)
-for detailed porting instructions.
-
 ### Trusted Platform Module (TPM)
 
 No change is needed.

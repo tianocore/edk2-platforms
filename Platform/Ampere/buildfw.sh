@@ -337,11 +337,6 @@ if [ -e "${WORKSPACE}/IntelUndiBin/Release/AARCH64/GigUndiDxe.efi" ]; then
   EXTRA_BUILD_FLAGS+=" -D INTEL_UNDI_BIN=TRUE"
 fi
 
-# YearMonthDayBuild (0xYYMMDDBB)
-echo "#define CURRENT_FIRMWARE_VERSION ${VER_HEX}" > "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
-echo "#define CURRENT_FIRMWARE_VERSION_STRING L\"${FW_STR}\"" >> "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
-echo "#define LOWEST_SUPPORTED_FIRMWARE_VERSION 0x00000000" >> "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/Capsule/SystemFirmwareDescriptor/HostFwInfo.h"
-
 if [ -f "${SCP_SLIM}" ]; then
   cp -vf "${SCP_SLIM}" "${OUTPUT_BIN_DIR}/altra_scp.slim"
 fi
@@ -457,36 +452,6 @@ if [ -f "${TFA_SLIM}" ]; then
   INCLUDE_TFA_FW=TRUE
 else
   INCLUDE_TFA_FW=FALSE
-fi
-
-# LinuxBoot doesn't support capsule updates
-if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
-
-  # Build the capsule (for upgrading from the UEFI Shell or Linux)
-  build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
-      -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"        \
-      -D FIRMWARE_VER="${VER}" \
-      -D FIRMWARE_VER_HEX="${VER_HEX}" \
-      -D MAJOR_VER=${MAJOR_VER}  \
-      -D MINOR_VER=${MINOR_VER}  \
-      -D INCLUDE_TFA_FW=${INCLUDE_TFA_FW} \
-      -y BuildReportCapsule.log                                         \
-      -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
-
-  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
-  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "${OUTPUT_BIN_DIR}/"
-  mkdir ${OUTPUT_BIN_DIR}/Cab || true
-  rm -f ${OUTPUT_BIN_DIR}/Cab/*
-  METAINFO_FILE="${OUTPUT_BIN_DIR}/Cab/firmware.metainfo.xml"
-  cp -vf "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/firmware.metainfo.xml" "${METAINFO_FILE}"
-  cp -vf "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "${OUTPUT_BIN_DIR}/Cab/firmware.bin"
-  sed -i "s/{URGENCY}/high/g" "${METAINFO_FILE}"
-  sed -i "s/{FW_VERSION}/$(printf '%d' ${VER_HEX})/g" "${METAINFO_FILE}"
-  sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
-  sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
-  pushd "${OUTPUT_BIN_DIR}/Cab"
-  gcab -c -z -v "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab" ./*
-  popd
 fi
 
 if [ "${BOARD_NAME}" = "ComHpcAlt" ] && [ ! -e "${WORKSPACE}/${UPD720202_ROM_FILE}" ]; then

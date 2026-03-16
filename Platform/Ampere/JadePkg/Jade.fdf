@@ -153,10 +153,6 @@ APRIORI PEI {
   INF MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
 }
 
-!if $(CAPSULE_ENABLE) == TRUE
-  INF RuleOverride = FMP_IMAGE_DESC Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-!endif
-
   INF ArmPlatformPkg/Sec/Sec.inf
   INF MdeModulePkg/Core/Pei/PeiMain.inf
   INF UefiCpuPkg/CpuIoPei/CpuIoPei.inf
@@ -416,15 +412,6 @@ APRIORI DXE {
   INF EmbeddedPkg/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf
 
   #
-  # Firmware Capsule Update
-  #
-!if $(CAPSULE_ENABLE) == TRUE
-  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  INF MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
-  INF SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-!endif
-
-  #
   # System Firmware Update
   #
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
@@ -442,45 +429,5 @@ APRIORI DXE {
   INF MdeModulePkg/Bus/Usb/UsbNetwork/UsbCdcEcm/UsbCdcEcm.inf
 !include RedfishPkg/Redfish.fdf.inc
 !endif
-
-[FV.SystemFirmwareDescriptor]
-FvAlignment        = 8
-ERASE_POLARITY     = 1
-MEMORY_MAPPED      = TRUE
-STICKY_WRITE       = TRUE
-LOCK_CAP           = TRUE
-LOCK_STATUS        = TRUE
-WRITE_DISABLED_CAP = TRUE
-WRITE_ENABLED_CAP  = TRUE
-WRITE_STATUS       = TRUE
-WRITE_LOCK_CAP     = TRUE
-WRITE_LOCK_STATUS  = TRUE
-READ_DISABLED_CAP  = TRUE
-READ_ENABLED_CAP   = TRUE
-READ_STATUS        = TRUE
-READ_LOCK_CAP      = TRUE
-READ_LOCK_STATUS   = TRUE
-
-  INF RuleOverride = FMP_IMAGE_DESC Platform/Ampere/JadePkg/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-
-[FV.CapsuleDispatchFv]
-FvAlignment        = 8
-ERASE_POLARITY     = 1
-MEMORY_MAPPED      = TRUE
-STICKY_WRITE       = TRUE
-LOCK_CAP           = TRUE
-LOCK_STATUS        = TRUE
-WRITE_DISABLED_CAP = TRUE
-WRITE_ENABLED_CAP  = TRUE
-WRITE_STATUS       = TRUE
-WRITE_LOCK_CAP     = TRUE
-WRITE_LOCK_STATUS  = TRUE
-READ_DISABLED_CAP  = TRUE
-READ_ENABLED_CAP   = TRUE
-READ_STATUS        = TRUE
-READ_LOCK_CAP      = TRUE
-READ_LOCK_STATUS   = TRUE
-
-  INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc
