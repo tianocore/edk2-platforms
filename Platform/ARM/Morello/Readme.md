@@ -10,6 +10,7 @@ Platform code is located at Platform/ARM/Morello.
 The following platforms are supported
 
 - Morello FVP
+- Morello SoC
 
 # Documentation
 
@@ -21,8 +22,8 @@ Morello FVP can be downloaded from this [location](https://developer.arm.com/too
 
 # Supported Host and Toolchain
 
-- Host PC should be running Ubuntu Linux 18.04 LTS.
-- Please refer to the `edk2-platforms/Readme.md` for downloading the GCC toolchain.
+- Host PC should be running Ubuntu Linux 24.04 LTS.
+- Please refer to the `edk2-platforms/Readme.md` for downloading the GCC or Clang toolchain.
 
 # Build Instructions
 
@@ -48,4 +49,4 @@ for building SCP firmware.
 
 The Trusted Firmware-A source code can be downloaded from this [page](https://trustedfirmware-a.readthedocs.io/en/latest/).
 
-Refer to the [TF-A Readme](https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/tree/docs/plat/arm/morello/index.rst?h=refs/heads/master) for building TF-A.
+Refer to the [TF-A Readme](https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/plat/arm/morello/index.rst) for building TF-A.
