@@ -19,11 +19,6 @@ supported in this platform code.
 - [RD-N2-CFG2](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdn2cfg2.html)
 - [RD-N2-CFG1](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdn2cfg1.html)
 - [RD-N2](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdn2.html)
-- [RD-V1](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdv1.html)
-- [RD-V1-MC](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdv1mc.html)
-- [RD-N1-Edge](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdn1edge.html)
-- [RD-N1-Edge-X2](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/rdn1edgex2.html)
-- [SGI-575](https://neoverse-reference-design.docs.arm.com/en/latest/platforms/sgi575.html)
 
 # Build Environment
 
