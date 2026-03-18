@@ -5,7 +5,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
-    - Firmware Interface Table Revision 1.5
+    - Firmware Interface Table Revision 1.6
 
 **/
 
@@ -34,7 +34,7 @@
 #define FIT_TYPE_1B_VAB_KEY_MANIFEST               0x1B
 #define FIT_TYPE_1C_VAB_IMAGE_MANIFEST             0x1C
 #define FIT_TYPE_1D_VAB_IMAGE_HASH_DESC            0x1D
-#define FIT_TYPE_1E_VAB_AUTH_CODE_UPDATE_MANIFEST  0x1E
+#define FIT_TYPE_1E_VAB_AUTH_FW_UPDATE_MANIFEST    0x1E
 #define FIT_TYPE_2C_SACM_DEBUG                     0x2C
 #define FIT_TYPE_2D_TXTSX_POLICY                   0x2D
 #define FIT_TYPE_2E_GRANULAR_SCRTM_ERROR           0x2E
