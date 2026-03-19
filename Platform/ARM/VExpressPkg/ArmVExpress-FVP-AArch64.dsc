@@ -25,6 +25,9 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.fdf
 
+  # Enable PL111 LCD
+  DEFINE EDK2_ENABLE_PL111       = TRUE
+
   # To allow the use of uefi secure variable feature, set this to TRUE.
   DEFINE ENABLE_UEFI_SECURE_VARIABLE = FALSE
 
