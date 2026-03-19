@@ -1,7 +1,7 @@
 /** @file
   Differentiated System Description Table Fields (DSDT)
 
-  Copyright (c) 2014-2023, ARM Ltd. All rights reserved.<BR>
+  Copyright (c) 2014-2026, ARM Ltd. All rights reserved.<BR>
   Copyright (c) 2013, Al Stone <al.stone@linaro.org>
   All rights reserved.
 
@@ -65,6 +65,31 @@ DefinitionBlock("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARM-VEXP", 1) {
       Name (_CRS, ResourceTemplate() {
         Memory32Fixed (ReadWrite, 0x1c150000, 0x10000)
         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x4C}
+      })
+    }
+
+    //
+    // Keyboard and Mouse
+    //
+    Device(KMI0) {
+      Name(_HID,"ARMH0501")
+      Name(_CID,"PL050_KBD")
+      Name(_CRS,ResourceTemplate() {
+        Memory32Fixed(ReadWrite,0x1C060008,0x4)
+        Memory32Fixed(ReadWrite,0x1C060000,0x4)
+        Memory32Fixed(ReadOnly, 0x1C060004,0x4)
+        Interrupt(ResourceConsumer,Level,ActiveHigh,Exclusive) {44}
+      })
+    }
+
+    Device(KMI1) {
+      Name(_HID,"ARMH0502")
+      Name(_CID,"PL050_MOUSE")
+      Name(_CRS,ResourceTemplate() {
+        Memory32Fixed(ReadWrite,0x1C070008,0x4)
+        Memory32Fixed(ReadWrite,0x1C070000,0x4)
+        Memory32Fixed(ReadOnly, 0x1C070004,0x4)
+        Interrupt(ResourceConsumer,Level,ActiveHigh,Exclusive) {45}
       })
     }
   } // Scope(_SB)
