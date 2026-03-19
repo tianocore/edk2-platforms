@@ -8,6 +8,10 @@
   @par Glossary:
     - Cm or CM   - Configuration Manager
     - Obj or OBJ - Object
+
+  @par Reference(s):
+    - Base Platform interrupt assignments [https://developer.arm.com/documentation/110379/1131/Base-Platform/Base-Platform-interrupt-assignments]
+
 **/
 
 #include <IndustryStandard/ArmFfaSvc.h>
@@ -168,15 +172,15 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
            platform is FVP RevC.
   */
   {
-    GICC_ENTRY (0, GET_MPID (0, 0), 92, 25, 0),
-    GICC_ENTRY (1, GET_MPID (0, 1), 93, 25, 0),
-    GICC_ENTRY (2, GET_MPID (0, 2), 94, 25, 0),
-    GICC_ENTRY (3, GET_MPID (0, 3), 95, 25, 0),
+    GICC_ENTRY (0, GET_MPID (0, 0), 23, 25, 0),
+    GICC_ENTRY (1, GET_MPID (0, 1), 23, 25, 0),
+    GICC_ENTRY (2, GET_MPID (0, 2), 23, 25, 0),
+    GICC_ENTRY (3, GET_MPID (0, 3), 23, 25, 0),
 
-    GICC_ENTRY (4, GET_MPID (1, 0), 96, 25, 0),
-    GICC_ENTRY (5, GET_MPID (1, 1), 97, 25, 0),
-    GICC_ENTRY (6, GET_MPID (1, 2), 98, 25, 0),
-    GICC_ENTRY (7, GET_MPID (1, 3), 99, 25, 0)
+    GICC_ENTRY (4, GET_MPID (1, 0), 23, 25, 0),
+    GICC_ENTRY (5, GET_MPID (1, 1), 23, 25, 0),
+    GICC_ENTRY (6, GET_MPID (1, 2), 23, 25, 0),
+    GICC_ENTRY (7, GET_MPID (1, 3), 23, 25, 0)
   },
 
   // GIC Distributor Info
