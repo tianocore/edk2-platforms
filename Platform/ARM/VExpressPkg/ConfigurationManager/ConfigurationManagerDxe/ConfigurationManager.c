@@ -365,7 +365,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     // Memory access properties : Allocation hints
     0,
     // Memory access properties : Memory access flags
-    0,
+    EFI_ACPI_IORT_MEM_ACCESS_FLAGS_CPM,
     // ATS attributes
     EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,
     // PCI segment number
