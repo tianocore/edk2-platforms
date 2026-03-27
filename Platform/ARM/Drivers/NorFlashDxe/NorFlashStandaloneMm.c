@@ -382,25 +382,33 @@ NorFlashCreateInstanceType (
     }
   }
 
-  if (InstanceType == InstanceTypeVariable) {
+  switch (InstanceType) {
+  case InstanceTypeVariable:
     /**
      * For variable storage.
      */
     ProtocolGuid = &gEfiSmmFirmwareVolumeBlockProtocolGuid;
     Interface = &Instance->FvbProtocol;
     NorFlashFvbInitialize (Instance);
-  } else if (InstanceType == InstanceTypeFwu) {
+    break;
+  case InstanceTypeFwu:
     /**
      * For firmware update stoarge.
      */
     ProtocolGuid = &gEfiBlockIoProtocolGuid;
     Interface = &Instance->BlockIoProtocol;
-  } else if (InstanceType == InstanceTypeTpm) {
+    break;
+  case InstanceTypeTpm:
     /**
      * For TPM stoarge.
      */
     ProtocolGuid = &gEdkiiTpmBlockIoProtocolGuid;
     Interface = &Instance->BlockIoProtocol;
+    break;
+  default:
+    ASSERT(0);
+    Status = EFI_INVALID_PARAMETER;
+    goto ErrorHandler;
   }
 
   Status = gMmst->MmInstallProtocolInterface (
