@@ -40,7 +40,7 @@ StartsWithDevicePath (
   PartialSize = (INTN)GetDevicePathSize (PartialDevicePath) - sizeof (EFI_DEVICE_PATH_PROTOCOL);
   FullSize    = (INTN)GetDevicePathSize (FullDevicePath) - sizeof (EFI_DEVICE_PATH_PROTOCOL);
 
-  if ((PartialSize <= 0) || (FullSize <= 0)) {
+  if ((PartialSize <= 0) || (FullSize <= 0) || (FullSize < PartialSize)) {
     return FALSE;
   }
 
