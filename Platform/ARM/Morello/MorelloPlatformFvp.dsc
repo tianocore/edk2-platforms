@@ -121,8 +121,3 @@
       LcdHwLib|Platform/ARM/Morello/Library/LcdHwMaliDxxLib/LcdHwMaliDxxLib.inf
       LcdPlatformLib|Platform/ARM/Morello/Library/LcdPlatformLibMorello/LcdPlatformLibMorelloFvp.inf
   }
-
-  #
-  # Semi-hosting filesystem
-  #
-  ArmPkg/Filesystem/SemihostFs/SemihostFs.inf
