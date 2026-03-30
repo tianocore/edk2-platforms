@@ -188,10 +188,8 @@ BootMonFsInitialize (
 {
   EFI_STATUS               Status;
   EFI_LBA                  Lba;
-  UINT32                   ImageCount;
   BOOTMON_FS_FILE          *NewFile;
 
-  ImageCount = 0;
   Lba = 0;
 
   while (1) {
@@ -207,7 +205,6 @@ BootMonFsInitialize (
       break;
     }
     InsertTailList (&Instance->RootFile->Link, &NewFile->Link);
-    ImageCount++;
   }
 
   Instance->Initialized = TRUE;
