@@ -1037,6 +1037,11 @@ HiiConfigToBlock (
       goto Exit;
     }
 
+    if (Width > (HiiNumber.NumberPtrLength + 1) / 2) {
+      DEBUG ((DEBUG_WARN, "HiiConfigToBlock: Value length is less than Width\n"));
+      Width = (HiiNumber.NumberPtrLength + 1) / 2;
+    }
+
     //
     // Update the Block with configuration info
     //
