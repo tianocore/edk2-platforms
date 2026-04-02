@@ -13,10 +13,8 @@ The majority of the content in the EDK II open source project uses a
 [BSD-2-Clause Plus Patent License](License.txt).  Additional details on EDK II
 open source project code contributions can be found in the edk2 repository
 [Readme.md](https://github.com/tianocore/edk2/blob/master/ReadMe.rst).
-The EDK II Platforms open source project contains the following components that
-are covered by additional licenses:
-
-- [`Silicon/RISC-V/ProcessorPkg/Library/RiscVOpensbiLib/opensbi`](https://github.com/riscv/opensbi/blob/master/COPYING.BSD)
+The EDK II Platforms open source project contains no components that
+are covered by additional licenses.
 
 # INDEX
 * [Overview](#overview)
@@ -67,7 +65,7 @@ will come with a Python environment installed by default, but you usually need
 to install uuid-dev (or uuid-devel, depending on distribution) manually.
 
 ## If cross compiling
-If building EDK2 for a different archtecture than the build machine, you need to
+If building EDK2 for a different architecture than the build machine, you need to
 obtain an appropriate cross-compiler. X64 (x86_64) compilers also support IA32,
 but the reverse may not always be true.
 
@@ -94,11 +92,11 @@ RISC-V open source community provides GCC toolchains for
 compiled to run on x86 Linux.
 
 ### GCC for LoongArch
-Loonson open source community provides GCC toolchains for
+Loongson open source community provides GCC toolchains for
 [loongarch64-unknown-elf](https://github.com/loongson/build-tools)
 compiled to run on x86 Linux
 
-### clang
+### Clang
 Clang does not require separate cross compilers, but it does need a
 target-specific binutils. These are included with any prepackaged GCC toolchain
 (see above), or can be installed or built separately.
@@ -208,7 +206,7 @@ fail   0
 The build finishes with a summary of which platforms/targets were built, which
 succeeded and which failed (and the total number of either).
 
-Like the `build` command itself, `edk2-build.sh` it supports specifying multiple
+Like the `build` command itself, `edk2-build.sh` supports specifying multiple
 targets on a single command line, but it also lets you specify multiple
 platforms (or `all` for building all known platforms). So in order to build all
 platforms described by the configuration file, for both DEBUG and RELEASE
@@ -229,10 +227,7 @@ See [CONTRIBUTORS.md](CONTRIBUTORS.md), [CODEOWNERS](CODEOWNERS) and [REVIEWERS]
 # Submodules
 
 Submodule in EDK II Platforms is allowed but submodule chain should be avoided
-as possible as we can. Currently EDK II Platforms contains the following
-submodules
-
-- Silicon/RISC-V/ProcessorPkg/Library/RiscVOpensbiLib/opensbi
+as possible as we can. Currently EDK II Platforms contains no submodules.
 
 To get a full, buildable EDK II repository, use following steps of git command
 
@@ -253,7 +248,7 @@ submodules code.
 ```
 
 Note: When cloning submodule repos, '--recursive' option is not recommended.
-EDK II Platforms itself will not use any code/feature from submodules in above
-submodules. So using '--recursive' adds a dependency on being able to reach
-servers we do not actually want any code from, as well as needlessly
+EDK II Platforms itself will not use any code/feature from submodules within
+its own submodules. So using '--recursive' adds a dependency on being able to
+reach servers we do not actually want any code from, as well as needlessly
 downloading code we will not use.
