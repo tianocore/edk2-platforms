@@ -143,6 +143,8 @@
 
 [Protocols]
   ##
-  ## IntelFrameworkModulePkg
+  ## The OEM Badging Protocol defines the interface to get the OEM badging
+  ## image with the display attribute. This protocol can be produced based on
+  ## OEM badging images.
   ##
   gEfiOemBadgingProtocolGuid                       = { 0x170E13C0, 0xBF1B, 0x4218, { 0x87, 0x1D, 0x2A, 0xBD, 0xC6, 0xF8, 0x87, 0xBC }}
