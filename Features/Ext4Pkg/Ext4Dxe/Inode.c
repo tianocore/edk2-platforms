@@ -165,7 +165,7 @@ Ext4Read (
                            Extent.ee_start_lo,
                            Partition->BlockSize
                            );
-      ExtentLengthBytes  = Extent.ee_len * Partition->BlockSize;
+      ExtentLengthBytes  = MultU64x32 ((UINT64)Extent.ee_len, Partition->BlockSize);
       ExtentLogicalBytes = MultU64x32 ((UINT64)Extent.ee_block, Partition->BlockSize);
       ExtentOffset       = CurrentSeek - ExtentLogicalBytes;
       ExtentMayRead      = (UINTN)(ExtentLengthBytes - ExtentOffset);
