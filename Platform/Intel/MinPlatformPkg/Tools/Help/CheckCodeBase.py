@@ -16,7 +16,7 @@ class FileChecker:
         # sourceRoot == WORKSPACE
         # sourceRoot != PACKAGES_PATH
         self.sourceRoot = ""
-        self.includeCoreList = ["\\CryptoPkg\\", "\\FatBinPkg\\", "\\FatPkg\\", "\\IntelFrameworkModulePkg\\", "\\IntelFrameworkPkg\\", "\\IntelFsp2Pkg\\", "\\IntelFsp2WrapperPkg\\", "\\IntelFspPkg\\", "\\IntelFspWrapperPkg\\", "\\IntelSiliconPkg\\", "\\MdeModulePkg\\", "\\MdePkg\\", "\\NetworkPkg\\", "\\PcAtChipsetPkg\\", "\\PerformancePkg\\", "\\SecurityPkg\\", "\\ShellBinPkg\\", "\\ShellPkg\\", "\\SourceLevelDebugPkg\\", "\\UefiCpuPkg\\"]
+        self.includeCoreList = ["\\CryptoPkg\\", "\\FatBinPkg\\", "\\FatPkg\\", "\\IntelFsp2Pkg\\", "\\IntelFsp2WrapperPkg\\", "\\IntelFspPkg\\", "\\IntelFspWrapperPkg\\", "\\IntelSiliconPkg\\", "\\MdeModulePkg\\", "\\MdePkg\\", "\\NetworkPkg\\", "\\PcAtChipsetPkg\\", "\\PerformancePkg\\", "\\SecurityPkg\\", "\\ShellBinPkg\\", "\\ShellPkg\\", "\\SourceLevelDebugPkg\\", "\\UefiCpuPkg\\"]
         self.includeList = self.includeCoreList
         self.excluseCoreList = ["\\BaseTools\\", "\\Conf\\", "\\Tools\\", "\\Build\\", "\\tool\\", "\\.svn", "\\.git", "\\Override\\", "\\SampleCode\\", "\\openssl"]
         self.excluseList = self.excluseCoreList
