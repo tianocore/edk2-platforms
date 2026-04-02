@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -x
+
+set -o errexit
+
 ##
 # @file
 #  Build script for platforms with an Altra(R) CPU from Ampere(R).
@@ -77,17 +79,18 @@ usage () {
   echo "  CERT_PASSWORD        - password to use when generating Platform and Update Keys and certificates"
   echo "                         defaults to \"password\" if not specified."
   echo ""
+  echo "  EDK2_CAPSULE_ENABLE                 (TRUE)"
   echo "  EDK2_SECURE_BOOT_ENABLE             (TRUE)"
   echo "  EDK2_NETWORK_ENABLE                 (TRUE)"
   echo "  EDK2_INCLUDE_TFTP_COMMAND           (TRUE)"
   echo "  EDK2_NETWORK_IP6_ENABLE             (TRUE)"
-  echo "  EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS (FALSE)"
+  echo "  EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS (TRUE)"
   echo "  EDK2_NETWORK_TLS_ENABLE             (TRUE)"
   echo "  EDK2_REDFISH_ENABLE                 (TRUE)"
   echo "  EDK2_PERFORMANCE_MEASUREMENT_ENABLE (FALSE)"
   echo "  EDK2_TPM2_ENABLE                    (TRUE)"
   echo "  EDK2_HEAP_GUARD_ENABLE              (FALSE)"
-  echo "  EDK2_X86_EMULATOR_ENABLE            (TRUE)"
+  echo "  EDK2_X86_EMULATOR_ENABLE            (FALSE)"
   echo "  EDK2_SHELL_ENABLE                   (TRUE)"
   echo "  LINUXBOOT_FILE_IN_UEFI_EXTRA        (FALSE)"
 
@@ -98,8 +101,8 @@ ctrl_c() {
   popd
 }
 
-TFA_VERSION=${TFA_VERSION:-2.10.20230517}
-SCP_VERSION=${SCP_VERSION:-2.10.20230517}
+TFA_VERSION=${TFA_VERSION:-2.10.20250506}
+SCP_VERSION=${SCP_VERSION:-2.10.20250506}
 
 TFA_SLIM=${TFA_SLIM:-$PWD/altra_atf_signed_${TFA_VERSION}.slim}
 SCP_SLIM=${SCP_SLIM:-$PWD/altra_scp_signed_${SCP_VERSION}.slim}
@@ -264,17 +267,18 @@ if [ -n "${CERT_PASSWORD}" ]; then
   export CERT_PASSWORD
 fi
 
+EDK2_CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE:-TRUE}
 EDK2_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE:-TRUE}
 EDK2_NETWORK_ENABLE=${EDK2_NETWORK_ENABLE:-TRUE}
 EDK2_INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND:-TRUE}
 EDK2_NETWORK_IP6_ENABLE=${EDK2_NETWORK_IP6_ENABLE:-TRUE}
-EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS:-FALSE}
+EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS:-TRUE}
 EDK2_NETWORK_TLS_ENABLE=${EDK2_NETWORK_TLS_ENABLE:-TRUE}
 EDK2_REDFISH_ENABLE=${EDK2_REDFISH_ENABLE:-TRUE}
 EDK2_PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE:-FALSE}
 EDK2_TPM2_ENABLE=${EDK2_TPM2_ENABLE:-TRUE}
 EDK2_HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE:-FALSE}
-EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-TRUE}
+EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-FALSE}
 EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-TRUE}
 LINUXBOOT_FILE_IN_UEFI_EXTRA=${LINUXBOOT_FILE_IN_UEFI_EXTRA:-FALSE}
 
@@ -355,6 +359,7 @@ build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS}              
         -D FIRMWARE_VER="${VER}"                                                   \
         -D FIRMWARE_VER_HEX="${VER_HEX}"                                           \
         -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}                        \
+        -D CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE}                                   \
         -D UEFI_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE}                      \
         -D NETWORK_ENABLE=${EDK2_NETWORK_ENABLE}                                   \
         -D INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND}                       \
@@ -460,7 +465,7 @@ else
 fi
 
 # LinuxBoot doesn't support capsule updates
-if [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
+if [ "${EDK2_CAPSULE_ENABLE}" = "TRUE" ] && [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
 
   # Build the capsule (for upgrading from the UEFI Shell or Linux)
   build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \

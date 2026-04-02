@@ -15,7 +15,6 @@
 
 #langdef en-US "English"
 
-#include "Type07/PlatformCache.uni"
-#include "Type11/PlatformOemString.uni"
-#include "Type12/PlatformJumperStrings.uni"
-#include "Type17/PlatformMemoryDevice.uni"
+#include "Type08/PlatformPortConnector.uni"
+#include "Type09/PlatformSystemSlot.uni"
+#include "Type41/PlatformOnboardDevicesExtended.uni"

@@ -57,9 +57,9 @@
 
   DEFINE FIRMWARE_VER            = 00.01.01-00
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
-  DEFINE CAPSULE_ENABLE          = TRUE
+  DEFINE CAPSULE_ENABLE          = FALSE
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = FALSE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -74,13 +74,10 @@
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
+
+  DEFINE X86_EMULATOR_ENABLE                 = FALSE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
   DEFINE HEAP_GUARD_ENABLE                   = FALSE
-
-!if $(CAPSULE_ENABLE) == TRUE
-  DEFINE UEFI_IMAGE              = Build/Altra1L2T/altra1l2q_uefi.bin
-  DEFINE TFA_UEFI_IMAGE          = Build/Altra1L2T/altra1l2q_tfa_uefi.bin
-!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -117,8 +114,6 @@
   # Pcie Board
   #
   BoardPcieLib|Platform/ASRockRack/AltraBoardPkg/Library/BoardPcieLib/BoardPcieLib.inf
-
-  IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
@@ -202,6 +197,10 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
 
+  gArmTokenSpaceGuid.PcdSystemProductName|L"ALTRAD8UD-1L2T"
+  gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"ASRock Rack"
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"ALTRAD8UD-1L2T"
+
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
   # presence of the 32-bit entry point anyway (because many AARCH64 systems
@@ -267,13 +266,15 @@
 
 [PcdsDynamicDefault.common.DEFAULT]
   # SMBIOS Type 0 - BIOS Information
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"ASRock Rack Inc."
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"EDK II"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString|L"MM/DD/YYYY"
 
 [PcdsDynamicExDefault.common.DEFAULT]
+!if $(CAPSULE_ENABLE) == TRUE
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("731cbc77-cce1-4ec2-b79a-265470b332f1")}|VOID*|0x10
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("a4c7d17d-491f-4be6-a261-ed5d9d36de42")}|VOID*|0x10
+!endif
 
   # Default Video Resolution
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum
@@ -348,6 +349,7 @@
   ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  Platform/ASRockRack/Altra1L2TPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
   ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
   Features/ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf 
 
