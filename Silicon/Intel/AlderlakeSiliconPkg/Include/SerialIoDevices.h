@@ -125,7 +125,7 @@ typedef struct {
   UINT8       Parity;      ///< <b> 1 - No Parity</b> see EFI_PARITY_TYPE MdePkg.dec PcdUartDefaultParity
   UINT8       DataBits;    ///< <b>8</b> MdePkg.dec PcdUartDefaultDataBits
   UINT8       StopBits;    ///< <b>1 - One Stop Bit</b> see EFI_STOP_BITS_TYPE  MdePkg.dec  PcdUartDefaultStopBits
-  UINT8       AutoFlow;    ///< <b>FALSE</b>  IntelFrameworkModulePkg.dsc PcdIsaBusSerialUseHalfHandshake
+  UINT8       AutoFlow;    ///< <b>FALSE</b>  MdeModulePkg.dec PcdSerialUseHalfHandshake
 } SERIAL_IO_UART_ATTRIBUTES;
 
 /**
