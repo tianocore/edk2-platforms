@@ -105,6 +105,10 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
     # Source override Binary
     config["WORKSPACE_PLATFORM"] = os.path.join(config["WORKSPACE"],
                                                 config["WORKSPACE_PLATFORM"])
+    config["WORKSPACE_MIN_PACKAGE"] = os.path.join(config["WORKSPACE"],
+                                                config["WORKSPACE_MIN_PACKAGE"])
+    config["MIN_PACKAGE_TOOLS"] = os.path.join(config["WORKSPACE"],
+                                                config["MIN_PACKAGE_TOOLS"])
     config["WORKSPACE_SILICON"] = os.path.join(config["WORKSPACE"],
                                                config["WORKSPACE_SILICON"])
     config["WORKSPACE_FEATURES"] = os.path.join(config["WORKSPACE"],
@@ -122,6 +126,7 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
 
     # add to package path
     config["PACKAGES_PATH"] = config["WORKSPACE_PLATFORM"]
+    config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_MIN_PACKAGE"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON_BIN"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_FEATURES"]
@@ -408,9 +413,8 @@ def build(config):
             if re.search(pattern, item):
                 os.remove(os.path.join(file_dir, item))
 
-        command = [sys.executable, os.path.join(config['WORKSPACE_PLATFORM'],
-                                config['PLATFORM_PACKAGE'],
-                                'Tools', 'Fsp',
+        command = [sys.executable, os.path.join(config['MIN_PACKAGE_TOOLS'],
+                                'Fsp',
                                 'RebaseFspBinBaseAddress.py'),
                    os.path.join(config['WORKSPACE_PLATFORM'],
                                 config['FLASH_MAP_FDF']),

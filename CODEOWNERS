@@ -51,7 +51,7 @@
 
 /Platform/Intel/** @nate-desimone @SaiChaganty
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
-/Platform/Intel/MinPlatformPkg/** @nate-desimone @SaiChaganty
+/Platform/MinPlatformPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
