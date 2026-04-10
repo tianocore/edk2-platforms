@@ -16,7 +16,7 @@
   PldmProtocolLib|ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
 
 [LibraryClasses.AARCH64]
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
 
 [LibraryClasses.AARCH64.PEIM]

@@ -33,7 +33,7 @@
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 
 [LibraryClasses.common]
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Silicon/ARM/NeoverseN1Soc/Library/PlatformLib/PlatformLib.inf
   BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf

@@ -150,7 +150,7 @@
   ArmPlatformPkg/PeilessSec/PeilessSec.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
-      ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+      ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
       PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLibNull.inf
   }
 

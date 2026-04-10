@@ -35,7 +35,7 @@
 !include Silicon/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).dsc.inc
 
 [LibraryClasses]
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
+  ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
   ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf

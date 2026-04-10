@@ -28,7 +28,7 @@
   *_*_*_CC_FLAGS = -DDISABLE_NEW_DEPRECATED_INTERFACES -DEDK2_PLAT_FW_REL_VERSION=\"$(EDK2_PLAT_FW_REL_VERSION)\"
 
 [LibraryClasses.common]
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
