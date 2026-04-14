@@ -80,6 +80,7 @@
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
   VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
   AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
+  VariableStorageRouterLib|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseStandaloneMmLib.inf
 !endif
 
   ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
@@ -151,7 +152,7 @@
 !endif
 
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbStandaloneMm.inf {
     <LibraryClasses>
       DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLibBase.inf
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
@@ -160,6 +161,7 @@
       VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLib.inf
       VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
   }
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
 !endif
 
