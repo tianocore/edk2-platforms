@@ -27,12 +27,6 @@
 #include <Library/IoLib.h>
 #include <Library/PrintLib.h>
 
-#ifndef DYNAMIC_TABLES_FRAMEWORK
-// This GUID must match the FILE_GUID in ArmPlatformPkg/ArmJunoPkg/AcpiTables/AcpiTables.inf
-STATIC CONST EFI_GUID mJunoAcpiTableFile = { 0xa1dd808e, 0x1e95, 0x4399, { 0xab, 0xc0, 0x65, 0x3c, 0x82, 0xe8, 0x53, 0x0c } };
-STATIC VOID *mAcpiRegistration = NULL;
-#endif
-
 STATIC VOID *mPciIoNotificationRegistration = NULL;
 
 /**
@@ -383,14 +377,6 @@ ArmJunoEntryPoint (
 
   GetJunoRevision(JunoRevision);
 
-#ifndef DYNAMIC_TABLES_FRAMEWORK
-  //
-  // Try to install the ACPI Tables
-  //
-  Status = LocateAndInstallAcpiFromFv (&mJunoAcpiTableFile);
-  ASSERT_EFI_ERROR (Status);
-#endif
-
   //
   // Setup R1/R2 options if not already done.
   //
@@ -410,17 +396,6 @@ ArmJunoEntryPoint (
         NULL,
         &mPciIoNotificationRegistration
         );
-
-#ifndef DYNAMIC_TABLES_FRAMEWORK
-    // Declare the related ACPI Tables
-    EfiCreateProtocolNotifyEvent (
-        &gEfiAcpiTableProtocolGuid,
-        TPL_CALLBACK,
-        AcpiPciNotificationEvent,
-        NULL,
-        &mAcpiRegistration
-        );
-#endif
   }
 
   //

@@ -42,10 +42,8 @@
 # On RTSM, most peripherals are VExpress Motherboard peripherals
 !include Platform/ARM/VExpressPkg/ArmVExpress.dsc.inc
 
-!ifdef DYNAMIC_TABLES_FRAMEWORK
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 !include Platform/ARM/JunoPkg/ConfigurationManager/ConfigurationManager.dsc.inc
-!endif
 
 [LibraryClasses.common]
   ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
@@ -117,9 +115,6 @@
 [BuildOptions]
   GCC:*_*_ARM_PLATFORM_FLAGS = -march=armv8-a
 
-!ifdef DYNAMIC_TABLES_FRAMEWORK
-  *_*_*_PLATFORM_FLAGS = -DDYNAMIC_TABLES_FRAMEWORK
-!endif
 !ifdef ENABLE_CPC
   *_*_*_PLATFORM_FLAGS = -DENABLE_CPC
 !endif
@@ -309,10 +304,7 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13FFF
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
-
-!ifdef DYNAMIC_TABLES_FRAMEWORK
   gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdGenTpm2DeviceTable|TRUE
-!endif
 !endif
 
 [PcdsFixedAtBuild.ARM]
@@ -417,9 +409,6 @@
   # ACPI Support
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-!ifndef DYNAMIC_TABLES_FRAMEWORK
-  Platform/ARM/JunoPkg/AcpiTables/AcpiTables.inf
-!endif
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
   ArmPkg/Drivers/ArmGicDxe/ArmGicV2Dxe.inf
