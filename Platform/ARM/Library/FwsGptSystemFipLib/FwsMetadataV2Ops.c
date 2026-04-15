@@ -138,7 +138,8 @@ ValidateMetadataV2 (
 
   for (BankIdx = 0; BankIdx < FwFwsDesc->NumBanks; BankIdx++) {
     if ((Metadata->BankState[BankIdx] != FWU_BANK_STATE_VALID) &&
-        (Metadata->BankState[BankIdx] != FWU_BANK_STATE_ACCEPTED))
+        (Metadata->BankState[BankIdx] != FWU_BANK_STATE_ACCEPTED) &&
+        (Metadata->BankState[BankIdx] != FWU_BANK_STATE_INVALID))
     {
       DEBUG ((
         DEBUG_ERROR,
