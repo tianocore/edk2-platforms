@@ -15,6 +15,7 @@
 #include <Library/FdtLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiLib.h>
 #include <Protocol/RpiFirmware.h>
 #include <Guid/Fdt.h>
 #include <ConfigVars.h>
@@ -499,37 +500,37 @@ FdtDxeInitialize (
 
   Status = SanitizePSCI ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to sanitize PSCI: %r\n", Status));
+    Print (L"Failed to sanitize PSCI: %r\n", Status);
   }
 
   Status = CleanMemoryNodes ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to clean memory nodes: %r\n", Status));
+    Print (L"Failed to clean memory nodes: %r\n", Status);
   }
 
   Status = CleanSimpleFramebuffer ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to clean frame buffer: %r\n", Status));
+    Print (L"Failed to clean frame buffer: %r\n", Status);
   }
 
   Status = FixEthernetAliases ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to fix ethernet aliases: %r\n", Status));
+    Print (L"Failed to fix ethernet aliases: %r\n", Status);
   }
 
   Status = UpdateMacAddress ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to update MAC address: %r\n", Status));
+    Print (L"Failed to update MAC address: %r\n", Status);
   }
 
   Status = AddUsbCompatibleProperty ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to update USB compatible properties: %r\n", Status));
+    Print (L"Failed to update USB compatible properties: %r\n", Status);
   }
 
   SyncPcie ();
   if (EFI_ERROR (Status)) {
-    DEBUG (("Failed to update PCIe address ranges: %r\n", Status));
+    Print (L"Failed to update PCIe address ranges: %r\n", Status);
   }
 
   DEBUG ((DEBUG_INFO, "Installed devicetree at address %p\n", mFdtImage));
