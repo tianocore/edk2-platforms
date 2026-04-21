@@ -5,8 +5,8 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 
-${GCC5_AARCH64_PREFIX}objcopy -I binary -B aarch64 -O elf64-littleaarch64 ${WORKSPACE}/Build/RB3Gen2/${1}_GCC/FV/RB3GEN2_EFI.fd edk2-elf.o
-${GCC5_AARCH64_PREFIX}ld edk2-elf.o -o edk2.elf -EL -T ${WORKSPACE}/edk2-platforms/Silicon/Qualcomm/qcom-edk2-elf.lds --defsym=ELFENTRY=0x9fc00000 -Ttext=0x9fc00000
+${GCC_AARCH64_PREFIX}objcopy -I binary -B aarch64 -O elf64-littleaarch64 ${WORKSPACE}/Build/RB3Gen2/${1}_GCC/FV/RB3GEN2_EFI.fd edk2-elf.o
+${GCC_AARCH64_PREFIX}ld edk2-elf.o -o edk2.elf -EL -T ${WORKSPACE}/edk2-platforms/Silicon/Qualcomm/qcom-edk2-elf.lds --defsym=ELFENTRY=0x9fc00000 -Ttext=0x9fc00000
 rm -f edk2-elf.o
 
 if [ ! -d "${WORKSPACE}/qtestsign" ]; then
