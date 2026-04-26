@@ -481,6 +481,10 @@ DriverCallback (
         case 2:
           Value->u8 = PcieRCDevMapHighDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
           break;
+
+        case 3:
+          Value->u8 = PcieRCAspmDefaultSetting ((QuestionId - 0x8002) / MAX_EDITABLE_ELEMENTS, PrivateData);
+          break;
       }
 
       break;
@@ -545,6 +549,17 @@ PcieRCActiveDefaultSetting (
   AC01_ROOT_COMPLEX  *RootComplex = GetRootComplex (RCIndex);
 
   return RootComplex->DefaultActive;
+}
+
+UINT8
+PcieRCAspmDefaultSetting (
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
+  )
+{
+  AC01_ROOT_COMPLEX  *RootComplex = GetRootComplex (RCIndex);
+
+  return RootComplex->AspmSupport;
 }
 
 VOID *
@@ -635,10 +650,12 @@ PcieRCScreenSetup (
   UINT16              BifurHiVarOffset;
   UINT16              BifurLoVarOffset;
   UINT16              DisabledStatusVarOffset;
+  UINT16              AspmCapVarOffset;
   UINT8               QuestionFlags, QuestionFlagsSubItem;
   VOID                *EndOpCodeHandle;
   VOID                *OptionsOpCodeHandle;
   VOID                *StartOpCodeHandle;
+  VOID                *AspmOpCodeHandle;
 
   RootComplex = GetRootComplex (RCIndex);
 
@@ -699,6 +716,7 @@ PcieRCScreenSetup (
   DisabledStatusVarOffset = (UINT16)RC0_STATUS_OFFSET + sizeof (BOOLEAN) * RCIndex;
   BifurLoVarOffset        = (UINT16)RC0_BIFUR_LO_OFFSET + sizeof (UINT8) * RCIndex;
   BifurHiVarOffset        = (UINT16)RC0_BIFUR_HI_OFFSET + sizeof (UINT8) * RCIndex;
+  AspmCapVarOffset        = (UINT16)RC0_ASPM_CAP_OFFSET + sizeof (UINT8) * RCIndex;
 
   QuestionFlags = EFI_IFR_FLAG_RESET_REQUIRED | EFI_IFR_FLAG_CALLBACK;
   if (  IsEmptyRC (RootComplex)
@@ -735,10 +753,11 @@ PcieRCScreenSetup (
     //
     OptionsOpCodeHandle = CreateDevMapOptions (RootComplex);
 
+    QuestionFlagsSubItem = QuestionFlags;
     if (  (RootComplex->DefaultDevMapLow != 0)
        && (RootComplex->DefaultDevMapLow != DevMapModeAuto))
     {
-      QuestionFlags |= EFI_IFR_FLAG_READ_ONLY;
+      QuestionFlagsSubItem |= EFI_IFR_FLAG_READ_ONLY;
     }
 
     HiiCreateOneOfOpCode (
@@ -748,7 +767,7 @@ PcieRCScreenSetup (
       BifurLoVarOffset,                         // Offset in Buffer Storage
       STRING_TOKEN (STR_PCIE_RCA_BIFUR),        // Question prompt text
       STRING_TOKEN (STR_PCIE_RCA_BIFUR_HELP),   // Question help text
-      QuestionFlags,                            // Question flag
+      QuestionFlagsSubItem,                     // Question flag
       EFI_IFR_NUMERIC_SIZE_1,                   // Data type of Question Value
       OptionsOpCodeHandle,                      // Option Opcode list
       NULL                                      // Default Opcode is NULl
@@ -803,6 +822,51 @@ PcieRCScreenSetup (
       );
   }
 
+  AspmOpCodeHandle = HiiAllocateOpCodeHandle ();
+  ASSERT (AspmOpCodeHandle != NULL);
+
+  HiiCreateOneOfOptionOpCode (
+    AspmOpCodeHandle,
+    STRING_TOKEN (STR_PCIE_ASPM_DISABLED),
+    0,
+    EFI_IFR_NUMERIC_SIZE_1,
+    0x0
+    );
+  HiiCreateOneOfOptionOpCode (
+    AspmOpCodeHandle,
+    STRING_TOKEN (STR_PCIE_ASPM_L0S),
+    0,
+    EFI_IFR_NUMERIC_SIZE_1,
+    0x1
+    );
+  HiiCreateOneOfOptionOpCode (
+    AspmOpCodeHandle,
+    STRING_TOKEN (STR_PCIE_ASPM_L1),
+    0,
+    EFI_IFR_NUMERIC_SIZE_1,
+    0x2
+    );
+  HiiCreateOneOfOptionOpCode (
+    AspmOpCodeHandle,
+    STRING_TOKEN (STR_PCIE_ASPM_L0S_L1),
+    EFI_IFR_OPTION_DEFAULT,
+    EFI_IFR_NUMERIC_SIZE_1,
+    0x3
+    );
+
+  HiiCreateOneOfOpCode (
+    StartOpCodeHandle,                        // Container for dynamic created opcodes
+    0x8005 + MAX_EDITABLE_ELEMENTS * RCIndex, // Question ID (or call it "key")
+    VARSTORE_ID,                              // VarStore ID
+    AspmCapVarOffset,                         // Offset within Buffer Storage
+    STRING_TOKEN (STR_PCIE_ASPM_PROMPT),      // Question prompt text
+    STRING_TOKEN (STR_PCIE_ASPM_HELP),        // Question flag text
+    QuestionFlags,                            // Question flag
+    EFI_IFR_NUMERIC_SIZE_1,                   // Data type of Question Value
+    AspmOpCodeHandle,                         // Option Opcode list
+    NULL                                      // Default Opcode is NULL
+    );
+
   HiiUpdateForm (
     PrivateData->HiiHandle,     // HII handle
     &gPcieFormSetGuid,          // Formset GUID
@@ -814,6 +878,7 @@ PcieRCScreenSetup (
   HiiFreeOpCodeHandle (StartOpCodeHandle);
   HiiFreeOpCodeHandle (EndOpCodeHandle);
   HiiFreeOpCodeHandle (OptionsOpCodeHandle);
+  HiiFreeOpCodeHandle (AspmOpCodeHandle);
 
   return EFI_SUCCESS;
 }
@@ -1219,6 +1284,7 @@ RootComplexDriverEntry (
       VarStoreConfig->RCBifurcationLow[RCIndex]  = RootComplex->DefaultDevMapLow;
       VarStoreConfig->RCBifurcationHigh[RCIndex] = RootComplex->DefaultDevMapHigh;
       VarStoreConfig->RCStatus[RCIndex]          = RootComplex->Active;
+      VarStoreConfig->RCAspmCap[RCIndex]         = RootComplex->AspmSupport;
       IsUpdated                                  = TRUE;
     }
   }

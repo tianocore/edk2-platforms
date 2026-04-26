@@ -25,13 +25,15 @@ extern UINT8  RootComplexConfigVfrBin[];
 //
 extern UINT8  RootComplexConfigDxeStrings[];
 
-#define MAX_EDITABLE_ELEMENTS  3
+#define MAX_EDITABLE_ELEMENTS  4
 #define RC0_STATUS_OFFSET  \
   OFFSET_OF (ROOT_COMPLEX_CONFIG_VARSTORE_DATA, RCStatus[0])
 #define RC0_BIFUR_LO_OFFSET  \
   OFFSET_OF (ROOT_COMPLEX_CONFIG_VARSTORE_DATA, RCBifurcationLow[0])
 #define RC0_BIFUR_HI_OFFSET  \
   OFFSET_OF (ROOT_COMPLEX_CONFIG_VARSTORE_DATA, RCBifurcationHigh[0])
+#define RC0_ASPM_CAP_OFFSET  \
+  OFFSET_OF (ROOT_COMPLEX_CONFIG_VARSTORE_DATA, RCAspmCap[0])
 #define SMMU_PMU_OFFSET  \
   OFFSET_OF (ROOT_COMPLEX_CONFIG_VARSTORE_DATA, SmmuPmu)
 
@@ -107,6 +109,12 @@ PcieRCDevMapHighDefaultSetting (
 
 BOOLEAN
 PcieRCActiveDefaultSetting (
+  IN UINTN                RCIndex,
+  IN SCREEN_PRIVATE_DATA  *PrivateData
+  );
+
+UINT8
+PcieRCAspmDefaultSetting (
   IN UINTN                RCIndex,
   IN SCREEN_PRIVATE_DATA  *PrivateData
   );

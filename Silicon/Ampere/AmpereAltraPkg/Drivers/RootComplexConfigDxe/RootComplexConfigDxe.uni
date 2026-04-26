@@ -101,3 +101,10 @@
 
 #string STR_PCIE_STRONG_ORDERING_PROMPT #language en-US "PCIe Strong Ordering"
 #string STR_PCIE_STRONG_ORDERING_HELP   #language en-US "Enable/disable PCIe Strong Ordering with internal bus"
+
+#string STR_PCIE_ASPM_PROMPT            #language en-US "ASPM Support"
+#string STR_PCIE_ASPM_HELP              #language en-US "Configure Active State Power Management for this Root Complex. Disabled = no ASPM; L0s = light sleep; L1 = deeper sleep; L0s and L1 = both states. Only enable if the attached endpoint(s) support the selected state."
+#string STR_PCIE_ASPM_DISABLED          #language en-US "Disabled"
+#string STR_PCIE_ASPM_L0S               #language en-US "L0s"
+#string STR_PCIE_ASPM_L1                #language en-US "L1"
+#string STR_PCIE_ASPM_L0S_L1            #language en-US "L0s and L1"

@@ -492,8 +492,8 @@ ProgramLinkCapabilities (
       break;
   }
 
-  // Enable ASPM Capability
-  Val = CAP_ACTIVE_STATE_LINK_PM_SUPPORT_SET (Val, L0S_L1_SUPPORTED);
+  // Enable ASPM Capability based on per-RC setting
+  Val = CAP_ACTIVE_STATE_LINK_PM_SUPPORT_SET (Val, RootComplex->AspmSupport);
   MmioWrite32 (TargetAddress, Val);
 
   TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL2_LINK_STATUS2_REG;

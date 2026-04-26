@@ -134,6 +134,7 @@ typedef struct {
   UINT32                    Flags;
   UINT8                     PresetGen3[MaxPcieController];
   UINT8                     PresetGen4[MaxPcieController];
+  UINT8                     AspmSupport;
 } AC01_ROOT_COMPLEX;
 
 #pragma pack()
