@@ -56,4 +56,4 @@
   gEdkiiSmmLegacyBootProtocolGuid               ## CONSUMES
 
 [Depex]
-  gEfiSmmVariableProtocolGuid
+  gEfiSmmVariableProtocolGuid AND gSmmVariableWriteGuid
