@@ -20,7 +20,7 @@
   BmcConfigVfr.vfr
 
 [Packages]
-  Features/ManageabilityPkg/ManageabilityPkg.dec
+  ManageabilityPkg/ManageabilityPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec

@@ -313,7 +313,7 @@ The IPMI SSIF is used for the communication between the BMC and the SoC. It requ
   If the custom platform does not support this pin, use a NULL library that assumes BMC is always on and ready to accept IPMI messages. Put below line to NewBoard.dsc.
 
   ```c
-  Features/ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
+  ManageabilityPkg/Library/PlatformBmcReadyLibNull/PlatformBmcReadyLibNull.inf
   ```
 
 In order to enable the IPMI SSIF support:
