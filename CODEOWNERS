@@ -49,8 +49,6 @@
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty
 /Features/Intel/UserInterface/** @dandanbi @nate-desimone @SaiChaganty
 
-/Features/ManageabilityPkg/** @changab
-
 /Platform/Intel/** @nate-desimone @SaiChaganty
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
 /Platform/Intel/MinPlatformPkg/** @nate-desimone @SaiChaganty
