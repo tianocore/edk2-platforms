@@ -96,8 +96,8 @@
 /Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
 
 # Qualcomm platforms and silicon
-/Platform/Qualcomm/** @leiflindholm @b49020
-/Silicon/Qualcomm/** @leiflindholm @b49020
+/Platform/Qualcomm/** @leiflindholm @b49020 @vishalo
+/Silicon/Qualcomm/** @leiflindholm @b49020 @vishalo
 
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm

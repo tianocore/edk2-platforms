@@ -44,6 +44,9 @@
 /Platform/Marvell/** @leiflindholm
 /Silicon/Marvell/** @leiflindholm
 
+/Platform/Qualcomm/** @tsreelalitha
+/Silicon/Qualcomm/** @tsreelalitha
+
 # Miscellaneous Drivers
 /Silicon/Atmel/** @ardbiesheuvel
 /Silicon/Openmoko/** @ardbiesheuvel

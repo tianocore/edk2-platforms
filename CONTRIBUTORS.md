@@ -59,9 +59,11 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Sami Mujawar           | sami.mujawar@arm.com             | [@samimujawar](https://github.com/samimujawar)       |
 | Sumit Garg             | sumit.garg@oss.qualcomm.com      | [@b49020](https://github.com/b49020)                 |
 | Sunil V L              | sunilvl@ventanamicro.com         | [@vlsunil](https://github.com/vlsunil)               |
+| Thamballi Sreelalitha  | sreelali@qti.qualcomm.com        | [@tsreelalitha](https://github.com/tsreelalitha)     |
 | Theo Jehl              | theojehl76@gmail.com             | [@theomacx86](https://github.com/theomacx86)         |
 | Thomas Abraham         | thomas.abraham@arm.com           |                                                      |
 | USER0FISH              | libing1202@outlook.com           | [@USER0FISH](https://github.com/USER0FISH)           |
+| Vishal Oliyil Kunnil   | vishalo@qti.qualcomm.com         | [@vishalo](https://github.com/vishalo)               |
 | Wenyi Xie              | xiewenyi2@huawei.com             |                                                      |
 | Xianglai li            | lixianglai@loongson.cn           | [@lixianglai](https://github.com/lixianglai)         |
 | Yang Wang              | wangyang@bosc.ac.cn              |                                                      |
