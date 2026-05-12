@@ -53,7 +53,11 @@ SerialPortInitialize (
   GeniSerialPollBit(GENI_S_CMD_CTRL_REG, GENI_S_CMD_ABORT, FALSE);
   MmioWrite32(GENI_S_IRQ_CLEAR_REG, GENI_S_CMD_DONE_EN | GENI_S_CMD_ABORT_EN);
 
+  // Force default resets the GENI state machine (including TX/RX config).
   MmioWrite32(GENI_FORCE_DEFAULT_REG, GENI_FORCE_DEFAULT);
+  // Wait for CMD_ACTIVE to clear before proceeding so the reset is complete.
+  GeniSerialPollBit(GENI_STATUS_REG, GENI_STATUS_REG_CMD_ACTIVE, FALSE);
+
   MmioWrite32(GENI_RX_PACKING_CFG0_REG, GENI_UART_PACKING_CFG0);
   MmioWrite32(GENI_RX_PACKING_CFG1_REG, GENI_UART_PACKING_CFG1);
   MmioWrite32(GENI_S_CMD0_REG, GENI_S_CMD_RX);
