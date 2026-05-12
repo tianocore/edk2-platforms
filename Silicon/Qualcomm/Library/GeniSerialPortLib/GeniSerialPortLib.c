@@ -121,7 +121,7 @@ SerialPortRead (
 
     GeniSerialPollBit(GENI_RX_FIFO_STATUS_REG, GENI_RX_FIFO_WC_MASK, TRUE);
     if ((MmioRead32(GENI_RX_FIFO_STATUS_REG) & GENI_RX_FIFO_WC_MASK) == 0) {
-	    return Count;
+      return Count;
     }
 
     Buffer[Count] = (UINT8)MmioRead32(GENI_RX_FIFO_REG);

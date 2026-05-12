@@ -11,9 +11,9 @@
 ENTRY(ELFENTRY)
 SECTIONS
 {
-	. = ELFENTRY;
+  . = ELFENTRY;
 
-	.data : {
-		*(.data*)
-	}
+  .data : {
+    *(.data*)
+  }
 }
