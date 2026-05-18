@@ -79,7 +79,7 @@ usage () {
   echo "  CERT_PASSWORD        - password to use when generating Platform and Update Keys and certificates"
   echo "                         defaults to \"password\" if not specified."
   echo ""
-  echo "  EDK2_CAPSULE_ENABLE                 (TRUE)"
+  echo "  EDK2_CAPSULE_ENABLE                 (FALSE)"
   echo "  EDK2_SECURE_BOOT_ENABLE             (TRUE)"
   echo "  EDK2_NETWORK_ENABLE                 (TRUE)"
   echo "  EDK2_INCLUDE_TFTP_COMMAND           (TRUE)"
@@ -267,7 +267,7 @@ if [ -n "${CERT_PASSWORD}" ]; then
   export CERT_PASSWORD
 fi
 
-EDK2_CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE:-TRUE}
+EDK2_CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE:-FALSE}
 EDK2_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE:-TRUE}
 EDK2_NETWORK_ENABLE=${EDK2_NETWORK_ENABLE:-TRUE}
 EDK2_INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND:-TRUE}

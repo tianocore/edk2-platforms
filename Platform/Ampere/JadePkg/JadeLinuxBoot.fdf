@@ -161,11 +161,6 @@ APRIORI DXE {
   INF Platform/Ampere/JadePkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
 
   #
-  # SystemFirmwareUpdateDxe
-  #
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
-
-  #
   # In-band NVPARAM Access
   #
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf

@@ -270,11 +270,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString|L"MM/DD/YYYY"
 
 [PcdsDynamicExDefault.common.DEFAULT]
-!if $(CAPSULE_ENABLE) == TRUE
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("731cbc77-cce1-4ec2-b79a-265470b332f1")}|VOID*|0x10
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{GUID("a4c7d17d-491f-4be6-a261-ed5d9d36de42")}|VOID*|0x10
-!endif
 
   # Default Video Resolution
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum
