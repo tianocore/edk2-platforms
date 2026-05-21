@@ -23,9 +23,9 @@
 **/
 STATIC VOID
 GeniSerialPollBit (
-  IN UINTN      Reg,
-  IN UINT32     Bit,
-  IN BOOLEAN    Set
+  IN UINTN    Reg,
+  IN UINT32   Bit,
+  IN BOOLEAN  Set
   )
 {
   UINT32  TimeOutUs;
@@ -33,10 +33,11 @@ GeniSerialPollBit (
   TimeOutUs = 10000;
 
   do {
-    if ((MmioRead32(Reg) & Bit) == Set) {
+    if ((MmioRead32 (Reg) & Bit) == Set) {
       break;
     }
-    MicroSecondDelay(10);
+
+    MicroSecondDelay (10);
     TimeOutUs -= 10;
   } while (TimeOutUs > 0);
 }
@@ -53,25 +54,31 @@ SerialPortInitialize (
   VOID
   )
 {
-  MmioWrite32(GENI_TX_WATERMARK_REG, GENI_DEF_TX_WM);
-  MmioWrite32(GENI_M_IRQ_EN_REG, MmioRead32(GENI_M_IRQ_EN_REG) |
-              GENI_M_CMD_DONE_EN | GENI_M_TX_FIFO_WATERMARK_EN |
-              GENI_M_RX_FIFO_WATERMARK_EN | GENI_M_RX_FIFO_LAST_EN);
+  MmioWrite32 (GENI_TX_WATERMARK_REG, GENI_DEF_TX_WM);
+  MmioWrite32 (
+    GENI_M_IRQ_EN_REG,
+    MmioRead32 (GENI_M_IRQ_EN_REG) |
+    GENI_M_CMD_DONE_EN | GENI_M_TX_FIFO_WATERMARK_EN |
+    GENI_M_RX_FIFO_WATERMARK_EN | GENI_M_RX_FIFO_LAST_EN
+    );
 
-  MmioWrite32(GENI_S_CMD_CTRL_REG, GENI_S_CMD_ABORT);
-  GeniSerialPollBit(GENI_S_CMD_CTRL_REG, GENI_S_CMD_ABORT, FALSE);
-  MmioWrite32(GENI_S_IRQ_CLEAR_REG, GENI_S_CMD_DONE_EN | GENI_S_CMD_ABORT_EN);
+  MmioWrite32 (GENI_S_CMD_CTRL_REG, GENI_S_CMD_ABORT);
+  GeniSerialPollBit (GENI_S_CMD_CTRL_REG, GENI_S_CMD_ABORT, FALSE);
+  MmioWrite32 (GENI_S_IRQ_CLEAR_REG, GENI_S_CMD_DONE_EN | GENI_S_CMD_ABORT_EN);
 
   // Force default resets the GENI state machine (including TX/RX config).
-  MmioWrite32(GENI_FORCE_DEFAULT_REG, GENI_FORCE_DEFAULT);
+  MmioWrite32 (GENI_FORCE_DEFAULT_REG, GENI_FORCE_DEFAULT);
   // Wait for CMD_ACTIVE to clear before proceeding so the reset is complete.
-  GeniSerialPollBit(GENI_STATUS_REG, GENI_STATUS_REG_CMD_ACTIVE, FALSE);
+  GeniSerialPollBit (GENI_STATUS_REG, GENI_STATUS_REG_CMD_ACTIVE, FALSE);
 
-  MmioWrite32(GENI_RX_PACKING_CFG0_REG, GENI_UART_PACKING_CFG0);
-  MmioWrite32(GENI_RX_PACKING_CFG1_REG, GENI_UART_PACKING_CFG1);
-  MmioWrite32(GENI_S_CMD0_REG, GENI_S_CMD_RX);
-  MmioWrite32(GENI_S_IRQ_EN_REG, MmioRead32(GENI_S_IRQ_EN_REG) |
-              GENI_S_RX_FIFO_WATERMARK_EN | GENI_S_RX_FIFO_LAST_EN);
+  MmioWrite32 (GENI_RX_PACKING_CFG0_REG, GENI_UART_PACKING_CFG0);
+  MmioWrite32 (GENI_RX_PACKING_CFG1_REG, GENI_UART_PACKING_CFG1);
+  MmioWrite32 (GENI_S_CMD0_REG, GENI_S_CMD_RX);
+  MmioWrite32 (
+    GENI_S_IRQ_EN_REG,
+    MmioRead32 (GENI_S_IRQ_EN_REG) |
+    GENI_S_RX_FIFO_WATERMARK_EN | GENI_S_RX_FIFO_LAST_EN
+    );
 
   return EFI_SUCCESS;
 }
@@ -89,22 +96,23 @@ SerialPortInitialize (
 UINTN
 EFIAPI
 SerialPortWrite (
-  IN UINT8     *Buffer,
-  IN UINTN     NumberOfBytes
-)
+  IN UINT8  *Buffer,
+  IN UINTN  NumberOfBytes
+  )
 {
-  UINTN   Count;
+  UINTN  Count;
 
   for (Count = 0; Count < NumberOfBytes; Count++, Buffer++) {
-    while (MmioRead32(GENI_STATUS_REG) & GENI_STATUS_REG_CMD_ACTIVE);
-    MmioWrite32(GENI_TX_TRANS_LEN_REG, 1);
-    MmioWrite32(GENI_M_CMD0_REG, GENI_M_CMD_TX);
-    MmioWrite32(GENI_TX_FIFO_REG, *Buffer);
+    while (MmioRead32 (GENI_STATUS_REG) & GENI_STATUS_REG_CMD_ACTIVE) {
+    }
+
+    MmioWrite32 (GENI_TX_TRANS_LEN_REG, 1);
+    MmioWrite32 (GENI_M_CMD0_REG, GENI_M_CMD_TX);
+    MmioWrite32 (GENI_TX_FIFO_REG, *Buffer);
   }
 
   return NumberOfBytes;
 }
-
 
 /**
   Read data from GENI serial port.
@@ -119,30 +127,29 @@ SerialPortWrite (
 UINTN
 EFIAPI
 SerialPortRead (
-  OUT UINT8     *Buffer,
-  IN  UINTN     NumberOfBytes
-)
+  OUT UINT8  *Buffer,
+  IN  UINTN  NumberOfBytes
+  )
 {
-  UINTN   Count;
+  UINTN  Count;
 
   for (Count = 0; Count < NumberOfBytes; Count++) {
-    MmioWrite32(GENI_S_CMD0_REG, GENI_S_CMD_RX);
+    MmioWrite32 (GENI_S_CMD0_REG, GENI_S_CMD_RX);
 
-    GeniSerialPollBit(GENI_M_IRQ_STATUS_REG, GENI_M_SEC_IRQ_EN, TRUE);
-    MmioWrite32(GENI_M_IRQ_CLEAR_REG, MmioRead32(GENI_M_IRQ_STATUS_REG));
-    MmioWrite32(GENI_S_IRQ_CLEAR_REG, MmioRead32(GENI_S_IRQ_STATUS_REG));
+    GeniSerialPollBit (GENI_M_IRQ_STATUS_REG, GENI_M_SEC_IRQ_EN, TRUE);
+    MmioWrite32 (GENI_M_IRQ_CLEAR_REG, MmioRead32 (GENI_M_IRQ_STATUS_REG));
+    MmioWrite32 (GENI_S_IRQ_CLEAR_REG, MmioRead32 (GENI_S_IRQ_STATUS_REG));
 
-    GeniSerialPollBit(GENI_RX_FIFO_STATUS_REG, GENI_RX_FIFO_WC_MASK, TRUE);
-    if ((MmioRead32(GENI_RX_FIFO_STATUS_REG) & GENI_RX_FIFO_WC_MASK) == 0) {
+    GeniSerialPollBit (GENI_RX_FIFO_STATUS_REG, GENI_RX_FIFO_WC_MASK, TRUE);
+    if ((MmioRead32 (GENI_RX_FIFO_STATUS_REG) & GENI_RX_FIFO_WC_MASK) == 0) {
       return Count;
     }
 
-    Buffer[Count] = (UINT8)MmioRead32(GENI_RX_FIFO_REG);
+    Buffer[Count] = (UINT8)MmioRead32 (GENI_RX_FIFO_REG);
   }
 
   return NumberOfBytes;
 }
-
 
 /**
   Check to see if any data is avaiable on GENI serial port.
@@ -156,7 +163,7 @@ SerialPortPoll (
   VOID
   )
 {
-  if (MmioRead32(GENI_RX_FIFO_STATUS_REG) & GENI_RX_FIFO_WC_MASK) {
+  if (MmioRead32 (GENI_RX_FIFO_STATUS_REG) & GENI_RX_FIFO_WC_MASK) {
     return TRUE;
   } else {
     return FALSE;
@@ -176,7 +183,7 @@ SerialPortPoll (
 EFI_STATUS
 EFIAPI
 SerialPortSetControl (
-  IN UINT32 Control
+  IN UINT32  Control
   )
 {
   return EFI_UNSUPPORTED;
@@ -195,13 +202,14 @@ SerialPortSetControl (
 EFI_STATUS
 EFIAPI
 SerialPortGetControl (
-  OUT UINT32 *Control
+  OUT UINT32  *Control
   )
 {
   *Control = 0;
   if (!SerialPortPoll ()) {
     *Control = EFI_SERIAL_INPUT_BUFFER_EMPTY;
   }
+
   return EFI_SUCCESS;
 }
 
@@ -241,12 +249,12 @@ SerialPortGetControl (
 EFI_STATUS
 EFIAPI
 SerialPortSetAttributes (
-  IN OUT UINT64             *BaudRate,
-  IN OUT UINT32             *ReceiveFifoDepth,
-  IN OUT UINT32             *Timeout,
-  IN OUT EFI_PARITY_TYPE    *Parity,
-  IN OUT UINT8              *DataBits,
-  IN OUT EFI_STOP_BITS_TYPE *StopBits
+  IN OUT UINT64              *BaudRate,
+  IN OUT UINT32              *ReceiveFifoDepth,
+  IN OUT UINT32              *Timeout,
+  IN OUT EFI_PARITY_TYPE     *Parity,
+  IN OUT UINT8               *DataBits,
+  IN OUT EFI_STOP_BITS_TYPE  *StopBits
   )
 {
   return EFI_UNSUPPORTED;

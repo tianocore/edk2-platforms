@@ -18,13 +18,13 @@
 // Note here that it is assumed that the prior stage XBL has already
 // initialized the UFS controller.
 //
-EDKII_UFS_HC_PLATFORM_PROTOCOL gQcomUfsHc = {
-    EDKII_UFS_HC_PLATFORM_PROTOCOL_VERSION,
-    NULL,
-    NULL,
-    EdkiiUfsCardRefClkFreqObsolete,
-    TRUE,
-    TRUE
+EDKII_UFS_HC_PLATFORM_PROTOCOL  gQcomUfsHc = {
+  EDKII_UFS_HC_PLATFORM_PROTOCOL_VERSION,
+  NULL,
+  NULL,
+  EdkiiUfsCardRefClkFreqObsolete,
+  TRUE,
+  TRUE
 };
 
 /**
@@ -40,21 +40,24 @@ EDKII_UFS_HC_PLATFORM_PROTOCOL gQcomUfsHc = {
 EFI_STATUS
 EFIAPI
 QcomUfsHcDriverEntry (
-  IN EFI_HANDLE            ImageHandle,
-  IN EFI_SYSTEM_TABLE      *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-  EFI_STATUS               Status;
+  EFI_STATUS  Status;
 
   Status = gBS->InstallProtocolInterface (
-             &ImageHandle,
-             &gEdkiiUfsHcPlatformProtocolGuid,
-             EFI_NATIVE_INTERFACE,
-             &gQcomUfsHc
-             );
+                  &ImageHandle,
+                  &gEdkiiUfsHcPlatformProtocolGuid,
+                  EFI_NATIVE_INTERFACE,
+                  &gQcomUfsHc
+                  );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "Failed to install UFS platform protocol, error: %r \n",
-      Status));
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to install UFS platform protocol, error: %r \n",
+      Status
+      ));
     return Status;
   }
 
