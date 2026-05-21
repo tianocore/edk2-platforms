@@ -14,6 +14,13 @@
 
 #include "GeniSerialPortLib.h"
 
+/**
+  Polls a register bit until it matches the specified state or the timeout expires.
+
+  @param[in] Reg  The physical address of the register to poll.
+  @param[in] Bit  The bitmask for target bit.
+  @param[in] Set  The boolean state to wait for.
+**/
 STATIC VOID
 GeniSerialPollBit (
   IN UINTN      Reg,
@@ -21,7 +28,9 @@ GeniSerialPollBit (
   IN BOOLEAN    Set
   )
 {
-  UINT32  TimeOutUs = 10000;
+  UINT32  TimeOutUs;
+
+  TimeOutUs = 10000;
 
   do {
     if ((MmioRead32(Reg) & Bit) == Set) {

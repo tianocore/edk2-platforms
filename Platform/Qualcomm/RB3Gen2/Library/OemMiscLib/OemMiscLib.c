@@ -1,11 +1,11 @@
 /** @file
-*  OemMiscLib.c
-*
-*  Copyright (c) 2020-2024, Linaro Ltd. All rights reserved.
-*  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-*
-*  SPDX-License-Identifier: BSD-2-Clause-Patent
-*
+  OemMiscLib implementation for RB3Gen2.
+
+  Copyright (c) 2020-2024, Linaro Ltd. All rights reserved.
+  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
 #include <Uefi.h>
