@@ -18,6 +18,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/MemoryAllocationLib.h>
 #include <Protocol/LoadedImage.h>
 #include <Protocol/DevicePath.h>
+#include <Guid/PcAnsi.h>
+#include <Guid/TtyTerm.h>
 
 VOID
 TestPointDumpDevicePath (
@@ -71,6 +73,42 @@ Done:
   return ;
 }
 
+STATIC
+BOOLEAN
+IsTerminalVendorNode (
+  EFI_DEVICE_PATH_PROTOCOL  *Node
+  )
+{
+  STATIC CONST EFI_GUID  *mTerminalGuids[] = {
+    &gEfiPcAnsiGuid,
+    &gEfiVT100Guid,
+    &gEfiVT100PlusGuid,
+    &gEfiVTUTF8Guid,
+    &gEfiTtyTermGuid,
+    &gEdkiiLinuxTermGuid,
+    &gEdkiiXtermR6Guid,
+    &gEdkiiVT400Guid,
+    &gEdkiiSCOTermGuid
+  };
+  UINTN  Index;
+
+  if ((Node == NULL) ||
+      (DevicePathType (Node) != MESSAGING_DEVICE_PATH) ||
+      (DevicePathSubType (Node) != MSG_VENDOR_DP) ||
+      (DevicePathNodeLength (Node) != sizeof (VENDOR_DEVICE_PATH)))
+  {
+    return FALSE;
+  }
+
+  for (Index = 0; Index < ARRAY_SIZE (mTerminalGuids); Index++) {
+    if (CompareGuid (&((VENDOR_DEVICE_PATH *)Node)->Guid, mTerminalGuids[Index])) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 /**
   The DevicePathNode is a single instance.
   The DevicePathNodeSize must not include END_DEVICE_PATH.
@@ -88,6 +126,9 @@ IsDevicePathNodeExist (
   EFI_STATUS                        Status;
   BOOLEAN                           Result;
   UINTN                             DevicePathSize;
+  EFI_DEVICE_PATH_PROTOCOL          *Node;
+  EFI_DEVICE_PATH_PROTOCOL          *LastNode;
+
 
   if (DevicePathType (DevicePathNode) == HARDWARE_DEVICE_PATH ||
       DevicePathType (DevicePathNode) == ACPI_DEVICE_PATH) {
@@ -104,6 +145,14 @@ IsDevicePathNodeExist (
       goto Done ;
     }
 
+    // loop until LastNode holds the node previous to the DevicePath End node
+    Node     = DevicePathNode;
+    LastNode = NULL;
+    while (!IsDevicePathEnd (Node)) {
+      LastNode = Node;
+      Node     = NextDevicePathNode (Node);
+    }
+
     for (Index = 0; Index < HandleCount; Index++) {
       Status = gBS->HandleProtocol (
                     HandleBuf[Index],
@@ -116,6 +165,10 @@ IsDevicePathNodeExist (
       DevicePathSize = GetDevicePathSize(DevicePath);
       if (DevicePathSize != DevicePathNodeSize + sizeof(EFI_DEVICE_PATH_PROTOCOL)) {
         continue;
+      }
+      // If the DevicePath has a Terminal child device, subtract the size of TerminalNode 
+      if (LastNode != NULL && IsTerminalVendorNode (LastNode)) {
+        DevicePathNodeSize -= sizeof(VENDOR_DEVICE_PATH);
       }
       if (CompareMem (DevicePath, DevicePathNode, DevicePathNodeSize) == 0) {
         Result = TRUE;
