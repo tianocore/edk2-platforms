@@ -538,12 +538,10 @@ FwsMetadataV2CheckTrialRunState (
   )
 {
   PSA_MM_FWU_METADATA_V2       *Metadata;
-  PSA_MM_FWU_FW_STORE_DESC_V2  *FwFwsDesc;
   UINT8                        BankIdx;
 
   Metadata  = (PSA_MM_FWU_METADATA_V2 *)FwsMetadata->Metadata;
   BankIdx   = Metadata->Header.ActiveIndex;
-  FwFwsDesc = GET_FWU_FW_STORE_DESC_V2 (Metadata);
 
   if (Metadata->BankState[BankIdx] == FWU_BANK_STATE_VALID) {
     *TrialRunState = TRUE;
