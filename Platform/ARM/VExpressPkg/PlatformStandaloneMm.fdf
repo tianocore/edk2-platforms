@@ -20,7 +20,11 @@
 
 [FD.BL32_AP_MM]
 # See macro definition BL32_BASE in TF-A code at include/plat/arm/common/arm_def.h
+!if $(ENABLE_FIRMWARE_UPDATE)
+BaseAddress   = 0xfc200000|gArmTokenSpaceGuid.PcdFdBaseAddress
+!else
 BaseAddress   = 0xff200000|gArmTokenSpaceGuid.PcdFdBaseAddress
+!endif
 
 # Maximum size of BL32 Image in TF-A (see include/plat/arm/common/arm_spm.def.h)
 Size          = 0x00300000|gArmTokenSpaceGuid.PcdFdSize
