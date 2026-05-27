@@ -190,6 +190,18 @@
       gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpLowestSupportedVersion|0x00000000
       gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpVersion|0x00000000
       gPlatformArmTokenSpaceGuid.PcdSystemFirmwareFmpVersionString|"000.000.000.000"
+
+!ifdef FMP_SYSTEM_FIP_CERT_PCD_FILE
+      !include $(FMP_SYSTEM_FIP_CERT_PCD_FILE)
+!endif
+
+    <PcdsFeatureFlag>
+      gPlatformArmTokenSpaceGuid.PcdFwuFmpImageAuth|FALSE
+
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+      FmpDependencyLib|FmpDevicePkg/Library/FmpDependencyLib/FmpDependencyLib.inf
+      FmpPayloadHeaderLib|FmpDevicePkg/Library/FmpPayloadHeaderLibV1/FmpPayloadHeaderLibV1.inf
   }
 !endif
 

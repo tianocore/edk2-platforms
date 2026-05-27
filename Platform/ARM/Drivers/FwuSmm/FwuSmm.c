@@ -58,13 +58,17 @@
 
 #include <Library/ArmMmHandlerContext.h>
 #include <Library/BaseLib.h>
-#include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/DebugLib.h>
+#include <Library/FmpAuthenticationLib.h>
+#include <Library/FmpDependencyLib.h>
+#include <Library/FmpPayloadHeaderLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/HobLib.h>
 #include <Library/MmServicesTableLib.h>
 
 #include <Protocol/BlockIo.h>
+#include <Protocol/FirmwareManagement.h>
 #include <Protocol/MmCommunication2.h>
 
 #include <Library/FwsPlatformLib.h>
@@ -79,6 +83,8 @@
 
 #define IFD_IS_OPENED(Ifd)          ((((Ifd)->ImageFile != NULL)))
 #define IFD_IS_STATUS_STAGING(Ifd)  ((BOOLEAN) ((((Ifd)->Status) & IFD_F_STATUS_STAGING) != 0))
+
+#define FMP_MAX_HEADER_SIZE  (SIZE_1MB)
 
 /**
  * See the PSA specification 3.2.1 Firmware Store state machine.
@@ -129,6 +135,9 @@ typedef struct {
 
   /// Current Pos for Commit
   UINTN             CommitPos;
+
+  /// Trimmed Size from buffer (e.x) Header for authtentication.
+  UINTN             TrimmedSize;
 } IMAGE_FILE_DESCRIPTOR;
 
 STATIC EFI_MMRAM_DESCRIPTOR        *mNsCommBufferRange;
@@ -273,10 +282,11 @@ ClearStaging (
 
         ASSERT (Status == EFI_SUCCESS);
 
-        Ifd->ImageFile = NULL;
-        Ifd->Pos       = 0;
-        Ifd->OpType    = FwuOpStreamRead;
-        Ifd->CommitPos = 0;
+        Ifd->ImageFile   = NULL;
+        Ifd->Pos         = 0;
+        Ifd->OpType      = FwuOpStreamRead;
+        Ifd->CommitPos   = 0;
+        Ifd->TrimmedSize = 0;
 
         if (Ifd->Buffer != NULL) {
           FreePool (Ifd->Buffer);
@@ -487,6 +497,7 @@ InitImageFileDescTable (
   Ifd->Status            = 0;
   Ifd->CommitPos         = 0;
   Ifd->Buffer            = NULL;
+  Ifd->TrimmedSize       = 0;
 
   for (Idx = 1; Idx < mFdTableSize; Idx++) {
     Ifd     = &mFdTable[Idx];
@@ -499,9 +510,138 @@ InitImageFileDescTable (
     Ifd->Status            = 0;
     Ifd->CommitPos         = 0;
     Ifd->Buffer            = NULL;
+    Ifd->TrimmedSize       = 0;
   }
 
   return EFI_SUCCESS;
+}
+
+/**
+ * Authenticate the Image which includes the FmpHeaders before
+ * writing any data from the image into firmware storage.
+ *
+ * @param[in] Ifd               Image file descriptor
+ *
+ * @retval PSA_MM_FWU_SUCCESS
+ * @retval PSA_MM_FWU_AUTH_FAIL
+ */
+STATIC
+INT32
+EFIAPI
+ImageFileAuthtenticate (
+  IN IMAGE_FILE_DESCRIPTOR  *Ifd
+  )
+{
+  RETURN_STATUS  Status;
+  VOID           *PublicKeyData;
+  UINTN          PublicKeyDataLength;
+  UINT8          *PublicKeyDataXdr;
+  UINT8          *PublicKeyDataXdrEnd;
+
+  /*
+   * If PcdFwuFmpImageAuth is FALSE, the authentication is already done
+   * in the normal world.
+   */
+  if (!FeaturePcdGet (PcdFwuFmpImageAuth)) {
+    return PSA_MM_FWU_SUCCESS;
+  }
+
+  PublicKeyDataXdr    = PcdGetPtr (PcdFmpDevicePkcs7CertBufferXdr);
+  PublicKeyDataXdrEnd = PublicKeyDataXdr + PcdGetSize (PcdFmpDevicePkcs7CertBufferXdr);
+
+  if ((PublicKeyDataXdr == NULL) || (PublicKeyDataXdr == PublicKeyDataXdrEnd)) {
+    return PSA_MM_FWU_AUTH_FAIL;
+  }
+
+  while (PublicKeyDataXdr < PublicKeyDataXdrEnd) {
+    if ((PublicKeyDataXdr + sizeof (UINT32)) > PublicKeyDataXdrEnd) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Certificate size extends beyond end of Data.\n", &Ifd->ImageTypeGuid));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyDataLength = SwapBytes32 (*(UINT32 *)(PublicKeyDataXdr));
+    PublicKeyDataXdr   += sizeof (UINT32);
+
+    if (PublicKeyDataXdr + PublicKeyDataLength > PublicKeyDataXdrEnd) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Certificate size extends beyond end of Data.\n", &Ifd->ImageTypeGuid));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyData = PublicKeyDataXdr;
+    Status        = AuthenticateFmpImage (
+                      (EFI_FIRMWARE_IMAGE_AUTHENTICATION *)Ifd->Buffer,
+                      Ifd->Pos,
+                      PublicKeyData,
+                      PublicKeyDataLength
+                      );
+    if (RETURN_ERROR (Status) && (Status != RETURN_SECURITY_VIOLATION)) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Invalid Image Header for auth: %r\n", &Ifd->ImageTypeGuid, Status));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyDataXdr += ALIGN_VALUE (PublicKeyDataLength, 4);
+  }
+
+  if (Status != RETURN_SUCCESS) {
+    DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Failed to verify the Image.\n", &Ifd->ImageTypeGuid));
+    return PSA_MM_FWU_AUTH_FAIL;
+  }
+
+  return PSA_MM_FWU_SUCCESS;
+}
+
+/**
+ * Trim Headers from the Image file.
+ *
+ * @param[in] Ifd               Image file descriptor
+ *
+ */
+STATIC
+VOID
+EFIAPI
+ImageFileTrimHeaders (
+  IN IMAGE_FILE_DESCRIPTOR  *Ifd
+  )
+{
+  EFI_STATUS                         Status;
+  EFI_FIRMWARE_IMAGE_AUTHENTICATION  *Image;
+  UINTN                              ImageSize;
+  UINT32                             DependenciesSize;
+  VOID                               *FmpPayload;
+  UINTN                              FmpPayloadSize;
+  UINT32                             FmpHeaderSize;
+  UINT32                             AllHeaderSize;
+
+  if (!FeaturePcdGet (PcdFwuFmpImageAuth)) {
+    return;
+  }
+
+  Image            = (EFI_FIRMWARE_IMAGE_AUTHENTICATION *)Ifd->Buffer;
+  ImageSize        = Ifd->Pos;
+  DependenciesSize = 0;
+  FmpHeaderSize    = 0;
+
+  GetImageDependency (Image, ImageSize, &DependenciesSize, NULL);
+
+  FmpPayload =  (VOID *)((UINT8 *)Image + sizeof (Image->MonotonicCount) +
+                         Image->AuthInfo.Hdr.dwLength  + DependenciesSize);
+  FmpPayloadSize = ImageSize - (sizeof (Image->MonotonicCount) +
+                                Image->AuthInfo.Hdr.dwLength + DependenciesSize);
+  Status = GetFmpPayloadHeaderSize (FmpPayload, FmpPayloadSize, &FmpHeaderSize);
+
+  /*
+   * FmpHeader verification is already done in normal world.
+   * Therefore, it's enough to ASSERT in here.
+   */
+  ASSERT_EFI_ERROR (Status);
+
+  AllHeaderSize = sizeof (Image->MonotonicCount) +
+                  FmpHeaderSize + DependenciesSize +
+                  Image->AuthInfo.Hdr.dwLength;
+
+  Ifd->Buffer     += AllHeaderSize;
+  Ifd->Pos        -= AllHeaderSize;
+  Ifd->TrimmedSize = AllHeaderSize;
 }
 
 /**
@@ -845,7 +985,11 @@ FwuSmmOpen (
     }
 
     if (!FeaturePcdGet (PcdFwuDirectWrite)) {
-      BufferSize  = Ifd->ImageFile->MaxSize;
+      BufferSize = Ifd->ImageFile->MaxSize;
+      if (FeaturePcdGet (PcdFwuFmpImageAuth)) {
+        BufferSize += FMP_MAX_HEADER_SIZE;
+      }
+
       Ifd->Buffer = AllocateRuntimeZeroPool (BufferSize);
       if (Ifd->Buffer == NULL) {
         FwsRelease (Ifd->ImageFile, 0, NULL, NULL);
@@ -1088,6 +1232,15 @@ FwuSmmCommit (
   if (!FeaturePcdGet (PcdFwuDirectWrite) && (Ifd->OpType == FwuOpStreamWrite) &&
       (Ifd->Pos != Ifd->CommitPos))
   {
+    if (Ifd->CommitPos == 0) {
+      FwuStatus = ImageFileAuthtenticate (Ifd);
+      if (FwuStatus != PSA_MM_FWU_SUCCESS) {
+        goto ErrorHandler;
+      }
+
+      ImageFileTrimHeaders (Ifd);
+    }
+
     WriteSize = MIN (mFwuCommitUnitSize, (Ifd->Pos - Ifd->CommitPos));
     Status    = FwsWrite (Ifd->ImageFile, Ifd->Buffer + Ifd->CommitPos, &WriteSize, Ifd->CommitPos);
     if (EFI_ERROR (Status)) {
@@ -1170,14 +1323,15 @@ FwuSmmCommit (
 
 ErrorHandler:
   if (Ifd->Buffer != NULL) {
-    FreePool (Ifd->Buffer);
+    FreePool (Ifd->Buffer - Ifd->TrimmedSize);
     Ifd->Buffer = NULL;
   }
 
-  Ifd->ImageFile = NULL;
-  Ifd->Pos       = 0;
-  Ifd->OpType    = FwuOpStreamRead;
-  Ifd->CommitPos = 0;
+  Ifd->ImageFile   = NULL;
+  Ifd->Pos         = 0;
+  Ifd->OpType      = FwuOpStreamRead;
+  Ifd->CommitPos   = 0;
+  Ifd->TrimmedSize = 0;
 
   return FwuStatus;
 }
@@ -1468,6 +1622,11 @@ FwuSmmMain (
   EFI_BLOCK_IO_PROTOCOL  *NorFlashBlockIo = NULL;
   UINT16                 Idx;
   BOOLEAN                IsTrialState;
+
+  if (FeaturePcdGet (PcdFwuFmpImageAuth) && FeaturePcdGet (PcdFwuDirectWrite)) {
+    DEBUG ((DEBUG_ERROR, "PcdFwuDirectWrite should be disabled for PcdFwuFmpImageAuth.\n"));
+    return EFI_UNSUPPORTED;
+  }
 
   Status = gMmst->MmLocateProtocol (
                     &gEfiBlockIoProtocolGuid,

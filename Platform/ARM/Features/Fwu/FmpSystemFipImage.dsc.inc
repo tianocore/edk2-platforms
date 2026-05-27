@@ -98,7 +98,13 @@
       # For more detail, Please see "Quick Start" Section of
       # Platform/ARM/Features/Fwu/Readme.md
       #
+
+!ifdef FMP_SYSTEM_FIP_CERT_PCD_FILE
       !include $(FMP_SYSTEM_FIP_CERT_PCD_FILE)
+!endif
+
+    <PcdsFeatureFlag>
+      gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceDeferImageAuthToSetImage|FALSE
 
     <LibraryClasses>
       #
