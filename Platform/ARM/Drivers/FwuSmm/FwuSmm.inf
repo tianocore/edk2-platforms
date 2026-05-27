@@ -49,6 +49,9 @@
   gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks
   gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank
 
+[FeaturePcd]
+  gPlatformArmTokenSpaceGuid.PcdFwuDirectWrite
+
 [Guids]
   gPsaFwuUpdateAgentGuid
   gPsaFwuImageDirectoryGuid

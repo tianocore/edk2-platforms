@@ -123,18 +123,25 @@ typedef struct {
 
   /// See the IFD_F_STATUS_*
   UINT64            Status;
+
+  /// For buffered write
+  UINT8             *Buffer;
+
+  /// Current Pos for Commit
+  UINTN             CommitPos;
 } IMAGE_FILE_DESCRIPTOR;
 
 STATIC EFI_MMRAM_DESCRIPTOR        *mNsCommBufferRange;
-STATIC EFI_MM_SYSTEM_TABLE         *mMmst           = NULL;
-STATIC UINT32                      mStagingFlags    = 0;
-STATIC IMAGE_FILE_DESCRIPTOR       *mFdTable        = NULL;
-STATIC UINTN                       mFdTableSize     = 0;
-STATIC PSA_MM_FWU_IMAGE_DIRECTORY  *mImageDirectory = NULL;
-STATIC FWS_DEVICE_INSTANCE         *mFwsDevice      = NULL;
-STATIC FW_STORE_STATE              mFwState         = FW_STORE_REGULAR;
-STATIC UINT32                      mFwuFlags        = 0;
-STATIC UINT32                      mFwuVendorFlags  = 0;
+STATIC EFI_MM_SYSTEM_TABLE         *mMmst             = NULL;
+STATIC UINT32                      mStagingFlags      = 0;
+STATIC IMAGE_FILE_DESCRIPTOR       *mFdTable          = NULL;
+STATIC UINTN                       mFdTableSize       = 0;
+STATIC PSA_MM_FWU_IMAGE_DIRECTORY  *mImageDirectory   = NULL;
+STATIC FWS_DEVICE_INSTANCE         *mFwsDevice        = NULL;
+STATIC FW_STORE_STATE              mFwState           = FW_STORE_REGULAR;
+STATIC UINT32                      mFwuFlags          = 0;
+STATIC UINT32                      mFwuVendorFlags    = 0;
+STATIC UINTN                       mFwuCommitUnitSize = 0;
 
 // Initialise the Service status to error init by default.
 STATIC UINT32  mServiceStatus = SERVICE_STATUS_ERR_INIT;
@@ -265,9 +272,16 @@ ClearStaging (
         }
 
         ASSERT (Status == EFI_SUCCESS);
+
+        Ifd->ImageFile = NULL;
         Ifd->Pos       = 0;
         Ifd->OpType    = FwuOpStreamRead;
-        Ifd->ImageFile = NULL;
+        Ifd->CommitPos = 0;
+
+        if (Ifd->Buffer != NULL) {
+          FreePool (Ifd->Buffer);
+          Ifd->Buffer = NULL;
+        }
       } else if (Mode == CLEAR_ERROR) {
         /**
          * CLEAR_ERROR Mode could be called when an error occurred during the begining staging.
@@ -471,6 +485,8 @@ InitImageFileDescTable (
   Ifd->Pos               = 0;
   Ifd->OpType            = FwuOpStreamRead;
   Ifd->Status            = 0;
+  Ifd->CommitPos         = 0;
+  Ifd->Buffer            = NULL;
 
   for (Idx = 1; Idx < mFdTableSize; Idx++) {
     Ifd     = &mFdTable[Idx];
@@ -481,6 +497,8 @@ InitImageFileDescTable (
     Ifd->Pos               = 0;
     Ifd->OpType            = FwuOpStreamRead;
     Ifd->Status            = 0;
+    Ifd->CommitPos         = 0;
+    Ifd->Buffer            = NULL;
   }
 
   return EFI_SUCCESS;
@@ -781,6 +799,7 @@ FwuSmmOpen (
   IMAGE_FILE_DESCRIPTOR      *Ifd = NULL;
   CONST PSA_MM_FWU_OPEN_REQ  *ReqData;
   PSA_MM_FWU_OPEN_RESP       *RespData;
+  UINTN                      BufferSize;
 
   ReqData  = (CONST PSA_MM_FWU_OPEN_REQ *)GET_FWU_DATA_BUFFER (Message);
   RespData = (PSA_MM_FWU_OPEN_RESP *)GET_FWU_DATA_BUFFER (Message);
@@ -823,6 +842,17 @@ FwuSmmOpen (
                );
     if (EFI_ERROR (Status)) {
       return PSA_MM_FWU_NOT_AVAILABLE;
+    }
+
+    if (!FeaturePcdGet (PcdFwuDirectWrite)) {
+      BufferSize  = Ifd->ImageFile->MaxSize;
+      Ifd->Buffer = AllocateRuntimeZeroPool (BufferSize);
+      if (Ifd->Buffer == NULL) {
+        FwsRelease (Ifd->ImageFile, 0, NULL, NULL);
+        Ifd->ImageFile = NULL;
+
+        return PSA_MM_FWU_NOT_AVAILABLE;
+      }
     }
   } else {
     Ifd->ImageFile = AllocateRuntimePool (sizeof (FWS_IMAGE_FILE));
@@ -907,12 +937,16 @@ FwuSmmWriteStream (
     return PSA_MM_FWU_OUT_OF_BOUNDS;
   }
 
-  Status = FwsWrite (Ifd->ImageFile, WriteBuffer, &WriteSize, Ifd->Pos);
-  if (EFI_ERROR (Status)) {
-    return PSA_MM_FWU_NO_PERMISSION;
+  if (FeaturePcdGet (PcdFwuDirectWrite)) {
+    Status = FwsWrite (Ifd->ImageFile, WriteBuffer, &WriteSize, Ifd->Pos);
+    if (EFI_ERROR (Status)) {
+      return PSA_MM_FWU_NO_PERMISSION;
+    }
+  } else {
+    CopyMem (Ifd->Buffer + Ifd->Pos, WriteBuffer, WriteSize);
   }
 
-  Ifd->Pos += ReqData->DataLen;
+  Ifd->Pos += WriteSize;
 
   return PSA_MM_FWU_SUCCESS;
 }
@@ -1034,6 +1068,7 @@ FwuSmmCommit (
   CONST PSA_MM_FWU_COMMIT_REQ  *ReqData;
   PSA_MM_FWU_COMMIT_RESP       *RespData;
   BOOLEAN                      IsCorrectBoot;
+  UINTN                        WriteSize;
 
   ReqData  = (CONST PSA_MM_FWU_COMMIT_REQ *)GET_FWU_DATA_BUFFER (Message);
   RespData = (PSA_MM_FWU_COMMIT_RESP *)GET_FWU_DATA_BUFFER (Message);
@@ -1048,6 +1083,25 @@ FwuSmmCommit (
     FwuStatus = PSA_MM_FWU_SUCCESS;
 
     goto ErrorHandler;
+  }
+
+  if (!FeaturePcdGet (PcdFwuDirectWrite) && (Ifd->OpType == FwuOpStreamWrite) &&
+      (Ifd->Pos != Ifd->CommitPos))
+  {
+    WriteSize = MIN (mFwuCommitUnitSize, (Ifd->Pos - Ifd->CommitPos));
+    Status    = FwsWrite (Ifd->ImageFile, Ifd->Buffer + Ifd->CommitPos, &WriteSize, Ifd->CommitPos);
+    if (EFI_ERROR (Status)) {
+      FwuStatus = PSA_MM_FWU_AUTH_FAIL;
+      goto ErrorHandler;
+    }
+
+    Ifd->CommitPos += WriteSize;
+
+    if (Ifd->Pos != Ifd->CommitPos) {
+      RespData->Progress  = Ifd->CommitPos;
+      RespData->TotalWork = Ifd->Pos;
+      return PSA_MM_FWU_RESUME;
+    }
   }
 
   FwsCheckCorrectBoot (Ifd->ImageFile->FwsDevice, &IsCorrectBoot);
@@ -1115,9 +1169,15 @@ FwuSmmCommit (
   FwuStatus = PSA_MM_FWU_SUCCESS;
 
 ErrorHandler:
+  if (Ifd->Buffer != NULL) {
+    FreePool (Ifd->Buffer);
+    Ifd->Buffer = NULL;
+  }
+
   Ifd->ImageFile = NULL;
   Ifd->Pos       = 0;
   Ifd->OpType    = FwuOpStreamRead;
+  Ifd->CommitPos = 0;
 
   return FwuStatus;
 }
@@ -1483,6 +1543,16 @@ FwuSmmMain (
   }
 
   DEBUG ((DEBUG_BLKIO, "Firmware Update Driver: Current FwState: %d\n", mFwState));
+
+  /*
+   * Commit unit size used for buffered writes.
+   * The buffered data up to this size will be committed
+   * in a single commit request.
+   * Currently, this is limited to the maximum write payload size.
+   */
+  mFwuCommitUnitSize = mNsCommBufferRange->PhysicalSize -
+                       sizeof (EFI_MM_COMMUNICATE_HEADER) -
+                       GetRequiredBufferSize (PSA_MM_FWU_COMMAND_WRITE_STREAM);
 
   mServiceStatus = SERVICE_STATUS_OPERATIVE;
 
