@@ -160,7 +160,11 @@
   #
 !if $(ENABLE_STMM) == TRUE
   ## MM Communicate
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  gArmTokenSpaceGuid.PcdMmBufferBase|0xFBF00000
+!else
   gArmTokenSpaceGuid.PcdMmBufferBase|0xFEF00000
+!endif
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
@@ -278,8 +282,16 @@
   # Normal pseudo crbs which locality from 0 to 3 are allocated
   # at the start of System Memory.
   #
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  #
+  # When ENABLE_FIRMWARE_UPDATE, TZC DRAM size is 64MB.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfbf10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfbf13fff
+!else
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13fff
+!endif
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
   gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc|FALSE
   gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdGenTpm2DeviceTable|TRUE
