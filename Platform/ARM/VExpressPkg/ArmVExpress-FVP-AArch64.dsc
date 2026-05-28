@@ -57,7 +57,7 @@
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE
-!include Platform/ARM/Features/Fwu/FmpSystemFipImage.dsc.inc
+!include Platform/ARM/Features/Fwu/FmpSystemFipImageRuntime.dsc.inc
 !endif
 
 [LibraryClasses.common]
@@ -132,6 +132,10 @@
 !if $(ENABLE_UEFI_SECURE_VARIABLE) == TRUE
   ## Disable Runtime Variable Cache.
   gEfiMdeModulePkgTokenSpaceGuid.PcdEnableVariableRuntimeCache|FALSE
+!endif
+
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportProcessCapsuleAtRuntime|TRUE
 !endif
 
 [PcdsFixedAtBuild.common]

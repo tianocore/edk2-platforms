@@ -196,7 +196,7 @@
 !endif
 
     <PcdsFeatureFlag>
-      gPlatformArmTokenSpaceGuid.PcdFwuFmpImageAuth|FALSE
+      gPlatformArmTokenSpaceGuid.PcdFwuFmpImageAuth|TRUE
 
     <LibraryClasses>
       FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
