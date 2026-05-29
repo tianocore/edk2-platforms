@@ -1356,17 +1356,16 @@ FwuEventHandler (
     return EFI_INVALID_PARAMETER;
   }
 
-  if (MmHandlerContext->CommProtocol == CommProtocolFfa) {
-    FfaMsgInfo = &MmHandlerContext->CtxData.FfaMsgInfo;
+  if (MmHandlerContext->CommProtocol != CommProtocolFfa) {
+    return EFI_UNSUPPORTED;
+  }
 
-    if ((FfaMsgInfo->ServiceType == ServiceTypeMmCommunication) ||
-        (FfaMsgInfo->DirectMsgVersion != DirectMsgV2))
-    {
-      // via mm communication protocol (FF-A).
-      return EFI_UNSUPPORTED;
-    }
-  } else {
-    // via mm communication protocol (SPM_MM).
+  FfaMsgInfo = &MmHandlerContext->CtxData.FfaMsgInfo;
+
+  if ((FfaMsgInfo->ServiceType == ServiceTypeMmCommunication) ||
+      (FfaMsgInfo->DirectMsgVersion != DirectMsgV2))
+  {
+    // via mm communication protocol (FF-A).
     return EFI_UNSUPPORTED;
   }
 
