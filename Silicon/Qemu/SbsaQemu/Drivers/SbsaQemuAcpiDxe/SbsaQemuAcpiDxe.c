@@ -7,6 +7,7 @@
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
 **/
+#include <AcpiHelperMacros.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/AcpiAml.h>
 #include <IndustryStandard/ArmCache.h>

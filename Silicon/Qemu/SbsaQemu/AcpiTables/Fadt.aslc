@@ -6,7 +6,7 @@
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include <Library/AcpiLib.h>
+#include <AcpiHelperMacros.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
 
@@ -55,23 +55,23 @@ EFI_ACPI_6_0_FIXED_ACPI_DESCRIPTION_TABLE Fadt = {
   0,                                            // UINT8      Reserved1
   EFI_ACPI_6_0_HW_REDUCED_ACPI |
   EFI_ACPI_6_0_LOW_POWER_S0_IDLE_CAPABLE,       // UINT32     Flags
-  NULL_GAS,                                     // GAS        ResetReg
+  ACPI_NULL_GAS,                                // GAS        ResetReg
   0,                                            // UINT8      ResetValue
   EFI_ACPI_6_0_ARM_PSCI_COMPLIANT,              // UINT16     ArmBootArchFlags
   EFI_ACPI_6_0_FIXED_ACPI_DESCRIPTION_TABLE_MINOR_REVISION,
                                                 // UINT8      MinorRevision
   0,                                            // UINT64     XFirmwareCtrl
   0,                                            // UINT64     XDsdt
-  NULL_GAS,                                     // GAS        XPm1aEvtBlk
-  NULL_GAS,                                     // GAS        XPm1bEvtBlk
-  NULL_GAS,                                     // GAS        XPm1aCntBlk
-  NULL_GAS,                                     // GAS        XPm1bCntBlk
-  NULL_GAS,                                     // GAS        XPm2CntBlk
-  NULL_GAS,                                     // GAS        XPmTmrBlk
-  NULL_GAS,                                     // GAS        XGpe0Blk
-  NULL_GAS,                                     // GAS        XGpe1Blk
-  NULL_GAS,                                     // GAS        SleepControlReg
-  NULL_GAS,                                     // GAS        SleepStatusReg
+  ACPI_NULL_GAS,                                // GAS        XPm1aEvtBlk
+  ACPI_NULL_GAS,                                // GAS        XPm1bEvtBlk
+  ACPI_NULL_GAS,                                // GAS        XPm1aCntBlk
+  ACPI_NULL_GAS,                                // GAS        XPm1bCntBlk
+  ACPI_NULL_GAS,                                // GAS        XPm2CntBlk
+  ACPI_NULL_GAS,                                // GAS        XPmTmrBlk
+  ACPI_NULL_GAS,                                // GAS        XGpe0Blk
+  ACPI_NULL_GAS,                                // GAS        XGpe1Blk
+  ACPI_NULL_GAS,                                // GAS        SleepControlReg
+  ACPI_NULL_GAS,                                // GAS        SleepStatusReg
   0                                             // UINT64     HypervisorVendorId
 };
 

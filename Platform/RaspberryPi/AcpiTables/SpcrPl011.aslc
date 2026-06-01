@@ -8,10 +8,10 @@
 *
 **/
 
+#include <AcpiHelperMacros.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/Bcm2836.h>
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
-#include <Library/AcpiLib.h>
 #include <Library/PcdLib.h>
 
 #include "AcpiTables.h"
@@ -37,7 +37,7 @@ STATIC EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE Spcr = {
     EFI_ACPI_RESERVED_BYTE
   },
   // EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE  BaseAddress;
-  ARM_GAS32 (RPI_UART_BASE_ADDRESS),
+  ACPI_GAS32 (RPI_UART_BASE_ADDRESS),
   // UINT8                                   InterruptType;
   EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERRUPT_TYPE_GIC,
   // UINT8                                   Irq;

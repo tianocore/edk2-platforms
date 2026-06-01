@@ -9,10 +9,10 @@
  *
  **/
 
+#include <AcpiHelperMacros.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/Bcm2836.h>
 #include <IndustryStandard/RpiDebugPort2Table.h>
-#include <Library/AcpiLib.h>
 #include <Library/PcdLib.h>
 
 #include "AcpiTables.h"
@@ -42,7 +42,7 @@
       OFFSET_OF (DBG2_DEBUG_DEVICE_INFORMATION, BaseAddressRegister), /* UINT16    BaseAddressRegister Offset */      \
       OFFSET_OF (DBG2_DEBUG_DEVICE_INFORMATION, AddressSize)          /* UINT16    AddressSize Offset */              \
     },                                                                                                                \
-    ARM_GAS32 (UartBase),                            /* EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE BaseAddressRegister */ \
+    ACPI_GAS32 (UartBase),                           /* EFI_ACPI_6_3_GENERIC_ADDRESS_STRUCTURE BaseAddressRegister */ \
     UartAddrLen,                                     /* UINT32  AddressSize */                                        \
     UartNameStr                                      /* UINT8   NameSpaceString[MAX_DBG2_NAME_LEN] */                 \
   }
