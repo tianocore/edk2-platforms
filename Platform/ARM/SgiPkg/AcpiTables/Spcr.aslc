@@ -16,7 +16,7 @@
 **/
 
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
-#include <Library/AcpiLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 #include "SgiAcpiHeader.h"
 
 STATIC EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE Spcr = {

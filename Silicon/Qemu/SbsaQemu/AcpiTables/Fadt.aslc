@@ -6,9 +6,9 @@
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#include <Library/AcpiLib.h>
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 EFI_ACPI_6_0_FIXED_ACPI_DESCRIPTION_TABLE Fadt = {
   SBSAQEMU_ACPI_HEADER (

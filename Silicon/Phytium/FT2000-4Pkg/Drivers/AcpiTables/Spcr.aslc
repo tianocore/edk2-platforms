@@ -9,10 +9,10 @@
 
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
-#include <Library/AcpiLib.h>
 #include <Library/ArmLib.h>
 #include <Library/PcdLib.h>
 #include <Platform.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 ///
 /// SPCR Flow Control

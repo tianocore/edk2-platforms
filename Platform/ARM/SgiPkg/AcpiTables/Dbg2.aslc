@@ -15,7 +15,7 @@
 **/
 
 #include <IndustryStandard/DebugPort2Table.h>
-#include <Library/AcpiLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 #include "SgiAcpiHeader.h"
 
 #define SGI_DBG2_NUM_DEBUG_PORTS           1

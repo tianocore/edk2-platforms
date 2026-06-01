@@ -8,8 +8,8 @@
 **/
 
 #include <IndustryStandard/Acpi.h>
-#include <Library/AcpiLib.h>
 #include <Platform.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 EFI_ACPI_6_1_FIXED_ACPI_DESCRIPTION_TABLE Fadt = {
   PHYTIUM_ACPI_HEADER (

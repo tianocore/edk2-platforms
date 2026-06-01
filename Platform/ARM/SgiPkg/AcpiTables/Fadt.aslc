@@ -14,7 +14,7 @@
     - ACPI 6.4, Chapter 5, Section 5.2.9, Fixed ACPI Description Table
 **/
 
-#include <Library/AcpiLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 #include "SgiAcpiHeader.h"
 
 STATIC EFI_ACPI_6_4_FIXED_ACPI_DESCRIPTION_TABLE Fadt = {

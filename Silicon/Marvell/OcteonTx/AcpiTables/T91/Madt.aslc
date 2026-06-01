@@ -9,7 +9,7 @@
 
 **/
 
-#include <Library/AcpiLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 #include "AcpiHeader.h"
 
