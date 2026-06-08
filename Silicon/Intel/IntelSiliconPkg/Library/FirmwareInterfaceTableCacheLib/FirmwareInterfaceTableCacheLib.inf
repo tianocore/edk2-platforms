@@ -1,0 +1,30 @@
+## @file
+# Library to cache FIT entries into a GUIDed HOB.
+#
+# Copyright (c) 2025, Intel Corporation. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = FirmwareInterfaceTableCacheLib
+  FILE_GUID            = 7b2e4f8a-d91c-4e3b-a5f0-6c8d1e9a2b47
+  MODULE_TYPE          = PEIM
+  VERSION_STRING       = 1.0
+  LIBRARY_CLASS        = FirmwareInterfaceTableCacheLib|PEIM
+
+[Sources]
+  FirmwareInterfaceTableCacheLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  HobLib
+
+[Guids]
+  gFitEntryHobGuid
