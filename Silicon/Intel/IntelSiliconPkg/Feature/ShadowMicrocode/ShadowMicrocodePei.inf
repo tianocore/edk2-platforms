@@ -39,6 +39,7 @@
 [Guids]
   gEdkiiMicrocodeShadowInfoHobGuid
   gEdkiiMicrocodeStorageTypeFlashGuid
+  gFitEntryHobGuid
 
 [Pcd]
   gIntelSiliconPkgTokenSpaceGuid.PcdShadowAllMicrocode

@@ -18,6 +18,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Register/Intel/Microcode.h>
 #include <Register/Intel/Cpuid.h>
 #include <Guid/MicrocodeShadowInfoHob.h>
+#include <Guid/FitEntryHob.h>
 //
 // Data structure for microcode patch information
 //
@@ -167,36 +168,29 @@ ShadowMicrocodePatchWorker (
 }
 
 /**
-  Check if FIT table content is valid according to FIT BIOS specification.
+  Check if cached FIT table content is valid according to FIT BIOS specification.
 
 **/
 BOOLEAN
-IsValidFitTable (
-  IN  UINT64               FitPointer
+IsValidFitEntryHob (
+  IN  FIT_ENTRY_HOB_DATA    *FitHobData
   )
 {
-  UINT64                            FitEnding;
   FIRMWARE_INTERFACE_TABLE_ENTRY    *FitEntry;
   UINT32                            EntryNum;
   UINT32                            Type0Count;
   UINT32                            Index;
 
-  //
-  // The entire FIT table must reside with in the firmware address range
-  // of (4GB-16MB) to (4GB-40h).
-  //
-  if ((FitPointer < (SIZE_4GB - SIZE_16MB)) || (FitPointer >= (SIZE_4GB - 0x40))) {
-    //
-    // Invalid FIT address, treat it as no FIT table.
-    //
-    DEBUG ((DEBUG_ERROR, "Error: Invalid FIT pointer 0x%p.\n", FitPointer));
+  if ((FitHobData == NULL) || (FitHobData->EntryCount == 0)) {
+    DEBUG ((DEBUG_ERROR, "Error: FIT HOB is empty.\n"));
     return FALSE;
   }
+
+  FitEntry = FitHobData->Entry;
 
   //
   // Check FIT header.
   //
-  FitEntry = (FIRMWARE_INTERFACE_TABLE_ENTRY *) (UINTN) FitPointer;
   if ((FitEntry[0].Type != FIT_TYPE_00_HEADER) ||
       (FitEntry[0].Address != FIT_TYPE_00_SIGNATURE)) {
     DEBUG ((DEBUG_ERROR, "Error: Invalid FIT header.\n"));
@@ -212,14 +206,9 @@ IsValidFitTable (
   }
 
   //
-  // Check FIT ending address in valid range.
+  // Check cached FIT entry count against the FIT header.
   //
   EntryNum = *(UINT32 *)(&FitEntry[0].Size[0]) & 0xFFFFFF;
-  FitEnding = FitPointer + sizeof (FIRMWARE_INTERFACE_TABLE_ENTRY) * EntryNum;
-  if (FitEnding  > (SIZE_4GB - 0x40)) {
-    DEBUG ((DEBUG_ERROR, "Error: FIT table exceeds valid range.\n"));
-    return FALSE;
-  }
 
   //
   // Calculate FIT checksum if Checksum Valid bit is set.
@@ -283,7 +272,8 @@ ShadowMicrocode (
   )
 {
   EFI_STATUS                        Status;
-  UINT64                            FitPointer;
+  VOID                              *Hob;
+  FIT_ENTRY_HOB_DATA                *FitHobData;
   FIRMWARE_INTERFACE_TABLE_ENTRY    *FitEntry;
   UINT32                            EntryNum;
   UINT32                            Index;
@@ -302,15 +292,21 @@ ShadowMicrocode (
     return EFI_INVALID_PARAMETER;
   }
 
-  FitPointer = *(UINT64 *) (UINTN) FIT_POINTER_ADDRESS;
-  if (!IsValidFitTable (FitPointer)) {
+  Hob = GetFirstGuidHob (&gFitEntryHobGuid);
+  if (Hob == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: FIT Entry HOB not found.\n", __func__));
+    return EFI_NOT_FOUND;
+  }
+
+  FitHobData = (FIT_ENTRY_HOB_DATA *) GET_GUID_HOB_DATA (Hob);
+  if (!IsValidFitEntryHob (FitHobData)) {
     return EFI_NOT_FOUND;
   }
 
   //
   // Calculate microcode entry number
   //
-  FitEntry = (FIRMWARE_INTERFACE_TABLE_ENTRY *) (UINTN) FitPointer;
+  FitEntry = FitHobData->Entry;
   EntryNum = *(UINT32 *)(&FitEntry[0].Size[0]) & 0xFFFFFF;
   MaxPatchNumber = 0;
   for (Index = 0; Index < EntryNum; Index++) {
