@@ -25,6 +25,7 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiDriverEntryPoint.h>
 #include <Library/UefiLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 #include <Protocol/AcpiTable.h>
 #include "SbsaQemuAcpiDxe.h"
 

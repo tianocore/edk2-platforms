@@ -12,8 +12,8 @@
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/Bcm2836.h>
 #include <IndustryStandard/RpiDebugPort2Table.h>
-#include <Library/AcpiLib.h>
 #include <Library/PcdLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 #include "AcpiTables.h"
 

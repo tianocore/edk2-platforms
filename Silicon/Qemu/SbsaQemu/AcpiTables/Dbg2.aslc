@@ -9,8 +9,8 @@
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/DebugPort2Table.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
-#include <Library/AcpiLib.h>
 #include <Library/PcdLib.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 #pragma pack(1)
 

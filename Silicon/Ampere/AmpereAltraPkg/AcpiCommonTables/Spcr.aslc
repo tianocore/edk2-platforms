@@ -7,10 +7,10 @@
 **/
 
 #include <Library/PcdLib.h>
-#include <Library/AcpiLib.h>
 #include <IndustryStandard/Acpi63.h>
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
 #include <AcpiHeader.h>
+#include <Protocol/AcpiHelperMacros.h>
 
 STATIC EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE Spcr = {
   __ACPI_HEADER (
