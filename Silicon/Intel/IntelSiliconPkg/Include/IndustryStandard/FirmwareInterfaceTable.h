@@ -5,7 +5,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
-    - Firmware Interface Table Revision 1.5
+    - Firmware Interface Table Revision 1.6
 
 **/
 
@@ -40,6 +40,12 @@
 #define FIT_TYPE_2E_GRANULAR_SCRTM_ERROR           0x2E
 #define FIT_TYPE_2F_JMP_DEBUG_POLICY               0x2F
 #define FIT_TYPE_7F_SKIP                           0x7F
+
+//
+// Create aliasing definition for backwards compatibility.
+// FIT Type 0x1E was originally defined as VAB Auth Firmware Update Manifest
+//
+#define FIT_TYPE_1E_VAB_AUTH_FW_UPDATE_MANIFEST    FIT_TYPE_1E_VAB_AUTH_CODE_UPDATE_MANIFEST
 
 //
 // FIT pointer definitions.
