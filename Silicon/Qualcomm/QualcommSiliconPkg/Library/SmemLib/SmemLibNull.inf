@@ -1,0 +1,33 @@
+## @file
+#  Qualcomm Shared memory (SMEM) library for UEFI.
+#
+#  This library provides shared memory management functionality for UEFI
+#  firmware, including allocation, retrieval, and partition management.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  @par Glossary:
+#    - SMEM - Shared Memory
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = SmemLib
+  FILE_GUID                      = 9568C37C-9CAD-4B5F-8B3E-83CDCCF4057E
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmemLib
+
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+[Sources.common]
+  SmemLibNull.c
+
+[LibraryClasses]
+  BaseLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Qualcomm/QualcommSiliconPkg/QualcommSiliconPkg.dec

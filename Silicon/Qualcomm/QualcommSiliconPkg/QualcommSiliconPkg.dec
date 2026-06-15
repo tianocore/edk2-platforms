@@ -27,3 +27,43 @@
 
 [Guids]
   gQualcommSiliconPkgTokenSpaceGuid     = {0x648ed5f4, 0x6e90, 0x11f1, {0xad, 0xee, 0x5b, 0x58, 0x90, 0x85, 0x09, 0x0b}}
+
+[Protocols]
+  gEfiSmemProtocolGuid                  = {0xf4e3d2c1, 0x8a7b, 0x4c5d, {0x9e, 0x6f, 0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f}}
+
+[PcdsFixedAtBuild]
+  #
+  # Shared Memory (SMEM) Configuration
+  #
+
+  ## Base address of Qualcomm Shared Memory (SMEM).
+  #  SMEM is used for communication between different processors
+  #  in Qualcomm SoCs (Application Processor, Modem, DSP, etc.).
+  #  @Prompt SMEM Base Address
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemBaseAddress             | 0x0          | UINT64  | 0xA1000001
+
+  ## Size of Shared Memory region in bytes.
+  #  Defines the total size of the SMEM region available for
+  #  inter-processor communication.
+  #  @Prompt SMEM Size
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize                    | 0x0          | UINT32  | 0xA1000002
+
+  ## Maximum number of SMEM items that can be allocated.
+  #  @Prompt SMEM Maximum Items
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemMaxItems                | 0            | UINT16  | 0xA1000003
+
+  ## Base address of Top-Level Control and Status Register (TCSR).
+  #  @Prompt SMEM TCSR Base Address
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemTcsrBase                | 0x0          | UINT32  | 0xA1000004
+
+  ## Base address of hardware mutex registers for SMEM synchronization.
+  #  @Prompt SMEM Mutex Register Base
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemMutexRegBase            | 0x0          | UINT32  | 0xA1000005
+
+  ## Base address of Write-Once (WONCE) registers.
+  #  @Prompt SMEM WONCE Register Base
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemWonceRegBase            | 0x0          | UINT32  | 0xA1000006
+
+  ## Offset of target information register within WONCE space.
+  #  @Prompt SMEM Target Info WONCE Register
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemTargetInfoWonceReg      | 0x0          | UINT32  | 0xA1000007
