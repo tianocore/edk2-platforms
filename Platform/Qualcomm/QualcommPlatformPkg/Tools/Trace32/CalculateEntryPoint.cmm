@@ -1,0 +1,164 @@
+;;@file
+;;  Calculates the entry point of the UEFI DXE image by parsing the PE/TE header
+;;  in memory. Scans backwards for the last 'data.load.elf'.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  ARGUMENTS:
+;    &DebugScriptMetaDataBufferAddress - Base address of the debug script metadata buffer.
+;    &HeaderOffset                     - Offset of the CMM header within the buffer.
+;============================================================================
+ENTRY &DebugScriptMetaDataBufferAddress &HeaderOffset
+
+LOCAL &CwDir
+LOCAL &ScriptStart
+LOCAL &ScriptLen
+LOCAL &EndPtr
+LOCAL &CurrPtr
+LOCAL &LineStart
+LOCAL &ImageBase
+LOCAL &Sig
+LOCAL &PeOffset
+LOCAL &PeHeader
+LOCAL &OptHeader
+LOCAL &Magic
+LOCAL &EntryPointRva
+LOCAL &EntryPoint
+LOCAL &StrippedSize
+LOCAL &Found
+LOCAL &DataLoadElfPatternStr
+LOCAL &ByteVal
+LOCAL &AddrPos
+LOCAL &AddrStr
+LOCAL &PeSig
+
+; Get the current working directory of the script
+&CwDir=os.ppd()
+
+&Found=0
+
+IF "&DebugScriptMetaDataBufferAddress"==""
+(
+  PRINT %ERROR "Debug script metadata buffer address argument is required."
+  ENDDO 0
+)
+
+; &HeaderSize = sizeof(CMM_DDR_HEADER) = 16 bytes (0x10)
+; If the header struct grows, update &HeaderSize here to match HEADER_SIZE in the C code.
+&HeaderSize=0x10
+&ScriptStart=&DebugScriptMetaDataBufferAddress+(&HeaderOffset+&HeaderSize)
+
+; Read script length from header (Offset 8 in header structure)
+; Header is at HEADER_OFFSET=0x48; WriteOffset field is at +0x8 within the header
+&ScriptLen=Data.Long(A:&DebugScriptMetaDataBufferAddress+&HeaderOffset+0x8)
+
+IF &ScriptLen==0
+(
+  PRINT %ERROR "No script data found in DDR."
+  ENDDO 0
+)
+
+; Calculate end of script data
+&EndPtr=&ScriptStart+&ScriptLen-1
+&CurrPtr=&EndPtr
+
+; Scan backwards for the last occurence of 'data.load.elf'
+; "data.load.elf" is 13 chars. We search for the first part "data".
+WHILE &CurrPtr>&ScriptStart+14
+(
+  ; "data" = 0x61746164
+  IF Data.Long(A:&CurrPtr-13)==0x61746164
+  (
+    ; Found "data", verify full 13-char pattern using STR.SCAN()
+    &DataLoadElfPatternStr=Data.STRingN(A:&CurrPtr-13, 13)
+    IF STR.SCAN("&DataLoadElfPatternStr","data.load.elf",0)!=-1
+    (
+      &LineStart=&CurrPtr
+      &Found=1
+      GOTO FoundLine
+    )
+  )
+  &CurrPtr=&CurrPtr-1
+)
+
+IF &Found==0
+(
+  PRINT %ERROR "Could not find 'data.load.elf' entry in script."
+  ENDDO 0
+)
+
+FoundLine:
+; We found the line. Now scan forward from here to find "0x"
+&CurrPtr=&LineStart
+WHILE &CurrPtr<&EndPtr-1
+(
+  &ByteVal=Data.Short(A:&CurrPtr)
+
+  ; Look for "0x"
+  IF &ByteVal==0x7830
+  (
+    &AddrPos=&CurrPtr
+    GOTO FoundAddress
+  )
+  &CurrPtr=&CurrPtr+1
+)
+
+PRINT %ERROR "Could not find address starting with '0x' after 'data.load.elf'."
+ENDDO 0
+
+FoundAddress:
+; Extract address string (assuming fixed length or until next space/newline)
+&AddrStr=Data.STRingN(A:&AddrPos, 0x12) ; 0x + 16 hex chars
+&ImageBase=&AddrStr
+
+PRINT "Found ImageBase: &ImageBase"
+
+;----------------------------------------------------------------------------
+; Parse Header to find Entry Point
+;----------------------------------------------------------------------------
+
+; Check Signature
+&Sig=Data.Short(A:&ImageBase)
+
+IF &Sig==0x5A56 ; 'VZ' -> TE Image
+(
+   PRINT "Detected TE Image"
+   &StrippedSize=Data.Short(A:&ImageBase+0x6)
+   &EntryPointRva=Data.Long(A:&ImageBase+0x8)
+   &EntryPoint=&ImageBase+&EntryPointRva-&StrippedSize
+)
+ELSE IF &Sig==0x5A4D ; 'MZ' -> PE Image
+(
+   PRINT "Detected PE Image"
+   &PeOffset=Data.Long(A:&ImageBase+0x3C)
+   &PeHeader=&ImageBase+&PeOffset
+   &PeSig=Data.Long(A:&PeHeader)
+
+   IF &PeSig==0x00004550 ; 'PE\0\0'
+   (
+      &OptHeader=&PeHeader+0x18
+      &Magic=Data.Short(A:&OptHeader)
+      &EntryPointRva=Data.Long(A:&OptHeader+0x10)
+      &EntryPoint=&ImageBase+&EntryPointRva
+   )
+   ELSE
+   (
+      PRINT %ERROR "Invalid PE Signature"
+      ENDDO 0
+   )
+)
+ELSE
+(
+   PRINT %ERROR "Unknown Image Signature: &Sig"
+   ENDDO 0
+)
+
+PRINT "Calculated EntryPoint: &EntryPoint"
+
+ENDDO &EntryPoint
+

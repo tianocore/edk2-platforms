@@ -1,0 +1,274 @@
+;;@file
+;;  Symbol load script for SEC.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+
+GLOBAL &AppSrcPath
+GLOBAL &AppObjPath
+GLOBAL &UefiRootDirName
+GLOBAL &AppSrcDirName
+GLOBAL &AppObjDirName
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  ARGUMENTS:
+;    &UefiBaseAddr - The base address of the UEFI image.
+;    &LoadAddr - The address where the symbols should be loaded.
+;    &ImageBase - The base address of the image in memory.
+;    &Option - Optional flags for symbol loading.
+;============================================================================
+; Read the symbol file path from the ELF image loaded in memory
+GetSymFilePath:
+  ENTRY &UefiBaseAddr &LoadAddr &ImageBase &Option
+
+  LOCAL &CwDir
+  LOCAL &Sig
+  LOCAL &PeOffset
+  LOCAL &PeHeader
+  LOCAL &OptHeader
+  LOCAL &Magic
+  LOCAL &DataDirOffset
+  LOCAL &DebugEntryOffset
+  LOCAL &DebugDirRva
+  LOCAL &DebugDirSize
+  LOCAL &DebugDirAddr
+  LOCAL &RvaAdjust
+  LOCAL &Entries
+  LOCAL &Index
+  LOCAL &Type
+  LOCAL &CvRva
+  LOCAL &CvSig
+  LOCAL &ElfFilePath
+  LOCAL &LoadFilePathPos
+  LOCAL &LoadFilePath
+  LOCAL &WorkspaceRoot
+  LOCAL &ScanLocation
+  LOCAL &IgnoreSymPathParts
+  LOCAL &PathSep
+  LOCAL &StrippedSize
+  LOCAL &PeSig
+  LOCAL &scanres
+  LOCAL &SecSourcePath
+  LOCAL &ArchPos
+  LOCAL &DebugPos
+  LOCAL &SourceModulePath
+
+  &CwDir=os.ppd()
+  &WorkspaceRoot="&CwDir/../../../../../.."
+
+  &RvaAdjust=0
+  &DebugDirRva=0
+  &ElfFilePath=""
+
+  ; Check Signature
+  &Sig=Data.Short(A:&ImageBase)
+
+  IF &Sig==0x5A56 ; 'VZ' -> TE Image
+  (
+     PRINT "Detected TE Image at &ImageBase"
+     &StrippedSize=Data.Short(A:&ImageBase+0x6)
+     ; DataDirectory[1] is Debug. Header size 40 (0x28).
+     ; DataDirectory start at 0x18. Entry 0 is BaseReloc. Entry 1 is Debug.
+     ; Entry size 8 bytes.
+     &DebugEntryOffset=&ImageBase+0x18+8
+     &DebugDirRva=Data.Long(A:&DebugEntryOffset)
+     &DebugDirSize=Data.Long(A:&DebugEntryOffset+4)
+     &RvaAdjust=0x28-&StrippedSize
+  )
+  ELSE IF &Sig==0x5A4D ; 'MZ' -> PE Image
+  (
+     PRINT "Detected PE Image at &ImageBase"
+     &PeOffset=Data.Long(A:&ImageBase+0x3C)
+     &PeHeader=&ImageBase+&PeOffset
+     &PeSig=Data.Long(A:&PeHeader)
+
+     IF &PeSig==0x00004550 ; 'PE\0\0'
+     (
+        &OptHeader=&PeHeader+0x18
+        &Magic=Data.Short(A:&OptHeader)
+
+        IF &Magic==0x10B ; PE32
+          &DataDirOffset=0x60
+        ELSE IF &Magic==0x20B ; PE32+
+          &DataDirOffset=0x70
+
+        ; The Debug Directory entry is at index 6 in the PE/COFF DataDirectory array.
+        ; See the PE/COFF specification for more details.
+        &DebugEntryOffset=&OptHeader+&DataDirOffset+(6*8)
+        &DebugDirRva=Data.Long(A:&DebugEntryOffset)
+        &DebugDirSize=Data.Long(A:&DebugEntryOffset+4)
+     )
+  )
+
+  IF &DebugDirRva==0
+  (
+    PRINT %ERROR "No Debug Directory found in image at &ImageBase"
+    ENDDO
+  )
+
+  ; Process Debug Directory
+  &DebugDirAddr=&ImageBase+&DebugDirRva+&RvaAdjust
+  &Entries=&DebugDirSize/0x1C ; Sizeof IMAGE_DEBUG_DIRECTORY is 28 (0x1C)
+
+  &Index=0
+  WHILE &Index<&Entries
+  (
+     &Type=Data.Long(A:&DebugDirAddr+(&Index*0x1C)+0xC)
+
+     IF &Type==2 ; IMAGE_DEBUG_TYPE_CODEVIEW
+     (
+        &CvRva=Data.Long(A:&DebugDirAddr+(&Index*0x1C)+0x14) ; AddressOfRawData
+        &CvAddr=&ImageBase+&CvRva+&RvaAdjust
+        &CvSig=Data.Long(A:&CvAddr)
+
+        IF &CvSig==0x53445352 ; 'RSDS'
+        (
+           ; PDB Path at offset 0x18
+           &ElfFilePath=Data.STRing(A:&CvAddr+0x18)
+           &Index=&Entries ; Break loop
+        )
+        ELSE IF &CvSig==0x3031424E ; 'NB10'
+        (
+           ; PDB Path at offset 0x10
+           &ElfFilePath=Data.STRing(A:&CvAddr+0x10)
+           &Index=&Entries ; Break loop
+        )
+     )
+     &Index=&Index+1
+  )
+
+  IF "&ElfFilePath"==""
+  (
+    PRINT %ERROR "No CodeView PDB path found in image"
+    ENDDO
+  )
+
+  PRINT "Found Symbol Path: &ElfFilePath"
+
+  ; Path normalization and loading
+  ; Search for Build folder in the file path
+  &LoadFilePathPos=0.
+  &scanres=0.
+
+  ; Try \Build
+  &scanres=string.scan("&ElfFilePath","\Build",&LoadFilePathPos)
+  IF (&scanres!=-1.)
+  (
+    &LoadFilePathPos=&scanres+1.
+  )
+  ELSE
+  (
+    ; Try /Build
+    &scanres=string.scan("&ElfFilePath","/Build",&LoadFilePathPos)
+    IF (&scanres!=-1.)
+    (
+      &LoadFilePathPos=&scanres+1.
+    )
+  )
+
+  IF (&scanres==-1.)
+  (
+     PRINT %ERROR "Could not find /Build in path: &ElfFilePath"
+     ENDDO
+  )
+
+  &PathSep=string.mid("&ElfFilePath",&LoadFilePathPos-1,1)
+
+  ; Add symbols paths
+  IF ("&Option"!="NOSYMRESET")
+  (
+    y.spath.reset
+  )
+
+  y.spath.SETBASEDIR "&WorkspaceRoot"
+  y.spath.SETBASEDIR .
+
+  &IgnoreSymPathParts=0
+  &ScanLocation=string.scan("&ElfFilePath","&PathSep",0)
+  WHILE &ScanLocation<&LoadFilePathPos
+  (
+    &IgnoreSymPathParts=&IgnoreSymPathParts+1
+    &ScanLocation=string.scan("&ElfFilePath","&PathSep",&ScanLocation+1)
+  )
+
+  ; Extract only the ELF file path relative to current location
+  ; (Should start with Build/...)
+  &LoadFilePath=string.cut("&ElfFilePath",&LoadFilePathPos)
+
+  ; Check if the file exists relative to workspace root
+  IF (!os.file("&WorkspaceRoot/&LoadFilePath"))
+  (
+    PRINT "Warning: Could not locate &LoadFilePath in &WorkspaceRoot"
+  )
+
+  PRINT "Sec dll file: &LoadFilePath"
+
+  IF ("&Option"!="NOSYMRESET")
+  (
+    data.load.elf "&WorkspaceRoot/&LoadFilePath" &LoadAddr /nocode /strippart &IgnoreSymPathParts
+  )
+  ELSE
+  (
+    data.load.elf "&WorkspaceRoot/&LoadFilePath" &LoadAddr /nocode /noclear
+  )
+
+  PRINT "Loaded Sec symbols at &LoadAddr from &LoadFilePath"
+
+  ;----------------------------------------------------------------------------
+  ; Add SEC source code path for debugging
+  ;----------------------------------------------------------------------------
+  ; Extract module source path from &LoadFilePath
+  ; Pattern: Build/.../DEBUG_XXX/AARCH64/<SOURCE_PATH>/DEBUG/<FILENAME>
+  ; We need to extract <SOURCE_PATH>
+
+  &ArchPos=-1
+  &DebugPos=-1
+
+  ; Search for architecture markers
+  &ArchPos=string.scan("&LoadFilePath","AARCH64",0)
+  IF (&ArchPos==-1)
+  (
+    &ArchPos=string.scan("&LoadFilePath","ARM",0)
+  )
+  IF (&ArchPos==-1)
+  (
+    &ArchPos=string.scan("&LoadFilePath","X64",0)
+  )
+  IF (&ArchPos==-1)
+  (
+    &ArchPos=string.scan("&LoadFilePath","IA32",0)
+  )
+
+  IF (&ArchPos!=-1)
+  (
+    ; Find the next "/" after architecture marker to skip the arch folder
+    &ArchPos=string.scan("&LoadFilePath","&PathSep",&ArchPos)
+    IF (&ArchPos!=-1)
+    (
+      &ArchPos=&ArchPos+1
+
+      ; Find "/DEBUG/" substring to mark the end of the source module path
+      &DebugPos=string.scan("&LoadFilePath","/DEBUG/",&ArchPos)
+      IF (&DebugPos==-1)
+      (
+        &DebugPos=string.scan("&LoadFilePath","\DEBUG\",&ArchPos)
+      )
+
+      IF (&DebugPos!=-1)
+      (
+        ; Extract source module path
+        &SourceModulePath=string.mid("&LoadFilePath",&ArchPos,&DebugPos-&ArchPos)
+        ; Construct full SEC source path
+        &SecSourcePath="&WorkspaceRoot/&SourceModulePath"
+        ; Set source path for Trace32 debugger
+        y.SourcePATH.SetRecurseDir "&SecSourcePath"
+        PRINT "SEC source path set: &SecSourcePath"
+      )
+    )
+  )
+
+ENDDO
+
