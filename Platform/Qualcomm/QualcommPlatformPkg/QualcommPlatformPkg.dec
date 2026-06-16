@@ -61,3 +61,15 @@
   #  @Prompt Trace32 DDR Size
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize              | 0x0          | UINT64  | 0xA1000004
 
+  #
+  # Device Tree - DT
+  #
+
+  ## Base address where Device Tree Blob (DTB) is loaded.
+  #  @Prompt Boot Device Tree Base Address
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtBase                  | 0x0          | UINT64  | 0xA1000010
+
+  ## Size of Device Tree Blob region in bytes.
+  #  @Prompt Boot Device Tree Size
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize                  | 0x0          | UINT64  | 0xA1000011
+
