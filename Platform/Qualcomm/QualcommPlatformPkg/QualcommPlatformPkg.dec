@@ -26,3 +26,16 @@
 
 [Guids]
   gQualcommPlatformPkgTokenSpaceGuid     = {0xfcdbe91a, 0x2a3d, 0x11f1, {0x93, 0x72, 0x0b, 0x68, 0x11, 0x99, 0x4c, 0x30}}
+
+[PcdsFixedAtBuild]
+  #
+  # SoC Internal Memory - IMEM
+  #
+
+  ## Base address of IMEM cookies region.
+  #  @Prompt IMEM Cookies Base Address
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase             | 0x0          | UINT64  | 0xA1000001
+
+  ## Size of IMEM cookies region in bytes.
+  #  @Prompt IMEM Cookies Size
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize             | 0x0          | UINT64  | 0xA1000002
