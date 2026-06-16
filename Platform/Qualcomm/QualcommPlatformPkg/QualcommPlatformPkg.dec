@@ -48,3 +48,16 @@
   ## Size of IMEM cookies region in bytes.
   #  @Prompt IMEM Cookies Size
   gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize             | 0x0          | UINT64  | 0xA1000002
+
+  #
+  # Lauterbach Trace32 CMM Save Address for T32 Debug - DebugPecoffExtraActionLib T32 instance.
+  #
+
+  ## Base address of Trace32 debug region in DDR.
+  #  @Prompt Trace32 DDR Base Address
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase              | 0x0          | UINT64  | 0xA1000003
+
+  ## Size of Trace32 debug region in bytes.
+  #  @Prompt Trace32 DDR Size
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize              | 0x0          | UINT64  | 0xA1000004
+
