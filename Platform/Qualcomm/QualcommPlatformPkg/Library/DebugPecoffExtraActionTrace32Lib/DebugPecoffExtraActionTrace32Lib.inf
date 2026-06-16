@@ -1,0 +1,35 @@
+## @file
+#  Debug PE/COFF Extra Action Library for Trace32.
+#
+#  This library enables Trace32 debugging on device by generating
+#  symbol loading scripts in DDR memory.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = DebugPecoffExtraActionTrace32Lib
+  FILE_GUID                      = C3E9448E-1726-42fb-9368-41F75B038C0C
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PeCoffExtraActionLib
+
+[Sources.common]
+  DebugPecoffExtraActionTrace32Lib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  QualcommPlatformPkg/QualcommPlatformPkg.dec
+  MdePkg/MdePkg.dec
+
+[Pcd]
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+
+[LibraryClasses]
+  ArmLib
+  CacheMaintenanceLib
+  DebugLib
