@@ -1,0 +1,208 @@
+;;@file
+;;  Debug UEFI with Dynamic Symbol Loading.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  ARGUMENTS:
+;    &Module                           - Module to debug (e.g., Sec, DxeCore, ArmCpuDxe).
+;    &DebugScriptMetaDataBufferAddress - Base address of the debug script metadata buffer.
+;    &DebugScriptMetaDataBufferSize    - Size of the debug script metadata buffer.
+;    &UefiEntry                        - UEFI entry point address.
+;    &UEFIImageElfPath                 - [Optional] Path to UEFI image ELF for RAM loading.
+;    &UEFIDtbImageElfPath              - [Optional] Path to UEFI DTB image ELF for RAM loading.
+;    &NoReset                          - [Optional] Pass NORESET to skip device reset.
+;============================================================================
+ENTRY &Module &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize &UefiEntry &UEFIImageElfPath &UEFIDtbImageElfPath &NoReset
+
+LOCAL &CwDir
+LOCAL &EntryPointAddr
+LOCAL &SecUefiBaseAddr
+LOCAL &SecLoadAddr
+LOCAL &SecImageBase
+LOCAL &HeaderOffset
+LOCAL &TrapFlagOffset
+LOCAL &StopDriverOffset
+LOCAL &SecLoadImgOffset
+
+&CwDir=os.ppd()
+&NoReset=convert.toupper("&NoReset")
+
+; Debug protocol layout offsets.
+; These MUST match the corresponding #define values in
+; DebugPecoffExtraActionTrace32Lib.c:
+;   HEADER_OFFSET      = 0x50
+;   TRAP_FLAG_OFFSET   = 0x40
+;   STOP_DRIVER_OFFSET = 0x0
+&HeaderOffset=0x48
+&TrapFlagOffset=0x40
+&StopDriverOffset=0x0
+&SecLoadImgOffset=0x1738
+
+AREA.CLEAR
+AREA.RESET
+AREA.CREATE UEFI_Logs 1000. 8192.
+AREA.SELECT UEFI_Logs
+AREA.view UEFI_Logs
+
+IF "&DebugScriptMetaDataBufferAddress"==""
+(
+  DIALOG.OK "Please specify the debug script metadata buffer address."
+  ENDDO
+)
+
+IF "&DebugScriptMetaDataBufferSize"==""
+(
+  DIALOG.OK "Please specify the debug script metadata buffer size."
+  ENDDO
+)
+
+IF "&UefiEntry"==""
+(
+  DIALOG.OK "Please specify the UEFI entry address."
+  ENDDO
+)
+
+;============================================================================
+; 1. Reset Device and Break at UEFI Entry
+;    Common to both live boot and RAM loading modes.
+;    Skipped if NORESET is passed (device is assumed to be already stopped).
+;============================================================================
+IF (string.scan("&NoReset","NORESET",0)==-1)
+(
+  PRINT "Reset device and break at UEFI Entry ..."
+  Break.Delete
+  DO std_reset
+  Break.Set &UefiEntry /Program /ONCHIP
+  Go
+  WAIT !STATE.RUN()
+  PRINT "Stopped at UEFI Entry."
+)
+
+;============================================================================
+; 2. RAM Load UEFI Image(s)  [Optional]
+;    Only executed when UEFIImageElfPath or UEFIDtbImageElfPath is provided.
+;    Loads ELF image(s) into RAM after the device has stopped at UEFI Entry.
+;============================================================================
+IF ("&UEFIImageElfPath"!="")||("&UEFIDtbImageElfPath"!="")
+(
+  PRINT "Loading RAM images..."
+  cd ..\..\..\..\..
+
+  IF "&UEFIImageElfPath"!=""
+  (
+    Data.LOAD.Elf "&UEFIImageElfPath" A: /DualPort
+  )
+
+  IF "&UEFIDtbImageElfPath"!=""
+  (
+    IF OS.FILE(&UEFIDtbImageElfPath)
+    (
+      Data.LOAD.Elf "&UEFIDtbImageElfPath" A: /DualPort
+    )
+  )
+)
+
+IF "&Module"==""
+(
+  DIALOG.OK "No module specified. Stopped at UEFI Entry."
+  ENDDO
+)
+
+;============================================================================
+; 3. Load SEC Symbols
+;    Legacy method for early-stage symbol resolution.
+;============================================================================
+PRINT "Loading SEC symbols..."
+&SecUefiBaseAddr=&UefiEntry
+&SecLoadAddr=&UefiEntry+0x1000
+&SecImageBase=&UefiEntry+&SecLoadImgOffset
+DO "&CwDir/LoadSecSym.cmm" &SecUefiBaseAddr &SecLoadAddr &SecImageBase NOSYMRESET
+
+;============================================================================
+; 4. Break at CEntryPoint (SecMain)
+;    Sets a breakpoint at the SEC entry function and waits.
+;============================================================================
+if sYmbol.EXIST(CEntryPoint)
+(
+  print "Breaking at CEntryPoint..."
+  Break.Delete
+  Break.Set CEntryPoint /Program /ONCHIP /RESUME
+  Go.direct
+  WAIT !STATE.RUN()
+  PRINT "Stopped at CEntryPoint."
+)
+ELSE
+(
+  PRINT "Symbol SecMain not found. Continuing..."
+)
+
+IF &Module=="Sec"
+(
+  PRINT "Target is Sec. We are debugging Sec."
+  ENDDO
+)
+
+;============================================================================
+; 5. Set Trap for Target Module
+;    Writes module name and trap-flag to the debug metadata buffer so
+;    firmware spins inside BreakPointFunction.
+;============================================================================
+PRINT "Setting trap for module: &Module"
+
+; Clear debug script metadata buffer first to ensure no garbage data
+Data.Set ezaxi:(&DebugScriptMetaDataBufferAddress)--(&DebugScriptMetaDataBufferAddress+&DebugScriptMetaDataBufferSize-1) %Word 0x0
+
+; Write module name to debug metadata buffer to trigger firmware breakpoint (StopDriverName at Offset 0)
+Data.Set ezaxi:(&DebugScriptMetaDataBufferAddress+&StopDriverOffset) &Module 0x0
+
+; Set trap-flag to ASCII "TF" so firmware spins inside BreakPointFunction
+Data.Set ezaxi:(&DebugScriptMetaDataBufferAddress+&TrapFlagOffset) "TF" 0x0
+
+PRINT "Trap set for: &Module"
+
+PRINT "Running (firmware will enter BreakPointFunction and spin on TF)..."
+
+; Set a read watchpoint on the TrapFlag — fires when firmware enters the spin loop
+Break.Set ezaxi:(&DebugScriptMetaDataBufferAddress+&TrapFlagOffset) /Read /ONCHIP
+Go
+WAIT !STATE.RUN() 30.s
+Break.Delete ezaxi:(&DebugScriptMetaDataBufferAddress+&TrapFlagOffset)
+
+;============================================================================
+; 6. Load Symbols and Calculate Module Entry Point
+;    Loads new symbols from DDR, calculates the target module entry point,
+;    clears the trap-flag, and breaks at the module entry.
+;============================================================================
+
+; Load any new symbols from DDR
+DO "&CwDir/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
+
+; Calculate Entry Point for the last loaded module
+DO "&CwDir/CalculateEntryPoint.cmm" &DebugScriptMetaDataBufferAddress &HeaderOffset
+ENTRY &EntryPointAddr
+
+; Clear trap-flag to release firmware from the spin loop
+Data.Set A:(&DebugScriptMetaDataBufferAddress+&TrapFlagOffset) %Word 0x0
+
+IF &EntryPointAddr!=0
+(
+  PRINT "Found Module Entry Point at &EntryPointAddr"
+  Break.Set &EntryPointAddr /Program /ONCHIP
+
+  ; Continue to hit the entry point
+  Go
+  WAIT !STATE.RUN()
+
+  PRINT "Stopped at &Module Entry Point."
+)
+ELSE
+(
+  PRINT "Could not calculate entry point (EntryPointAddr=0)."
+)
+
+ENDDO
