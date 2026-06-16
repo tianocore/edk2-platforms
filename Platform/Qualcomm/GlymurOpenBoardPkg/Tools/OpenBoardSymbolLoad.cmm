@@ -1,0 +1,27 @@
+;;@file
+;;  Glymur target-specific wrapper for the generic Qualcomm Trace32 UEFI symbol loading flow.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  Example:
+;    do OpenBoardSymbolLoad.cmm
+;============================================================================
+LOCAL &CwDir
+LOCAL &WorkspaceRoot
+LOCAL &DebugScriptMetaDataBufferAddress
+LOCAL &DebugScriptMetaDataBufferSize
+
+&CwDir=os.ppd()
+&WorkspaceRoot="&CwDir/../../../../.."
+
+&DebugScriptMetaDataBufferAddress=0xA8FFB000
+&DebugScriptMetaDataBufferSize=0x5000
+
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
+
+ENDDO
