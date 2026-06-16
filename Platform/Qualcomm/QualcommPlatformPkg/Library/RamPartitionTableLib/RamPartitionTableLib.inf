@@ -1,0 +1,41 @@
+## @file
+#  RAM Partition Table Library
+#
+#  This library provides interface to access and manage RAM partition table
+#  information stored in SMEM, including memory capacity, partition entries,
+#  and physical memory attributes.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = RamPartitionTableLib
+  FILE_GUID                      = 853f974c-3b4e-4678-b53e-d4be54482a58
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = RamPartitionTableLib
+
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+
+[Sources]
+  RamPartitionTableLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  QualcommPlatformPkg/QualcommPlatformPkg.dec
+  QualcommSiliconPkg/QualcommSiliconPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  SmemLib
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+  gQualcommPlatformPkgTokenSpaceGuid.PcdMaxMemory

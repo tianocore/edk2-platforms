@@ -29,6 +29,15 @@
 
 [PcdsFixedAtBuild]
   #
+  # Memory Management
+  #
+
+  ## Limit available memory irrespective of RAM partition region.
+  #  Restricts memory visible to UEFI.
+  #  @Prompt Maximum Memory
+  gQualcommPlatformPkgTokenSpaceGuid.PcdMaxMemory                   | 0x1000000000 | UINT64  | 0xA1000000
+
+  #
   # SoC Internal Memory - IMEM
   #
 
