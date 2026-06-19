@@ -619,6 +619,9 @@ DumpAcpiRsdt (
   EntryPtr = (UINT32 *)(Rsdt + 1);
   for (Index = 0; Index < EntryCount; Index ++, EntryPtr ++) {
     Table = (EFI_ACPI_DESCRIPTION_HEADER *)((UINTN)(*EntryPtr));
+    if (Table == NULL) {
+      continue;
+    }
     if (DumpPrint) {
       DumpAcpiTable (Table);
     }
@@ -676,6 +679,9 @@ DumpAcpiXsdt (
   for (Index = 0; Index < EntryCount; Index ++) {
     CopyMem (&EntryPtr, (VOID *)(BasePtr + Index * sizeof(UINT64)), sizeof(UINT64));
     Table = (EFI_ACPI_DESCRIPTION_HEADER *)((UINTN)(EntryPtr));
+    if (Table == NULL) {
+      continue;
+    }
     if (DumpPrint) {
       DumpAcpiTable (Table);
     }
