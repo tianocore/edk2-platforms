@@ -1,0 +1,41 @@
+#/** @file
+#
+#  Component description file for VirtNorFlashDeviceTreeLib module
+#
+#  Copyright (c) 2023, Ventana Micro Systems Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = NorFlashPlatformLib
+  FILE_GUID                      = 7E4A1C2B-9F3D-4A6E-8B2F-1D5C9E7A3F60
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NorFlashPlatformLib
+
+[Sources.common]
+  NorFlashLib.c
+
+[Packages]
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  OvmfPkg/OvmfPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gFdtClientProtocolGuid          ## CONSUMES
+
+[Depex]
+  gFdtClientProtocolGuid
+
+[Pcd]
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFdBaseAddress64
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFirmwareFdSize
