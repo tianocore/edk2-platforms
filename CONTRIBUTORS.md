@@ -11,6 +11,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 |------------------------|----------------------------------|------------------------------------------------------|
 | Abdul Lateef Attar     | AbdulLateef.Attar@amd.com        | [@abdattar](https://github.com/abdattar)             |
 | Abner Chang            | abner.chang@amd.com              | [@changab](https://github.com/changab)               |
+| Ajay Iyengar           | aiyengar@qti.qualcomm.com        | [@aiyengar-qc](https://github.com/aiyengar-qc)       |
 | Ard Biesheuvel         | ardb+tianocore@kernel.org        | [@ardbiesheuvel](https://github.com/ardbiesheuvel)   |
 | Ashraf Ali S           | ashraf.ali.s@intel.com           | [@AshrafAliS](https://github.com/AshrafAliS)         |
 | Benjamin Doron         | benjamin.doron00@gmail.com       | [@benjamindoron](https://github.com/benjamindoron)   |
@@ -63,6 +64,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Theo Jehl              | theojehl76@gmail.com             | [@theomacx86](https://github.com/theomacx86)         |
 | Thomas Abraham         | thomas.abraham@arm.com           |                                                      |
 | USER0FISH              | libing1202@outlook.com           | [@USER0FISH](https://github.com/USER0FISH)           |
+| Vishal Oliyil Kunnil   | vishalo@qti.qualcomm.com         | [@vishalo](https://github.com/vishalo)               |
 | Wenyi Xie              | xiewenyi2@huawei.com             |                                                      |
 | Xianglai li            | lixianglai@loongson.cn           | [@lixianglai](https://github.com/lixianglai)         |
 | Yang Wang              | wangyang@bosc.ac.cn              |                                                      |
