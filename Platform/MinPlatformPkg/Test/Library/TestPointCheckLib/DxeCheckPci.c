@@ -420,9 +420,9 @@ TestPointCheckPciBusMaster (
           }
 
           if (VendorId != 0xffff) {
-            Command = PciSegmentRead16 (PCI_SEGMENT_LIB_ADDRESS(Segment, Bus, Device, Function, PCI_COMMAND_OFFSET));
+            Command = PciSegmentRead16 (PCI_SEGMENT_LIB_ADDRESS(PciSegmentInfo[Segment].SegmentNumber, Bus, Device, Function, PCI_COMMAND_OFFSET));
             if ((Command & EFI_PCI_COMMAND_BUS_MASTER) != 0) {
-              DEBUG ((DEBUG_INFO, "PCI BME enabled (S%04x.B%02x.D%02x.F%x - %04x)\n", Segment, Bus, Device, Function, Command));
+              DEBUG ((DEBUG_INFO, "PCI BME enabled (S%04x.B%02x.D%02x.F%x - %04x)\n", PciSegmentInfo[Segment].SegmentNumber, Bus, Device, Function, Command));
               TestPointLibAppendErrorString (
                 PLATFORM_TEST_POINT_ROLE_PLATFORM_IBV,
                 NULL,
@@ -437,7 +437,7 @@ TestPointCheckPciBusMaster (
             // If this is not a multi-function device, we can leave the loop
             // to deal with the next device.
             //
-            HeaderType = PciSegmentRead8 (PCI_SEGMENT_LIB_ADDRESS(Segment, Bus, Device, Function, PCI_HEADER_TYPE_OFFSET));
+            HeaderType = PciSegmentRead8 (PCI_SEGMENT_LIB_ADDRESS(PciSegmentInfo[Segment].SegmentNumber, Bus, Device, Function, PCI_HEADER_TYPE_OFFSET));
             if (Function == 0 && ((HeaderType & HEADER_TYPE_MULTI_FUNCTION) == 0x00)) {
               break;
             }
