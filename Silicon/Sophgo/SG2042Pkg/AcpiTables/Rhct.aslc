@@ -1,0 +1,174 @@
+/** @file
+  Processor Properties Topology Table (PPTT) for SG2042X8EVB platform
+
+  This file describes the topological structure of the processor block on the
+  SG2042X8EVB platform in the form as defined by ACPI PPTT table. The SG2042X8EVB
+  platform includes sixteen four-thread CPUS. Each of the CPUs include 64KB L1
+  Data cache, 64KB L1 Instruction cache. Each cluster share a single L2 Cache.
+
+  Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+  @par Specification Reference:
+    - ACPI 6.5, Chapter 5, Section 5.2.30, Processor Properties Topology Table
+**/
+
+#include <Library/AcpiLib.h>
+#include <Library/PcdLib.h>
+#include "SG2042AcpiHeader.h"
+
+/** Define helper macro for populating processor core information.
+
+  @param [in] PackageId Package instance number.
+  @param [in] ClusterId Cluster instance number.
+  @param [in] CpuId     CPU instance number.
+**/
+#define PPTT_CORE_INIT(PackageId, ClusterId, CpuId)                            \
+  {                                                                            \
+    /* Parameters for CPU Core */                                              \
+    EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
+      OFFSET_OF (TH_PPTT_CORE, DCache),     /* Length */                       \
+      PPTT_PROCESSOR_CORE_FLAGS,            /* Flag */                         \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package.Cluster[ClusterId]),        /* Parent */                       \
+      ((PackageId << 4) | (ClusterId << 2) | CpuId),    /* ACPI Id */          \
+      2                                     /* Num of private resource */      \
+    ),                                                                         \
+                                                                               \
+    /* Offsets of the private resources */                                     \
+    {                                                                          \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package.Cluster[ClusterId].Core[CpuId].DCache),                        \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package.Cluster[ClusterId].Core[CpuId].ICache)                         \
+    },                                                                         \
+                                                                               \
+    /* L1 data cache parameters */                                             \
+    EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE_INIT (                                   \
+      PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package.Cluster[ClusterId].L2Cache),                                   \
+                                            /* Next level of cache */          \
+      SIZE_64KB,                            /* Size */                         \
+      512,                                  /* Num of sets */                  \
+      2,                                    /* Associativity */                \
+      PPTT_DATA_CACHE_ATTR,                 /* Attributes */                   \
+      64,                                   /* Line size */                    \
+      TH_PPTT_CACHE_ID(PackageId, ClusterId, CpuId, L1DataCache) /* Cache id */\
+    ),                                                                         \
+                                                                               \
+    /* L1 instruction cache parameters */                                      \
+    EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE_INIT (                                   \
+      PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package.Cluster[ClusterId].L2Cache),                                   \
+                                            /* Next level of cache */          \
+      SIZE_64KB,                            /* Size */                         \
+      512,                                  /* Num of sets */                  \
+      2,                                    /* Associativity */                \
+      PPTT_INST_CACHE_ATTR,                 /* Attributes */                   \
+      64,                                   /* Line size */                    \
+      TH_PPTT_CACHE_ID(PackageId, ClusterId, CpuId, L1InstructionCache)        \
+                                            /* Cache id */                     \
+    ),                                                                         \
+  }
+
+/** Define helper macro for populating processor container information.
+
+  @param [in] PackageId Package instance number.
+  @param [in] ClusterId Cluster instance number.
+**/
+#define PPTT_CLUSTER_INIT(PackageId, ClusterId)                                \
+  {                                                                            \
+    /* Parameters for Cluster */                                               \
+    EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
+      OFFSET_OF (TH_PPTT_CLUSTER, L2Cache),                                    \
+                                            /* Length */                       \
+      PPTT_PROCESSOR_CLUSTER_FLAGS,         /* Flag */                         \
+      OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+        Package),                           /* Parent */                       \
+      ((PackageId << 4) | ClusterId),       /* ACPI Id */                      \
+      1                                     /* Num of private resource */      \
+    ),                                                                         \
+                                                                               \
+    /* Offsets of the private resources */                                     \
+    OFFSET_OF (EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,               \
+      Package.Cluster[ClusterId].L2Cache),                                     \
+                                                                               \
+    /* L2 cache parameters */                                                  \
+    EFI_ACPI_6_5_PPTT_STRUCTURE_CACHE_INIT (                                   \
+      PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
+      0,                                    /* Next level of cache */          \
+      SIZE_1MB,                             /* Size */                         \
+      1024,                                 /* Num of sets */                  \
+      16,                                   /* Associativity */                \
+      PPTT_UNIFIED_CACHE_ATTR,              /* Attributes */                   \
+      64,                                   /* Line size */                    \
+      TH_PPTT_CACHE_ID(PackageId, ClusterId, 0, L2Cache)    /* Cache id */     \
+    ),                                                                         \
+                                                                               \
+    /* Initialize child cores */                                               \
+    {                                                                          \
+      PPTT_CORE_INIT (PackageId, ClusterId, 0),                                \
+      PPTT_CORE_INIT (PackageId, ClusterId, 1),                                \
+      PPTT_CORE_INIT (PackageId, ClusterId, 2),                                \
+      PPTT_CORE_INIT (PackageId, ClusterId, 3)                                 \
+    }                                                                          \
+  }
+
+#pragma pack(1)
+typedef struct {
+  EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR  Package;
+  TH_PPTT_CLUSTER                        Cluster[CLUSTER_COUNT];
+} SG2042X8_PPTT_PACKAGE;
+
+/*
+ * Processor Properties Topology Table
+ */
+typedef struct {
+  EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_HEADER  Header;
+  SG2042X8_PPTT_PACKAGE                                    Package;
+} EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE;
+#pragma pack ()
+
+STATIC EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE Pptt = {
+  {
+    RISCV_ACPI_HEADER (
+      EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,
+      EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,
+      EFI_ACPI_6_5_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_REVISION
+    )
+  },
+
+  {
+    EFI_ACPI_6_5_PPTT_STRUCTURE_PROCESSOR_INIT (
+      OFFSET_OF (SG2042X8_PPTT_PACKAGE, Cluster[0]),
+      PPTT_PROCESSOR_PACKAGE_FLAGS, 0, 0, 0
+    ),
+    {
+      PPTT_CLUSTER_INIT (0, 0),
+      PPTT_CLUSTER_INIT (0, 1),
+      PPTT_CLUSTER_INIT (0, 2),
+      PPTT_CLUSTER_INIT (0, 3),
+      PPTT_CLUSTER_INIT (0, 4),
+      PPTT_CLUSTER_INIT (0, 5),
+      PPTT_CLUSTER_INIT (0, 6),
+      PPTT_CLUSTER_INIT (0, 7),
+      PPTT_CLUSTER_INIT (0, 8),
+      PPTT_CLUSTER_INIT (0, 9),
+      PPTT_CLUSTER_INIT (0, 10),
+      PPTT_CLUSTER_INIT (0, 11),
+      PPTT_CLUSTER_INIT (0, 12),
+      PPTT_CLUSTER_INIT (0, 13),
+      PPTT_CLUSTER_INIT (0, 14),
+      PPTT_CLUSTER_INIT (0, 15)
+    }
+  }
+};
+
+/*
+ * Reference the table being generated to prevent the optimizer from removing
+ * the data structure from the executable
+ */
+VOID* CONST ReferenceAcpiTable = &Pptt;
