@@ -1,0 +1,29 @@
+## @file
+# Qualcomm Silicon Package.
+#
+# Qualcomm silicon package declaration file for MinPlatform
+# support on Qualcomm silicon.
+#
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = QualcommSiliconPkg
+  PACKAGE_GUID                   = 7FCF5A07-EF72-478F-ABC1-E2D2E19E7211
+  PACKAGE_VERSION                = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+################################################################################
+
+[Includes.common]
+  Include
+
+[Guids]
+  gQualcommSiliconPkgTokenSpaceGuid     = {0x648ed5f4, 0x6e90, 0x11f1, {0xad, 0xee, 0x5b, 0x58, 0x90, 0x85, 0x09, 0x0b}}
