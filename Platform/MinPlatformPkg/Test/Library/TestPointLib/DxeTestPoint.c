@@ -72,11 +72,13 @@ InternalTestPointFindAip (
     //
     // Check AIP
     //
-    Status = Aip->GetSupportedTypes (
-                    Aip,
-                    &InfoTypesBuffer,
-                    &InfoTypesBufferCount
-                    );
+    InfoTypesBuffer      = NULL;
+    InfoTypesBufferCount = 0;
+    Status               = Aip->GetSupportedTypes (
+                                  Aip,
+                                  &InfoTypesBuffer,
+                                  &InfoTypesBufferCount
+                                  );
     if (EFI_ERROR (Status)) {
       continue;
     }
@@ -88,7 +90,10 @@ InternalTestPointFindAip (
         break;
       }
     }
-    FreePool (InfoTypesBuffer);
+
+    if (InfoTypesBuffer != NULL) {
+      FreePool (InfoTypesBuffer);
+    }
 
     if (AipCandidate == NULL) {
       continue;
@@ -109,7 +114,7 @@ InternalTestPointFindAip (
     }
 
     TestPoint = InformationBlock;
-    if ((TestPoint->Role == Role) && 
+    if ((TestPoint->Role == Role) &&
         ((ImplementationID == NULL) || (StrCmp (ImplementationID, TestPoint->ImplementationID) == 0))) {
       break;
     } else {
@@ -299,7 +304,7 @@ TestPointLibSetTable (
   CopyMem (&TestPointAip->Aip, &mDxeAdapterInformationProtocol, sizeof(EFI_ADAPTER_INFORMATION_PROTOCOL));
   TestPointAip->TestPointSize = TestPointSize;
   TestPointAip->TestPointMaxSize = TestPointSize;
-  
+
   Handle = NULL;
   Status = gBS->InstallMultipleProtocolInterfaces (
                   &Handle,
