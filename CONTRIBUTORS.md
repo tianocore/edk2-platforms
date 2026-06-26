@@ -63,6 +63,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Theo Jehl              | theojehl76@gmail.com             | [@theomacx86](https://github.com/theomacx86)         |
 | Thomas Abraham         | thomas.abraham@arm.com           |                                                      |
 | USER0FISH              | libing1202@outlook.com           | [@USER0FISH](https://github.com/USER0FISH)           |
+| Vishal Oliyil Kunnil   | vishalo@qti.qualcomm.com         | [@vishalo](https://github.com/vishalo)               |
 | Wenyi Xie              | xiewenyi2@huawei.com             |                                                      |
 | Xianglai li            | lixianglai@loongson.cn           | [@lixianglai](https://github.com/lixianglai)         |
 | Yang Wang              | wangyang@bosc.ac.cn              |                                                      |
