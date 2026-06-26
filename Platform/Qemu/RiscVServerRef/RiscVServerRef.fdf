@@ -77,6 +77,12 @@ INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
 #
 INF  Silicon/Qemu/RiscVServerRef/Drivers/RiscVIoMmuDxe/RiscVIoMmuDxe.inf
 
+# PCI support
+#
+INF  UefiCpuPkg/CpuMmio2Dxe/CpuMmio2Dxe.inf
+INF  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+INF  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]

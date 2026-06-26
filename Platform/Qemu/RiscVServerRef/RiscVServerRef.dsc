@@ -63,6 +63,16 @@
   VirtNorFlashDeviceLib|OvmfPkg/Library/VirtNorFlashDeviceLib/VirtNorFlashDeviceLib.inf
   VirtNorFlashPlatformLib|Silicon/Qemu/RiscVServerRef/Library/NorFlashLib/NorFlashLib.inf
 
+  # PCI Libraries
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+  PciExpressLib|OvmfPkg/Library/BaseCachingPciExpressLib/BaseCachingPciExpressLib.inf
+  PciCapLib|OvmfPkg/Library/BasePciCapLib/BasePciCapLib.inf
+  PciCapPciSegmentLib|OvmfPkg/Library/BasePciCapPciSegmentLib/BasePciCapPciSegmentLib.inf
+  PciCapPciIoLib|OvmfPkg/Library/UefiPciCapPciIoLib/UefiPciCapPciIoLib.inf
+  PciPcdProducerLib|OvmfPkg/Fdt/FdtPciPcdProducerLib/FdtPciPcdProducerLib.inf
+  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
+  PciHostBridgeLib|Silicon/Qemu/RiscVServerRef/Library/PciHostBridgeLib/PciHostBridgeLib.inf
+
 ################################################################################
 #
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform.
@@ -163,6 +173,12 @@
 
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|5
 
+  # set PcdPciExpressBaseAddress to MAX_UINT64, which signifies that this
+  # PCD and PcdPciDisableBusEnumeration above have not been assigned yet
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0xFFFFFFFFFFFFFFFF
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|FALSE
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x0
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform.
@@ -178,3 +194,12 @@
   # RISC-V IOMMU
   #
   Silicon/Qemu/RiscVServerRef/Drivers/RiscVIoMmuDxe/RiscVIoMmuDxe.inf
+
+  # PCI support
+  #
+  UefiCpuPkg/CpuMmio2Dxe/CpuMmio2Dxe.inf {
+    <LibraryClasses>
+      NULL|OvmfPkg/Fdt/FdtPciPcdProducerLib/FdtPciPcdProducerLib.inf
+  }
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
