@@ -440,17 +440,7 @@ GetNumberOfSupportedSockets (
   VOID
   )
 {
-  PLATFORM_INFO_HOB  *PlatformHob;
-
-  PlatformHob = GetPlatformHob ();
-  if (PlatformHob == NULL) {
-    //
-    // By default, the number of supported sockets is 1.
-    //
-    return 1;
-  }
-
-  return (sizeof (PlatformHob->ClusterEn) / sizeof (PLATFORM_CLUSTER_EN));
+  return 2;
 }
 
 /**
