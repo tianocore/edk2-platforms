@@ -358,7 +358,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0001|UINT16|0x90000026
   gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000086A5|UINT32|0x90000027
   gMinPlatformPkgTokenSpaceGuid.PcdFadtMajorVersion|0x06|UINT8|0x90000030
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtMinorVersion|0x05|UINT8|0x90000031
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtMinorVersion|0x06|UINT8|0x90000031
 
 [PcdsFixedAtBuild]
 
