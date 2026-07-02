@@ -116,7 +116,7 @@
   # as much as PcdTpmSecureCrbSize which default is 0x1000.
   # This region is reserved by TF-A.
   #
-  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0xffdfe000
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase|0xffdff000
 
   #
   # The second last 256KB block is used for TPM storage in norflash1.
