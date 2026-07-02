@@ -1,0 +1,24 @@
+## @file
+#  Declaration file for GlymurOpenBoardPkg.
+#
+#  Support MinPlatform based boot for GlymurOpenBoardPkg.
+#
+#  Copyright (c) 2022 Theo Jehl<BR>
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = GlymurOpenBoardPkg
+  PACKAGE_GUID                   = 7D99A498-B2D4-4E93-B32F-1917BA96196E
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gGlymurOpenBoardPkgTokenSpaceGuid                     = { 0x121b20c4, 0xa3dc, 0x4b8f, { 0xb6, 0x94, 0x03, 0xc7, 0xf4, 0x76, 0x51, 0x2b } }
+
+[PcdsFixedAtBuild]
+  gGlymurOpenBoardPkgTokenSpaceGuid.PcdFdVarBlockSize   |0|UINT16|0x00000004

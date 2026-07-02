@@ -1,0 +1,85 @@
+;;@file
+;;  Glymur target-specific wrapper for the generic Qualcomm Trace32 UEFI debug flow.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+;;  @par Glossary:
+;;    - DTB - Device Tree Binary
+;============================================================================
+;  FUNCTION:  main
+;
+;  ARGUMENTS:
+;    &OptArgs - Optional flags (comma-separated):
+;               RAM     - RAM load UEFI images before debugging.
+;               NORESET - Skip device reset; use with RAM when device is
+;                         already stopped at UEFI Entry.
+;    &Module  - Name of the UEFI module to debug. Examples:
+;               Sec, PeiCore, DxeCore, ArmCpuDxe, ...
+;               If not specified, stops at UEFI Entry.
+;
+;  Example:
+;    do OpenBoardDebug.cmm
+;    do OpenBoardDebug.cmm ArmCpuDxe
+;    do OpenBoardDebug.cmm RAM DxeCore
+;    do OpenBoardDebug.cmm RAM,NORESET ArmCpuDxe
+;============================================================================
+ENTRY &OptArgs &Module
+
+LOCAL &CwDir
+LOCAL &WorkspaceRoot
+LOCAL &DebugScriptMetaDataBufferAddress
+LOCAL &DebugScriptMetaDataBufferSize
+LOCAL &UEFIImageElfPath
+LOCAL &UEFIDtbImageElfPath
+LOCAL &OutputDir
+LOCAL &UefiEntry
+LOCAL &NoReset
+
+&CwDir=os.ppd()
+&WorkspaceRoot="&CwDir/../../../../.."
+
+&OptArgs=convert.toupper("&OptArgs")
+&NoReset=""
+
+IF (string.scan("&OptArgs","NORESET",0)!=-1)
+(
+    &NoReset="NORESET"
+)
+
+&DebugScriptMetaDataBufferAddress=0xA8FFB000
+&DebugScriptMetaDataBufferSize=0x5000
+
+&UefiEntry=0xA7000000
+
+;&OutputDir="DEBUG_CLANGDWARF"
+&OutputDir="DEBUG_GCC"
+
+; Optional RAM-load images:
+; - Pass RAM in OptArgs when the images are not already present in RAM.
+; - Leave OptArgs empty for live setups where firmware was loaded from storage.
+IF (string.scan("&OptArgs","RAM",0)!=-1)
+(
+    &UEFIImageElfPath="&WorkspaceRoot/Build/GlymurOpenBoardPkg/&OutputDir/FV/signed/uefi.elf"
+    &UEFIDtbImageElfPath="&WorkspaceRoot/Build/GlymurdefaultPkg/Deliverables/Bin/DEBUG/sign/default/uefi/uncompressed/uefi_dtbs.elf"
+    IF !OS.FILE("&UEFIImageElfPath")
+    (
+        PRINT %ERROR "UEFI Image ELF not found at &WorkspaceRoot/&UEFIImageElfPath"
+        END
+    )
+    IF !OS.FILE("&UEFIDtbImageElfPath")
+    (
+        PRINT %ERROR "UEFI DTB Image ELF not found at &UEFIDtbImageElfPath"
+        &UEFIDtbImageElfPath=""
+    )
+)
+ELSE
+(
+    &UEFIImageElfPath=""
+    &UEFIDtbImageElfPath=""
+)
+
+print "&WorkspaceRoot"
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/QualcommPlatformDebug.cmm" "&Module" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize &UefiEntry "&UEFIImageElfPath" "&UEFIDtbImageElfPath" "&NoReset"
+
+ENDDO
