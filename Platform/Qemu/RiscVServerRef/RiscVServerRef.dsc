@@ -34,7 +34,20 @@
   #
   DEFINE BUILD_SHELL             = TRUE
 
+  #
+  # Network definition
+  #
+  DEFINE NETWORK_IP6_ENABLE             = TRUE
+  DEFINE NETWORK_HTTP_BOOT_ENABLE       = TRUE
+  DEFINE NETWORK_HTTP_ENABLE            = TRUE
+  DEFINE NETWORK_TLS_ENABLE             = TRUE
+  DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
+  DEFINE NETWORK_ISCSI_ENABLE           = FALSE
+  DEFINE NETWORK_PXE_BOOT_ENABLE        = TRUE
+  DEFINE NETWORK_VLAN_ENABLE            = FALSE
+
 !include MdePkg/MdeLibs.dsc.inc
+!include NetworkPkg/Network.dsc.inc
 
 [BuildOptions]
   GCC:RELEASE_*_*_CC_FLAGS       = -DMDEPKG_NDEBUG
@@ -59,6 +72,10 @@
 !include Silicon/RISC-V/RiscV.dsc.inc
 
 [LibraryClasses]
+  # Common Libraries
+  ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
+  FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
+
   # Flash Libraries
   VirtNorFlashDeviceLib|OvmfPkg/Library/VirtNorFlashDeviceLib/VirtNorFlashDeviceLib.inf
   VirtNorFlashPlatformLib|Silicon/Qemu/RiscVServerRef/Library/NorFlashLib/NorFlashLib.inf
@@ -72,6 +89,22 @@
   PciPcdProducerLib|OvmfPkg/Fdt/FdtPciPcdProducerLib/FdtPciPcdProducerLib.inf
   PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
   PciHostBridgeLib|Silicon/Qemu/RiscVServerRef/Library/PciHostBridgeLib/PciHostBridgeLib.inf
+
+!if $(NETWORK_TLS_ENABLE) == TRUE
+  TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
+!endif
+
+  #
+  # CryptoPkg libraries needed by multiple firmware features
+  #
+  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+!if $(NETWORK_TLS_ENABLE) == TRUE
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+!else
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibCrypto.inf
+!endif
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  RngLib|MdeModulePkg/Library/BaseRngLibTimerLib/BaseRngLibTimerLib.inf
 
 ################################################################################
 #
@@ -160,6 +193,8 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate|3686400
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride|1
 
+  gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
+
 ################################################################################
 #
 # Pcd Dynamic Section - list of all EDK II PCD Entries defined by this Platform
@@ -219,3 +254,19 @@
   # NVME support
   #
   MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+  #
+  # X86Emulator for running X86 OptionROM code of e1000 card.
+  #
+  Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+
+  #
+  # Shell add-on commands
+  #
+  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
+
+  #
+  # RNG driver backed by pseudo-RNG (timer-based, not for production)
+  #
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf

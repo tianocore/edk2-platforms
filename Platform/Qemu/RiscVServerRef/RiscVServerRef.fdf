@@ -99,6 +99,27 @@ INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 #
 INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 
+#
+# RNG driver backed by pseudo-RNG (timer-based, not for production)
+#
+INF  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
+
+#
+# Networking stack
+#
+!include NetworkPkg/Network.fdf.inc
+
+#
+# X86Emulator for running X86 OptionROM code
+#
+INF  Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+
+#
+# Shell add-on commands
+#
+INF  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+INF  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]
