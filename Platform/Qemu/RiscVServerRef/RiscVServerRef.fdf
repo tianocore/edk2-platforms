@@ -72,6 +72,11 @@ APRIORI DXE {
 #
 INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
 
+#
+# RISC-V IOMMU.
+#
+INF  Silicon/Qemu/RiscVServerRef/Drivers/RiscVIoMmuDxe/RiscVIoMmuDxe.inf
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]

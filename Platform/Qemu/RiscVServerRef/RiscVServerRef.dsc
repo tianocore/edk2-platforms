@@ -173,3 +173,8 @@
   # Platform Driver
   #
   OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
+
+  #
+  # RISC-V IOMMU
+  #
+  Silicon/Qemu/RiscVServerRef/Drivers/RiscVIoMmuDxe/RiscVIoMmuDxe.inf

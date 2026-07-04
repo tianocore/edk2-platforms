@@ -1,0 +1,48 @@
+## @file
+#  RISC-V IOMMU DXE driver.
+#
+#  Initializes the RISC-V IOMMU in bare (pass-through) mode and installs
+#  the EDKII_IOMMU_PROTOCOL so that PCI bus drivers can perform DMA
+#  without bounce buffers on platforms that do not require memory
+#  encryption or address translation.
+#
+#  Copyright (c) 2026, Qualcomm Incorporated. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001c
+  BASE_NAME                      = RiscVIoMmuDxe
+  FILE_GUID                      = 3E4B7A1F-9C2D-4E8A-B3F6-1A5C8D2E7F04
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = RiscVIoMmuEntryPoint
+
+[Sources]
+  RiscVIoMmuDxe.c
+  RiscVIoMmuDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  DxeServicesTableLib
+  TimerLib
+
+[Protocols]
+  gEdkiiIoMmuProtocolGuid         ## PRODUCES
+  gFdtClientProtocolGuid          ## CONSUMES
+
+[Depex]
+  gFdtClientProtocolGuid
