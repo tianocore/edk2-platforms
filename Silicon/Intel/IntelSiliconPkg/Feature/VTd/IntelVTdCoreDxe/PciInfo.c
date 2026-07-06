@@ -98,15 +98,15 @@ RegisterPciDevice (
       //
       // Reallocate
       //
-      NewPciDeviceInfo = AllocateZeroPool (sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber + MAX_VTD_PCI_DATA_NUMBER));
+      NewPciDeviceInfo = AllocateZeroPool (sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber + VTD_PCI_DATA_ALLOC_CHUNK));
       if (NewPciDeviceInfo == NULL) {
         return EFI_OUT_OF_RESOURCES;
       }
 
-      CopyMem (NewPciDeviceInfo, PciDeviceInfo, sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber + MAX_VTD_PCI_DATA_NUMBER));
+      CopyMem (NewPciDeviceInfo, PciDeviceInfo, sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber));
       FreePool (PciDeviceInfo);
 
-      NewPciDeviceInfo->PciDeviceDataMaxNumber += MAX_VTD_PCI_DATA_NUMBER;
+      NewPciDeviceInfo->PciDeviceDataMaxNumber += VTD_PCI_DATA_ALLOC_CHUNK;
       mVtdUnitInformation[VtdIndex].PciDeviceInfo = NewPciDeviceInfo;
       PciDeviceInfo = NewPciDeviceInfo;
     }

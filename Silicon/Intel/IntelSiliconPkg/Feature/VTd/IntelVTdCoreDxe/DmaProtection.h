@@ -61,7 +61,7 @@
 // This is the initial max PCI DATA number.
 // The number may be enlarged later.
 //
-#define MAX_VTD_PCI_DATA_NUMBER             0x100
+#define VTD_PCI_DATA_ALLOC_CHUNK            0x100
 
 typedef struct {
   UINTN                            VtdUnitBaseAddress;
