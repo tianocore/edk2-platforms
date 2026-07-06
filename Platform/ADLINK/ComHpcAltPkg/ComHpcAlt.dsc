@@ -198,7 +198,7 @@
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x309
 
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the

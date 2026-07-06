@@ -195,7 +195,7 @@
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x309
 
   gArmTokenSpaceGuid.PcdSystemProductName|L"ALTRAD8UD2-1L2Q"
   gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"ASRock Rack"
