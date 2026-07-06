@@ -235,7 +235,7 @@ OemGetMaxProcessors (
   VOID
   )
 {
-  return GetNumberOfSupportedSockets ();
+  return 2;
 }
 
 /** Gets the type of chassis for the system.
