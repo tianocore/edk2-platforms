@@ -28,8 +28,6 @@ PlatformBootManagerDiagnostics (
   IN BOOLEAN                   QuietBoot
   )
 {
-  EFI_STATUS  Status;
-
   //
   // Here we can decide if we need to show
   // the diagnostics screen
@@ -40,14 +38,13 @@ PlatformBootManagerDiagnostics (
     //
     // Perform system diagnostic
     //
-    Status = PlatformBootManagerMemoryTest (MemoryTestLevel);
-    return;
+    PlatformBootManagerMemoryTest (MemoryTestLevel);
   }
 
   //
   // Perform system diagnostic
   //
-  Status = PlatformBootManagerMemoryTest (MemoryTestLevel);
+  PlatformBootManagerMemoryTest (MemoryTestLevel);
 }
 
 /**
