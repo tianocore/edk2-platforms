@@ -269,7 +269,7 @@ OemIsProcessorPresent (
   mProcessorIndex = ProcessorIndex;
 
   //
-  // Platform only supports 2 sockets: Master and Slave.
+  // Platform only supports 1 socket.
   // The master socket is always online.
   //
   if (ProcessorIndex == 0) {
