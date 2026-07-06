@@ -30,6 +30,8 @@
 #define PROCESSOR_VERSION_ALTRA      L"Ampere(R) Altra(R) Processor"
 #define PROCESSOR_VERSION_ALTRA_MAX  L"Ampere(R) Altra(R) Max Processor"
 
+#define PLACEHOLDER_SMBIOS_STRING  "Not Set"
+
 #define SCP_VERSION_STRING_MAX_LENGTH  32
 
 #define MHZ_SCALE_FACTOR  1000000
@@ -158,10 +160,10 @@ OemGetCacheInformation (
   IN OUT SMBIOS_TABLE_TYPE7  *SmbiosCacheTable
   )
 {
-  SMBIOS_CACHE_SIZE    CacheSize16;
-  SMBIOS_CACHE_SIZE_2  CacheSize32;
-  UINT64               CacheSize64;
-  UINT8                Granularity32;
+  SMBIOS_CACHE_SIZE   CacheSize16;
+  SMBIOS_CACHE_SIZE_2 CacheSize32;
+  UINT64              CacheSize64;
+  UINT8               Granularity32;
 
   SmbiosCacheTable->CacheConfiguration  = CacheLevel - 1;
   SmbiosCacheTable->CacheConfiguration |= (1 << 7); // Enable
@@ -360,9 +362,14 @@ OemUpdateSmbiosInfo (
   )
 {
   EFI_STRING  UnicodeString;
+  BOOLEAN     FreeUniString;
   UINT8       StringLength;
   CHAR8       *AsciiString;
   UINT32      *Ecid;
+
+  // Default to assuming UnicodeString is dynamically allocated.
+  // This is set to FALSE in places it's from a PCD.
+  FreeUniString = TRUE;
 
   StringLength  = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
   UnicodeString = AllocatePool (StringLength);
@@ -380,6 +387,10 @@ OemUpdateSmbiosInfo (
   switch (Field) {
     case ProductNameType01:
       AsciiString = IpmiFruInfoGet (FruProductName);
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        AsciiString = IpmiFruInfoGet (FruBoardProductName);
+      }
+
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
@@ -389,7 +400,17 @@ OemUpdateSmbiosInfo (
 
     case SystemManufacturerType01:
       AsciiString = IpmiFruInfoGet (FruProductManufacturerName);
-      if (AsciiString != NULL) {
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        AsciiString = IpmiFruInfoGet (FruBoardManufacturerName);
+      }
+
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        UnicodeSPrint(
+          UnicodeString,
+          StringLength,
+          L"ASRock Rack"
+        );
+	  } else {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
       }
@@ -407,6 +428,10 @@ OemUpdateSmbiosInfo (
 
     case SerialNumType01:
       AsciiString = IpmiFruInfoGet (FruProductSerialNumber);
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        AsciiString = IpmiFruInfoGet (FruBoardSerialNumber);
+      }
+
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
@@ -437,6 +462,9 @@ OemUpdateSmbiosInfo (
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
+      } else {
+        UnicodeString = (CHAR16 *)PcdGetPtr (PcdBaseBoardProductName);
+        FreeUniString = FALSE;
       }
 
       break;
@@ -470,11 +498,13 @@ OemUpdateSmbiosInfo (
 
     case BoardManufacturerType02:
       AsciiString = IpmiFruInfoGet (FruBoardManufacturerName);
-      if (AsciiString != NULL) {
+      if (AsciiString != NULL && (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) != 0)) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
+      } else {
+        UnicodeString = (CHAR16 *)PcdGetPtr (PcdBaseBoardManufacturer);
+        FreeUniString = FALSE;
       }
-
       break;
 
     case ChassisLocationType02:
@@ -488,6 +518,10 @@ OemUpdateSmbiosInfo (
 
     case SerialNumberType03:
       AsciiString = IpmiFruInfoGet (FruChassisSerialNumber);
+      if (AsciiStrCmp (AsciiString, PLACEHOLDER_SMBIOS_STRING) == 0) {
+        AsciiString = IpmiFruInfoGet (FruBoardSerialNumber);
+      }
+
       if (AsciiString != NULL) {
         StringLength = AsciiStrLen (AsciiString) + 1;
         AsciiStrToUnicodeStrS (AsciiString, UnicodeString, StringLength);
@@ -599,7 +633,9 @@ OemUpdateSmbiosInfo (
   HiiSetString (HiiHandle, TokenToUpdate, UnicodeString, NULL);
 
 Exit:
-  FreePool (UnicodeString);
+  if (FreeUniString) {
+    FreePool (UnicodeString);
+  }
 }
 
 /** Fetches the Type 32 boot information status.
@@ -809,6 +845,7 @@ OemGetSystemUuid (
   Status = IpmiGetSystemUuid (&Uuid);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a %d Can not get System UUID!\n", __func__, __LINE__));
+    ZeroMem (&Uuid, sizeof (EFI_GUID));
   }
 
   ConvertIpmiGuidToSmbiosGuid ((UINT8 *)SystemUuid, (UINT8 *)&Uuid);
