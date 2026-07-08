@@ -1,0 +1,54 @@
+#/** @file
+#
+#    Copyright (c) 2024, SOPHGO Inc. All rights reserved.
+#
+#    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = NorFlashDxe
+  FILE_GUID                      = 193C6420-E06F-4833-ACDB-876C4A69FE61
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SpiNorEntryPoint
+
+[Sources.common]
+  NorFlashDxe.c
+  NorFlashDxe.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Silicon/Sophgo/Sophgo.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  MemoryAllocationLib
+  NorFlashInfoLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeLib
+  IoLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  gSophgoNorFlashProtocolGuid          ## PRODUCES
+  gSophgoSpiMasterProtocolGuid         ## CONSUMES
+
+[Pcd]
+  gSophgoTokenSpaceGuid.PcdSPIFMC0Base                             ## CONSUMES
+  gSophgoTokenSpaceGuid.PcdSPIFMC1Base                             ## CONSUMES
+  gSophgoTokenSpaceGuid.PcdFlashVariableOffset                     ## CONSUMES
+  gSophgoTokenSpaceGuid.PcdFlashPartitionTableAddress              ## CONSUMES
+  gSophgoTokenSpaceGuid.PcdFdOffset                                ## CONSUMES
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize            ## CONSUMES
+
+[Depex]
+  gSophgoSpiMasterProtocolGuid
