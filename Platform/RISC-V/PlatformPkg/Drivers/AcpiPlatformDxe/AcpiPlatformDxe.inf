@@ -1,0 +1,70 @@
+## @file
+#  ACPI platform driver for the RISC-V platform.
+#
+#  Generates and installs all ACPI tables required:
+#
+#    FADT  - Fixed ACPI Description Table (HW-reduced profile)
+#    MCFG  - PCI Express Memory Mapped Configuration Space Base Address Table
+#    MADT  - Multiple APIC Description Table (RINTC / IMSIC / APLIC)
+#    RHCT  - RISC-V Hart Capabilities Table (ISA string, CMO, MMU)
+#    RIMT  - RISC-V IO Mapping Table (IOMMU platform device)
+#    SPCR  - Serial Port Console Redirection Table
+#    DSDT  - Differentiated System Description Table
+#
+#  Copyright (c) 2026, Qualcomm Incorporated. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = AcpiPlatformDxe
+  FILE_GUID                      = 3A7B8C21-F4D9-4E6A-B012-5C8D9E3F7A04
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = AcpiPlatformDxeEntryPoint
+
+[Sources]
+  AcpiPlatformDxe.h
+  AcpiPlatformDxe.c
+  Common.c
+  Dsdt.c
+  Fadt.c
+  Mcfg.c
+  Madt.c
+  Rhct.c
+  Rimt.c
+  Spcr.c
+  Topology.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec          # gFdtClientProtocolGuid
+  DynamicTablesPkg/DynamicTablesPkg.dec
+
+[LibraryClasses]
+  AmlLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  FdtLib
+  MemoryAllocationLib
+  PciHostBridgeLib
+  PrintLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  TimerLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid          ## CONSUMES
+  gFdtClientProtocolGuid             ## CONSUMES
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gFdtClientProtocolGuid

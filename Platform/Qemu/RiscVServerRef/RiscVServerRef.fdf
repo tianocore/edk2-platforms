@@ -105,6 +105,12 @@ INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 INF  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
 
 #
+# ACPI table generation
+#
+INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+INF  Platform/RISC-V/PlatformPkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+
+#
 # Networking stack
 #
 !include NetworkPkg/Network.fdf.inc
