@@ -145,7 +145,7 @@ DefinitionBlock (
           // Check bit 1
           // CXL VH Register Access Supported
           //
-          If (LNotEqual (And (SUPC, 0x02), 0x01))
+          If (LNotEqual (And (SUPC, 0x02), 0x02))
           {
             And (CTRC, 0xFE, CTRC)
           }

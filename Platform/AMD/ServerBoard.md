@@ -26,6 +26,7 @@
 | 1.0.0.8          | Commit ID 17893ae84e968214ee6db15bf7502531d9034260 |                                    |
 | 1.0.0.9          | Commit ID 0991a0b643509d900e5d023a0116789827a696e5 |                                    |
 | 1.0.0.A          | Commit ID 0991a0b643509d900e5d023a0116789827a696e5 | No edk2-platforms changes required |
+| 1.0.0.B          | Commit ID 3c044a6c40478c11491242c87dc6409213cffd7e | CXL VH Register Access bitmask fix |
 
 #### Server boards edk2 build
 AMD server SoC platform firmware reference code can be built using edk2 native build system. As of now the AGESA source code is released to customer in a different way, the AGESA source files under edk2-platforms/Platform/AMD are published to make sure the platform firmware reference code can be built without errors. Those AGESA modules are considered as the NULL instance of AGESA. Customers can request the release version of
