@@ -368,4 +368,7 @@ You can test using Capsule Image generated in **How to generate Capsule Image** 
 
 # References
 [1] https://developer.arm.com/products/system-design/fixed-virtual-platforms
+
 [2] https://trustedfirmware-a.readthedocs.io/en/latest/getting_started/tools-build.html
+
+[3] https://developer.arm.com/documentation/den0118/latest/
