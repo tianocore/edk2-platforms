@@ -13,12 +13,14 @@
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/PcdLib.h>
 
 #include <Library/RamPartitionTableLib.h>
 #include <Library/SmemLib.h>
 
 #include <MemRegionInfo.h>
 #include <RamPartition.h>
+#include <SmemType.h>
 
 #define UNSUPPORTED_BELOW_VER  1
 
@@ -63,6 +65,56 @@ RamPartitionGetVersion (
 }
 
 /**
+  Locate the usable RAM partition table within the SMEM region.
+
+  SmemLib is a generic SMEM item accessor, so the RAM-partition-specific
+  validation lives here. Primary path: the SMEM allocation-table entry for the
+  usable RAM partition table item, validated against the table magics.
+  Fallback: a bounded scan of the SMEM region for the table magics (robust to
+  TOC layout differences). The returned pointer, if any, has validated magic
+  values.
+
+  @retval NULL   The table was not found.
+  @retval Other  Pointer to the validated table.
+**/
+STATIC
+USABLE_RAM_PARTITION_TABLE *
+LocateRamPartitionTable (
+  VOID
+  )
+{
+  USABLE_RAM_PARTITION_TABLE  *Table;
+  UINT32                      BufferSize;
+  UINT8                       *Scan;
+  UINT8                       *ScanEnd;
+
+  //
+  // Primary: SMEM allocation-table lookup of the usable RAM partition table.
+  //
+  BufferSize = 0;
+  Table      = SmemGetAddr (SmemUsableRamPartitionTable, &BufferSize);
+  if ((Table != NULL) &&
+      (Table->Magic1 == RAM_PART_MAGIC1) && (Table->Magic2 == RAM_PART_MAGIC2))
+  {
+    return Table;
+  }
+
+  //
+  // Fallback: scan the SMEM region for the table magics.
+  //
+  Scan    = (UINT8 *)(UINTN)PcdGet64 (PcdSmemBaseAddress);
+  ScanEnd = Scan + FixedPcdGet32 (PcdSmemSize) - sizeof (USABLE_RAM_PARTITION_TABLE);
+  for ( ; Scan <= ScanEnd; Scan += sizeof (UINT32)) {
+    Table = (USABLE_RAM_PARTITION_TABLE *)Scan;
+    if ((Table->Magic1 == RAM_PART_MAGIC1) && (Table->Magic2 == RAM_PART_MAGIC2)) {
+      return Table;
+    }
+  }
+
+  return NULL;
+}
+
+/**
   Get pointer to the RAM partition table from SMEM.
 
   @param[in,out]  RamPartitionTable  Pointer to receive the RAM partition table address.
@@ -82,12 +134,9 @@ RamPartitionGetRamPartitionTable (
   )
 {
   EFI_STATUS  Status;
-  UINT32      BufferSize;
-
-  BufferSize = 0;
 
   /* Get the RAM partition table */
-  *RamPartitionTable = SmemGetAddr (SmemUsableRamPartitionTable, (UINT32 *)&BufferSize);
+  *RamPartitionTable = LocateRamPartitionTable ();
   if (*RamPartitionTable == NULL) {
     DEBUG ((DEBUG_ERROR, "WARNING: Unable to read memory partition table from SMEM\n"));
     return EFI_NOT_READY;

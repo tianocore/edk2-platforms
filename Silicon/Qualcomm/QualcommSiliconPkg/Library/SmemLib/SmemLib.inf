@@ -1,0 +1,39 @@
+## @file
+#  Qualcomm Shared Memory (SMEM) library for Qualcomm platforms.
+#
+#  Locates SMEM items that the boot firmware publishes in the SMEM region via
+#  the legacy allocation table so consumers can read them. See SmemLib.c for
+#  details.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  @par Glossary:
+#    - SMEM - Shared Memory
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = SmemLib
+  FILE_GUID                      = 1FF1499F-40C2-4F7F-8C00-D6D36FBCED5C
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmemLib
+
+#
+#  VALID_ARCHITECTURES           = AARCH64
+#
+[Sources.common]
+  SmemLib.c
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  PcdLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Qualcomm/QualcommSiliconPkg/QualcommSiliconPkg.dec
+
+[FixedPcd]
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemBaseAddress
