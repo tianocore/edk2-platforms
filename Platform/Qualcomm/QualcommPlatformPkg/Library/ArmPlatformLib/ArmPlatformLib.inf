@@ -66,6 +66,8 @@
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize
 
 [Ppis]
   gArmMpCoreInfoPpiGuid
