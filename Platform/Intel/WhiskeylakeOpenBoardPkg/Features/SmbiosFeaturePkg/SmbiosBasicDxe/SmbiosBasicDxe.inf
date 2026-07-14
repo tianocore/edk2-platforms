@@ -1,0 +1,259 @@
+### @file
+# Component description file for the SMBIOS basic module.
+#
+# Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmbiosBasic
+  FILE_GUID                      = 03ADF4A1-A27A-45E3-B211-3177C6C2E7ED
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmbiosBasicEntryPoint
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  SmbiosBasic.h
+  SmbiosBasicEntryPoint.c
+  Type0BiosVendorFunction.c
+  Type1SystemManufacturerFunction.c
+  Type2BaseBoardManufacturerFunction.c
+  Type3ChassisManufacturerFunction.c
+  Type4ProcessorInformationFunction.c
+  Type5MemoryControllerFunction.c
+  Type6MemoryModuleInformationFunction.c
+  Type7CacheInformationFunction.c
+  Type8PortConnectorInformationFunction.c
+  Type9SystemSlotsFunction.c
+  Type10OnBoardDevicesInformationFunction.c
+  Type11OEMStringsFunction.c
+  Type12SystemConfigurationOptionsFunction.c
+  Type13BiosLanguageInformationFunction.c
+  Type14GroupAssociationFunction.c
+  Type15SystemEventLogFunction.c
+  Type16PhysicalMemoryArrayFunction.c
+  Type17MemoryDeviceFunction.c
+  Type1832bitMemoryErrorInformationFunction.c
+  Type19MemoryArrayMappedAddressFunction.c
+  Type20MemoryDeviceMappedAddressFunction.c
+  Type21PointingDeviceFunction.c
+  Type22PortableBatteryFunction.c
+  Type23SystemResetFunction.c
+  Type24HardwareSecurityFunction.c
+  Type25SystemPowerControlsFunction.c
+  Type26VoltageProbeFunction.c
+  Type27CoolingDeviceFunction.c
+  Type28TemperatureProbeFunction.c
+  Type29ElectricalCurrentProbeFunction.c
+  Type30OutOfBandRemoteAccess.c
+  Type31BISEntryPointFunction.c
+  Type32BootInformationFunction.c
+  Type3364BitMemoryErrorInformationFunction.c
+  Type34ManagementDeviceFunction.c
+  Type35ManagementDeviceComponentFunction.c
+  Type36ManagementDeviceThresholdDataFunction.c
+  Type37MemoryChannelInformation.c
+  Type38IpmiDeviceInformationFunction.c
+  Type39SystemPowerSupplyFunction.c
+  Type40AdditionalInformationFunction.c
+  Type41OnboardDevicesExtendedInformationFunction.c
+  Type42ManagementControllerHostInterfaceFunction.c
+  Type43TMPDeviceFunction.c
+  Type44ProcessorAdditionalInformationFunction.c
+  Type126InactiveFunction.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+# SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  HobLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid                       # PROTOCOL ALWAYS_CONSUMED
+  gEfiVariableArchProtocolGuid
+
+[Pcd]
+  # Type 0:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringBiosReleaseDate
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringBiosVersion
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringVendor
+  # Type 1:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringFamily
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringProductName
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringSKUNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringVersion
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation
+  # Type 2:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringAssetTag
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringLocationInChassis
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringProductName
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringVersion
+  # Type 3:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringAssetTag
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringSKUNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringVersion
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis
+  # Type 4:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringSocket
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringVersion
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringAssetTag
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringPartNumber
+  # Type 5:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController
+  # Type 6:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6StringSocketDesignation
+  # Type 7:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7StringSocketDesignation
+  # Type 8:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8StringInternalReferenceDesignator
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8StringExternalReferenceDesignator
+  # Type 9:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9StringSlotDesignation
+  # Type 10:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10OnBoardDevicesInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10StringDescriptionString
+  # Type 11:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType11OEMStrings
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType11StringCount
+  # Type 12:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType12SystemConfigurationOptions
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType12StringCount
+  # Type 13:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13StringCurrentLanguages
+  # Type 14:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14GroupAssociations
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14StringGroupName
+  # Type 15
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog 
+  # Type 16:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray
+  # Type 17:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringDeviceLocator
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringBankLocator
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringAssetTag
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringPartNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringFirmwareVersion
+  # Type 18:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation
+  # Type 19:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress
+  # Type 20:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress
+  # Type 21:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType21PointingDevice
+  # Type 22:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringLocation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringManufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringManufactureDate
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringDeviceName
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSBDSVersionNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSBDSDeviceChemistryStr
+  # Type 23:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset
+  # Type 24:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType24HardwareSecurity
+  # Type 25:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls
+  # Type 26:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26StringDescription
+  # Type 27:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27StringDescription
+  # Type 28:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28StringDescription
+  # Type 29:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29StringDescription
+  # Type 30
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType30OutOfBoundRemoteAccess
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType30StringManufacturerName
+  # Type 31:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint
+  # Type 32:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType32SystemBootInformation
+  # Type 33:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation
+  # Type 34:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34StringDescription
+  # Type 35:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35StringDescription
+  # Type 36:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData
+  # Type 37:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation
+  # Type 38:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation
+  # Type 39:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39StringLocation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39StringDeviceName
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39Manufacturer
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SerialNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39AssetTagNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39ModelPartNumber
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39RevisionLevel
+  # Type 40:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40StringEntryString
+  # Type 41:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41StringReferenceDesignation
+  # Type 42:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface
+  #type 43
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43StringDescription
+  # Type 44:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType44ProcessorAdditionalInformation
+  # Type 126:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType126Inactive
+
+[Depex]
+  gEfiSmbiosProtocolGuid AND
+  gEfiVariableArchProtocolGuid
