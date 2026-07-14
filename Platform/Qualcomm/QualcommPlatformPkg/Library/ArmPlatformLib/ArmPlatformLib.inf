@@ -53,6 +53,13 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
 
+[FeaturePcd]
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemEnable
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtEnable
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesEnable
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32Enable
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcEnable
+
 [FixedPcd]
   gArmTokenSpaceGuid.PcdFdBaseAddress
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
@@ -66,6 +73,8 @@
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize
 
 [Ppis]
   gArmMpCoreInfoPpiGuid

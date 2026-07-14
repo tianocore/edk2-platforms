@@ -47,39 +47,55 @@ EarlyCacheInit (
   VOID
   )
 {
-  ARM_MEMORY_REGION_DESCRIPTOR  EarlyInitMemoryTable[] = {
-    {
-      .PhysicalBase = FixedPcdGet64 (PcdSerialRegisterBase),
-      .VirtualBase  = FixedPcdGet64 (PcdSerialRegisterBase),
-      .Length       = EFI_PAGE_SIZE,
-      .Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE
-    },
-    {
-      .PhysicalBase = FixedPcdGet64 (PcdBootDtBase),
-      .VirtualBase  = FixedPcdGet64 (PcdBootDtBase),
-      .Length       = FixedPcdGet64 (PcdBootDtSize),
-      .Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
-    },
-    {
-      .PhysicalBase = FixedPcdGet64 (PcdSystemMemoryBase),
-      .VirtualBase  = FixedPcdGet64 (PcdSystemMemoryBase),
-      .Length       = FixedPcdGet64 (PcdSystemMemorySize),
-      .Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
-    },
-    {
-      .PhysicalBase = FixedPcdGet64 (PcdSmemBaseAddress),
-      .VirtualBase  = FixedPcdGet64 (PcdSmemBaseAddress),
-      .Length       = FixedPcdGet64 (PcdSmemSize),
-      .Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED
-    },
-    {
-      .PhysicalBase = FixedPcdGet64 (PcdIMemCookiesBase),
-      .VirtualBase  = FixedPcdGet64 (PcdIMemCookiesBase),
-      .Length       = FixedPcdGet64 (PcdIMemCookiesSize),
-      .Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE
-    },
-    { 0 } // End of table
-  };
+  //
+  // Mandatory regions (serial, system DRAM, SMEM) plus optional regions
+  // (boot DT, IMEM cookies) that a platform may leave unconfigured. Only map
+  // an optional region when both its base and size PCDs are non-zero: a zero
+  // base/size would install a bogus page-table descriptor and fault once the
+  // MMU is enabled.
+  //
+  ARM_MEMORY_REGION_DESCRIPTOR  EarlyInitMemoryTable[6];
+  UINTN                         Index;
+
+  Index = 0;
+
+  EarlyInitMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdSerialRegisterBase);
+  EarlyInitMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdSerialRegisterBase);
+  EarlyInitMemoryTable[Index].Length       = EFI_PAGE_SIZE;
+  EarlyInitMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  Index++;
+
+  EarlyInitMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdSystemMemoryBase);
+  EarlyInitMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdSystemMemoryBase);
+  EarlyInitMemoryTable[Index].Length       = FixedPcdGet64 (PcdSystemMemorySize);
+  EarlyInitMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+  Index++;
+
+  if (FeaturePcdGet (PcdSmemEnable)) {
+    EarlyInitMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdSmemBaseAddress);
+    EarlyInitMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdSmemBaseAddress);
+    EarlyInitMemoryTable[Index].Length       = FixedPcdGet64 (PcdSmemSize);
+    EarlyInitMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+    Index++;
+  }
+
+  if (FeaturePcdGet (PcdBootDtEnable)) {
+    EarlyInitMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdBootDtBase);
+    EarlyInitMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdBootDtBase);
+    EarlyInitMemoryTable[Index].Length       = FixedPcdGet64 (PcdBootDtSize);
+    EarlyInitMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+    Index++;
+  }
+
+  if (FeaturePcdGet (PcdIMemCookiesEnable)) {
+    EarlyInitMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdIMemCookiesBase);
+    EarlyInitMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdIMemCookiesBase);
+    EarlyInitMemoryTable[Index].Length       = FixedPcdGet64 (PcdIMemCookiesSize);
+    EarlyInitMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+    Index++;
+  }
+
+  ZeroMem (&EarlyInitMemoryTable[Index], sizeof (EarlyInitMemoryTable[Index]));
 
   return ArmConfigureMmu (EarlyInitMemoryTable, NULL, NULL);
 }
@@ -252,7 +268,9 @@ GeneratePageTableRegionMap (
   MemoryTable[Index].Attributes   = (ARM_MEMORY_REGION_ATTRIBUTES)0;
 
   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdFdBaseAddress), FixedPcdGet64 (PcdSystemMemoryUefiRegionSize));
-  WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdBootDtBase), FixedPcdGet64 (PcdBootDtSize));
+  if (FeaturePcdGet (PcdBootDtEnable)) {
+    WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdBootDtBase), FixedPcdGet64 (PcdBootDtSize));
+  }
 
   ArmDisableCachesAndMmu ();
   ArmInvalidateTlb ();
@@ -271,6 +289,13 @@ ArmPlatformSetupDebugBuffer (
   VOID
   )
 {
+  //
+  // Only reserve the Trace32 DDR debug buffer when the platform enabled it.
+  //
+  if (!FeaturePcdGet (PcdTrace32Enable)) {
+    return;
+  }
+
   BuildResourceDescriptorHob (
     EFI_RESOURCE_MEMORY_RESERVED,
     EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,

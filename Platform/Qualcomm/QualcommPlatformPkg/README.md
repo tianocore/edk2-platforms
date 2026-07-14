@@ -61,6 +61,7 @@ UEFI locates SMEM using platform-specific PCDs:
 
 | PCD | Type | Description |
 |-----|------|-------------|
+| `PcdSmemEnable` | `BOOLEAN` (FeaturePcd) | Whether the platform exposes an SMEM region. `FALSE` by default; boards backed by XBL-populated SMEM set it `TRUE`. |
 | `PcdSmemBaseAddress` | `UINT64` | Physical base address of the SMEM DDR region |
 | `PcdSmemSize` | `UINT32` | Size of the SMEM region in bytes |
 | `PcdSmemMaxItems` | `UINT16` | Maximum number of allocatable SMEM items |
@@ -217,11 +218,13 @@ The structure is mapped at a fixed physical address configured by:
 
 | PCD | Type | Description |
 |-----|------|-------------|
+| `PcdIMemCookiesEnable` | `BOOLEAN` (FeaturePcd) | Whether the platform exposes an IMEM cookie region. `FALSE` by default; boards that carry cookies set it `TRUE`. |
 | `PcdIMemCookiesBase` | `UINT64` | Physical base address of the IMEM cookie region |
 | `PcdIMemCookiesSize` | `UINT64` | Size of the IMEM cookie region in bytes |
 
-The region is mapped as `ARM_MEMORY_REGION_ATTRIBUTE_DEVICE` (non-cacheable,
-non-bufferable) in the UEFI page table.
+The region is only mapped when `PcdIMemCookiesEnable` is `TRUE`, and it is mapped
+as `ARM_MEMORY_REGION_ATTRIBUTE_DEVICE` (non-cacheable, non-bufferable) in the
+UEFI page table.
 
 ### Validity Check
 
@@ -296,4 +299,3 @@ These offsets are fixed by the IMEM layout and must not change.
 - The IMEM region must be mapped as device memory (non-cacheable) by UEFI.
   Cached access to IMEM produces undefined behavior.
 
----

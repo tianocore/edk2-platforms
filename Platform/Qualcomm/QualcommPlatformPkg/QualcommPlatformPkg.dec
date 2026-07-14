@@ -27,6 +27,47 @@
 [Guids]
   gQualcommPlatformPkgTokenSpaceGuid     = {0xfcdbe91a, 0x2a3d, 0x11f1, {0x93, 0x72, 0x0b, 0x68, 0x11, 0x99, 0x4c, 0x30}}
 
+[PcdsFeatureFlag]
+  #
+  # SoC Internal Memory - IMEM
+  #
+
+  ## Whether the platform exposes an IMEM cookies region to UEFI.
+  #  Boards that carry IMEM cookies set this TRUE and provide
+  #  PcdIMemCookiesBase/PcdIMemCookiesSize.
+  #  @Prompt Enable IMEM Cookies Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesEnable           | FALSE        | BOOLEAN | 0xA1000005
+
+  #
+  # Device Tree - DT
+  #
+
+  ## Whether the platform hands a Device Tree Blob (DTB) region to UEFI.
+  #  Boards that carry a boot DTB set this TRUE and provide
+  #  PcdBootDtBase/PcdBootDtSize.
+  #  @Prompt Enable Boot Device Tree Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtEnable                | FALSE        | BOOLEAN | 0xA1000006
+
+  #
+  # Lauterbach Trace32 CMM debug buffer.
+  #
+
+  ## Whether the platform reserves a Trace32 DDR debug buffer.
+  #  Boards that carve out a T32 buffer set this TRUE and provide
+  #  PcdTrace32DdrBase/PcdTrace32DdrSize.
+  #  @Prompt Enable Trace32 DDR Debug Buffer
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32Enable               | FALSE        | BOOLEAN | 0xA1000007
+
+  #
+  # UFS host controller register window.
+  #
+
+  ## Whether the platform exposes a UFS host controller register window.
+  #  Boards with a UFS host controller set this TRUE and provide
+  #  PcdUfsHcMmioBase/PcdUfsHcMmioSize.
+  #  @Prompt Enable UFS Host Controller MMIO Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcEnable                 | FALSE        | BOOLEAN | 0xA1000008
+
 [PcdsFixedAtBuild]
   #
   # Memory Management
