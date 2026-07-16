@@ -25,7 +25,7 @@ UINT32 mBoardRevision;
 
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
-#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS 14
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS 16
 
 STATIC BOOLEAN                  VirtualMemoryInfoInitialized = FALSE;
 STATIC RPI_MEMORY_REGION_INFO   VirtualMemoryInfo[MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS];
@@ -173,6 +173,26 @@ ArmPlatformGetVirtualMemoryMap (
     VirtualMemoryInfo[Index].Type             = RPI_MEM_BASIC_REGION;
     VirtualMemoryInfo[Index++].Name           = L"System RAM below TF-A";
 
+#ifdef ENABLE_TPM
+    // RAM Before CRB Memory
+    VirtualMemoryTable[Index].PhysicalBase    = 0x11000000;
+    VirtualMemoryTable[Index].VirtualBase     = VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Length          = 0x20000000 - 0x11000000;
+    VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+    VirtualMemoryInfo[Index].Type             = RPI_MEM_BASIC_REGION;
+    VirtualMemoryInfo[Index++].Name           = L"System RAM < 512MB";
+
+    // CRB Memory (Cannot be cacheable)
+    VirtualMemoryTable[Index].PhysicalBase    = 0x20000000;
+    VirtualMemoryTable[Index].VirtualBase     = VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Length          = 0x4000;
+    VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+    VirtualMemoryInfo[Index].Type             = RPI_MEM_MMIO_REGION;
+    VirtualMemoryInfo[Index++].Name           = L"FF-A TPM CRB";
+
+    // RAM After CRB
+    VirtualMemoryTable[Index].PhysicalBase    = 0x20004000;
+#else
 #ifdef RPI4_TFA_SECURE_PAYLOAD
     // System RAM after BL32
     VirtualMemoryTable[Index].PhysicalBase    = 0x11000000;
@@ -180,11 +200,18 @@ ArmPlatformGetVirtualMemoryMap (
     // System RAM after BL31
     VirtualMemoryTable[Index].PhysicalBase    = 0x10100000;
 #endif
+#endif
     VirtualMemoryTable[Index].VirtualBase     = VirtualMemoryTable[Index].PhysicalBase;
     VirtualMemoryTable[Index].Length          = mSystemMemoryEnd + 1 - VirtualMemoryTable[Index].PhysicalBase;
     VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
     VirtualMemoryInfo[Index].Type             = RPI_MEM_BASIC_REGION;
+#ifdef ENABLE_TPM
+    VirtualMemoryInfo[Index++].Name           = L"System RAM above CRB";
+#elif defined (RPI4_TFA_SECURE_PAYLOAD)
+    VirtualMemoryInfo[Index++].Name           = L"System RAM above BL32";
+#else
     VirtualMemoryInfo[Index++].Name           = L"System RAM above TF-A";
+#endif
   } else
 #endif
   {
