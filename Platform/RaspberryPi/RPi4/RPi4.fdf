@@ -362,6 +362,11 @@ READ_LOCK_STATUS   = TRUE
   #
   INF Platform/RaspberryPi/Drivers/LogoDxe/LogoDxe.inf
 
+!if $(ENABLE_TPM) == TRUE
+  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+  INF SecurityPkg/Tcg/Tcg2AcpiFfa/Tcg2AcpiFfa.inf
+!endif
+
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
