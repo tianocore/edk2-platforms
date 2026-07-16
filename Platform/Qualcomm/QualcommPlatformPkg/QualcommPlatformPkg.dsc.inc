@@ -22,7 +22,15 @@
   #
   # Qualcomm Libraries
   #
+  # Trace32 (T32) JTAG debug hooks are only useful for development, so limit
+  # the Pe/Coff extra-action reporting to DEBUG builds and use the null
+  # instance for RELEASE builds.
+  #
+!if $(TARGET) == DEBUG
   PeCoffExtraActionLib|QualcommPlatformPkg/Library/DebugPecoffExtraActionTrace32Lib/DebugPecoffExtraActionTrace32Lib.inf
+!else
+  PeCoffExtraActionLib|MdePkg/Library/BasePeCoffExtraActionLibNull/BasePeCoffExtraActionLibNull.inf
+!endif
 
 [LibraryClasses.AARCH64.SEC]
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
