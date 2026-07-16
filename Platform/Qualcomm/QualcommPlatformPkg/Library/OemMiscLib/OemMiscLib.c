@@ -1,8 +1,8 @@
 /** @file
-  OemMiscLib implementation for RB3Gen2.
+  OemMiscLib implementation for Qualcomm platforms.
 
-  Copyright (c) 2020-2024, Linaro Ltd. All rights reserved.
-  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  Copyright (c) 2020-2024, Linaro Ltd. All rights reserved.<BR>
+  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
