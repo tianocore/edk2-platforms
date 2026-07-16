@@ -6,6 +6,15 @@
 #
 ##
 
+[Defines]
+  #
+  # Trace32 (T32) JTAG symbol-loading hooks are included automatically for
+  # DEBUG builds and, by default, for RELEASE builds too so a RELEASE image
+  # can be debugged on target out of the box. Set -D TRACE32_DEBUG=FALSE to
+  # drop them from RELEASE builds when the hooks are not needed.
+  #
+  DEFINE TRACE32_DEBUG = TRUE
+
 [LibraryClasses.Common]
   SerialPortLib|Silicon/Qualcomm/Library/GeniSerialPortLib/GeniSerialPortLib.inf
   ReportFvLib|QualcommPlatformPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
@@ -22,7 +31,15 @@
   #
   # Qualcomm Libraries
   #
+  # Trace32 (T32) JTAG debug hooks are only useful for development. They are
+  # included for DEBUG builds and, by default, RELEASE builds as well; set
+  # TRACE32_DEBUG=FALSE to use the null instance and drop them when not needed.
+  #
+!if $(TARGET) == DEBUG || $(TRACE32_DEBUG) == TRUE
   PeCoffExtraActionLib|QualcommPlatformPkg/Library/DebugPecoffExtraActionTrace32Lib/DebugPecoffExtraActionTrace32Lib.inf
+!else
+  PeCoffExtraActionLib|MdePkg/Library/BasePeCoffExtraActionLibNull/BasePeCoffExtraActionLibNull.inf
+!endif
 
 [LibraryClasses.AARCH64.SEC]
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
