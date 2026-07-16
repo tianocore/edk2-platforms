@@ -33,6 +33,28 @@
   DEFINE INCLUDE_TFTP_COMMAND    = FALSE
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
 
+  #
+  # Emit a TF-A BL1 + UEFI + FIP firmware image.
+  #
+  DEFINE RPI4_TFA_STAGED         = FALSE
+
+  #
+  # Reserve the TF-A BL32 region from normal-world memory.
+  #
+  DEFINE RPI4_TFA_SECURE_PAYLOAD = FALSE
+
+!if $(RPI4_TFA_SECURE_PAYLOAD) == TRUE
+!if $(RPI4_TFA_STAGED) != TRUE
+  !error "RPI4_TFA_SECURE_PAYLOAD requires RPI4_TFA_STAGED."
+!endif
+!endif
+
+!if $(RPI4_TFA_STAGED) == TRUE
+!ifndef TFA_BUILD_ARTIFACTS
+  !error "RPI4_TFA_STAGED requires TFA_BUILD_ARTIFACTS."
+!endif
+!endif
+
 !ifndef TFA_BUILD_ARTIFACTS
   #
   # Default TF-A binary checked into edk2-non-osi.
@@ -44,7 +66,8 @@
   # on the firmware, being able to use a local TF-A build without extra copy
   # operations ends up being very helpful.
   #
-  DEFINE TFA_BUILD_BL31 = $(TFA_BUILD_ARTIFACTS)/bl31.bin
+  DEFINE TFA_BUILD_BL31     = $(TFA_BUILD_ARTIFACTS)/bl31.bin
+  DEFINE TFA_BUILD_ARMSTUB8 = $(TFA_BUILD_ARTIFACTS)/armstub8.bin
 !endif
 
 ################################################################################
@@ -241,6 +264,12 @@
   GCC:*_*_*_ASLCC_FLAGS       = -DRPI_MODEL=4
   GCC:*_*_*_VFRPP_FLAGS       = -DRPI_MODEL=4
   GCC:RELEASE_*_*_CC_FLAGS    = -DMDEPKG_NDEBUG -DNDEBUG
+!if $(RPI4_TFA_STAGED) == TRUE
+  GCC:*_*_*_CC_FLAGS          = -DRPI4_TFA_STAGED
+!endif
+!if $(RPI4_TFA_SECURE_PAYLOAD) == TRUE
+  GCC:*_*_*_CC_FLAGS          = -DRPI4_TFA_SECURE_PAYLOAD
+!endif
 
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
   GCC:*_*_AARCH64_DLINK_FLAGS = -z common-page-size=0x10000
@@ -271,7 +300,12 @@
   #
   # Follows right after the FD image. (bump the size again)
   #
+!if $(RPI4_TFA_STAGED) == TRUE
+  gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress|0x005e0000
+  gRaspberryPiTokenSpaceGuid.PcdFdtSize|0x00020000
+!else
   gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress|0x003e0000
+!endif
 
 
   # DEBUG_ASSERT_ENABLED       0x01
@@ -389,15 +423,28 @@
   # Size of the region used by UEFI in permanent memory (Reserved 64MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x04000000
   #
-  # 0x00000000 - 0x001F0000  FD (PcdFdBaseAddress, PcdFdSize)
+!if $(RPI4_TFA_STAGED) == TRUE
+  # 0x00000000 - 0x00200000 TF-A BL1 and FIP
+  # 0x00200000 - 0x005B0000 UEFI FD contents
+  # 0x005B0000 - 0x005E0000 Reserved firmware space
+  # 0x005E0000 - 0x00600000 DTB (PcdFdtBaseAddress, PcdFdtSize)
+  # 0x00600000 - ...        RAM (PcdSystemMemoryBase, PcdSystemMemorySize)
+!else
+  # 0x00000000 - 0x003E0000 UEFI FD contents
   # 0x003E0000 - 0x00400000 DTB (PcdFdtBaseAddress, PcdFdtSize)
   # 0x00400000 - ...        RAM (PcdSystemMemoryBase, PcdSystemMemorySize)
+!endif
   #
-  # This matches PcdFvBaseAddress, since everything less is the FD, and
-  # will be reserved away.
+  # Everything below PcdSystemMemoryBase is part of the firmware layout and
+  # is reserved away.
   #
+!if $(RPI4_TFA_STAGED) == TRUE
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00600000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x3fa00000
+!else
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00400000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x3fc00000
+!endif
 
   #
   # Device specific addresses
