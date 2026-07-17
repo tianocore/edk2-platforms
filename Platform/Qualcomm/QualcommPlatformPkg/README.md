@@ -35,7 +35,7 @@ Power-on
         ├─ Populates RAM Partition Table in SMEM
         ├─ Writes IMEM cookies to on-chip SRAM
         └─► UEFI (QualcommPlatformPkg / QualcommSiliconPkg)
-              ├─ Reads SMEM via SmemLib
+              ├─ Reads SMEM via QualcommSmemLib
               ├─ Reads RAM Partition Table from SMEM
               ├─ Reads IMEM cookies for boot state
               └─► HLOS (Linux/Android)
@@ -52,8 +52,7 @@ re-initialize them; it reads what XBL has already established.
 
 SMEM is a DDR region that acts as a message-passing bus between the
 Application Processor (UEFI/HLOS), Modem, DSPs, RPM, TrustZone, and other
-subsystems. Each item in SMEM is identified by a numeric ID from the
-`SMEM_MEM_TYPE` enum defined in `Silicon/Qualcomm/QualcommSiliconPkg/Include/SmemType.h`.
+subsystems.
 
 ### Hardware Configuration
 
@@ -72,8 +71,8 @@ UEFI locates SMEM using platform-specific PCDs:
 ### Initialization Contract
 
 XBL initializes SMEM before transferring control to UEFI. UEFI calls
-`SmemInit()` early in `ArmPlatformGetVirtualMemoryMap()` to set up its
-local view of the SMEM region. UEFI must not call `SmemInit()` more than
+`QualcommSmemInit()` early in `ArmPlatformGetVirtualMemoryMap()` to set up its
+local view of the SMEM region. UEFI must not call `QualcommSmemInit()` more than
 once.
 
 ### SMEM Version Protocol
@@ -92,21 +91,21 @@ A minor version mismatch is tolerated.
 ### UEFI Usage
 
 UEFI uses SMEM exclusively to retrieve the RAM Partition Table (see §2).
-The relevant SMEM item ID is `SmemUsableRamPartitionTable` (value `402`).
+The relevant SMEM item ID is `SMEM_USABLE_RAM_PARTITION_TABLE` (value `402`).
 
 ```c
 // Retrieve RAM partition table pointer from SMEM
-RamPartitionTable = SmemGetAddr(SmemUsableRamPartitionTable, &BufferSize);
+QualcommSmemLookup(QUALCOMM_SMEM_HOST_COMMON,
+                   SMEM_USABLE_RAM_PARTITION_TABLE,
+                   QUALCOMM_SMEM_FLAG_NONE, RamPartitionTable,
+                   (VOID *)&BufferSize);
 ```
 
 ### Compatibility Requirements
 
 - The physical address and size of SMEM **must not change** between XBL and
   UEFI for a given target. They are fixed at SoC integration time.
-- The `SMEM_MEM_TYPE` enum values are an ABI shared with all subsystems.
-  All entries carry **explicit numeric assignments** to prevent accidental
-  value shifts when new entries are added.
-- SMEM item IDs used by UEFI (`SmemUsableRamPartitionTable`) must remain
+- SMEM item IDs used by UEFI (`SMEM_USABLE_RAM_PARTITION_TABLE`) must remain
   stable across XBL versions.
 
 ---
@@ -121,7 +120,7 @@ memory map and build HOBs for the DXE phase.
 
 ### Location
 
-Stored in SMEM at item ID `SmemUsableRamPartitionTable` (value `402`).
+Stored in SMEM at item ID `SMEM_USABLE_RAM_PARTITION_TABLE` (value `402`).
 
 ### Structure
 

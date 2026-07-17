@@ -8,4 +8,4 @@
 ##
 
 [LibraryClasses.common]
-  SmemLib|QualcommSiliconPkg/Library/SmemLib/SmemLibNull.inf
+  QualcommSmemLib|QualcommSiliconPkg/Library/QualcommSmemLib/QualcommSmemLib.inf

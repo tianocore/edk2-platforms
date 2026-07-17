@@ -15,7 +15,7 @@
 #include <Library/DebugLib.h>
 
 #include <Library/RamPartitionTableLib.h>
-#include <Library/SmemLib.h>
+#include <Library/QualcommSmemLib.h>
 
 #include <MemRegionInfo.h>
 #include <RamPartition.h>
@@ -23,6 +23,8 @@
 #define UNSUPPORTED_BELOW_VER  1
 
 #define DEFAULT_MEM_REGION_ATTRIBUTE  ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK
+
+#define SMEM_USABLE_RAM_PARTITION_TABLE  402U
 
 STATIC MEM_REGION_INFO  mRamPartitionTable[RAM_NUM_PART_ENTRIES];
 STATIC MEM_REGION_INFO  mPreloadRamPartitionTable[RAM_NUM_PART_ENTRIES];
@@ -87,8 +89,15 @@ RamPartitionGetRamPartitionTable (
   BufferSize = 0;
 
   /* Get the RAM partition table */
-  *RamPartitionTable = SmemGetAddr (SmemUsableRamPartitionTable, (UINT32 *)&BufferSize);
-  if (*RamPartitionTable == NULL) {
+  Status = QualcommSmemLookup (
+             QUALCOMM_SMEM_HOST_COMMON,
+             SMEM_USABLE_RAM_PARTITION_TABLE,
+             QUALCOMM_SMEM_FLAG_NONE,
+             RamPartitionTable,
+             (VOID *)&BufferSize
+             );
+
+  if (Status != EFI_SUCCESS) {
     DEBUG ((DEBUG_ERROR, "WARNING: Unable to read memory partition table from SMEM\n"));
     return EFI_NOT_READY;
   }

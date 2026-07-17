@@ -23,8 +23,8 @@
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/PcdLib.h>
+#include <Library/QualcommSmemLib.h>
 #include <Library/RamPartitionTableLib.h>
-#include <Library/SmemLib.h>
 
 #include <PiPei.h>
 #include <Pi/PiHob.h>
@@ -493,7 +493,7 @@ ArmPlatformGetVirtualMemoryMap (
   /* Reserved DDR Region for T32 CMM Script */
   ArmPlatformSetupDebugBuffer ();
 
-  SmemInit ();
+  QualcommSmemInit ();
   DEBUG ((DEBUG_INFO, "SmemInit\n"));
 
   Status = EarlyCacheInit ();
