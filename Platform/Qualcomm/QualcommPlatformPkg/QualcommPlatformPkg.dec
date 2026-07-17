@@ -73,3 +73,13 @@
   #  @Prompt Boot Device Tree Size
   gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize                  | 0x0          | UINT64  | 0xA1000011
 
+  # UFS host controller register window (was QcomPlatformPkg's
+  # PcdQcomUfsHcDxe*): used by QcomUfsHcDxe as the BAR, mapped by ArmPlatformLib.
+  ## Base address of the UFS host controller register window.
+  #  @Prompt UFS Host Controller MMIO Base Address
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase               | 0x0          | UINT64  | 0xA1000012
+
+  ## Size of the UFS host controller register window in bytes.
+  #  @Prompt UFS Host Controller MMIO Size
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize               | 0x0          | UINT64  | 0xA1000013
+

@@ -26,7 +26,6 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  QcomPlatformPkg/QcomPlatformPkg.dec
   QualcommPlatformPkg/QualcommPlatformPkg.dec
   QualcommSiliconPkg/QualcommSiliconPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec

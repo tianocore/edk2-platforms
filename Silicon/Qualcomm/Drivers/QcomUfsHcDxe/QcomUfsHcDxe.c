@@ -67,8 +67,8 @@ QcomUfsHcDriverEntry (
              NULL,
              NULL,
              1,
-             PcdGet32 (PcdQcomUfsHcDxeBaseAddress),
-             PcdGet32 (PcdQcomUfsHcDxeSize)
+             PcdGet64 (PcdUfsHcMmioBase),
+             PcdGet64 (PcdUfsHcMmioSize)
              );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Failed to register UFS device, error: %r \n", Status));

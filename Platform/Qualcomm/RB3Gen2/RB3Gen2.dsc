@@ -367,8 +367,8 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x994000
 
   # Ufs
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress|0x1D84000
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize|0x3000
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase|0x1D84000
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize|0x3000
 
   gArmTokenSpaceGuid.PcdSystemProductName|L"Qualcomm Dragonwing RB3 Gen 2"
   gArmTokenSpaceGuid.PcdSystemVersion|L"1.0"
