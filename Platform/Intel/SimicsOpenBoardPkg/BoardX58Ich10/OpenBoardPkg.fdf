@@ -40,7 +40,7 @@ DATA = {
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 #NV_FTW_SPARE
 
-0x00080000|0x0016C000
+0x00080000|$(FVMAIN_SIZE)
 FV = FVMAIN_COMPACT
 
 $(SECFV_OFFSET)|$(SECFV_SIZE)
@@ -66,10 +66,10 @@ ErasePolarity = 1
 BlockSize     = $(BLOCK_SIZE)
 NumBlocks     = $(CODE_BLOCKS)
 
-0x00000000|0x0016C000
+0x00000000|$(FVMAIN_SIZE)
 FV = FVMAIN_COMPACT
 
-0x0016C000|$(SECFV_SIZE)
+$(FVMAIN_SIZE)|$(SECFV_SIZE)
 FV = FvTempMemorySilicon
 
 [FD.MEMFD]

@@ -48,6 +48,7 @@
   ######################################
 
   gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x400
+  gEfiNetworkPkgTokenSpaceGuid.PcdAllowHttpConnections|TRUE
 
 [PcdsFeatureFlag.common]
   ######################################
@@ -72,6 +73,16 @@
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
+  ######################################
+  # Platform Configuration
+  ######################################
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
   ######################################
   # Silicon Configuration
@@ -277,11 +288,11 @@
   ######################################
   # Edk2 Configuration
   ######################################
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|100
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|31
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|800
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|600
-  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|0
+  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|2
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits|8
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultParity|1
@@ -292,5 +303,13 @@
   ######################################
   # Edk2 Configuration
   ######################################
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|50 # Variable: L"Timeout"
-  gEfiMdePkgTokenSpaceGuid.PcdHardwareErrorRecordLevel|L"HwErrRecSupport"|gEfiGlobalVariableGuid|0x0|1 # Variable: L"HwErrRecSupport"
+!ifdef NO_PLATFORM_BOOT_DELAYS
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|0 # Variable: L"Timeout"
+!else
+  !ifdef PLATFORM_BOOT_3S_DELAY
+    gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|3 # Variable: L"Timeout"
+  !else
+    gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|10 # Variable: L"Timeout"
+  !endif
+!endif
+  gEfiMdePkgTokenSpaceGuid.PcdHardwareErrorRecordLevel|L"HwErrRecSupport"|gEfiGlobalVariableGuid|0x0|0 # Variable: L"HwErrRecSupport"
