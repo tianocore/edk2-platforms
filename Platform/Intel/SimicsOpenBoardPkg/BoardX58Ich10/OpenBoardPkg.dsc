@@ -173,6 +173,10 @@
   SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
 
 [LibraryClasses.common]
+  # MinPlatformPkg defaults to CF8 based PciLib but we need MmIoCFg accesses
+  # in order to access cfg regs beyond 0x100 for SRIOV support.
+  # Hence, we override with a PCIe lib
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
   TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
 
 #######################################

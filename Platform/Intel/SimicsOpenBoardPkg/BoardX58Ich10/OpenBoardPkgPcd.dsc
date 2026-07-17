@@ -98,6 +98,10 @@
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
+  #
+  # don't degrade 64bit MMIO space to 32-bit
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPciDegradeResourceForOptionRom|FALSE
 
 [PcdsFeatureFlag.X64]
   ######################################
@@ -124,7 +128,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreMaxPeiStackSize|0x100000
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdShadowPeimOnS3Boot|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0xc000
   gEfiMdeModulePkgTokenSpaceGuid.PcdVpdBaseAddress|0x0
@@ -255,7 +259,8 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio32Base|0x0
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio32Size|0x0
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Base|0x0
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Size|0x800000000
+  # keep below in sync with DW64 in Dsdt.asl
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Size|0x10000000000
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId|0
 
   ######################################
