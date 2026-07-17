@@ -37,6 +37,7 @@
   DebugLib
   PcdLib
   PerformanceLib
+  QualcommSmemLib
   RamPartitionTableLib
   SortLib
 

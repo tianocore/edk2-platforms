@@ -25,6 +25,9 @@
 [Includes.common]
   Include
 
+[LibraryClasses]
+  QualcommSmemLib|Include/Library/QualcommSmemLib.h
+
 [Guids]
   gQualcommSiliconPkgTokenSpaceGuid     = {0x648ed5f4, 0x6e90, 0x11f1, {0xad, 0xee, 0x5b, 0x58, 0x90, 0x85, 0x09, 0x0b}}
 
