@@ -33,7 +33,7 @@
 
 [LibraryClasses]
   DebugLib
-  SmemLib
+  QualcommSmemLib
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase

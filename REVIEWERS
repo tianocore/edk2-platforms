@@ -59,6 +59,10 @@
 # /Platform/Qemu/SbsaQemu/**
 # /Silicon/Qemu/SbsaQemu/**
 
+# Qualcomm
+/Silicon/Qualcomm/QualcommSiliconPkg/Include/Library/QualcommSmemLib.h @gparikh
+/Silicon/Qualcomm/QualcommSiliconPkg/Library/QualcommSmemLib/** @gparikh
+
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @jlinton
 /Silicon/Broadcom/** @jlinton
