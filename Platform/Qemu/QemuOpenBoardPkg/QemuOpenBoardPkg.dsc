@@ -138,6 +138,7 @@
 [LibraryClasses.Common]
   QemuOpenFwCfgLib        | QemuOpenBoardPkg/Library/QemuOpenFwCfgLib/QemuOpenFwCfgLib.inf
   PlatformHookLib         | MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf
+  GptLib                  | MdeModulePkg/Library/GptLib/GptLib.inf
   PlatformSecLib          | QemuOpenBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
   DebugLib                | MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
   PciCf8Lib               | MdePkg/Library/BasePciCf8Lib/BasePciCf8Lib.inf
