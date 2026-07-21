@@ -9,6 +9,7 @@
 [LibraryClasses.Common]
   SerialPortLib|Silicon/Qualcomm/Library/GeniSerialPortLib/GeniSerialPortLib.inf
   ReportFvLib|QualcommPlatformPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  GptLib|MdeModulePkg/Library/GptLib/GptLib.inf
 
 [LibraryClasses.AARCH64]
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
