@@ -38,6 +38,7 @@
   DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
+  GptLib|MdeModulePkg/Library/GptLib/GptLib.inf
 
   # Networking Requirements
   NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
