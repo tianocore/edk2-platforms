@@ -38,6 +38,9 @@
   PL011UartClockLib|ArmPlatformPkg/Library/PL011UartClockLib/PL011UartClockLib.inf
   PL011UartLib|ArmPlatformPkg/Library/PL011UartLib/PL011UartLib.inf
 
+  # GPT partition table parsing
+  GptLib|MdeModulePkg/Library/GptLib/GptLib.inf
+
 [LibraryClasses.common.DXE_DRIVER]
   # Pci dependencies
   PciSegmentLib|Silicon/Phytium/FT2000-4Pkg/Library/PciSegmentLib/PciSegmentLib.inf
