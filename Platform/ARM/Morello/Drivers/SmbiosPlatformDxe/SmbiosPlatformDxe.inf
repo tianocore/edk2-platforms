@@ -1,7 +1,7 @@
 ## @file
 #  This driver installs SMBIOS information for Arm Morello System
 #  Development Platform
-#  Copyright (c) 2022 - 2023, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2022 - 2026, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -36,7 +36,7 @@
 
 [LibraryClasses]
   ArmLib
-  ArmSmcLib
+  ArmSmcccSocIdLib
   DebugLib
   HobLib
   PrintLib
