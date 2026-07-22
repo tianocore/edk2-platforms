@@ -7,6 +7,10 @@
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
+!ifndef QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE
+  DEFINE QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE = FALSE
+!endif
+
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress      = 0xA7000000
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
 
@@ -165,6 +169,10 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
   INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPostMem.inf
 
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+
+!if $(QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE) == TRUE
+  INF QualcommCommonPlatformPkg/Drivers/DtbExtnDxe/DtbExtnDxe.inf
+!endif
 
   INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
   INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf

@@ -27,3 +27,8 @@
 
 [LibraryClasses.Common]
   PlatformInfoLib|QualcommCommonPlatformPkg/Library/PlatformInfoLib/PlatformInfoLib.inf
+
+!if $(QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE) == TRUE
+[Components.AARCH64]
+  QualcommCommonPlatformPkg/Drivers/DtbExtnDxe/DtbExtnDxe.inf
+!endif
