@@ -55,7 +55,7 @@
   DEFINE FIRMWARE_VER            = 00.01.01-01
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = FALSE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -209,6 +209,8 @@
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x309
+
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
   # presence of the 32-bit entry point anyway (because many AARCH64 systems
@@ -216,6 +218,8 @@
   # below 4 GB needlessly fragment the memory map. So expose the 64-bit entry
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
+
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"Mt. Jade"
 
 !if $(UEFI_SECURE_BOOT_ENABLE) == TRUE
   # Override the default values from SecurityPkg to ensure images

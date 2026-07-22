@@ -91,7 +91,7 @@
   SmbusLib|MdePkg/Library/DxeSmbusLib/DxeSmbusLib.inf
 
 [PcdsFixedAtBuild.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0309
 
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)

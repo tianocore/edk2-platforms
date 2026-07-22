@@ -412,11 +412,6 @@ APRIORI DXE {
   INF EmbeddedPkg/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf
 
   #
-  # System Firmware Update
-  #
-  INF Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
-
-  #
   # In-band NVPARAM Access
   #
   INF Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf

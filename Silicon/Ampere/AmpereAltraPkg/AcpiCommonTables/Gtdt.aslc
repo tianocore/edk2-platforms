@@ -7,9 +7,9 @@
 **/
 
 #include <Library/PcdLib.h>
-#include <Library/AcpiLib.h>
 #include <IndustryStandard/Acpi63.h>
 #include <AcpiHeader.h>
+#include <AcpiHelperMacros.h>
 
 #define SYSTEM_TIMER_BASE_ADDRESS       0xFFFFFFFFFFFFFFFF
 #define CNT_READ_BASE_ADDRESS           0xFFFFFFFFFFFFFFFF

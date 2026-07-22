@@ -9,7 +9,7 @@
 DefinitionBlock("Dsdt.aml", "DSDT", 0x02, "ASRock", "ALTRA", 1) {
   //
   // Board Model
-  Name(\BDMD, "ALTRAD8UD2-1L2Q")
+  Name(\BDMD, "ALTRAD8")
   Name(TPMF, 0)  // TPM presence
   Name(AERF, 0)  // PCIe AER Firmware-First
 

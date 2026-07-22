@@ -532,6 +532,7 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
   gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
+  gArmTokenSpaceGuid.PcdProcessorSocketType|L"LGA 4926"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Ampere(R)"
   gArmTokenSpaceGuid.PcdProcessorAssetTag|L"Not Set"
   gArmTokenSpaceGuid.PcdFdSize|0x2000000
