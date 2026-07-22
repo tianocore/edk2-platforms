@@ -1,0 +1,34 @@
+#/** @file PlatformInfoLib.inf
+#
+#  Component description file for PlatformInfo library.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = PlatformInfoLib
+  FILE_GUID                      = 1A0AF404-ECC1-4F0A-A1CA-4EDE122AFFAD
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformInfoLib
+
+[Sources.common]
+  PlatformInfo.c
+  PlatformInfoLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  QualcommCommonPlatformPkg/QualcommCommonPlatformPkg.dec
+  QualcommCommonSiliconPkg/QualcommCommonSiliconPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  QualcommSiliconPkg/QualcommSiliconPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  MemoryAllocationLib
+  SmemLib
