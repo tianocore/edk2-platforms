@@ -103,7 +103,7 @@ RegisterPciDevice (
         return EFI_OUT_OF_RESOURCES;
       }
 
-      CopyMem (NewPciDeviceInfo, PciDeviceInfo, sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber + MAX_VTD_PCI_DATA_NUMBER));
+      CopyMem (NewPciDeviceInfo, PciDeviceInfo, sizeof (PCI_DEVICE_INFORMATION) + sizeof (PCI_DEVICE_DATA) * (PciDeviceInfo->PciDeviceDataMaxNumber));
       FreePool (PciDeviceInfo);
 
       NewPciDeviceInfo->PciDeviceDataMaxNumber += MAX_VTD_PCI_DATA_NUMBER;
