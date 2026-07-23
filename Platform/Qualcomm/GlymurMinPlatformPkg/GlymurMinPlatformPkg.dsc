@@ -1,5 +1,5 @@
 ## @file
-#  The main build description file for the GlymurOpenBoard.
+#  The main build description file for the GlymurMinPlatformPkg
 #
 #  Copyright (c) 2022 Theo Jehl<BR>
 #  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
@@ -9,7 +9,7 @@
 [Defines]
   DSC_SPECIFICATION           = 0x0001001E
   PLATFORM_GUID               = 416EE676-95FE-4CF7-9CEC-DCDB255C9FB1
-  PLATFORM_NAME               = GlymurOpenBoardPkg
+  PLATFORM_NAME               = GlymurMinPlatformPkg
   PLATFORM_VERSION            = 1.0
   SUPPORTED_ARCHITECTURES     = AARCH64
   FLASH_DEFINITION            = $(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
@@ -86,10 +86,10 @@
 !include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage3.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage4.dsc.inc
+!include GlymurMinPlatformPkg/Include/Dsc/Stage1.dsc.inc
+!include GlymurMinPlatformPkg/Include/Dsc/Stage2.dsc.inc
+!include GlymurMinPlatformPkg/Include/Dsc/Stage3.dsc.inc
+!include GlymurMinPlatformPkg/Include/Dsc/Stage4.dsc.inc
 
 #
 # Qualcomm Silicon and Platform dsc
@@ -153,5 +153,5 @@
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize                    | 0x00005000
 
 [LibraryClasses.Common]
-  BoardInitLib            | GlymurOpenBoardPkg/Library/BoardInitLib/BoardInitLib.inf
+  BoardInitLib            | GlymurMinPlatformPkg/Library/BoardInitLib/BoardInitLib.inf
   PlatformHookLib         | MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf

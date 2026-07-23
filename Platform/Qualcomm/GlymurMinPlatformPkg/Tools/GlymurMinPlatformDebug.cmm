@@ -19,13 +19,13 @@
 ;               If not specified, stops at UEFI Entry.
 ;
 ;  Example:
-;    do OpenBoardDebug.cmm
-;    do OpenBoardDebug.cmm ArmCpuDxe
-;    do OpenBoardDebug.cmm RAM DxeCore
-;    do OpenBoardDebug.cmm RAM,NORESET ArmCpuDxe
+;    do GlymurMinPlatformDebug.cmm
+;    do GlymurMinPlatformDebug.cmm ArmCpuDxe
+;    do GlymurMinPlatformDebug.cmm RAM DxeCore
+;    do GlymurMinPlatformDebug.cmm RAM,NORESET ArmCpuDxe
 ;  NOTE:
 ;  This script assumes it is located at:
-;   <workspace>/edk2-platforms/Platform/Qualcomm/GlymurOpenBoardPkg/Tools/
+;   <workspace>/edk2-platforms/Platform/Qualcomm/GlymurMinPlatformPkg/Tools/
 ;
 ;  The workspace root is derived by traversing 5 levels up from this script's
 ;  directory. The expected layout is:
@@ -35,7 +35,7 @@
 ;     edk2-platforms/
 ;       Platform/
 ;         Qualcomm/
-;           GlymurOpenBoardPkg/
+;           GlymurMinPlatformPkg/
 ;             Tools/                <- this script
 ;
 ; If your checkout uses a different layout, update the path below accordingly.
@@ -77,7 +77,7 @@ IF (string.scan("&OptArgs","NORESET",0)!=-1)
 ; - Leave OptArgs empty for live setups where firmware was loaded from storage.
 IF (string.scan("&OptArgs","RAM",0)!=-1)
 (
-    &UEFIImageElfPath="&WorkspaceRoot/Build/GlymurOpenBoardPkg/&OutputDir/FV/signed/uefi.elf"
+    &UEFIImageElfPath="&WorkspaceRoot/Build/GlymurMinPlatformPkg/&OutputDir/FV/signed/uefi.elf"
     &UEFIDtbImageElfPath="&WorkspaceRoot/Build/GlymurdefaultPkg/Deliverables/Bin/DEBUG/sign/default/uefi/uncompressed/uefi_dtbs.elf"
     IF !OS.FILE("&UEFIImageElfPath")
     (

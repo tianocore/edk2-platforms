@@ -1,5 +1,5 @@
 ## @file
-# Flashmap and variable definitions for GlymurOpenBoardPkg FVs and FD
+# Flashmap and variable definitions for GlymurMinPlatformPkg FVs and FD
 #
 # Copyright (C) 2022 Theo Jehl<BR>
 # Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
@@ -68,14 +68,14 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset   = gMinPlatfo
 
 #
 # Calculate base addresses
-# GlymurOpenBoardPkgVars FD
+# GlymurMinPlatformPkgVars FD
 #
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase    = gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase  = gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    + gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase    = gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase  + gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 
 #
-# GlymurOpenBoardPkg FD
+# GlymurMinPlatformPkg FD
 #
 
 #
