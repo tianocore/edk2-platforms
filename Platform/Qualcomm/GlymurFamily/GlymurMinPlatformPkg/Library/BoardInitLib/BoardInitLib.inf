@@ -1,5 +1,5 @@
 ## @file
-#  GlymurOpenBoardPkg BoardInitLib instance
+#  GlymurMinPlatformPkg BoardInitLib instance
 #
 #  Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
 #  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
@@ -20,7 +20,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
-  GlymurOpenBoardPkg/GlymurOpenBoardPkg.dec
+  GlymurMinPlatformPkg/GlymurMinPlatformPkg.dec
 
 [LibraryClasses]
   DebugLib

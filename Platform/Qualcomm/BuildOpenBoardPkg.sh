@@ -33,6 +33,8 @@ usage() {
     echo "  -t <toolchain>          Toolchain: GCC, CLANGDWARF (default: GCC)"
     echo "  -n <cores>              Number of parallel build threads (default: 1)"
     echo "  --signing-tool <tool>   Signing tool: sectools, qtestsign (default: sectools)"
+    echo "  --pkg-name <name>       Override the derived package name (e.g. GlymurOpenBoardPkg)."
+    echo "                          Lets multiple board packages share one --silicon entry."
     echo "  -h                      Show this help message"
     echo ""
     echo "Examples:"
@@ -40,6 +42,7 @@ usage() {
     echo "  $0 --silicon Glymur -b RELEASE -t CLANGDWARF -n 8"
     echo "  $0 --silicon glymur -b DEBUG,RELEASE -n 4"
     echo "  $0 --silicon glymur --signing-tool qtestsign -n 4"
+    echo "  $0 --silicon glymur --pkg-name GlymurOpenBoardPkg --signing-tool qtestsign"
     echo ""
     exit 0
 }
@@ -50,9 +53,10 @@ TOOLCHAIN="GCC"
 CORES=$((`getconf _NPROCESSORS_ONLN`))
 SIGNING_TOOL="sectools"
 SILICON=""
+PKG_NAME=""
 
 # Parse options using getopt (supports both short and long options)
-PARSED=$(getopt -o hb:t:n: --long silicon:,signing-tool: -n "$0" -- "$@") \
+PARSED=$(getopt -o hb:t:n: --long silicon:,signing-tool:,pkg-name: -n "$0" -- "$@") \
     || { usage; exit 1; }
 eval set -- "$PARSED"
 
@@ -64,6 +68,7 @@ while true; do
         -t)             TOOLCHAIN="$2";     shift 2 ;;
         -n)             CORES="$2";         shift 2 ;;
         --signing-tool) SIGNING_TOOL="$2";  shift 2 ;;
+        --pkg-name)     PKG_NAME="$2";      shift 2 ;;
         --)             shift; break ;;
         *)              exit_error "Unknown option: $1" ;;
     esac
@@ -109,11 +114,15 @@ case "$SILICON" in
     glymur)
         LOAD_ADDR="0xA7000000"
         QTESTSIGN_VER="v7"
+        PKG_SUFFIX="MinPlatformPkg"
+        FD_NAME="Glymur"
         ;;
 
     rb3)
         LOAD_ADDR="0x9FC00000"
         QTESTSIGN_VER="v6"
+        PKG_SUFFIX="OpenBoardPkg"
+        FD_NAME="Rb3OpenBoardPkg"
         ;;
     *)
         exit_error "Unknown silicon '$SILICON'. Add it to the lookup table in this script."
@@ -124,9 +133,19 @@ esac
 # Derive all package names and paths from parameters
 # -----------------------------------------------------------------------
 SILICON_CAP="${SILICON^}"                                           # glymur  -> Glymur
-PKG_NAME="${SILICON_CAP}OpenBoardPkg"                               # GlymurOpenBoardPkg
-PKG_UPPER=$(echo "$PKG_NAME" | tr '[:lower:]' '[:upper:]')          # GLYMUROPENBOARDPKG
-DSC_PATH="edk2-platforms/Platform/Qualcomm/${PKG_NAME}/${PKG_NAME}.dsc"
+PKG_NAME="${PKG_NAME:-${SILICON_CAP}${PKG_SUFFIX}}"                 # explicit --pkg-name wins; else derive
+FD_UPPER=$(echo "$FD_NAME" | tr '[:lower:]' '[:upper:]')            # GLYMUR (fixed FD name for this silicon)
+
+# -----------------------------------------------------------------------
+# Some packages live in a shared family subdirectory rather than directly
+# under Platform/Qualcomm. Add entries here as packages move/are added.
+# -----------------------------------------------------------------------
+case "$PKG_NAME" in
+    GlymurMinPlatformPkg) PKG_SUBDIR="GlymurFamily" ;;
+    *)                    PKG_SUBDIR="" ;;
+esac
+
+DSC_PATH="edk2-platforms/Platform/Qualcomm/${PKG_SUBDIR:+${PKG_SUBDIR}/}${PKG_NAME}/${PKG_NAME}.dsc"
 
 echo ""
 echo "=========================================="
@@ -144,9 +163,7 @@ echo ""
 # -----------------------------------------------------------------------
 # Set up workspace (done once, outside the per-build-type loop)
 # -----------------------------------------------------------------------
-pwd
-cd ../../../.. || exit_error "Failed to navigate to workspace root"
-pwd
+cd "${SCRIPT_DIR}/../../.." || exit_error "Failed to navigate to workspace root"
 export WORKSPACE=$PWD
 
 export PACKAGES_PATH=\
@@ -155,6 +172,7 @@ $WORKSPACE/edk2-platforms:\
 $WORKSPACE/edk2-platforms/Platform:\
 $WORKSPACE/edk2/ArmPlatformPkg:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm:\
+$WORKSPACE/edk2-platforms/Platform/Qualcomm/GlymurFamily:\
 $WORKSPACE/edk2-platforms/Silicon/Qualcomm
 
 # Initialize EDK2 build environment
@@ -217,7 +235,7 @@ fi
 # -----------------------------------------------------------------------
 OUTPUT_DIR="${BUILD_TYPE}_${TOOLCHAIN}"
 FV_DIR="$WORKSPACE/Build/${PKG_NAME}/${OUTPUT_DIR}/FV"
-FD_PATH="${FV_DIR}/${PKG_UPPER}.fd"
+FD_PATH="${FV_DIR}/${FD_UPPER}.fd"
 UNSIGNED_DIR="${FV_DIR}/unsigned"
 SIGNED_DIR="${FV_DIR}/signed"
 UNSIGNED_ELF="${UNSIGNED_DIR}/uefi_unsigned.elf"
