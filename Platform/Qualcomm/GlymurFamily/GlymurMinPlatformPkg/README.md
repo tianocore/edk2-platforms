@@ -6,7 +6,7 @@ This project brings UEFI support to Glymur (AARCH64) following the MinPlatform s
 - Boot UEFI Shell, and UiApp
 
 ## How to build
-- GCC_AARCH64_PREFIX=aarch64-linux-gnu- build -b DEBUG -a AARCH64 -t GCC -p edk2-platforms/GlymurMinPlatformPkg/GlymurMinPlatformPkg.dsc -j $WORKSPACE/Build/GlymurMinPlatformPkg.log
+- GCC_AARCH64_PREFIX=aarch64-linux-gnu- build -b DEBUG -a AARCH64 -t GCC -p edk2-platforms/Platform/Qualcomm/GlymurFamily/GlymurMinPlatformPkg/GlymurMinPlatformPkg.dsc -j $WORKSPACE/Build/GlymurMinPlatformPkg.log
 
 ### Prerequesites
 - Ensure cross compiler is setup: aarch64-linux-gnu-gcc
@@ -26,6 +26,7 @@ This project brings UEFI support to Glymur (AARCH64) following the MinPlatform s
     - edk2/ArmPlatformPkg
     - edk2-platforms/Platform/Qualcomm
     - edk2-platforms/Silicon/Qualcomm
+    - edk2-platforms/Platform/Qualcomm/GlymurFamily
 
 ## Build and Sign (Recommended)
 

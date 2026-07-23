@@ -27,7 +27,7 @@
 
 [Packages]
   ArmPkg/ArmPkg.dec
-  QualcommPlatformPkg/QualcommPlatformPkg.dec
+  QualcommMinPlatformPkg/QualcommMinPlatformPkg.dec
   QualcommSiliconPkg/QualcommSiliconPkg.dec
   MdePkg/MdePkg.dec
 
@@ -38,4 +38,4 @@
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
   gArmTokenSpaceGuid.PcdSystemMemorySize
-  gQualcommPlatformPkgTokenSpaceGuid.PcdMaxMemory
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdMaxMemory

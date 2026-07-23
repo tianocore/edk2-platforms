@@ -34,7 +34,7 @@ Power-on
         ├─ Initializes SMEM region in DDR
         ├─ Populates RAM Partition Table in SMEM
         ├─ Writes IMEM cookies to on-chip SRAM
-        └─► UEFI (QualcommPlatformPkg / QualcommSiliconPkg)
+        └─► UEFI (QualcommMinPlatformPkg / QualcommSiliconPkg)
               ├─ Reads SMEM via SmemLib
               ├─ Reads RAM Partition Table from SMEM
               ├─ Reads IMEM cookies for boot state

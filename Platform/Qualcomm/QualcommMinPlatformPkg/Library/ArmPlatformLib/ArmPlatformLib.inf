@@ -27,7 +27,7 @@
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   QcomPlatformPkg/QcomPlatformPkg.dec
-  QualcommPlatformPkg/QualcommPlatformPkg.dec
+  QualcommMinPlatformPkg/QualcommMinPlatformPkg.dec
   QualcommSiliconPkg/QualcommSiliconPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
 
@@ -59,14 +59,14 @@
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtBase
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtBase
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtSize
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemBaseAddress
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
 
 [Ppis]
   gArmMpCoreInfoPpiGuid

@@ -22,12 +22,12 @@
 
 [Packages]
   ArmPkg/ArmPkg.dec
-  QualcommPlatformPkg/QualcommPlatformPkg.dec
+  QualcommMinPlatformPkg/QualcommMinPlatformPkg.dec
   MdePkg/MdePkg.dec
 
 [Pcd]
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
 
 [LibraryClasses]
   ArmLib

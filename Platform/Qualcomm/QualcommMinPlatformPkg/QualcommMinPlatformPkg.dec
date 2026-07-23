@@ -10,7 +10,7 @@
 
 [Defines]
   DEC_SPECIFICATION              = 1.27
-  PACKAGE_NAME                   = QualcommPlatformPkg
+  PACKAGE_NAME                   = QualcommMinPlatformPkg
   PACKAGE_GUID                   = E2C81C52-2717-11F1-91FC-CF0277097D43
   PACKAGE_VERSION                = 0.1
 
@@ -25,7 +25,7 @@
   Include
 
 [Guids]
-  gQualcommPlatformPkgTokenSpaceGuid     = {0xfcdbe91a, 0x2a3d, 0x11f1, {0x93, 0x72, 0x0b, 0x68, 0x11, 0x99, 0x4c, 0x30}}
+  gQualcommMinPlatformPkgTokenSpaceGuid     = {0xfcdbe91a, 0x2a3d, 0x11f1, {0x93, 0x72, 0x0b, 0x68, 0x11, 0x99, 0x4c, 0x30}}
 
 [PcdsFixedAtBuild]
   #
@@ -35,7 +35,7 @@
   ## Limit available memory irrespective of RAM partition region.
   #  Restricts memory visible to UEFI.
   #  @Prompt Maximum Memory
-  gQualcommPlatformPkgTokenSpaceGuid.PcdMaxMemory                   | 0x1000000000 | UINT64  | 0xA1000000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdMaxMemory                   | 0x1000000000 | UINT64  | 0xA1000000
 
   #
   # SoC Internal Memory - IMEM
@@ -43,11 +43,11 @@
 
   ## Base address of IMEM cookies region.
   #  @Prompt IMEM Cookies Base Address
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase             | 0x0          | UINT64  | 0xA1000001
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase             | 0x0          | UINT64  | 0xA1000001
 
   ## Size of IMEM cookies region in bytes.
   #  @Prompt IMEM Cookies Size
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize             | 0x0          | UINT64  | 0xA1000002
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize             | 0x0          | UINT64  | 0xA1000002
 
   #
   # Lauterbach Trace32 CMM Save Address for T32 Debug - DebugPecoffExtraActionLib T32 instance.
@@ -55,11 +55,11 @@
 
   ## Base address of Trace32 debug region in DDR.
   #  @Prompt Trace32 DDR Base Address
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase              | 0x0          | UINT64  | 0xA1000003
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase              | 0x0          | UINT64  | 0xA1000003
 
   ## Size of Trace32 debug region in bytes.
   #  @Prompt Trace32 DDR Size
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize              | 0x0          | UINT64  | 0xA1000004
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize              | 0x0          | UINT64  | 0xA1000004
 
   #
   # Device Tree - DT
@@ -67,9 +67,9 @@
 
   ## Base address where Device Tree Blob (DTB) is loaded.
   #  @Prompt Boot Device Tree Base Address
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtBase                  | 0x0          | UINT64  | 0xA1000010
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtBase                  | 0x0          | UINT64  | 0xA1000010
 
   ## Size of Device Tree Blob region in bytes.
   #  @Prompt Boot Device Tree Size
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize                  | 0x0          | UINT64  | 0xA1000011
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtSize                  | 0x0          | UINT64  | 0xA1000011
 
