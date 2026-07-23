@@ -38,6 +38,6 @@ LOCAL &DebugScriptMetaDataBufferSize
 &DebugScriptMetaDataBufferAddress=0xA8FFB000
 &DebugScriptMetaDataBufferSize=0x5000
 
-DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommMinPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
 
 ENDDO

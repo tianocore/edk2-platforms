@@ -95,7 +95,7 @@
 # Qualcomm Silicon and Platform dsc
 #
 !include Silicon/Qualcomm/QualcommSiliconPkg/QualcommSiliconPkg.dsc.inc
-!include Platform/Qualcomm/QualcommPlatformPkg/QualcommPlatformPkg.dsc.inc
+!include Platform/Qualcomm/QualcommMinPlatformPkg/QualcommMinPlatformPkg.dsc.inc
 
 #
 # Qualcomm Platform Override for this target
@@ -137,20 +137,20 @@
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemTargetInfoWonceReg             | 0x00000000
 
   #
-  # gQualcommPlatformPkgTokenSpaceGuid Overrides
+  # gQualcommMinPlatformPkgTokenSpaceGuid Overrides
   #
 
   # Device Tree (DT)
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtBase                        | 0xA9000000
-  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize                        | 0x00070000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtBase                        | 0xA9000000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdBootDtSize                        | 0x00070000
 
   # Internal Memory (IMEM) Cookie
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase                   | 0x14680000
-  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize                   | 0x00001000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesBase                   | 0x14680000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdIMemCookiesSize                   | 0x00001000
 
   # Trace32 Debug
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase                    | 0xA8FFB000
-  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize                    | 0x00005000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase                    | 0xA8FFB000
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize                    | 0x00005000
 
 [LibraryClasses.Common]
   BoardInitLib            | GlymurMinPlatformPkg/Library/BoardInitLib/BoardInitLib.inf

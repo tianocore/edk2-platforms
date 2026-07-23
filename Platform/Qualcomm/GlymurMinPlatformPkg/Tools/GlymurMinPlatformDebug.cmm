@@ -97,6 +97,6 @@ ELSE
 )
 
 print "&WorkspaceRoot"
-DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/QualcommPlatformDebug.cmm" "&Module" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize &UefiEntry "&UEFIImageElfPath" "&UEFIDtbImageElfPath" "&NoReset"
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommMinPlatformPkg/Tools/Trace32/QualcommPlatformDebug.cmm" "&Module" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize &UefiEntry "&UEFIImageElfPath" "&UEFIDtbImageElfPath" "&NoReset"
 
 ENDDO

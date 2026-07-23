@@ -8,7 +8,7 @@
 
 [LibraryClasses.Common]
   SerialPortLib|Silicon/Qualcomm/Library/GeniSerialPortLib/GeniSerialPortLib.inf
-  ReportFvLib|QualcommPlatformPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  ReportFvLib|QualcommMinPlatformPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
   GptLib|MdeModulePkg/Library/GptLib/GptLib.inf
 
 [LibraryClasses.AARCH64]
@@ -23,7 +23,7 @@
   #
   # Qualcomm Libraries
   #
-  PeCoffExtraActionLib|QualcommPlatformPkg/Library/DebugPecoffExtraActionTrace32Lib/DebugPecoffExtraActionTrace32Lib.inf
+  PeCoffExtraActionLib|QualcommMinPlatformPkg/Library/DebugPecoffExtraActionTrace32Lib/DebugPecoffExtraActionTrace32Lib.inf
 
 [LibraryClasses.AARCH64.SEC]
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
@@ -40,9 +40,9 @@
   #
   # Qualcomm Libraries
   #
-  ReportCpuHobLib|QualcommPlatformPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
-  ArmPlatformLib|QualcommPlatformPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
-  RamPartitionTableLib|QualcommPlatformPkg/Library/RamPartitionTableLib/RamPartitionTableLib.inf
+  ReportCpuHobLib|QualcommMinPlatformPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
+  ArmPlatformLib|QualcommMinPlatformPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
+  RamPartitionTableLib|QualcommMinPlatformPkg/Library/RamPartitionTableLib/RamPartitionTableLib.inf
 
 [Components.AARCH64]
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
