@@ -1,0 +1,43 @@
+;;@file
+;;  Kodiak target-specific wrapper for the generic Qualcomm Trace32 UEFI symbol loading flow.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+;; NOTE:
+;; This script assumes it is located at:
+;;   <workspace>/edk2-platforms/Platform/Qualcomm/KodiakMinPlatformPkg/Tools/
+;;
+;; The workspace root is derived by traversing 5 levels up from this script's
+;; directory. The expected layout is:
+;;
+;;   <workspace>/                    <- WorkspaceRoot
+;;     edk2/
+;;     edk2-platforms/
+;;       Platform/
+;;         Qualcomm/
+;;           KodiakMinPlatformPkg/
+;;             Tools/                <- this script
+;;
+; If your checkout uses a different layout, update the path below accordingly.
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  Example:
+;    do OpenBoardSymbolLoad.cmm
+;============================================================================
+LOCAL &CwDir
+LOCAL &WorkspaceRoot
+LOCAL &DebugScriptMetaDataBufferAddress
+LOCAL &DebugScriptMetaDataBufferSize
+
+&CwDir=os.ppd()
+&WorkspaceRoot="&CwDir/../../../../.."
+
+&DebugScriptMetaDataBufferAddress=0x9FFFB000
+&DebugScriptMetaDataBufferSize=0x5000
+
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
+
+ENDDO
