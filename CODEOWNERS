@@ -98,6 +98,8 @@
 # Qualcomm platforms and silicon
 /Platform/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc @vishalo
 /Silicon/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc @vishalo
+/Platform/Qualcomm/KodiakMinPlatformPkg** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc @vishalo @dhanushg1197
+
 
 # Qualcomm MinPlatform
 /Silicon/Qualcomm/QualcommSiliconPkg/** @leiflindholm @aiyengar-qc @vishalo

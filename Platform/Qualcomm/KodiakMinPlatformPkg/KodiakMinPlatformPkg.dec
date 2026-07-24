@@ -1,0 +1,24 @@
+## @file
+#  Declaration file for KodiakMinPlatformPkg.
+#
+#  Support MinPlatform based boot for KodiakMinPlatformPkg.
+#
+#  Copyright (c) 2022 Theo Jehl
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = KodiakMinPlatformPkg
+  PACKAGE_GUID                   = 7D99A498-B2D4-4E93-B32F-1917BA96196E
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gKodiakMinPlatformPkgTokenSpaceGuid                     = { 0xa9d4f3c2, 0x1b7e, 0x4e6a, { 0x9f, 0x82, 0xd3, 0x6b, 0xa1, 0x58, 0xc4, 0x90 } }
+
+[PcdsFixedAtBuild]
+  gKodiakMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize   |0|UINT16|0x00000004
