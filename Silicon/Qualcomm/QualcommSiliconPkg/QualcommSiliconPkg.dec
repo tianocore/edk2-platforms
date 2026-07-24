@@ -31,6 +31,17 @@
 [Protocols]
   gEfiSmemProtocolGuid                  = {0xf4e3d2c1, 0x8a7b, 0x4c5d, {0x9e, 0x6f, 0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f}}
 
+[PcdsFeatureFlag]
+  #
+  # Shared Memory (SMEM) Configuration
+  #
+
+  ## Whether the platform exposes a Qualcomm Shared Memory (SMEM) region.
+  #  Boards backed by an XBL-populated SMEM region set this TRUE and provide
+  #  PcdSmemBaseAddress/PcdSmemSize.
+  #  @Prompt Enable SMEM Region
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemEnable                  | FALSE        | BOOLEAN | 0xA1000008
+
 [PcdsFixedAtBuild]
   #
   # Shared Memory (SMEM) Configuration

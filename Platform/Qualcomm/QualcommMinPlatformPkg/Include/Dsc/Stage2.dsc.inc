@@ -4,7 +4,6 @@
 # Copyright (C) 2022 Theo Jehl<BR>
 # Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
 #
-#
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 

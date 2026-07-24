@@ -561,22 +561,39 @@ LoadStaticPlatformCfg (
   /* single system-memory descriptor covering the whole UEFI region.     */
   /* ------------------------------------------------------------------- */
 
-  /* Lower portion: FD base up to (but not including) the T32 buffer */
-  BuildResourceDescriptorHob (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    SYSTEM_MEMORY_RESOURCE_ATTR_SETTINGS_CAPABILITIES,
-    FixedPcdGet64 (PcdFdBaseAddress),
-    FixedPcdGet64 (PcdTrace32DdrBase) - FixedPcdGet64 (PcdFdBaseAddress)
-    );
+  //
+  // When a T32 DDR debug buffer is configured inside the UEFI region, emit two
+  // system-memory descriptors that bracket it (the reserved T32 HOB was built
+  // by ArmPlatformSetupDebugBuffer). When it is not enabled emit a single
+  // descriptor for the whole UEFI region -- otherwise the size arithmetic below
+  // would underflow.
+  //
+  if (FeaturePcdGet (PcdTrace32Enable)) {
+    /* Lower portion: FD base up to (but not including) the T32 buffer */
+    BuildResourceDescriptorHob (
+      EFI_RESOURCE_SYSTEM_MEMORY,
+      SYSTEM_MEMORY_RESOURCE_ATTR_SETTINGS_CAPABILITIES,
+      FixedPcdGet64 (PcdFdBaseAddress),
+      FixedPcdGet64 (PcdTrace32DdrBase) - FixedPcdGet64 (PcdFdBaseAddress)
+      );
 
-  /* Upper portion: above the T32 buffer to the end of the UEFI region */
-  BuildResourceDescriptorHob (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    SYSTEM_MEMORY_RESOURCE_ATTR_SETTINGS_CAPABILITIES,
-    FixedPcdGet64 (PcdTrace32DdrBase) + FixedPcdGet64 (PcdTrace32DdrSize),
-    (FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet64 (PcdSystemMemorySize))
-    - (FixedPcdGet64 (PcdTrace32DdrBase) + FixedPcdGet64 (PcdTrace32DdrSize))
-    );
+    /* Upper portion: above the T32 buffer to the end of the UEFI region */
+    BuildResourceDescriptorHob (
+      EFI_RESOURCE_SYSTEM_MEMORY,
+      SYSTEM_MEMORY_RESOURCE_ATTR_SETTINGS_CAPABILITIES,
+      FixedPcdGet64 (PcdTrace32DdrBase) + FixedPcdGet64 (PcdTrace32DdrSize),
+      (FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet64 (PcdSystemMemorySize))
+      - (FixedPcdGet64 (PcdTrace32DdrBase) + FixedPcdGet64 (PcdTrace32DdrSize))
+      );
+  } else {
+    /* No T32 buffer carve-out: one descriptor for the whole UEFI region */
+    BuildResourceDescriptorHob (
+      EFI_RESOURCE_SYSTEM_MEMORY,
+      SYSTEM_MEMORY_RESOURCE_ATTR_SETTINGS_CAPABILITIES,
+      FixedPcdGet64 (PcdFdBaseAddress),
+      FixedPcdGet64 (PcdSystemMemorySize)
+      );
+  }
 
   AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "UEFI FD");
   mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdFdBaseAddress);
@@ -602,15 +619,17 @@ LoadStaticPlatformCfg (
   /* ------------------------------------------------------------------ */
 
   /* SMEM - shared memory (uncached) */
-  AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "SMEM");
-  mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdSmemBaseAddress);
-  mMemRegions[mNumMemRegions].MemSize           = FixedPcdGet64 (PcdSmemSize);
-  mMemRegions[mNumMemRegions].BuildHobOption    = AddPeripheral;
-  mMemRegions[mNumMemRegions].ResourceType      = EFI_RESOURCE_MEMORY_MAPPED_IO;
-  mMemRegions[mNumMemRegions].ResourceAttribute = EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE;
-  mMemRegions[mNumMemRegions].MemoryType        = EfiMemoryMappedIO;
-  mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
-  mNumMemRegions++;
+  if (FeaturePcdGet (PcdSmemEnable)) {
+    AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "SMEM");
+    mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdSmemBaseAddress);
+    mMemRegions[mNumMemRegions].MemSize           = FixedPcdGet64 (PcdSmemSize);
+    mMemRegions[mNumMemRegions].BuildHobOption    = AddPeripheral;
+    mMemRegions[mNumMemRegions].ResourceType      = EFI_RESOURCE_MEMORY_MAPPED_IO;
+    mMemRegions[mNumMemRegions].ResourceAttribute = EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE;
+    mMemRegions[mNumMemRegions].MemoryType        = EfiMemoryMappedIO;
+    mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+    mNumMemRegions++;
+  }
 
   /* Serial Port */
   AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "UART");
@@ -623,16 +642,34 @@ LoadStaticPlatformCfg (
   mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
   mNumMemRegions++;
 
-  /* IMEM Cookies */
-  AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "IMEM");
-  mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdIMemCookiesBase);
-  mMemRegions[mNumMemRegions].MemSize           = FixedPcdGet64 (PcdIMemCookiesSize);
-  mMemRegions[mNumMemRegions].BuildHobOption    = AddPeripheral;
-  mMemRegions[mNumMemRegions].ResourceType      = EFI_RESOURCE_MEMORY_MAPPED_IO;
-  mMemRegions[mNumMemRegions].ResourceAttribute = EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE;
-  mMemRegions[mNumMemRegions].MemoryType        = EfiMemoryMappedIO;
-  mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
-  mNumMemRegions++;
+  /* IMEM Cookies (only when the platform enables the region) */
+  if (FeaturePcdGet (PcdIMemCookiesEnable)) {
+    AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "IMEM");
+    mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdIMemCookiesBase);
+    mMemRegions[mNumMemRegions].MemSize           = FixedPcdGet64 (PcdIMemCookiesSize);
+    mMemRegions[mNumMemRegions].BuildHobOption    = AddPeripheral;
+    mMemRegions[mNumMemRegions].ResourceType      = EFI_RESOURCE_MEMORY_MAPPED_IO;
+    mMemRegions[mNumMemRegions].ResourceAttribute = EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE;
+    mMemRegions[mNumMemRegions].MemoryType        = EfiMemoryMappedIO;
+    mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+    mNumMemRegions++;
+  }
+
+  /* UFS host controller MMIO (only when the platform enables the region).
+   * NonDiscoverablePciDeviceDxe's BAR access path does not create the CPU
+   * mapping itself, so the UFS register window must be mapped here or the first
+   * UfsPassThru register access takes a translation fault. */
+  if (FeaturePcdGet (PcdUfsHcEnable)) {
+    AsciiStrCpyS (mMemRegions[mNumMemRegions].Name, MAX_MEM_LABEL_NAME, "UFS");
+    mMemRegions[mNumMemRegions].MemBase           = FixedPcdGet64 (PcdUfsHcMmioBase);
+    mMemRegions[mNumMemRegions].MemSize           = FixedPcdGet64 (PcdUfsHcMmioSize);
+    mMemRegions[mNumMemRegions].BuildHobOption    = AddPeripheral;
+    mMemRegions[mNumMemRegions].ResourceType      = EFI_RESOURCE_MEMORY_MAPPED_IO;
+    mMemRegions[mNumMemRegions].ResourceAttribute = EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE;
+    mMemRegions[mNumMemRegions].MemoryType        = EfiMemoryMappedIO;
+    mMemRegions[mNumMemRegions].CacheAttributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+    mNumMemRegions++;
+  }
 
   DEBUG ((
     DEBUG_INFO,

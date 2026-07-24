@@ -1,0 +1,18 @@
+## @file
+#  Declaration file for NordBoardPkg.
+#
+#  Supports MinPlatform-based boot for the Qualcomm Nord Generic.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = NordBoardPkg
+  PACKAGE_GUID                   = 6F5B2C1E-4A7D-4E52-9C3A-1D0E7F2B8A44
+  PACKAGE_VERSION                = 1.0
+
+[Guids]
+  gNordBoardPkgTokenSpaceGuid = { 0x9a2d7c14, 0x5e83, 0x4b6f, { 0xa1, 0x0c, 0x3d, 0x27, 0x6e, 0x51, 0x84, 0xb9 } }
+

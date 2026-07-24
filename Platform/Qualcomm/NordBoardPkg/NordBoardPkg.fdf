@@ -1,0 +1,334 @@
+## @file
+#  NordBoardPkg FDF (Qualcomm Nord Generic).
+#
+#  Multi-FV MinPlatform flash layout. The whole FD is loaded by TF-A as the
+#  BL33 payload at PcdFlashAreaBaseAddress and entered at offset 0, so the
+#  FvPreMemory FV (containing ArmPlatformPkg/Sec) must remain first.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress = 0xA0200000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize        = 0x00800000
+
+#
+# Board-specific flash sizes (Nord uses emulated NV variables, so the NV
+# storage sizes describe reserved layout only). Offsets and base addresses are
+# derived by the shared FlashMap include below.
+#
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize   = 0x0003C000
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize = 0x00004000
+
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize          = 0x00080000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize       = 0x00010000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize               = 0x00000000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize               = 0x00000000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize               = 0x00000000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize         = 0x00040000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspSize                = 0x00010000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize           = 0x00500000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize             = 0x00100000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize           = 0x00010000
+
+!include QualcommMinPlatformPkg/Include/Fdf/FlashMap.fdf.inc
+
+[FD.NordBoardPkg]
+BaseAddress   = 0xA0200000|gArmTokenSpaceGuid.PcdFdBaseAddress
+Size          = 0x00800000|gArmTokenSpaceGuid.PcdFdSize
+ErasePolarity = 1
+BlockSize     = 0x00001000
+NumBlocks     = 0x800
+
+  # --- START OF FLASH (Offset 0 = SEC reset vector) ---
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset    | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
+  gArmTokenSpaceGuid.PcdFvBaseAddress                        | gArmTokenSpaceGuid.PcdFvSize
+  FV = FvPreMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemoryOffset | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize
+  FV = FvBspPreMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset   | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize
+  FV = FvPostMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspOffset          | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspSize
+  FV = FvBsp
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
+  FV = FvUefiBoot
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset       | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize
+  FV = FvOsBoot
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize
+  FV = FvSecurity
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize
+  FV = FvAdvanced
+  # --- END OF FLASH ---
+
+###########################
+# Stage 1 (PEI) Firmware Volumes
+###########################
+[FV.FvPreMemory]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E01
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF ArmPlatformPkg/Sec/Sec.inf
+  INF MdeModulePkg/Core/Pei/PeiMain.inf
+  INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
+  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
+  INF ArmPkg/Drivers/CpuPei/CpuPei.inf
+  INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
+  INF MinPlatformPkg/PlatformInit/ReportFv/ReportFvPei.inf
+  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+
+[FV.FvBspPreMemory]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E02
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPreMemNonFsp.inf
+
+###########################
+# Stage 2 Firmware Volumes
+###########################
+[FV.FvPostMemory]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E03
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPostMem.inf
+
+[FV.FvBsp]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E04
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+###########################
+# Stage 3 (DXE) Firmware Volumes
+###########################
+[FV.FvUefiBootUncompressed]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E05
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  APRIORI DXE {
+    INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  }
+
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
+  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
+  INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/Disk/UdfDxe/UdfDxe.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+
+  # UFS
+  INF Silicon/Qualcomm/Drivers/QcomUfsHcDxe/QcomUfsHcDxe.inf
+  INF MdeModulePkg/Bus/Pci/UfsPciHcDxe/UfsPciHcDxe.inf
+  INF MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+
+  # BDS / UI / Shell
+  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  INF MdeModulePkg/Logo/LogoDxe.inf
+  INF MdeModulePkg/Application/UiApp/UiApp.inf
+  INF ShellPkg/Application/Shell/Shell.inf
+  INF MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+
+  #
+  # DTB support
+  #
+!if $(USER_PROVIDED_DTB) == TRUE
+  INF RuleOverride = DTB Platform/Qualcomm/NordBoardPkg/DeviceTree/UserDTB.inf
+!else
+  INF RuleOverride = DTB Platform/Qualcomm/NordBoardPkg/DeviceTree/DummyDeviceTree.inf
+!endif
+  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
+
+[FV.FvUefiBoot]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E06
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+
+  FILE FV_IMAGE = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E05 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvUefiBootUncompressed
+    }
+  }
+
+###########################
+# Stage 4 Firmware Volumes
+###########################
+[FV.FvOsBoot]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E07
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
+  INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
+
+[FV.FvSecurity]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E08
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+[FV.FvAdvanced]
+!include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 5F4C1E30-2B7A-4C1D-9E62-0A1B2C3D4E09
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+###########################
+# File Construction Rules
+###########################
+!include MinPlatformPkg/Include/Fdf/RuleInclude.fdf
+
+[Rule.Common.USER_DEFINED.DTB]
+  FILE FREEFORM = $(NAMED_GUID) {
+    RAW BIN                |.dtb
+  }
+
+[Rule.AARCH64.SEC]
+  FILE SEC = $(NAMED_GUID) RELOCS_RETAINED {
+    TE  TE Align = Auto                 $(INF_OUTPUT)/$(MODULE_NAME).efi
+  }
+
+[Rule.AARCH64.PEIM]
+  FILE PEIM = $(NAMED_GUID) {
+     PEI_DEPEX PEI_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
+     PE32        PE32    Align = Auto    $(INF_OUTPUT)/$(MODULE_NAME).efi
+     UI        STRING="$(MODULE_NAME)" Optional
+     VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+

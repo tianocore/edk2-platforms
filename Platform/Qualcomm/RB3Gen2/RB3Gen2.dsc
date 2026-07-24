@@ -117,7 +117,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   RealTimeClockLib|EmbeddedPkg/Library/VirtualRealTimeClockLib/VirtualRealTimeClockLib.inf
 
   # SMBIOS platform information
-  OemMiscLib|Platform/Qualcomm/RB3Gen2/Library/OemMiscLib/OemMiscLib.inf
+  OemMiscLib|Platform/Qualcomm/QualcommPlatformPkg/Library/OemMiscLib/OemMiscLib.inf
 
   # Debug Support
   PeCoffExtraActionLib|ArmPkg/Library/DebugPeCoffExtraActionLib/DebugPeCoffExtraActionLib.inf
@@ -368,8 +368,8 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x994000
 
   # Ufs
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress|0x1D84000
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize|0x3000
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase|0x1D84000
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize|0x3000
 
   gArmTokenSpaceGuid.PcdSystemProductName|L"Qualcomm Dragonwing RB3 Gen 2"
   gArmTokenSpaceGuid.PcdSystemVersion|L"1.0"
@@ -406,21 +406,21 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmTokenSpaceGuid.PcdSystemBiosRelease|0x0100
   gArmTokenSpaceGuid.PcdEmbeddedControllerFirmwareRelease|0x0100
 
-  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemManufacturer|L"Qualcomm"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemSerialNumber|L"SN0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemSKU|L"SK0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdSystemFamily|L"Kodiak"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemManufacturer|L"Qualcomm"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemSerialNumber|L"SN0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemSKU|L"SK0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemFamily|L"Kodiak"
 
-  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardAssetTag|L"AT0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardSerialNumber|L"SN0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardSKU|L"SK000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdBaseBoardLocation|L"Public"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardAssetTag|L"AT0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardSerialNumber|L"SN0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardSKU|L"SK000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardLocation|L"Public"
 
-  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisSerialNumber|L"SN0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisVersion|L"1.0"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisManufacturer|L"Thundercomm"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisAssetTag|L"AT0000"
-  gQcomKodiakPlatformTokenSpaceGuid.PcdChassisSKU|L"SK0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisSerialNumber|L"SN0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisVersion|L"1.0"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisManufacturer|L"Thundercomm"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisAssetTag|L"AT0000"
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisSKU|L"SK0000"
 
   gQcomKodiakPlatformTokenSpaceGuid.PcdPlatformVersionMajor|0x0
   gQcomKodiakPlatformTokenSpaceGuid.PcdPlatformVersionMinor|0x0

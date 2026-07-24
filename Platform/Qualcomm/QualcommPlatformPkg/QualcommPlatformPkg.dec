@@ -27,6 +27,47 @@
 [Guids]
   gQualcommPlatformPkgTokenSpaceGuid     = {0xfcdbe91a, 0x2a3d, 0x11f1, {0x93, 0x72, 0x0b, 0x68, 0x11, 0x99, 0x4c, 0x30}}
 
+[PcdsFeatureFlag]
+  #
+  # SoC Internal Memory - IMEM
+  #
+
+  ## Whether the platform exposes an IMEM cookies region to UEFI.
+  #  Boards that carry IMEM cookies set this TRUE and provide
+  #  PcdIMemCookiesBase/PcdIMemCookiesSize.
+  #  @Prompt Enable IMEM Cookies Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesEnable           | FALSE        | BOOLEAN | 0xA1000005
+
+  #
+  # Device Tree - DT
+  #
+
+  ## Whether the platform hands a Device Tree Blob (DTB) region to UEFI.
+  #  Boards that carry a boot DTB set this TRUE and provide
+  #  PcdBootDtBase/PcdBootDtSize.
+  #  @Prompt Enable Boot Device Tree Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtEnable                | FALSE        | BOOLEAN | 0xA1000006
+
+  #
+  # Lauterbach Trace32 CMM debug buffer.
+  #
+
+  ## Whether the platform reserves a Trace32 DDR debug buffer.
+  #  Boards that carve out a T32 buffer set this TRUE and provide
+  #  PcdTrace32DdrBase/PcdTrace32DdrSize.
+  #  @Prompt Enable Trace32 DDR Debug Buffer
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32Enable               | FALSE        | BOOLEAN | 0xA1000007
+
+  #
+  # UFS host controller register window.
+  #
+
+  ## Whether the platform exposes a UFS host controller register window.
+  #  Boards with a UFS host controller set this TRUE and provide
+  #  PcdUfsHcMmioBase/PcdUfsHcMmioSize.
+  #  @Prompt Enable UFS Host Controller MMIO Region
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcEnable                 | FALSE        | BOOLEAN | 0xA1000008
+
 [PcdsFixedAtBuild]
   #
   # Memory Management
@@ -72,4 +113,56 @@
   ## Size of Device Tree Blob region in bytes.
   #  @Prompt Boot Device Tree Size
   gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtSize                  | 0x0          | UINT64  | 0xA1000011
+
+  # UFS host controller register window (was QcomPlatformPkg's
+  # PcdQcomUfsHcDxe*): used by QcomUfsHcDxe as the BAR, mapped by ArmPlatformLib.
+  ## Base address of the UFS host controller register window.
+  #  @Prompt UFS Host Controller MMIO Base Address
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase               | 0x0          | UINT64  | 0xA1000012
+
+  ## Size of the UFS host controller register window in bytes.
+  #  @Prompt UFS Host Controller MMIO Size
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize               | 0x0          | UINT64  | 0xA1000013
+
+[PcdsDynamic]
+  # SMBIOS OEM strings (System/Base Board/Chassis) for the shared OemMiscLib.
+
+  ## SMBIOS Type 1 System Manufacturer string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemManufacturer     | L"" | VOID* | 0xA1000020
+
+  ## SMBIOS Type 1 System Serial Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemSerialNumber     | L"" | VOID* | 0xA1000021
+
+  ## SMBIOS Type 1 System SKU Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemSKU             | L"" | VOID* | 0xA1000022
+
+  ## SMBIOS Type 1 System Family string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdSystemFamily          | L"" | VOID* | 0xA1000023
+
+  ## SMBIOS Type 2 Base Board Asset Tag string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardAssetTag     | L"" | VOID* | 0xA1000024
+
+  ## SMBIOS Type 2 Base Board Serial Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardSerialNumber | L"" | VOID* | 0xA1000025
+
+  ## SMBIOS Type 2 Base Board SKU Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardSKU          | L"" | VOID* | 0xA1000026
+
+  ## SMBIOS Type 2 Base Board Location In Chassis string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBaseBoardLocation     | L"" | VOID* | 0xA1000027
+
+  ## SMBIOS Type 3 Chassis Serial Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisSerialNumber   | L"" | VOID* | 0xA1000028
+
+  ## SMBIOS Type 3 Chassis Version string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisVersion        | L"" | VOID* | 0xA1000029
+
+  ## SMBIOS Type 3 Chassis Manufacturer string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisManufacturer   | L"" | VOID* | 0xA100002A
+
+  ## SMBIOS Type 3 Chassis Asset Tag string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisAssetTag       | L"" | VOID* | 0xA100002B
+
+  ## SMBIOS Type 3 Chassis SKU Number string.
+  gQualcommPlatformPkgTokenSpaceGuid.PcdChassisSKU            | L"" | VOID* | 0xA100002C
 

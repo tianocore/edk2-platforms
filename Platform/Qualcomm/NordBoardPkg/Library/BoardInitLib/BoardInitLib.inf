@@ -1,0 +1,26 @@
+## @file
+#  NordBoardPkg BoardInitLib instance.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = BoardInitLib
+  FILE_GUID                      = 3B8C1A6E-7F42-4D9B-8E15-2A0C6D3F5B71
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardInitLib
+
+[Sources]
+  BoardInitLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  NordBoardPkg/NordBoardPkg.dec
+
+[LibraryClasses]
+  DebugLib
+

@@ -72,6 +72,10 @@
 [PcdsFeatureFlag]
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable                   | TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSupportUefiDecompress           | TRUE
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemEnable                         | TRUE
+  gQualcommPlatformPkgTokenSpaceGuid.PcdBootDtEnable                      | TRUE
+  gQualcommPlatformPkgTokenSpaceGuid.PcdIMemCookiesEnable                 | TRUE
+  gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32Enable                     | TRUE
 
 [PcdsDynamicDefault]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut                         | 3
@@ -86,10 +90,86 @@
 !include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage3.dsc.inc
-!include GlymurOpenBoardPkg/Include/Dsc/Stage4.dsc.inc
+!include QualcommMinPlatformPkg/Include/Dsc/Stage1.dsc.inc
+!include QualcommMinPlatformPkg/Include/Dsc/Stage2.dsc.inc
+!include QualcommMinPlatformPkg/Include/Dsc/Stage3.dsc.inc
+!include QualcommMinPlatformPkg/Include/Dsc/Stage4.dsc.inc
+
+#
+# Board-specific stage content (extends the shared QualcommMinPlatformPkg
+# Stage3/Stage4 with Glymur's PCI/ISA/USB/storage driver set).
+#
+[LibraryClasses.Common]
+  PlatformBootManagerLib  | MdeModulePkg/Library/PlatformBootManagerLibNull/PlatformBootManagerLibNull.inf
+  IoLib                   | MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
+  PciExpressLib           | MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
+  DebugLib                | MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+
+[LibraryClasses.AARCH64]
+  IoLib                    | MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsicArmVirt.inf
+  ArmGenericTimerCounterLib| ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
+  PlatformBootManagerLib   | ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+
+[Components.Common]
+  MdeModulePkg/Universal/Metronome/Metronome.inf
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  MdeModulePkg/Universal/Console/GraphicsOutputDxe/GraphicsOutputDxe.inf
+  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
+  MdeModulePkg/Bus/Isa/IsaBusDxe/IsaBusDxe.inf
+  MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+  MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  PcAtChipsetPkg/Bus/Pci/IdeControllerDxe/IdeControllerDxe.inf
+  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+
+  ShellPkg/Application/Shell/Shell.inf {
+    <LibraryClasses>
+      ShellCommandLib | ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.inf
+      NULL | ShellPkg/Library/UefiShellLevel2CommandsLib/UefiShellLevel2CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellLevel1CommandsLib/UefiShellLevel1CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellLevel3CommandsLib/UefiShellLevel3CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellDriver1CommandsLib/UefiShellDriver1CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellDebug1CommandsLib/UefiShellDebug1CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellInstall1CommandsLib/UefiShellInstall1CommandsLib.inf
+      NULL | ShellPkg/Library/UefiShellNetwork1CommandsLib/UefiShellNetwork1CommandsLib.inf
+      HandleParsingLib | ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
+      PrintLib | MdePkg/Library/BasePrintLib/BasePrintLib.inf
+      BcfgCommandLib | ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask | 0xFF
+      gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize | FALSE
+      gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize | 8000
+  }
+
+  MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  MdeModulePkg/Application/BootManagerMenuApp/BootManagerMenuApp.inf
+  MdeModulePkg/Application/UiApp/UiApp.inf {
+    <LibraryClasses>
+      UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
+      FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
+      NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootDiscoveryPolicyUiLib/BootDiscoveryPolicyUiLib.inf
+  }
+  MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
+
+[LibraryClasses.Common.DXE_SMM_DRIVER]
+  LockBoxLib              | MdeModulePkg/Library/SmmLockBoxLib/SmmLockBoxSmmLib.inf
+
+[Components.AARCH64]
+  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 
 #
 # Qualcomm Silicon and Platform dsc

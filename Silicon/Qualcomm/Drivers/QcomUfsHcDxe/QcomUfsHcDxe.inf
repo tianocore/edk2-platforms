@@ -21,7 +21,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  Silicon/Qualcomm/QcomPlatformPkg/QcomPlatformPkg.dec
+  Platform/Qualcomm/QualcommPlatformPkg/QualcommPlatformPkg.dec
 
 [LibraryClasses]
   DebugLib
@@ -33,8 +33,8 @@
   gEdkiiUfsHcPlatformProtocolGuid
 
 [Pcd]
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeBaseAddress
-  gQcomPlatformTokenSpaceGuid.PcdQcomUfsHcDxeSize
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize
 
 [Depex]
   TRUE
