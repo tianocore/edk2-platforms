@@ -109,11 +109,13 @@ case "$SILICON" in
     glymur)
         LOAD_ADDR="0xA7000000"
         QTESTSIGN_VER="v7"
+        PKG_SUFFIX="OpenBoardPkg"
         ;;
 
-    rb3)
+    kodiak)
         LOAD_ADDR="0x9FC00000"
         QTESTSIGN_VER="v6"
+        PKG_SUFFIX="MinPlatformPkg"
         ;;
     *)
         exit_error "Unknown silicon '$SILICON'. Add it to the lookup table in this script."
@@ -124,7 +126,7 @@ esac
 # Derive all package names and paths from parameters
 # -----------------------------------------------------------------------
 SILICON_CAP="${SILICON^}"                                           # glymur  -> Glymur
-PKG_NAME="${SILICON_CAP}OpenBoardPkg"                               # GlymurOpenBoardPkg
+PKG_NAME="${SILICON_CAP}${PKG_SUFFIX}"                              # GlymurOpenBoardPkg
 PKG_UPPER=$(echo "$PKG_NAME" | tr '[:lower:]' '[:upper:]')          # GLYMUROPENBOARDPKG
 DSC_PATH="edk2-platforms/Platform/Qualcomm/${PKG_NAME}/${PKG_NAME}.dsc"
 
