@@ -1,0 +1,329 @@
+## @file
+#  NordMinPlatformPkg.fdf
+#
+#  Copyright (c) 2022 Theo Jehl
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress      = 0xD8D00000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
+
+!include NordMinPlatformPkg/Include/Fdf/FlashMap.fdf.inc
+
+#
+# Note: NordMinPlatformPkgVars FD is currently not used
+# Pending persistent variable enablement
+#
+[FD.NordMinPlatformPkgVars]
+  BaseAddress   = 0xFF800000
+  Size          = 0x80000
+  ErasePolarity = 1
+  BlockSize     = 0x800|gNordMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize
+  NumBlocks     = 0x100
+
+  #
+  # Do not modify this block
+  # These three areas are tightly coupled and should be modified with utmost care.
+  # The total size must match the size in the EFI_FIRMWARE_VOLUME_HEADER in NvStorage512K.fdf.
+  # The NvStorageVariableSize must also match the VARIABLE_STORE_HEADER size in NvStorage512K.fdf.
+  # The EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER in CommonNvStorageFtwWorking.fdf doesn't have size info.
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+  DATA = { 0xFF } # Hack to ensure build doesn't treat the next PCD as Base/Size to be written
+
+[FD.NordMinPlatformPkg]
+  BaseAddress   = 0xD8D00000|gArmTokenSpaceGuid.PcdFdBaseAddress
+  Size          = 0x00380000|gArmTokenSpaceGuid.PcdFdSize
+  ErasePolarity = 1
+  BlockSize     = 0x1000
+  NumBlocks     = 0x380
+
+  # --- START OF FLASH (Offset 0) ---
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset    | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
+  gArmTokenSpaceGuid.PcdFvBaseAddress                        | gArmTokenSpaceGuid.PcdFvSize
+  FV = FvPreMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemoryOffset | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize
+  FV = FvBspPreMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTOffset         | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize
+  FV = FvFspT
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMOffset         | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize
+  FV = FvFspM
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSOffset         | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize
+  FV = FvFspS
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset   | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize
+  FV = FvPostMemory
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspOffset          | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspSize
+  FV = FvBsp
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
+  FV = FvUefiBoot
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset       | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize
+  FV = FvOsBoot
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize
+  FV = FvSecurity
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset     | gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize
+  FV = FvAdvanced
+  # --- END OF FLASH ---
+
+###########################
+#
+# Stage 1 Firmware Volumes
+#
+###########################
+
+[FV.FvPreMemory]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = BD479C6B-2EFF-401F-A7F1-566347B41D07
+  INF ArmPlatformPkg/Sec/Sec.inf
+
+  FILE FV_IMAGE = 618FBA00-2231-41F6-9931-25A89DF501D3 {
+    SECTION FV_IMAGE = FvSecurityPreMemory
+  }
+
+
+  INF MdeModulePkg/Core/Pei/PeiMain.inf
+  INF ArmPlatformPkg/PlatformPei/PlatformPeim.inf
+  INF ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
+  INF ArmPkg/Drivers/CpuPei/CpuPei.inf
+  INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
+  INF MinPlatformPkg/PlatformInit/ReportFv/ReportFvPei.inf
+
+  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+  
+[FV.FvSecurityPreMemory]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = F626B0FB-D759-44A8-B131-42408BB3533D
+
+[FV.FvBspPreMemory]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = 5CF9C072-385F-44FC-B21B-002074251C08
+
+  INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPreMemNonFsp.inf
+
+  FILE FV_IMAGE = 90B948EA-FF73-4689-B90A-A54F86C1FC01 {
+    SECTION FV_IMAGE = FvAdvancedPreMemory
+  }
+
+[FV.FvAdvancedPreMemory]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = 43528CE0-812B-4074-B77E-C49E7A2F4FE1
+
+[FV.FvFspT]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = 958CAF39-0B6C-40F1-B190-EC91C536CFF9
+
+[FV.FvFspM]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid      = 03982cf7-246a-4356-b6ba-436a2251595c
+
+  FILE FV_IMAGE = 83B39C64-BFB9-42EC-A7A3-527854A5C4C3 {
+      SECTION FV_IMAGE = FvPreMemorySilicon
+  }
+
+[FV.FvPreMemorySilicon]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = F0205C0E-0AD1-499C-A5F9-96BAF98248A0
+
+  INF MinPlatformPkg/PlatformInit/SiliconPolicyPei/SiliconPolicyPeiPreMem.inf
+
+[FV.FvFspS]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = C6786443-AFCA-471B-A8FC-E8C330708F99
+
+[FV.FvPostMemorySilicon]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = EF76DFDC-2B7D-423D-BFE4-8FD4BB22E770
+
+###########################
+#
+# Stage 2 Firmware Volumes
+#
+###########################
+[FV.FvPostMemory]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = 5A1D6978-BABE-42F9-A629-F7B3B6A1E1BD
+
+
+  INF MinPlatformPkg/PlatformInit/SiliconPolicyPei/SiliconPolicyPeiPostMem.inf
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPostMem.inf
+
+  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+
+[FV.FvBsp]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = FCA0BC4A-994D-4EF9-BD56-A8C45872C2A8
+
+###########################
+#
+# Stage 3 Firmware Volumes
+#
+###########################
+
+[FV.FvUefiBootUnCompressed]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = D2F110DB-2388-4963-BEFD-5889EEE01569
+
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
+
+  INF MdeModulePkg/Universal/Metronome/Metronome.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+
+  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+
+
+  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsOutputDxe/GraphicsOutputDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
+  INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+
+  INF MdeModulePkg/Application/BootManagerMenuApp/BootManagerMenuApp.inf
+  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  INF MdeModulePkg/Application/UiApp/UiApp.inf
+  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  INF ShellPkg/Application/Shell/Shell.inf
+
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
+
+[FV.FvUefiBoot]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = D0C15ADB-FE38-4331-841C-0E96C1B0FBFA
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+
+   FILE FV_IMAGE = D2F110DB-2388-4963-BEFD-5889EEE01569 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvUefiBootUncompressed
+    }
+  }
+
+###########################
+#
+# Stage 4 Firmware Volumes
+#
+###########################
+[FV.FvOsBootUncompressed]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = 4bb59c22-e1b8-414e-9de8-559db4054c4c
+
+  INF PcAtChipsetPkg/Bus/Pci/IdeControllerDxe/IdeControllerDxe.inf
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+
+  INF MdeModulePkg/Bus/Isa/IsaBusDxe/IsaBusDxe.inf
+  INF MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+
+  # ACPI
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+
+  # Buses
+
+  INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+
+  INF MdeModulePkg/Bus/Ufs/UfsPassThruDxe/UfsPassThruDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+  INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+
+  INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+
+[FV.FvOsBoot]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = AE8F0EA0-1614-422D-ABC1-C518596F1678
+
+   FILE FV_IMAGE = 4bb59c22-e1b8-414e-9de8-559db4054c4c {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvOsBootUncompressed
+    }
+  }
+
+###########################
+#
+# Stage 5 Firmware Volumes
+#
+###########################
+[FV.FvSecurity]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = 1AE6AB90-9431-425B-9A92-ED2708A4E982
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityLateInclude.fdf
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityPreMemoryInclude.fdf
+
+###########################
+#
+# Stage 6 Firmware Volumes
+#
+###########################
+[FV.FvAdvanced]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = 936D6D65-CB6C-4B87-A51C-70D56511CB55
+
+###########################
+#
+# File Construction Rules
+#
+###########################
+!include MinPlatformPkg/Include/Fdf/RuleInclude.fdf
+
+###########################
+#
+# File Construction Rules for AARCH64
+#
+###########################
+
+[Rule.AARCH64.SEC]
+  FILE SEC = $(NAMED_GUID) RELOCS_RETAINED{
+    TE  TE Align = Auto                 $(INF_OUTPUT)/$(MODULE_NAME).efi
+  }
+
+[Rule.AARCH64.PEIM]
+  FILE PEIM = $(NAMED_GUID) {
+     PEI_DEPEX PEI_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
+     PE32        PE32    Align = Auto    $(INF_OUTPUT)/$(MODULE_NAME).efi
+     UI        STRING="$(MODULE_NAME)" Optional
+     VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }

@@ -1,0 +1,82 @@
+;;@file
+;;  Iq10Evk target-specific wrapper for the generic Qualcomm Trace32 UEFI debug flow.
+;;
+;;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+;;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;;
+
+;============================================================================
+;  FUNCTION:  main
+;
+;  ARGUMENTS:
+;    &OptArgs - Optional flags (comma-separated):
+;               RAM     - RAM load UEFI images before debugging.
+;               NORESET - Skip device reset; use with RAM when device is
+;                         already stopped at UEFI Entry.
+;    &Module  - Name of the UEFI module to debug. Examples:
+;               Sec, PeiCore, DxeCore, ArmCpuDxe, ...
+;               If not specified, stops at UEFI Entry.
+;
+;  Example:
+;    do NordMinPlatformDebug.cmm
+;    do NordMinPlatformDebug.cmm ArmCpuDxe
+;    do NordMinPlatformDebug.cmm RAM DxeCore
+;    do NordMinPlatformDebug.cmm RAM,NORESET ArmCpuDxe
+;============================================================================
+ENTRY &OptArgs &Module
+
+LOCAL &CwDir
+LOCAL &WorkspaceRoot
+LOCAL &DebugScriptMetaDataBufferAddress
+LOCAL &DebugScriptMetaDataBufferSize
+LOCAL &UEFIImageElfPath
+LOCAL &UEFIDtbImageElfPath
+LOCAL &OutputDir
+LOCAL &UefiEntry
+LOCAL &NoReset
+
+&CwDir=os.ppd()
+&WorkspaceRoot="&CwDir/../../../../.."
+
+&OptArgs=convert.toupper("&OptArgs")
+&NoReset=""
+
+IF (string.scan("&OptArgs","NORESET",0)!=-1)
+(
+    &NoReset="NORESET"
+)
+
+&DebugScriptMetaDataBufferAddress=0x9FFFB000
+&DebugScriptMetaDataBufferSize=0x5000
+
+&UefiEntry=0xD8D00000
+
+;&OutputDir="DEBUG_CLANGDWARF"
+&OutputDir="DEBUG_GCC"
+
+; Optional RAM-load images:
+; - Pass RAM in OptArgs when the images are not already present in RAM.
+; - Leave OptArgs empty for live setups where firmware was loaded from storage.
+IF (string.scan("&OptArgs","RAM",0)!=-1)
+(
+    &UEFIImageElfPath="./Build/NordMinPlatformPkg/&OutputDir/FV/signed/uefi.elf"
+    &UEFIDtbImageElfPath="./Build/Iq10EvkdefaultPkg/Deliverables/Bin/DEBUG/sign/default/uefi/uncompressed/uefi_dtbs.elf"
+    IF !OS.FILE("&WorkspaceRoot/&UEFIImageElfPath")
+    (
+        PRINT %ERROR "UEFI Image ELF not found at &WorkspaceRoot/&UEFIImageElfPath"
+        END
+    )
+    IF !OS.FILE("&WorkspaceRoot/&UEFIDtbImageElfPath")
+    (
+        PRINT %ERROR "UEFI DTB Image ELF not found at &WorkspaceRoot/&UEFIDtbImageElfPath"
+    )
+)
+ELSE
+(
+    &UEFIImageElfPath=""
+    &UEFIDtbImageElfPath=""
+)
+
+DO "&WorkspaceRoot/edk2-qualcomm/Platform/Qualcomm/QualcommMinplatformPkg/Tools/Trace32/QualcommPlatformDebug.cmm" "&Module" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize &UefiEntry "&UEFIImageElfPath" "&UEFIDtbImageElfPath" "&NoReset"
+
+ENDDO
