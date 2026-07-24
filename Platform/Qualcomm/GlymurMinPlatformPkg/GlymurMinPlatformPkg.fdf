@@ -1,5 +1,5 @@
 ## @file
-#  GlymurOpenBoardPkg FDF file
+#  GlymurMinPlatformPkg FDF file
 #
 #  Copyright (c) 2022 Theo Jehl<BR>
 #  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
@@ -10,17 +10,17 @@
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress      = 0xA7000000
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
 
-!include GlymurOpenBoardPkg/Include/Fdf/FlashMap.fdf.inc
+!include GlymurMinPlatformPkg/Include/Fdf/FlashMap.fdf.inc
 
 #
-# Note: GlymurOpenBoardPkgVars FD is currently not used
+# Note: GlymurMinPlatformPkgVars FD is currently not used
 # Pending persistent variable enablement
 #
-[FD.GlymurOpenBoardPkgVars]
+[FD.GlymurMinPlatformPkgVars]
   BaseAddress   = 0xFF800000
   Size          = 0x80000
   ErasePolarity = 1
-  BlockSize     = 0x800|gGlymurOpenBoardPkgTokenSpaceGuid.PcdFdVarBlockSize
+  BlockSize     = 0x800|gGlymurMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize
   NumBlocks     = 0x100
 
   #
@@ -31,13 +31,13 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
   # The EFI_FAULT_TOLERANT_WORKING_BLOCK_HEADER in CommonNvStorageFtwWorking.fdf doesn't have size info.
   #
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
-  #!include GlymurOpenBoardPkgOpenBoardPkg/Include/Fdf/NvStorage512K.fdf
+  #!include GlymurMinPlatformPkgPkg/Include/Fdf/NvStorage512K.fdf
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
-  #!include GlymurOpenBoardPkgOpenBoardPkg/Include/Fdf/CommonNvStorageFtwWorking.fdf
+  #!include GlymurMinPlatformPkgPkg/Include/Fdf/CommonNvStorageFtwWorking.fdf
   gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareOffset | gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
   DATA = { 0xFF } # Hack to ensure build doesn't treat the next PCD as Base/Size to be written
 
-[FD.GlymurOpenBoardPkg]
+[FD.GlymurMinPlatformPkg]
   BaseAddress   = 0xA7000000|gArmTokenSpaceGuid.PcdFdBaseAddress
   Size          = 0x00380000|gArmTokenSpaceGuid.PcdFdSize
   ErasePolarity = 1

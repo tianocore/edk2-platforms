@@ -6,7 +6,7 @@
 ;;
 ;; NOTE:
 ;; This script assumes it is located at:
-;;   <workspace>/edk2-platforms/Platform/Qualcomm/GlymurOpenBoardPkg/Tools/
+;;   <workspace>/edk2-platforms/Platform/Qualcomm/GlymurMinPlatformPkg/Tools/
 ;;
 ;; The workspace root is derived by traversing 5 levels up from this script's
 ;; directory. The expected layout is:
@@ -16,7 +16,7 @@
 ;;     edk2-platforms/
 ;;       Platform/
 ;;         Qualcomm/
-;;           GlymurOpenBoardPkg/
+;;           GlymurMinPlatformPkg/
 ;;             Tools/                <- this script
 ;;
 ; If your checkout uses a different layout, update the path below accordingly.
@@ -25,7 +25,7 @@
 ;  FUNCTION:  main
 ;
 ;  Example:
-;    do OpenBoardSymbolLoad.cmm
+;    do GlymurMinPlatformSymbolLoad.cmm
 ;============================================================================
 LOCAL &CwDir
 LOCAL &WorkspaceRoot
@@ -38,6 +38,6 @@ LOCAL &DebugScriptMetaDataBufferSize
 &DebugScriptMetaDataBufferAddress=0xA8FFB000
 &DebugScriptMetaDataBufferSize=0x5000
 
-DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
+DO "&WorkspaceRoot/edk2-platforms/Platform/Qualcomm/QualcommMinPlatformPkg/Tools/Trace32/SymbolLoad.cmm" &DebugScriptMetaDataBufferAddress &DebugScriptMetaDataBufferSize
 
 ENDDO

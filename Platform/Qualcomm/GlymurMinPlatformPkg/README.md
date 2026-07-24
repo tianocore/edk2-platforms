@@ -1,4 +1,4 @@
-# GlymurOpenBoardPkg
+# GlymurMinPlatformPkg
 
 This project brings UEFI support to Glymur (AARCH64) following the MinPlatform specification.
 
@@ -6,7 +6,7 @@ This project brings UEFI support to Glymur (AARCH64) following the MinPlatform s
 - Boot UEFI Shell, and UiApp
 
 ## How to build
-- GCC_AARCH64_PREFIX=aarch64-linux-gnu- build -b DEBUG -a AARCH64 -t GCC -p edk2-qualcomm/GlymurOpenBoardPkg/GlymurOpenBoardPkg.dsc -j $WORKSPACE/Build/GlymurOpenBoardPkg.log
+- GCC_AARCH64_PREFIX=aarch64-linux-gnu- build -b DEBUG -a AARCH64 -t GCC -p edk2-qualcomm/GlymurMinPlatformPkg/GlymurMinPlatformPkg.dsc -j $WORKSPACE/Build/GlymurMinPlatformPkg.log
 
 ### Prerequesites
 - Ensure cross compiler is setup: aarch64-linux-gnu-gcc
@@ -48,8 +48,8 @@ Edit `SetupPath.sh` and set the variables for your environment:
 ### 2. Run the build script
 
 ```bash
-cd Platform/Qualcomm/GlymurOpenBoardPkg
-./BuildGlymurOpenBoardPkg.sh [OPTIONS]
+cd Platform/Qualcomm/GlymurMinPlatformPkg
+./BuildGlymurMinPlatformPkg.sh [OPTIONS]
 ```
 
 Options:
@@ -64,13 +64,13 @@ Examples:
 
 ```bash
 # Default DEBUG build
-./BuildGlymurOpenBoardPkg.sh
+./BuildGlymurMinPlatformPkg.sh
 
 # RELEASE build with 8 threads
-./BuildGlymurOpenBoardPkg.sh -b RELEASE -n 8
+./BuildGlymurMinPlatformPkg.sh -b RELEASE -n 8
 
 # Build both DEBUG and RELEASE
-./BuildGlymurOpenBoardPkg.sh -b DEBUG,RELEASE -n 4
+./BuildGlymurMinPlatformPkg.sh -b DEBUG,RELEASE -n 4
 ```
 
 ### 3. Signing flow
@@ -78,7 +78,7 @@ Examples:
 The script automatically produces a signed flashable ELF after the EDK2 build:
 
 ```
-GLYMUROPENBOARDPKG.fd
+GLYMURMINPLATFORMPKG.fd
     │  objcopy  (binary → AArch64 ELF object)
     │  ld       (link at load address 0xA7000000)
     ▼
@@ -91,7 +91,7 @@ signed/uefi.elf  →  uefi.elf   ← flash this file
 ### 4. Final output
 
 ```
-Build/GlymurOpenBoardPkg/<BUILD>_<TOOLCHAIN>/FV/uefi.elf
+Build/GlymurMinPlatformPkg/<BUILD>_<TOOLCHAIN>/FV/uefi.elf
 ```
 
 Flash `uefi.elf` to the UEFI partition using your platform's download tool.
