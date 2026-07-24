@@ -1,0 +1,255 @@
+# @file
+#  Flash definition file on RISC-V Server Reference platform
+#
+#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2022, Ventana Micro Systems Inc. All rights reserved.<BR>
+#  Copyright (c) 2026, Qualcomm Incorporated. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+!include RiscVServerRef.fdf.inc
+
+#
+# Build the variable store and the firmware code as one unified flash device
+# image.
+#
+[FD.RISCV_SERVER_REF_CODE]
+BaseAddress   = $(CODE_BASE_ADDRESS)|gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFdBaseAddress64
+Size          = $(CODE_SIZE)|gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVFirmwareFdSize
+ErasePolarity = 1
+BlockSize     = $(BLOCK_SIZE)
+NumBlocks     = $(CODE_BLOCKS)
+
+0x00000000|$(CODE_SIZE)
+gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeMemFvBase64|gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeMemFvSize
+FV = FVMAIN_COMPACT
+
+################################################################################
+[FD.RISCV_SERVER_REF_VARS]
+BaseAddress   = $(VARS_BASE_ADDRESS)
+Size          = $(VARS_SIZE)
+ErasePolarity = 1
+BlockSize     = $(VARS_BLOCK_SIZE)
+NumBlocks     = $(VARS_BLOCKS)
+
+!include VarStore.fdf.inc
+################################################################################
+
+[FV.DXEFV]
+BlockSize          = 0x10000
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+APRIORI DXE {
+  INF  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  INF  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  INF  EmbeddedPkg/Drivers/FdtClientDxe/FdtClientDxe.inf
+  INF  UefiCpuPkg/CpuDxeRiscV64/CpuDxeRiscV64.inf
+  INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
+}
+
+#
+# RISC-V common DXE modules
+!include Silicon/RISC-V/RiscV.fdf.inc
+
+#
+# Platform Driver
+#
+INF  OvmfPkg/VirtNorFlashDxe/VirtNorFlashDxe.inf
+
+#
+# RISC-V IOMMU.
+#
+INF  Silicon/Qemu/RiscVServerRef/Drivers/RiscVIoMmuDxe/RiscVIoMmuDxe.inf
+
+# PCI support
+#
+INF  UefiCpuPkg/CpuMmio2Dxe/CpuMmio2Dxe.inf
+INF  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+INF  MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+
+# SATA/AHCI Support
+INF  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+INF  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+INF  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+#
+# SCSI Bus and Disc drivers.
+#
+INF  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+#
+# NVME support
+#
+INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+#
+# RNG driver backed by pseudo-RNG (timer-based, not for production)
+#
+INF  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
+
+#
+# ACPI table generation
+#
+INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+INF  Platform/RISC-V/PlatformPkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+
+#
+# Networking stack
+#
+!include NetworkPkg/Network.fdf.inc
+
+#
+# X86Emulator for running X86 OptionROM code
+#
+INF  Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+
+#
+# Shell add-on commands
+#
+INF  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+INF  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
+
+################################################################################
+
+[FV.FVMAIN_COMPACT]
+FvAlignment        = 16
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+FvNameGuid         = 27A72E80-3118-4c0c-8673-AA5B4EFA9613
+
+INF  UefiCpuPkg/SecCore/SecCoreNative.inf
+INF  Platform/RISC-V/PlatformPkg/PlatformPei/PlatformPeim.inf
+INF  MdeModulePkg/Core/Pei/PeiMain.inf
+INF  MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+INF  MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
+INF  MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+
+FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
+   SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+     #
+     # These firmware volumes will have files placed in them uncompressed,
+     # and then both firmware volumes will be compressed in a single
+     # compression operation in order to achieve better overall compression.
+     #
+     SECTION FV_IMAGE = DXEFV
+   }
+ }
+
+[Rule.Common.SEC]
+  FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED {
+    PE32     PE32   Align=4K $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING ="$(MODULE_NAME)" Optional
+    VERSION  STRING ="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.PEI_CORE]
+  FILE PEI_CORE = $(NAMED_GUID) {
+    PE32     PE32   Align=4K    $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING ="$(MODULE_NAME)" Optional
+    VERSION  STRING ="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.PEIM]
+  FILE PEIM = $(NAMED_GUID) {
+     PEI_DEPEX PEI_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
+     PE32     PE32   Align=4K         $(INF_OUTPUT)/$(MODULE_NAME).efi
+     UI       STRING="$(MODULE_NAME)" Optional
+     VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.DXE_CORE]
+  FILE DXE_CORE = $(NAMED_GUID) {
+    PE32     PE32   Align=4K  $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.DXE_DRIVER]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX Optional      $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32     PE32   Align=4K  $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.DXE_DRIVER.BINARY]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX Optional      |.depex
+    PE32      PE32                    |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.DXE_RUNTIME_DRIVER]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX Optional      $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32     PE32   Align = 4K    $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.UEFI_DRIVER]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX Optional      $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32     PE32  Align=4K  $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.UEFI_DRIVER.BINARY]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX Optional      |.depex
+    PE32      PE32   Align=4K   |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+    VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.UEFI_APPLICATION]
+  FILE APPLICATION = $(NAMED_GUID) {
+    PE32     PE32   Align=4K   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.UEFI_APPLICATION.BINARY]
+  FILE APPLICATION = $(NAMED_GUID) {
+    PE32      PE32  Align=4K  |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+    VERSION   STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.USER_DEFINED.ACPITABLE]
+  FILE FREEFORM = $(NAMED_GUID) {
+    RAW ACPI               |.acpi
+    RAW ASL                |.aml
+  }

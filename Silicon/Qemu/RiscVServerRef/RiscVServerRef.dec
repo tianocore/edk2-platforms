@@ -1,0 +1,27 @@
+#/** @file
+#
+#  Copyright (c) 2026, Qualcomm Incorporated. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001B
+  PACKAGE_NAME                   = RiscVServerRef
+  PACKAGE_GUID                   = A3F7C812-5E49-4B1D-9F26-D8C043E71A85
+  PACKAGE_VERSION                = 0.1
+
+[LibraryClasses]
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+# Supported Module Types:
+#  BASE SEC PEI_CORE PEIM DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER DXE_SAL_DRIVER UEFI_DRIVER UEFI_APPLICATION
+#
+################################################################################
+[Includes]
+  Include                        # Root include for the package
