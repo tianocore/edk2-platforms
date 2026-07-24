@@ -118,11 +118,11 @@ case "$SILICON" in
         FD_NAME="Glymur"
         ;;
 
-    rb3)
+    kodiak)
         LOAD_ADDR="0x9FC00000"
         QTESTSIGN_VER="v6"
-        PKG_SUFFIX="OpenBoardPkg"
-        FD_NAME="Rb3OpenBoardPkg"
+        PKG_SUFFIX="MinPlatformPkg"
+        FD_NAME="KodiakMinPlatformPkg"
         ;;
     nord)
         LOAD_ADDR="0xD8D00000"
@@ -149,6 +149,7 @@ FD_UPPER=$(echo "$FD_NAME" | tr '[:lower:]' '[:upper:]')            # GLYMUR (fi
 case "$PKG_NAME" in
     GlymurMinPlatformPkg|GlymurOpenBoardPkg) PKG_SUBDIR="GlymurFamily" ;;
     NordMinPlatformPkg)                      PKG_SUBDIR="NordFamily" ;;
+    KodiakMinPlatformPkg)                    PKG_SUBDIR="KodiakFamily" ;;
     *)                                       PKG_SUBDIR="" ;;
 esac
 
@@ -181,6 +182,7 @@ $WORKSPACE/edk2/ArmPlatformPkg:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm/GlymurFamily:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm/NordFamily:\
+$WORKSPACE/edk2-platforms/Platform/Qualcomm/KodiakFamily:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm/Common:\
 $WORKSPACE/edk2-platforms/Silicon/Qualcomm:\
 $WORKSPACE/edk2-platforms/Silicon/Qualcomm/Common:\
