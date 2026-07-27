@@ -84,8 +84,10 @@
 #
 # Qualcomm Silicon and Platform dsc
 #
-!include Silicon/Qualcomm/QualcommSiliconPkg/QualcommSiliconPkg.dsc.inc
-!include Platform/Qualcomm/QualcommMinPlatformPkg/QualcommMinPlatformPkg.dsc.inc
+!include QualcommSiliconPkg/QualcommSiliconPkg.dsc.inc
+!include QualcommCommonSiliconPkg/QualcommCommonSiliconPkg.dsc.inc
+!include QualcommMinPlatformPkg/QualcommMinPlatformPkg.dsc.inc
+!include QualcommCommonPlatformPkg/QualcommCommonPlatformPkg.dsc.inc
 
 #
 # Qualcomm Platform Override for this target
