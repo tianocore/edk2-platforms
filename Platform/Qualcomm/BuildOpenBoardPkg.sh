@@ -173,7 +173,9 @@ $WORKSPACE/edk2-platforms/Platform:\
 $WORKSPACE/edk2/ArmPlatformPkg:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm:\
 $WORKSPACE/edk2-platforms/Platform/Qualcomm/GlymurFamily:\
-$WORKSPACE/edk2-platforms/Silicon/Qualcomm
+$WORKSPACE/edk2-platforms/Platform/Qualcomm/Common:\
+$WORKSPACE/edk2-platforms/Silicon/Qualcomm:\
+$WORKSPACE/edk2-platforms/Silicon/Qualcomm/Common
 
 # Initialize EDK2 build environment
 cd "$WORKSPACE/edk2" || exit_error "Failed to enter edk2 directory"
