@@ -1,0 +1,27 @@
+## @file
+#
+# Qualcomm common platform package declaration file.
+#
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = QualcommCommonPlatformPkg
+  PACKAGE_GUID                   = 9022FBB0-2272-4E5A-802F-DC3B5A11D9BE
+  PACKAGE_VERSION                = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+################################################################################
+
+[Includes.common]
+  Include
+
+[Guids]
+  gQualcommCommonPlatformPkgTokenSpaceGuid     = {0xB7BF47E4, 0x94FE, 0x4641, {0x83, 0x4F, 0xC5, 0xB9, 0x8E, 0xFF, 0xD5, 0xBE}}
