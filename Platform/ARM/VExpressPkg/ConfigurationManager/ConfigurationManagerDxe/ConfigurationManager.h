@@ -288,6 +288,9 @@ typedef struct PlatformRepositoryInfo {
 
   CM_ARM_ET_INFO                        EtInfo;
 
+  // Common _STA information for CPUs/Clusters
+  CM_ARCH_COMMON_STA_INFO               StaInfo[1];
+
   // Processor topology information
   CM_ARCH_COMMON_PROC_HIERARCHY_INFO    ProcHierarchyInfo[PLAT_PROC_HIERARCHY_NODE_COUNT];
 
