@@ -21,21 +21,25 @@
 #define CLOCK_VEXPRESS_NOMINAL  (ArmGenericTimerGetTimerFreq () / 1000U)
 
 // 0.5% change in rate
-#define CLOCK_VEXPRESS_ADJUST_CORSE  (CLOCK_VEXPRESS_NOMINAL / 5000)
+#define CLOCK_VEXPRESS_ADJUST_COARSE  (CLOCK_VEXPRESS_NOMINAL / 200)
 
 // 0.05% change in rate
-#define CLOCK_VEXPRESS_ADJUST_MEDIUM  (CLOCK_VEXPRESS_NOMINAL / 50000)
+#define CLOCK_VEXPRESS_ADJUST_MEDIUM  (CLOCK_VEXPRESS_NOMINAL / 2000)
 
 // A minimum change in rate
 #define CLOCK_VEXPRESS_ADJUST_FINE  1
 
-// The clock tolereance is +/- 10%
+// The clock tolerance is +/- 10%
 #define CLOCK_VEXPRESS_ADJUST_LIMIT  ((CLOCK_VEXPRESS_NOMINAL / 100) * 10)
 
-STATIC UINT64   mLastSystemTimer;
+#define COUNTER_TO_TIMER_MS(CounterVal)    ((CounterVal) / CLOCK_VEXPRESS_NOMINAL)
+#define GET_COUNTER_REMAINDER(CounterVal)  ((CounterVal) % CLOCK_VEXPRESS_NOMINAL)
+
+STATIC UINT64   mLastSystemCounter;
 STATIC UINT64   mTpmTimer;
-STATIC UINT64   mEndTimer;
+STATIC UINT64   mMaxCounter;
 STATIC UINT64   mAdjustTimerRate;
+STATIC UINT64   mCounterRemainder;
 STATIC BOOLEAN  mTimerWasReset;
 STATIC BOOLEAN  mTimerWasStopped;
 
@@ -48,25 +52,35 @@ STATIC BOOLEAN  mTimerWasStopped;
 **/
 STATIC
 UINT64
-GetTimerDiff (
+GetCounterDiff (
   VOID
   )
 {
   UINT64  Diff;
-  UINT64  TimerNow;
+  UINT64  CounterNow;
 
-  if (mEndTimer == 0x00) {
-    GetPerformanceCounterProperties (NULL, &mEndTimer);
+  if (mMaxCounter == 0x00) {
+    GetPerformanceCounterProperties (NULL, &mMaxCounter);
   }
 
-  TimerNow = GetPerformanceCounter ();
-  if (TimerNow > mLastSystemTimer) {
-    Diff = TimerNow - mLastSystemTimer;
+  CounterNow = GetPerformanceCounter ();
+  if (CounterNow >= mLastSystemCounter) {
+    Diff = CounterNow - mLastSystemCounter;
   } else {
-    Diff = (mEndTimer - mLastSystemTimer) + TimerNow;
+    /*
+     * Counter wrap handling. +1 is to complement the leap for changing
+     * mMaxCounter to 0.
+     */
+    Diff = (mMaxCounter - mLastSystemCounter) + CounterNow + 1;
   }
 
-  mLastSystemTimer = TimerNow;
+  /*
+   * Compensate for ticks smaller than one millisecond
+   * in last PlatformTpmLibTimerRead().
+   */
+  Diff += mCounterRemainder;
+
+  mLastSystemCounter = CounterNow;
 
   return Diff;
 }
@@ -85,11 +99,12 @@ PlatformTpmLibTimerReset (
   VOID
   )
 {
-  mLastSystemTimer = GetPerformanceCounter ();
-  mTpmTimer        = mLastSystemTimer;
-  mAdjustTimerRate = CLOCK_VEXPRESS_NOMINAL;
-  mTimerWasReset   = TRUE;
-  mTimerWasStopped = TRUE;
+  mLastSystemCounter = GetPerformanceCounter ();
+  mTpmTimer          = COUNTER_TO_TIMER_MS (mLastSystemCounter);
+  mCounterRemainder  = GET_COUNTER_REMAINDER (mLastSystemCounter);
+  mAdjustTimerRate   = CLOCK_VEXPRESS_NOMINAL;
+  mTimerWasReset     = TRUE;
+  mTimerWasStopped   = TRUE;
 
   return;
 }
@@ -166,12 +181,23 @@ PlatformTpmLibTimerRead (
   UINT64  Diff;
   UINT64  AdjustedTimerDiff;
 
-  if (mLastSystemTimer == 0x00) {
-    mLastSystemTimer = GetPerformanceCounter ();
-    mTpmTimer        = mLastSystemTimer;
+  if (mLastSystemCounter == 0x00) {
+    mLastSystemCounter = GetPerformanceCounter ();
+    mTpmTimer          = COUNTER_TO_TIMER_MS (mLastSystemCounter);
+    mCounterRemainder  = GET_COUNTER_REMAINDER (mLastSystemCounter);
+
+    if (mAdjustTimerRate == 0) {
+      mAdjustTimerRate = CLOCK_VEXPRESS_NOMINAL;
+    }
   } else {
-    Diff              = GetTimerDiff ();
-    AdjustedTimerDiff = (Diff * CLOCK_VEXPRESS_NOMINAL) / mAdjustTimerRate;
+    Diff              = GetCounterDiff ();
+    AdjustedTimerDiff = Diff / mAdjustTimerRate;
+
+    /*
+     * Ticks smaller than one millisecond are compensated for during the
+     * next call to GetCounterDiff().
+     */
+    mCounterRemainder = GET_COUNTER_REMAINDER (Diff);
     mTpmTimer        += AdjustedTimerDiff;
   }
 
@@ -249,12 +275,16 @@ PlatformTpmLibClockAdjustRate (
   IN INT32  Adjust
   )
 {
+  if (mAdjustTimerRate == 0) {
+    mAdjustTimerRate = CLOCK_VEXPRESS_NOMINAL;
+  }
+
   switch (Adjust) {
     case TpmClockAdjustCoarseSlower:
-      mAdjustTimerRate += CLOCK_VEXPRESS_ADJUST_CORSE;
+      mAdjustTimerRate += CLOCK_VEXPRESS_ADJUST_COARSE;
       break;
     case TpmClockAdjustCoarseFaster:
-      mAdjustTimerRate -= CLOCK_VEXPRESS_ADJUST_CORSE;
+      mAdjustTimerRate -= CLOCK_VEXPRESS_ADJUST_COARSE;
       break;
     case TpmClockAdjustMediumSlower:
       mAdjustTimerRate += CLOCK_VEXPRESS_ADJUST_MEDIUM;
