@@ -114,6 +114,7 @@
   DxeLoadLinuxLib|$(BOARD_PKG)/Library/LoadLinuxLib/DxeLoadLinuxLib.inf
   LogoLib|$(BOARD_PKG)/Library/DxeLogoLib/DxeLogoLib.inf
   ReportFvLib|$(BOARD_PKG)/Library/PeiReportFvLib/PeiReportFvLib.inf
+  SimicsUefiDeviceLib|$(BOARD_PKG)/Library/SimicsUefiDeviceLib/SimicsUefiDeviceLib.inf
   SiliconPolicyInitLib|$(BOARD_PKG)/Policy/Library/SiliconPolicyInitLib/SiliconPolicyInitLib.inf
   SiliconPolicyUpdateLib|$(BOARD_PKG)/Policy/Library/SiliconPolicyUpdateLib/SiliconPolicyUpdateLib.inf
   PlatformCmosAccessLib|BoardModulePkg/Library/PlatformCmosAccessLibNull/PlatformCmosAccessLibNull.inf

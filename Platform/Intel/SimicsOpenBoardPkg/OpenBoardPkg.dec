@@ -16,6 +16,10 @@
 [Includes]
   Include
 
+[LibraryClasses]
+  ## @libraryclass  Detect and access the Simics UEFI PCI config device.
+  SimicsUefiDeviceLib|Include/Library/SimicsUefiDeviceLib.h
+
 [Guids]
   gSimicsOpenBoardPkgTokenSpaceGuid  = {0x75fd61da, 0x3931, 0x49aa, {0x8f, 0x11, 0x18, 0x25, 0xf6, 0x31, 0x21, 0xd2}}
   gSimicsBoardConfigGuid  = {0xeed35f57, 0x4ff2, 0x4244, {0xb8, 0x3a, 0xea, 0x71, 0x5f, 0xd3, 0x59, 0xa5}}
@@ -45,6 +49,13 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsLockBoxStorageSize|0x0|UINT32|0x19
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdGuidedExtractHandlerTableSize|0x0|UINT32|0x1a
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsDecompressionScratchEnd|0x0|UINT32|0x1f
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceFunction|0x7|UINT8|0x42
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceDevice|0x0|UINT8|0x43
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceBus|0x0|UINT8|0x44
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceCapsRegBase|0x40|UINT8|0x45
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiTblsOffs|0x44|UINT8|0x46
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiSizeOffs|0x48|UINT8|0x47
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiDataOffs|0x4C|UINT8|0x48
 
 [PcdsFeatureFlag]
   ## Indicates if EFI_MEMORY_ATTRIBUTE_PROTOCOL should be uninstalled before booting.
