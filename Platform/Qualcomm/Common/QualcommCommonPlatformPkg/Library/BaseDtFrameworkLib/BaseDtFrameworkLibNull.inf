@@ -1,0 +1,31 @@
+## @file
+#  BaseDtFrameworkLib - Null implementation.
+#
+#  Provides stub implementations of all DtFramework* wrapper functions that
+#  DTFramework dependency is not required; this library can be used
+#  in any build configuration where the DTFramework git submodule
+#  is absent or not needed.
+#
+#  Use BaseDtFrameworkLib.inf for the real implementation.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.27
+  BASE_NAME                      = BaseDtFrameworkLibNull
+  FILE_GUID                      = B3F8A2C5-6D14-4E97-B021-7A3C9E5F1D82
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = DtFrameworkLib
+
+[Sources.common]
+  BaseDtFrameworkLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  QualcommCommonPlatformPkg/QualcommCommonPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib

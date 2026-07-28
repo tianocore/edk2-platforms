@@ -7,4 +7,6 @@
 # BuildGlymurOpenBoardPkg.sh - Convenience wrapper to build the Glymur OpenBoard.
 ##
 
+export EXTRA_BUILD_FLAGS="-D QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE=TRUE"
+
 ../../BuildOpenBoardPkg.sh --silicon Glymur --pkg-name GlymurOpenBoardPkg "$@" --signing-tool qtestsign

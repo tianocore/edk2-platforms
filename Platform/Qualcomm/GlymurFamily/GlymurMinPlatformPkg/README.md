@@ -27,6 +27,23 @@ This project brings UEFI support to Glymur (AARCH64) following the MinPlatform s
     - edk2-platforms/Platform/Qualcomm
     - edk2-platforms/Silicon/Qualcomm
     - edk2-platforms/Platform/Qualcomm/GlymurFamily
+    - edk2-qualcomm-extra
+
+- edk2-qualcomm-extra
+  - Vendors third-party repos that edk2-platforms code depends on (e.g.
+    `DtFrameworkPkg/DTFramework`, used by `BaseDtFrameworkLib`), checked out
+    as git submodules.
+  - Clone it alongside `edk2` and `edk2-platforms` in `$WORKSPACE`:
+    ```bash
+    git clone --recurse-submodules https://github.com/qualcomm/edk2-qualcomm-extra.git
+    ```
+  - To sync an existing checkout to the latest revision (including
+    submodules):
+    ```bash
+    cd edk2-qualcomm-extra
+    git pull
+    git submodule update --init --recursive
+    ```
 
 ## Build and Sign (Recommended)
 
