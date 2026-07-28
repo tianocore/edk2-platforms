@@ -96,6 +96,7 @@
   ######################################
   gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable|TRUE
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
 
 [PcdsFeatureFlag.X64]

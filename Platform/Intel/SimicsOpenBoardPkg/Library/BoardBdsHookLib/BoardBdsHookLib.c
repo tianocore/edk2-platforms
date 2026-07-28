@@ -9,6 +9,7 @@
 #include "BoardBdsHook.h"
 #include <Guid/RootBridgesConnectedEventGroup.h>
 #include <Protocol/FirmwareVolume2.h>
+#include <Protocol/MemoryAttribute.h>
 
 #define LEGACY_8259_MASK_REGISTER_MASTER                  0x21
 #define LEGACY_8259_MASK_REGISTER_SLAVE                   0xA1
@@ -1458,6 +1459,11 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
   )
 {
   EFI_BOOT_MODE                      BootMode;
+  EFI_STATUS                         Status;
+  EFI_HANDLE                         *MemAttrHandles;
+  EFI_MEMORY_ATTRIBUTE_PROTOCOL      *MemAttr;
+  UINTN                              HandleCount;
+  UINTN                              HandleIndex;
 
   DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 
@@ -1491,6 +1497,64 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
   PlatformRegisterFvBootOption (
     PcdGetPtr (PcdShellFile), L"EFI Internal Shell", LOAD_OPTION_ACTIVE
     );
+
+  //
+  // Disable EFI_MEMORY_ATTRIBUTE_PROTOCOL to work around page faults
+  // triggered by Fedora grub2 when the protocol is present.
+  //
+  if (PcdGetBool (PcdUninstallMemAttrProtocol)) {
+    MemAttrHandles = NULL;
+    HandleCount    = 0;
+    Status = gBS->LocateHandleBuffer (
+                    ByProtocol,
+                    &gEfiMemoryAttributeProtocolGuid,
+                    NULL,
+                    &HandleCount,
+                    &MemAttrHandles
+                    );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_INFO, "Could not get MemAttrHandles.\n"));
+    } else {
+      DEBUG ((
+        DEBUG_INFO,
+        "Got MemAttrHandles. Total number is %d.\n",
+        HandleCount
+        ));
+      for (HandleIndex = 0;
+            HandleIndex < HandleCount;
+            HandleIndex++)
+      {
+        Status = gBS->HandleProtocol (
+                        MemAttrHandles[HandleIndex],
+                        &gEfiMemoryAttributeProtocolGuid,
+                        (VOID **)&MemAttr
+                        );
+        if (EFI_ERROR (Status)) {
+          DEBUG ((
+            DEBUG_INFO,
+            "Could not get MemAttrProtocol on handle %d.\n",
+            HandleIndex
+            ));
+          continue;
+        }
+
+        Status = gBS->UninstallMultipleProtocolInterfaces (
+                        MemAttrHandles[HandleIndex],
+                        &gEfiMemoryAttributeProtocolGuid,
+                        MemAttr,
+                        NULL
+                        );
+        if (EFI_ERROR (Status)) {
+          DEBUG ((
+            DEBUG_INFO,
+            "Could not remove MemAttrProtocol (0x%x).\n",
+            Status
+            ));
+        }
+      }
+      FreePool (MemAttrHandles);
+    }
+  }
 
   RemoveStaleFvFileOptions ();
 }

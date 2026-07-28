@@ -57,6 +57,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleInputDevicePath  ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleOutputDevicePath ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedStorageDevicePath       ## CONSUMES
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol    ## CONSUMES
 
 [Pcd.IA32, Pcd.X64]
   gEfiMdePkgTokenSpaceGuid.PcdFSBClock
@@ -69,6 +70,7 @@
   gEfiLoadedImageProtocolGuid                   # PROTOCOL SOMETIMES_PRODUCED
   gEfiFirmwareVolume2ProtocolGuid               # PROTOCOL SOMETIMES_CONSUMED
   gEfiPciEnumerationCompleteProtocolGuid        # PROTOCOL SOMETIMES_CONSUMED
+  gEfiMemoryAttributeProtocolGuid                ## CONSUMES
 
 
 [Guids]

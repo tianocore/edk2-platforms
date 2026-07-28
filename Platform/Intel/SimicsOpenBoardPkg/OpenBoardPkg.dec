@@ -46,6 +46,12 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdGuidedExtractHandlerTableSize|0x0|UINT32|0x1a
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsDecompressionScratchEnd|0x0|UINT32|0x1f
 
+[PcdsFeatureFlag]
+  ## Indicates if EFI_MEMORY_ATTRIBUTE_PROTOCOL should be uninstalled before booting.
+  #   TRUE  - Uninstall the protocol (works around grub2 page faults).
+  #   FALSE - Leave the protocol installed.
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol|FALSE|BOOLEAN|0x50
+
 [PcdsDynamic, PcdsDynamicEx]
 
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId|0|UINT16|0x1b
