@@ -48,6 +48,7 @@
   DxeLoadLinuxLib
   UefiLib
   LogoLib
+  SimicsUefiDeviceLib
 
 [Pcd]
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId
@@ -57,6 +58,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleInputDevicePath  ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleOutputDevicePath ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedStorageDevicePath       ## CONSUMES
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceCapsRegBase      ## CONSUMES
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol    ## CONSUMES
 
 [Pcd.IA32, Pcd.X64]
@@ -70,6 +72,7 @@
   gEfiLoadedImageProtocolGuid                   # PROTOCOL SOMETIMES_PRODUCED
   gEfiFirmwareVolume2ProtocolGuid               # PROTOCOL SOMETIMES_CONSUMED
   gEfiPciEnumerationCompleteProtocolGuid        # PROTOCOL SOMETIMES_CONSUMED
+  gEfiGraphicsOutputProtocolGuid                 ## CONSUMES
   gEfiMemoryAttributeProtocolGuid                ## CONSUMES
 
 

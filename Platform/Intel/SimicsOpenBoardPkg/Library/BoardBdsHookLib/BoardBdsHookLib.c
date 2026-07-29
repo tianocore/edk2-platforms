@@ -9,12 +9,33 @@
 #include "BoardBdsHook.h"
 #include <Guid/RootBridgesConnectedEventGroup.h>
 #include <Protocol/FirmwareVolume2.h>
+#include <Protocol/GraphicsOutput.h>
 #include <Protocol/MemoryAttribute.h>
+#include <Library/SimicsUefiDeviceLib.h>
 
 #define LEGACY_8259_MASK_REGISTER_MASTER                  0x21
 #define LEGACY_8259_MASK_REGISTER_SLAVE                   0xA1
 #define LEGACY_8259_EDGE_LEVEL_TRIGGERED_REGISTER_MASTER  0x4D0
 #define LEGACY_8259_EDGE_LEVEL_TRIGGERED_REGISTER_SLAVE   0x4D1
+
+GLOBAL_REMOVE_IF_UNREFERENCED USB_CLASS_FORMAT_DEVICE_PATH gUsbClassKeyboardDevicePath = {
+  {
+    {
+      MESSAGING_DEVICE_PATH,
+      MSG_USB_CLASS_DP,
+      {
+        (UINT8) (sizeof (USB_CLASS_DEVICE_PATH)),
+        (UINT8) ((sizeof (USB_CLASS_DEVICE_PATH)) >> 8)
+      }
+    },
+    0xffff,           // VendorId
+    0xffff,           // ProductId
+    CLASS_HID,        // DeviceClass
+    SUBCLASS_BOOT,    // DeviceSubClass
+    PROTOCOL_KEYBOARD // DeviceProtocol
+  },
+  gEndEntire
+};
 
 //
 // Predefined platform connect sequence
@@ -37,6 +58,7 @@ VOID          *mEmuVariableEventReg;
 EFI_EVENT     mEmuVariableEvent;
 BOOLEAN       mDetectVgaOnly;
 UINT16        mHostBridgeDevId;
+CHAR16        mSelectedBootOption[256];
 
 //
 // Table of host IRQs matching PCI IRQs A-D
@@ -100,6 +122,59 @@ ConnectRootBridge (
   IN VOID        *Context
   );
 
+/**
+  Query the Simics UEFI device for the desired graphics mode
+  and apply it via the Graphics Output Protocol.
+**/
+VOID
+SetGraphicsMode (
+  VOID
+  )
+{
+  EFI_GRAPHICS_OUTPUT_PROTOCOL     *Gop;
+  EFI_STATUS                       Status;
+  UINT16                           GfxMode;
+  UINT8                            ModeRegOffs;
+
+  ModeRegOffs  = PcdGet8 (PcdUefiDeviceCapsRegBase) + 2;
+  Status       = SimicsUefiDeviceCheck ();
+
+  if (!EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_INFO, "Getting GFX Mode at offset 0x%x\n", ModeRegOffs));
+    Status = SimicsUefiDeviceRead (
+               ModeRegOffs,
+               2,
+               &GfxMode
+               );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "Could not read GFX mode. Not setting any GFX mode.\n"
+        ));
+      return;
+    }
+
+    DEBUG ((DEBUG_INFO, "Got GFX Mode %d\n", GfxMode));
+  } else {
+    DEBUG ((
+      DEBUG_INFO,
+      "No Simics UEFI device. Not setting any GFX mode.\n"
+      ));
+    return;
+  }
+
+  Status = gBS->LocateProtocol (
+                  &gEfiGraphicsOutputProtocolGuid,
+                  NULL,
+                  (VOID **)&Gop
+                  );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Could not get GOP handle.\n"));
+  } else {
+    DEBUG ((DEBUG_INFO, "Setting GFX Mode %d\n", GfxMode));
+    Gop->SetMode (Gop, GfxMode);
+  }
+}
 
 VOID
 PlatformRegisterFvBootOption (
@@ -868,6 +943,18 @@ PlatformInitializeConsole (
       EfiBootManagerUpdateConsoleVariable (ErrOut, PlatformConsole[Index].DevicePath, NULL);
     }
   }
+
+  DEBUG ((DEBUG_INFO, "[EnumUsbKeyboard]\n"));
+  EfiBootManagerUpdateConsoleVariable (
+    ConIn,
+    (EFI_DEVICE_PATH_PROTOCOL *)&gUsbClassKeyboardDevicePath,
+    NULL
+    );
+  EfiBootManagerUpdateConsoleVariable (
+    ConInDev,
+    (EFI_DEVICE_PATH_PROTOCOL *)&gUsbClassKeyboardDevicePath,
+    NULL
+    );
 }
 
 
@@ -1284,7 +1371,11 @@ BdsReadyToBootCallback (
   IN  VOID                      *Context
   )
 {
-   DEBUG ((DEBUG_INFO, "%a called\n", __func__));
+  DEBUG ((DEBUG_INFO, "%a called\n", __func__));
+  //
+  // Set graphics mode again as the UEFI boot menu might reset it
+  //
+  SetGraphicsMode ();
 }
 
 
@@ -1445,6 +1536,83 @@ BdsBeforeConsoleBeforeEndOfDxeGuidCallback (
   DEBUG ((DEBUG_INFO, "%a called\n", __func__));
 }
 
+#define INTERNAL_UEFI_SHELL_NAME L"EFI Internal Shell"
+
+/**
+  Returns the priority number.
+
+  NOTE: Priority is determined by matching substrings in the boot
+  option Description field.  This is inherently fragile — descriptions
+  are vendor-specific and may be localized.  For the Simics QSP
+  platform this is acceptable because boot option descriptions are
+  produced exclusively by drivers built into this firmware and are
+  therefore predictable.  Do not reuse this approach in production
+  platform code.
+
+  OptionType                 EFI
+  ------------------------------------
+  Selected                    1
+  USB                         4
+  DVD                         5
+  HDD                         6
+  PXE                         7
+  HTTP                        8
+  EFI Shell                   150
+  Others                      100
+
+  @param BootOption
+**/
+INTN
+BootOptionPriority (
+  CONST EFI_BOOT_MANAGER_LOAD_OPTION *BootOption
+  )
+{
+  INTN  ReturnValue;
+
+  ReturnValue = 100;
+  //
+  // EFI boot options
+  //
+  if (mSelectedBootOption[0] != 0 && StrStr (BootOption->Description, mSelectedBootOption) != NULL) {
+    ReturnValue = 1;
+  } else if (StrStr (BootOption->Description, L"USB") != NULL) {
+    ReturnValue = 4;
+  } else if (StrStr (BootOption->Description, L"CD-ROM") != NULL) {
+    ReturnValue = 5;
+  } else if (StrStr (BootOption->Description, L"Harddrive") != NULL) {
+    ReturnValue = 6;
+  } else if (StrStr (BootOption->Description, L"PXE") != NULL) {
+    ReturnValue = 7;
+  } else if (StrStr (BootOption->Description, L"HTTP") != NULL) {
+    ReturnValue = 8;
+  } else if (StrCmp (BootOption->Description, INTERNAL_UEFI_SHELL_NAME) == 0) {
+    ReturnValue = 150;
+  }
+
+  DEBUG ((DEBUG_INFO, "For %s prio is %d\n", BootOption->Description, ReturnValue));
+  return ReturnValue;
+}
+
+/**
+   Compares boot priorities of two boot options
+
+  @param Left       The left boot option
+  @param Right      The right boot option
+
+  @return           The difference between the Left and Right
+                    boot options
+ **/
+INTN
+EFIAPI
+CompareBootOption (
+  CONST VOID  *Left,
+  CONST VOID  *Right
+  )
+{
+  return BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *) Left) -
+         BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *) Right);
+}
+
 /**
   After console ready before boot option event callback
 
@@ -1460,12 +1628,19 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
 {
   EFI_BOOT_MODE                      BootMode;
   EFI_STATUS                         Status;
+  UINT8                              BootDevRegOffs;
+  UINT8                              BootOptIndex;
+  CHAR16                             Char;
   EFI_HANDLE                         *MemAttrHandles;
   EFI_MEMORY_ATTRIBUTE_PROTOCOL      *MemAttr;
   UINTN                              HandleCount;
   UINTN                              HandleIndex;
 
   DEBUG ((DEBUG_INFO, "%a called\n", __func__));
+
+  ErrorPrint (L"Press ESC to enter BIOS menu\n");
+
+  DEBUG ((DEBUG_INFO, "QSP BIOS never restores variables from disk.\n"));
 
   //
   // Get current Boot Mode
@@ -1489,14 +1664,80 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
   //
   EnableBootLogo(PcdGetPtr(PcdLogoFile));
 
-  EfiBootManagerRefreshAllBootOption ();
-
   //
   // Register UEFI Shell
   //
   PlatformRegisterFvBootOption (
-    PcdGetPtr (PcdShellFile), L"EFI Internal Shell", LOAD_OPTION_ACTIVE
+    PcdGetPtr (PcdShellFile), INTERNAL_UEFI_SHELL_NAME, LOAD_OPTION_ACTIVE
     );
+
+  EfiBootManagerRefreshAllBootOption ();
+
+  //
+  // Query the Simics UEFI device for a pre-selected boot option
+  //
+  DEBUG ((DEBUG_INFO, "Checking for pre-selected boot option!\n"));
+
+  Status         = SimicsUefiDeviceCheck ();
+  BootDevRegOffs = PcdGet8 (PcdUefiDeviceCapsRegBase) + 0xE;
+
+  BootOptIndex = 0;
+  mSelectedBootOption[0] = 0;
+
+  if (!EFI_ERROR (Status)) {
+    Char = 0;
+    Status = SimicsUefiDeviceWrite (
+                BootDevRegOffs,
+                2,
+                &Char
+                );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "Could not reset boot option register. Error: %d\n",
+        Status
+        ));
+    } else {
+      Status = SimicsUefiDeviceRead (
+                  BootDevRegOffs,
+                  2,
+                  &Char
+                  );
+      if (EFI_ERROR (Status)) {
+        DEBUG ((
+          DEBUG_ERROR,
+          "Could not read boot option. Error: %d\n",
+          Status
+          ));
+      } else {
+        while ((Char != 0) &&
+               (BootOptIndex < ARRAY_SIZE (mSelectedBootOption) - 1))
+        {
+          mSelectedBootOption[BootOptIndex] = Char;
+          BootOptIndex++;
+          SimicsUefiDeviceRead (
+            BootDevRegOffs,
+            2,
+            &Char
+            );
+        }
+
+        mSelectedBootOption[BootOptIndex] = 0;
+      }
+    }
+  } else {
+    DEBUG ((
+      DEBUG_INFO,
+      "No Simics UEFI device. Not querying boot option.\n"
+      ));
+  }
+
+  if (BootOptIndex > 0) {
+    ErrorPrint (L"Selected boot option is %s\n", mSelectedBootOption);
+  }
+
+  DEBUG ((DEBUG_INFO, "Sorting options!\n"));
+  EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, CompareBootOption);
 
   //
   // Disable EFI_MEMORY_ATTRIBUTE_PROTOCOL to work around page faults
