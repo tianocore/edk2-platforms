@@ -1,5 +1,5 @@
 /** @file
-  Parser for iqualcomm UEFI platform configuration data.
+  Parser for Qualcomm UEFI platform configuration data.
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -12,6 +12,21 @@
 #include <Pi/PiHob.h>
 
 #include <MemRegionInfo.h>
+/** Maximum number of memory region entries in the page table map. **/
+#define MAX_MEMORY_ENTRIES  128
+
+/** Maximum number of memory regions in the platform memory map. **/
+#define MAX_MEMORY_REGIONS  125
+
+/**
+  Internal sort structure used by CheckOverlap() to validate that
+  memory regions do not overlap.
+**/
+typedef struct {
+  UINT64    MemBase;                  ///< Offset to DDR memory base
+  UINT64    MemSize;                  ///< Size (in bytes) of the memory region
+  CHAR16    Name[MAX_MEM_LABEL_NAME]; ///< Region Name in ASCII
+} SORT_MEM_REG_INFO;
 
 typedef struct {
   CHAR8    *Key;
@@ -65,13 +80,6 @@ UpdateSystemMemoryRegions (
 EFI_STATUS
 EFIAPI
 AddUpperMemoryFromRamPartitions (
-  VOID
-  );
-
-/* Initializes the cache with all the memory regions */
-EFI_STATUS
-EFIAPI
-InitCacheWithMemoryRegions (
   VOID
   );
 
