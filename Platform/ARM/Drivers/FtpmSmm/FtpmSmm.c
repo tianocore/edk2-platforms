@@ -1,5 +1,4 @@
-/** @file
-  FtpmDxe driver which is software based TPM using TpmLib.
+/** @file FtpmDxe driver which is software based TPM using TpmLib.
 
   Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -166,7 +165,7 @@ STATIC
 VOID
 EFIAPI
 SetResponseArgs (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs,
+  IN OUT ARM_FFA_ARGS     *TpmArgs,
   IN     TPM2_FFA_STATUS  TpmStatus,
   IN     UINTN            Arg1,
   IN     UINTN            Arg2,
@@ -175,10 +174,10 @@ SetResponseArgs (
 {
   ZeroMem (TpmArgs, sizeof (DIRECT_MSG_ARGS));
 
-  TpmArgs->Arg0 = TpmStatus;
-  TpmArgs->Arg1 = Arg1;
-  TpmArgs->Arg2 = Arg2;
-  TpmArgs->Arg3 = Arg3;
+  TpmArgs->Arg4 = TpmStatus;
+  TpmArgs->Arg5 = Arg1;
+  TpmArgs->Arg6 = Arg2;
+  TpmArgs->Arg7 = Arg3;
 }
 
 /**
@@ -722,7 +721,7 @@ STATIC
 VOID
 EFIAPI
 FtpmGetInterfaceVersion (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   UINTN  Version;
@@ -745,12 +744,12 @@ STATIC
 VOID
 EFIAPI
 FtpmGetFeatureInfo (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   TPM2_FFA_STATUS  TpmStatus;
 
-  switch (TpmArgs->Arg1) {
+  switch (TpmArgs->Arg5) {
     case TPM_SERVICE_FEATURE_SUPPORT_NOTIFICATION:
       // Ftpm doesn't support notification.
       TpmStatus = TPM2_FFA_ERROR_NOTSUP;
@@ -776,7 +775,7 @@ STATIC
 VOID
 EFIAPI
 FtpmStart (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   TPM2_FFA_STATUS       TpmStatus;
@@ -793,8 +792,8 @@ FtpmStart (
   INTN                  Idx;
   BOOLEAN               RestoreFormerLoc;
 
-  CommandType  = (TpmArgs->Arg1 & TPM2_FFA_START_FUNC_COMMAND_TYPE_MASK);
-  NextLocality = (TpmArgs->Arg2 & TPM2_FFA_START_FUNC_LOCALITY_MASK);
+  CommandType  = (TpmArgs->Arg5 & TPM2_FFA_START_FUNC_COMMAND_TYPE_MASK);
+  NextLocality = (TpmArgs->Arg6 & TPM2_FFA_START_FUNC_LOCALITY_MASK);
 
   if (NextLocality >= NUM_LOCALITIES) {
     TpmStatus = TPM2_FFA_ERROR_INVARG;
@@ -967,7 +966,7 @@ STATIC
 VOID
 EFIAPI
 FtpmRegisterForNotification (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
@@ -988,7 +987,7 @@ STATIC
 VOID
 EFIAPI
 FtpmUnregisterFromNotification (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
@@ -1010,7 +1009,7 @@ STATIC
 VOID
 EFIAPI
 FtpmFinishNotified (
-  IN OUT DIRECT_MSG_ARGS  *TpmArgs
+  IN OUT ARM_FFA_ARGS  *TpmArgs
   )
 {
   SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
@@ -1043,16 +1042,17 @@ FtpmEventHandler (
   IN OUT UINTN                    *CommBufferSize         OPTIONAL
   )
 {
-  DIRECT_MSG_ARGS  *TpmArgs;
+  ARM_FFA_ARGS     *TpmArgs;
   UINTN            Operation;
+  TPM2_FFA_STATUS  TpmStatus;
 
-  if ((CommBufferSize == NULL) || (*CommBufferSize < sizeof (DIRECT_MSG_ARGS))) {
+  if ((CommBufferSize == NULL) || (*CommBufferSize < sizeof (ARM_FFA_ARGS))) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid Parameters\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   TpmArgs   = CommBuffer;
-  Operation = TpmArgs->Arg0;
+  Operation = TpmArgs->Arg4;
 
   switch (Operation) {
     case TPM2_FFA_GET_INTERFACE_VERSION:
@@ -1074,19 +1074,21 @@ FtpmEventHandler (
       FtpmFinishNotified (TpmArgs);
       break;
     default:
-      DEBUG ((DEBUG_ERROR, "Invalid function id... 0x%llx\n", TpmArgs->Arg0));
+      DEBUG ((DEBUG_ERROR, "Invalid function id... 0x%llx\n", Operation));
       ASSERT (0);
       SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_INVARG, 0x00, 0x00, 0x00);
   }
 
-  if ((TpmArgs->Arg0 != TPM2_FFA_SUCCESS_OK) &&
-      (TpmArgs->Arg0 != TPM2_FFA_SUCCESS_OK_RESULTS_RETURNED))
+  TpmStatus = TpmArgs->Arg4;
+
+  if ((TpmStatus != TPM2_FFA_SUCCESS_OK) &&
+      (TpmStatus != TPM2_FFA_SUCCESS_OK_RESULTS_RETURNED))
   {
     DEBUG ((
       DEBUG_ERROR,
       "Failed for operation(0x%x). TpmStatus: 0x%x\n",
       Operation,
-      TpmArgs->Arg0
+      TpmStatus
       ));
   }
 
