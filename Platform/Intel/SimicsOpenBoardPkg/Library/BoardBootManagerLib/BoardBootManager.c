@@ -43,7 +43,7 @@ BoardBootManagerWaitCallback (
   BootLogoUpdateProgress (
     White.Pixel,
     Black.Pixel,
-    L"Start boot option",
+    L"Press ESC to enter BIOS menu",
     White.Pixel,
     (Timeout - TimeoutRemain) * 100 / Timeout,
     0
