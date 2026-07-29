@@ -7,7 +7,7 @@
 **/
 
 #include "Simics.h"
-
+#include <Library/SimicsUefiDeviceLib.h>
 
 ///
 /// Generic Attribute Controller Register Settings
@@ -248,10 +248,15 @@ QemuVideoBochsModeSetup (
   BOOLEAN                  IsQxl
   )
 {
+  EFI_STATUS                             Status;
   UINT32                                 AvailableFbSize;
   UINT32                                 Index;
   QEMU_VIDEO_MODE_DATA                   *ModeData;
   QEMU_VIDEO_BOCHS_MODES                 *VideoMode;
+  BOOLEAN                                SimicsDevicePresent;
+  UINT8                                  UefiDeviceModeRegOffs;
+
+  UefiDeviceModeRegOffs = PcdGet8 (PcdUefiDeviceCapsRegBase) + 2;
 
   //
   // Fetch the available framebuffer size.
@@ -310,6 +315,18 @@ QemuVideoBochsModeSetup (
   }
   ModeData = Private->ModeData;
   VideoMode = &QemuVideoBochsModes[0];
+
+  //
+  // Detect Simics UEFI device to report video modes
+  //
+  Status = SimicsUefiDeviceCheck ();
+  SimicsDevicePresent = !EFI_ERROR (Status);
+  if (!SimicsDevicePresent) {
+    DEBUG ((DEBUG_INFO, "Simics UEFI device not available. Not reporting video modes.\n"));
+  } else {
+    DEBUG ((DEBUG_INFO, "Simics UEFI device detected. Will report video modes.\n"));
+  }
+
   for (Index = 0; Index < QEMU_VIDEO_BOCHS_MODE_COUNT; Index ++) {
     UINTN RequiredFbSize;
 
@@ -321,6 +338,22 @@ QemuVideoBochsModeSetup (
       ModeData->HorizontalResolution = VideoMode->Width;
       ModeData->VerticalResolution   = VideoMode->Height;
       ModeData->ColorDepth           = VideoMode->ColorDepth;
+      if (SimicsDevicePresent) {
+        UINT16 ModeIndex16;
+        UINT16 Width16;
+        UINT16 Height16;
+        UINT16 Depth16;
+
+        ModeIndex16 = (UINT16)Index;
+        Width16     = (UINT16)VideoMode->Width;
+        Height16    = (UINT16)VideoMode->Height;
+        Depth16     = (UINT16)VideoMode->ColorDepth;
+
+        SimicsUefiDeviceWrite (UefiDeviceModeRegOffs, 2, &ModeIndex16);
+        SimicsUefiDeviceWrite (UefiDeviceModeRegOffs, 2, &Width16);
+        SimicsUefiDeviceWrite (UefiDeviceModeRegOffs, 2, &Height16);
+        SimicsUefiDeviceWrite (UefiDeviceModeRegOffs, 2, &Depth16);
+      }
       DEBUG ((DEBUG_INFO,
         "Adding Mode %d as Bochs Internal Mode %d: %dx%d, %d-bit\n",
         (INT32) (ModeData - Private->ModeData),
