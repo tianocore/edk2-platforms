@@ -127,6 +127,8 @@ extern VTD_UNIT_INFORMATION             *mVtdUnitInformation;
 extern UINT64                           mBelow4GMemoryLimit;
 extern UINT64                           mAbove4GMemoryLimit;
 
+extern BOOLEAN                          mVtdInitialized;
+
 extern EDKII_PLATFORM_VTD_POLICY_PROTOCOL   *mPlatformVTdPolicy;
 
 /**
