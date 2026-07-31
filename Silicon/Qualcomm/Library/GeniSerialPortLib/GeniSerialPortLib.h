@@ -7,8 +7,7 @@
 
 **/
 
-#ifndef GENI_SERIAL_PORT_LIB_H_
-#define GENI_SERIAL_PORT_LIB_H_
+#pragma once
 
 #include <Library/PcdLib.h>
 
@@ -51,5 +50,3 @@
 #define GENI_RX_FIFO_WC_MASK         0x01ffffff
 #define GENI_UART_PACKING_CFG0       0xf
 #define GENI_UART_PACKING_CFG1       0x0
-
-#endif /* GENI_SERIAL_PORT_LIB_H_ */
