@@ -1,0 +1,14 @@
+## @file
+#  Declaration file for GlymurOpenBoardPkg.
+#
+#  Board package built on top of the GlymurMinPlatformPkg silicon layer.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = GlymurOpenBoardPkg
+  PACKAGE_GUID                   = 2399D16A-E2C5-4BFE-AFDA-3B29591E0AED
+  PACKAGE_VERSION                = 1.0

@@ -141,8 +141,8 @@ FD_UPPER=$(echo "$FD_NAME" | tr '[:lower:]' '[:upper:]')            # GLYMUR (fi
 # under Platform/Qualcomm. Add entries here as packages move/are added.
 # -----------------------------------------------------------------------
 case "$PKG_NAME" in
-    GlymurMinPlatformPkg) PKG_SUBDIR="GlymurFamily" ;;
-    *)                    PKG_SUBDIR="" ;;
+    GlymurMinPlatformPkg|GlymurOpenBoardPkg) PKG_SUBDIR="GlymurFamily" ;;
+    *)                                       PKG_SUBDIR="" ;;
 esac
 
 DSC_PATH="edk2-platforms/Platform/Qualcomm/${PKG_SUBDIR:+${PKG_SUBDIR}/}${PKG_NAME}/${PKG_NAME}.dsc"

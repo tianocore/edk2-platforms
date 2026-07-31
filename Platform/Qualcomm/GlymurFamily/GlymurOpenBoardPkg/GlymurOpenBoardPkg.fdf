@@ -1,0 +1,15 @@
+## @file
+#  GlymurOpenBoardPkg FDF file
+#
+#  Board package built on top of the GlymurMinPlatformPkg silicon layer.
+#  Reuses the shared FD/FV/Rule definitions from GlymurMinPlatformPkg.fdf.inc.
+#  The produced FD keeps the Glymur name/GUID, matching how
+#  other multi-board packages in edk2-platforms (e.g. AMD's Genoa board
+#  family) share one FD section across board variants of the same silicon.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+!include GlymurMinPlatformPkg/GlymurMinPlatformPkg.fdf.inc
