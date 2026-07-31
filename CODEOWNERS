@@ -96,11 +96,14 @@
 /Silicon/Qemu/SbsaQemu/** @ardbiesheuvel @leiflindholm
 
 # Qualcomm platforms and silicon
-/Platform/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc @vishalo
-/Silicon/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc @vishalo
+/Platform/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc-ext @vishalo
+/Silicon/Qualcomm/** @leiflindholm @b49020 @ricardosalveti @aiyengar-qc-ext @vishalo
 
 # Qualcomm MinPlatform
-/Silicon/Qualcomm/QualcommSiliconPkg/** @leiflindholm @aiyengar-qc @vishalo
+/Silicon/Qualcomm/QualcommSiliconPkg/** @leiflindholm @aiyengar-qc-ext @vishalo
+/Platform/Qualcomm/QualcommMinPlatformPkg/** @leiflindholm @aiyengar-qc-ext @vishalo
+/Platform/Qualcomm/GlymurFamily/GlymurMinPlatformPkg/** @leiflindholm @aiyengar-qc-ext @vishalo
+/Platform/Qualcomm/GlymurFamily/GlymurOpenBoardPkg/** @leiflindholm @aiyengar-qc-ext @vishalo
 
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm

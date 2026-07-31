@@ -77,3 +77,8 @@
 /Platform/Sophgo/** @caiyiqing379 @dahogn @meng-cz @USER0FISH
 /Silicon/Sophgo/SG2042Pkg/** @caiyiqing379 @dahogn @meng-cz @USER0FISH
 
+# Qualcomm Platform
+/Silicon/Qualcomm/QualcommSiliconPkg/** @b49020 @ricardosalveti
+/Platform/Qualcomm/QualcommMinPlatformPkg/** @b49020 @ricardosalveti
+/Platform/Qualcomm/GlymurFamily/GlymurMinPlatformPkg/** @b49020 @ricardosalveti
+/Platform/Qualcomm/GlymurFamily/GlymurOpenBoardPkg/** @b49020 @ricardosalveti
