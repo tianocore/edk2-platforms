@@ -180,7 +180,7 @@ RamPartitionGetInstalledPhysicalMemory (
   USABLE_RAM_PART_TABLE_TYPE  Table;
   UINT32                      Index;
   UINT32                      Version;
-  
+
   RamPartitionTable = NULL;
   Version           = 0;
 
@@ -464,7 +464,7 @@ RamPartitionGetHighestBankBit (
   USABLE_RAM_PART_TABLE_TYPE  Table;
   UINT32                      Index;
   UINT32                      Version;
-  
+
   RamPartitionTable = NULL;
   Version           = 0;
 

@@ -12,7 +12,7 @@
     - IMEM    - Internal Memory
     - PASR    - Partial Array Self Refresh
     - QUANTUM - Qualcomm Native UEFI Platform
-    - QUEST   - Qualcomm UEFI based SoC test suite 
+    - QUEST   - Qualcomm UEFI based SoC test suite
 **/
 
 #pragma once
