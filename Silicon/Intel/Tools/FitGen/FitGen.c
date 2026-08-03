@@ -3257,6 +3257,8 @@ FillFitTable (
     FitEntry[FitIndex].Type     = (UINT8)gFitTableContext.OptionalModule[Index].Type;
     if (FitEntry[FitIndex].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) {
       FitEntry[FitIndex].Rsvd   = (UINT8)gFitTableContext.OptionalModule[Index].SubType;
+    } else {
+      FitEntry[FitIndex].Rsvd   = 0;
     }
     FitEntry[FitIndex].C_V      = 0;
     FitEntry[FitIndex].Checksum = 0;
