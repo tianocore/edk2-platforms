@@ -227,7 +227,7 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
   # Firmware update
   #
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE
-  !include Platform/ARM/Features/Fwu/FmpSystemFipImage.fdf.inc
+  !include Platform/ARM/Features/Fwu/FmpSystemFipImageRuntime.fdf.inc
 !endif
 
 !if $(ENABLE_TPM) == TRUE
