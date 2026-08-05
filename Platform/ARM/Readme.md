@@ -353,22 +353,7 @@ The Standalone MM binary is generated at the following location:
 
 TF-A supports the following ABIs to communicate with Standalone MM:
 
-   - SPM_MM
    - FF-A (>= v1.2)
-
-#### Building TF-A with SPM_MM as the communication ABI
-TF-A should be built with the following additional build flags:
-```
-   BL32={StandaloneMm Binary} SPM_MM=1 CTX_INCLUDE_FPREGS=1 TRANSFER_LIST=1 HOB_LIST=1
-```
-
-e.g.
-```
-cd tf-a
-make all PLAT=fvp CROSS_COMPILE={cross_compile_prefix} DEBUG=1 V=1 CSS_NON_SECURE_UART=1 EXTRA_EL2_INIT=1 \
-     EL3_EXCEPTION_HANDLING=1 ENABLE_SME2_FOR_NS=0 ENABLE_SME_FOR_NS=0 ENABLE_SVE_FOR_NS=0 CTX_INCLUDE_AARCH32_REGS=0 \
-     BL32={StandaloneMm Binary} SPM_MM=1 CTX_INCLUDE_FPREGS=1 TRANSFER_LIST=1 HOB_LIST=1
-```
 
 #### Building TF-A with FF-A as the communication ABI
 TF-A should be built with the following additional build flags:
@@ -392,8 +377,6 @@ The FIP image should be generated with the following additional option with FF-A
 ```
    --tos-fw-config  $TF_A_DIR/build/fvp/<debug|release>/fdts/fvp_stmm_manifest.dtb"
 ```
-
-SPM_MM doesn't need to add --tos-fw-config option.
 
 e.g.
 ```

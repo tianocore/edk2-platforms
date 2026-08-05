@@ -1126,7 +1126,6 @@ FtpmPseudoCrbInit (
   if (Locality == 0) {
     /*
      * default locality is 0, always assigned unless disabled.
-     * this is for SPM_MM using with ARM_SMC method.
      */
     CrbReg->LocalityState |= PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED;
   }
