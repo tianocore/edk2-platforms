@@ -88,12 +88,14 @@ IpmiGetSmbusApiPtr (
   EFI_STATUS             Status;
   EFI_SMBUS_HC_PROTOCOL  *EfiSmbusHcProtocol;
   UINTN                  HandleCount;
-  EFI_HANDLE             *HandleBuffer = NULL;
+  EFI_HANDLE             *HandleBuffer;
   UINTN                  Index;
   BMC_INTERFACE_STATUS   BmcStatus;
 
   IpmiTransport2->Interface.Ssif.SsifInterfaceApiGuid = gEfiSmbusHcProtocolGuid;
-  HandleCount                                         = 0;
+
+  HandleBuffer = NULL;
+  HandleCount  = 0;
 
   Status = gMmst->MmLocateHandle (
                     ByProtocol,
@@ -102,9 +104,12 @@ IpmiGetSmbusApiPtr (
                     &HandleCount,
                     HandleBuffer
                     );
-  if (EFI_ERROR (Status) && (Status == EFI_BUFFER_TOO_SMALL)) {
-    // Allocate memory for Handle buffer
-    HandleBuffer = AllocateZeroPool (HandleCount);
+  if (EFI_ERROR (Status)) {
+    if (Status == EFI_BUFFER_TOO_SMALL) {
+      // Allocate memory for Handle buffer
+      HandleBuffer = AllocateZeroPool (HandleCount);
+    }
+
     if (HandleBuffer == NULL) {
       return EFI_NOT_FOUND;
     }
