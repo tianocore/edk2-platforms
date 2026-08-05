@@ -57,7 +57,8 @@ SecStartup (
   )
 {
   EFI_HOB_HANDOFF_INFO_TABLE  *HobList;
-  EFI_RISCV_FIRMWARE_CONTEXT  FirmwareContext;
+  RISCV_SEC_HANDOFF_DATA      SecHandoffData;
+  const EFI_GUID              SecHobDataGuid = RISCV_SEC_HANDOFF_HOB_GUID;
   EFI_STATUS                  Status;
   UINT64                      UefiMemoryBase;
   UINT64                      StackBase;
@@ -76,9 +77,6 @@ SecStartup (
     DeviceTreeAddress
     ));
 
-  FirmwareContext.BootHartId          = BootHartId;
-  SetFirmwareContextPointer (&FirmwareContext);
-
   StackBase      = (UINT64)FixedPcdGet32 (PcdTemporaryRamBase);
   StackSize      = FixedPcdGet32 (PcdTemporaryRamSize);
   UefiMemoryBase = StackBase + StackSize - SIZE_32MB;
@@ -96,6 +94,9 @@ SecStartup (
 
   BuildStackHob (StackBase, StackSize);
 
+  SecHandoffData.BootHartId = BootHartId;
+  SecHandoffData.FdtPointer = DeviceTreeAddress;
+  BuildGuidDataHob (&SecHobDataGuid, &SecHandoffData, sizeof(SecHandoffData));
   //
   // Process all libraries constructor function linked to SecMain.
   //
