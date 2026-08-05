@@ -21,6 +21,8 @@
   FLASH_DEFINITION               = Platform/ARM/SgiPkg/SgiPlatform.fdf
   BOARD_DXE_FV_COMPONENTS        = Platform/ARM/SgiPkg/RdN2Cfg3/RdN2Cfg3.fdf.inc
   BUILD_NUMBER                   = 1
+  
+  DEFINE PCIE_ENABLE             = TRUE
 
 # include common/basic libraries from MdePkg.
 !include MdePkg/MdeLibs.dsc.inc
