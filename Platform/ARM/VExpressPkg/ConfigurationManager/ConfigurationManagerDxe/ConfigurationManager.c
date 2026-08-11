@@ -1510,8 +1510,14 @@ InitializePlatformRepository (
   CM_OBJECT_TOKEN                 EtToken;
   UINT64                          SocId;
   EFI_STATUS                      Status;
+  PROCESSOR_CHARACTERISTIC_FLAGS  *ProcessorCharacteristics;
+  PROCESSOR_STATUS_DATA           ProcessorStatus;
 
   PlatformRepo = This->PlatRepoInfo;
+
+  ProcessorCharacteristics =
+    (PROCESSOR_CHARACTERISTIC_FLAGS *)
+    &PlatformRepo->ProcHierarchyInfo[0].ProcessorCharacteristics;
 
   if (ArmHasGicV5SystemRegisters ()) {
     DEBUG ((DEBUG_ERROR, "ConfigurationManager: GICv5 not supported.\n"));
@@ -1561,7 +1567,23 @@ InitializePlatformRepository (
     for (Index = 0; Index < PLAT_PROC_HIERARCHY_NODE_COUNT; Index++) {
       PlatformRepo->ProcHierarchyInfo[Index].ProcessorId = SocId;
     }
+
+    ProcessorCharacteristics->ProcessorArm64SocId = 1;
+  } else {
+    PlatformRepo->ProcHierarchyInfo[0].ProcessorId = ArmReadMidr ();
   }
+
+  ProcessorStatus.Data                 = 0;
+  ProcessorStatus.Bits.CpuStatus       = 1;
+  ProcessorStatus.Bits.SocketPopulated = 1;
+
+  PlatformRepo->ProcHierarchyInfo[0].ProcessorFamily2 = ProcessorFamilyARMv8;
+  PlatformRepo->ProcHierarchyInfo[0].Status           = ProcessorStatus.Data;
+  PlatformRepo->ProcHierarchyInfo[0].ProcessorUpgrade = ProcessorUpgradeUnknown;
+  PlatformRepo->ProcHierarchyInfo[0].EnabledCoreCount =
+    PLAT_CPU_COUNT;
+  PlatformRepo->ProcHierarchyInfo[0].EnabledThreadCount =
+    PLAT_CPU_COUNT;
 
   InitialiseProcStrings ();
 
