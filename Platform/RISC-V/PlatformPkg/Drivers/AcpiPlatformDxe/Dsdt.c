@@ -9,6 +9,7 @@
       UART device (RSCV0003)
       Interrupt controller — APLIC (RSCV0002), one per socket
       IOMMU device (RSCV0004)
+      TPM 2.0 device (MSFT0101), if present
       PCIe host bridge (_HID PNP0A03, _CID PNP0A08)
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
@@ -572,6 +573,71 @@ AddIoMmuDevices (
 }
 
 /**
+  Build the TPM 2.0 device node (TIS/MMIO interface).
+
+  @param[in]       Topo     Platform topology.
+  @param[in, out]  SbNode   The SB node to add the TPM device to.
+
+  @retval EFI_SUCCESS       TPM node added successfully.
+  @retval other             Error occurred adding TPM node.
+
+**/
+STATIC
+EFI_STATUS
+AddTpm2Device (
+  IN PLATFORM_TOPOLOGY           *Topo,
+  IN OUT AML_OBJECT_NODE_HANDLE  SbNode
+  )
+{
+  EFI_STATUS              Status;
+  AML_OBJECT_NODE_HANDLE  TpmNode;
+
+  Status = AmlCodeGenDevice ("TPM0", SbNode, &TpmNode);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AML: Failed to create TPM0 device: %r\n", __func__, Status));
+    return Status;
+  }
+
+  //
+  // _HID "MSFT0101" — TCG PC Client Platform TPM Profile (PTP) device ID.
+  //
+  Status = AmlCodeGenNameString ("_HID", "MSFT0101", TpmNode, NULL);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AML: Failed to create _HID MSFT0101 name: %r\n", __func__, Status));
+    return Status;
+  }
+
+  Status = AmlCodeGenNameString ("_STR", "TPM 2.0 Device", TpmNode, NULL);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AML: Failed to create _STR name: %r\n", __func__, Status));
+    return Status;
+  }
+
+  Status = AmlCodeGenNameInteger ("_UID", 0, TpmNode, NULL);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AML: Failed to create _UID 0 name: %r\n", __func__, Status));
+    return Status;
+  }
+
+  //
+  // _CRS: TPM MMIO region, no interrupt.
+  //
+  Status = AddCrsMemIrq (
+             TpmNode,
+             Topo->TpmBase,
+             Topo->TpmSize,
+             NULL,
+             0,
+             FALSE
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AML: Failed to create _CRS resource: %r\n", __func__, Status));
+  }
+
+  return Status;
+}
+
+/**
   Build PCIe Host Bridge nodes. Only one host bridge is supported for now.
 
   @param[in]        Topo    Platform topology.
@@ -914,6 +980,22 @@ InstallDsdt (
       DEBUG ((
         DEBUG_ERROR,
         "%a: AddIoMmuDevices failed: %r\n",
+        __func__,
+        Status
+        ));
+      goto Done;
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // TPM 2.0 device — optional, present only if discovered from the FDT.
+  // -------------------------------------------------------------------------
+  if (Topo->TpmSize != 0) {
+    Status = AddTpm2Device (Topo, SbNode);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: AddTpm2Device failed: %r\n",
         __func__,
         Status
         ));

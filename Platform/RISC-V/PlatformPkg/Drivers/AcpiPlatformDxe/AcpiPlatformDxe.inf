@@ -9,6 +9,7 @@
 #    RHCT  - RISC-V Hart Capabilities Table (ISA string, CMO, MMU)
 #    RIMT  - RISC-V IO Mapping Table (IOMMU platform device)
 #    SPCR  - Serial Port Console Redirection Table
+#    TPM2  - Trusted Computing Platform 2 Table (TCG ACPI Spec)
 #    DSDT  - Differentiated System Description Table
 #
 #  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
@@ -35,12 +36,14 @@
   Rhct.c
   Rimt.c
   Spcr.c
+  Tpm2.c
   Topology.c
 
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec          # gFdtClientProtocolGuid
+  SecurityPkg/SecurityPkg.dec          # PcdTpmBaseAddress
   DynamicTablesPkg/DynamicTablesPkg.dec
 
 [LibraryClasses]
@@ -50,6 +53,7 @@
   DebugLib
   FdtLib
   MemoryAllocationLib
+  PcdLib
   PciHostBridgeLib
   PrintLib
   UefiBootServicesTableLib
@@ -64,6 +68,7 @@
 [Pcd]
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
 
 [Depex]
   gEfiAcpiTableProtocolGuid AND

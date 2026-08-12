@@ -13,11 +13,13 @@
               MMU node         (type 2)
               Hart Info node   (type 0xFFFF) per hart
     SPCR  - Serial Port Console Redirection Table
+    TPM2  - Trusted Computing Platform 2 Table (TCG ACPI Spec)
     DSDT  - Differentiated System Description Table
               CPU devices (ACPI0007)
               UART (RSCV0003)
               APLIC interrupt controller devices (RSCV0002)
               IOMMU (RSCV0004)
+              TPM 2.0 device (MSFT0101)
               PCIe host bridge
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
@@ -35,6 +37,7 @@
 #include <Library/DebugLib.h>
 #include <Library/FdtLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/PcdLib.h>
 #include <Library/PciHostBridgeLib.h>
 #include <Library/PrintLib.h>
 #include <Library/TimerLib.h>
@@ -109,6 +112,12 @@ typedef struct {
   UINT64           IommuSize;                    ///< IOMMU MMIO size
   UINT32           IommuIrqBase;                 ///< First IOMMU IRQ from FDT
   UINT32           IommuNumIrqs;                 ///< Number of IOMMU IRQs from FDT
+
+  //
+  // TPM 2.0 (TIS/MMIO)
+  //
+  UINT64           TpmBase;                      ///< TPM MMIO base
+  UINT64           TpmSize;                      ///< TPM MMIO size (0 = absent)
 
   //
   // PCIe host bridge (only one supported)
@@ -237,6 +246,13 @@ InstallRimt (
 EFI_STATUS
 EFIAPI
 InstallSpcr (
+  IN EFI_ACPI_TABLE_PROTOCOL  *AcpiTable,
+  IN PLATFORM_TOPOLOGY        *Topo
+  );
+
+EFI_STATUS
+EFIAPI
+InstallTpm2 (
   IN EFI_ACPI_TABLE_PROTOCOL  *AcpiTable,
   IN PLATFORM_TOPOLOGY        *Topo
   );
