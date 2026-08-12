@@ -27,6 +27,9 @@
   DEFINE TTY_TERMINAL            = FALSE
   DEFINE DEBUG_ON_SERIAL_PORT    = TRUE
 
+  DEFINE TPM2_ENABLE              = TRUE
+  DEFINE TPM2_CONFIG_ENABLE       = TRUE
+
   #
   # Shell can be useful for debugging but should not be enabled for production
   #
@@ -219,12 +222,31 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|FALSE
   gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x0
 
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0x0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2HashMask|0
+
+[PcdsPatchableInModule]
+  # make this PCD patchable instead of dynamic when TPM support is not enabled
+  # this permits setting the PCD in unreachable code without pulling in dynamic PCD support
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0x0
+
+[PcdsDynamicHii]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcgPhysicalPresenceInterfaceVer|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x0|"1.3"|NV,BS
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|3|NV,BS
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform.
 #
 ################################################################################
 [Components]
+  #
+  # Tpm2 support
+  #
+  OvmfPkg/Tcg/Tcg2Config/Tcg2ConfigPei.inf
+  Silicon/Qemu/RiscVServerRef/Tcg/TpmDiscoverPei/TpmDiscoverPei.inf
+
   #
   # Platform Driver
   #
