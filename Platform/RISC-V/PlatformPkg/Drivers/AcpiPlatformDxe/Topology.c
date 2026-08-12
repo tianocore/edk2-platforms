@@ -8,6 +8,7 @@
     - ISA string, Zicbom/Zicboz, MMU type
     - UART base, size, IRQ
     - RISC-V IOMMU base, size, IRQs
+    - TPM 2.0 (TIS/MMIO) base, size
     - PCIe apertures via PciHostBridgeLib (not re-parsed from FDT)
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
@@ -747,6 +748,48 @@ NextCpu:
       Topo->IommuIrqBase,
       Topo->IommuNumIrqs
       ));
+  }
+
+  // -------------------------------------------------------------------------
+  // TPM 2.0 — compatible "tcg,tpm-tis-mmio" (QEMU platform-bus TPM TIS/MMIO).
+  // -------------------------------------------------------------------------
+  Status = FdtClient->FindCompatibleNode (FdtClient, "tcg,tpm-tis-mmio", &Node);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_INFO, "%a: No 'tcg,tpm-tis-mmio' compatible DT node found (%r)\n", __func__, Status));
+  } else {
+    CONST VOID  *RegProp;
+    UINT32      RegSize;
+
+    Status = FdtClient->GetNodeProperty (
+                          FdtClient,
+                          Node,
+                          "reg",
+                          &RegProp,
+                          &RegSize
+                          );
+    if (!EFI_ERROR (Status)) {
+      ASSERT (RegSize == 8 || RegSize == 16);
+      if (RegSize == 8) {
+        Topo->TpmSize = FdtReadU32Be ((UINT8 *)RegProp + 4);
+      } else if (RegSize == 16) {
+        Topo->TpmSize = FdtReadU64Be ((UINT8 *)RegProp + 8);
+      }
+
+      //
+      // QEMU may place the TPM behind the platform bus. In that case,
+      // the MMIO address must be translated using the bus 'ranges'
+      // property. For simplicity, use PcdTpmBaseAddress that set during
+      // early booting.
+      //
+      Topo->TpmBase = PcdGet64 (PcdTpmBaseAddress);
+      DEBUG ((
+        DEBUG_INFO,
+        "%a: TPM base=0x%lx size=0x%lx\n",
+        __func__,
+        Topo->TpmBase,
+        Topo->TpmSize
+        ));
+    }
   }
 
   // -------------------------------------------------------------------------
