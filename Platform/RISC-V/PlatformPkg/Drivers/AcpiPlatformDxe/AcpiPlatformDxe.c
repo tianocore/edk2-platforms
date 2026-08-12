@@ -1,8 +1,8 @@
 /** @file
   Entry point for the RISC-V ACPI driver.
 
-  Installs all required ACPI tables for the platform:
-    FADT, MADT, RHCT, SPCR, MCFG, RIMT, DSDT
+    Installs all required ACPI tables for the platform:
+    FADT, MADT, RHCT, SPCR, MCFG, RIMT, TPM2, DSDT
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 
@@ -118,6 +118,16 @@ AcpiPlatformDxeEntryPoint (
   Status = InstallRimt (AcpiTable, &Topo);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: InstallRimt failed: %r\n", __func__, Status));
+    return Status;
+  }
+
+  //
+  // Install TPM2 (TCG ACPI table) — required in addition to the \_SB.TPM0
+  // DSDT device node for the OS to bind a TPM driver.
+  //
+  Status = InstallTpm2 (AcpiTable, &Topo);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: InstallTpm2 failed: %r\n", __func__, Status));
     return Status;
   }
 
