@@ -27,6 +27,8 @@
   DEFINE TTY_TERMINAL            = FALSE
   DEFINE DEBUG_ON_SERIAL_PORT    = TRUE
 
+  DEFINE SECURE_BOOT_ENABLE       = TRUE
+  DEFINE SECURE_BOOT_DEFAULT_KEYS = FALSE
   DEFINE TPM2_ENABLE              = TRUE
   DEFINE TPM2_CONFIG_ENABLE       = TRUE
 
@@ -112,6 +114,9 @@
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
   RngLib|MdeModulePkg/Library/BaseRngLibTimerLib/BaseRngLibTimerLib.inf
 
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  PlatformSecureLib|OvmfPkg/Library/PlatformSecureLib/PlatformSecureLib.inf
+!endif
 ################################################################################
 #
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform.
@@ -182,9 +187,15 @@
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|10
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|96
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|800
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|400
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1500
+!else
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|300
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|150
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1000
+!endif
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|6000
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|20
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData|0
@@ -202,6 +213,16 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride|1
 
   gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
+
+!if $(NETWORK_TLS_ENABLE) == TRUE || $(SECURE_BOOT_ENABLE) == TRUE
+  #
+  # The cumulative and individual VOLATILE variable size limits should be set
+  # high enough for accommodating several and/or large CA certificates.
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0x80000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVolatileVariableSize|0x40000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMaxAuthVariableSize|0x8400
+!endif
 
 ################################################################################
 #
@@ -303,3 +324,7 @@
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   Platform/RISC-V/PlatformPkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+
+!if $(SECURE_BOOT_DEFAULT_KEYS) == TRUE
+  Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
+!endif

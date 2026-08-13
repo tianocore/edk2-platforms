@@ -124,6 +124,29 @@ INF  Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
 INF  ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
 INF  ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
 
+!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(SECURE_BOOT_DEFAULT_KEYS) == TRUE
+INF  Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
+
+FILE FREEFORM = 85254ea7-4759-4fc4-82d4-5eed5fb0a4a0 {
+  SECTION RAW = Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootKeys/PK/PK.cer
+}
+
+FILE FREEFORM = 6f64916e-9f7a-4c35-b952-cd041efb05a3 {
+  SECTION RAW = Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootKeys/KEK/MicCorKEKCA2011_2011-06-24.crt
+}
+
+FILE FREEFORM = c491d352-7623-4843-accc-2791a7574421 {
+  SECTION RAW = Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootKeys/db/MicWinProPCA2011_2011-10-19.crt
+  SECTION RAW = Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootKeys/db/MicCorUEFCA2011_2011-06-27.crt
+}
+
+FILE FREEFORM = 5740766a-718e-4dc0-9935-c36f7d3f884f {
+  SECTION RAW = Platform/Qemu/RiscVServerRef/Feature/SecureBoot/SecureBootKeys/dbx/DBXUpdate-20260402.x64.bin
+}
+!endif
+!endif
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]
