@@ -25,11 +25,14 @@
 [Includes.common]
   Include
 
+[LibraryClasses]
+  QualcommSmemLib|Include/Library/QualcommSmemLib.h
+
 [Guids]
   gQualcommSiliconPkgTokenSpaceGuid     = {0x648ed5f4, 0x6e90, 0x11f1, {0xad, 0xee, 0x5b, 0x58, 0x90, 0x85, 0x09, 0x0b}}
 
 [Protocols]
-  gEfiSmemProtocolGuid                  = {0xf4e3d2c1, 0x8a7b, 0x4c5d, {0x9e, 0x6f, 0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f}}
+  gEfiQualcommSmemProtocolGuid                  = {0xf4e3d2c1, 0x8a7b, 0x4c5d, {0x9e, 0x6f, 0x1a, 0x2b, 0x3c, 0x4d, 0x5e, 0x6f}}
 
 [PcdsFixedAtBuild]
   #
@@ -40,13 +43,13 @@
   #  SMEM is used for communication between different processors
   #  in Qualcomm SoCs (Application Processor, Modem, DSP, etc.).
   #  @Prompt SMEM Base Address
-  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemBaseAddress             | 0x0          | UINT64  | 0xA1000001
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemBaseAddress             | 0xFFE00000   | UINT64  | 0xA1000001
 
   ## Size of Shared Memory region in bytes.
   #  Defines the total size of the SMEM region available for
   #  inter-processor communication.
   #  @Prompt SMEM Size
-  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize                    | 0x0          | UINT32  | 0xA1000002
+  gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize                    | 0x200000     | UINT32  | 0xA1000002
 
   ## Maximum number of SMEM items that can be allocated.
   #  @Prompt SMEM Maximum Items
