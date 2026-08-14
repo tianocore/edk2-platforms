@@ -49,6 +49,16 @@
   DEFINE NETWORK_PXE_BOOT_ENABLE        = TRUE
   DEFINE NETWORK_VLAN_ENABLE            = FALSE
 
+  #
+  # Firmware Upgrade definition
+  #
+  DEFINE CAPSULE_ENABLE                 = FALSE
+
+!if $(CAPSULE_ENABLE) == TRUE
+  POSTBUILD                      = python Platform/Qemu/RiscVServerRef/Feature/Capsule/GenerateCapsule/GenCapsule.py
+!include Platform/Qemu/RiscVServerRef/Feature/Capsule/RiscVServerRefSystemFW.dsc.inc
+!endif
+
 !include MdePkg/MdeLibs.dsc.inc
 !include NetworkPkg/Network.dsc.inc
 

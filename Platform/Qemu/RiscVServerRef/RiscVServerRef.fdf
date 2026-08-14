@@ -147,6 +147,10 @@ FILE FREEFORM = 5740766a-718e-4dc0-9935-c36f7d3f884f {
 !endif
 !endif
 
+!if $(CAPSULE_ENABLE) == TRUE
+!include Platform/Qemu/RiscVServerRef/Feature/Capsule/RiscVServerRefSystemFw.fdf.inc
+!endif
+
 ################################################################################
 
 [FV.FVMAIN_COMPACT]
