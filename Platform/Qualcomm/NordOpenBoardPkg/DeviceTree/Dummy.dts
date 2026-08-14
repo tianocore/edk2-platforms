@@ -1,0 +1,17 @@
+/*  @file
+ *
+ *  Empty dts file that's only used as an example to build the IQ-10 EVK platform.
+ *  User can override this with USER_PROVIDED_DTB=true option.
+ *
+ *  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ */
+
+/dts-v1/;
+
+/ {
+    model = "Qualcomm Technologies, Inc. IQ-10 EVK";
+    compatible = "qcom,sa8797p-iq10-evk", "qcom,sa8797p";
+};

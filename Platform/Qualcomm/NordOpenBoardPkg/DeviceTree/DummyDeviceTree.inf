@@ -1,0 +1,21 @@
+#/** @file
+#    DummyDeviceTree.inf
+#
+#    Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 1.30
+  BASE_NAME                      = DummyDeviceTree
+  FILE_GUID                      = 25462CDA-221F-47DF-AC1D-259CFAA4E326 # Same value for gDtPlatformDefaultDtbFileGuid
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+
+[Sources]
+  Dummy.dts
+
+[Packages]
+  MdePkg/MdePkg.dec

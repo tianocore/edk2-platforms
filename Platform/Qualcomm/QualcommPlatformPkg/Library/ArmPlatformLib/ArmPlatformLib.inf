@@ -26,7 +26,6 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  QcomPlatformPkg/QcomPlatformPkg.dec
   QualcommPlatformPkg/QualcommPlatformPkg.dec
   QualcommSiliconPkg/QualcommSiliconPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
@@ -67,6 +66,8 @@
   gQualcommSiliconPkgTokenSpaceGuid.PcdSmemSize
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrBase
   gQualcommPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioBase
+  gQualcommPlatformPkgTokenSpaceGuid.PcdUfsHcMmioSize
 
 [Ppis]
   gArmMpCoreInfoPpiGuid
