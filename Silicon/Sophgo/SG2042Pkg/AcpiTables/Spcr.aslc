@@ -1,0 +1,78 @@
+/** @file
+  Serial Port Console Redirection Table (SPCR)
+
+  SPCR table provides information about the configuration and use of the serial
+  port or non-legacy UART interface. This table list the non-secure UART
+  instance in the compute subsystem on the reference design platforms as the
+  available serial port.
+
+  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+  @par Specification Reference:
+    - https://docs.microsoft.com/en-us/windows-hardware/drivers/serports/
+      serial-port-console-redirection-table
+**/
+
+#include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
+#include <Library/AcpiLib.h>
+#include "SG2042AcpiHeader.h"
+
+STATIC EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE Spcr = {
+  RISCV_ACPI_HEADER (
+    EFI_ACPI_6_5_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_SIGNATURE,
+    EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE,
+    EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_REVISION
+  ),
+  // UINT8                                   InterfaceType;
+  0x0015,
+  // UINT8                                   Reserved1[3];
+  {
+    EFI_ACPI_RESERVED_BYTE,
+    EFI_ACPI_RESERVED_BYTE,
+    EFI_ACPI_RESERVED_BYTE
+  },
+  // EFI_ACPI_6_5_GENERIC_ADDRESS_STRUCTURE  BaseAddress;
+  ARM_GAS32 (FixedPcdGet64 (PcdSerialRegisterBase)),
+  // UINT8                                   InterruptType;
+  0x10,
+  // UINT8                                   Irq;
+  0,
+  // UINT32                                  GlobalSystemInterrupt;
+  112,
+  // UINT8                                   BaudRate;
+  EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_BAUD_RATE_115200,
+  // UINT8                                   Parity;
+  EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_PARITY_NO_PARITY,
+  // UINT8                                   StopBits;
+  EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_STOP_BITS_1,
+  // UINT8                                   FlowControl;
+  0,
+  // UINT8                                   TerminalType;
+  EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_TERMINAL_TYPE_ANSI,
+  // UINT8                                   Reserved2;
+  EFI_ACPI_RESERVED_BYTE,
+  // UINT16                                  PciDeviceId;
+  0xFFFF,
+  // UINT16                                  PciVendorId;
+  0xFFFF,
+  // UINT8                                   PciBusNumber;
+  0x00,
+  // UINT8                                   PciDeviceNumber;
+  0x00,
+  // UINT8                                   PciFunctionNumber;
+  0x00,
+  // UINT32                                  PciFlags;
+  0x00000000,
+  // UINT8                                   PciSegment;
+  0x00,
+  // UINT32                                  Reserved3;
+  EFI_ACPI_RESERVED_DWORD
+};
+
+//
+// Reference the table being generated to prevent the optimizer from removing the
+// data structure from the executable
+//
+VOID* CONST ReferenceAcpiTable = &Spcr;

@@ -1,0 +1,65 @@
+## @file
+#
+# Copyright (c) 2024, SOPHGO Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = FlashFvbDxe
+  FILE_GUID                      = 777E2D5F-C4B8-4737-B957-73942528BFFB
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 0.1
+  ENTRY_POINT                    = FlashFvbEntryPoint
+
+[Sources]
+  FlashFvbDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Sophgo/Sophgo.dec
+  Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  HobLib
+  PcdLib
+  DxeServicesTableLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiRuntimeLib
+  UefiRuntimeServicesTableLib
+
+[FixedPcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64
+  gSophgoTokenSpaceGuid.PcdFlashVariableOffset
+  gUefiRiscVPlatformPkgTokenSpaceGuid.PcdVariableFdBlockSize
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+  gEdkiiNvVarStoreFormattedGuid
+  gEfiAuthenticatedVariableGuid
+  gEfiSystemNvDataFvGuid
+  gEfiVariableGuid
+
+[Protocols]
+  gEfiDevicePathProtocolGuid           ## PRODUCES
+  gEfiFirmwareVolumeBlockProtocolGuid  ## PRODUCES
+  gSophgoSpiMasterProtocolGuid         ## CONSUMES
+  gSophgoNorFlashProtocolGuid          ## CONSUMES
+
+[Depex]
+  gSophgoSpiMasterProtocolGuid AND
+  gSophgoNorFlashProtocolGuid
