@@ -27,8 +27,10 @@
 
 [Packages]
   ArmPkg/ArmPkg.dec
+  FmpDevicePkg/FmpDevicePkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  SecurityPkg/SecurityPkg.dec
   StandaloneMmPkg/StandaloneMmPkg.dec
   Platform/ARM/ARM.dec
   Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
@@ -37,17 +39,25 @@
   ArmLib
   BaseMemoryLib
   DebugLib
+  FmpAuthenticationLib
+  FmpDependencyLib
+  FmpPayloadHeaderLib
+  FwsPlatformLib
+  HobLib
   MemoryAllocationLib
   StandaloneMmDriverEntryPoint
-  HobLib
-  FwsPlatformLib
 
 [Protocols]
   gEfiBlockIoProtocolGuid
 
 [FixedPcd]
+  gFmpDevicePkgTokenSpaceGuid.PcdFmpDevicePkcs7CertBufferXdr
   gPlatformArmTokenSpaceGuid.PcdFwuNumberOfBanks
   gPlatformArmTokenSpaceGuid.PcdFwuImagesPerBank
+
+[FeaturePcd]
+  gPlatformArmTokenSpaceGuid.PcdFwuDirectWrite
+  gPlatformArmTokenSpaceGuid.PcdFwuFmpImageAuth
 
 [Guids]
   gPsaFwuUpdateAgentGuid

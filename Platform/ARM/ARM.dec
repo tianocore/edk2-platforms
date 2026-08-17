@@ -31,6 +31,26 @@
 [PcdsFeatureFlag.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashCheckBlockLocked|FALSE|BOOLEAN|0x0000001
 
+  # Firmware Update features
+
+  #
+  # When this option is enabled, FWU_COMMAND_WRITE_STREAM doesn't write
+  # to buffer but write into firwmare storage directly.
+  # Otherwise, buffered writes will be flushed at PSA_MM_FWU_COMMAND_COMMIT.
+  # This is useful if firmware update agent needs to authenticate the
+  # delivered image.
+  #
+  gPlatformArmTokenSpaceGuid.PcdFwuDirectWrite|FALSE|BOOLEAN|0x0000010
+
+  #
+  # When this option is enabled, FWU_COMMIT would perform FMP image
+  # authtentication.
+  # To use this option, gPlatformArmTokenSpaceGuid.PcdFwuDirectWrite 
+  # must be enabled and FmpDevice Instance must enable
+  # gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceDeferImageAuthToSetImage.
+  #
+  gPlatformArmTokenSpaceGuid.PcdFwuFmpImageAuth|FALSE|BOOLEAN|0x0000011
+
 [PcdsFixedAtBuild.common]
   gPlatformArmTokenSpaceGuid.PcdNorFlashRegBaseAddress|0x0|UINT32|0x00000002
 
