@@ -10,7 +10,7 @@
 #include <Library/DebugLib.h>
 #include <Library/MemoryAllocationLib.h>
 
-#include "SmbiosPlatformDxe.h"
+#include "SmbiosBoardSpecificDxe.h"
 
 /**
   This function adds SMBIOS Table (Type 41) records.
@@ -22,7 +22,7 @@
   @retval Other                      Failed to update the SMBIOS Table.
 
 **/
-SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformOnboardDevicesExtended) {
+SMBIOS_BOARD_SPECIFIC_DXE_TABLE_FUNCTION (PlatformOnboardDevicesExtended) {
   EFI_STATUS          Status;
   STR_TOKEN_INFO      *InputStrToken;
   SMBIOS_TABLE_TYPE41 *InputData;
@@ -32,7 +32,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformOnboardDevicesExtended) {
   InputStrToken = (STR_TOKEN_INFO *)StrToken;
 
   while (InputData->Hdr.Type != NULL_TERMINATED_TYPE) {
-    SmbiosPlatformDxeCreateTable (
+    SmbiosBoardSpecificDxeCreateTable (
       (VOID *)&Type41Record,
       (VOID *)&InputData,
       sizeof (SMBIOS_TABLE_TYPE41),
@@ -42,7 +42,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformOnboardDevicesExtended) {
       return EFI_OUT_OF_RESOURCES;
     }
 
-    Status = SmbiosPlatformDxeAddRecord ((UINT8 *)Type41Record, NULL);
+    Status = SmbiosBoardSpecificDxeAddRecord ((UINT8 *)Type41Record, NULL);
     if (EFI_ERROR (Status)) {
       FreePool (Type41Record);
       return Status;

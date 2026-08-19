@@ -8,4 +8,4 @@
 
 /=#
 
-#string STR_PLATFORM_DXE_STRING_1  #language en-US  "www.amperecomputing.com"
+#string STR_PLATFORM_DXE_OEM_STRING_1  #language en-US  "www.amperecomputing.com"

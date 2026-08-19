@@ -6,12 +6,12 @@
 
 **/
 
-#include "SmbiosPlatformDxe.h"
+#include "SmbiosBoardSpecificDxe.h"
 
 //
 // Define data for SMBIOS Type 41 Table.
 //
-SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE41, PlatformOnboardDevicesExtended) = {
+SMBIOS_BOARD_SPECIFIC_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE41, PlatformOnboardDevicesExtended) = {
   {                                                         // Table 1
     {                                                       // Header
       EFI_SMBIOS_TYPE_ONBOARD_DEVICES_EXTENDED_INFORMATION, // Type
@@ -76,28 +76,28 @@ SMBIOS_PLATFORM_DXE_TABLE_DATA (SMBIOS_TABLE_TYPE41, PlatformOnboardDevicesExten
 //
 // Define string Tokens for additional strings.
 //
-SMBIOS_PLATFORM_DXE_STRING_TOKEN_DATA (PlatformOnboardDevicesExtended) = {
+SMBIOS_BOARD_SPECIFIC_DXE_STRING_TOKEN_DATA (PlatformOnboardDevicesExtended) = {
   {                                                                                 // Table 1
     {                                                                               // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE1)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE1)
     },
     ADDITIONAL_STR_INDEX_1                                                          // Size of Tokens array
   },
   {                                                                                 // Table 2
     {                                                                               // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE2)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE2)
     },
     ADDITIONAL_STR_INDEX_1                                                          // Size of Tokens array
   },
   {                                                                                 // Table 3
     {                                                                               // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE3)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE3)
     },
     ADDITIONAL_STR_INDEX_1                                                          // Size of Tokens array
   },
   {                                                                                 // Table 4
     {                                                                               // Tokens array
-      STRING_TOKEN (STR_PLATFORM_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE4)
+      STRING_TOKEN (STR_BOARD_SPECIFIC_DXE_ONBOARD_DEVICES_EXTENDED_DEVICE_TYPE_INSTANCE4)
     },
     ADDITIONAL_STR_INDEX_1                                                          // Size of Tokens array
   },

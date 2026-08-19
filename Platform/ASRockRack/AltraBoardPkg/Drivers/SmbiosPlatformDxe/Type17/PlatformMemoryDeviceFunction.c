@@ -32,7 +32,7 @@
 #define DDR4_SPD_MANUFACTURER_PART_NUMBER_OFFSET   329
 #define DDR4_SPD_MANUFACTURER_SERIAL_NUMBER_OFFSET 325
 
-#define MAX_DIMMS  16
+#define MAX_DIMMS  8
 
 #define PRINTABLE_CHARACTER(Character) \
   (Character >= ASCII_SPACE_CHARACTER_CODE) && (Character <= ASCII_TILDE_CHARACTER_CODE) ? \
@@ -256,7 +256,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryDevice) {
 
   DimmIndex = 0;
 
-  for (ChannelIndex = 0; ChannelIndex < (MAX_DIMMS / 2); ChannelIndex++) {
+  for (ChannelIndex = 0; ChannelIndex < MAX_DIMMS; ChannelIndex++) {
     //
     // Prepare additional strings for SMBIOS Table.
     //
@@ -298,7 +298,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryDevice) {
 
       if (Dimm->Info.DimmStatus != DIMM_NOT_INSTALLED) {
         DEBUG ((DEBUG_INFO, "DIMM Info: \n"));
-	DEBUG ((DEBUG_INFO, "\tStatus (1=Installed-Operational, 2=Installed-NonOperational, 3=Installed-Failed): %d\n", Dimm->Info.DimmStatus));
+        DEBUG ((DEBUG_INFO, "\tStatus (1=Installed-Operational, 2=Installed-NonOperational, 3=Installed-Failed): %d\n", Dimm->Info.DimmStatus));
         DEBUG ((DEBUG_INFO, "\tPart Number: %a\n", Dimm->Info.PartNumber));
         DEBUG ((DEBUG_INFO, "\tDimmSize: %llu\n", Dimm->Info.DimmSize));
         DEBUG ((DEBUG_INFO, "\tDimmMfcId: %d\n", Dimm->Info.DimmMfcId));
@@ -308,7 +308,8 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryDevice) {
       }
 
       if (Dimm->Info.DimmStatus == DIMM_INSTALLED_OPERATIONAL) {
-        MemorySize = Dimm->Info.DimmSize * 1024;
+        MemorySize = Dimm->Info.DimmSize * 1024; // Convert to MB
+        Type17Record->VolatileSize = MemorySize * 1024 * 1024; // Convert to bytes
 
         if (MemorySize >= 0x7FFF) {
           Type17Record->Size = 0x7FFF;
@@ -358,7 +359,7 @@ SMBIOS_PLATFORM_DXE_TABLE_FUNCTION (PlatformMemoryDevice) {
         return Status;
       }
 
-      DimmIndex += 2;
+      DimmIndex++;
     }
 
   FreePool (HandleArray);

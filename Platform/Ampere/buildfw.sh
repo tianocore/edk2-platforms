@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -x
+
+set -o errexit
+
 ##
 # @file
 #  Build script for platforms with an Altra(R) CPU from Ampere(R).
@@ -77,17 +79,18 @@ usage () {
   echo "  CERT_PASSWORD        - password to use when generating Platform and Update Keys and certificates"
   echo "                         defaults to \"password\" if not specified."
   echo ""
+  echo "  EDK2_CAPSULE_ENABLE                 (FALSE)"
   echo "  EDK2_SECURE_BOOT_ENABLE             (TRUE)"
   echo "  EDK2_NETWORK_ENABLE                 (TRUE)"
   echo "  EDK2_INCLUDE_TFTP_COMMAND           (TRUE)"
   echo "  EDK2_NETWORK_IP6_ENABLE             (TRUE)"
-  echo "  EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS (FALSE)"
+  echo "  EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS (TRUE)"
   echo "  EDK2_NETWORK_TLS_ENABLE             (TRUE)"
   echo "  EDK2_REDFISH_ENABLE                 (TRUE)"
   echo "  EDK2_PERFORMANCE_MEASUREMENT_ENABLE (FALSE)"
   echo "  EDK2_TPM2_ENABLE                    (TRUE)"
   echo "  EDK2_HEAP_GUARD_ENABLE              (FALSE)"
-  echo "  EDK2_X86_EMULATOR_ENABLE            (TRUE)"
+  echo "  EDK2_X86_EMULATOR_ENABLE            (FALSE)"
   echo "  EDK2_SHELL_ENABLE                   (TRUE)"
   echo "  LINUXBOOT_FILE_IN_UEFI_EXTRA        (FALSE)"
 
@@ -98,8 +101,8 @@ ctrl_c() {
   popd
 }
 
-TFA_VERSION=${TFA_VERSION:-2.10.20230517}
-SCP_VERSION=${SCP_VERSION:-2.10.20230517}
+TFA_VERSION=${TFA_VERSION:-2.10.20260210}
+SCP_VERSION=${SCP_VERSION:-2.10.20260210}
 
 TFA_SLIM=${TFA_SLIM:-$PWD/altra_atf_signed_${TFA_VERSION}.slim}
 SCP_SLIM=${SCP_SLIM:-$PWD/altra_scp_signed_${SCP_VERSION}.slim}
@@ -264,17 +267,18 @@ if [ -n "${CERT_PASSWORD}" ]; then
   export CERT_PASSWORD
 fi
 
+EDK2_CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE:-FALSE}
 EDK2_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE:-TRUE}
 EDK2_NETWORK_ENABLE=${EDK2_NETWORK_ENABLE:-TRUE}
 EDK2_INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND:-TRUE}
 EDK2_NETWORK_IP6_ENABLE=${EDK2_NETWORK_IP6_ENABLE:-TRUE}
-EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS:-FALSE}
+EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS=${EDK2_NETWORK_ALLOW_HTTP_CONNECTIONS:-TRUE}
 EDK2_NETWORK_TLS_ENABLE=${EDK2_NETWORK_TLS_ENABLE:-TRUE}
 EDK2_REDFISH_ENABLE=${EDK2_REDFISH_ENABLE:-TRUE}
 EDK2_PERFORMANCE_MEASUREMENT_ENABLE=${EDK2_PERFORMANCE_MEASUREMENT_ENABLE:-FALSE}
 EDK2_TPM2_ENABLE=${EDK2_TPM2_ENABLE:-TRUE}
 EDK2_HEAP_GUARD_ENABLE=${EDK2_HEAP_GUARD_ENABLE:-FALSE}
-EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-TRUE}
+EDK2_X86_EMULATOR_ENABLE=${EDK2_X86_EMULATOR_ENABLE:-FALSE}
 EDK2_SHELL_ENABLE=${EDK2_SHELL_ENABLE:-TRUE}
 LINUXBOOT_FILE_IN_UEFI_EXTRA=${LINUXBOOT_FILE_IN_UEFI_EXTRA:-FALSE}
 
@@ -350,6 +354,7 @@ build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS}              
         -D FIRMWARE_VER="${VER}"                                                   \
         -D FIRMWARE_VER_HEX="${VER_HEX}"                                           \
         -D MAJOR_VER=${MAJOR_VER} -D MINOR_VER=${MINOR_VER}                        \
+        -D CAPSULE_ENABLE=${EDK2_CAPSULE_ENABLE}                                   \
         -D UEFI_SECURE_BOOT_ENABLE=${EDK2_SECURE_BOOT_ENABLE}                      \
         -D NETWORK_ENABLE=${EDK2_NETWORK_ENABLE}                                   \
         -D INCLUDE_TFTP_COMMAND=${EDK2_INCLUDE_TFTP_COMMAND}                       \
@@ -452,6 +457,36 @@ if [ -f "${TFA_SLIM}" ]; then
   INCLUDE_TFA_FW=TRUE
 else
   INCLUDE_TFA_FW=FALSE
+fi
+
+# LinuxBoot doesn't support capsule updates
+if [ "${EDK2_CAPSULE_ENABLE}" = "TRUE" ] && [ -z "${LINUXBOOT}" ] && [ -f "${TFA_SLIM}" ] && [ -f "${SCP_SLIM}" ]; then
+
+  # Build the capsule (for upgrading from the UEFI Shell or Linux)
+  build -a AARCH64 -t ${TOOLCHAIN} -b ${BLDTYPE} -n ${BUILD_THREADS} \
+      -D FIRMWARE_VER_FULL="${VER} TF-A ${TFA_VERSION}"        \
+      -D FIRMWARE_VER="${VER}" \
+      -D FIRMWARE_VER_HEX="${VER_HEX}" \
+      -D MAJOR_VER=${MAJOR_VER}  \
+      -D MINOR_VER=${MINOR_VER}  \
+      -D INCLUDE_TFA_FW=${INCLUDE_TFA_FW} \
+      -y BuildReportCapsule.log                                         \
+      -p Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/${BOARD_NAME}Capsule.dsc
+
+  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/FV/${BOARD_NAME^^}HOSTFIRMWARE.Cap" "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap"
+  cp -vf "${EDK2_BUILD_DIR}/${BLDTYPE}_${TOOLCHAIN}/AARCH64/CapsuleApp.efi" "${OUTPUT_BIN_DIR}/"
+  mkdir ${OUTPUT_BIN_DIR}/Cab || true
+  rm -f ${OUTPUT_BIN_DIR}/Cab/*
+  METAINFO_FILE="${OUTPUT_BIN_DIR}/Cab/firmware.metainfo.xml"
+  cp -vf "${WORKSPACE}/edk2-platforms/Platform/${MANUFACTURER}/${BOARD_NAME}Pkg/firmware.metainfo.xml" "${METAINFO_FILE}"
+  cp -vf "${OUTPUT_BIN_DIR}/${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cap" "${OUTPUT_BIN_DIR}/Cab/firmware.bin"
+  sed -i "s/{URGENCY}/high/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_VERSION}/$(printf '%d' ${VER_HEX})/g" "${METAINFO_FILE}"
+  sed -i "s/{FW_DATE}/$(date +%Y-%m-%d)/g" "${METAINFO_FILE}"
+  sed -i "s/{RELEASE_NOTES}//g" "${METAINFO_FILE}"
+  pushd "${OUTPUT_BIN_DIR}/Cab"
+  gcab -c -z -v "../${BOARD_NAME,,}_host_${BLDTYPE,,}_${VER}.cab" ./*
+  popd
 fi
 
 if [ "${BOARD_NAME}" = "ComHpcAlt" ] && [ ! -e "${WORKSPACE}/${UPD720202_ROM_FILE}" ]; then
