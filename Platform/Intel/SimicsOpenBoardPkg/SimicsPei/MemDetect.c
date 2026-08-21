@@ -25,6 +25,9 @@
 #include <Library/CmosAccessLib.h>
 #include <SimicsPlatforms.h>
 #include <Guid/SmramMemoryReserve.h>
+#include <Library/SmmControlLib.h>
+#include <Library/SmmRelocationLib.h>
+#include <Register/Cpuid.h>
 
 #include <CmosMap.h>
 
@@ -167,19 +170,43 @@ GetFirstNonAddress (
   }
 
   //
-  // SeaBIOS aligns both boundaries of the 64-bit PCI host aperture to 1GB, so
-  // that the host can map it with 1GB hugepages. Follow suit.
+  // Determine the 64-bit PCI host aperture from CPUID physical address width.
+  // Base is fixed at 0x800000000 (must stay in sync with Dsdt.asl).
   //
-  Pci64Base = ALIGN_VALUE (FirstNonAddress, (UINT64)SIZE_1GB);
-  Pci64Size = ALIGN_VALUE (Pci64Size, (UINT64)SIZE_1GB);
+  {
+    UINT32  PhysBits;
+    UINT32  MaxExtLeaf;
+    UINT64  MaxAddr;
 
-  //
-  // The 64-bit PCI host aperture should also be "naturally" aligned. The
-  // alignment is determined by rounding the size of the aperture down to the
-  // next smaller or equal power of two. That is, align the aperture by the
-  // largest BAR size that can fit into it.
-  //
-  Pci64Base = ALIGN_VALUE (Pci64Base, GetPowerOfTwo64 (Pci64Size));
+    PhysBits = 36;
+    AsmCpuid (0x80000000, &MaxExtLeaf, NULL, NULL, NULL);
+    if (MaxExtLeaf >= CPUID_VIR_PHY_ADDRESS_SIZE) {
+      AsmCpuid (CPUID_VIR_PHY_ADDRESS_SIZE, &PhysBits, NULL, NULL, NULL);
+      PhysBits &= 0xFF;
+    }
+    if (PhysBits > 48) {
+      PhysBits = 48;
+    }
+    DEBUG ((DEBUG_INFO, "%a: PhysBits=%d (max extended leaf=0x%x)\n",
+      __func__, PhysBits, MaxExtLeaf));
+
+    MaxAddr   = 1ULL << PhysBits;
+    Pci64Base = 0x800000000;           // Keep in sync with Dsdt.asl
+    Pci64Size = MaxAddr - Pci64Base;
+    if (PcdGet64 (PcdPciMmio64Size) < Pci64Size) {
+      Pci64Size = PcdGet64 (PcdPciMmio64Size);
+    }
+
+    DEBUG ((
+      DEBUG_INFO,
+      "%a: PhysBits=0x%x MaxAddr=0x%Lx Base=0x%Lx Size=0x%Lx\n",
+      __func__,
+      PhysBits,
+      MaxAddr,
+      Pci64Base,
+      Pci64Size
+      ));
+  }
 
   if (mBootMode != BOOT_ON_S3_RESUME) {
     //

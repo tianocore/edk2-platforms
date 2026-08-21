@@ -68,14 +68,14 @@
 *_*_*_VFR_FLAGS                     ==  -n
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support page level protection
-#[BuildOptions.common.EDKII.DXE_SMM_DRIVER, BuildOptions.common.EDKII.SMM_CORE]
-#  MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096
-#  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
+[BuildOptions.common.EDKII.DXE_SMM_DRIVER, BuildOptions.common.EDKII.SMM_CORE]
+  MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096 /FILEALIGN:4096
+  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
 
 # Force PE/COFF sections to be aligned at 4KB boundaries to support MemoryAttribute table
-#[BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
-#  MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096
-#  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
+[BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER, BuildOptions.common.EDKII.DXE_DRIVER, BuildOptions.common.EDKII.UEFI_DRIVER, BuildOptions.common.EDKII.DXE_CORE]
+  MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096 /FILEALIGN:4096
+  GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000
 
 [BuildOptions.common.EDKII.MM_CORE_STANDALONE, BuildOptions.common.EDKII.MM_STANDALONE]
   MSFT:*_*_*_DLINK_FLAGS        = /ALIGN:4096 /FILEALIGN:4096

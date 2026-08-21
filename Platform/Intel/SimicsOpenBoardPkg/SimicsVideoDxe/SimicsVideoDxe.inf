@@ -60,6 +60,7 @@
   UefiDriverEntryPoint
   UefiLib
   S3BootScriptLib
+  SimicsUefiDeviceLib
 
 [Protocols]
   gEfiDriverSupportedEfiVersionProtocolGuid     # PROTOCOL ALWAYS_PRODUCED
@@ -67,8 +68,10 @@
   gEfiDevicePathProtocolGuid                    # PROTOCOL BY_START
   gEfiPciIoProtocolGuid                         # PROTOCOL TO_START
   gEfiDxeSmmReadyToLockProtocolGuid
+  gEfiPciRootBridgeIoProtocolGuid
 
 [Pcd]
   gOptionRomPkgTokenSpaceGuid.PcdDriverSupportedEfiVersion
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId
   gEfiMdeModulePkgTokenSpaceGuid.PcdNullPointerDetectionPropertyMask
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceCapsRegBase      ## CONSUMES

@@ -329,6 +329,7 @@ MiscInitialization (
   UINT32        PmbaOrVal;
   UINTN         AcpiCtlReg;
   UINT8         AcpiEnBit;
+  UINT16        VendorId;
 
   //
   // Disable A20 Mask
@@ -415,20 +416,23 @@ MiscInitialization (
       ),
     (UINT32) ~0xfc0, ICH10_PMBASE_VALUE
     );
-  //
-  // Enable AHCI and all ports on the SATA controller.
-  //
-  // Address MAP Reg, setting AHCI mode
-  //
-  PciOr16 (PCI_LIB_ADDRESS (0, 31, 2, 0x90), 0x0060);
-  //
-  //Enabling Ports 0-5
-  //
-  PciOr16 (PCI_LIB_ADDRESS (0, 31, 2, 0x92), 0x003F);
-  //
-  //Disabling Sata Controller 2, bit 25 = 1, bit 0 = 1
-  //
-  MmioWrite32(0xFED1F418, 0x02000001);
+  VendorId = PciRead16 (PCI_LIB_ADDRESS (0, 31, 2, 0x0));
+  if (VendorId != 0xFFFF) {
+    //
+    // Enable AHCI and all ports on the SATA controller.
+    //
+    // Address MAP Reg, setting AHCI mode
+    //
+    PciOr16 (PCI_LIB_ADDRESS (0, 31, 2, 0x90), 0x0060);
+    //
+    // Enabling Ports 0-5
+    //
+    PciOr16 (PCI_LIB_ADDRESS (0, 31, 2, 0x92), 0x003F);
+    //
+    // Disabling Sata Controller 2, bit 25 = 1, bit 0 = 1
+    //
+    MmioWrite32 (ICH10_ROOT_COMPLEX_BASE + 0x3418, 0x02000001);
+  }
   //
   //Enable HPET at FED0_0000h ? FED0_03FFh
   //

@@ -59,6 +59,22 @@ extern ACPI_HID_DEVICE_PATH       gPnp16550ComPortDeviceNode;
 extern UART_DEVICE_PATH           gUartDeviceNode;
 extern VENDOR_DEVICE_PATH         gTerminalTypeDeviceNode;
 
+#define CLASS_HID           3
+#define SUBCLASS_BOOT       1
+#define PROTOCOL_KEYBOARD   1
+
+#define gEndEntire \
+  { \
+    END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { END_DEVICE_PATH_LENGTH, 0 } \
+  }
+
+typedef struct {
+  USB_CLASS_DEVICE_PATH           UsbClass;
+  EFI_DEVICE_PATH_PROTOCOL        End;
+} USB_CLASS_FORMAT_DEVICE_PATH;
+
+extern USB_CLASS_FORMAT_DEVICE_PATH              gUsbClassKeyboardDevicePath;
+
 #define PCI_DEVICE_PATH_NODE(Func, Dev) \
   { \
     { \

@@ -48,6 +48,7 @@
   ######################################
 
   gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x400
+  gEfiNetworkPkgTokenSpaceGuid.PcdAllowHttpConnections|TRUE
 
 [PcdsFeatureFlag.common]
   ######################################
@@ -72,6 +73,16 @@
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable|TRUE
+  ######################################
+  # Platform Configuration
+  ######################################
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
   ######################################
   # Silicon Configuration
@@ -85,7 +96,12 @@
   ######################################
   gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable|TRUE
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUninstallMemAttrProtocol|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
+  #
+  # don't degrade 64bit MMIO space to 32-bit
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPciDegradeResourceForOptionRom|FALSE
 
 [PcdsFeatureFlag.X64]
   ######################################
@@ -112,7 +128,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreMaxPeiStackSize|0x100000
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdShadowPeimOnS3Boot|TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableStoreSize|0xc000
   gEfiMdeModulePkgTokenSpaceGuid.PcdVpdBaseAddress|0x0
@@ -243,7 +259,8 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio32Base|0x0
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio32Size|0x0
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Base|0x0
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Size|0x800000000
+  # keep below in sync with DW64 in Dsdt.asl
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdPciMmio64Size|0x10000000000
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId|0
 
   ######################################
@@ -277,11 +294,11 @@
   ######################################
   # Edk2 Configuration
   ######################################
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|100
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|31
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|800
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|600
-  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|0
+  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|2
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultDataBits|8
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultParity|1
@@ -292,5 +309,13 @@
   ######################################
   # Edk2 Configuration
   ######################################
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|50 # Variable: L"Timeout"
-  gEfiMdePkgTokenSpaceGuid.PcdHardwareErrorRecordLevel|L"HwErrRecSupport"|gEfiGlobalVariableGuid|0x0|1 # Variable: L"HwErrRecSupport"
+!ifdef NO_PLATFORM_BOOT_DELAYS
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|0 # Variable: L"Timeout"
+!else
+  !ifdef PLATFORM_BOOT_3S_DELAY
+    gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|3 # Variable: L"Timeout"
+  !else
+    gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|10 # Variable: L"Timeout"
+  !endif
+!endif
+  gEfiMdePkgTokenSpaceGuid.PcdHardwareErrorRecordLevel|L"HwErrRecSupport"|gEfiGlobalVariableGuid|0x0|0 # Variable: L"HwErrRecSupport"

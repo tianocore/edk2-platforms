@@ -22,19 +22,16 @@
 #include <IndustryStandard/WindowsSmmSecurityMitigationTable.h>
 #include <Register/Hpet.h>
 #include <Guid/EventGroup.h>
-#include <Guid/GlobalVariable.h>
-#include <Library/UefiLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/IoLib.h>
 #include <Library/PcdLib.h>
-#include <Library/BoardAcpiTableLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/AslUpdateLib.h>
 #include <Library/PciSegmentInfoLib.h>
+#include <Library/SimicsUefiDeviceLib.h>
 
 #include <Protocol/AcpiTable.h>
 #include <Protocol/MpService.h>

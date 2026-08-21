@@ -19,7 +19,7 @@
   DEFINE SKT_PKG               = SimicsX58SktPkg
   DEFINE PCH_PKG               = SimicsIch10Pkg
   DEFINE DXE_ARCH              = X64
-  DEFINE PEI_ARCH              = IA32
+  DEFINE PEI_ARCH              = X64
   DEFINE PROJECT               = $(BOARD_PKG)/$(BOARD_NAME)
 
   PLATFORM_NAME                  = SimicsX58
@@ -27,7 +27,7 @@
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010005
   OUTPUT_DIRECTORY               = Build/$(PROJECT)
-  SUPPORTED_ARCHITECTURES        = IA32|X64
+  SUPPORTED_ARCHITECTURES        = X64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = $(PROJECT)/OpenBoardPkg.fdf
@@ -114,6 +114,7 @@
   DxeLoadLinuxLib|$(BOARD_PKG)/Library/LoadLinuxLib/DxeLoadLinuxLib.inf
   LogoLib|$(BOARD_PKG)/Library/DxeLogoLib/DxeLogoLib.inf
   ReportFvLib|$(BOARD_PKG)/Library/PeiReportFvLib/PeiReportFvLib.inf
+  SimicsUefiDeviceLib|$(BOARD_PKG)/Library/SimicsUefiDeviceLib/SimicsUefiDeviceLib.inf
   SiliconPolicyInitLib|$(BOARD_PKG)/Policy/Library/SiliconPolicyInitLib/SiliconPolicyInitLib.inf
   SiliconPolicyUpdateLib|$(BOARD_PKG)/Policy/Library/SiliconPolicyUpdateLib/SiliconPolicyUpdateLib.inf
   PlatformCmosAccessLib|BoardModulePkg/Library/PlatformCmosAccessLibNull/PlatformCmosAccessLibNull.inf
@@ -172,6 +173,13 @@
   #######################################
   SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
 
+[LibraryClasses.common]
+  # MinPlatformPkg defaults to CF8 based PciLib but we need MmIoCFg accesses
+  # in order to access cfg regs beyond 0x100 for SRIOV support.
+  # Hence, we override with a PCIe lib
+  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+  TestPointCheckDmaProtectionLib|MinPlatformPkg/Test/Library/TestPointCheckDmaProtectionLib/PeiTestPointCheckDmaProtectionLib.inf
+
 #######################################
 # PEI Components
 #######################################
@@ -208,6 +216,7 @@
   $(BOARD_PKG)/SecCore/SecMain.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
+      NULL|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   }
 
   $(BOARD_PKG)/SimicsPei/SimicsPei.inf {
@@ -219,6 +228,9 @@
 # DXE Components
 #######################################
 [Components.$(DXE_ARCH)]
+  !include NetworkPkg/NetworkComponents.dsc.inc
+  SmbiosFeaturePkg/SmbiosBasicDxe/SmbiosBasicDxe.inf
+
   #######################################
   # Edk2 Packages
   #######################################

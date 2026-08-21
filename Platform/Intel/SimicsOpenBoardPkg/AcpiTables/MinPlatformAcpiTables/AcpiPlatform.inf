@@ -29,6 +29,7 @@
   UefiCpuPkg/UefiCpuPkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
   PcAtChipsetPkg/PcAtChipsetPkg.dec
+  SimicsOpenBoardPkg/OpenBoardPkg.dec
 
 [LibraryClasses]
   UefiDriverEntryPoint
@@ -37,11 +38,11 @@
   IoLib
   PcdLib
   UefiBootServicesTableLib
-  UefiRuntimeServicesTableLib
   BaseMemoryLib
-  HobLib
+  MemoryAllocationLib
   PciSegmentInfoLib
   AslUpdateLib
+  SimicsUefiDeviceLib
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
@@ -87,21 +88,19 @@
 
   gMinPlatformPkgTokenSpaceGuid.PcdWsmtProtectionFlags
 
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiTblsOffs ## CONSUMES
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiSizeOffs ## CONSUMES
+  gSimicsOpenBoardPkgTokenSpaceGuid.PcdUefiDeviceAddedAcpiDataOffs ## CONSUMES
+
 [Protocols]
   gEfiAcpiTableProtocolGuid                     ## CONSUMES
   gEfiMpServiceProtocolGuid                     ## CONSUMES
   gEfiPciIoProtocolGuid                         ## CONSUMES
 
 [Guids]
-  gEfiGlobalVariableGuid                        ## CONSUMES
-  gEfiHobListGuid                               ## CONSUMES
   gEfiEndOfDxeEventGroupGuid                    ## CONSUMES
 
 [Depex]
-  gEfiAcpiTableProtocolGuid           AND
-  gEfiMpServiceProtocolGuid           AND
-  gEfiPciRootBridgeIoProtocolGuid     AND
-  gEfiVariableArchProtocolGuid        AND
-  gEfiVariableWriteArchProtocolGuid
+  gEfiAcpiTableProtocolGuid AND gEfiMpServiceProtocolGuid
 
 

@@ -1181,7 +1181,7 @@ InstallMcfgFromScratch (
   //
   // Set MCFG table "Length" field based on the number of PCIe segments enumerated so far
   //
-  McfgTable->Header.Length = (UINT32)(sizeof (EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_BASE_ADDRESS_TABLE_HEADER) + 
+  McfgTable->Header.Length = (UINT32)(sizeof (EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_BASE_ADDRESS_TABLE_HEADER) +
                                       sizeof (EFI_ACPI_MEMORY_MAPPED_ENHANCED_CONFIGURATION_SPACE_BASE_ADDRESS_ALLOCATION_STRUCTURE) * SegmentCount);
 
   Segment = (VOID *)(McfgTable + 1);
@@ -1509,8 +1509,159 @@ AcpiEndOfDxeEvent (
   //
   // Calculate Hardware Signature value based on current platform configurations
   //
-  IsHardwareChange();
+  IsHardwareChange ();
 }
+
+/**
+  Install additional ACPI tables provided by the Simics
+  UEFI device, replacing existing tables if needed.
+**/
+static
+VOID
+InstallAdditionalTables (
+  VOID
+  )
+{
+  EFI_STATUS                       Status;
+  UINT32                           AvailableAcpiTables;
+  UINT32                           Index;
+  UINT32                           Mask;
+  UINT32                           TblSize;
+  UINT32                           ByteIndex;
+  UINT8                            *TableMem;
+  UINTN                            TableHandle;
+  EFI_ACPI_DESCRIPTION_HEADER      *Table;
+
+  DEBUG ((DEBUG_INFO, "Getting Additional ACPI Tables\n"));
+
+  AvailableAcpiTables = 0;
+  Status = SimicsUefiDeviceCheck ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_INFO,
+      "Simics UEFI Device does not exist. "
+      "No additional ACPI tables installed.\n"
+      ));
+    return;
+  }
+
+  Status = SimicsUefiDeviceRead (
+             PcdGet8 (PcdUefiDeviceAddedAcpiTblsOffs),
+             4,
+             &AvailableAcpiTables
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_INFO,
+      "Could not read ACPI table bitmap. "
+      "No additional ACPI tables installed.\n"
+      ));
+    return;
+  }
+
+  if (AvailableAcpiTables == 0) {
+    return;
+  }
+
+  DEBUG ((
+    DEBUG_INFO,
+    "Found additional ACPI tables: 0x%x.\n",
+    AvailableAcpiTables
+    ));
+
+  for (Index = 0; Index < 32; Index++) {
+    Mask = 1 << (31 - Index);
+    if ((AvailableAcpiTables & Mask) == 0) {
+      continue;
+    }
+
+    //
+    // Select this table and read its size
+    //
+    SimicsUefiDeviceWrite (
+      PcdGet8 (PcdUefiDeviceAddedAcpiTblsOffs),
+      4,
+      &Mask
+      );
+    SimicsUefiDeviceRead (
+      PcdGet8 (PcdUefiDeviceAddedAcpiSizeOffs),
+      4,
+      &TblSize
+      );
+    DEBUG ((
+      DEBUG_INFO,
+      "Table @mask 0x%x has size 0x%x.\n",
+      1 << (31 - Index),
+      TblSize
+      ));
+
+    TableMem = (UINT8 *)AllocateZeroPool (TblSize);
+    if (TableMem == NULL) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "Could not allocate table memory.\n"
+        ));
+      return;
+    }
+
+    //
+    // Read table data byte by byte.  The ACPI data register on the
+    // Simics UEFI device is a one-byte-wide streaming interface, so
+    // wider reads are not possible.
+    //
+    for (ByteIndex = 0; ByteIndex < TblSize; ByteIndex++) {
+      SimicsUefiDeviceRead (
+        PcdGet8 (PcdUefiDeviceAddedAcpiDataOffs),
+        1,
+        &TableMem[ByteIndex]
+        );
+    }
+
+    //
+    // If a table with the same signature exists, remove it
+    //
+    TableHandle = 0;
+    Status = LocateAcpiTableBySignature (
+               SIGNATURE_32 (
+                 TableMem[0],
+                 TableMem[1],
+                 TableMem[2],
+                 TableMem[3]
+                 ),
+               (EFI_ACPI_DESCRIPTION_HEADER **)&Table,
+               &TableHandle
+               );
+    if (!EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_INFO,
+        "Table with matching signature already exists. "
+        "Removing it to use override.\n"
+        ));
+      Status = mAcpiTable->UninstallAcpiTable (mAcpiTable, TableHandle);
+      ASSERT_EFI_ERROR (Status);
+      FreePool (Table);
+    }
+
+    //
+    // Install the new table
+    //
+    Status = mAcpiTable->InstallAcpiTable (
+                           mAcpiTable,
+                           TableMem,
+                           TblSize,
+                           &TableHandle
+                           );
+    ASSERT_EFI_ERROR (Status);
+
+    //
+    // Null-terminate signature for debug printing, then free
+    //
+    TableMem[4] = 0;
+    DEBUG ((DEBUG_INFO, "Installed ACPI table '%a'.\n", TableMem));
+    FreePool (TableMem);
+  }
+}
+
 
 /**
   ACPI Platform driver installation function.
@@ -1577,6 +1728,7 @@ InstallAcpiPlatform (
 
   InstallMadtFromScratch ();
   InstallMcfgFromScratch ();
+  InstallAdditionalTables ();
 
   return EFI_SUCCESS;
 }
