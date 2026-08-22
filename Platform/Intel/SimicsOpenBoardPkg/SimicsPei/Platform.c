@@ -502,7 +502,7 @@ SimicsVersionCheck(
   UINT32          ModelNumber;
 
   PciAddrPtr = PCI_LIB_ADDRESS(0, SIMICS_SIDEBANDPCI_DEV, SIMICS_SIDEBANDPCI_FUNC, 0);
-  CapOffset = PciRead8(PciAddrPtr + PCI_CAPBILITY_POINTER_OFFSET);
+  CapOffset = PciRead8(PciAddrPtr + PCI_CAPABILITY_POINTER_OFFSET);
   if (CapOffset != 0xFF) {
     ModelNumber = PciRead32(PciAddrPtr + CapOffset + 4);
     MajorVersion = PciRead32(PciAddrPtr + CapOffset + 8);
