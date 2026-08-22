@@ -1,0 +1,23 @@
+## @file
+#  Declaration file for NordMinPlatformPkg.
+#
+#  Support MinPlatform based boot for NordMinPlatformPkg.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 1.27
+  PACKAGE_NAME                   = NordMinPlatformPkg
+  PACKAGE_GUID                   = 8F3E8C1A-2D4B-4D9F-9A61-3C5F728E11A4
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gNordMinPlatformPkgTokenSpaceGuid                     = { 0xa9d4f3c2, 0x1b7e, 0x4e6a, { 0x9f, 0x82, 0xd3, 0x6b, 0xa1, 0x58, 0xc4, 0x90 } }
+
+[PcdsFixedAtBuild]
+  gNordMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize   |0|UINT16|0x00000004
