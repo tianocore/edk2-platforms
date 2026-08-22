@@ -78,6 +78,7 @@
   TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
   VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
+  VariableStorageRouterLib|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseStandaloneMmLib.inf
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
 !endif
 
@@ -133,8 +134,7 @@
   ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
 !if $(SECURE_STORAGE_ENABLE) == TRUE
   Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
-  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbStandaloneMm.inf {
     <LibraryClasses>
       DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
@@ -143,6 +143,8 @@
       VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLib.inf
       VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
   }
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
+  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
 !endif
 
 ###################################################################################################

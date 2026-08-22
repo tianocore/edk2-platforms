@@ -362,9 +362,13 @@
       <LibraryClasses>
         NULL|AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
     }
-    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbTraditionalMm.inf {
       <LibraryClasses>
         NULL|AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
+    }
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseTraditionalMmLib.inf
     }
     MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
       <PcdsFixedAtBuild>
