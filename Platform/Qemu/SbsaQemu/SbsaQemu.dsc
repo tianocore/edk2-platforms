@@ -169,6 +169,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
 
+  ArmCcaLib|MdeModulePkg/Library/ArmCcaLibNull/ArmCcaLibNull.inf
   ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
 
