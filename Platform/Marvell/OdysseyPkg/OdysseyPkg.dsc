@@ -35,6 +35,7 @@
 !include Silicon/Marvell/$(PLATFORM_NAME)/$(PLATFORM_NAME).dsc.inc
 
 [LibraryClasses]
+  ArmCcaLib|MdeModulePkg/Library/ArmCcaLibNull/ArmCcaLibNull.inf
   ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf   # used by PlatformSmbiosDxe
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf # used by SmcLib
