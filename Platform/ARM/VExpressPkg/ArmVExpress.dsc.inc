@@ -101,6 +101,7 @@
   ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
   ArmTransferListLib|ArmPkg/Library/ArmTransferListLib/ArmTransferListLib.inf
   ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
+  ArmCcaLib|MdeModulePkg/Library/ArmCcaLibNull/ArmCcaLibNull.inf
 
   # Versatile Express Specific Libraries
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
