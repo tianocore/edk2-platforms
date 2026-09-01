@@ -1,6 +1,6 @@
-# FtpmSmm Driver
+# TpmCrbOverFfaSmm Driver
 
-FtpmSmm driver is a software-based TPM implementation built using the
+TpmCrbOverFfaSmm driver is a software-based TPM implementation built using the
 [TPM 2.0 Reference Implementation Library][1] and the
 [TPM Service Command Response Buffer Interface over FF-A][2] specification.
 
@@ -10,26 +10,27 @@ while [the TPM Service Command Response Buffer Interface over FF-A][2] defines
 the communication mechanism between
 the TPM and the system using FF-A (Firmware Framework for Arm A-profile).
 
-With FtpmSmm driver, the platform where StandaloneMm is used
+With TpmCrbOverFfa driver, the platform where StandaloneMm is used
 can use TPM functionality for:
     - Block device encryption with LUKS using PCR.
     - End-to-end measurement boot.
 
 ## Overview
-Here is an overview how FtpmSmm works.
+Here is an overview how TpmCrbOverFfa driver works with fTPM.
 
 1) with UEFI
 ```
          UEFI (Normal world)       |         Secure World
     -------------------------------|------------------------------
                                    |
-       +--------------+            | +-----------+      +----------+
-       |    Tcg2Dxe   |            | |  FtpmSmm  |<---->|  TpmLib  |
-       +--------------+            | +-----------+      +----------+
-               |                   |       |
-               |                   |       ----------
-               |                   |                |
-               |                   |                |
+       +--------------+            | +------------------+      +--------------------+
+       |    Tcg2Dxe   |            | | TpmCrbOverFfaSmm |<---->| TpmCrbFfaDeviceLib |
+       +--------------+            | +------------------+      | (TpmCrbFfaFtpmLib) |
+               |                   |       |                   +--------------------+
+                                   |       |                             |
+               |                   |       ----------             +-------------+
+               |                   |                |             |    TpmLib   |
+               |                   |                |             +-------------+
                |                   |       +------------------+
                |                   |       | StandaloneMmCpu  |
                |                   |       +------------------+
@@ -48,13 +49,14 @@ Here is an overview how FtpmSmm works.
          linux (Normal world)      |         Secure World
     -------------------------------|------------------------------
                                    |
-       +----------------------+    | +-----------+      +----------+
-       |  TPM infra-structure |    | |  FtpmSmm  |<---->|  TpmLib  |
-       +----------------------+    | +-----------+      +----------+
-               |                   |       |
-               |                   |       ----------
-               |                   |                |
-               |                   |                |
+       +----------------------+    | +------------------+        +--------------------+
+       |  TPM infra-structure |    | | TpmCrbOverFfaSmm | <----> | TpmCrbFfaDeviceLib |
+       +----------------------+    | +------------------+        | (TpmCrbFfaFtpmLib) |
+               |                   |       |                     +--------------------+
+               |                   |       |                             |
+               |                   |       ----------            +--------------+
+               |                   |                |            |    TpmLib    |
+               |                   |                |            +--------------+
                |                   |       +------------------+
                |                   |       | StandaloneMmCpu  |
                |                   |       +------------------+
@@ -71,8 +73,9 @@ Here is an overview how FtpmSmm works.
 When a TPM command is initiated by Tpm2InstanceFfaLib or
 tpm_crb_ffa driver according to
 [the TPM Service Command Response Buffer Interface over FF-A][2] specitication,
-FtpmSmm receives the command request and it calls the TpmLib which
-is wrapper library of [The TPM 2.0 Reference Implementation Library][1]
+TpmCrbOverFfa StandaloneMm driver receives the command request and it calls
+the TpmCrbFfaDeviceLib interface. if TpmCrbFfaDeviceLib is used with fTPM via
+TpmCrbFfaFtpmLib, it use TpmLib which is wrapper library of [The TPM 2.0 Reference Implementation Library][1]
 to handle the command properly.
 
 After TpmLib handles the TPM command via
@@ -80,6 +83,9 @@ After TpmLib handles the TPM command via
 It delivers the result according to
 [the TPM Service Command Response Buffer Interface over FF-A][2] specitication.
 
+In the example, TpmCrbFfaDeviceLib is used with TpmCrbFfaFtpmLib using fTPM
+via TpmLib. However, TpmCrbFfaDeviceLib could be implmented according to
+platform and backend TPM device type (fTPM, dTPM or etc).
 
 ## Quick Start
 
@@ -103,19 +109,19 @@ e.x)
          MEASURED_BOOT=1 TRANSFER_LIST=1 MBEDTLS_DIR=${MBEDTLS_DIR}
 
 ### Build StandaloneMm
-To use FtpmSmm, StandaloneMm should be built with below options.
+To use TpmCrbOverFfaSmm, StandaloneMm should be built with below options.
 ```
-build -t GCC5 -a AARCH64 -p Platform/ARM/VExpressPkg/PlatformStandaloneMm.dsc -D ENABLE_UEFI_SECURE_VARIABLE=TRUE -D ENABLE_TPM=TRUE --pcd PcdTpmUniqueValue={UINT64 unique value}
+build -t GCC -a AARCH64 -p Platform/ARM/VExpressPkg/PlatformStandaloneMm.dsc -D ENABLE_UEFI_SECURE_VARIABLE=TRUE -D ENABLE_TPM=TRUE --pcd PcdTpmUniqueValue={UINT64 unique value}
 ```
 
 ### Build UEFI
-To use FtpmSmm, UEFI should be built with below options.
+To use TpmCrbOverFfaSmm, UEFI should be built with below options.
 ```
-    build -t GCC5 -a AARCH64 -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -D ENABLE_UEFI_SECURE_VARIABLE=TRUE -D ENABLE_TPM=TRUE
+    build -t GCC -a AARCH64 -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -D ENABLE_UEFI_SECURE_VARIABLE=TRUE -D ENABLE_TPM=TRUE
 ```
 
 ### Test
-You can check the TPM funtionality with FtpmSmm driver with ubuntu ditro:
+You can check the TPM funtionality with TpmCrbOverFfaSmm driver with ubuntu ditro:
 
 1) Measurement boot
 ```

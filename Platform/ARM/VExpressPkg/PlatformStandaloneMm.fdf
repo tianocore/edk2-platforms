@@ -82,7 +82,7 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
 !endif
 
 !if $(ENABLE_TPM) == TRUE
-  INF Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf
+  INF Platform/ARM/Drivers/TpmCrbOverFfaSmm/TpmCrbOverFfaSmm.inf
 !endif
 
 [FV.FVMAIN_COMPACT]

@@ -164,8 +164,10 @@
 !endif
 
 !if $(ENABLE_TPM) == TRUE
-  Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf {
+  Platform/ARM/Drivers/TpmCrbOverFfaSmm/TpmCrbOverFfaSmm.inf {
     <LibraryClasses>
       OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibFull.inf
+      TpmCrbFfaDeviceLib|Platform/ARM/Library/TpmCrbFfaFtpmLib/TpmCrbFfaFtpmLib.inf
+
   }
 !endif
