@@ -183,7 +183,7 @@
   # Common Arm Timer and Gic Components
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
