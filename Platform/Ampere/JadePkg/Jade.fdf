@@ -282,7 +282,7 @@ APRIORI DXE {
   #
   # ARM GIC Dxe
   #
-  INF ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
 
   INF UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
 

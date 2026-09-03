@@ -546,7 +546,7 @@
   #
   # ARM GIC Dxe
   #
-  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
 
   #
   # Console
