@@ -213,7 +213,7 @@
   #
   # ARM Support
   #
-  ArmPkg/Drivers/ArmGicDxe/ArmGicV3Dxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   #
