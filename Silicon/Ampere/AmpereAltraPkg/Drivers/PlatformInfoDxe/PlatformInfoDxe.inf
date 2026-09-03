@@ -21,6 +21,7 @@
   PlatformInfoStrings.uni
 
 [Packages]
+  ArmPkg/ArmPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
@@ -46,7 +47,8 @@
   gEfiIfrTianoGuid
   gPlatformInfoHobGuid
 
-[Protocols]
+[Pcd]
+  gArmTokenSpaceGuid.PcdBaseBoardProductName
 
 [Depex]
   TRUE

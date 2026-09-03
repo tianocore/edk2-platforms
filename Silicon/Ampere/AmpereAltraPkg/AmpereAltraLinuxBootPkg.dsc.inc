@@ -169,7 +169,7 @@
 
   SmbusLib|MdePkg/Library/PeiSmbusLibSmbus2Ppi/PeiSmbusLibSmbus2Ppi.inf
   IpmiLib|MdeModulePkg/Library/PeiIpmiLibIpmiPpi/PeiIpmiLibIpmiPpi.inf
-  ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/Pei/PeiManageabilityTransportSsif.inf
+  ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/PeiManageabilityTransportSsif.inf
   IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLibPei.inf
 
 [LibraryClasses.common.SEC, LibraryClasses.common.PEIM]
@@ -232,7 +232,7 @@
   SmbusLib|MdePkg/Library/DxeSmbusLib/DxeSmbusLib.inf
   IpmiLib|MdeModulePkg/Library/DxeIpmiLibIpmiProtocol/DxeIpmiLibIpmiProtocol.inf
   IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
-  ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/Dxe/DxeManageabilityTransportSsif.inf
+  ManageabilityTransportLib|ManageabilityPkg/Library/ManageabilityTransportSsifLib/DxeManageabilityTransportSsif.inf
 
 ################################################################################
 #
@@ -449,6 +449,7 @@
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
   gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
+  gArmTokenSpaceGuid.PcdProcessorSocketType|L"LGA 4926"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Ampere(R)"
   gArmTokenSpaceGuid.PcdProcessorAssetTag|L"Not Set"
 

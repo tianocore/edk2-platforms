@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2022, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2026, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -52,6 +52,14 @@
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
   DEFINE FIRMWARE_VER            = 0.01.001
   DEFINE EDK2_SKIP_PEICORE       = TRUE
+  DEFINE LINUXBOOT_FILE_IN_UEFI_EXTRA = FALSE
+
+  #
+  # The build command must specify the path of the LinuxBoot flashkernel file
+  #
+!ifndef $(LINUXBOOT_FILE)
+  !error "Need to specify the LinuxBoot flashkernel file with `-D LINUXBOOT_FILE=<flashkernel>`."
+!endif
 
 !include MdePkg/MdeLibs.dsc.inc
 
@@ -66,17 +74,17 @@
   # ACPI Libraries
   #
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
-  AcpiHelperLib|Platform/Ampere/AmperePlatformPkg/Library/AcpiHelperLib/AcpiHelperLib.inf
+
+  JedecJep106Lib|MdePkg/Library/JedecJep106Lib/JedecJep106Lib.inf
 
   #
   # Pcie Board
   #
-  BoardPcieLib|Platform/ASRockRack/Altra1L2QPkg/Library/BoardPcieLib/BoardPcieLib.inf
+  BoardPcieLib|Platform/ASRockRack/AltraBoardPkg/Library/BoardPcieLib/BoardPcieLib.inf
 
-  IOExpanderLib|Platform/ASRockRack/Altra1L2QPkg/Library/IOExpanderLib/IOExpanderLib.inf
-
-  PlatformBmcReadyLib|Platform/ASRockRack/Altra1L2QPkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
-  OemMiscLib|Platform/ASRockRack/Altra1L2QPkg/Library/OemMiscLib/OemMiscLib.inf
+  PlatformBmcReadyLib|Platform/ASRockRack/AltraBoardPkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+  OemMiscLib|Platform/ASRockRack/AltraBoardPkg/Library/OemMiscLib/OemMiscLib.inf
+  ArmSmcccSocIdLib|ArmPkg/Library/ArmSmcccSocIdLib/ArmSmcccSocIdLib.inf
 
 [LibraryClasses.common.PEIM]
   SmbusLib|MdePkg/Library/PeiSmbusLibSmbus2Ppi/PeiSmbusLibSmbus2Ppi.inf
@@ -85,13 +93,13 @@
   #
   # RTC Library: Common RTC
   #
-  RealTimeClockLib|Platform/ASRockRack/Altra1L2QPkg/Library/PCF85063RealTimeClockLib/PCF85063RealTimeClockLib.inf
+  RealTimeClockLib|Platform/ASRockRack/AltraBoardPkg/Library/ISL1208RealTimeClockLib/ISL1208RealTimeClockLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   SmbusLib|MdePkg/Library/DxeSmbusLib/DxeSmbusLib.inf
 
 [PcdsFixedAtBuild.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0309
 
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|$(MAJOR_VER)
   gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|$(MINOR_VER)
@@ -107,6 +115,9 @@
   # point only, for entry point versions >= 3.0.
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
+[PcdsDynamicExDefault.common]
+  gArmTokenSpaceGuid.PcdLinuxBootFileGuid|{GUID({0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}})}
+
 #
 # Specific Platform Component
 #
@@ -116,10 +127,10 @@
   # ACPI
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  Platform/ASRockRack/Altra1L2QPkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
   Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
-  Platform/ASRockRack/Altra1L2QPkg/AcpiTables/AcpiTables.inf
-  Platform/ASRockRack/Altra1L2QPkg/Ac02AcpiTables/Ac02AcpiTables.inf
+  Platform/ASRockRack/AltraBoardPkg/Ac01AcpiTables/Ac01AcpiTables.inf
+  Platform/ASRockRack/AltraBoardPkg/Ac02AcpiTables/Ac02AcpiTables.inf
 
   #
   # SMBIOS
@@ -127,6 +138,6 @@
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
-  Platform/ASRockRack/Altra1L2QPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
 
   MdeModulePkg/Application/HelloWorld/HelloWorld.inf

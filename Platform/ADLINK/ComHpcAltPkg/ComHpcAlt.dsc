@@ -58,7 +58,7 @@
   DEFINE FIRMWARE_VER            = 00.01.01-00
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = FALSE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -118,6 +118,7 @@
 
   PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
+  ArmSmcccSocIdLib|ArmPkg/Library/ArmSmcccSocIdLib/ArmSmcccSocIdLib.inf
 
   #
   # RTC Library: Common RTC
@@ -198,7 +199,11 @@
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x309
+
+  gArmTokenSpaceGuid.PcdSystemProductName|L"Ampere Altra Platform"
+  gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"ADLINK"
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"COM-HPC-ALT"
 
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the

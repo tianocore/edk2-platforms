@@ -57,8 +57,9 @@
 
   DEFINE FIRMWARE_VER            = 00.01.01-00
   DEFINE FIRMWARE_VER_HEX        = 0x00010100
+  DEFINE CAPSULE_ENABLE          = FALSE
   DEFINE INCLUDE_TFA_FW          = TRUE
-  DEFINE UEFI_SECURE_BOOT_ENABLE = TRUE
+  DEFINE UEFI_SECURE_BOOT_ENABLE = FALSE
   DEFINE TPM2_ENABLE             = TRUE
   DEFINE SHELL_ENABLE            = TRUE
   DEFINE INCLUDE_TFTP_COMMAND    = TRUE
@@ -73,6 +74,8 @@
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS      = TRUE
   DEFINE NETWORK_TLS_ENABLE                  = TRUE
   DEFINE REDFISH_ENABLE                      = TRUE
+
+  DEFINE X86_EMULATOR_ENABLE                 = FALSE
   DEFINE PERFORMANCE_MEASUREMENT_ENABLE      = FALSE
   DEFINE HEAP_GUARD_ENABLE                   = FALSE
 
@@ -112,10 +115,9 @@
   #
   BoardPcieLib|Platform/ASRockRack/AltraBoardPkg/Library/BoardPcieLib/BoardPcieLib.inf
 
-  IOExpanderLib|Platform/Ampere/JadePkg/Library/IOExpanderLib/IOExpanderLib.inf
-
-  PlatformBmcReadyLib|Platform/Ampere/JadePkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
+  PlatformBmcReadyLib|Platform/ASRockRack/AltraBoardPkg/Library/PlatformBmcReadyLib/PlatformBmcReadyLib.inf
   LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
+  ArmSmcccSocIdLib|ArmPkg/Library/ArmSmcccSocIdLib/ArmSmcccSocIdLib.inf
 
   #
   # RTC Library: Common RTC
@@ -194,7 +196,11 @@
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
 
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x307
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x309
+
+  gArmTokenSpaceGuid.PcdSystemProductName|L"ALTRAD8UD2-1L2Q"
+  gArmTokenSpaceGuid.PcdBaseBoardManufacturer|L"ASRock Rack"
+  gArmTokenSpaceGuid.PcdBaseBoardProductName|L"ALTRAD8UD2-1L2Q"
 
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
@@ -261,11 +267,10 @@
 
 [PcdsDynamicDefault.common.DEFAULT]
   # SMBIOS Type 0 - BIOS Information
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"ASRock Rack Inc."
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"EDK II"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString|L"MM/DD/YYYY"
 
 [PcdsDynamicExDefault.common.DEFAULT]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{GUID("f42e6f13-a7a6-4912-9962-ad2734b45c3a")}|VOID*|0x10
 
   # Default Video Resolution
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0  # 0 - Maximum
@@ -319,16 +324,6 @@
   !endif
 
   #
-  # Renesas PD720202 XHCI firmware uploader
-  #
-!ifdef $(USB_UPD720202_ROM_FILE)
-  Drivers/OptionRomPkg/RenesasFirmwarePD720202/RenesasFirmwarePD720202.inf {
-    <LibraryClasses>
-      DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
-  }
-!endif
-
-  #
   # VGA Aspeed
   #
   Drivers/ASpeed/ASpeedGopBinPkg/ASpeedAst2500GopDxe.inf
@@ -340,6 +335,7 @@
   ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  Platform/ASRockRack/Altra1L2QPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
   ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
 

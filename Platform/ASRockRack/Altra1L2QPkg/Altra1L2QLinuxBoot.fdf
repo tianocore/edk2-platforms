@@ -148,7 +148,12 @@ APRIORI DXE {
   #
   # Linuxboot in Flash Support
   #
-  INF Platform/Ampere/LinuxBootPkg/LinuxBoot.inf
+!ifdef $(LINUXBOOT_FILE)
+  FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {
+    SECTION UI = "LinuxBoot"
+    SECTION PE32 = $(LINUXBOOT_FILE)
+  }
+!endif
 
   #
   # Bds
@@ -159,10 +164,10 @@ APRIORI DXE {
   # ACPI
   #
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  INF Platform/ASRockRack/Altra1L2QPkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF RuleOverride=ACPITABLE Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
-  INF RuleOverride=ACPITABLE Platform/ASRockRack/Altra1L2QPkg/AcpiTables/AcpiTables.inf
-  INF RuleOverride=ACPITABLE Platform/ASRockRack/Altra1L2QPkg/Ac02AcpiTables/Ac02AcpiTables.inf
+  INF RuleOverride=ACPITABLE Platform/ASRockRack/AltraBoardPkg/Ac01AcpiTables/Ac01AcpiTables.inf
+  INF RuleOverride=ACPITABLE Platform/ASRockRack/AltraBoardPkg/Ac02AcpiTables/Ac02AcpiTables.inf
 
   #
   # SMBIOS
@@ -170,7 +175,7 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
-  INF Platform/ASRockRack/Altra1L2QPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  INF Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
 
   INF MdeModulePkg/Application/HelloWorld/HelloWorld.inf
 

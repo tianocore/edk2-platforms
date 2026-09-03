@@ -16,3 +16,7 @@
 
 [Sources]
   PlatformBmcReadyLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec

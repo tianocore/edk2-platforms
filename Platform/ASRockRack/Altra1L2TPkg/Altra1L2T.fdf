@@ -422,6 +422,7 @@ APRIORI DXE {
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/ASRockRack/AltraBoardPkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  INF Platform/ASRockRack/Altra1L2TPkg/Drivers/SmbiosBoardSpecificDxe/SmbiosBoardSpecificDxe.inf
   INF ManageabilityPkg/Universal/IpmiBlobTransferDxe/IpmiBlobTransferDxe.inf
 
   #
@@ -451,17 +452,6 @@ APRIORI DXE {
   !if $(REDFISH_ENABLE) == TRUE
     !include RedfishPkg/Redfish.fdf.inc
   !endif
-!endif
-
-  #
-  # Renesas PD720202 XHCI firmware uploader, requires firmware image
-  # in directory $(WORKSPACE)
-  #
-!ifdef $(USB_UPD720202_ROM_FILE)
-  INF Drivers/OptionRomPkg/RenesasFirmwarePD720202/RenesasFirmwarePD720202.inf
-  FILE FREEFORM = A059EBC4-D73D-4279-81BF-E4A89308B923 {
-    SECTION RAW = $(WORKSPACE)/K2026090.mem
-  }
 !endif
 
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc
