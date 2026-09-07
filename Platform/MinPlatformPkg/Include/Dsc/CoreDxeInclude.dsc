@@ -32,10 +32,12 @@
   #
   # Emulated variables for stages 1-4
   #
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
-    <PcdsFixedAtBuild>
-      gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
-  }
+  !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == TRUE
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
+      <PcdsFixedAtBuild>
+        gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+    }
+  !endif
 
   #
   # Real variables for stages 5+
