@@ -503,6 +503,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     ArmEtTypeEte
   },
 
+  // Common _STA information for CPUs/Clusters
+  {
+    {
+      ACPI_AML_STA_BASE_SUPPORTED
+    }
+  },
+
   // Processor Hierarchy Nodes
   {
     // Package
@@ -526,7 +533,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (PackageResources),
       // CM_OBJECT_TOKEN  LpiToken
-      CM_NULL_TOKEN
+      CM_NULL_TOKEN,
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     // Cluster 0
     {
@@ -549,7 +557,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster0Resources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (ClustersLpiRef)
+      REFERENCE_TOKEN (ClustersLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     // Cluster 1
     {
@@ -572,7 +581,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster1Resources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (ClustersLpiRef)
+      REFERENCE_TOKEN (ClustersLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     // Eight cores
     {
@@ -595,7 +605,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster0CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -617,7 +628,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster0CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -639,7 +651,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster0CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -661,7 +674,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster0CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
 
     {
@@ -684,7 +698,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster1CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -706,7 +721,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster1CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -728,7 +744,8 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
       REFERENCE_TOKEN (Cluster1CoreResources),
       // CM_OBJECT_TOKEN  LpiToken
-      REFERENCE_TOKEN (CoresLpiRef)
+      REFERENCE_TOKEN (CoresLpiRef),
+      .StaToken = REFERENCE_TOKEN (StaInfo[0])
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -1620,6 +1637,55 @@ GetLpiInfo (
   return EFI_NOT_FOUND;
 }
 
+/** Return _STA information.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARCH_COMMON_STA_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetStaInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  *CONST  This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     *CONST  CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo;
+  UINT32                          TotalObjCount;
+  UINT32                          ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->StaInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->StaInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size     = sizeof (PlatformRepo->StaInfo[ObjIndex]);
+      CmObject->Data     = (VOID *)&PlatformRepo->StaInfo[ObjIndex];
+      CmObject->Count    = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
 /** Return a GT Block timer frame info list.
 
   @param [in]      This        Pointer to the Configuration Manager Protocol.
@@ -2230,6 +2296,19 @@ GetArchCommonNameSpaceObject (
                  0,
                  Token,
                  GetLpiInfo,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjStaInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 NULL,
+                 0,
+                 0,
+                 Token,
+                 GetStaInfo,
                  CmObject
                  );
       break;

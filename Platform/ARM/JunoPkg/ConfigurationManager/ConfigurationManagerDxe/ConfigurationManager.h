@@ -322,11 +322,11 @@ typedef struct PlatformRepositoryInfo {
   CM_ARCH_COMMON_CPC_INFO               CpcInfo[PSD_DOMAIN_COUNT];
 
 #ifdef ENABLE_TPM
-  /// TPM2 Interface Information
-  CM_ARCH_COMMON_TPM2_INTERFACE_INFO    TpmInfo;
+  /// TPM2 Interface Information
+  CM_ARCH_COMMON_TPM2_INTERFACE_INFO    TpmInfo;
 
-  /// TPM2 Device Information
-  CM_ARCH_COMMON_TPM2_DEVICE_INFO       TpmDevInfo;
+  /// TPM2 Device Information
+  CM_ARCH_COMMON_TPM2_DEVICE_INFO       TpmDevInfo;
 #endif
 
   /// Juno Board Revision

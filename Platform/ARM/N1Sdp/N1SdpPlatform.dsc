@@ -4,7 +4,7 @@
 # This provides platform specific component descriptions and libraries that
 # conform to EFI/Framework standards.
 #
-# Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.<BR>
+# Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -131,9 +131,9 @@
   gArmPlatformTokenSpaceGuid.PL011UartInterrupt|95
 
   # PL011 Serial Debug UART (DBG2)
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1C0A0000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x1C0A0000
   gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz|24000000
 
   # SBSA Watchdog
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|93
