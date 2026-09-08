@@ -6,7 +6,7 @@
 # INF files to generate AutoGen.c and AutoGen.h files
 # for the build infrastructure.
 #
-# Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2025, Intel Corporation. All rights reserved.<BR>
 # Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -120,14 +120,17 @@
   IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
   IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
-  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
-  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
   IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
-  IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
-  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
-  IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
+!if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChildStandaloneMm.inf
+  IpmiFeaturePkg/BmcElog/StandaloneMmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElogStandaloneMm.inf
+!else
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
+  IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+  IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
+!endif
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
   IpmiFeaturePkg/GenericFru/GenericFru.inf
