@@ -1706,6 +1706,10 @@ UsbSerialDriverBindingStart (
   UART_FLOW_CONTROL_DEVICE_PATH       *FlowControl;
   UINT32                              Control;
   EFI_DEVICE_PATH_PROTOCOL            *TempDevicePath;
+  EFI_OPEN_PROTOCOL_INFORMATION_ENTRY *ChildInfo;
+  UINTN                               ChildCount;
+  UINTN                               ChildIdx;
+  EFI_HANDLE                          TerminalChild;
 
   UsbSerialDevice = AllocateZeroPool (sizeof (USB_SER_DEV));
   ASSERT (UsbSerialDevice != NULL);
@@ -2083,6 +2087,46 @@ UsbSerialDriverBindingStart (
                  );
 
   UsbSerialDevice->Shutdown = FALSE;
+
+  if (FeaturePcdGet (PcdFtdiAutoAttachConsole)) {
+    //
+    // Connect TerminalDxe to produce SimpleTextIn/SimpleTextOut on the child handle
+    //
+    gBS->ConnectController (UsbSerialDevice->ControllerHandle, NULL, NULL, TRUE);
+
+    //
+    // Query child handles produced by TerminalDxe, attach console device GUIDs,
+    // and connect ConSplitter so the USB serial port is included in system consoles
+    //
+    ChildInfo  = NULL;
+    ChildCount = 0;
+    Status     = gBS->OpenProtocolInformation (
+                        UsbSerialDevice->ControllerHandle,
+                        &gEfiSerialIoProtocolGuid,
+                        &ChildInfo,
+                        &ChildCount
+                        );
+    if (!EFI_ERROR (Status) && (ChildInfo != NULL)) {
+      for (ChildIdx = 0; ChildIdx < ChildCount; ChildIdx++) {
+        if ((ChildInfo[ChildIdx].Attributes & EFI_OPEN_PROTOCOL_BY_CHILD_CONTROLLER) != 0) {
+          TerminalChild = ChildInfo[ChildIdx].ControllerHandle;
+          gBS->InstallMultipleProtocolInterfaces (
+                 &TerminalChild,
+                 &gEfiConsoleOutDeviceGuid,
+                 NULL,
+                 &gEfiConsoleInDeviceGuid,
+                 NULL,
+                 &gEfiStandardErrorDeviceGuid,
+                 NULL,
+                 NULL
+                 );
+          gBS->ConnectController (TerminalChild, NULL, NULL, TRUE);
+        }
+      }
+
+      FreePool (ChildInfo);
+    }
+  }
 
   return EFI_SUCCESS;
 
