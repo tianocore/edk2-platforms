@@ -1905,11 +1905,12 @@ UsbSerialDriverBindingStart (
 
   //
   // set the values of UsbSerialDevice->FlowControlDevicePath
-  UsbSerialDevice->FlowControlDevicePath.Header.Type = MESSAGING_DEVICE_PATH;
-  UsbSerialDevice->FlowControlDevicePath.Header.SubType = MSG_VENDOR_DP;
+  UsbSerialDevice->FlowControlDevicePath.Header.Type      = MESSAGING_DEVICE_PATH;
+  UsbSerialDevice->FlowControlDevicePath.Header.SubType   = MSG_VENDOR_DP;
   UsbSerialDevice->FlowControlDevicePath.Header.Length[0] = (UINT8) (sizeof (UART_FLOW_CONTROL_DEVICE_PATH));
   UsbSerialDevice->FlowControlDevicePath.Header.Length[1] = (UINT8) ((sizeof (UART_FLOW_CONTROL_DEVICE_PATH)) >> 8);
-  UsbSerialDevice->FlowControlDevicePath.FlowControlMap = 0;
+  CopyGuid (&UsbSerialDevice->FlowControlDevicePath.Guid, &gEfiUartDevicePathGuid);
+  UsbSerialDevice->FlowControlDevicePath.FlowControlMap   = 0;
 
   Status = SetAttributesInternal (
              UsbSerialDevice, 
@@ -2035,14 +2036,16 @@ UsbSerialDriverBindingStart (
                                   (EFI_DEVICE_PATH_PROTOCOL *) &UsbSerialDevice->UartDevicePath
                                   );
   //
-  // Continue building the device path by appending the flow control node
+  // Continue building the device path by appending the flow control node only if configured
   //
-  TempDevicePath = UsbSerialDevice->DevicePath;
-  UsbSerialDevice->DevicePath = AppendDevicePathNode (
-                                  TempDevicePath,
-                                  (EFI_DEVICE_PATH_PROTOCOL *) &UsbSerialDevice->FlowControlDevicePath
-                                  );
-  FreePool (TempDevicePath);
+  if (FlowControl != NULL) {
+    TempDevicePath = UsbSerialDevice->DevicePath;
+    UsbSerialDevice->DevicePath = AppendDevicePathNode (
+                                    TempDevicePath,
+                                    (EFI_DEVICE_PATH_PROTOCOL *) &UsbSerialDevice->FlowControlDevicePath
+                                    );
+    FreePool (TempDevicePath);
+  }
 
   if (UsbSerialDevice->DevicePath == NULL) {
     Status = EFI_OUT_OF_RESOURCES;
