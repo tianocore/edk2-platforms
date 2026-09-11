@@ -599,7 +599,6 @@ SetDataInternal (
   EFI_STATUS              Status;
   EFI_USB_DEVICE_REQUEST  DevReq;
   UINT32                  ReturnValue;
-  UINT8                   ConfigurationValue;
 
   //
   // Since data bits settings of 6,7,8 cannot be set with a stop bits setting of
@@ -687,10 +686,10 @@ SetDataInternal (
   Status = UsbIo->UsbControlTransfer (
                     UsbIo,
                     &DevReq,
-                    EfiUsbDataOut,
+                    EfiUsbNoData,
                     WDR_SHORT_TIMEOUT,
-                    &ConfigurationValue,
-                    1,
+                    NULL,
+                    0,
                     &ReturnValue
                     );
   if (EFI_ERROR (Status)) {
@@ -733,7 +732,6 @@ SetBaudRateInternal (
   EFI_STATUS              Status;
   EFI_USB_DEVICE_REQUEST  DevReq;
   UINT32                  ReturnValue;
-  UINT8                   ConfigurationValue;
   UINT16                  EncodedBaudRate;
   EFI_TPL                 Tpl;
 
@@ -779,10 +777,10 @@ SetBaudRateInternal (
   Status = UsbIo->UsbControlTransfer (
                     UsbIo,
                     &DevReq,
-                    EfiUsbDataOut,
+                    EfiUsbNoData,
                     WDR_SHORT_TIMEOUT,
-                    &ConfigurationValue,
-                    1,
+                    NULL,
+                    0,
                     &ReturnValue
                     );
   if (EFI_ERROR (Status)) {
@@ -995,7 +993,6 @@ SetFlowControlInternal (
   EFI_STATUS               Status;
   EFI_USB_DEVICE_REQUEST   DevReq;
   UINT32                   ReturnValue;
-  UINT8                    ConfigurationValue;
 
   //
   // set DevReq.Value based on the value of FlowControlEnable
@@ -1017,10 +1014,10 @@ SetFlowControlInternal (
   Status              = UsbIo->UsbControlTransfer (
                                  UsbIo,
                                  &DevReq,
-                                 EfiUsbDataOut,
+                                 EfiUsbNoData,
                                  WDR_TIMEOUT,
-                                 &ConfigurationValue,
-                                 1,
+                                 NULL,
+                                 0,
                                  &ReturnValue
                                  );
   if (EFI_ERROR (Status)) {
@@ -1064,7 +1061,6 @@ SetDtrInternal (
   EFI_STATUS              Status;
   EFI_USB_DEVICE_REQUEST  DevReq;
   UINT32                  ReturnValue;
-  UINT8                   ConfigurationValue;
 
   //
   // set the value of DevReq.Value based on the value of DtrEnable
@@ -1087,10 +1083,10 @@ SetDtrInternal (
   Status = UsbIo->UsbControlTransfer (
                     UsbIo,
                     &DevReq,
-                    EfiUsbDataOut,
+                    EfiUsbNoData,
                     WDR_TIMEOUT,
-                    &ConfigurationValue,
-                    1,
+                    NULL,
+                    0,
                     &ReturnValue
                     );
   if (EFI_ERROR (Status)) {
@@ -1133,7 +1129,6 @@ SetRtsInternal (
   EFI_STATUS              Status;
   EFI_USB_DEVICE_REQUEST  DevReq;
   UINT32                  ReturnValue;
-  UINT8                   ConfigurationValue;
 
   //
   // set DevReq.Value based on the value of RtsEnable
@@ -1157,10 +1152,10 @@ SetRtsInternal (
   Status = UsbIo->UsbControlTransfer (
                     UsbIo,
                     &DevReq,
-                    EfiUsbDataOut,
+                    EfiUsbNoData,
                     WDR_TIMEOUT,
-                    &ConfigurationValue,
-                    1,
+                    NULL,
+                    0,
                     &ReturnValue
                     );
   if (EFI_ERROR (Status)) {
@@ -1381,7 +1376,6 @@ ResetInternal (
 {
   EFI_STATUS              Status;
   EFI_USB_DEVICE_REQUEST  DevReq;
-  UINT8                   ConfigurationValue;
   UINT32                  ReturnValue;
 
   DevReq.Request     = FTDI_COMMAND_RESET_PORT;
@@ -1393,10 +1387,10 @@ ResetInternal (
   Status = UsbSerialDevice->UsbIo->UsbControlTransfer (
                                      UsbSerialDevice->UsbIo,
                                      &DevReq,
-                                     EfiUsbDataIn,
+                                     EfiUsbNoData,
                                      WDR_TIMEOUT,
-                                     &ConfigurationValue,
-                                     1,
+                                     NULL,
+                                     0,
                                      &ReturnValue
                                      );
   if (EFI_ERROR (Status)) {
@@ -1412,10 +1406,10 @@ ResetInternal (
   Status = UsbSerialDevice->UsbIo->UsbControlTransfer (
                                      UsbSerialDevice->UsbIo,
                                      &DevReq,
-                                     EfiUsbDataIn,
+                                     EfiUsbNoData,
                                      WDR_TIMEOUT,
-                                     &ConfigurationValue,
-                                     1,
+                                     NULL,
+                                     0,
                                      &ReturnValue
                                      );
   if (EFI_ERROR (Status)) {
