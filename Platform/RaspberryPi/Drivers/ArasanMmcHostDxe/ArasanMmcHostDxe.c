@@ -260,7 +260,11 @@ CalculateClockFrequencyDivisor (
     return Status;
   }
 
-  ASSERT (BaseFrequency != 0);
+  if (BaseFrequency == 0) {
+    DEBUG ((DEBUG_ERROR, "%a: firmware reported a base clock of 0\n", __func__));
+    return EFI_DEVICE_ERROR;
+  }
+
   Divisor = BaseFrequency / TargetFrequency;
 
   // Arasan controller is based on 3.0 spec so the div is multiple of 2
