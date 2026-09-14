@@ -57,7 +57,7 @@
 !include DynamicTablesPkg/DynamicTables.dsc.inc
 
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE
-!include Platform/ARM/Features/Fwu/FmpSystemFipImage.dsc.inc
+!include Platform/ARM/Features/Fwu/FmpSystemFipImageRuntime.dsc.inc
 !endif
 
 [LibraryClasses.common]
@@ -134,6 +134,10 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdEnableVariableRuntimeCache|FALSE
 !endif
 
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportProcessCapsuleAtRuntime|TRUE
+!endif
+
 [PcdsFixedAtBuild.common]
   # Only one core enters UEFI, and PSCI is implemented in EL3 by TF-A
   gArmPlatformTokenSpaceGuid.PcdCoreCount|1
@@ -160,7 +164,11 @@
   #
 !if $(ENABLE_STMM) == TRUE
   ## MM Communicate
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  gArmTokenSpaceGuid.PcdMmBufferBase|0xFBF00000
+!else
   gArmTokenSpaceGuid.PcdMmBufferBase|0xFEF00000
+!endif
   gArmTokenSpaceGuid.PcdMmBufferSize|0x10000
 !endif
 
@@ -278,8 +286,16 @@
   # Normal pseudo crbs which locality from 0 to 3 are allocated
   # at the start of System Memory.
   #
+!if $(ENABLE_FIRMWARE_UPDATE) == TRUE
+  #
+  # When ENABLE_FIRMWARE_UPDATE, TZC DRAM size is 64MB.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfbf10000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfbf13fff
+!else
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0xfef10000
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0xfef13fff
+!endif
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
   gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc|FALSE
   gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdGenTpm2DeviceTable|TRUE

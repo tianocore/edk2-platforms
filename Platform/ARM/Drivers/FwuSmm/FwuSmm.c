@@ -58,13 +58,17 @@
 
 #include <Library/ArmMmHandlerContext.h>
 #include <Library/BaseLib.h>
-#include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/DebugLib.h>
+#include <Library/FmpAuthenticationLib.h>
+#include <Library/FmpDependencyLib.h>
+#include <Library/FmpPayloadHeaderLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/HobLib.h>
 #include <Library/MmServicesTableLib.h>
 
 #include <Protocol/BlockIo.h>
+#include <Protocol/FirmwareManagement.h>
 #include <Protocol/MmCommunication2.h>
 
 #include <Library/FwsPlatformLib.h>
@@ -79,6 +83,8 @@
 
 #define IFD_IS_OPENED(Ifd)          ((((Ifd)->ImageFile != NULL)))
 #define IFD_IS_STATUS_STAGING(Ifd)  ((BOOLEAN) ((((Ifd)->Status) & IFD_F_STATUS_STAGING) != 0))
+
+#define FMP_MAX_HEADER_SIZE  (SIZE_1MB)
 
 /**
  * See the PSA specification 3.2.1 Firmware Store state machine.
@@ -123,18 +129,28 @@ typedef struct {
 
   /// See the IFD_F_STATUS_*
   UINT64            Status;
+
+  /// For buffered write
+  UINT8             *Buffer;
+
+  /// Current Pos for Commit
+  UINTN             CommitPos;
+
+  /// Trimmed Size from buffer (e.x) Header for authtentication.
+  UINTN             TrimmedSize;
 } IMAGE_FILE_DESCRIPTOR;
 
 STATIC EFI_MMRAM_DESCRIPTOR        *mNsCommBufferRange;
-STATIC EFI_MM_SYSTEM_TABLE         *mMmst           = NULL;
-STATIC UINT32                      mStagingFlags    = 0;
-STATIC IMAGE_FILE_DESCRIPTOR       *mFdTable        = NULL;
-STATIC UINTN                       mFdTableSize     = 0;
-STATIC PSA_MM_FWU_IMAGE_DIRECTORY  *mImageDirectory = NULL;
-STATIC FWS_DEVICE_INSTANCE         *mFwsDevice      = NULL;
-STATIC FW_STORE_STATE              mFwState         = FW_STORE_REGULAR;
-STATIC UINT32                      mFwuFlags        = 0;
-STATIC UINT32                      mFwuVendorFlags  = 0;
+STATIC EFI_MM_SYSTEM_TABLE         *mMmst             = NULL;
+STATIC UINT32                      mStagingFlags      = 0;
+STATIC IMAGE_FILE_DESCRIPTOR       *mFdTable          = NULL;
+STATIC UINTN                       mFdTableSize       = 0;
+STATIC PSA_MM_FWU_IMAGE_DIRECTORY  *mImageDirectory   = NULL;
+STATIC FWS_DEVICE_INSTANCE         *mFwsDevice        = NULL;
+STATIC FW_STORE_STATE              mFwState           = FW_STORE_REGULAR;
+STATIC UINT32                      mFwuFlags          = 0;
+STATIC UINT32                      mFwuVendorFlags    = 0;
+STATIC UINTN                       mFwuCommitUnitSize = 0;
 
 // Initialise the Service status to error init by default.
 STATIC UINT32  mServiceStatus = SERVICE_STATUS_ERR_INIT;
@@ -265,9 +281,17 @@ ClearStaging (
         }
 
         ASSERT (Status == EFI_SUCCESS);
-        Ifd->Pos       = 0;
-        Ifd->OpType    = FwuOpStreamRead;
-        Ifd->ImageFile = NULL;
+
+        Ifd->ImageFile   = NULL;
+        Ifd->Pos         = 0;
+        Ifd->OpType      = FwuOpStreamRead;
+        Ifd->CommitPos   = 0;
+        Ifd->TrimmedSize = 0;
+
+        if (Ifd->Buffer != NULL) {
+          FreePool (Ifd->Buffer);
+          Ifd->Buffer = NULL;
+        }
       } else if (Mode == CLEAR_ERROR) {
         /**
          * CLEAR_ERROR Mode could be called when an error occurred during the begining staging.
@@ -471,6 +495,9 @@ InitImageFileDescTable (
   Ifd->Pos               = 0;
   Ifd->OpType            = FwuOpStreamRead;
   Ifd->Status            = 0;
+  Ifd->CommitPos         = 0;
+  Ifd->Buffer            = NULL;
+  Ifd->TrimmedSize       = 0;
 
   for (Idx = 1; Idx < mFdTableSize; Idx++) {
     Ifd     = &mFdTable[Idx];
@@ -481,9 +508,140 @@ InitImageFileDescTable (
     Ifd->Pos               = 0;
     Ifd->OpType            = FwuOpStreamRead;
     Ifd->Status            = 0;
+    Ifd->CommitPos         = 0;
+    Ifd->Buffer            = NULL;
+    Ifd->TrimmedSize       = 0;
   }
 
   return EFI_SUCCESS;
+}
+
+/**
+ * Authenticate the Image which includes the FmpHeaders before
+ * writing any data from the image into firmware storage.
+ *
+ * @param[in] Ifd               Image file descriptor
+ *
+ * @retval PSA_MM_FWU_SUCCESS
+ * @retval PSA_MM_FWU_AUTH_FAIL
+ */
+STATIC
+INT32
+EFIAPI
+ImageFileAuthtenticate (
+  IN IMAGE_FILE_DESCRIPTOR  *Ifd
+  )
+{
+  RETURN_STATUS  Status;
+  VOID           *PublicKeyData;
+  UINTN          PublicKeyDataLength;
+  UINT8          *PublicKeyDataXdr;
+  UINT8          *PublicKeyDataXdrEnd;
+
+  /*
+   * If PcdFwuFmpImageAuth is FALSE, the authentication is already done
+   * in the normal world.
+   */
+  if (!FeaturePcdGet (PcdFwuFmpImageAuth)) {
+    return PSA_MM_FWU_SUCCESS;
+  }
+
+  PublicKeyDataXdr    = PcdGetPtr (PcdFmpDevicePkcs7CertBufferXdr);
+  PublicKeyDataXdrEnd = PublicKeyDataXdr + PcdGetSize (PcdFmpDevicePkcs7CertBufferXdr);
+
+  if ((PublicKeyDataXdr == NULL) || (PublicKeyDataXdr == PublicKeyDataXdrEnd)) {
+    return PSA_MM_FWU_AUTH_FAIL;
+  }
+
+  while (PublicKeyDataXdr < PublicKeyDataXdrEnd) {
+    if ((PublicKeyDataXdr + sizeof (UINT32)) > PublicKeyDataXdrEnd) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Certificate size extends beyond end of Data.\n", &Ifd->ImageTypeGuid));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyDataLength = SwapBytes32 (*(UINT32 *)(PublicKeyDataXdr));
+    PublicKeyDataXdr   += sizeof (UINT32);
+
+    if (PublicKeyDataXdr + PublicKeyDataLength > PublicKeyDataXdrEnd) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Certificate size extends beyond end of Data.\n", &Ifd->ImageTypeGuid));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyData = PublicKeyDataXdr;
+    Status        = AuthenticateFmpImage (
+                      (EFI_FIRMWARE_IMAGE_AUTHENTICATION *)Ifd->Buffer,
+                      Ifd->Pos,
+                      PublicKeyData,
+                      PublicKeyDataLength
+                      );
+    if (RETURN_ERROR (Status) && (Status != RETURN_SECURITY_VIOLATION)) {
+      DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Invalid Image Header for auth: %r\n", &Ifd->ImageTypeGuid, Status));
+      return PSA_MM_FWU_AUTH_FAIL;
+    }
+
+    PublicKeyDataXdr += ALIGN_VALUE (PublicKeyDataLength, 4);
+  }
+
+  if (Status != RETURN_SUCCESS) {
+    DEBUG ((DEBUG_ERROR, "FwuSmm(%g): Failed to verify the Image.\n", &Ifd->ImageTypeGuid));
+    return PSA_MM_FWU_AUTH_FAIL;
+  }
+
+  return PSA_MM_FWU_SUCCESS;
+}
+
+/**
+ * Trim Headers from the Image file.
+ *
+ * @param[in] Ifd               Image file descriptor
+ *
+ */
+STATIC
+VOID
+EFIAPI
+ImageFileTrimHeaders (
+  IN IMAGE_FILE_DESCRIPTOR  *Ifd
+  )
+{
+  EFI_STATUS                         Status;
+  EFI_FIRMWARE_IMAGE_AUTHENTICATION  *Image;
+  UINTN                              ImageSize;
+  UINT32                             DependenciesSize;
+  VOID                               *FmpPayload;
+  UINTN                              FmpPayloadSize;
+  UINT32                             FmpHeaderSize;
+  UINT32                             AllHeaderSize;
+
+  if (!FeaturePcdGet (PcdFwuFmpImageAuth)) {
+    return;
+  }
+
+  Image            = (EFI_FIRMWARE_IMAGE_AUTHENTICATION *)Ifd->Buffer;
+  ImageSize        = Ifd->Pos;
+  DependenciesSize = 0;
+  FmpHeaderSize    = 0;
+
+  GetImageDependency (Image, ImageSize, &DependenciesSize, NULL);
+
+  FmpPayload =  (VOID *)((UINT8 *)Image + sizeof (Image->MonotonicCount) +
+                         Image->AuthInfo.Hdr.dwLength  + DependenciesSize);
+  FmpPayloadSize = ImageSize - (sizeof (Image->MonotonicCount) +
+                                Image->AuthInfo.Hdr.dwLength + DependenciesSize);
+  Status = GetFmpPayloadHeaderSize (FmpPayload, FmpPayloadSize, &FmpHeaderSize);
+
+  /*
+   * FmpHeader verification is already done in normal world.
+   * Therefore, it's enough to ASSERT in here.
+   */
+  ASSERT_EFI_ERROR (Status);
+
+  AllHeaderSize = sizeof (Image->MonotonicCount) +
+                  FmpHeaderSize + DependenciesSize +
+                  Image->AuthInfo.Hdr.dwLength;
+
+  Ifd->Buffer     += AllHeaderSize;
+  Ifd->Pos        -= AllHeaderSize;
+  Ifd->TrimmedSize = AllHeaderSize;
 }
 
 /**
@@ -781,6 +939,7 @@ FwuSmmOpen (
   IMAGE_FILE_DESCRIPTOR      *Ifd = NULL;
   CONST PSA_MM_FWU_OPEN_REQ  *ReqData;
   PSA_MM_FWU_OPEN_RESP       *RespData;
+  UINTN                      BufferSize;
 
   ReqData  = (CONST PSA_MM_FWU_OPEN_REQ *)GET_FWU_DATA_BUFFER (Message);
   RespData = (PSA_MM_FWU_OPEN_RESP *)GET_FWU_DATA_BUFFER (Message);
@@ -823,6 +982,21 @@ FwuSmmOpen (
                );
     if (EFI_ERROR (Status)) {
       return PSA_MM_FWU_NOT_AVAILABLE;
+    }
+
+    if (!FeaturePcdGet (PcdFwuDirectWrite)) {
+      BufferSize = Ifd->ImageFile->MaxSize;
+      if (FeaturePcdGet (PcdFwuFmpImageAuth)) {
+        BufferSize += FMP_MAX_HEADER_SIZE;
+      }
+
+      Ifd->Buffer = AllocateRuntimeZeroPool (BufferSize);
+      if (Ifd->Buffer == NULL) {
+        FwsRelease (Ifd->ImageFile, 0, NULL, NULL);
+        Ifd->ImageFile = NULL;
+
+        return PSA_MM_FWU_NOT_AVAILABLE;
+      }
     }
   } else {
     Ifd->ImageFile = AllocateRuntimePool (sizeof (FWS_IMAGE_FILE));
@@ -907,12 +1081,16 @@ FwuSmmWriteStream (
     return PSA_MM_FWU_OUT_OF_BOUNDS;
   }
 
-  Status = FwsWrite (Ifd->ImageFile, WriteBuffer, &WriteSize, Ifd->Pos);
-  if (EFI_ERROR (Status)) {
-    return PSA_MM_FWU_NO_PERMISSION;
+  if (FeaturePcdGet (PcdFwuDirectWrite)) {
+    Status = FwsWrite (Ifd->ImageFile, WriteBuffer, &WriteSize, Ifd->Pos);
+    if (EFI_ERROR (Status)) {
+      return PSA_MM_FWU_NO_PERMISSION;
+    }
+  } else {
+    CopyMem (Ifd->Buffer + Ifd->Pos, WriteBuffer, WriteSize);
   }
 
-  Ifd->Pos += ReqData->DataLen;
+  Ifd->Pos += WriteSize;
 
   return PSA_MM_FWU_SUCCESS;
 }
@@ -1034,6 +1212,7 @@ FwuSmmCommit (
   CONST PSA_MM_FWU_COMMIT_REQ  *ReqData;
   PSA_MM_FWU_COMMIT_RESP       *RespData;
   BOOLEAN                      IsCorrectBoot;
+  UINTN                        WriteSize;
 
   ReqData  = (CONST PSA_MM_FWU_COMMIT_REQ *)GET_FWU_DATA_BUFFER (Message);
   RespData = (PSA_MM_FWU_COMMIT_RESP *)GET_FWU_DATA_BUFFER (Message);
@@ -1048,6 +1227,34 @@ FwuSmmCommit (
     FwuStatus = PSA_MM_FWU_SUCCESS;
 
     goto ErrorHandler;
+  }
+
+  if (!FeaturePcdGet (PcdFwuDirectWrite) && (Ifd->OpType == FwuOpStreamWrite) &&
+      (Ifd->Pos != Ifd->CommitPos))
+  {
+    if (Ifd->CommitPos == 0) {
+      FwuStatus = ImageFileAuthtenticate (Ifd);
+      if (FwuStatus != PSA_MM_FWU_SUCCESS) {
+        goto ErrorHandler;
+      }
+
+      ImageFileTrimHeaders (Ifd);
+    }
+
+    WriteSize = MIN (mFwuCommitUnitSize, (Ifd->Pos - Ifd->CommitPos));
+    Status    = FwsWrite (Ifd->ImageFile, Ifd->Buffer + Ifd->CommitPos, &WriteSize, Ifd->CommitPos);
+    if (EFI_ERROR (Status)) {
+      FwuStatus = PSA_MM_FWU_AUTH_FAIL;
+      goto ErrorHandler;
+    }
+
+    Ifd->CommitPos += WriteSize;
+
+    if (Ifd->Pos != Ifd->CommitPos) {
+      RespData->Progress  = Ifd->CommitPos;
+      RespData->TotalWork = Ifd->Pos;
+      return PSA_MM_FWU_RESUME;
+    }
   }
 
   FwsCheckCorrectBoot (Ifd->ImageFile->FwsDevice, &IsCorrectBoot);
@@ -1115,9 +1322,16 @@ FwuSmmCommit (
   FwuStatus = PSA_MM_FWU_SUCCESS;
 
 ErrorHandler:
-  Ifd->ImageFile = NULL;
-  Ifd->Pos       = 0;
-  Ifd->OpType    = FwuOpStreamRead;
+  if (Ifd->Buffer != NULL) {
+    FreePool (Ifd->Buffer - Ifd->TrimmedSize);
+    Ifd->Buffer = NULL;
+  }
+
+  Ifd->ImageFile   = NULL;
+  Ifd->Pos         = 0;
+  Ifd->OpType      = FwuOpStreamRead;
+  Ifd->CommitPos   = 0;
+  Ifd->TrimmedSize = 0;
 
   return FwuStatus;
 }
@@ -1409,6 +1623,11 @@ FwuSmmMain (
   UINT16                 Idx;
   BOOLEAN                IsTrialState;
 
+  if (FeaturePcdGet (PcdFwuFmpImageAuth) && FeaturePcdGet (PcdFwuDirectWrite)) {
+    DEBUG ((DEBUG_ERROR, "PcdFwuDirectWrite should be disabled for PcdFwuFmpImageAuth.\n"));
+    return EFI_UNSUPPORTED;
+  }
+
   Status = gMmst->MmLocateProtocol (
                     &gEfiBlockIoProtocolGuid,
                     NULL,
@@ -1483,6 +1702,16 @@ FwuSmmMain (
   }
 
   DEBUG ((DEBUG_BLKIO, "Firmware Update Driver: Current FwState: %d\n", mFwState));
+
+  /*
+   * Commit unit size used for buffered writes.
+   * The buffered data up to this size will be committed
+   * in a single commit request.
+   * Currently, this is limited to the maximum write payload size.
+   */
+  mFwuCommitUnitSize = mNsCommBufferRange->PhysicalSize -
+                       sizeof (EFI_MM_COMMUNICATE_HEADER) -
+                       GetRequiredBufferSize (PSA_MM_FWU_COMMAND_WRITE_STREAM);
 
   mServiceStatus = SERVICE_STATUS_OPERATIVE;
 

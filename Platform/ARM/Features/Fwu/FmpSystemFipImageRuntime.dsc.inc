@@ -26,7 +26,7 @@
       BmpSupportLib|MdeModulePkg/Library/BaseBmpSupportLib/BaseBmpSupportLib.inf
   }
 
-  FmpDevicePkg/FmpDxe/FmpDxe.inf {
+  FmpDevicePkg/FmpDxe/FmpDxeRuntime.inf {
     <Defines>
       #
       # ESRT and FMP GUID for system firmware capsule update
@@ -104,7 +104,7 @@
 !endif
 
     <PcdsFeatureFlag>
-      gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceDeferImageAuthToSetImage|FALSE
+      gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceDeferImageAuthToSetImage|TRUE
 
     <LibraryClasses>
       #

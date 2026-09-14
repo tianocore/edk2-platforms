@@ -883,7 +883,6 @@ FwsRelease (
   )
 {
   FWS_IMAGE_FILE_DATA  *FileData;
-  FWS_DEVICE_DATA      *FwsDeviceData;
 
   if ((ImageFile == NULL) ||
       (ImageFile->FwsDevice == NULL) ||
@@ -893,7 +892,6 @@ FwsRelease (
   }
 
   FileData      = ImageFile->Private;
-  FwsDeviceData = ImageFile->FwsDevice->Private;
 
   /**
    * Currently, UpdateCapsule is blocking call in UEFI.
@@ -907,7 +905,7 @@ FwsRelease (
     *Progress = 100;
   }
 
-  InternalFwsRelease ((FWS_IMAGE_FILE_DATA *)ImageFile->Private);
+  InternalFwsRelease (FileData);
   ImageFile->FwsDevice->ImageFileCount--;
   ImageFile->FwsDevice = NULL;
   ImageFile->Private   = NULL;
