@@ -75,7 +75,7 @@ function create_gpt_partition()
   sgdisk -a 1 -n $partition_number:$start_sector:+$num_sectors \
            -c $partition_number:$partition_name \
            -t $partition_number:$partition_type \
-           -u $unique_partition_uuid \
+           -u $partition_number:$unique_partition_uuid \
            "$FLASH_IMAGE_FILE"
   if [[ $? -ne 0 ]]; then
     ret=$?
