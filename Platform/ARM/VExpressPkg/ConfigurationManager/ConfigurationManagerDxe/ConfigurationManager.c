@@ -465,7 +465,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       0, // PciDevice
       0, // PciInterrupt
       {
-        168, // Interrupt
+        200, // Interrupt
         0x0  // Flags
       }
     },
@@ -474,7 +474,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       0, // PciDevice
       1, // PciInterrupt
       {
-        169, // Interrupt
+        201, // Interrupt
         0x0  // Flags
       }
     },
@@ -483,7 +483,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       0, // PciDevice
       2, // PciInterrupt
       {
-        170, // Interrupt
+        202, // Interrupt
         0x0  // Flags
       }
     },
@@ -492,7 +492,7 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       0, // PciDevice
       3, // PciInterrupt
       {
-        171, // Interrupt
+        203, // Interrupt
         0x0  // Flags
       }
     },
