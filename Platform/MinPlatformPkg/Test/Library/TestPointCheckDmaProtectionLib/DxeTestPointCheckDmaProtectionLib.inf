@@ -12,7 +12,7 @@
   FILE_GUID                      = C0569448-C3B8-43BE-87FD-7CFFA5778356
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = TestPointCheckDmaProtection
+  LIBRARY_CLASS                  = TestPointCheckDmaProtectionLib
 
 [Sources]
   DxeTestPointCheckDmaProtectionLib.c
