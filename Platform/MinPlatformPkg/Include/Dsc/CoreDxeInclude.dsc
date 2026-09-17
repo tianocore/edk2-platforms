@@ -42,19 +42,27 @@
   #
   !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
     MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
-    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbStandaloneMm.inf {
       <LibraryClasses>
         NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
         NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLibStandaloneMm.inf
     }
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseStandaloneMmLib.inf
+    }
 
   !else
     MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
-    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbTraditionalMm.inf {
       <LibraryClasses>
         NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
         NULL|MdeModulePkg/Library/VarCheckHiiLib/VarCheckHiiLib.inf
         NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLib.inf
+    }
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseTraditionalMmLib.inf
     }
   !endif
 

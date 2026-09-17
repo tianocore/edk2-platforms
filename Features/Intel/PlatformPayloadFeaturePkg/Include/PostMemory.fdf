@@ -14,6 +14,7 @@
   INF PlatformPayloadFeaturePkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf
   INF PlatformPayloadFeaturePkg/Fvb/FvbSmm.inf
   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbTraditionalMm.inf
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf
   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
 

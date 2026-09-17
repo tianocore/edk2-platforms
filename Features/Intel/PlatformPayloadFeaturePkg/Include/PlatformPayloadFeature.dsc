@@ -87,7 +87,7 @@
         NULL|PlatformPayloadFeaturePkg/Library/PcdInitLib/PcdInitLib.inf
     }
 
-    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbTraditionalMm.inf {
       <LibraryClasses>
         PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
         NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
@@ -95,6 +95,11 @@
         NULL|MdeModulePkg/Library/VarCheckPcdLib/VarCheckPcdLib.inf
         NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLib.inf
         NULL|PlatformPayloadFeaturePkg/Library/PcdInitLib/PcdInitLib.inf
+    }
+
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
+      <LibraryClasses>
+        NULL|MdeModulePkg/Library/VariableStorageRouterBaseLib/VariableStorageRouterBaseTraditionalMmLib.inf
     }
 
     MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf {

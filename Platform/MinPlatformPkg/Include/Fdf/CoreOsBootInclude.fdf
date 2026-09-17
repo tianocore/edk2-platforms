@@ -10,9 +10,11 @@
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
   INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
   !if gMinPlatformPkgTokenSpaceGuid.PcdStandaloneMmEnable == TRUE
+    INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbStandaloneMm.inf
     INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
     INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf
   !else
+    INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStorageFvbTraditionalMm.inf
     INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
     INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf
   !endif
