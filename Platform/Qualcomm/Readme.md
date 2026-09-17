@@ -1,6 +1,9 @@
 # Qualcomm edk2-platforms structure
 ### UEFI Platform - Glymur & Nord Families
 
+Qualcomm platform sources are complemented by the
+[edk2-qualcomm-extra](https://github.com/tianocore/edk2-qualcomm-extra) repository.
+
 ```
 edk2-platforms/
 |-- Silicon/
