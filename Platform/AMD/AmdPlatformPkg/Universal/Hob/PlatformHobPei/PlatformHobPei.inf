@@ -1,0 +1,46 @@
+## @file
+# AMD Platform HOB generator for the PEI phase.
+# Creates platform-specific HOBs during PEI initialization.
+#  - Produces a HOB identified by gMmCommBufferHobGuid for MM communication.
+#
+# Copyright (C) 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION        = 1.30
+  BASE_NAME          = PlatformHobPei
+  FILE_GUID          = F3768969-9375-44CD-B78E-1A00998E57CC
+  MODULE_TYPE        = PEIM
+  ENTRY_POINT        = PlatformHobPeiEntryPoint
+  VERSION_STRING     = 1.0
+
+# VALID_ARCHITECTURES = IA32 X64
+
+[Sources]
+  PlatformHobPei.c
+
+[LibraryClasses]
+  PeimEntryPoint
+  HobLib
+  DebugLib
+  PcdLib
+  PeiServicesLib
+  MemoryAllocationLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMmCommBufferPages
+
+[Guids]
+  gMmCommBufferHobGuid
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[Ppis]
+  gEfiEndOfPeiSignalPpiGuid
+
+[Depex]
+  TRUE

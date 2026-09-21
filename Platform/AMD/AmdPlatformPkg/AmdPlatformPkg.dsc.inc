@@ -43,6 +43,7 @@
   AmdPlatformPkg/Universal/RestoreDefaultPei/RestoreDefault.inf
   AmdPlatformPkg/Universal/BoardId/Pei/AmdBoardIdPei.inf
   AmdPlatformPkg/Universal/BoardIdValidatePei/BoardIdValidatePei.inf
+  AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
 
 [Components.X64]
   AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf

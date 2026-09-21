@@ -167,6 +167,7 @@
 [Components.IA32]
   MdeModulePkg/Universal/PCD/Pei/Pcd.inf
   AmdPlatformPkg/Library/CcxTscTimerLib/PeiTscTimerLib.inf
+  AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
 
 [Components.X64]
   AmdPlatformPkg/Library/CcxTscTimerLib/DxeTscTimerLib.inf
