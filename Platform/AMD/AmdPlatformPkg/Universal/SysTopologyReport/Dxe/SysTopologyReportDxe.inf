@@ -1,0 +1,47 @@
+## @file
+#  SysTopology Report DXE Driver.
+#
+#  Copyright (C) 2021 - 2025, Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SysTopologyReportProtocol
+  FILE_GUID                      = d5fae934-91b1-4b9c-aceb-19baf4e112a5
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SysTopologyReportInit
+
+[Sources.common]
+  SysTopologyReportDxe.c
+  SysTopologyReportDxe.h
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  DebugLib
+
+[Guids]
+  gEfiDiskInfoIdeInterfaceGuid
+  gEfiDiskInfoAhciInterfaceGuid
+
+[Protocols]
+  gEfiSysTopologyProtocolGuid         ## PRODUCES ##
+  gEfiPciIoProtocolGuid
+  gEfiNvmExpressPassThruProtocolGuid
+  gEfiDiskInfoProtocolGuid
+  gEfiBlockIoProtocolGuid
+  gEfiSmbiosProtocolGuid
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+
+[Depex]
+  gEfiPciEnumerationCompleteProtocolGuid

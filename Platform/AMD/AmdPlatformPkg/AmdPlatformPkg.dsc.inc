@@ -54,3 +54,4 @@
   AmdPlatformPkg/Universal/PlatformCipherDxe/PlatformCipherDxe.inf
   AmdPlatformPkg/Universal/Hsti/PlatformHstiDxe/PlatformHstiDxe.inf
   AmdPlatformPkg/Universal/NvStoreRestoreDefaultSmm/NvStoreRestoreDefaultSmm.inf
+  AmdPlatformPkg/Universal/SysTopologyReport/Dxe/SysTopologyReportDxe.inf
