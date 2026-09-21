@@ -52,3 +52,4 @@
   AmdPlatformPkg/Universal/Pci/PciHotPlug/PciHotPlugInit.inf
   AmdPlatformPkg/Universal/PlatformCipherDxe/PlatformCipherDxe.inf
   AmdPlatformPkg/Universal/Hsti/PlatformHstiDxe/PlatformHstiDxe.inf
+  AmdPlatformPkg/Universal/NvStoreRestoreDefaultSmm/NvStoreRestoreDefaultSmm.inf

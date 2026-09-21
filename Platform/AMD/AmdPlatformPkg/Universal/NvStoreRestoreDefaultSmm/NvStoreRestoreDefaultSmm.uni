@@ -1,0 +1,13 @@
+/** @file
+  String resources file for NV restore SMM driver.
+
+  Copyright (C) 2023 - 2024, Advanced Micro Devices, Inc. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+#string STR_MODULE_ABSTRACT             #language en-US "Restore NV Store from Default Image"
+
+#string STR_MODULE_DESCRIPTION          #language en-US "This driver restores the SPI NV store firmware volume from the factory default."
+

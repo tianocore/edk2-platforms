@@ -1,0 +1,65 @@
+## @file
+#  SMM Driver to implement restore primary variable region.
+#
+#  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010029
+  BASE_NAME                      = NvStoreRestoreDefaultSmm
+  MODULE_UNI_FILE                = NvStoreRestoreDefaultSmm.uni
+  FILE_GUID                      = B1DD2F34-DA6D-4B8D-9D1C-DCB76B6E400F
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = NvStoreRestoreDefaultEntry
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  NvStoreRestoreDefaultSmm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  PcdLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  MmServicesTableLib
+  IoLib
+
+[FixedPcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariablePrimaryBase
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariablePrimaryOffset
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultBase
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultOffset
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultSize
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
+
+[Protocols]
+  gEfiSpiSmmNorFlashProtocolGuid      ## CONSUMES
+  gAmdEspiSmmNorFlashProtocolGuid     ## CONSUMES
+
+[Depex]
+  TRUE

@@ -142,11 +142,15 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadMem|0x00100000|UINT32|0x20000002
   gAmdPlatformPkgTokenSpaceGuid.PcdPciHotPlugResourcePadBus|2|UINT8|0x20000003
 
-  # NV Store restore-default PCDs (used by RestoreDefaultPei)
+  # NV Store restore-default PCDs (used by RestoreDefaultPei, NvStoreRestoreDefaultSmm)
   #
   gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultBase|0x00000000|UINT32|0x50000020
   gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariablePrimaryOffset|0x00000000|UINT32|0x50000010
   gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultOffset|0x00000000|UINT32|0x50000040
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariablePrimaryBase|0x00000000|UINT32|0x50000000
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableDefaultSize|0x00000000|UINT32|0x50000030
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize|0x1000|UINT32|0x0002001A
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress|0xFF000000|UINT32|0x10000001
 
   #
   # SPI PCDs
