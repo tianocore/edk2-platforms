@@ -31,6 +31,8 @@
 
 [PcdsFixedAtBuild]
   gAmdCpmPkgTokenSpaceGuid.PcdFchUartPort|2|UINT8|0x00000052
+  ## TRUE when building for AMD SimNow emulator; disables hardware-specific ACPI objects.
+  gAmdCpmPkgTokenSpaceGuid.PcdAmdSimNowEn|FALSE|BOOLEAN|0x11000012
 
   #ACPI
   gAmdCpmPkgTokenSpaceGuid.PcdAmdAcpiHestTableHeaderOemTableId|"AMD HEST"|VOID*|0x000AC001

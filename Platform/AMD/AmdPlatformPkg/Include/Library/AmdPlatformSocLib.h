@@ -25,6 +25,7 @@ typedef struct {
   UINT8      PortPresent;
   UINTN      Device;
   UINTN      Function;
+  UINT8      LinkHotplug;
   UINTN      SlotNum;
   // Interrupts are relative to IOAPIC 0->n
   UINTN      BridgeInterrupt;           // Redirection table entry for mapped bridge interrupt
@@ -69,7 +70,8 @@ typedef struct {
   AMD_PCI_ROOT_PORT_OBJECT      *RootPort[PCIE_MAX_ROOTPORT]; // Never free this object
   UINTN                         CxlCount;
   AMD_CXL_PORT_INFO             CxlPortInfo;
-  UINTN                         PxmDomain;  // Proximity domain
+  UINTN                         PxmDomain;   // Proximity domain
+  UINTN                         EcrcSupport; // PCIe core ECRC Support
 } AMD_PCI_ROOT_BRIDGE_OBJECT_INSTANCE;
 
 /**
@@ -115,6 +117,28 @@ GetPcieInfo (
   );
 
 /**
+  Get the ECRC support setting from PCIe core topology for a root bridge.
+
+  @param[in]      Segment      PCI segment number.
+  @param[in]      Bus          PCI bus number.
+  @param[out]     EcrcSupport  PCIe core ECRC support value.
+
+  @retval EFI_SUCCESS             Successfully retrieved ECRC support.
+  @retval EFI_INVALID_PARAMETER   Incorrect parameters provided.
+  @retval EFI_NOT_FOUND           Matching PCIe core was not found in topology.
+  @retval EFI_UNSUPPORTED         Platform does not support this function.
+  @retval Other value             Returns other EFI_STATUS in case of failure.
+
+**/
+EFI_STATUS
+EFIAPI
+GetPcieEcrcSupport (
+  IN  UINTN  Segment,
+  IN  UINTN  Bus,
+  OUT UINTN  *EcrcSupport
+  );
+
+/**
   Get the platform specific System Slot information.
 
   NOTE: Caller will need to free structure once finished.
@@ -129,6 +153,22 @@ EFIAPI
 GetSystemSlotInfo (
   IN OUT SMBIOS_TABLE_TYPE9  **SystemSlotInfo,
   IN OUT UINTN               *SystemSlotCount
+  );
+
+/**
+  Update the platform specific Configuration Manager information.
+  PlatformRepo needs to be typecasted to the platform specific Configuration Manager information.
+  e.g EDKII_PLATFORM_REPOSITORY_INFO *PlatRepo = (EDKII_PLATFORM_REPOSITORY_INFO *)PlatformRepo;
+
+  @param[in, out]  PlatformRepo   The platform specific Configuration Manager information.
+  @retval EFI_SUCCESS             Successfully updated the configuration information.
+  @retval EFI_UNSUPPORTED         Platform do not support this function.
+  @retval Other value             Returns other EFI_STATUS in case of failure.
+**/
+EFI_STATUS
+EFIAPI
+UpdatePlatformCmInfo (
+  IN OUT VOID  *PlatformRepo
   );
 
 #endif

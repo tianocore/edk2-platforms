@@ -1,0 +1,75 @@
+## @file
+#  Creates ACPI SSDT PCI tables for AMD platforms.
+#
+#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiSsdtPciLib
+  FILE_GUID         = CF551DAA-C1BD-46FE-A68E-17CA216CF7B9
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiSsdtPciLibConstructor
+  DESTRUCTOR        = AcpiSsdtPciLibDestructor
+
+[Sources]
+  AcpiSsdtPciLib.c
+  AcpiSsdtPciLib.h
+  AcpiSsdtUsb.c
+  AcpiSsdtUsbTemplate.asl
+  AcpiSsdtSysDev.asl
+  AcpiSsdtSysDev.asi
+  AcpiSsdtSysDevInstall.c
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+
+[LibraryClasses]
+  AcpiHelperLib
+  AmlLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PcdLib
+  PciSegmentLib
+  PrintLib
+  DebugLib
+  PlatformSocLib
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiAcpiSdtProtocolGuid
+  gEfiPciRootBridgeIoProtocolGuid
+
+[Guids]
+  gEfiAcpiTableGuid
+  gEfiEventReadyToBootGuid
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiPciSsdtOemTableId      ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiSysDevSsdtOemTableId   ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress             ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize                ## CONSUMES
+  gPcAtChipsetPkgTokenSpaceGuid.PcdIoApicBaseAddress            ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress         ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize                ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType            ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress              ## CONSUMES
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiPciRootBridgeIoProtocolGuid AND
+  gEfiPciEnumerationCompleteProtocolGuid

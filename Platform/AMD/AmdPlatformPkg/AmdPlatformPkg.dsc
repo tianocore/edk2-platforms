@@ -129,6 +129,8 @@
 [LibraryClasses.Common.DXE_DRIVER]
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
   HstiLib|MdePkg/Library/DxeHstiLib/DxeHstiLib.inf
+  LocalApicLib|UefiCpuPkg/Library/BaseXApicX2ApicLib/BaseXApicX2ApicLib.inf
+  PciSegmentInfoLib|MdePkg/Library/BasePciSegmentInfoLibNull/BasePciSegmentInfoLibNull.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
   Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
@@ -182,6 +184,13 @@
   AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusSmm.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigDxe.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
+
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiDsdtLib/AcpiDsdtLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtCpuTopologyLib/AcpiSsdtCpuTopologyLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtEspiUartLib/AcpiSsdtEspiUartLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtPciLib/AcpiSsdtPciLib.inf
+  AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiSsdtSerialLib/AcpiSsdtSerialLib.inf
+  AmdPlatformPkg/DynamicTables/Library/SampleCmPlatOverrideLib/SamplecmPlatOverrideLib.inf
 
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|0x00000000

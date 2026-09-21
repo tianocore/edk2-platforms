@@ -1,0 +1,64 @@
+## @file
+#  Creates ACPI SSDT Serial tables for AMD platforms.
+#
+#  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiSsdtSerialLib
+  FILE_GUID         = 51C8BDF1-4ECD-4C9F-8C0C-E95015A5EABF
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiSsdtSerialLibConstructor
+  DESTRUCTOR        = AcpiSsdtSerialLibDestructor
+
+[Sources]
+  AcpiSsdtSerialLib.h
+  AcpiSsdtSerialLib.c
+  AcpiSsdtSerialLibAml.c
+  AcpiSsdtSerialLibSoc.c
+
+[Packages]
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  AmlLib
+  BaseLib
+  DebugLib
+  PcdLib
+  UefiLib
+
+[Guids]
+  gEfiAcpiTableGuid
+  gEfiEventReadyToBootGuid
+
+[FixedPcd]
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdUsePlatformAcpi
+  gAmdPlatformPkgTokenSpaceGuid.PcdAcpiSsdtSerialSkipOnSimNow
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiSerialSsdtOemTableId
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.FchRTDeviceEnableMap
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintSerialPortSelect
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart0Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart1Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart2Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsUartBaudRate
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid   # CONSUMED

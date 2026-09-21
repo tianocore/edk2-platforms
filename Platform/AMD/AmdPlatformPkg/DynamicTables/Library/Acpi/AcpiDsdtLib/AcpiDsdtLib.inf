@@ -1,0 +1,67 @@
+## @file
+#  Creates ACPI DSDT table for AMD platforms.
+#
+#  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiDsdtLib
+  FILE_GUID         = 3B4A2E58-1E9A-4D6F-B8C7-A05F9E2D41B3
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiDsdtLibConstructor
+  DESTRUCTOR        = AcpiDsdtLibDestructor
+
+[Sources]
+  AcpiDsdtLib.c
+  Dsdt.asl
+
+[Packages]
+  AgesaPkg/AgesaPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AmdCpmPkg/AmdCpmPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  SpcrFeaturePkg/SpcrFeaturePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                                     ## CONSUMES
+
+[Guids]
+  gEfiAcpiTableGuid
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdIpmiInterfaceType
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart0Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart1Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart2Irq
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdFchUart3Irq
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x2e8
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x2f8
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x3e8
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x3f8
+  gAmdCpmPkgTokenSpaceGuid.PcdAmdSimNowEn
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsDebugPrintSerialPortSelect
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrInterrupt
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiDsdtOemTableId        ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId       ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId            ## CONSUMES

@@ -73,3 +73,23 @@ GetSystemSlotInfo (
 {
   return EFI_UNSUPPORTED;
 }
+
+EFI_STATUS
+EFIAPI
+GetPcieEcrcSupport (
+  IN  UINTN  Segment,
+  IN  UINTN  Bus,
+  OUT UINTN  *EcrcSupport
+  )
+{
+  return EFI_UNSUPPORTED;
+}
+
+EFI_STATUS
+EFIAPI
+UpdatePlatformCmInfo (
+  IN OUT VOID  *PlatformRepo
+  )
+{
+  return EFI_UNSUPPORTED;
+}

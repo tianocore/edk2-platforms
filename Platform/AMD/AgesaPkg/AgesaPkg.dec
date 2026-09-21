@@ -341,6 +341,11 @@
   gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdMemRuntimePostPackageRepair|FALSE|BOOLEAN|0x00030006
 
 [PcdsFixedAtBuild, PcdsDynamic]
+  ## Enable AMD platform-specific ACPI table generation (DSDT/SSDT generators).
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdUsePlatformAcpi|FALSE|BOOLEAN|0x00001038
+  ## Default baud rate for AMD UART debug output.
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdIdsUartBaudRate|3000000|UINT32|0x00020012
+
 #----------------------------------------------------------------------------
 #-  System control PCDs
 ### Set Doxy_path: "PCD-Sys.h"

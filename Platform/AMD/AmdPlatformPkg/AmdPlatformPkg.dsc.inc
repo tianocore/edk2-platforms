@@ -45,6 +45,7 @@
   AmdPlatformPkg/Universal/BoardIdValidatePei/BoardIdValidatePei.inf
 
 [Components.X64]
+  AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
   AmdPlatformPkg/Universal/BoardId/Dxe/AmdBoardIdDxe.inf
   AmdPlatformPkg/Universal/Pci/PciLegacy/PciLegacy.inf
   AmdPlatformPkg/Universal/Pci/PciHotPlug/PciHotPlugInit.inf

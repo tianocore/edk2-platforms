@@ -1,0 +1,48 @@
+## @file
+#  Creates ACPI SSDT eSPI UART table for AMD platforms.
+#
+#  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION       = 1.30
+  BASE_NAME         = AcpiSsdtEspiUartLib
+  FILE_GUID         = 6B693FC9-E79D-4177-85E0-6089353A3DB9
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.0
+  LIBRARY_CLASS     = NULL|DXE_DRIVER
+  CONSTRUCTOR       = AcpiSsdtEspiUartLibConstructor
+  DESTRUCTOR        = AcpiSsdtEspiUartLibDestructor
+
+[Sources]
+  AcpiSsdtEspiUartLib.c
+  AcpiSsdtEspiUart.asl
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                                     ## CONSUMES
+
+[Guids]
+  gEfiAcpiTableGuid
+  gEfiEventReadyToBootGuid
+
+[Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiEspiUartSsdtOemTableId ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId             ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId        ## CONSUMES

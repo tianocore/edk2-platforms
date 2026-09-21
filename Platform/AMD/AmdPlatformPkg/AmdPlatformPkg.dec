@@ -61,6 +61,35 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdDisplayLogoEventGuid|{0xdc, 0xd5, 0xb3, 0x8e, 0xe7, 0xf4, 0x57, 0x4b, 0xa9, 0xe7, 0x27, 0x39, 0x10, 0xf2, 0x18, 0x9f}|VOID*|0x00010001
 
 [PcdsFixedAtBuild]
+  #
+  # ACPI control PCDs
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdAcpiSsdtSerialSkipOnSimNow|FALSE|BOOLEAN|0x0002000B
+
+  #
+  # ACPI OEM table ID PCDs — allow platforms to stamp their OEM ID into ACPI table headers
+  #
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiMcfgOemTableId|0|UINT64|0x0002000C
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiMadtOemTableId|0|UINT64|0x0002000D
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiHpetOemTableId|0|UINT64|0x0002000E
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiDsdtOemTableId|0|UINT64|0x0002000F
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiCpuSsdtOemTableId|0|UINT64|0x00020010
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiEspiUartSsdtOemTableId|0|UINT64|0x00020011
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiPciSsdtOemTableId|0|UINT64|0x00020012
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiSysDevSsdtOemTableId|0|UINT64|0x00020013
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdAcpiSerialSsdtOemTableId|0|UINT64|0x00020014
+
+  #
+  # ACPI non-feature PCDs
+  #
+  ## NUMA CCD ordering — platform-supplied byte array controlling CCD NUMA domain order
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdNumaCcdOrder|{0xFF}|VOID*|0x00020015
+  ## Legacy UART IRQ assignments for standard I/O port ranges
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x2e8|0xFF|UINT8|0x00020016
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x2f8|0xFF|UINT8|0x00020017
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x3e8|0xFF|UINT8|0x00020018
+  gAmdPlatformPkgTokenSpaceGuid.PcdLegacyUartIrq0x3f8|0xFF|UINT8|0x00020019
+
   ## Board ID to board-name mapping table used by BoardIdValidatePei.
   gAmdPlatformPkgTokenSpaceGuid.PcdPlatformBoardIdNameTable|{0x0}|PLATFORM_BOARD_ID_NAME_TABLE|0x00020026 {
   <HeaderFiles>

@@ -82,4 +82,7 @@
 #define FCH_SPI_SPIROM_PAGE_MASK         0xFF        //
 #define FCH_SPI_MMIO_REG80_FIFO          0x80        //
 
+/// AL2AHB Legacy UART I/O Enable Register (AL2AHBxFEDC0020)
+#define FCH_AL2AHBx20_LEGACY_UART_IO_ENABLE  0xFEDC0020ul
+
 #endif /* FCH_REGISTER_COMMON_H_ */
