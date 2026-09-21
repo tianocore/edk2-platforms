@@ -44,6 +44,7 @@
   AmdPlatformPkg/Universal/BoardId/Pei/AmdBoardIdPei.inf
   AmdPlatformPkg/Universal/BoardIdValidatePei/BoardIdValidatePei.inf
   AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
+  AmdPlatformPkg/Universal/SmmRelocatePei/SmmRelocatePei.inf
 
 [Components.X64]
   AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf

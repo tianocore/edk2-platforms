@@ -1,0 +1,57 @@
+## @file
+#  The PEI driver for SMRAM space location.
+#
+#  Copyright (C) 2024, Advanced Micro Devices, Inc. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmRelocatePei
+  FILE_GUID                      = F993C1CD-13C2-4CF7-B9E7-96A6F9C8AAC3
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = RelocateSmBasePeiEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  SmmRelocatePei.c
+  SmmRelocatePei.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AmdCpmPkg/AmdCpmPkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  AgesaPkg/AgesaPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  PeimEntryPoint
+  SmmRelocationLib
+  HobLib
+  MemoryAllocationLib
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreMaxPeiStackSize
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuApStackSize
+  gAmdPlatformPkgTokenSpaceGuid.PcdS3ExtraMemSize
+
+[Guids]
+  gEfiSmmSmramMemoryGuid
+
+[Ppis]
+  gEdkiiPeiMpServices2PpiGuid
+  gAmdCpmTablePpiGuid
+
+[Depex]
+  gEfiPeiMemoryDiscoveredPpiGuid

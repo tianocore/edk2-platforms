@@ -152,6 +152,9 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize|0x1000|UINT32|0x0002001A
   gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress|0xFF000000|UINT32|0x10000001
 
+  # Indicate how many size needs to be configured for SMM in S3 resume path
+  gAmdPlatformPkgTokenSpaceGuid.PcdS3ExtraMemSize|0x400000|UINT32|0x6A00000B
+
   #
   # SPI PCDs
   #
