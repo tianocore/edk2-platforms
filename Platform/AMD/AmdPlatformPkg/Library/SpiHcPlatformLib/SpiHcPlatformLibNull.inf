@@ -1,0 +1,30 @@
+## @file
+#  Combined NULL instance of SpiHcPlatformLib for DXE_DRIVER and DXE_SMM_DRIVER.
+#
+#  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = SpiHcPlatformLibNull
+  MODULE_UNI_FILE           = SpiHcPlatformLibNull.uni
+  FILE_GUID                 = DBDD4A7A-8378-4991-97F6-BF5941F10263
+  MODULE_TYPE               = BASE
+  VERSION_STRING            = 1.0
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  LIBRARY_CLASS             = SpiHcPlatformLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DevicePathLib
+
+[Sources]
+  SpiHcPlatformLibNull.c
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiHcPlatformLibNull.uni
