@@ -304,6 +304,8 @@
 !endif
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
+  MapMmioLib|MdeModulePkg/Library/MapMmioLib/MapMmioLib.inf
+
 [BuildOptions]
   GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
 
