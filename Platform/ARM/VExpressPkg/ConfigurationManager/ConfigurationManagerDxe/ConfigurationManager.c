@@ -119,6 +119,14 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSrat),
       NULL
     },
+#ifdef ENABLE_TPM
+    {
+      EFI_ACPI_6_5_TRUSTED_COMPUTING_PLATFORM_2_TABLE_SIGNATURE,
+      EFI_TPM2_ACPI_TABLE_REVISION_5,
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdTpm2),
+      NULL,
+    },
+#endif
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
@@ -142,14 +150,6 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       NULL,
       SIGNATURE_64 ('S', 'S', 'D', 'T', '-', 'P', 'C', 'I')
     },
-#ifdef ENABLE_TPM
-    {
-      EFI_ACPI_6_5_TRUSTED_COMPUTING_PLATFORM_2_TABLE_SIGNATURE,
-      EFI_TPM2_ACPI_TABLE_REVISION_5,
-      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdTpm2),
-      NULL,
-    },
-#endif
   },
 
   { // SMBIOS
