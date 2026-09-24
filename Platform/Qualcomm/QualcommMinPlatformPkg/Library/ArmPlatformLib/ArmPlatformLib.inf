@@ -36,8 +36,10 @@
 [LibraryClasses]
   ArmLib
   ArmMmuLib
+  BaseMemoryLib
   ChipInfoLib
   DebugLib
+  DtFrameworkLib
   PcdLib
   PerformanceLib
   PlatformInfoLib
@@ -48,6 +50,8 @@
 [Sources.common]
   ArmPlatformLib.c
   ArmPlatformLibMem.c
+  PlatformDeviceTree.c
+  PlatformDeviceTree.h
   PlatformConfiguration.c
   PlatformConfiguration.h
 

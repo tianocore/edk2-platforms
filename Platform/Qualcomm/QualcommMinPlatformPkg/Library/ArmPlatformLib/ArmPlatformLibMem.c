@@ -34,8 +34,7 @@
 
 #include "MemRegionInfo.h"
 #include "PlatformConfiguration.h"
-
-#define MAX_MEMORY_ENTRIES  (128)
+#include "PlatformDeviceTree.h"
 
 /**
   Configure early MMU mappings for UART, DTB, system memory, SMEM, and IMEM.
@@ -253,7 +252,10 @@ GeneratePageTableRegionMap (
   MemoryTable[Index].Length       = 0;
   MemoryTable[Index].Attributes   = (ARM_MEMORY_REGION_ATTRIBUTES)0;
 
-  WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdFdBaseAddress), FixedPcdGet64 (PcdSystemMemoryUefiRegionSize));
+  WriteBackInvalidateDataCacheRange (
+    (VOID *)FixedPcdGet64 (PcdFdBaseAddress),
+    FixedPcdGet64 (PcdSystemMemoryUefiRegionSize)
+    );
   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdBootDtBase), FixedPcdGet64 (PcdBootDtSize));
 
   ArmDisableCachesAndMmu ();
@@ -291,7 +293,12 @@ ArmPlatformSetupDebugBuffer (
 /**
   Load platform memory configuration from the boot device tree.
 
-  @retval  EFI_UNSUPPORTED  Not yet implemented.
+  Initializes the DTB blob and parses the platform configuration
+  (memory map, register map, config parameters) from the device tree.
+
+  @retval  EFI_SUCCESS      Configuration loaded successfully.
+  @retval  EFI_UNSUPPORTED  DTB initialization failed (no DTB available).
+  @retval  Other            Platform configuration parse error.
 
 **/
 STATIC
@@ -300,7 +307,19 @@ LoadPlatformConfigFromDeviceTree (
   VOID
   )
 {
-  return EFI_UNSUPPORTED;
+  EFI_STATUS  Status;
+
+  Status = DtbInit ();
+  if (Status != EFI_SUCCESS) {
+    return EFI_UNSUPPORTED;
+  }
+
+  Status = LoadAndParsePlatformCfg ();
+  if (Status != EFI_SUCCESS) {
+    return Status;
+  }
+
+  return EFI_SUCCESS;
 }
 
 /**
@@ -631,10 +650,16 @@ ArmPlatformGetVirtualMemoryMap (
   IN ARM_MEMORY_REGION_DESCRIPTOR  **VirtualMemoryMap
   )
 {
-  EFI_STATUS       Status         = EFI_UNSUPPORTED;
-  MEM_REGION_INFO  *mMemRegions   = NULL;
-  UINTN            mNumMemRegions = 0;
-  BOOLEAN          UsedStaticMap  = FALSE;
+  EFI_STATUS       Status;
+  EFI_STATUS       HobStatus;
+  MEM_REGION_INFO  *mMemRegions;
+  UINTN            mNumMemRegions;
+  BOOLEAN          UsedStaticMap;
+
+  Status         = EFI_UNSUPPORTED;
+  mMemRegions    = NULL;
+  mNumMemRegions = 0;
+  UsedStaticMap  = FALSE;
 
   DEBUG ((DEBUG_INFO, "ArmPlatformGetVirtualMemoryMap\n"));
 
@@ -664,6 +689,16 @@ ArmPlatformGetVirtualMemoryMap (
 
   /* Try DT-based platform configuration first */
   Status = LoadPlatformConfigFromDeviceTree ();
+  if (Status == EFI_SUCCESS) {
+    //
+    // DTB is initialised register the blob handle.
+    //
+    HobStatus = DtFrameworkPublishDtbExtnIntfHob ();
+    if (EFI_ERROR (HobStatus)) {
+      DEBUG ((DEBUG_WARN, "DtFrameworkPublishDtbExtnIntfHob failed: %r\n", HobStatus));
+    }
+  }
+
   if (Status == EFI_UNSUPPORTED) {
     DEBUG ((DEBUG_WARN, "DT platform configuration unsupported, falling back to static memory map\n"));
     Status = LoadStaticPlatformCfg ();

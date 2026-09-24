@@ -1,5 +1,5 @@
 /** @file
-  Parser for iqualcomm UEFI platform configuration data.
+  Parser for Qualcomm UEFI platform configuration data.
 
   Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -12,6 +12,21 @@
 #include <Pi/PiHob.h>
 
 #include <MemRegionInfo.h>
+/** Maximum number of memory region entries in the page table map. **/
+#define MAX_MEMORY_ENTRIES  128
+
+/** Maximum number of memory regions in the platform memory map. **/
+#define MAX_MEMORY_REGIONS  125
+
+/**
+  Internal sort structure used by CheckOverlap() to validate that
+  memory regions do not overlap.
+**/
+typedef struct {
+  UINT64    MemBase;                  ///< Offset to DDR memory base
+  UINT64    MemSize;                  ///< Size (in bytes) of the memory region
+  CHAR16    Name[MAX_MEM_LABEL_NAME]; ///< Region Name in ASCII
+} SORT_MEM_REG_INFO;
 
 typedef struct {
   CHAR8    *Key;
@@ -30,17 +45,32 @@ typedef struct {
   UINTN                         IntConfigTableEntryCount;
 } META_CONFIG;
 
-/* Parses UEFI platform configuration data (i.e. UEFI memory map) and
-   stores/installs the necessary items to be accessed by other UEFI modules
-*/
+/**
+  Load and parse platform configuration.
+
+  Parses UEFI platform configuration data (i.e. UEFI memory map) and
+  stores/installs the necessary items to be accessed by other UEFI modules.
+
+  @retval  EFI_SUCCESS     Configuration loaded and parsed successfully.
+  @retval  EFI_LOAD_ERROR  Error occurred during parsing.
+
+**/
 EFI_STATUS
 EFIAPI
 LoadAndParsePlatformCfg (
   VOID
   );
 
-/* Adds all banks from ram partition table, as well as remainder of bank
-   containing FD region to the memory map table */
+/**
+  Update system memory regions.
+
+  Adds all banks from RAM partition table, as well as remainder of
+  bank containing FD region to the memory map table.
+
+  @retval  EFI_SUCCESS  System memory regions updated successfully.
+  @retval  Other        Error occurred during update.
+
+**/
 EFI_STATUS
 EFIAPI
 UpdateSystemMemoryRegions (
@@ -53,14 +83,18 @@ AddUpperMemoryFromRamPartitions (
   VOID
   );
 
-/* Initializes the cache with all the memory regions */
-EFI_STATUS
-EFIAPI
-InitCacheWithMemoryRegions (
-  VOID
-  );
+/**
+  Get memory region configuration information.
 
-/* Gets the Memory Map that was parsed from the platform cfg file */
+  Gets the Memory Map that was parsed from the platform cfg file.
+
+  @param[out]  MemoryRegions     Pointer to receive memory regions array.
+  @param[out]  NumMemoryRegions  Pointer to receive number of memory regions.
+
+  @retval  EFI_SUCCESS             Memory region info retrieved successfully.
+  @retval  EFI_INVALID_PARAMETER   Invalid parameter.
+
+**/
 EFI_STATUS
 EFIAPI
 GetMemRegionCfgInfo (
@@ -69,26 +103,54 @@ GetMemRegionCfgInfo (
   );
 
 /* Gets the configuration tables detail parsed from config file */
-EFI_STATUS EFIAPI
+EFI_STATUS
+EFIAPI
 GetMetaConfigTable (
   META_CONFIG  *MetaCfgTable
   );
 
-/* To Check if there is a region defined in uefiplat that overlaps with a hole in rampartition table */
+/**
+  Validate parsed memory regions.
+
+  Check if there is a region defined in uefiplat that overlaps with a
+  hole in rampartition table.
+
+  @retval  EFI_SUCCESS             Memory regions validated successfully.
+  @retval  EFI_INVALID_PARAMETER   Overlapping regions found.
+
+**/
 EFI_STATUS
 EFIAPI
 ValidateParsedMemoryRegions (
   VOID
   );
 
-/* Updates the region marked as Reserved to Conventional memory based on the Ram Partiton table info */
+/**
+  Update reserved memory regions.
+
+  Updates the region marked as Reserved to Conventional memory based on
+  the Ram Partiton table info.
+
+  @retval  EFI_SUCCESS  Reserved memory regions updated successfully.
+  @retval  Other        Error occurred during update.
+
+**/
 EFI_STATUS
 EFIAPI
 UpdateReservedMemoryRegions (
   VOID
   );
 
-/* Loads a minimal static memory map from PCDs when device tree is not available */
+/**
+  Load static platform configuration.
+
+  Loads a minimal static memory map from PCDs when device tree is not
+  available.
+
+  @retval  EFI_SUCCESS           Static configuration loaded successfully.
+  @retval  EFI_OUT_OF_RESOURCES  Memory allocation failed.
+
+**/
 EFI_STATUS
 EFIAPI
 LoadStaticPlatformCfg (

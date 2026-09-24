@@ -1,0 +1,47 @@
+## @file
+#  Device tree extension DXE
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  @par Glossary:
+#    - DtbExtn - Device Tree Extension
+##
+
+[Defines]
+  INF_VERSION               = 1.27
+  BASE_NAME                 = DtbExtnDxe
+  FILE_GUID                 = 004FC59D-56E0-4371-B16B-EEF8A1215DD8
+  MODULE_TYPE               = DXE_DRIVER
+  VERSION_STRING            = 1.0
+  ENTRY_POINT               = DtbExtnEntryPoint
+
+#
+#  The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES      = AARCH64
+#
+
+[Sources]
+  DtbExtnDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  QualcommCommonPlatformPkg/QualcommCommonPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gDtbExtensionInterfaceHobGuid      ##CONSUMES
+
+[Protocols]
+  gDtbExtnProtocolGuid     ##PRODUCES
+
+[Depex]
+  TRUE

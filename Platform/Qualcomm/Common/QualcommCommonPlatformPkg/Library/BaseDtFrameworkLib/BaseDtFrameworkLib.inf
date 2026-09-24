@@ -1,0 +1,81 @@
+## @file
+#  BaseDtFrameworkLib - real implementation.
+#
+#  Provides UEFI-style wrapper functions for the Qualcomm DTFramework
+#  Device Tree APIs.
+#
+#  Use BaseDtFrameworkLibNull.inf when building without DTFramework.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.27
+  BASE_NAME                      = BaseDtFrameworkLib
+  FILE_GUID                      = 4A7C3E1B-9F82-4D56-A3C8-1E5F2B7D0A94
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = DtFrameworkLib
+
+  #
+  # DTFRAMEWORK_BASE points to the DTFramework submodule checked out by the
+  # edk2-qualcomm-extra repo, under its DtFrameworkPkg package. It is left
+  # relative to the edk2-qualcomm-extra package root (edk2-qualcomm-extra,
+  # added via PACKAGES_PATH) since $(WORKSPACE) is not substituted in a
+  # library's own [Defines] DEFINE statements.
+  #
+  DEFINE DTFRAMEWORK_BASE        = DtFrameworkPkg/DTFramework
+
+  DEFINE DTBEXTNLIB_PATH         = $(DTFRAMEWORK_BASE)/libs/DTBExtnLib
+  DEFINE DTSELECT_PATH           = $(DTFRAMEWORK_BASE)/libs/DTSelectLib
+
+[Sources.common]
+  BaseDtFrameworkLib.c
+  DtFrameworkLibSupport.c
+
+  # DTBExtnLib - node/property/blob/overlay APIs
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_blob.c
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_node.c
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_prop.c
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_driver.c
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_overlay.c
+  $(DTBEXTNLIB_PATH)/DTBExtnLib_create-dtb.c
+
+  # DTSelectLib - DTB selection
+  $(DTSELECT_PATH)/Environment/dt_select_env.c
+  $(DTSELECT_PATH)/dt_select.c
+  $(DTSELECT_PATH)/get_dt.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  DtFrameworkPkg/DtFrameworkPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  QualcommCommonPlatformPkg/QualcommCommonPlatformPkg.dec
+  QualcommMinPlatformPkg/QualcommMinPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  FdtLib
+  HobLib
+  TimerLib
+
+[Guids]
+  gDtbExtensionInterfaceHobGuid
+
+[BuildOptions]
+  #
+  # -DTARGET_UEFI: required by DTFramework to pick its UEFI-specific headers
+  # instead of the ones for its other supported targets.
+  #
+  # -include DTBCompatibility.h: DTBExtnLib.h (in the DTFramework submodule)
+  # uses fdt_node_handle and the FDT_ERR_QC_*/MAX_BLOB_ID/etc names without
+  # including their definitions. Force-include DTBCompatibility.h
+  # (DtFrameworkPkg/Include) ahead of every translation unit here instead of
+  # patching the submodule.
+  #
+  GCC:*_*_*_CC_FLAGS = -DTARGET_UEFI -include DTBCompatibility.h

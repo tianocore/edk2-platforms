@@ -7,4 +7,6 @@
 # BuildGlymurMinPlatformPkg.sh - Convenience wrapper to build the Glymur MinPlatform.
 ##
 
+export EXTRA_BUILD_FLAGS="-D QUALCOMM_DEVICETREE_FRAMEWORK_ENABLE=TRUE"
+
 ../../BuildOpenBoardPkg.sh --silicon Glymur "$@" --signing-tool qtestsign
