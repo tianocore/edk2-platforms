@@ -106,6 +106,7 @@
 /Platform/Qualcomm/GlymurFamily/GlymurOpenBoardPkg/** @leiflindholm @aiyengar-qc-ext @vishalo
 /Silicon/Qualcomm/Common/** @leiflindholm @aiyengar-qc-ext @vishalo
 /Platform/Qualcomm/Common/** @leiflindholm @aiyengar-qc-ext @vishalo
+/Platform/Qualcomm/NordFamily/NordMinPlatformPkg/** @leiflindholm @aiyengar-qc-ext @vishalo @dhanushg1197
 
 # Raspberry Pi platforms and silicon
 /Platform/RaspberryPi/** @ardbiesheuvel @leiflindholm
