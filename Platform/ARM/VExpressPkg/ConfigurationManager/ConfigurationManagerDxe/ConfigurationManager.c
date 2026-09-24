@@ -136,6 +136,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       NULL,
     },
 #endif
+    // SSDT tables describing Virtio MMIO block and network devices
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtVirtioMmioDevice),
+      NULL
+    },
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
@@ -337,6 +344,26 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART,  // Port subtype
     0x1000,                                                   // Address length
     EFI_ACPI_6_3_DWORD,                                       // Access size
+  },
+
+  // Virtio MMIO devices: block (UID 0) and network (UID 1).
+  {
+    {
+      FixedPcdGet32 (PcdVirtioBlkBaseAddress),
+      FixedPcdGet32 (PcdVirtioBlkSize),
+      {
+        FixedPcdGet32 (PcdVirtioBlkInterrupt),
+        0 // Level, ActiveHigh
+      }
+    },
+    {
+      FixedPcdGet32 (PcdVirtioNetBaseAddress),
+      FixedPcdGet32 (PcdVirtioNetSize),
+      {
+        FixedPcdGet32 (PcdVirtioNetInterrupt),
+        0 // Level, ActiveHigh
+      }
+    }
   },
 
   // GIC ITS
@@ -1788,8 +1815,8 @@ InitialiseProcStrings (
 
   @param [in]  This        Pointer to the Configuration Manager Protocol.
 
-  @retval
-    EFI_SUCCESS   Success
+  @retval EFI_SUCCESS  The platform repository was initialized.
+  @return An error from platform information initialization.
 **/
 STATIC
 EFI_STATUS
@@ -1846,6 +1873,9 @@ InitializePlatformRepository (
 
   if (PlatformRepo->HasGicV5) {
     // GICv5 uses different interrupts to previous GICs
+    PlatformRepo->VirtioMmioDeviceInfo[0].Interrupt.Interrupt = FVP_GICV5_VIRTIO_BLOCK_IRQ;
+    PlatformRepo->VirtioMmioDeviceInfo[1].Interrupt.Interrupt = FVP_GICV5_VIRTIO_NET_IRQ;
+
     for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
       PlatformRepo->GicCInfo[Index].PerformanceInterruptGsiv = FVP_GICV5_PMU_IRQ;
       PlatformRepo->GicCInfo[Index].VGICMaintenanceInterrupt = FVP_GICV5_VGIC_IRQ;
@@ -2518,6 +2548,16 @@ GetArchCommonNameSpaceObject (
                  &PlatformRepo->DbgSerialPort,
                  sizeof (PlatformRepo->DbgSerialPort),
                  1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjVirtioMmioDeviceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->VirtioMmioDeviceInfo,
+                 sizeof (PlatformRepo->VirtioMmioDeviceInfo),
+                 ARRAY_SIZE (PlatformRepo->VirtioMmioDeviceInfo),
                  CmObject
                  );
       break;
