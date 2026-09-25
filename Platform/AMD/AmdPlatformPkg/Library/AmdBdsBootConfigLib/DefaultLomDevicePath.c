@@ -1,16 +1,14 @@
-/*****************************************************************************
- * Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
- * SPDX-License-Identifier: BSD-2-Clause-Patent
- *
-*******************************************************************************/
-#include <Library/IoLib.h>
-#include <Library/PciLib.h>
-#include <Protocol/PciEnumerationComplete.h>
-#include <IndustryStandard/Ipmi.h>
+/** @file
+  Provides device path for Lan-On-Motherboard.
+
+  Copyright (C) 2024 - 2025, Advanced Micro Devices, Inc. All rights reserved.<BR>
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
 #include <Bus/Pci/PciBusDxe/PciBus.h>
 #include <Pcd/SmbiosPcd.h>
 #include <Library/PciSegmentLib.h>
-#include <IndustryStandard/Ipmi.h>
 
 /**
   Find the Lan-On-Motherboard device path.
@@ -26,22 +24,22 @@ GetLomDevicePath (
   OUT EFI_DEVICE_PATH  **LomDevicePath
   )
 {
-  SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD  *DevExtInfoRecord;
-  EFI_STATUS                          Status;
-  EFI_HANDLE                          *PciHandles;
-  UINTN                               PciHandlesSize;
-  UINTN                               Index;
-  EFI_PCI_IO_PROTOCOL                 *PciProtocol;
-  PCI_IO_DEVICE                       *PciIoDevice;
-  UINT8                               NumberOfDevices;
-  UINT8                               DevIdx;
-  UINTN                               SegmentNumber;
-  UINTN                               BusNumber;
-  UINTN                               DeviceNumber;
-  UINTN                               FunctionNumber;
+  CONST SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD  *DevExtInfoRecord;
+  EFI_STATUS                                Status;
+  EFI_HANDLE                                *PciHandles;
+  UINTN                                     PciHandlesSize;
+  UINTN                                     Index;
+  EFI_PCI_IO_PROTOCOL                       *PciProtocol;
+  PCI_IO_DEVICE                             *PciIoDevice;
+  UINT8                                     NumberOfDevices;
+  UINT8                                     DevIdx;
+  UINTN                                     SegmentNumber;
+  UINTN                                     BusNumber;
+  UINTN                                     DeviceNumber;
+  UINTN                                     FunctionNumber;
 
   NumberOfDevices  = PcdGet8 (PcdAmdSmbiosType41Number);
-  DevExtInfoRecord = (SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD *)PcdGetPtr (PcdAmdSmbiosType41);
+  DevExtInfoRecord = (CONST SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD *)PcdGetPtr (PcdAmdSmbiosType41);
 
   // No device entries found
   if (NumberOfDevices == 0) {
@@ -88,6 +86,7 @@ GetLomDevicePath (
       continue;
     }
 
+    // coverity[cert_exp39_c_violation]
     PciIoDevice = PCI_IO_DEVICE_FROM_PCI_IO_THIS (PciProtocol);
     Status      = PciIoDevice->PciIo.GetLocation (&PciIoDevice->PciIo, &SegmentNumber, &BusNumber, &DeviceNumber, &FunctionNumber);
 
