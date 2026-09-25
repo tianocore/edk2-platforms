@@ -1,31 +1,41 @@
 /** @file
-  This driver init default Secure Boot variables
+  This driver init default Secure Boot variables.
 
   Copyright (c) 2011 - 2018, Intel Corporation. All rights reserved.<BR>
   (C) Copyright 2018 Hewlett Packard Enterprise Development LP<BR>
   Copyright (c) 2021, ARM Ltd. All rights reserved.<BR>
   Copyright (c) 2021, Semihalf All rights reserved.<BR>
   Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <Uefi.h>
-#include <UefiSecureBoot.h>
-#include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DxeServicesLib.h>
 #include <Library/MemoryAllocationLib.h>
-#include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiLib.h>
-#include <Guid/AuthenticatedVariableFormat.h>
 #include <Guid/ImageAuthentication.h>
-#include <Library/SecureBootVariableLib.h>
-#include <Library/SecureBootVariableProvisionLib.h>
+
+CHAR16  mPkDefaultVariableName[]  = EFI_PK_DEFAULT_VARIABLE_NAME;
+CHAR16  mKekDefaultVariableName[] = EFI_KEK_DEFAULT_VARIABLE_NAME;
+CHAR16  mDbDefaultVariableName[]  = EFI_DB_DEFAULT_VARIABLE_NAME;
+CHAR16  mDbxDefaultVariableName[] = EFI_DBX_DEFAULT_VARIABLE_NAME;
+
+//
+// Microsoft signature owner GUID. The WS25 HLK Secure Boot tests require that
+// Microsoft-provided KEK and db certificates are enrolled with this
+// SignatureOwner GUID (77FA9ABD-0359-4D32-BD60-28F4E78F784B); a non-Microsoft
+// owner (e.g. gEfiGlobalVariableGuid) is rejected as "Non-Microsoft
+// signatureOwner". Matches gMicrosoftVendorGuid used by SecureBootInitDxe.
+//
+EFI_GUID  mMicrosoftVendorGuid = {
+  0x77FA9ABD, 0x0359, 0x4D32, { 0xBD, 0x60, 0x28, 0xF4, 0xE7, 0x8F, 0x78, 0x4B }
+};
 
 /**
   Set PKDefault Variable.
@@ -83,7 +93,7 @@ SetPkDefault (
   DataSize = PkCert->SignatureListSize;
 
   Status = gRT->SetVariable (
-                  EFI_PK_DEFAULT_VARIABLE_NAME,
+                  mPkDefaultVariableName,
                   &gEfiGlobalVariableGuid,
                   Attr,
                   DataSize,
@@ -147,7 +157,7 @@ SetKekDefault (
   CopyGuid (&KekSigList->SignatureType, &gEfiCertX509Guid);
 
   KEKSigData = (EFI_SIGNATURE_DATA *)((UINT8 *)KekSigList + sizeof (EFI_SIGNATURE_LIST));
-  CopyGuid (&KEKSigData->SignatureOwner, &gEfiGlobalVariableGuid);
+  CopyGuid (&KEKSigData->SignatureOwner, &mMicrosoftVendorGuid);
   CopyMem (KEKSigData->SignatureData, X509Data, X509DataSize);
 
   //
@@ -158,7 +168,7 @@ SetKekDefault (
   Attr = EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_BOOTSERVICE_ACCESS;
 
   Status = gRT->GetVariable (
-                  EFI_KEK_DEFAULT_VARIABLE_NAME,
+                  mKekDefaultVariableName,
                   &gEfiGlobalVariableGuid,
                   NULL,
                   &DataSize,
@@ -172,7 +182,7 @@ SetKekDefault (
   }
 
   Status = gRT->SetVariable (
-                  EFI_KEK_DEFAULT_VARIABLE_NAME,
+                  mKekDefaultVariableName,
                   &gEfiGlobalVariableGuid,
                   Attr,
                   KekSigListSize,
@@ -209,11 +219,26 @@ IsAuthentication2Format (
   )
 {
   EFI_VARIABLE_AUTHENTICATION_2  *Auth2;
+  EFI_VARIABLE_AUTHENTICATION_2  Auth2Buffer;
   BOOLEAN                        IsAuth2Format;
 
   IsAuth2Format = FALSE;
 
-  Auth2 = (EFI_VARIABLE_AUTHENTICATION_2 *)Data;
+  //
+  // The data must be at least large enough to contain the
+  // EFI_VARIABLE_AUTHENTICATION_2 header before its fields can be inspected.
+  // A real signed dbx/db update (e.g. Microsoft DbxUpdate.bin) is always much
+  // larger than the header; using "!=" here wrongly rejected every such update
+  // and caused the whole signed blob to be stored as a bogus X509 entry,
+  // producing a malformed dbxDefault that crashes the HLK Secure Boot parser.
+  //
+  if (DataSize < sizeof (EFI_VARIABLE_AUTHENTICATION_2)) {
+    goto ON_EXIT;
+  }
+
+  CopyMem (&Auth2Buffer, Data, sizeof (EFI_VARIABLE_AUTHENTICATION_2));
+  Auth2 = &Auth2Buffer;
+
   if (Auth2->AuthInfo.Hdr.wCertificateType != WIN_CERT_TYPE_EFI_GUID) {
     goto ON_EXIT;
   }
@@ -248,10 +273,12 @@ SetAuthentication2ToSigDb (
   IN CHAR16  *VariableName
   )
 {
-  EFI_STATUS  Status;
-  UINTN       DataSize;
-  UINT32      Attr;
-  UINT8       *Data;
+  EFI_STATUS                     Status;
+  UINTN                          DataSize;
+  UINT32                         Attr;
+  UINT8                          *Data;
+  EFI_VARIABLE_AUTHENTICATION_2  *Auth2;
+  EFI_VARIABLE_AUTHENTICATION_2  Auth2Buffer;
 
   Attr = EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_BOOTSERVICE_ACCESS;
 
@@ -278,7 +305,9 @@ SetAuthentication2ToSigDb (
   //
   // Ignore AUTHENTICATION_2 region. Only the actual certificate is needed.
   //
-  DataSize = AuthDataSize - ((EFI_VARIABLE_AUTHENTICATION_2 *)AuthData)->AuthInfo.Hdr.dwLength - sizeof (EFI_TIME);
+  CopyMem (&Auth2Buffer, AuthData, sizeof (EFI_VARIABLE_AUTHENTICATION_2));
+  Auth2    = &Auth2Buffer;
+  DataSize = AuthDataSize - Auth2->AuthInfo.Hdr.dwLength - sizeof (EFI_TIME);
   Data     = AuthData + (AuthDataSize - DataSize);
 
   Status = gRT->SetVariable (
@@ -438,9 +467,9 @@ InitPkDefault (
   //
   // Check if variable exists, if so do not change it
   //
-  Status = GetVariable2 (EFI_PK_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
+  Status = GetVariable2 (mPkDefaultVariableName, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
   if (Status == EFI_SUCCESS) {
-    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", EFI_PK_DEFAULT_VARIABLE_NAME));
+    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", mPkDefaultVariableName));
     FreePool (Data);
     return EFI_UNSUPPORTED;
   }
@@ -448,7 +477,7 @@ InitPkDefault (
   //
   // Variable does not exist, can be initialized
   //
-  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", EFI_PK_DEFAULT_VARIABLE_NAME));
+  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", mPkDefaultVariableName));
 
   //
   // Enroll default PK.
@@ -485,9 +514,9 @@ InitKekDefault (
   //
   // Check if variable exists, if so do not change it
   //
-  Status = GetVariable2 (EFI_KEK_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
+  Status = GetVariable2 (mKekDefaultVariableName, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
   if (Status == EFI_SUCCESS) {
-    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", EFI_KEK_DEFAULT_VARIABLE_NAME));
+    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", mKekDefaultVariableName));
     FreePool (Data);
     return EFI_UNSUPPORTED;
   }
@@ -525,14 +554,14 @@ InitDbDefault (
   UINT8       *Data;
   UINTN       DataSize;
 
-  Status = GetVariable2 (EFI_DB_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
+  Status = GetVariable2 (mDbDefaultVariableName, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
   if (Status == EFI_SUCCESS) {
-    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", EFI_DB_DEFAULT_VARIABLE_NAME));
+    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", mDbDefaultVariableName));
     FreePool (Data);
     return EFI_UNSUPPORTED;
   }
 
-  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", EFI_DB_DEFAULT_VARIABLE_NAME));
+  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", mDbDefaultVariableName));
 
   Index = 0;
   do {
@@ -544,7 +573,7 @@ InitDbDefault (
                &DataSize
                );
     if (!EFI_ERROR (Status)) {
-      SetSignatureDatabase (Data, DataSize, EFI_DB_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid);
+      SetSignatureDatabase (Data, DataSize, mDbDefaultVariableName, &mMicrosoftVendorGuid);
       Index++;
     }
   } while (Status == EFI_SUCCESS);
@@ -570,9 +599,9 @@ InitDbxDefault (
   //
   // Check if variable exists, if so do not change it
   //
-  Status = GetVariable2 (EFI_DBX_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
+  Status = GetVariable2 (mDbxDefaultVariableName, &gEfiGlobalVariableGuid, (VOID **)&Data, &DataSize);
   if (Status == EFI_SUCCESS) {
-    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", EFI_DBX_DEFAULT_VARIABLE_NAME));
+    DEBUG ((DEBUG_INFO, "Variable %s exists. Old value is preserved\n", mDbxDefaultVariableName));
     FreePool (Data);
     return EFI_UNSUPPORTED;
   }
@@ -580,7 +609,7 @@ InitDbxDefault (
   //
   // Variable does not exist, can be initialized
   //
-  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", EFI_DBX_DEFAULT_VARIABLE_NAME));
+  DEBUG ((DEBUG_INFO, "Variable %s does not exist.\n", mDbxDefaultVariableName));
 
   Index = 0;
   do {
@@ -592,7 +621,7 @@ InitDbxDefault (
                &DataSize
                );
     if (!EFI_ERROR (Status)) {
-      SetSignatureDatabase (Data, DataSize, EFI_DBX_DEFAULT_VARIABLE_NAME, &gEfiGlobalVariableGuid);
+      SetSignatureDatabase (Data, DataSize, mDbxDefaultVariableName, &gEfiGlobalVariableGuid);
       Index++;
     }
   } while (Status == EFI_SUCCESS);
@@ -618,25 +647,25 @@ SecureBootDefaultKeysInitEntry (
   EFI_STATUS  Status;
 
   Status = InitPkDefault ();
-  if (EFI_ERROR (Status)) {
+  if (EFI_ERROR (Status) && (Status != EFI_UNSUPPORTED)) {
     DEBUG ((DEBUG_ERROR, "%a: Cannot initialize PKDefault: %r\n", __func__, Status));
     return Status;
   }
 
   Status = InitKekDefault ();
-  if (EFI_ERROR (Status)) {
+  if (EFI_ERROR (Status) && (Status != EFI_UNSUPPORTED)) {
     DEBUG ((DEBUG_ERROR, "%a: Cannot initialize KEKDefault: %r\n", __func__, Status));
     return Status;
   }
 
   Status = InitDbDefault ();
-  if (EFI_ERROR (Status)) {
+  if (EFI_ERROR (Status) && (Status != EFI_UNSUPPORTED)) {
     DEBUG ((DEBUG_ERROR, "%a: Cannot initialize dbDefault: %r\n", __func__, Status));
     return Status;
   }
 
   Status = InitDbxDefault ();
-  if (EFI_ERROR (Status)) {
+  if (EFI_ERROR (Status) && (Status != EFI_UNSUPPORTED)) {
     DEBUG ((DEBUG_ERROR, "%a: Cannot initialize dbxDefault: %r\n", __func__, Status));
     return Status;
   }
