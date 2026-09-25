@@ -17,11 +17,8 @@
   PLATFORM_GUID                  = 9A4BBA60-B4F9-47C7-9258-3BD77CAE9322
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001C
-!ifdef $(EDK2_OUT_DIR)
-  OUTPUT_DIRECTORY               = $(EDK2_OUT_DIR)
-!else
-  OUTPUT_DIRECTORY               = Build/ArmVExpress-FVP-AArch64
-!endif
+  DEFINE ARM_DEFAULT_OUTPUT_DIRECTORY = Build/ArmVExpress-FVP-AArch64
+!include Platform/ARM/ArmPlatformOutput.dsc.inc
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT

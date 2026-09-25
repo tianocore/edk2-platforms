@@ -24,11 +24,8 @@
   PLATFORM_GUID                  = 667ffb82-9128-11ef-8299-cfafe2cc85b5
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001C
-!ifdef $(EDK2_OUT_DIR)
-  OUTPUT_DIRECTORY               = $(EDK2_OUT_DIR)
-!else
-  OUTPUT_DIRECTORY               = Build/ArmJuno
-!endif
+  DEFINE ARM_DEFAULT_OUTPUT_DIRECTORY = Build/ArmJuno
+!include Platform/ARM/ArmPlatformOutput.dsc.inc
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
