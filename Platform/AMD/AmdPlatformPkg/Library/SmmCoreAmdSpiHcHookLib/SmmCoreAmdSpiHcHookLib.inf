@@ -1,7 +1,8 @@
 ## @file
 #  INF of SMM Core AMD SPI Host Contoller State hook library.
 #
-#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 [Defines]
@@ -23,6 +24,7 @@
 
 [Sources]
   SmmCoreAmdSpiHcHookLib.c
+  SmmCoreAmdSpiHcHookLib.h
 
 [Packages]
   AmdPlatformPkg/AmdPlatformPkg.dec
