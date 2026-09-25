@@ -18,6 +18,8 @@
 #include "AmdSpiHcInternal.h"
 #include <FchRegistersCommon.h>
 
+SPI_CONTROLLER_DEVICE_PATH  mFchDevicePath = FCH_DEVICE_PATH;
+
 extern BOOLEAN                   mPspMailboxSpiMode;
 extern SPI_COMMUNICATION_BUFFER  mSpiCommunicationBuffer;
 extern EFI_PHYSICAL_ADDRESS      mHcAddress;

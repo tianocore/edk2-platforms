@@ -29,6 +29,10 @@
 [Guids]
   gAmdPlatformPkgTokenSpaceGuid   = { 0x663DE733, 0x70E0, 0x4D37, { 0xBB, 0x30, 0x7D, 0x9E, 0xAF, 0x9B, 0xDA, 0xE9 }}
 
+  ## gAmdPlatformFakeSpiDriver Guid
+  #  Identifies the AMD platform fake SPI peripheral driver.
+  gAmdPlatformFakeSpiDriverGuid   = { 0x07fecf70, 0xd7ae, 0x4274, { 0x9f, 0x70, 0x78, 0xc8, 0x36, 0x91, 0xd4, 0xfb }}
+
   ## gAmdTscFrequencyGuid
   #  Used for TSC frequency information (PEI HOB / DXE configuration table).
   gAmdTscFrequencyGuid            = { 0x614facf7, 0x1ac6, 0x4b15, { 0xa8, 0x8c, 0x2c, 0x1a, 0x70, 0xd7, 0x77, 0xec }}
@@ -202,6 +206,11 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl10Capable|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.FlexbusSlotCxl20Capable|0
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics2.Reserved|0
+
+[PcdsPatchableInModule]
+  ## Size of the remote flash ROM.<BR><BR>
+  # @Prompt Remote Flash ROM Size.
+  gAmdPlatformPkgTokenSpaceGuid.PcdRemoteFlashRomSize|0x00000000|UINT32|0x20000021
 
 [PcdsDynamic, PcdsDynamicEx]
 

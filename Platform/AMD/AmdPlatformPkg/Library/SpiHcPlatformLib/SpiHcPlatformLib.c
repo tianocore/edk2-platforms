@@ -3,29 +3,25 @@
   SPI HC platform library implementation. This code touches the SPI controllers and performs
   the hardware transaction
 
-  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#include <Base.h>
-#include <Library/BaseLib.h>
-#include <Library/DebugLib.h>
+#include <Uefi.h>
 #include <Library/IoLib.h>
-#include <Library/BaseMemoryLib.h>
-#include <Library/PcdLib.h>
-#include <Library/MemoryAllocationLib.h>
 #include <Protocol/SpiHc.h>
-#include <FchRegistersCommon.h>
 #include <Spi/AmdSpiHcChipSelectParameters.h>
 #include <Spi/AmdSpiDevicePaths.h>
-#include <Library/PciSegmentLib.h>
 #include <Library/SpiHcPlatformLib.h>
-#include "AmdSpiHcInternal.h"
+#include "SpiHcInternal.h"
 #include <IndustryStandard/SpiNorFlashJedecSfdp.h>
 #include <FchRegistersCommon.h>
 
 extern EFI_PHYSICAL_ADDRESS  mHcAddress;
+
+SPI_CONTROLLER_DEVICE_PATH  mFchDevicePath = FCH_DEVICE_PATH;
 
 /**
   This function reports the device path of SPI host controller. This is needed in order for the SpiBus
@@ -34,7 +30,7 @@ extern EFI_PHYSICAL_ADDRESS  mHcAddress;
   @param[out] DevicePath The device path for this SPI HC is returned in this variable
 
   @retval EFI_SUCCESS
-*/
+**/
 EFI_STATUS
 EFIAPI
 GetSpiHcDevicePath (
@@ -47,7 +43,7 @@ GetSpiHcDevicePath (
 
 /**
   This is the platform specific Spi Chip select function.
-  Assert or deassert the SPI chip select.
+  Assert or de-assert the SPI chip select.
 
   This routine is called at TPL_NOTIFY.
   Update the value of the chip select line for a SPI peripheral. The SPI bus
@@ -86,7 +82,7 @@ PlatformSpiHcChipSelect (
 
   if (ChipSelectParameter->OrValue <= 1) {
     MmioAndThenOr8 (
-      mHcAddress + FCH_SPI_MMIO_REG1D,
+      (UINTN)mHcAddress + FCH_SPI_MMIO_REG1D,
       ChipSelectParameter->AndValue,
       ChipSelectParameter->OrValue
       );
@@ -180,15 +176,16 @@ PlatformSpiHcClock (
     if (!EFI_ERROR (Status)) {
       // Enable UseSpi100
       MmioOr8 (
-        mHcAddress + FCH_SPI_MMIO_REG20,
+        (UINTN)mHcAddress + FCH_SPI_MMIO_REG20,
         BIT0
         );
-      // Set the Value for NormSpeed and FastSpeed
-      InternalClockValue = InternalClockValue << 12 | InternalClockValue << 8;
+      // Set NormSpeed [15:12] and FastSpeed [11:8] to the selected clock code.
+      // InternalClockValue is a 3-bit code (0x0..0x5); mask to the register
+      // width so the UINT16 store provably cannot lose data.
       MmioAndThenOr16 (
-        mHcAddress + FCH_SPI_MMIO_REG22,
+        (UINTN)mHcAddress + FCH_SPI_MMIO_REG22,
         0x00FF,
-        InternalClockValue
+        (UINT16)((((UINT32)InternalClockValue << 12) | ((UINT32)InternalClockValue << 8)) & MAX_UINT16)
         );
     }
   }
@@ -263,18 +260,18 @@ PlatformSpiHcTransaction (
   Status = FchSpiControllerNotBusy ();
   if (!EFI_ERROR (Status)) {
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG48_TXBYTECOUNT,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG48_TX_BYTE_COUNT,
       (UINT8)WriteBytes
       );
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG4B_RXBYTECOUNT,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG4B_RX_BYTE_COUNT,
       (UINT8)ReadBytes
       );
 
     // Fill in Write Data including Address
     if (WriteBytes != 0) {
       MmioWriteBuffer8 (
-        HcAddress + FCH_SPI_MMIO_REG80_FIFO,
+        (UINTN)HcAddress + FCH_SPI_MMIO_REG80_FIFO,
         WriteBytes,
         WriteBuffer
         );
@@ -282,7 +279,7 @@ PlatformSpiHcTransaction (
 
     // Set Opcode
     MmioWrite8 (
-      HcAddress + FCH_SPI_MMIO_REG45_CMDCODE,
+      (UINTN)HcAddress + FCH_SPI_MMIO_REG45_CMDCODE,
       Opcode
       );
 
@@ -291,7 +288,7 @@ PlatformSpiHcTransaction (
     if (!EFI_ERROR (Status)) {
       if (ReadBytes != 0) {
         MmioReadBuffer8 (
-          HcAddress
+          (UINTN)HcAddress
           + FCH_SPI_MMIO_REG80_FIFO
           + WriteBytes,
           ReadBytes,

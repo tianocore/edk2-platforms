@@ -20,6 +20,11 @@ enum _PSP_DIRECTORY_ENTRY_TYPE {
   PSP_REGION_B_DIR = 0x4A,                                ///< PSP entry points to PSP DIR in Region B
 };
 
+/// BIOS Directory entry types used by platform SPI FVB
+enum {
+  RDE_RESPONSE_TABLE = 0x7D,                              ///< SoC RDE request/response blob
+};
+
 /// Define structure for PSP directory
 typedef struct {
   UINT32    Cookie;                                       ///< "$PSP"

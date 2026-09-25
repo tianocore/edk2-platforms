@@ -1,0 +1,55 @@
+## @file
+#  AMD SPI FVB for RDE Response Table DXE driver description File
+#
+#  Copyright (C) 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                = 0x00010017
+  BASE_NAME                  = SpiFvbRdeResponseDxe
+  FILE_GUID                  = C496B62E-8DC4-4FC0-9EBF-F21127672AFD
+  MODULE_TYPE                = DXE_DRIVER
+  VERSION_STRING             = 1.0
+  PI_SPECIFICATION_VERSION   = 0x0001000A
+  ENTRY_POINT                = SpiFvbRdeResponseDxeEntryPoint
+
+[Sources]
+  ../SpiFvbCommon.c
+  SpiFvbRdeResponseCommon.c
+  SpiFvbRdeResponseDxe.c
+  SpiFvbRdeResponse.h
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses]
+  AmdRdeDirectoryLib
+  AmdRdeMediaLib
+  BaseLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  DebugLib
+  IoLib
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize          ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress             ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize
+
+[Protocols]
+  gEfiFirmwareVolumeBlockProtocolGuid
+  gEfiSpiNorFlashProtocolGuid
+
+[Depex]
+  gEfiSpiNorFlashProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiFvbRdeResponseExtra.uni

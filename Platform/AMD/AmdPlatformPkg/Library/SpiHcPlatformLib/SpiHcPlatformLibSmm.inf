@@ -1,11 +1,12 @@
-#/** @file
-#
+## @file
 #  SpiHcPlatformLibrary DXE_SMM_DRIVER inf
 #
-#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+#
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-#**/
+##
+
 [Defines]
   INF_VERSION               = 0x00010019
   BASE_NAME                 = SpiHcPlatformLibSmm
@@ -16,9 +17,8 @@
   LIBRARY_CLASS             = SpiHcPlatformLib
 
 [Packages]
-  AgesaModulePkg/AgesaCommonModulePkg.dec
-  AgesaPkg/AgesaPkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
 
@@ -37,10 +37,10 @@
 [Sources]
   SpiHcPlatformLibSmm.c
   SpiHcPlatformLib.c
-  AmdSpiHcInternal.h
-  AmdSpiHcInternal.c
-  AmdSpiHcSmmState.h
-  AmdSpiHcSmmState.c
+  SpiHcInternal.h
+  SpiHcInternal.c
+  SpiHcSmmState.h
+  SpiHcSmmState.c
 
 [Protocols]
   gEfiSmmVariableProtocolGuid
@@ -50,7 +50,7 @@
 
 [FixedPcd]
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount
-  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
 
 [Depex]
   TRUE
