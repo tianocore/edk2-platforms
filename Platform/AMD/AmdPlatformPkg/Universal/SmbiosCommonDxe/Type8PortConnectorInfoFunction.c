@@ -1,10 +1,11 @@
 /** @file
-  AMD SMBIOS Type 8 Record
+  AMD SMBIOS Type 8 Record.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
+
 #include <Pcd/SmbiosPcd.h>
 #include "SmbiosCommon.h"
 
@@ -22,17 +23,18 @@ PortConnectorInfoFunction (
   IN EFI_SMBIOS_PROTOCOL  *Smbios
   )
 {
-  EFI_STATUS                    Status;
-  EFI_SMBIOS_HANDLE             SmbiosHandle;
-  SMBIOS_TABLE_TYPE8            *SmbiosRecord;
-  SMBIOS_PORT_CONNECTOR_RECORD  *PortConnRecord;
-  UINT8                         PortIdx;
-  UINT8                         NumberOfPortConnector;
-  UINTN                         StringOffset;
-  CHAR8                         *IntPortConDesStr;
-  UINTN                         IntPortConDesStrLen;
-  CHAR8                         *ExtPortConDesStr;
-  UINTN                         ExtPortConDesStrLen;
+  EFI_STATUS                          Status;
+  EFI_SMBIOS_HANDLE                   SmbiosHandle;
+  SMBIOS_TABLE_TYPE8                  *SmbiosRecord;
+  UINTN                               SmbiosRecordSize;
+  CONST SMBIOS_PORT_CONNECTOR_RECORD  *PortConnRecord;
+  UINT8                               PortIdx;
+  UINT8                               NumberOfPortConnector;
+  UINTN                               StringOffset;
+  CONST CHAR8                         *IntPortConDesStr;
+  UINTN                               IntPortConDesStrLen;
+  CONST CHAR8                         *ExtPortConDesStr;
+  UINTN                               ExtPortConDesStrLen;
 
   if (Smbios == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -41,7 +43,8 @@ PortConnectorInfoFunction (
   // Get the total number of port connectors.
   NumberOfPortConnector = PcdGet8 (PcdAmdSmbiosType8Number);
   DEBUG ((DEBUG_INFO, "%a: Total number of AMD SMBIOS type8 PCD structure %d.\n", __func__, NumberOfPortConnector));
-  PortConnRecord = (SMBIOS_PORT_CONNECTOR_RECORD *)PcdGetPtr (PcdAmdSmbiosType8);
+
+  PortConnRecord = (CONST SMBIOS_PORT_CONNECTOR_RECORD *)PcdGetPtr (PcdAmdSmbiosType8);
 
   if (NumberOfPortConnector == 0) {
     DEBUG ((DEBUG_INFO, "No port connectors found.\n"));
@@ -53,28 +56,47 @@ PortConnectorInfoFunction (
     DEBUG ((DEBUG_MANAGEABILITY, "Port %d:\n", PortIdx));
     // Check whether Port connector designator strings are present or not.
     if (PortConnRecord->Type8Data.InternalReferenceDesignator != 0) {
-      IntPortConDesStr    = PortConnRecord->Designator.IntDesignatorStr;
+      IntPortConDesStr    = PortConnRecord->DesignatorStr.IntDesignatorStr;
       IntPortConDesStrLen = AsciiStrLen (IntPortConDesStr) + 1;
-      DEBUG ((DEBUG_MANAGEABILITY, "-- Designator.IntDesignatorStr = %a\n", IntPortConDesStr));
+      DEBUG ((DEBUG_MANAGEABILITY, "-- DesignatorStr.IntDesignatorStr = %a\n", IntPortConDesStr));
     } else {
       IntPortConDesStr    = NULL;
       IntPortConDesStrLen = 0;
     }
 
     if (PortConnRecord->Type8Data.ExternalReferenceDesignator != 0) {
-      ExtPortConDesStr    = PortConnRecord->Designator.ExtDesignatorStr;
+      ExtPortConDesStr    = PortConnRecord->DesignatorStr.ExtDesignatorStr;
       ExtPortConDesStrLen = AsciiStrLen (ExtPortConDesStr) + 1;
-      DEBUG ((DEBUG_MANAGEABILITY, "-- Designator.ExtDesignatorStr = %a\n", ExtPortConDesStr));
+      DEBUG ((DEBUG_MANAGEABILITY, "-- DesignatorStr.ExtDesignatorStr = %a\n", ExtPortConDesStr));
     } else {
       ExtPortConDesStr    = NULL;
       ExtPortConDesStrLen = 0;
     }
 
-    SmbiosRecord = NULL;
-    SmbiosRecord = AllocateZeroPool (
-                     sizeof (SMBIOS_TABLE_TYPE8) + IntPortConDesStrLen + ExtPortConDesStrLen + 1
-                     );
+    SmbiosRecord     = NULL;
+    SmbiosRecordSize = sizeof (SMBIOS_TABLE_TYPE8);
+    if ((MAX_UINTN - IntPortConDesStrLen) > SmbiosRecordSize) {
+      SmbiosRecordSize += IntPortConDesStrLen;
+    } else {
+      DEBUG ((DEBUG_ERROR, "SmbiosRecordSize exceed max record limit.\n"));
+      return EFI_BAD_BUFFER_SIZE;
+    }
 
+    if ((MAX_UINTN - ExtPortConDesStrLen) > SmbiosRecordSize) {
+      SmbiosRecordSize += ExtPortConDesStrLen;
+    } else {
+      DEBUG ((DEBUG_ERROR, "SmbiosRecordSize exceed max record limit.\n"));
+      return EFI_BAD_BUFFER_SIZE;
+    }
+
+    if ((MAX_UINTN - 1) > SmbiosRecordSize) {
+      SmbiosRecordSize += 1;
+    } else {
+      DEBUG ((DEBUG_ERROR, "SmbiosRecordSize exceed max record limit.\n"));
+      return EFI_BAD_BUFFER_SIZE;
+    }
+
+    SmbiosRecord = AllocateZeroPool (SmbiosRecordSize);
     if (SmbiosRecord == NULL) {
       Status = EFI_OUT_OF_RESOURCES;
       return Status;

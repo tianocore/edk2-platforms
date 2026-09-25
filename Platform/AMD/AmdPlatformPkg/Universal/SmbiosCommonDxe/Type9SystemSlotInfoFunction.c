@@ -1,10 +1,11 @@
 /** @file
-  AMD SMBIOS Type 9 Record
+  AMD SMBIOS Type 9 Record.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
+
 #include <Library/PrintLib.h>
 #include "SmbiosCommon.h"
 #include <Library/AmdPlatformSocLib.h>
@@ -33,6 +34,7 @@ SystemSlotInfoFunction (
   CHAR8                        SlotDesignationStr[SMBIOS_STRING_MAX_LENGTH];
   SMBIOS_TABLE_TYPE9_EXTENDED  SmbiosRecordExtended;
   UINTN                        SlotDesStrLen;
+  UINTN                        FixedSize;
   UINTN                        TotalSize;
 
   if (Smbios == NULL) {
@@ -55,7 +57,14 @@ SystemSlotInfoFunction (
                       SystemSlotInfo[Index].SlotID
                       );
     // Two zeros following the last string.
-    TotalSize    = sizeof (SMBIOS_TABLE_TYPE9) + sizeof (SMBIOS_TABLE_TYPE9_EXTENDED) + SlotDesStrLen + 2;
+    FixedSize = sizeof (SMBIOS_TABLE_TYPE9) + sizeof (SMBIOS_TABLE_TYPE9_EXTENDED) + 2;
+    if (SlotDesStrLen < (MAX_UINTN - FixedSize)) {
+      TotalSize = FixedSize + SlotDesStrLen;
+    } else {
+      FreePool (SystemSlotInfo);
+      return EFI_BAD_BUFFER_SIZE;
+    }
+
     SmbiosRecord = NULL;
     SmbiosRecord = AllocateZeroPool (TotalSize);
     if (SmbiosRecord == NULL) {
@@ -69,6 +78,14 @@ SystemSlotInfoFunction (
       SmbiosRecordExtended.SlotHeight        = SlotHeightUnknown;
       SmbiosRecordExtended.SlotPitch         = 0;
       SmbiosRecordExtended.SlotPhysicalWidth = SmbiosRecord->SlotDataBusWidth;
+      // Per SMBIOS 3.9 - 7.10.10: SlotInformation must hold the numeric PCIe
+      // generation value when SlotType is 0xC4 (Gen6+); 0x00 for all others.
+      if (SmbiosRecord->SlotType == SlotTypePCIExpressGen6andBeyond) {
+        SmbiosRecordExtended.SlotInformation = 6;
+      } else {
+        SmbiosRecordExtended.SlotInformation = 0;
+      }
+
       CopyMem (&SmbiosRecord->SlotCharacteristics1, PcdGetPtr (PcdAmdSmbiosType9SlotCharacteristics1), sizeof (MISC_SLOT_CHARACTERISTICS1));
       CopyMem (&SmbiosRecord->SlotCharacteristics2, PcdGetPtr (PcdAmdSmbiosType9SlotCharacteristics2), sizeof (MISC_SLOT_CHARACTERISTICS2));
       CopyMem ((UINT8 *)SmbiosRecord->PeerGroups + SmbiosRecord->PeerGroupingCount * sizeof (SmbiosRecord->PeerGroups), (UINT8 *)&SmbiosRecordExtended, sizeof (SMBIOS_TABLE_TYPE9_EXTENDED));
@@ -89,6 +106,9 @@ SystemSlotInfoFunction (
     }
   }
 
-  FreePool (SystemSlotInfo);
+  if (SystemSlotInfo != NULL) {
+    FreePool (SystemSlotInfo);
+  }
+
   return EFI_SUCCESS;
 }
