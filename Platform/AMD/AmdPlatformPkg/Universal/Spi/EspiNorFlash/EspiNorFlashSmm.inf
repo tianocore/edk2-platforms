@@ -1,8 +1,10 @@
-#/*****************************************************************************
-# *
-# * Copyright (C) 2018-2025 Advanced Micro Devices, Inc. All rights reserved.
-# * SPDX-License-Identifier: BSD-2-Clause-Patent
-# *****************************************************************************/
+## @file
+#  AMD eSPI NOR flash SMM driver.
+#
+#  Copyright (C) 2018 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
 
 [Defines]
   INF_VERSION               = 0x00010019
@@ -16,43 +18,35 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  AgesaPkg/AgesaPkg.dec
   AgesaModulePkg/AgesaModuleFchPkg.dec
-  MinPlatformPkg/MinPlatformPkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
 
 [LibraryClasses]
   UefiDriverEntryPoint
   SmmServicesTableLib
-  BaseLib
-  BaseMemoryLib
   MemoryAllocationLib
-  TimerLib
   DebugLib
   IoLib
   PciLib
   FchEspiCmdLib
   BaseMemoryLib
-  MemoryAllocationLib
+
 [Sources]
   EspiNorFlashSmm.c
   EspiNorFlash.c
-  EspiNorFlashSfdp.c
   EspiNorFlashInstance.h
   EspiNorFlash.h
 
 [Protocols]
-  gAmdEspiSmmNorFlashProtocolGuid                                ## PRODUCES
+  gEfiSpiSmmNorFlashProtocolGuid                                 ## PRODUCES
   gEdk2EspiSmmDriverProtocolGuid                                 ## CONSUMES
 
 [FixedPcd]
-  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
-  gEfiMdePkgTokenSpaceGuid.PcdSpiNorFlashOperationRetryCount
-  gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdEspiOffset
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize            ## CONSUMES
 
 [Pcd]
-  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdPspRomArmorSelection      ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdRemoteFlashRomSize
 
 [Depex]
   gEdk2EspiSmmDriverProtocolGuid

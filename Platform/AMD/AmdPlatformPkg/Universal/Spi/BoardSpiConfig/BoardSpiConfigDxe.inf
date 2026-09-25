@@ -1,11 +1,9 @@
-#/** @file
+## @file
+#  AMD Board SPI config inf file.
 #
-#  Component description file for SpiFvbDxe module
-#
-#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) Advanced Micro Devices, Inc., or its affiliates.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-#
-#**/
+##
 
 [Defines]
   INF_VERSION               = 0x00010019
@@ -18,24 +16,27 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
   AgesaModulePkg/AgesaModuleFchPkg.dec
 
 [LibraryClasses]
   DebugLib
-  MemoryAllocationLib
   UefiDriverEntryPoint
   UefiBootServicesTableLib
 
 [Sources]
   BoardSpiConfigDxe.c
 
+[Pcd]
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdResetSpiSpeed
+
 [Protocols]
   gEfiSpiConfigurationProtocolGuid
-  gFakeDeviceIoProtocolGuid
 
 [Guids]
   gEdk2JedecSfdpSpiDxeDriverGuid
+  gAmdPlatformFakeSpiDriverGuid
 
 [Depex]
   TRUE

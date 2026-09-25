@@ -48,7 +48,7 @@
   PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
   PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
   PlatformSocLib|AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
-  SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibNull.inf
+  SpiHcPlatformLib|MdeModulePkg/Library/BaseSpiHcPlatformLibNull/BaseSpiHcPlatformLibNull.inf
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
   RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
   SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
@@ -159,7 +159,6 @@
   AmdPlatformPkg/Library/AmdPostCodeLibNull/AmdPostCodeLibNull.inf
   AmdPlatformPkg/Library/EmulatorSerialPort80RedirectLib/EmulatorSerialPort80Redirect.inf
   AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
-  AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibNull.inf
   AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
   AmdPlatformPkg/Universal/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
   AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
@@ -187,12 +186,8 @@
   AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
   AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibDxe.inf
   AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibSmm.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbSmm.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbDxe.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcSmm.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcDxe.inf
-  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusDxe.inf
-  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusSmm.inf
+  AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
+  AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigDxe.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
 
