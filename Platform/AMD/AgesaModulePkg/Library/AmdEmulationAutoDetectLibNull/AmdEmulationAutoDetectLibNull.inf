@@ -1,0 +1,14 @@
+[Defines]
+  INF_VERSION    = 0x00010006
+  BASE_NAME      = AmdEmulationAutoDetectLibNull
+  FILE_GUID      = a1b2c3d4-e5f6-7890-abcd-ef1234567890
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = AmdEmulationAutoDetectLib
+
+[Sources]
+  AmdEmulationAutoDetectLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec

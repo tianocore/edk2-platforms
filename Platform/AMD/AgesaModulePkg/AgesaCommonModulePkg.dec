@@ -34,6 +34,9 @@
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdAmdMemMaxChannelPerDieV2|8|UINT8|0x00002004     # 8 by default
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdAmdMemMaxDimmPerChannelV2|2|UINT8|0x00002005  # 2 by default
 
+[PcdsFeatureFlag]
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdRomArmorWhitelistEnable|FALSE|BOOLEAN|0x00040001
+
 [PcdsDynamic]
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdAmdS3LibTableSize|0x4000|UINT64|0x00027003
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdValLoopbackMode|0|UINT32|0x00041608

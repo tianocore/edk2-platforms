@@ -185,6 +185,8 @@
   AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
   AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
   AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
+  AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibDxe.inf
+  AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibSmm.inf
   AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbSmm.inf
   AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbDxe.inf
   AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcSmm.inf
