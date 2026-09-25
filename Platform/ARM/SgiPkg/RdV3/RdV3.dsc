@@ -14,7 +14,7 @@
   PLATFORM_GUID                  = fd140b0f-4467-4314-aa69-cd0bd712e08e
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x0001001B
-  OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
+!include Platform/ARM/ArmPlatformOutput.dsc.inc
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = NOOPT|DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT

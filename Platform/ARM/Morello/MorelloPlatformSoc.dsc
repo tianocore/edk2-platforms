@@ -16,11 +16,7 @@
   PLATFORM_GUID                  = 8AC37B62-713D-449D-876D-06AD1B8E67E5
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x0001001B
-!ifdef $(EDK2_OUT_DIR)
-  OUTPUT_DIRECTORY               = $(EDK2_OUT_DIR)
-!else
-  OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)
-!endif
+!include Platform/ARM/ArmPlatformOutput.dsc.inc
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = NOOPT|DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
