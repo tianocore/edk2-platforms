@@ -83,7 +83,7 @@ GetSpiFlashOffset (
 
   // Read SPI XOR Value from Register 0x5C
   // SPI ROM Addr[31:24] = SPI ROM Page [31:24] ^ Host Mem Addr [31:24]
-  Value32 = MmioRead32 ((UINTN)(FCH_SPI_BASE_ADDRESS + FCH_SPI_MMIO_REG5C_Addr32_Ctrl3));
+  Value32 = MmioRead32 ((UINTN)(FCH_SPI_BASE_ADDRESS + FCH_SPI_MMIO_REG5C_ADDR32_CTRL3));
   DEBUG ((DEBUG_INFO, "%a - ROM 0x5C ADDR32Ctrl3 = 0x%X\n", __func__, Value32));
 
   // Compute SPI Address
