@@ -34,6 +34,8 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Drivers/OptionRomPkg/OptionRomPkg.dec
 
 [LibraryClasses]
   UefiDriverEntryPoint
@@ -43,9 +45,16 @@
   UefiBootServicesTableLib
   UefiLib
   DevicePathLib
+  PcdLib
 
 [Guids]
   gEfiUartDevicePathGuid
+  gEfiConsoleOutDeviceGuid
+  gEfiConsoleInDeviceGuid
+  gEfiStandardErrorDeviceGuid
+
+[FeaturePcd]
+  gOptionRomPkgTokenSpaceGuid.PcdFtdiAutoAttachConsole
 
 [Protocols]
   ## TO_START
