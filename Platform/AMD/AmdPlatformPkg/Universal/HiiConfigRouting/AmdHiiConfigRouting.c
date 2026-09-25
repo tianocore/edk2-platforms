@@ -4,14 +4,14 @@
   functions.
 
   Copyright (c) 2007 - 2018, Intel Corporation. All rights reserved.<BR>
-
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include "AmdHiiConfigRouting.h"
+#include <Uefi.h>
 
 HII_ELEMENT  gElementInfo[] = {
   { L"GUID=",   FIXED_STR_LEN (L"GUID=")   },
@@ -21,6 +21,9 @@ HII_ELEMENT  gElementInfo[] = {
   { L"WIDTH=",  FIXED_STR_LEN (L"WIDTH=")  },
   { L"VALUE=",  FIXED_STR_LEN (L"VALUE=")  }
 };
+
+CHAR16  mAmpersand[]           = L"&";
+CHAR16  mAmpersandValueEqual[] = L"&VALUE=";
 
 /**
   Converts the unicode character of the string from uppercase to lowercase.
@@ -251,6 +254,10 @@ GetValueOfNumber (
 
   while (*EndOfString != L'\0' && *EndOfString != L'&') {
     EndOfString++;
+    if (StringLength == (MAX_UINTN - 1)) {
+      return EFI_OUT_OF_RESOURCES;
+    }
+
     StringLength++;
   }
 
@@ -284,7 +291,11 @@ GetValueOfNumber (
     if ((Index & 1) == 0) {
       This->NumberPtr[Index / 2] = DigitUint8;
     } else {
-      This->NumberPtr[Index / 2] = (UINT8)((DigitUint8 << 4) + This->NumberPtr[Index / 2]);
+      if (((DigitUint8 << 4) + This->NumberPtr[Index / 2]) > MAX_UINT8) {
+        return EFI_OUT_OF_RESOURCES;
+      }
+
+      This->NumberPtr[Index / 2] = (UINT8)(UINTN)(((DigitUint8 << 4) + This->NumberPtr[Index / 2]) & 0xFF);
     }
   }
 
@@ -380,6 +391,18 @@ HiiStringSetMinBufferSize (
   UINTN       ThisStringSize;
   EFI_STRING  NewAlloc;
 
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (This->StringLength == (MAX_UINTN - 1)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  if (This->StringLength >= (MAX_UINTN - 1) / sizeof (CHAR16)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
   ThisStringSize = (This->StringLength + 1) * sizeof (CHAR16);
 
   if (Size > This->PrivateBufferSize) {
@@ -425,7 +448,7 @@ HiiStringAppend (
   ThisStringSize = (This->StringLength + 1) * sizeof (CHAR16);
   StringSize     = HII_STR_SIZE (String);
 
-  if (ThisStringSize + StringSize > This->PrivateBufferSize) {
+  if ((ThisStringSize > (MAX_UINTN - StringSize)) || ((ThisStringSize + StringSize) > This->PrivateBufferSize)) {
     MaxLen = (ThisStringSize + StringSize) * 2;
     Status = HiiStringSetMinBufferSize (This, MaxLen);
     if (EFI_ERROR (Status)) {
@@ -454,9 +477,9 @@ HiiStringAppend (
 **/
 EFI_STATUS
 HiiStringAppendValue (
-  IN OUT  HII_STRING  *This,
-  IN      UINT8       *Number,
-  IN      UINTN       Length
+  IN OUT  HII_STRING   *This,
+  IN      CONST UINT8  *Number,
+  IN      UINTN        Length
   )
 {
   EFI_STATUS  Status;
@@ -472,7 +495,19 @@ HiiStringAppendValue (
     return EFI_INVALID_PARAMETER;
   }
 
+  if ((This == NULL) || (Number == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (This->StringLength >= (MAX_UINTN - 1) / sizeof (CHAR16)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
   ThisStringSize = (This->StringLength + 1) * sizeof (CHAR16);
+
+  if (ThisStringSize > (MAX_UINTN - Length * 2 * sizeof (CHAR16))) {
+    return EFI_OUT_OF_RESOURCES;
+  }
 
   if (ThisStringSize + Length * 2 * sizeof (CHAR16) > This->PrivateBufferSize) {
     MaxLen = (ThisStringSize + Length * 2 * sizeof (CHAR16)) * 2; // Double requested string length.
@@ -522,8 +557,8 @@ HiiStringAppendValue (
 **/
 EFI_STRING
 FindElmentValue (
-  IN ELEMENT_HDR  Hdr,
-  IN EFI_STRING   String
+  IN HII_ELEMENT_HDR  Hdr,
+  IN EFI_STRING       String
   )
 {
   ASSERT (String != NULL);
@@ -581,7 +616,7 @@ GetEndOfConfigHdr (
 {
   ASSERT (String != NULL);
 
-  String = FindElmentValue (ElementGuidHdr, String);
+  String = FindElmentValue (HiiElementGuidHdr, String);
   if (String == NULL) {
     return NULL;
   }
@@ -594,8 +629,8 @@ GetEndOfConfigHdr (
   while (*String != 0 &&
          HiiStrnCmp (
            String,
-           gElementInfo[ElementPathHdr].ElementString,
-           gElementInfo[ElementPathHdr].ElementLength
+           gElementInfo[HiiElementPathHdr].ElementString,
+           gElementInfo[HiiElementPathHdr].ElementLength
            )
          != 0)
   {
@@ -603,7 +638,7 @@ GetEndOfConfigHdr (
   }
 
   if (*String != 0) {
-    String = String + gElementInfo[ElementPathHdr].ElementLength;
+    String = String + gElementInfo[HiiElementPathHdr].ElementLength;
   }
 
   String = SkipElementValue (String);
@@ -656,15 +691,15 @@ HiiBlockToConfig (
   OUT EFI_STRING                             *Progress
   )
 {
-  EFI_STATUS  Status;
-  EFI_STRING  StringPtr;
-  EFI_STRING  OrigPtr;
-  CHAR16      CharBackup;
-  UINTN       Offset;
-  UINTN       Width;
-  UINT8       *Value;
-  HII_STRING  HiiString;
-  HII_NUMBER  HiiNumber;
+  EFI_STATUS   Status;
+  EFI_STRING   StringPtr;
+  EFI_STRING   OrigPtr;
+  CHAR16       CharBackup;
+  UINTN        Offset;
+  UINTN        Width;
+  CONST UINT8  *Value;
+  HII_STRING   HiiString;
+  HII_NUMBER   HiiNumber;
 
   if ((This == NULL) || (Progress == NULL) || (Config == NULL)) {
     return EFI_INVALID_PARAMETER;
@@ -717,7 +752,8 @@ HiiBlockToConfig (
   StringPtr[0] = L'\0';         // Temporarily change & to L'\0'
   Status       = HiiStringAppend (&HiiString, ConfigRequest);
   if (EFI_ERROR (Status)) {
-    *Progress = ConfigRequest;
+    *Progress    = ConfigRequest;
+    StringPtr[0] = CharBackup;
     goto Exit;
   }
 
@@ -734,7 +770,7 @@ HiiBlockToConfig (
   // When "OFFSET=" is found, OrigPtr starts at "OFFSET=", and StringPtr points to value.
   //
   while (*StringPtr != 0 &&
-         (OrigPtr = StringPtr, (StringPtr = FindElmentValue (ElementOffsetHdr, StringPtr)) != NULL)
+         (OrigPtr = StringPtr, (StringPtr = FindElmentValue (HiiElementOffsetHdr, StringPtr)) != NULL)
          )
   {
     //
@@ -757,7 +793,7 @@ HiiBlockToConfig (
     //
     // Get Width
     //
-    StringPtr = FindElmentValue (ElementWidthHdr, StringPtr);
+    StringPtr = FindElmentValue (HiiElementWidthHdr, StringPtr);
     if (StringPtr == NULL) {
       *Progress = OrigPtr - 1;
       Status    = EFI_INVALID_PARAMETER;
@@ -793,20 +829,21 @@ HiiBlockToConfig (
       goto Exit;
     }
 
-    Value = (UINT8 *)Block + Offset;
+    Value = Block + Offset;
 
     CharBackup = *StringPtr;
     *StringPtr = L'\0';
 
     Status = HiiStringAppend (&HiiString, OrigPtr);
     if (EFI_ERROR (Status)) {
-      *Progress = ConfigRequest;  // Out of memory
+      *Progress  = ConfigRequest;  // Out of memory
+      *StringPtr = CharBackup;
       goto Exit;
     }
 
     *StringPtr = CharBackup;  // End of section of string OrigPtr
 
-    Status = HiiStringAppend (&HiiString, L"&VALUE=");
+    Status = HiiStringAppend (&HiiString, mAmpersandValueEqual);
     if (EFI_ERROR (Status)) {
       *Progress = ConfigRequest;  // Out of memory
       goto Exit;
@@ -830,13 +867,19 @@ HiiBlockToConfig (
       break;
     }
 
-    Status = HiiStringAppend (&HiiString, L"&");
+    Status = HiiStringAppend (&HiiString, mAmpersand);
     if (EFI_ERROR (Status)) {
       *Progress = ConfigRequest;  // Out of memory
       goto Exit;
     }
 
     StringPtr++;  // Skip L'&'
+  }
+
+  if (StringPtr == NULL) {
+    *Progress = OrigPtr - 1;
+    Status    = EFI_INVALID_PARAMETER;
+    goto Exit;
   }
 
   if (*StringPtr != L'\0') {
@@ -972,7 +1015,7 @@ HiiConfigToBlock (
   // <BlockConfig> ::= 'OFFSET='<Number>&'WIDTH='<Number>&'VALUE='<Number>
   //
   while (*StringPtr != L'\0' &&
-         (OrigPtr = StringPtr, (StringPtr = FindElmentValue (ElementOffsetHdr, StringPtr)) != NULL)
+         (OrigPtr = StringPtr, (StringPtr = FindElmentValue (HiiElementOffsetHdr, StringPtr)) != NULL)
          )
   {
     //
@@ -995,7 +1038,7 @@ HiiConfigToBlock (
     //
     // Get Width
     //
-    StringPtr = FindElmentValue (ElementWidthHdr, StringPtr);
+    StringPtr = FindElmentValue (HiiElementWidthHdr, StringPtr);
     if (StringPtr == NULL) {
       *Progress = OrigPtr - 1;
       Status    = EFI_INVALID_PARAMETER;
@@ -1019,7 +1062,7 @@ HiiConfigToBlock (
     //
     // Get Value
     //
-    StringPtr = FindElmentValue (ElementValueHdr, StringPtr);
+    StringPtr = FindElmentValue (HiiElementValueHdr, StringPtr);
     if (StringPtr == NULL) {
       *Progress = OrigPtr - 1;
       Status    = EFI_INVALID_PARAMETER;
@@ -1071,6 +1114,12 @@ HiiConfigToBlock (
     StringPtr++;  // Skip L'&'
   }
 
+  if (StringPtr == NULL) {
+    *Progress = OrigPtr - 1;
+    Status    = EFI_INVALID_PARAMETER;
+    goto Exit;
+  }
+
   //
   // The input string is not ConfigResp format, return error.
   //
@@ -1081,7 +1130,7 @@ HiiConfigToBlock (
   }
 
   *Progress  = StringPtr + HiiStrLen (StringPtr);
-  *BlockSize = MaxBlockSize - 1;
+  *BlockSize = (MaxBlockSize > 0) ? (MaxBlockSize - 1) : 0;
 
   if (MaxBlockSize > BufferSize) {
     *BlockSize = MaxBlockSize;
