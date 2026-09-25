@@ -1,10 +1,11 @@
 /** @file
-  AMD SMBIOS Type 38 Record
+  AMD SMBIOS Type 38 Record.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
+
 #include "SmbiosCommon.h"
 
 /**

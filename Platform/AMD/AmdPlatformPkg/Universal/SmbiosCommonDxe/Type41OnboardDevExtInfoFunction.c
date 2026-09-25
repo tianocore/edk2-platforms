@@ -1,10 +1,11 @@
 /** @file
-  AMD SMBIOS Type 41 Record
+  AMD SMBIOS Type 41 Record.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025  Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
+
 #include <Pcd/SmbiosPcd.h>
 #include "SmbiosCommon.h"
 
@@ -24,21 +25,21 @@ OnboardDevExtInfoFunction (
   IN EFI_SMBIOS_PROTOCOL  *Smbios
   )
 {
-  EFI_STATUS                          Status;
-  EFI_SMBIOS_HANDLE                   SmbiosHandle;
-  SMBIOS_TABLE_TYPE41                 *SmbiosRecord;
-  SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD  *DevExtInfoRecord;
-  UINT8                               DevIdx;
-  UINT8                               Idx;
-  UINT8                               NumberOfDevices;
-  UINTN                               StringOffset;
-  CHAR8                               *RefDesStr;
-  UINTN                               RefDesStrLen;
-  UINT16                              SegmentNum;
-  UINT8                               BusNum;
-  UINT8                               DevNum;
-  UINT8                               Functions;
-  UINT8                               DeviceFound;
+  EFI_STATUS                                Status;
+  EFI_SMBIOS_HANDLE                         SmbiosHandle;
+  SMBIOS_TABLE_TYPE41                       *SmbiosRecord;
+  CONST SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD  *DevExtInfoRecord;
+  UINT8                                     DevIdx;
+  UINT8                                     Idx;
+  UINT8                                     NumberOfDevices;
+  UINTN                                     StringOffset;
+  CONST CHAR8                               *RefDesStr;
+  UINTN                                     RefDesStrLen;
+  UINT16                                    SegmentNum;
+  UINT8                                     BusNum;
+  UINT8                                     DevNum;
+  UINT8                                     Functions;
+  UINT8                                     DeviceFound;
 
   if (Smbios == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -47,7 +48,7 @@ OnboardDevExtInfoFunction (
   // Get the total number of onboard devices.
   NumberOfDevices = PcdGet8 (PcdAmdSmbiosType41Number);
   DEBUG ((DEBUG_INFO, "%a: Total number of AMD SMBIOS type41 PCD structure %d.\n", __func__, NumberOfDevices));
-  DevExtInfoRecord = (SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD *)PcdGetPtr (PcdAmdSmbiosType41);
+  DevExtInfoRecord = (CONST SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD *)PcdGetPtr (PcdAmdSmbiosType41);
 
   // No device entries found
   if (NumberOfDevices == 0) {
@@ -61,7 +62,12 @@ OnboardDevExtInfoFunction (
     // Check whether reference designation strings are present.
     if (DevExtInfoRecord->ReferenceDesignation != 0) {
       RefDesStr    = DevExtInfoRecord->RefDesignationStr;
-      RefDesStrLen = AsciiStrLen (RefDesStr) + 1;
+      RefDesStrLen = AsciiStrLen (RefDesStr);
+      if (SMBIOS_STRING_MAX_LENGTH < RefDesStrLen) {
+        RefDesStrLen = SMBIOS_STRING_MAX_LENGTH;
+      }
+
+      RefDesStrLen += 1;
     } else {
       RefDesStr    = NULL;
       RefDesStrLen = 1;
@@ -117,11 +123,11 @@ OnboardDevExtInfoFunction (
           SmbiosRecord->Hdr.Length           = sizeof (SMBIOS_TABLE_TYPE41);
           SmbiosRecord->Hdr.Handle           = 0;
           SmbiosRecord->ReferenceDesignation = DevExtInfoRecord->ReferenceDesignation;
-          SmbiosRecord->DeviceType           = (DevExtInfoRecord->DeviceEnabled << 7) | DevExtInfoRecord->DeviceType;
+          SmbiosRecord->DeviceType           = ((DevExtInfoRecord->DeviceEnabled << 7) & MAX_UINT8) | DevExtInfoRecord->DeviceType;
           SmbiosRecord->DeviceTypeInstance   = DevExtInfoRecord->DeviceTypeInstance;
           SmbiosRecord->SegmentGroupNum      = SegmentNum;
           SmbiosRecord->BusNum               = BusNum;
-          SmbiosRecord->DevFuncNum           = (DevNum << 3) + Idx;
+          SmbiosRecord->DevFuncNum           = ((DevNum << 3) & MAX_UINT8) | Idx;
 
           // Add strings to bottom of data block
           StringOffset = SmbiosRecord->Hdr.Length;
@@ -167,14 +173,14 @@ OnboardDevExtInfoFunction (
 EFI_STATUS
 EFIAPI
 GetBusDeviceInfo (
-  IN  UINT16  *VendorId,
-  IN  UINT16  *DeviceId,
-  IN  UINT8   *Instance,
-  OUT UINT16  *Segment,
-  OUT UINT8   *Bus,
-  OUT UINT8   *Device,
-  OUT UINT8   *Functions,
-  OUT UINT8   *DeviceFound
+  IN  CONST UINT16  *VendorId,
+  IN  CONST UINT16  *DeviceId,
+  IN  CONST UINT8   *Instance,
+  OUT UINT16        *Segment,
+  OUT UINT8         *Bus,
+  OUT UINT8         *Device,
+  OUT UINT8         *Functions,
+  OUT UINT8         *DeviceFound
   )
 {
   UINT16  SegIdx;
@@ -183,7 +189,7 @@ GetBusDeviceInfo (
   UINT8   DevIdx;
   UINT8   FuncIdx;
   UINT8   InstanceCount;
-  UINT16  MaxSegments;
+  UINT32  MaxSegments;
   UINT8   BusRangeIdentifier;
 
   InstanceCount = *Instance;
@@ -193,7 +199,12 @@ GetBusDeviceInfo (
   if ( BusRangeIdentifier <= 0x8 ) {
     MaxSegments = 1;
   } else if ((BusRangeIdentifier >= 0x9) && (BusRangeIdentifier <= 0xF)) {
-    MaxSegments = 1 << (BusRangeIdentifier - 0x8);
+    MaxSegments = 1u << (BusRangeIdentifier - 0x8);
+  }
+
+  if (MaxSegments > MAX_UINT16) {
+    ASSERT (FALSE);
+    return EFI_NOT_FOUND;
   }
 
   for (SegIdx = 0; SegIdx < MaxSegments; SegIdx++ ) {

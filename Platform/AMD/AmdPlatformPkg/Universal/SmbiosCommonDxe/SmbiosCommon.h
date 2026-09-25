@@ -1,16 +1,17 @@
 /** @file
   AMD Smbios common header file.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef SMBIOS_COMMON_DRIVER_H_
-#define SMBIOS_COMMON_DRIVER_H_
+#pragma once
 
 #include <PiDxe.h>
 #include <Protocol/Smbios.h>
+#include <Protocol/PciEnumerationComplete.h>
 #include <IndustryStandard/SmBios.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/DebugLib.h>
@@ -27,12 +28,12 @@
   @param[in]  Smbios                The EFI_SMBIOS_PROTOCOL instance.
   @param[out] SmbiosHandle          A unique handle will be assigned to the SMBIOS record.
   @param[in]  Record                The data for the fixed portion of the SMBIOS record. The format of the record is
-                                determined by EFI_SMBIOS_TABLE_HEADER.Type. The size of the formatted area is defined
-                                by EFI_SMBIOS_TABLE_HEADER.Length and either followed by a double-null (0x0000) or
-                                a set of null terminated strings and a null.
+                                    determined by EFI_SMBIOS_TABLE_HEADER.Type. The size of the formatted area is defined
+                                    by EFI_SMBIOS_TABLE_HEADER.Length and either followed by a double-null (0x0000) or
+                                    a set of null terminated strings and a null.
 
-  @retval EFI_SUCCESS           Record was added.
-  @retval EFI_OUT_OF_RESOURCES  Record was not added due to lack of system resources.
+  @retval EFI_SUCCESS               Record was added.
+  @retval EFI_OUT_OF_RESOURCES      Record was not added due to lack of system resources.
 
 **/
 EFI_STATUS
@@ -62,14 +63,14 @@ AddCommonSmbiosRecord (
 EFI_STATUS
 EFIAPI
 GetBusDeviceInfo (
-  IN  UINT16  *VendorId,
-  IN  UINT16  *DeviceId,
-  IN  UINT8   *Instance,
-  OUT UINT16  *Segment,
-  OUT UINT8   *Bus,
-  OUT UINT8   *Device,
-  OUT UINT8   *Functions,
-  OUT UINT8   *DeviceFound
+  IN  CONST UINT16  *VendorId,
+  IN  CONST UINT16  *DeviceId,
+  IN  CONST UINT8   *Instance,
+  OUT UINT16        *Segment,
+  OUT UINT8         *Bus,
+  OUT UINT8         *Device,
+  OUT UINT8         *Functions,
+  OUT UINT8         *DeviceFound
   );
 
 /**
@@ -86,6 +87,100 @@ OnPciEnumerationComplete (
   );
 
 /**
+  This function makes boot time changes to the contents of the
+  BiosVendor (Type 0).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+BiosVendorFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  This function makes boot time changes to the contents of the
+  SystemManufacturer (Type 1).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+SystemManufacturerFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  This function makes boot time changes to the contents of the
+  BaseBoardManufacturer (Type 2).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+BaseBoardManufacturerFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  This function makes boot time changes to the contents of the
+  ChassisManufacturer (Type 3).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+ChassisManufacturerFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  Build-in Pointing Device (Type 21).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+BuildInPointingDeviceFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  Voltage Probe (Type 26).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+VoltageProbeFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
   This function updates IPMI Device information changes to the contents of the
   Table Type 38.
 
@@ -95,6 +190,18 @@ OnPciEnumerationComplete (
 EFI_STATUS
 EFIAPI
 IpmiDeviceInformation (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  Management Controller Host Interface (Type 42).
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_UNSUPPORTED            Unexpected RecordType value.
+**/
+EFI_STATUS
+EFIAPI
+HostInterface (
   IN  EFI_SMBIOS_PROTOCOL  *Smbios
   );
 
@@ -172,6 +279,37 @@ BiosLanguageInfoFunction (
   );
 
 /**
+  This function makes boot time changes to the contents of the
+  BootInformation (Type 32).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+BootInfoStatusFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
+  System power supply function (Type 39).
+
+  @param[in]  Smbios                 The EFI_SMBIOS_PROTOCOL instance.
+
+  @retval EFI_SUCCESS                All parameters were valid.
+  @retval EFI_OUT_OF_RESOURCES       Resource not available.
+
+**/
+EFI_STATUS
+EFIAPI
+SystemPowerSupplyFunction (
+  IN  EFI_SMBIOS_PROTOCOL  *Smbios
+  );
+
+/**
   This function adds onboard devices extended information smbios record (Type 41).
 
   @param[in]  Smbios                     The EFI_SMBIOS_PROTOCOL instance.
@@ -185,25 +323,12 @@ OnboardDevExtInfoFunction (
   IN EFI_SMBIOS_PROTOCOL  *Smbios
   );
 
-/**
-  Find the Lan-On-Motherboard device path. Installs BOARD_BDS_BOOT_FROM_DEVICE_PATH_PROTOCOL
-  with the LOM device path protocol
-
-  @retval EFI NOT_FOUND         LOM device path is not found
-  @retval EFI_SUCCESS           LOM device path found
-**/
-EFI_STATUS
-EFIAPI
-InstallLomDevicePath (
-  );
-
 typedef
-EFI_STATUS
-(EFIAPI EFI_COMMON_SMBIOS_DATA_FUNCTION)(
+  EFI_STATUS
+(EFIAPI COMMON_SMBIOS_DATA_FUNCTION)(
   IN  EFI_SMBIOS_PROTOCOL  *Smbios
   );
 
 typedef struct {
-  EFI_COMMON_SMBIOS_DATA_FUNCTION    *Function;
-} EFI_COMMON_SMBIOS_DATA;
-#endif // SMBIOS_COMMON_DRIVER_H_
+  COMMON_SMBIOS_DATA_FUNCTION    *Function;
+} COMMON_SMBIOS_DATA;
