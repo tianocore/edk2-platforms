@@ -37,6 +37,9 @@
   ## @libraryclass     Provides a service to determine the firmware boot media device.
   FirmwareBootMediaInfoLib|Include/Library/FirmwareBootMediaInfoLib.h
 
+  ## @libraryclass     Provides board specific BDS hooks
+  BoardBdsHooksLib|Include/Library/BoardBdsHookLib.h
+
 [Guids]
   ## Include Include/Guid/BiosId.h
   gBiosIdGuid = { 0xC3E36D09, 0x8294, 0x4b97, { 0xA8, 0x57, 0xD5, 0x28, 0x8F, 0xE3, 0x3E, 0x28 } }
