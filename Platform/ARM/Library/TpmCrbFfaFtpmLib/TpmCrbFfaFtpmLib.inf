@@ -1,0 +1,54 @@
+## @file
+#
+# Copyright (c) 2026, Arm Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = TpmCrbFfaFtpmLib
+  FILE_GUID                      = 200b01d6-a613-11f1-9f72-5fc676d3a3c9
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = TpmCrbFfaDeviceLib
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  CONSTRUCTOR                    = TpmCrbFfaFtpmLibConstuctor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = ARM AARCH64
+#
+
+[Sources]
+  TpmCrbFfaFtpmLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+  SecurityPkg/SecurityPkg.dec
+  TcgTpmPkg/TcgTpmPkg.dec
+  Platform/ARM/ARM.dec
+
+[LibraryClasses]
+  ArmLib
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  MemoryAllocationLib
+  TpmLib
+  PlatformTpmLib
+
+[Guids]
+  gEdkiiTpmEventLogDescHobGuid
+
+[FixedPcd]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+  gPlatformArmTokenSpaceGuid.PcdTpmSecureCrbBase
+
+[Depex]
+  TRUE

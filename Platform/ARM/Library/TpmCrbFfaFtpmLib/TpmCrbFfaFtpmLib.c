@@ -1,6 +1,6 @@
-/** @file FtpmDxe driver which is software based TPM using TpmLib.
+/** @file TpmCrbFfa Library which is software based TPM using TpmLib.
 
-  Copyright (c) 2024, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2026, Arm Limited. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
    @par Glossary:
@@ -20,17 +20,16 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
+#include <Library/TpmCrbFfaDeviceLib.h>
 #include <Library/TpmLib.h>
 #include <Library/HobLib.h>
 #include <Library/PlatformTpmLib.h>
 #include <Library/MmServicesTableLib.h>
 
-#include <Protocol/MmCommunication2.h>
-
-#include <IndustryStandard/ArmFfaSvc.h>
 #include <IndustryStandard/Tpm20.h>
 #include <IndustryStandard/TpmPtp.h>
 #include <IndustryStandard/UefiTcgPlatform.h>
+
 #include <Guid/Tpm2ServiceFfa.h>
 
 #define CRB_BUFFER_SIZE        (sizeof (PTP_CRB_REGISTERS) - OFFSET_OF (PTP_CRB_REGISTERS, CrbDataBuffer))
@@ -91,10 +90,11 @@ typedef struct {
   CHAR8            *HashName;
 } INTERNAL_HASH_INFO;
 
-STATIC VOID   *mTmpCommandBuffer;
-STATIC VOID   *mTmpResponseBuffer;
-STATIC VOID   *mEventLog;
-STATIC UINTN  mEventLogSize;
+STATIC VOID     *mTmpCommandBuffer;
+STATIC VOID     *mTmpResponseBuffer;
+STATIC VOID     *mEventLog;
+STATIC UINTN    mEventLogSize;
+STATIC BOOLEAN  mFtpmAvailable = FALSE;
 
 STATIC INTERNAL_HASH_INFO  mHashInfo[] = {
   { TPM_ALG_SHA256, HASH_ALG_SHA256, SHA256_DIGEST_SIZE, "SHA256" },
@@ -152,35 +152,6 @@ GetCrbBuffer (
 }
 
 /**
-  Set response data according to CRB over FF-A specificatiion.
-
-  @param [in,out]  TpmArgs      Return arguments
-  @param [in]      TpmStatus    Tpm Service Status
-  @param [in]      Arg1
-  @param [in]      Arg2
-  @param [in]      Arg3
-
-**/
-STATIC
-VOID
-EFIAPI
-SetResponseArgs (
-  IN OUT ARM_FFA_ARGS     *TpmArgs,
-  IN     TPM2_FFA_STATUS  TpmStatus,
-  IN     UINTN            Arg1,
-  IN     UINTN            Arg2,
-  IN     UINTN            Arg3
-  )
-{
-  ZeroMem (TpmArgs, sizeof (DIRECT_MSG_ARGS));
-
-  TpmArgs->Arg4 = TpmStatus;
-  TpmArgs->Arg5 = Arg1;
-  TpmArgs->Arg6 = Arg2;
-  TpmArgs->Arg7 = Arg3;
-}
-
-/**
   Get hash size based on Algo
 
   @param[in]     HashAlgo           Hash Algorithm Id.
@@ -208,6 +179,44 @@ GetHashInfo (
 }
 
 /**
+  Set empty TPM session
+
+  @param[out]  AuthSessionBuffer     AuthSessionBuffer
+
+  @return     Size                   AuthSession size
+
+ **/
+STATIC
+UINT32
+EFIAPI
+SetEmptyAuthSession (
+  IN UINT8  *AuthSessionBuffer
+  )
+{
+  UINT8  *Buffer;
+
+  Buffer = AuthSessionBuffer;
+
+  // sessionHandle
+  WriteUnaligned32 ((UINT32 *)Buffer, SwapBytes32 (TPM_RS_PW));
+  Buffer += sizeof (UINT32);
+
+  // nonce = nullNonce
+  WriteUnaligned16 ((UINT16 *)Buffer, SwapBytes16 (0));
+  Buffer += sizeof (UINT16);
+
+  // sessionAttributes = 0
+  *Buffer = 0x00;
+  Buffer++;
+
+  // hmac = nullAuth
+  WriteUnaligned16 ((UINT16 *)Buffer, SwapBytes16 (0));
+  Buffer += sizeof (UINT16);
+
+  return (UINT32)(Buffer - AuthSessionBuffer);
+}
+
+/**
   This function dump TCG_EfiSpecIDEventStruct.
 
   @param[in,out]  LogAddr    Event address
@@ -215,6 +224,7 @@ GetHashInfo (
 
 **/
 VOID
+EFIAPI
 DumpTcgEfiSpecIdEvent (
   IN OUT UINT8  **LogAddr,
   IN OUT UINTN  *LogSize
@@ -387,46 +397,13 @@ DumpTpmEventLog (
 }
 
 /**
-  Get tpm event log.
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmGetTpmEventLog (
-  IN VOID
-  )
-{
-  VOID                  *HobList;
-  EFI_HOB_GUID_TYPE     *GuidHob;
-  EFI_MMRAM_DESCRIPTOR  *EventLogDesc;
-
-  HobList = GetHobList ();
-  if (HobList == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to find out gHobList.\n", __func__));
-    return;
-  }
-
-  GuidHob = GetNextGuidHob (&gEdkiiTpmEventLogDescHobGuid, HobList);
-  if (GuidHob == NULL) {
-    DEBUG ((DEBUG_INFO, "%a: [SKIP] TPM event log doesn't present.\n", __func__));
-    mEventLog     = NULL;
-    mEventLogSize = 0;
-    return;
-  }
-
-  EventLogDesc  = GET_GUID_HOB_DATA (GuidHob);
-  mEventLog     = (VOID *)EventLogDesc->PhysicalStart;
-  mEventLogSize = (UINTN)EventLogDesc->PhysicalSize;
-
-  DumpTpmEventLog ();
-}
-
-/**
   Strip SpecId Event which comes from TF-A
 
   @param[out]  StrippedLogAddr   Header stripped event log addr
   @param[out]  StrippedLogSize   Size of stripped event log size
+
+  @retval EFI_SUCECSS            event log is valid.
+  @retval EFI_INVALID_PARAMETER  event log is invalid.
 
  **/
 STATIC
@@ -500,43 +477,6 @@ ValidateAndStripSpecIdEvent (
   *StrippedLogSize = mEventLogSize - (UINTN)(EventLog - mEventLog);
 
   return EFI_SUCCESS;
-}
-
-/**
-  Set empty TPM session
-
-  @param[out]  AuthSessionBuffer     AuthSessionBuffer
-
-  @return     Size                   AuthSession size
-
- **/
-STATIC
-UINT32
-SetEmptyAuthSession (
-  IN UINT8  *AuthSessionBuffer
-  )
-{
-  UINT8  *Buffer;
-
-  Buffer = AuthSessionBuffer;
-
-  // sessionHandle
-  WriteUnaligned32 ((UINT32 *)Buffer, SwapBytes32 (TPM_RS_PW));
-  Buffer += sizeof (UINT32);
-
-  // nonce = nullNonce
-  WriteUnaligned16 ((UINT16 *)Buffer, SwapBytes16 (0));
-  Buffer += sizeof (UINT16);
-
-  // sessionAttributes = 0
-  *Buffer = 0x00;
-  Buffer++;
-
-  // hmac = nullAuth
-  WriteUnaligned16 ((UINT16 *)Buffer, SwapBytes16 (0));
-  Buffer += sizeof (UINT16);
-
-  return (UINT32)(Buffer - AuthSessionBuffer);
 }
 
 /**
@@ -668,440 +608,12 @@ ExtendOneEventLog (
 }
 
 /**
- * Extend PCR according to event log.
- *
- * @return EFI_SUCCESS
- * @return Others            Error
- *
- */
-STATIC
-EFI_STATUS
-EFIAPI
-FtpmExtendEventLogs (
-  IN VOID
-  )
-{
-  EFI_STATUS  Status;
-  UINT8       *EventLog;
-  UINTN       EventLogSize;
-
-  EventLog     = (UINT8 *)mEventLog;
-  EventLogSize = mEventLogSize;
-
-  if ((mEventLog == NULL) || (mEventLogSize == 0)) {
-    DEBUG ((DEBUG_INFO, "%a: [SKIP] Extend eventlog...\n", __func__));
-    return EFI_SUCCESS;
-  }
-
-  Status = ValidateAndStripSpecIdEvent (&EventLog, &EventLogSize);
-  if (EFI_ERROR (Status) || (EventLogSize == 0)) {
-    return Status;
-  }
-
-  while (EventLogSize != 0) {
-    Status = ExtendOneEventLog (&EventLog, &EventLogSize);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-  }
-
-  return EFI_SUCCESS;
-}
-
-/**
-  Return the version of the Tpm Service via FF-A interface that is available.
-
-  See the CRB over FF-A spec 6.1.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmGetInterfaceVersion (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  UINTN  Version;
-
-  Version = (1 << TPM2_FFA_SERVICE_MAJOR_VER_SHIFT) | (0 << TPM2_FFA_SERVICE_MINOR_VER_SHIFT);
-
-  SetResponseArgs (TpmArgs, TPM2_FFA_SUCCESS_OK_RESULTS_RETURNED, Version, 0x00, 0x00);
-}
-
-/**
-  Return information on a given feature of the TPM service.
-
-  See the CRB over FF-A spec 6.2.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmGetFeatureInfo (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  TPM2_FFA_STATUS  TpmStatus;
-
-  switch (TpmArgs->Arg5) {
-    case TPM_SERVICE_FEATURE_SUPPORT_NOTIFICATION:
-      // Ftpm doesn't support notification.
-      TpmStatus = TPM2_FFA_ERROR_NOTSUP;
-      break;
-    default:
-      TpmStatus = TPM2_FFA_ERROR_INVARG;
-  }
-
-  SetResponseArgs (TpmArgs, TpmStatus, 0x00, 0x00, 0x00);
-}
-
-/**
-  Notifies the TPM service that a TPM command or TPM locality request
-  is ready to be processed, and allows the TPM service to process it.
-
-  See the CRB over FF-A spec 6.3.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmStart (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  TPM2_FFA_STATUS       TpmStatus;
-  TPM_RC                ResponseCode;
-  TPM_CC                CommandCode;
-  UINTN                 CommandType;
-  UINT8                 CurLocality;
-  UINT8                 NextLocality;
-  PTP_CRB_REGISTERS     *CrbReg;
-  TPM2_COMMAND_HEADER   *Command;
-  TPM2_RESPONSE_HEADER  *Response;
-  UINT32                CommandSize;
-  UINT32                ResponseSize;
-  INTN                  Idx;
-  BOOLEAN               RestoreFormerLoc;
-
-  CommandType  = (TpmArgs->Arg5 & TPM2_FFA_START_FUNC_COMMAND_TYPE_MASK);
-  NextLocality = (TpmArgs->Arg6 & TPM2_FFA_START_FUNC_LOCALITY_MASK);
-
-  if (NextLocality >= NUM_LOCALITIES) {
-    TpmStatus = TPM2_FFA_ERROR_INVARG;
-    goto ErrorHandler;
-  }
-
-  CurLocality = TpmLibGetLocality ();
-
-  /**
-   * Currently, don't use locality 4.
-   */
-  if ((NextLocality == 4) || (NextLocality < CurLocality)) {
-    TpmStatus = TPM2_FFA_ERROR_DENIED;
-    goto ErrorHandler;
-  }
-
-  if (CommandType == TPM2_FFA_START_FUNC_QUALIFIER_LOCALITY) {
-    CrbReg = GetCrbBuffer (NextLocality, CRB_REGISTER);
-
-    if ((CrbReg->LocalityControl & PTP_CRB_LOCALITY_CONTROL_REQUEST_ACCESS) != 0x00) {
-      CrbReg->LocalityState  |= PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED;
-      CrbReg->LocalityStatus |= PTP_CRB_LOCALITY_STATUS_GRANTED;
-
-      for (Idx = NextLocality - 1; Idx >= 0; Idx--) {
-        CrbReg                  = GetCrbBuffer (Idx, CRB_REGISTER);
-        CrbReg->LocalityStatus |= (PTP_CRB_LOCALITY_STATUS_BEEN_SEIZED);
-      }
-
-      TpmLibSetLocality (NextLocality);
-    } else {
-      RestoreFormerLoc        = FALSE;
-      CrbReg->LocalityState  &= ~(PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED);
-      CrbReg->LocalityStatus &= ~(PTP_CRB_LOCALITY_STATUS_GRANTED);
-
-      for (Idx = NextLocality -1; Idx >= 0; Idx--) {
-        CrbReg                  = GetCrbBuffer (Idx, CRB_REGISTER);
-        CrbReg->LocalityStatus &= ~(PTP_CRB_LOCALITY_STATUS_BEEN_SEIZED);
-        if ((!RestoreFormerLoc) &&
-            (CrbReg->LocalityStatus & PTP_CRB_LOCALITY_STATUS_GRANTED) &&
-            (CrbReg->LocalityState & PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED))
-        {
-          TpmLibSetLocality (Idx);
-        }
-      }
-
-      if (!RestoreFormerLoc) {
-        TpmLibSetLocality (0);
-      }
-    }
-
-    CrbReg->LocalityControl = 0x00;
-  } else {
-    if (CurLocality != NextLocality) {
-      TpmStatus = TPM2_FFA_ERROR_DENIED;
-      DEBUG ((
-        DEBUG_ERROR,
-        "%a: Locality unmatched... cur:%d, req:%d\n",
-        __func__,
-        CurLocality,
-        NextLocality
-        ));
-      goto ErrorHandler;
-    }
-
-    CrbReg = GetCrbBuffer (CurLocality, CRB_REGISTER);
-
-    if ((CrbReg->LocalityState &
-         (PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED | PTP_CRB_LOCALITY_STATE_TPM_REG_VALID_STATUS)) !=
-        (PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED | PTP_CRB_LOCALITY_STATE_TPM_REG_VALID_STATUS))
-    {
-      TpmStatus = TPM2_FFA_ERROR_DENIED;
-      DEBUG ((
-        DEBUG_ERROR,
-        "%a: Locality(%d) isn't validated...\n",
-        __func__,
-        CurLocality
-        ));
-      goto ErrorHandler;
-    }
-
-    if (CrbReg->LocalityStatus != PTP_CRB_LOCALITY_STATUS_GRANTED) {
-      TpmStatus = TPM2_FFA_ERROR_DENIED;
-      DEBUG ((
-        DEBUG_ERROR,
-        "%a: Locality(%d) isn't granted...\n",
-        __func__,
-        CurLocality
-        ));
-      goto ErrorHandler;
-    }
-
-    /*
-     * Ignore request via CrbControlRequest for fTPM
-     */
-    if (CrbReg->CrbControlRequest != 0x00) {
-      CrbReg->CrbControlRequest = 0x00;
-      TpmStatus                 = TPM2_FFA_SUCCESS_OK;
-      goto ErrorHandler;
-    }
-
-    if (CrbReg->CrbControlStart != PTP_CRB_CONTROL_START) {
-      TpmStatus = TPM2_FFA_ERROR_INV_CRB_CTRL_DATA;
-      DEBUG ((DEBUG_ERROR, "%a: CRB_CONTROL_START isn't set...\n", __func__));
-      goto ErrorHandler;
-    }
-
-    Command     = GetCrbBuffer (CurLocality, CRB_COMMAND);
-    CommandCode = SwapBytes32 (Command->commandCode);
-    CommandSize = SwapBytes32 (Command->paramSize);
-
-    ResponseSize = CRB_BUFFER_SIZE;
-    CopyMem (mTmpCommandBuffer, Command, CommandSize);
-
-    DEBUG ((
-      DEBUG_INFO,
-      "%a: TpmLibExecuteCommand: 0x%lx\n",
-      __func__,
-      CommandCode
-      ));
-
-    TpmLibExecuteCommand (
-      CommandSize,
-      mTmpCommandBuffer,
-      &ResponseSize,
-      (UINT8 **)&mTmpResponseBuffer
-      );
-
-    Response = GetCrbBuffer (CurLocality, CRB_RESPONSE);
-    CopyMem (Response, mTmpResponseBuffer, ResponseSize);
-    ResponseCode = SwapBytes32 (Response->responseCode);
-
-    DEBUG ((
-      DEBUG_INFO,
-      "%a: Tpm ResponseCode: 0x%lx\n",
-      __func__,
-      ResponseCode
-      ));
-
-    if (ResponseCode != TPM_RC_SUCCESS) {
-      DEBUG ((
-        DEBUG_ERROR,
-        "%a: Failed to run CommandCode(0x%x)... RC: 0x%x \n",
-        __func__,
-        CommandCode,
-        ResponseCode
-        ));
-    }
-
-    CrbReg->CrbControlStart = 0x00;
-  }
-
-  TpmStatus = TPM2_FFA_SUCCESS_OK;
-
-ErrorHandler:
-  SetResponseArgs (TpmArgs, TpmStatus, 0x00, 0x00, 0x00);
-}
-
-/**
-  Register the calling FF-A partition for being sent an FF-A Notification
-  when a TPM service event occurs.
-  FtpmDxe doesn't support to register notification.
-
-  See the CRB over FF-A spec 6.4.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmRegisterForNotification (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
-}
-
-/**
-  Unregister the calling FF-A partition from being sent an FF-A Notification
-  when a TPM service event occurs.
-  FtpmDxe doesn't support to unregister notification.
-
-  See the CRB over FF-A spec 6.5.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmUnregisterFromNotification (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
-}
-
-/**
-  Complete command or locality request processing for
-  the calling FF-A partition; reveal the content of
-  the respective TPM service CRB Interrupt Status register.
-  FtpmDxe doesn't support to finish notification.
-
-  See the CRB over FF-A spec 6.6.
-  all of return values based on the specification.
-
-  @param [in,out]  TpmArgs      Tpm service arguments
-
-**/
-STATIC
-VOID
-EFIAPI
-FtpmFinishNotified (
-  IN OUT ARM_FFA_ARGS  *TpmArgs
-  )
-{
-  SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_NOTSUP, 0x00, 0x00, 0x00);
-}
-
-/**
-  Parse the Tpm Servie reqeust via FF-A and
-  Generate response for the request.
-
-  @param  [in]     DispatchHandle   The unique handle assigned to this handler
-                                    by MmiHandlerRegister().
-  @param  [in]     Context          Points to an optional handler context which
-                                    was specified when the handler was registered.
-  @param  [in,out] CommBuffer       A pointer to a collection of data in memory
-                                    that will be conveyed from a non-MM environment
-                                    into an MM environment.
-  @param  [in,out] CommBufferSize   The size of the CommBuffer.
-
-  @return EFI_SUCCESS
-  @return Others                    Error.
-
-**/
-STATIC
-EFI_STATUS
-EFIAPI
-FtpmEventHandler (
-  IN     EFI_HANDLE DispatchHandle,
-  IN     CONST VOID *Context, OPTIONAL
-  IN OUT VOID                     *CommBuffer, OPTIONAL
-  IN OUT UINTN                    *CommBufferSize         OPTIONAL
-  )
-{
-  ARM_FFA_ARGS     *TpmArgs;
-  UINTN            Operation;
-  TPM2_FFA_STATUS  TpmStatus;
-
-  if ((CommBufferSize == NULL) || (*CommBufferSize < sizeof (ARM_FFA_ARGS))) {
-    DEBUG ((DEBUG_ERROR, "%a: Invalid Parameters\n", __func__));
-    return EFI_INVALID_PARAMETER;
-  }
-
-  TpmArgs   = CommBuffer;
-  Operation = TpmArgs->Arg4;
-
-  switch (Operation) {
-    case TPM2_FFA_GET_INTERFACE_VERSION:
-      FtpmGetInterfaceVersion (TpmArgs);
-      break;
-    case TPM2_FFA_GET_FEATURE_INFO:
-      FtpmGetFeatureInfo (TpmArgs);
-      break;
-    case TPM2_FFA_START:
-      FtpmStart (TpmArgs);
-      break;
-    case TPM2_FFA_REGISTER_FOR_NOTIFICATION:
-      FtpmRegisterForNotification (TpmArgs);
-      break;
-    case TPM2_FFA_UNREGISTER_FROM_NOTIFICATION:
-      FtpmUnregisterFromNotification (TpmArgs);
-      break;
-    case TPM2_FFA_FINISH_NOTIFIED:
-      FtpmFinishNotified (TpmArgs);
-      break;
-    default:
-      DEBUG ((DEBUG_ERROR, "Invalid function id... 0x%llx\n", Operation));
-      ASSERT (0);
-      SetResponseArgs (TpmArgs, TPM2_FFA_ERROR_INVARG, 0x00, 0x00, 0x00);
-  }
-
-  TpmStatus = TpmArgs->Arg4;
-
-  if ((TpmStatus != TPM2_FFA_SUCCESS_OK) &&
-      (TpmStatus != TPM2_FFA_SUCCESS_OK_RESULTS_RETURNED))
-  {
-    DEBUG ((
-      DEBUG_ERROR,
-      "Failed for operation(0x%x). TpmStatus: 0x%x\n",
-      Operation,
-      TpmStatus
-      ));
-  }
-
-  return EFI_SUCCESS;
-}
-
-/**
   Initilize pseudo crb buffer for software based TPM.
 
   @param  [in]     Locality         Locality
 
   @return EFI_SUCCESS
-  @return Others                    Error.
+  @return EFI_INVALID_PARAMETER     Invalid locality.
 
 **/
 STATIC
@@ -1130,13 +642,14 @@ FtpmPseudoCrbInit (
      * default locality is 0, always assigned unless disabled.
      * this is for SPM_MM using with ARM_SMC method.
      */
-    CrbReg->LocalityState |= PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED;
+    CrbReg->LocalityState  |= PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED;
+    CrbReg->LocalityStatus |= PTP_CRB_LOCALITY_STATUS_GRANTED;
   }
 
   InterfaceId->Bits.InterfaceType          = PTP_INTERFACE_IDENTIFIER_INTERFACE_TYPE_CRB;
   InterfaceId->Bits.InterfaceVersion       = PTP_INTERFACE_IDENTIFIER_INTERFACE_VERSION_CRB;
-  InterfaceId->Bits.CapLocality            = PTP_CAP_LOCALITY_FIVE;           /**< Support localities 0-4 */
-  InterfaceId->Bits.CapDataXferSizeSupport = PTP_CAP_DATA_XFER_SIZE_64_BYTES; /**< supports 64-bytes transfer size */
+  InterfaceId->Bits.CapLocality            = PTP_CAP_LOCALITY_FIVE;             /**< Support localities 0-4 */
+  InterfaceId->Bits.CapDataXferSizeSupport = PTP_CAP_DATA_XFER_SIZE_64_BYTES;   /**< supports 64-bytes transfer size */
   InterfaceId->Bits.CapCRB                 = PTP_CAP_CRB_INTEREFACE_SUPPORTED;
   InterfaceId->Bits.InterfaceSelector      = PTP_INTERFACE_IDENTIFIER_INTERFACE_TYPE_CRB;
 
@@ -1151,10 +664,10 @@ FtpmPseudoCrbInit (
 }
 
 /**
-  Initilize software based TPM device.
+  Initialize software based TPM device.
 
   @return EFI_SUCCESS
-  @return Others                    Error.
+  @return EFI_DEVICE_ERROR  Failed to initialize fTPM device.
 
 **/
 STATIC
@@ -1233,7 +746,368 @@ FtpmDeviceStartup (
 }
 
 /**
-  The entry point of FtpmDxe Driver.
+  Notifies the TPM service that a TPM localirty request
+  is ready to be processed, and allows the TPM service to process it.
+
+  See the CRB over FF-A spec 6.3.
+  all of return values based on the specification.
+
+  @param [in]  Locality      Locality
+
+**/
+STATIC
+VOID
+EFIAPI
+FtpmHandleLocalityRequest (
+  IN UINT8  Locality
+  )
+{
+  PTP_CRB_REGISTERS  *CrbReg;
+  BOOLEAN            RestoreFormerLoc;
+  INT8               Idx;
+
+  CrbReg = GetCrbBuffer (Locality, CRB_REGISTER);
+
+  if ((CrbReg->LocalityControl & PTP_CRB_LOCALITY_CONTROL_REQUEST_ACCESS) != 0x00) {
+    CrbReg->LocalityState  |= PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED;
+    CrbReg->LocalityStatus |= PTP_CRB_LOCALITY_STATUS_GRANTED;
+
+    for (Idx = Locality - 1; Idx >= 0; Idx--) {
+      CrbReg                  = GetCrbBuffer (Idx, CRB_REGISTER);
+      CrbReg->LocalityStatus |= (PTP_CRB_LOCALITY_STATUS_BEEN_SEIZED);
+    }
+
+    TpmLibSetLocality (Locality);
+  } else {
+    RestoreFormerLoc        = FALSE;
+    CrbReg->LocalityState  &= ~(PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED);
+    CrbReg->LocalityStatus &= ~(PTP_CRB_LOCALITY_STATUS_GRANTED);
+
+    for (Idx = Locality -1; Idx >= 0; Idx--) {
+      CrbReg                  = GetCrbBuffer (Idx, CRB_REGISTER);
+      CrbReg->LocalityStatus &= ~(PTP_CRB_LOCALITY_STATUS_BEEN_SEIZED);
+      if ((!RestoreFormerLoc) &&
+          (CrbReg->LocalityStatus & PTP_CRB_LOCALITY_STATUS_GRANTED) &&
+          (CrbReg->LocalityState & PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED))
+      {
+        TpmLibSetLocality (Idx);
+        RestoreFormerLoc = TRUE;
+      }
+    }
+
+    if (!RestoreFormerLoc) {
+      TpmLibSetLocality (0);
+    }
+  }
+
+  CrbReg->LocalityControl = 0x00;
+}
+
+/**
+  Notifies the TPM service that a TPM command request
+  is ready to be processed, and allows the TPM service to process it.
+
+  See the CRB over FF-A spec 6.3.
+  all of return values based on the specification.
+
+  @param [in]  Locality      Locality
+
+  @retval EFI_SUCCESS          Success to execute command request
+  @retval EFI_ACCESS_DENIDED   Locality isn't available
+  @retval EFI_DEVICE_ERROR     Invalid CRB for locality.
+
+**/
+STATIC
+EFI_STATUS
+EFIAPI
+FtpmHandleCommandRequest (
+  IN UINT8  Locality
+  )
+{
+  TPM2_COMMAND_HEADER   *Command;
+  TPM_CC                CommandCode;
+  UINT32                CommandSize;
+  TPM2_RESPONSE_HEADER  *Response;
+  TPM_RC                ResponseCode;
+  UINT32                ResponseSize;
+  PTP_CRB_REGISTERS     *CrbReg;
+
+  CrbReg = GetCrbBuffer (Locality, CRB_REGISTER);
+
+  if ((CrbReg->LocalityState &
+       (PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED | PTP_CRB_LOCALITY_STATE_TPM_REG_VALID_STATUS)) !=
+      (PTP_CRB_LOCALITY_STATE_LOCALITY_ASSIGNED | PTP_CRB_LOCALITY_STATE_TPM_REG_VALID_STATUS))
+  {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Locality(%d) isn't validated...\n",
+      __func__,
+      Locality
+      ));
+    return EFI_ACCESS_DENIED;
+  }
+
+  if (CrbReg->LocalityStatus != PTP_CRB_LOCALITY_STATUS_GRANTED) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Locality(%d) isn't granted...\n",
+      __func__,
+      Locality
+      ));
+    return EFI_ACCESS_DENIED;
+  }
+
+  /*
+   * Ignore request via CrbControlRequest for fTPM
+   */
+  if (CrbReg->CrbControlRequest != 0x00) {
+    CrbReg->CrbControlRequest = 0x00;
+    return EFI_SUCCESS;
+  }
+
+  if (CrbReg->CrbControlStart != PTP_CRB_CONTROL_START) {
+    DEBUG ((DEBUG_ERROR, "%a: CRB_CONTROL_START isn't set...\n", __func__));
+    return EFI_DEVICE_ERROR;
+  }
+
+  Command     = GetCrbBuffer (Locality, CRB_COMMAND);
+  CommandCode = SwapBytes32 (Command->commandCode);
+  CommandSize = SwapBytes32 (Command->paramSize);
+
+  ResponseSize = CRB_BUFFER_SIZE;
+  CopyMem (mTmpCommandBuffer, Command, CommandSize);
+
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: TpmLibExecuteCommand: 0x%lx\n",
+    __func__,
+    CommandCode
+    ));
+
+  TpmLibExecuteCommand (
+    CommandSize,
+    mTmpCommandBuffer,
+    &ResponseSize,
+    (UINT8 **)&mTmpResponseBuffer
+    );
+
+  Response = GetCrbBuffer (Locality, CRB_RESPONSE);
+  CopyMem (Response, mTmpResponseBuffer, ResponseSize);
+  ResponseCode = SwapBytes32 (Response->responseCode);
+
+  DEBUG ((
+    DEBUG_INFO,
+    "%a: Tpm ResponseCode: 0x%lx\n",
+    __func__,
+    ResponseCode
+    ));
+
+  if (ResponseCode != TPM_RC_SUCCESS) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Failed to run CommandCode(0x%x)... RC: 0x%x \n",
+      __func__,
+      CommandCode,
+      ResponseCode
+      ));
+  }
+
+  CrbReg->CrbControlStart = 0x00;
+
+  return EFI_SUCCESS;
+}
+
+/**
+  Get tpm event log.
+
+**/
+STATIC
+VOID
+EFIAPI
+FtpmGetTpmEventLog (
+  IN VOID
+  )
+{
+  VOID                  *HobList;
+  EFI_HOB_GUID_TYPE     *GuidHob;
+  EFI_MMRAM_DESCRIPTOR  *EventLogDesc;
+
+  HobList = GetHobList ();
+  if (HobList == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to find out gHobList.\n", __func__));
+    return;
+  }
+
+  GuidHob = GetNextGuidHob (&gEdkiiTpmEventLogDescHobGuid, HobList);
+  if (GuidHob == NULL) {
+    DEBUG ((DEBUG_INFO, "%a: [SKIP] TPM event log doesn't present.\n", __func__));
+    mEventLog     = NULL;
+    mEventLogSize = 0;
+    return;
+  }
+
+  EventLogDesc  = GET_GUID_HOB_DATA (GuidHob);
+  mEventLog     = (VOID *)EventLogDesc->PhysicalStart;
+  mEventLogSize = (UINTN)EventLogDesc->PhysicalSize;
+
+  DumpTpmEventLog ();
+}
+
+/**
+  Extend event logs.
+
+  @retval EFI_SUCCESS
+  @retval EFI_UNSUPPORTED                      Unsupported Eventlog.
+  @retval EFI_INVALID_PARAMETER                Invalid arguments
+
+**/
+STATIC
+EFI_STATUS
+EFIAPI
+FtpmExtendEventLogs (
+  IN VOID
+  )
+{
+  EFI_STATUS  Status;
+  UINT8       *EventLog;
+  UINTN       EventLogSize;
+
+  EventLog     = (UINT8 *)mEventLog;
+  EventLogSize = mEventLogSize;
+
+  if ((mEventLog == NULL) || (mEventLogSize == 0)) {
+    DEBUG ((DEBUG_INFO, "%a: [SKIP] Extend eventlog...\n", __func__));
+    return EFI_SUCCESS;
+  }
+
+  Status = ValidateAndStripSpecIdEvent (&EventLog, &EventLogSize);
+  if (EFI_ERROR (Status) || (EventLogSize == 0)) {
+    return Status;
+  }
+
+  while (EventLogSize != 0) {
+    Status = ExtendOneEventLog (&EventLog, &EventLogSize);
+    if (EFI_ERROR (Status)) {
+      return Status;
+    }
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
+  Issue TPM command or locality request to FF-A CRB device.
+
+  @param[in]      Qualifier                 Qualifier.
+  @param[in]      Locality                  Locality.
+
+  @retval EFI_SUCCESS               The command byte stream was successfully sent to the device and a response was successfully received.
+  @retval EFI_INVALID_PARAMETER     Invalid arguments.
+  @retval EFI_DEVICE_ERROR          CRB control data or locality conrol data is not valid.
+  @retval EFI_ACCESS_DENIED         locality requests or command processing at given locality is disabled.
+
+**/
+EFI_STATUS
+EFIAPI
+TpmCrbFfaDeviceStart (
+  IN UINT8  Qualifier,
+  IN UINT8  Locality
+  )
+{
+  EFI_STATUS  Status;
+  UINTN       CommandType;
+  UINT8       CurLocality;
+
+  CommandType = (Qualifier & TPM2_FFA_START_FUNC_COMMAND_TYPE_MASK);
+
+  if (Locality >= NUM_LOCALITIES) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  CurLocality = TpmLibGetLocality ();
+
+  /**
+   * Currently, don't use locality 4.
+   */
+  if ((Locality == 4) || (Locality > CurLocality)) {
+    return EFI_ACCESS_DENIED;
+  }
+
+  if (CommandType == TPM2_FFA_START_FUNC_QUALIFIER_LOCALITY) {
+    FtpmHandleLocalityRequest (Locality);
+    Status = EFI_SUCCESS;
+  } else {
+    if (CurLocality != Locality) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Locality unmatched... cur:%d, req:%d\n",
+        __func__,
+        CurLocality,
+        Locality
+        ));
+      return EFI_ACCESS_DENIED;
+    }
+
+    Status = FtpmHandleCommandRequest (Locality);
+  }
+
+  return Status;
+}
+
+/**
+  Get CRB information.
+
+  @param[in]      Locality                     Locality.
+  @param[out]     BaseAddress                  CRB base address.
+  @param[out]     Size                         CRB region size.
+
+  @retval EFI_SUCCESS
+  @retval EFI_INVALID_PARAMETER                Invalid arguments
+
+**/
+EFI_STATUS
+EFIAPI
+TpmCrbFfaDeviceGetCrbInfo (
+  IN UINT8                  Locality,
+  OUT EFI_PHYSICAL_ADDRESS  *BaseAddress,
+  OUT UINTN                 *Size
+  )
+{
+  PTP_CRB_REGISTERS  *CrbReg;
+
+  if ((Locality >= NUM_LOCALITIES) || (BaseAddress == NULL) || (Size == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  CrbReg = GetCrbBuffer (Locality, CRB_REGISTER);
+  if (CrbReg == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  *BaseAddress = (EFI_PHYSICAL_ADDRESS)CrbReg;
+  *Size        = EFI_PAGE_SIZE;
+
+  return EFI_SUCCESS;
+}
+
+/**
+  Check whether FF-A CRB device is available
+
+  @retval TRUE    Available.
+  @retval FALSE   Unavailable.
+
+**/
+BOOLEAN
+EFIAPI
+TpmCrbFfaDeviceIsAvailable (
+  VOID
+  )
+{
+  return mFtpmAvailable;
+}
+
+/**
+  The constructor of TpmCrbFfaFtpmLib.
 
   @param  [in] ImageHandle    The image handle of the Standalone MM Driver.
   @param  [in] MmSystemTable  A pointer to the MM System Table.
@@ -1243,13 +1117,12 @@ FtpmDeviceStartup (
 **/
 EFI_STATUS
 EFIAPI
-FtpmDriverEntryPoint (
+TpmCrbFfaFtpmLibConstuctor (
   IN EFI_HANDLE           ImageHandle,
   IN EFI_MM_SYSTEM_TABLE  *MmSystemTable
   )
 {
   EFI_STATUS  Status;
-  EFI_HANDLE  DispatchHandle;
   UINT8       Locality;
 
   mTmpCommandBuffer = AllocateRuntimePool (CRB_BUFFER_SIZE * 2);
@@ -1275,21 +1148,6 @@ FtpmDriverEntryPoint (
     }
   }
 
-  Status = gMmst->MmiHandlerRegister (
-                    FtpmEventHandler,
-                    &gTpm2ServiceFfaGuid,
-                    &DispatchHandle
-                    );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "%a: Failed to register Ftpm Service... Status: %r\n",
-      __func__,
-      Status
-      ));
-    goto ErrorHandler;
-  }
-
   Status = FtpmDeviceStartup ();
   if (EFI_ERROR (Status)) {
     DEBUG ((
@@ -1298,7 +1156,6 @@ FtpmDriverEntryPoint (
       __func__,
       Status
       ));
-    gMmst->MmiHandlerUnRegister (DispatchHandle);
     goto ErrorHandler;
   }
 
@@ -1312,9 +1169,10 @@ FtpmDriverEntryPoint (
       __func__,
       Status
       ));
-    gMmst->MmiHandlerUnRegister (DispatchHandle);
     goto ErrorHandler;
   }
+
+  mFtpmAvailable = TRUE;
 
   return EFI_SUCCESS;
 

@@ -54,7 +54,6 @@
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
   StandaloneMmCoreEntryPoint|ArmPkg/Library/ArmStandaloneMmCoreEntryPoint/ArmStandaloneMmCoreEntryPoint.inf
   StandaloneMmDriverEntryPoint|MdePkg/Library/StandaloneMmDriverEntryPoint/StandaloneMmDriverEntryPoint.inf
-  VariableMmDependency|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
   ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
   PeCoffGetEntryPointLib|MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
   PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
@@ -141,7 +140,6 @@
   StandaloneMmPkg/Library/StandaloneMmHobLib/StandaloneMmHobLib.inf
   StandaloneMmPkg/Library/StandaloneMmMemLib/StandaloneMmMemLib.inf
   StandaloneMmPkg/Library/StandaloneMmMemoryAllocationLib/StandaloneMmMemoryAllocationLib.inf
-  StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
 
   ArmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
   StandaloneMmPkg/Library/StandaloneMmPeCoffExtraActionLib/StandaloneMmPeCoffExtraActionLib.inf
@@ -164,8 +162,10 @@
 !endif
 
 !if $(ENABLE_TPM) == TRUE
-  Platform/ARM/Drivers/FtpmSmm/FtpmSmm.inf {
+  Platform/ARM/Drivers/TpmCrbOverFfaSmm/TpmCrbOverFfaSmm.inf {
     <LibraryClasses>
       OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibFull.inf
+      TpmCrbFfaDeviceLib|Platform/ARM/Library/TpmCrbFfaFtpmLib/TpmCrbFfaFtpmLib.inf
+
   }
 !endif
