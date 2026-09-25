@@ -8,7 +8,6 @@
 **/
 
 #include <Base.h>
-#include <Library/BaseLib.h>
 #include <Library/IoLib.h>
 #include <Library/SerialPortLib.h>
 #include <Uefi.h>
