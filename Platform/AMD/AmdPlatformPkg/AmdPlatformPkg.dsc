@@ -136,6 +136,8 @@
 
 [LibraryClasses.Common.DXE_DRIVER]
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
+  NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
+  NbioCommonDxeLib|AgesaModulePkg/Nbio/Library/CommonDxe/NbioCommonDxeLib.inf
   HstiLib|MdePkg/Library/DxeHstiLib/DxeHstiLib.inf
   LocalApicLib|UefiCpuPkg/Library/BaseXApicX2ApicLib/BaseXApicX2ApicLib.inf
   PciSegmentInfoLib|MdePkg/Library/BasePciSegmentInfoLibNull/BasePciSegmentInfoLibNull.inf
@@ -177,6 +179,7 @@
   AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
 
 [Components.X64]
+  AmdPlatformPkg/Library/AmdBdsBootConfigLib/AmdBdsBootConfigLib.inf
   AmdPlatformPkg/Library/CcxTscTimerLib/DxeTscTimerLib.inf
   AmdPlatformPkg/Library/LocalApicTimerHpetSyncLib/LocalApicTimerHpetSyncLib.inf
   AmdPlatformPkg/Library/PlatformRedfishCredentialLib/PlatformRedfishCredentialLib.inf

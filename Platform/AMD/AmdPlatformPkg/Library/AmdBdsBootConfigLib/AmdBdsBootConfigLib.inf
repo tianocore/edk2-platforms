@@ -1,8 +1,11 @@
 ## @file
+#  Platform-specific library for AmdBootOptionPriority.
 #
-#  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
+##
 
 [Defines]
   INF_VERSION                    = 0x00010005
@@ -20,52 +23,55 @@
 [Sources]
   AmdBdsBootConfig.h
   AmdBdsBootConfigLib.c
+  ConfigureDhcp.c
   DefaultLomDevicePath.c
 
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
   AmdCpmPkg/AmdCpmPkg.dec
-  AgesaPkg/AgesaPkg.dec
-  AgesaModulePkg/AgesaCommonModulePkg.dec
-  AgesaModulePkg/AgesaModuleNbioPkg.dec
-  AgesaModulePkg/AgesaEdk2Pkg.dec
-  BoardModulePkg/BoardModulePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
-  AmdMinBoardPkg/AmdMinBoardPkg.dec
+  NetworkPkg/NetworkPkg.dec
 
 [LibraryClasses]
-  BaseLib
   BaseMemoryLib
   DebugLib
   DevicePathLib
-  HobLib
   MemoryAllocationLib
   NbioCommonDxeLib
   NbioHandleLib
+  NetLib
   PcdLib
   PcieConfigLib
   PciSegmentLib
   UefiDriverEntryPoint
   UefiLib
-  IpmiLib
-  IpmiCommandLib
+  UefiBootManagerLib
   UefiBootServicesTableLib
   UefiRuntimeServicesTableLib
-  BoardBdsHookLib
 
 [Protocols]
-  gEfiPciEnumerationCompleteProtocolGuid       ## CONSUMES
-  gAmdSocLogicalIdProtocolGuid                 ## CONSUMES
-  gEfiPciIoProtocolGuid                        ## CONSUMES
-  gAmdBoardBdsBootOptionPriorityProtocolGuid   ## PRODUCES SOMETIMES
+  gEfiPciEnumerationCompleteProtocolGuid        ## CONSUMES
+  gAmdSocLogicalIdProtocolGuid                  ## CONSUMES
+  gEfiPciIoProtocolGuid                         ## CONSUMES
+  gAmdBoardBdsBootOptionPriorityProtocolGuid    ## PRODUCES SOMETIMES
+  gEfiUdp4ProtocolGuid                          ## CONSUMED
+  gEfiDhcp4ProtocolGuid                         ## CONSUMED
+  gEfiMtftp4ServiceBindingProtocolGuid          ## CONSUMED
+  gEfiDhcp4ServiceBindingProtocolGuid           ## CONSUMED
+  gEfiUdp4ServiceBindingProtocolGuid            ## CONSUMED
+  gEfiIp4ServiceBindingProtocolGuid             ## CONSUMED
+  gEfiIp4Config2ProtocolGuid                    ## CONSUMED
+  gEfiIp4ProtocolGuid                           ## CONSUMED
 
 [Pcd]
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType41            ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType41Number      ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly            ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdShellFileDesc              ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdGetIpInfoRetryCount     ## CONSUMES
 
 [Depex]
   TRUE
