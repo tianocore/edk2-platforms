@@ -1,21 +1,53 @@
-/*****************************************************************************
- * Copyright (C) 2018-2025 Advanced Micro Devices, Inc. All rights reserved.
- * SPDX-License-Identifier: BSD-2-Clause-Patent
- *****************************************************************************/
+/** @file
+
+  eSPI NOR flash SMM implementation.
+
+  Copyright (C) 2018 - 2026 Advanced Micro Devices, Inc. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+**/
 
 #include <Base.h>
 #include <Library/DebugLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/SmmServicesTableLib.h>
-#include <Protocol/SpiSmmConfiguration.h>
 #include <Protocol/SpiSmmNorFlash.h>
-#include <Protocol/SpiIo.h>
 #include <IndustryStandard/SpiNorFlashJedecSfdp.h>
+#include <Library/PciLib.h>
+#include <Library/IoLib.h>
+#include <FchRegistersCommon.h>
 #include "EspiNorFlash.h"
 #include "EspiNorFlashInstance.h"
 
 /**
-  Entry point of the Macronix SPI NOR Flash driver.
+  Check if SAFS mode is enabled. Valid eSPI SAFS RomType configs:
+  2'b01: Boot from eSPI SAFS Channel with address high bits = 0x3F.
+  2'b10: Boot from eSPI SAFS Channel (with address high bits = 0x00).
+
+  @retval TRUE                   SAFS mode is enabled.
+  @retval FALSE                  MAFS mode is enabled
+
+**/
+BOOLEAN
+EFIAPI
+IsEspiSafsMode (
+  )
+{
+  UINT32  Misc80;
+  UINT32  RomType;
+
+  Misc80 = MmioRead32 (ACPI_MMIO_BASE + MISC_BASE + FCH_MISC_REG80);
+  // romtype_1 is BIT3, Romtype_0 is BIT1.
+  RomType = ((Misc80 & BIT3) >> 2) | ((Misc80 & BIT1) >> 1);
+  if ((RomType == 0x1) || (RomType == 0x2)) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+  Entry point of the eSPI Nor Flash Driver
 
   @param[in] ImageHandle  Image handle of this driver.
   @param[in] SystemTable  Pointer to standard EFI system table.
@@ -38,9 +70,7 @@ EspiNorFlashEntry (
 
   DEBUG ((DEBUG_INFO, "%a - ENTRY\n", __FUNCTION__));
 
-  if (PcdGet8 (PcdAmdPspRomArmorSelection) >= 2) {
-    // If RomArmor2 or 3 is enabled, skip
-    DEBUG ((DEBUG_INFO, "PcdAmdPspRomArmorSelection >= 2"));
+  if (!IsEspiSafsMode ()) {
     return EFI_UNSUPPORTED;
   }
 
@@ -59,108 +89,62 @@ EspiNorFlashEntry (
                     NULL,
                     (VOID **)&Instance->SpiIo
                     );
-
-  if (EFI_ERROR (Status) ||
-      ((Instance->SpiIo->Attributes & (SPI_IO_TRANSFER_SIZE_INCLUDES_ADDRESS |
-                                       SPI_IO_TRANSFER_SIZE_INCLUDES_OPCODE)) != 0))
-  {
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a - Failed to locate SPI IO Protocol\n", __FUNCTION__));
     FreePool (Instance);
-    Status = EFI_UNSUPPORTED;
+    return Status;
+  }
+
+  Protocol                  = &Instance->Protocol;
+  Protocol->GetFlashid      = GetFlashId;
+  Protocol->ReadData        = ReadData;
+  Protocol->ReadStatus      = ReadStatus;
+  Protocol->WriteStatus     = WriteStatus;
+  Protocol->WriteData       = WriteData;
+  Protocol->Erase           = Erase;
+  Protocol->EraseBlockBytes = SIZE_4KB;
+
+  // ESPI SAFS
+  Instance->EspiSafsMode    = TRUE;
+  Instance->EspiFlashOffset = (UINT32)(PcdGet64 (PcdRom3FlashAreaSize) - 0x1000000);
+  Protocol->FlashSize       = PcdGet32 (PcdRemoteFlashRomSize);
+  Instance->EspiBaseAddress =  ((
+                                 PciRead32 (PCI_LIB_ADDRESS (FCH_LPC_BUS, FCH_LPC_DEV, FCH_LPC_FUNC, FCH_LPC_REGA0))
+                                 ) & 0xFFFFFF00) + PcdGet32 (PcdAmdEspiOffset);
+
+  Instance->EspiEraseBlockMap = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, SLAVE_FA_CAPCFG2);
+  FaCapCfg.Value              = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, SLAVE_FA_CAPCFG);
+
+  if (FaCapCfg.Field.ChMaxReadReqSize != 0) {
+    Instance->EspiMaxReadReqSize = 64u << (FaCapCfg.Field.ChMaxReadReqSize - 1);
   } else {
-    // Allocate write buffer for SPI IO transactions with extra room for Opcode
-    // and Address
-    Instance->SpiTransactionWriteBuffer = AllocatePool (
-                                            Instance->SpiIo->MaximumTransferBytes + 10 // Add extra room
-                                            );
-    Protocol                  = &Instance->Protocol;
-    Protocol->SpiPeripheral   = Instance->SpiIo->SpiPeripheral;
-    Protocol->GetFlashid      = GetFlashId;
-    Protocol->ReadData        = ReadData;
-    Protocol->LfReadData      = LfReadData;
-    Protocol->ReadStatus      = ReadStatus;
-    Protocol->WriteStatus     = WriteStatus;
-    Protocol->WriteData       = WriteData;
-    Protocol->Erase           = Erase;
-    Protocol->EraseBlockBytes = SIZE_4KB;
+    Instance->EspiMaxReadReqSize = 64;  // Set 64 bytes as default
+  }
 
-    if (IsEspiSafsMode (&(Instance->EspiBaseAddress))) {
-      // ESPI SAFS
-      Instance->EspiSafsMode = TRUE;
-      Protocol->FlashSize    = PcdGet32 (PcdFlashAreaSize);
-      Instance->EspiEraseBlockMap = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, SLAVE_FA_CAPCFG2);
-      FaCapCfg.Value              = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, SLAVE_FA_CAPCFG);
+  EspiReg68.Value = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, ESPI_SLAVE0_CONFIG);
+  if (EspiReg68.Field.FlashMaxPayloadSize == 0x01) {
+    Instance->EspiMaxPayloadSize = 64;
+  } else if (EspiReg68.Field.FlashMaxPayloadSize == 0x02) {
+    Instance->EspiMaxPayloadSize = 128;
+  } else if (EspiReg68.Field.FlashMaxPayloadSize == 0x03) {
+    Instance->EspiMaxPayloadSize = 256;
+  } else {
+    Instance->EspiMaxPayloadSize = 64;   // Set 64 bytes as default
+  }
 
-      if (FaCapCfg.Field.ChMaxReadReqSize != 0) {
-        Instance->EspiMaxReadReqSize = 64 << (FaCapCfg.Field.ChMaxReadReqSize - 1);
-      } else {
-        Instance->EspiMaxReadReqSize = 64;  // Set 64 bytes as default
-      }
+  DEBUG ((DEBUG_INFO, "ESPI SAFS mode, EspiBaseAddress = 0x%x\n", Instance->EspiBaseAddress));
+  DEBUG ((DEBUG_INFO, "  EspiEraseBlockMap  = 0x%x\n", Instance->EspiEraseBlockMap));
+  DEBUG ((DEBUG_INFO, "  EspiMaxReadReqSize = 0x%x\n", Instance->EspiMaxReadReqSize));
+  DEBUG ((DEBUG_INFO, "  EspiMaxPayloadSize = 0x%x\n", Instance->EspiMaxPayloadSize));
 
-      EspiReg68.Value = FchEspiCmd_GetConfiguration (Instance->EspiBaseAddress, ESPI_SLAVE0_CONFIG);
-      if (EspiReg68.Field.FlashMaxPayloadSize == 0x01) {
-        Instance->EspiMaxPayloadSize = 64;
-      } else if (EspiReg68.Field.FlashMaxPayloadSize == 0x02) {
-        Instance->EspiMaxPayloadSize = 128;
-      } else if (EspiReg68.Field.FlashMaxPayloadSize == 0x03) {
-        Instance->EspiMaxPayloadSize = 256;
-      } else {
-        Instance->EspiMaxPayloadSize = 64;   // Set 64 bytes as default
-      }
-
-      DEBUG ((DEBUG_INFO, "ESPI SAFS mode, EspiBaseAddress = 0x%x\n", Instance->EspiBaseAddress));
-      DEBUG ((DEBUG_INFO, "  EspiEraseBlockMap  = 0x%x\n", Instance->EspiEraseBlockMap));
-      DEBUG ((DEBUG_INFO, "  EspiMaxReadReqSize = 0x%x\n", Instance->EspiMaxReadReqSize));
-      DEBUG ((DEBUG_INFO, "  EspiMaxPayloadSize = 0x%x\n", Instance->EspiMaxPayloadSize));
-    } else {
-      // SPI MAFS
-      Instance->EspiSafsMode = FALSE;
-      Status                 = Protocol->GetFlashid (
-                                           Protocol,
-                                           (UINT8 *)&Protocol->Deviceid
-                                           );
-      ASSERT_EFI_ERROR (Status);
-      DEBUG ((
-        DEBUG_INFO,
-        "%a: Flash ID: Manufacturer=0x%02X, Device=0x%02X%02X\n",
-        __FUNCTION__,
-        Protocol->Deviceid[0],
-        Protocol->Deviceid[1],
-        Protocol->Deviceid[2]
-        ));
-
-      Status = ReadSfdpBasicParameterTable (Instance);
-      ASSERT_EFI_ERROR (Status);
-
-      // SFDP DWORD 2
-      Protocol->FlashSize = (Instance->SfdpBasicFlash->Density + 1) / 8;
-      DEBUG ((DEBUG_INFO, "%a: Flash Size=0x%X\n", __FUNCTION__, Protocol->FlashSize));
-
-      if (Protocol->FlashSize > SIZE_16MB) {
-        // If flash size is more than 16MB, enable 4byte mode
-        Instance->SpiTransactionWriteBuffer[0] = 0xb7;// SPI_FLASH_4BYTEMODE; // 4byte mode opcode
-        Status                                 = Instance->SpiIo->Transaction (
-                                                                    Instance->SpiIo,
-                                                                    SPI_TRANSACTION_WRITE_ONLY,
-                                                                    FALSE,
-                                                                    0,
-                                                                    1,
-                                                                    8,
-                                                                    1,
-                                                                    Instance->SpiTransactionWriteBuffer,
-                                                                    0,
-                                                                    NULL
-                                                                    );
-        DEBUG ((DEBUG_INFO, "%a: enable 4-Byte mode (OpCode 0xB7) %r\n", __FUNCTION__, Status));
-        ASSERT_EFI_ERROR (Status);
-      }
-    }
-
-    Status = gSmst->SmmInstallProtocolInterface (
-                      &Instance->Handle,
-                      &gAmdEspiSmmNorFlashProtocolGuid,
-                      EFI_NATIVE_INTERFACE,
-                      &Instance->Protocol
-                      );
+  Status = gSmst->SmmInstallProtocolInterface (
+                    &Instance->Handle,
+                    &gEfiSpiSmmNorFlashProtocolGuid,
+                    EFI_NATIVE_INTERFACE,
+                    &Instance->Protocol
+                    );
+  if (EFI_ERROR (Status)) {
+    FreePool (Instance);
   }
 
   DEBUG ((DEBUG_INFO, "%a: EXIT - Status=%r\n", __FUNCTION__, Status));

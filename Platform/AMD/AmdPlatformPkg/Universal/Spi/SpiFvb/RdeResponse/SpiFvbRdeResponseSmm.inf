@@ -1,0 +1,60 @@
+## @file
+#  AMD SPI FVB RDE Response Table SMM driver description File
+#
+#  Copyright (C) 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SpiFvbRdeResponseSmm
+  FILE_GUID                      = BDB07431-0BCF-4422-A77D-AB3DC1F2B103
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = SpiFvbRdeResponseSmmEntryPoint
+
+[Sources]
+  ../SpiFvbCommon.c
+  SpiFvbRdeResponseCommon.c
+  SpiFvbRdeResponseSmm.c
+  SpiFvbRdeResponse.h
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaPkg/AgesaPkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+
+[LibraryClasses]
+  AmdRdeDirectoryLib
+  AmdRdeMediaLib
+  BaseLib
+  PcdLib
+  UefiLib
+  UefiDriverEntryPoint
+  SmmServicesTableLib
+  DebugLib
+  MemoryAllocationLib
+  IoLib
+  PciLib
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashNvStorageBlockSize          ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress             ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdRom3FlashAreaSize
+
+[Protocols]
+  gEfiSmmFirmwareVolumeBlockProtocolGuid                            ## PRODUCES
+  gEfiSpiSmmNorFlashProtocolGuid                                    ## CONSUMES
+  gAmdEspiSmmNorFlashProtocolGuid                                   ## CONSUMES
+  gEfiRdeResponseFvbReadySmmProtocolGuid                            ## PRODUCES
+[Depex]
+  gEfiSpiSmmNorFlashProtocolGuid OR
+  gAmdEspiSmmNorFlashProtocolGuid
+
+[UserExtensions.TianoCore."ExtraFiles"]
+  SpiFvbRdeResponseExtra.uni

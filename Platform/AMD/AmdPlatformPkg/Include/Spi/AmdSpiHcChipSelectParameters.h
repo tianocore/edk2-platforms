@@ -5,6 +5,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
+
 #ifndef AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
 #define AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
 
@@ -12,12 +13,12 @@
 
 #pragma pack (1)
 typedef struct _CHIP_SELECT_PARAMETERS {
-  UINT8   AndValue;
-  UINT8   OrValue;
+  UINT8    AndValue;
+  UINT8    OrValue;
 } CHIP_SELECT_PARAMETERS;
 #pragma pack ()
 
-CONST CHIP_SELECT_PARAMETERS ChipSelect1 = { (UINT8)~((UINT8)0x03), 0x0 }; // SPI_CS1_L
-CONST CHIP_SELECT_PARAMETERS ChipSelect2 = { (UINT8)~((UINT8)0x03), 0x1 }; // SPI_CS1_L
+#define CHIP_SELECT_1  { (UINT8)~((UINT8)0x03), 0x0 }
+#define CHIP_SELECT_2  { (UINT8)~((UINT8)0x03), 0x1 }
 
-#endif  // AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
+#endif // AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_

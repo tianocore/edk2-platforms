@@ -1,16 +1,15 @@
 /** @file
   AMD SMM core hook library
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#include <PiSmm.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
-#include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/SmmCorePlatformHookLib.h>
 #include <Library/AmdSmmCorePlatformHookLib.h>
@@ -88,6 +87,13 @@ PlatformHookBeforeSmmDispatch (
     //
     // We can handle priority in the future when needed.
     //
+
+    //
+    // Ignore EXP39-C violation as maintaining list of items using LIST_ENTRY is common
+    // practice in edkii. Calculating parant data structures address from embedded LIST_ENTRY
+    // is also common practice.
+    //
+    /* coverity[cert_exp39_c_violation] */
     if (ThisHook->AmdSmmDispatchHookBefore != NULL) {
       ThisHook->AmdSmmDispatchHookBefore ();
     }
@@ -128,6 +134,13 @@ PlatformHookAfterSmmDispatch (
     //
     // We can handle priority in the future when needed.
     //
+
+    //
+    // Ignore EXP39-C violation as maintaining list of items using LIST_ENTRY is common
+    // practice in edkii. Calculating parant data structures address from embedded LIST_ENTRY
+    // is also common practice.
+    //
+    /* coverity[cert_exp39_c_violation] */
     if (ThisHook->AmdSmmDispatchHookAfter != NULL) {
       ThisHook->AmdSmmDispatchHookAfter ();
     }

@@ -2,14 +2,13 @@
   Provide optimized implementation of HII_CONFIG_ROUTING Protocol
   functions HiiBlockToConfig and HiiConfigToBlock.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef AMD_HII_CONFIG_ROUTING_H_
-#define AMD_HII_CONFIG_ROUTING_H_
+#pragma once
 
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -62,18 +61,55 @@ typedef struct {
 #define FIXED_STR_LEN(String)  (sizeof (String) / sizeof (CHAR16) - 1)
 
 typedef enum {
-  ElementGuidHdr   = 0,
-  ElementNameHdr   = 1,
-  ElementPathHdr   = 2,
-  ElementOffsetHdr = 3,
-  ElementWidthHdr  = 4,
-  ElementValueHdr  = 5
-} ELEMENT_HDR;
+  HiiElementGuidHdr   = 0,
+  HiiElementNameHdr   = 1,
+  HiiElementPathHdr   = 2,
+  HiiElementOffsetHdr = 3,
+  HiiElementWidthHdr  = 4,
+  HiiElementValueHdr  = 5
+} HII_ELEMENT_HDR;
 
 typedef struct {
   EFI_STRING    ElementString;
   UINTN         ElementLength;
 } HII_ELEMENT;
+
+/**
+  Compares up to a specified length the contents of two Null-terminated Unicode
+  strings, and returns the difference between the first mismatched Unicode
+  characters.
+
+  @param[in]  FirstString   A pointer to a Null-terminated Unicode string.
+  @param[in]  SecondString  A pointer to a Null-terminated Unicode string.
+  @param[in]  Length        The maximum number of Unicode characters to compare.
+
+  @retval 0      FirstString is identical to SecondString.
+  @retval others FirstString is not identical to SecondString.
+
+**/
+INTN
+EFIAPI
+HiiStrnCmp (
+  IN EFI_STRING  FirstString,
+  IN EFI_STRING  SecondString,
+  IN UINTN       Length
+  );
+
+/**
+  Entry point for the AMD HII Config Routing driver.
+
+  @param[in] ImageHandle  The image handle.
+  @param[in] SystemTable  The system table.
+
+  @retval EFI_SUCCESS  The entry point is executed successfully.
+  @retval Others       Some error occurs when executing this entry point.
+**/
+EFI_STATUS
+EFIAPI
+AmdConfigRoutingEntry (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  );
 
 /**
   This helper function is to be called by drivers to map configuration data
@@ -185,5 +221,3 @@ HiiConfigToBlock (
   IN OUT UINTN                                  *BlockSize,
   OUT    EFI_STRING                             *Progress
   );
-
-#endif // AMD_HII_CONFIG_ROUTING_H_

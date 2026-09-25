@@ -1,0 +1,14 @@
+[Defines]
+  INF_VERSION    = 0x00010006
+  BASE_NAME      = AmdRdeMediaLibNull
+  FILE_GUID      = 43e0b975-44db-407f-9e8b-534142f7ae1e
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = AmdRdeMediaLib
+
+[Sources]
+  AmdRdeMediaLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec

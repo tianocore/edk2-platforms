@@ -48,7 +48,7 @@
   PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
   PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
   PlatformSocLib|AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
-  SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibNull.inf
+  SpiHcPlatformLib|MdeModulePkg/Library/BaseSpiHcPlatformLibNull/BaseSpiHcPlatformLibNull.inf
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
   RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
   SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
@@ -56,6 +56,8 @@
   SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
   TimerLib|MdePkg/Library/BaseTimerLibNullTemplate/BaseTimerLibNullTemplate.inf
   Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  TpmPlatformHierarchyLib|SecurityPkg/Library/PeiDxeTpmPlatformHierarchyLibNull/PeiDxeTpmPlatformHierarchyLib.inf
+  Tpm2HelpLib|SecurityPkg/Library/Tpm2HelpLib/Tpm2HelpLib.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
@@ -134,6 +136,8 @@
 
 [LibraryClasses.Common.DXE_DRIVER]
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
+  NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
+  NbioCommonDxeLib|AgesaModulePkg/Nbio/Library/CommonDxe/NbioCommonDxeLib.inf
   HstiLib|MdePkg/Library/DxeHstiLib/DxeHstiLib.inf
   LocalApicLib|UefiCpuPkg/Library/BaseXApicX2ApicLib/BaseXApicX2ApicLib.inf
   PciSegmentInfoLib|MdePkg/Library/BasePciSegmentInfoLibNull/BasePciSegmentInfoLibNull.inf
@@ -157,7 +161,6 @@
   AmdPlatformPkg/Library/AmdPostCodeLibNull/AmdPostCodeLibNull.inf
   AmdPlatformPkg/Library/EmulatorSerialPort80RedirectLib/EmulatorSerialPort80Redirect.inf
   AmdPlatformPkg/Library/DxePlatformSocLib/DxePlatformSocLibNull.inf
-  AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibNull.inf
   AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
   AmdPlatformPkg/Universal/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
   AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
@@ -176,6 +179,7 @@
   AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
 
 [Components.X64]
+  AmdPlatformPkg/Library/AmdBdsBootConfigLib/AmdBdsBootConfigLib.inf
   AmdPlatformPkg/Library/CcxTscTimerLib/DxeTscTimerLib.inf
   AmdPlatformPkg/Library/LocalApicTimerHpetSyncLib/LocalApicTimerHpetSyncLib.inf
   AmdPlatformPkg/Library/PlatformRedfishCredentialLib/PlatformRedfishCredentialLib.inf
@@ -183,12 +187,10 @@
   AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
   AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
   AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbSmm.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiFvb/AmdSpiFvbDxe.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcSmm.inf
-  AmdPlatformPkg/Universal/Spi/AmdSpiHc/AmdSpiHcDxe.inf
-  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusDxe.inf
-  AmdPlatformPkg/Universal/Spi/BoardSpiBus/BoardSpiBusSmm.inf
+  AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibDxe.inf
+  AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibSmm.inf
+  AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
+  AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigDxe.inf
   AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
 

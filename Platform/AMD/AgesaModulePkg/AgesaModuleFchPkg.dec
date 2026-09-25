@@ -56,3 +56,13 @@
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdUsbRSOemConfigurationTable|{0x0}|VOID*|0x0003F40A
   gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdXhciSsid|0x00000000|UINT32|0x0003FF07
   gEfiAmdAgesaModulePkgTokenSpaceGuid.FchRTDeviceEnableMap|0x00000000|UINT32|0x0003FF81
+
+  ### @brief This option selects the clock speed for the SPI bus after a reset.
+  ### @brief Permitted Choices: (Type: List)(Default: 33MHz)
+  ### @li 1 - 66MHz
+  ### @li 2 - 33MHz
+  ### @li 3 - 22MHz
+  ### @li 4 - 16.7MHz
+  ### @li 5 - 100MHz
+  ### @li 6 - 800KHz
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdResetSpiSpeed|0x02|UINT8|0x0003F011

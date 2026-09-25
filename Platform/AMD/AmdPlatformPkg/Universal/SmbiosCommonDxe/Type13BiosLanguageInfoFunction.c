@@ -1,10 +1,11 @@
 /** @file
-  AMD SMBIOS Type 13 Record
+  AMD SMBIOS Type 13 Record.
 
-  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
+
 #include "SmbiosCommon.h"
 
 /**
@@ -53,13 +54,20 @@ BiosLanguageInfoFunction (
     DEBUG ((DEBUG_ERROR, "Failed to get PlatformLang: %r\n", Status));
 
     VarSize = AsciiStrSize (
-                (CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLang)
+                (CONST CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLang)
                 );
     CurrLang = AllocateCopyPool (
                  VarSize,
-                 (CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLang)
+                 (CONST VOID *)PcdGetPtr (PcdUefiVariableDefaultPlatformLang)
                  );
+  }
+
+  if (CurrLang == NULL) {
     ASSERT (CurrLang != NULL);
+    return EFI_NOT_FOUND;
+  } else {
+    // Make sure string is NULL terminated.
+    CurrLang[VarSize - 1] = '\0';
   }
 
   // Get the list of supported languages.
@@ -72,11 +80,11 @@ BiosLanguageInfoFunction (
     DEBUG ((DEBUG_ERROR, "Failed to get PlatformLangCodes: %r\n", Status));
 
     VarSize = AsciiStrSize (
-                (CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLangCodes)
+                (CONST CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLangCodes)
                 );
     SupportedLang = AllocateCopyPool (
                       VarSize,
-                      (CHAR8 *)PcdGetPtr (PcdUefiVariableDefaultPlatformLangCodes)
+                      (CONST VOID *)PcdGetPtr (PcdUefiVariableDefaultPlatformLangCodes)
                       );
     ASSERT (SupportedLang != NULL);
   }
@@ -89,7 +97,11 @@ BiosLanguageInfoFunction (
   for (Idx = 0; Idx < VarSize; Idx++) {
     if ((SupportedLang[Idx] == ';') || (SupportedLang[Idx] == '\0')) {
       // Found a language string, increment the language count.
-      NumSupportedLang++;
+      if (NumSupportedLang < MAX_UINT8) {
+        NumSupportedLang++;
+      } else {
+        break;
+      }
 
       // Replace string separator with null termination.
       SupportedLang[Idx] = '\0';

@@ -1,9 +1,11 @@
 ## @file
-#  AMD common SMBIOS DXE library Description File
+#  AMD common SMBIOS DXE module inf file.
+#  This module populates SMBIOS table information.
 #
-#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-#
+##
 
 [Defines]
   INF_VERSION                    = 0x00010005
@@ -22,27 +24,33 @@
 [Sources]
   SmbiosCommon.h
   SmbiosCommonEntryPoint.c
-  Type38IpmiDeviceInformation.c
-  Type9SystemSlotInfoFunction.c
+  Type0BiosVendorFunction.c
+  Type1SystemManufacturerFunction.c
+  Type2BaseBoardManufacturerFunction.c
+  Type3ChassisManufacturerFunction.c
   Type8PortConnectorInfoFunction.c
+  Type9SystemSlotInfoFunction.c
   Type11OemStringsFunction.c
   Type12SystemCfgOptionsFunction.c
   Type13BiosLanguageInfoFunction.c
+  Type21BuildInPointingDeviceFunction.c
+  Type26VoltageProbeFunction.c
+  Type32BootInformationFunction.c
+  Type38IpmiDeviceInformation.c
+  Type39SystemPowerSupplyFunction.c
   Type41OnboardDevExtInfoFunction.c
-  DefaultLomDevicePath.c
+  Type42ManagementControllerHostInterface.c
 
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   AmdPlatformPkg/AmdPlatformPkg.dec
-  BoardModulePkg/BoardModulePkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
 
 [LibraryClasses]
   BaseLib
   BaseMemoryLib
   DebugLib
-  DevicePathLib
-  HobLib
   MemoryAllocationLib
   PcdLib
   UefiDriverEntryPoint
@@ -54,9 +62,34 @@
   gEfiSmbiosProtocolGuid                       ## PROTOCOL ALWAYS_CONSUMED
   gEfiPciEnumerationCompleteProtocolGuid       ## CONSUMES
   gEfiPciIoProtocolGuid                        ## CONSUMES
-  gBoardBdsBootFromDevicePathProtocolGuid      ## PRODUCES
 
 [Pcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress                 ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdFlashAreaSize                        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType0BiosInformation           ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType0StringBiosReleaseDate     ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType0StringBiosVersion         ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType0StringVendor              ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringFamily              ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringManufacturer        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringProductName         ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringSerialNumber        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringSkuNumber           ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1StringVersion             ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType1SystemInformation         ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation      ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringAssetTag            ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringLocationInChassis   ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringManufacturer        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringProductName         ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringSerialNumber        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType2StringVersion             ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3StringAssetTag            ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3StringManufacturer        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3StringSerialNumber        ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3StringSkuNumber           ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3StringVersion             ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis    ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType8                       ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType8Number                 ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdAmdSmbiosType9SlotCharacteristics1   ## CONSUMES
@@ -68,6 +101,7 @@
   gAmdPlatformPkgTokenSpaceGuid.PcdType11OemStrings                     ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptionsCount          ## CONSUMES
   gAmdPlatformPkgTokenSpaceGuid.PcdType12SystemCfgOptions               ## CONSUMES
+  gAmdPlatformPkgTokenSpaceGuid.PcdSmbiosType32SystemBootInformation    ## CONSUMES
   gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes      ## CONSUMES
   gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLang           ## CONSUMES
   gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress                      ## CONSUMES

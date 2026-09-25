@@ -62,25 +62,28 @@
 
 #define FCH_SPI_BASE_ADDRESS  0xFEC10000
 
-#define FCH_SPI_MMIO_REG00               0x00
-#define FCH_SPI_FIFO_PTR_CRL             0x00100000l //
-#define FCH_SPI_BUSY                     0x80000000l //
-#define FCH_SPI_MMIO_REG1D               0x1D        //
-#define FCH_SPI_MMIO_REG20               0x20
-#define FCH_SPI_MMIO_REG22               0x22        //
-#define FCH_SPI_MMIO_REG30               0x30        //
-#define FCH_SPI_R2VAL24                  0x00000001l //
-#define FCH_SPI_R2VAL25                  0x00000002l //
-#define FCH_SPI_R2MSK24                  0x00000004l //
-#define FCH_SPI_R2MSK25                  0x00000008l //
-#define FCH_SPI_MMIO_REG45_CMDCODE       0x45        //
-#define FCH_SPI_MMIO_REG47_CMDTRIGGER    0x47        //
-#define FCH_SPI_MMIO_REG48_TXBYTECOUNT   0x48        //
-#define FCH_SPI_MMIO_REG4B_RXBYTECOUNT   0x4B        //
-#define FCH_SPI_MMIO_REG4C_SPISTATUS     0x4C        //
-#define FCH_SPI_MMIO_REG5C_Addr32_Ctrl3  0x5C        //
-#define FCH_SPI_SPIROM_PAGE_MASK         0xFF        //
-#define FCH_SPI_MMIO_REG80_FIFO          0x80        //
+#define FCH_SPI_MMIO_REG00                0x00
+#define FCH_SPI_FIFO_PTR_CRL              0x00100000l //
+#define FCH_SPI_BUSY                      0x80000000l //
+#define FCH_SPI_MMIO_REG1D                0x1D        //
+#define FCH_SPI_MMIO_REG20                0x20
+#define FCH_SPI_MMIO_REG22                0x22        //
+#define FCH_SPI_MMIO_REG30                0x30        //
+#define FCH_SPI_R2VAL24                   0x00000001l //
+#define FCH_SPI_R2VAL25                   0x00000002l //
+#define FCH_SPI_R2MSK24                   0x00000004l //
+#define FCH_SPI_R2MSK25                   0x00000008l //
+#define FCH_SPI_MMIO_REG45_CMDCODE        0x45        //
+#define FCH_SPI_MMIO_REG47_CMDTRIGGER     0x47        //
+#define FCH_SPI_MMIO_REG48_TXBYTECOUNT    0x48        //
+#define FCH_SPI_MMIO_REG48_TX_BYTE_COUNT  FCH_SPI_MMIO_REG48_TXBYTECOUNT
+#define FCH_SPI_MMIO_REG4B_RXBYTECOUNT    0x4B       //
+#define FCH_SPI_MMIO_REG4B_RX_BYTE_COUNT  FCH_SPI_MMIO_REG4B_RXBYTECOUNT
+#define FCH_SPI_MMIO_REG4C_SPISTATUS      0x4C       //
+#define FCH_SPI_MMIO_REG5C_Addr32_Ctrl3   0x5C       //
+#define FCH_SPI_MMIO_REG5C_ADDR32_CTRL3   FCH_SPI_MMIO_REG5C_Addr32_Ctrl3
+#define FCH_SPI_SPIROM_PAGE_MASK          0xFF       //
+#define FCH_SPI_MMIO_REG80_FIFO           0x80       //
 
 /// AL2AHB Legacy UART I/O Enable Register (AL2AHBxFEDC0020)
 #define FCH_AL2AHBx20_LEGACY_UART_IO_ENABLE  0xFEDC0020ul

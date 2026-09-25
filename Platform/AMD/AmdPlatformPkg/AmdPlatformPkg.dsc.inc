@@ -13,6 +13,9 @@
 !ifndef SIMNOW_SUPPORT
   DEFINE SIMNOW_SUPPORT = FALSE
 !endif
+!ifndef ROM_ARMOR_ENABLED
+  DEFINE ROM_ARMOR_ENABLED = TRUE
+!endif
 
 [LibraryClasses.Common]
   TimerLib|AmdPlatformPkg/Library/CcxTscTimerLib/BaseTscTimerLib.inf
@@ -33,8 +36,21 @@
 
 [LibraryClasses.Common.DXE_DRIVER]
   RedfishPlatformCredentialLib|AmdPlatformPkg/Library/PlatformRedfishCredentialLib/PlatformRedfishCredentialLib.inf
+  AmdEmulationAutoDetectLib|AgesaModulePkg/Library/AmdEmulationAutoDetectLibNull/AmdEmulationAutoDetectLibNull.inf
+  AmdRdeDirectoryLib|AgesaModulePkg/Library/AmdRdeDirectoryLib/AmdRdeDirectoryLib.inf
+  AmdRdeMediaLib|AgesaModulePkg/Library/AmdRdeMediaLibNull/AmdRdeMediaLibNull.inf
+  !if $(ROM_ARMOR_ENABLED) == TRUE
+    SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibDxe.inf
+  !endif
 
 [LibraryClasses.Common.DXE_SMM_DRIVER]
+  AmdEmulationAutoDetectLib|AgesaModulePkg/Library/AmdEmulationAutoDetectLibNull/AmdEmulationAutoDetectLibNull.inf
+  AmdRdeDirectoryLib|AgesaModulePkg/Library/AmdRdeDirectoryLib/AmdRdeDirectoryLib.inf
+  AmdRdeMediaLib|AgesaModulePkg/Library/AmdRdeMediaLibNull/AmdRdeMediaLibNull.inf
+  !if $(ROM_ARMOR_ENABLED) == TRUE
+    SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibSmm.inf
+  !endif
+
 
 [LibraryClasses.Common.SMM_CORE]
 
@@ -55,3 +71,8 @@
   AmdPlatformPkg/Universal/Hsti/PlatformHstiDxe/PlatformHstiDxe.inf
   AmdPlatformPkg/Universal/NvStoreRestoreDefaultSmm/NvStoreRestoreDefaultSmm.inf
   AmdPlatformPkg/Universal/SysTopologyReport/Dxe/SysTopologyReportDxe.inf
+  AmdPlatformPkg/Universal/Tpm/Tcg2PlatformDxe/Tcg2PlatformDxe.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableDxe.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableSmm.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/RdeResponse/SpiFvbRdeResponseDxe.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/RdeResponse/SpiFvbRdeResponseSmm.inf

@@ -1,9 +1,9 @@
 ## @file
 #  The default logo bitmap picture shown on setup screen.
 #
-#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 #
-# SPDX-License-Identifier: BSD-2-Clause-Patent
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 
@@ -13,10 +13,10 @@
   FILE_GUID                      = 76ED6631-44FE-4ED2-8B5D-1B5355BB25E8
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-
   ENTRY_POINT                    = InitializeLogo
+
 #
-#  This flag specifies whether HII resource section is generated into PE image.
+# This flag specifies whether HII resource section is generated into PE image.
 #
   UEFI_HII_RESOURCE_SECTION      = TRUE
 

@@ -1,0 +1,14 @@
+[Defines]
+  INF_VERSION    = 0x00010006
+  BASE_NAME      = AmdRdeDirectoryLib
+  FILE_GUID      = 1fdf6f97-08c3-4511-b5f0-6ac386dc649e
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = AmdRdeDirectoryLib
+
+[Sources]
+  AmdRdeDirectoryLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AgesaModulePkg/AgesaCommonModulePkg.dec
