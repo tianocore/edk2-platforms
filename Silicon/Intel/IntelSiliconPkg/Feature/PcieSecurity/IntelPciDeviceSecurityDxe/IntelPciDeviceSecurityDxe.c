@@ -141,7 +141,7 @@ GetPciCapId (
   EFI_STATUS                                Status;
 
   PciCapIdHdr.CapabilityID = ~CapId;
-  Status = PciIo->Pci.Read (PciIo, EfiPciIoWidthUint8, PCI_CAPBILITY_POINTER_OFFSET, 1, &PciCapIdHdr.NextItemPtr);
+  Status = PciIo->Pci.Read (PciIo, EfiPciIoWidthUint8, PCI_CAPABILITY_POINTER_OFFSET, 1, &PciCapIdHdr.NextItemPtr);
   ASSERT_EFI_ERROR(Status);
   if (PciCapIdHdr.NextItemPtr == 0 || PciCapIdHdr.NextItemPtr == 0xFF) {
     return 0;
