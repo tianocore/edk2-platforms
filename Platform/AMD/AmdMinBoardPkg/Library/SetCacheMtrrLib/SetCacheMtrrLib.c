@@ -120,8 +120,9 @@ SetCacheMtrrAfterEndOfPei (
   )
 {
   EFI_STATUS  Status;
-  UINT32      Mmio64Hi = 0, Mmio64Low = 0;
-  UINT64      ROM3MmioBase = 0;
+  UINT32      Mmio64Hi;
+  UINT32      Mmio64Low;
+  UINT64      ROM3MmioBase;
 
   Status = MtrrSetMemoryAttribute (
              PcdGet32 (PcdFlashAreaBaseAddress),

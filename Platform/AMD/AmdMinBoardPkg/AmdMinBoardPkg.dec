@@ -4,7 +4,7 @@
 #  This package supports AMD processor family based board as per the MinPlatform
 #  Arch specification.
 #
-#  Copyright (c) 2023 - 2025, Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 #  @par Specification Reference:
@@ -55,6 +55,10 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdMmioCfgBusRange                   |0x00000008|UINT32|0x1000000D   # 8 = 256MB, 7 = 128MB, and 6 = 64MB
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressLow          |0xE0000000|UINT32|0x1000000E   # Lower 32 bit address of PCIe config base.
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressHi           |0x00000000|UINT32|0x1000000F   # Upper 32 bit address of PCIe config base.
+
+  ## Indicates the offset and of BVM CBS Override Binary.
+  gAmdMinBoardPkgTokenSpaceGuid.PcdFlashBvmOffset                    |0x00021000|UINT32|0x10000010
+  gAmdMinBoardPkgTokenSpaceGuid.PcdFlashBvmSize                      |0x00002000|UINT32|0x10000011
 
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   gAmdMinBoardPkgTokenSpaceGuid.PcdFlashFvAdvancedSecurityBase       |0x00000000|UINT32|0x10000012

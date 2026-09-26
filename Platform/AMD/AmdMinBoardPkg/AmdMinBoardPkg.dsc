@@ -22,9 +22,7 @@
   MinPlatformPkg/MinPlatformPkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
 
-[LibraryClasses]
-  SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
-  ReportFvLib|AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+!include AmdMinBoardPkg/AmdMinBoardPkg.inc.dsc
 
 [LibraryClasses.common]
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -33,19 +31,12 @@
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+  StackCheckLib|MdePkg/Library/StackCheckLibNull/StackCheckLibNull.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
 
-[LibraryClasses.common.SEC]
-  PlatformSecLib|AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
-
-[LibraryClasses.common.PEIM]
-  SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
-  BoardInitLib|AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
-
-[LibraryClasses.common.DXE_DRIVER]
-  BoardBdsHookLib|AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
-  BoardInitLib|AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
+[PcdsDynamicDefault]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0x10000000
 
 [Components]
   AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
@@ -59,20 +50,3 @@
 [Components.X64]
   AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
   AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
-
-# to make PcdSet64S working
-[PcdsDynamicDefault]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0x10000000
-
-[BuildOptions]
-  GCC:*_*_*_CC_FLAGS     = -D DISABLE_NEW_DEPRECATED_INTERFACES
-  INTEL:*_*_*_CC_FLAGS   = /D DISABLE_NEW_DEPRECATED_INTERFACES
-  MSFT:*_*_*_CC_FLAGS    = /D DISABLE_NEW_DEPRECATED_INTERFACES
-
-  GCC:*_*_*_CC_FLAGS     = -D USE_EDKII_HEADER_FILE
-
-  # Turn off DEBUG messages for Release Builds
-  GCC:RELEASE_*_*_CC_FLAGS     = -D MDEPKG_NDEBUG
-  INTEL:RELEASE_*_*_CC_FLAGS   = /D MDEPKG_NDEBUG
-  MSFT:RELEASE_*_*_CC_FLAGS    = /D MDEPKG_NDEBUG
-

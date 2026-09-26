@@ -1,0 +1,206 @@
+## @file
+# CI configuration for AmdMinBoardPkg
+#
+# Copyright (C) 2024 - 2026 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+{
+    "PrEval": {
+        "DscPath": "AmdMinBoardPkg.dsc",
+    },
+    ## options defined .pytool/Plugin/LicenseCheck
+    "LicenseCheck": {
+        "IgnoreFiles": []
+    },
+    "EccCheck": {
+        ## Exception sample looks like below:
+        ## "ExceptionList": [
+        ##     "<ErrorID>", "<KeyWord>"
+        ## ]
+        ## ECC runs without the full PACKAGES_PATH so it cannot resolve library
+        ## classes from external packages (MdePkg, MdeModulePkg, etc.).
+        ## This produces false-positive [10002], [10006], and [10022] errors for
+        ## every standard EDK2 library class used by modules in this package.
+        "ExceptionList": [
+            "10002", "BaseLib",
+            "10002", "BaseMemoryLib",
+            "10002", "DebugLib",
+            "10002", "DevicePathLib",
+            "10002", "DxeServicesTableLib",
+            "10002", "HobLib",
+            "10002", "IoLib",
+            "10002", "IpmiCommandLib",
+            "10002", "MemoryAllocationLib",
+            "10002", "MtrrLib",
+            "10002", "PcdLib",
+            "10002", "PeiServicesLib",
+            "10002", "PerformanceLib",
+            "10002", "PrintLib",
+            "10002", "SecBoardInitLib",
+            "10002", "Tcg2PhysicalPresenceLib",
+            "10002", "TestPointCheckLib",
+            "10002", "UefiBootManagerLib",
+            "10002", "UefiBootServicesTableLib",
+            "10002", "UefiLib",
+            "10002", "UefiRuntimeServicesTableLib",
+            "10006", "BaseLib",
+            "10006", "BaseMemoryLib",
+            "10006", "DebugLib",
+            "10006", "DevicePathLib",
+            "10006", "DxeServicesTableLib",
+            "10006", "HobLib",
+            "10006", "IoLib",
+            "10006", "IpmiCommandLib",
+            "10006", "MemoryAllocationLib",
+            "10006", "MtrrLib",
+            "10006", "PcdLib",
+            "10006", "PeiServicesLib",
+            "10006", "PerformanceLib",
+            "10006", "PrintLib",
+            "10006", "SecBoardInitLib",
+            "10006", "Tcg2PhysicalPresenceLib",
+            "10006", "TestPointCheckLib",
+            "10006", "UefiBootManagerLib",
+            "10006", "UefiBootServicesTableLib",
+            "10006", "UefiLib",
+            "10006", "UefiRuntimeServicesTableLib",
+            "10022", "BaseLib",
+            "10022", "BaseMemoryLib",
+            "10022", "DebugLib",
+            "10022", "DevicePathLib",
+            "10022", "DxeServicesTableLib",
+            "10022", "HobLib",
+            "10022", "IoLib",
+            "10022", "IpmiCommandLib",
+            "10022", "MemoryAllocationLib",
+            "10022", "MtrrLib",
+            "10022", "PcdLib",
+            "10022", "PeiServicesLib",
+            "10022", "PerformanceLib",
+            "10022", "PrintLib",
+            "10022", "SecBoardInitLib",
+            "10022", "Tcg2PhysicalPresenceLib",
+            "10022", "TestPointCheckLib",
+            "10022", "UefiBootManagerLib",
+            "10022", "UefiBootServicesTableLib",
+            "10022", "UefiLib",
+            "10022", "UefiRuntimeServicesTableLib",
+        ],
+        ## Both file path and directory path are accepted.
+        "IgnoreFiles": [
+        ]
+    },
+    ## options defined ci/Plugin/CompilerPlugin
+    "CompilerPlugin": {
+        "DscPath": "AmdMinBoardPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestCompilerPlugin
+    ## Disabled until Test/AmdMinBoardPkgHostTest.dsc (GoogleTest unit tests +
+    ## Mock library stubs) available.
+    ## below for the same reasoning.
+    "HostUnitTestCompilerPlugin-skip": {
+        "DscPath": "Test/AmdMinBoardPkgHostTest.dsc"
+    },
+
+    ## options defined ci/Plugin/CharEncodingCheck
+    "CharEncodingCheck": {
+        "IgnoreFiles": []
+    },
+
+    ## options defined ci/Plugin/DependencyCheck
+    "DependencyCheck-skip": {
+        "AcceptableDependencies": [
+            "AmdMinBoardPkg/AmdMinBoardPkg.dec",
+            "AmdPlatformPkg/AmdPlatformPkg.dec",
+            "BoardModulePkg/BoardModulePkg.dec",
+            "DynamicTablesPkg/DynamicTablesPkg.dec",
+            "IpmiFeaturePkg/IpmiFeaturePkg.dec",
+            "ManageabilityPkg/ManageabilityPkg.dec",
+            "MdeModulePkg/MdeModulePkg.dec",
+            "MdePkg/MdePkg.dec",
+            "MinPlatformPkg/MinPlatformPkg.dec",
+            "PcAtChipsetPkg/PcAtChipsetPkg.dec",
+            "SecurityPkg/SecurityPkg.dec",
+            "UefiCpuPkg/UefiCpuPkg.dec",
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec",
+            "AgesaModulePkg/AgesaCommonModulePkg.dec",
+            "AgesaModulePkg/AgesaModuleNbioPkg.dec"
+        ],
+        # For host based unit tests
+        "AcceptableDependencies-HOST_APPLICATION":[
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
+        # For UEFI shell based apps
+        "AcceptableDependencies-UEFI_APPLICATION":[],
+        "IgnoreInf": []
+    },
+
+    ## options defined ci/Plugin/DscCompleteCheck
+    "DscCompleteCheck": {
+        "IgnoreInf": [
+            ## Per-instance BoardInitLib wrappers used only by the host unit test
+            ## DSC (AmdMinBoardPkgHostTest.dsc).  These are test-only library
+            ## stubs that compile production DxeBoardInitLib sources under unique
+            ## FILE_GUIDs to avoid shared .gcda file collisions during coverage
+            ## collection.  They must not appear in the main AmdMinBoardPkg.dsc.
+            "AmdMinBoardPkg/Test/GoogleTest/DxeBoardInitLib/DxeBoardInitLibGoogleTestLib.inf",
+            "AmdMinBoardPkg/Test/GoogleTest/DxeBoardInitLib/DxeBoardInitLibNoDebugGoogleTestLib.inf"
+        ],
+        "DscPath": "AmdMinBoardPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestDscCompleteCheck
+    "HostUnitTestDscCompleteCheck": {
+        # "IgnoreInf": [],
+        # "DscPath": "Test/AmdMinBoardPkgHostTest.dsc"
+    },
+
+    ## options defined ci/Plugin/GuidCheck
+    "GuidCheck": {
+        "IgnoreGuidName": [],
+        "IgnoreGuidValue": [],
+        "IgnoreFoldersAndFiles": [],
+        "IgnoreDuplicates": []
+    },
+
+    ## options defined ci/Plugin/LibraryClassCheck
+    "LibraryClassCheck": {
+        "IgnoreHeaderFile": []
+    },
+
+    ## options defined ci/Plugin/SpellCheck
+    "SpellCheck": {
+        "AuditOnly": False,         # If True, only audit the files, do not fail the build
+        "IgnoreStandardPaths": [     # Standard Plugin defined paths that should be ignore
+        ##    "*.c", "*.asm", "*.h", "*.nasm", "*.s", "*.asl", "*.inf"
+        ],
+        "IgnoreFiles": [             # use gitignore syntax to ignore errors in matching files
+        ],
+        "ExtendWords": [           # words to extend to the dictionary for this package
+            "acpitable",
+            "agesa",
+            "bootxxxx",
+            "coverity",
+            "lapic",
+            "pciexbar",
+            "pmioa",
+            "rdtsc"
+        ],
+        "AdditionalIncludePaths": [] # Additional paths to spell check relative to package root (wildcards supported)
+    },
+    "DebugMacroCheck": {
+      "StringSubstitutions": {
+          # Reason: Expansion of macro that contains a print specifier.
+          # AMD can write its own print specifier.
+          # "AMD_PRINT": "0x%lx"
+      }
+   },
+    "CodeQlAnalyze": {
+        "AuditOnly": False,         # Fail the build if there are errors.
+        "QuerySpecifiers": "",      # Query specifiers to pass to CodeQL CLI.
+        "Filters": [                # Inclusion/exclusion filters
+            "-**/MdePkg/**/*",              # outside the scope of this package
+            "-**/MdeModulePkg/**/*",        # outside the scope of this package
+            "-**/UnitTestFrameworkPkg/**/*" # test framework internals (cmocka, googletest)
+        ]
+    }
+}
