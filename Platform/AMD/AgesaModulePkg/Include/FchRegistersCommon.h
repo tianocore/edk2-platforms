@@ -53,6 +53,7 @@
 //    offset : 0x300
 //
 #define FCH_PMIOA_REG60  0x60                 // AcpiPm1EvtBlk
+#define FCH_PMIOA_REG64  0x64                 // AcpiPmTmrBlk
 
 //
 //

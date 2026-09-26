@@ -3,7 +3,7 @@
 SetCacheMtrr library functions.
 This library implementation is for AMD processor based platforms.
 
-Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -13,6 +13,9 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <PiPei.h>
 #include <Library/DebugLib.h>
 #include <Library/MtrrLib.h>
+#include <Library/IoLib.h>
+#include <Library/BaseLib.h>
+#include <Include/FchRegistersCommon.h>
 
 /**
   This function sets the cache MTRR values for PEI phase.
@@ -24,7 +27,7 @@ SetCacheMtrr (
   )
 {
   EFI_STATUS  Status;
-  UINT64      TOM;
+  UINT64      TopOfMemory;
 
   Status = MtrrSetMemoryAttribute (
              0,
@@ -42,7 +45,7 @@ SetCacheMtrr (
   Status = MtrrSetMemoryAttribute (
              0xA0000,
              0x20000,
-             CacheUncacheable
+             CacheWriteThrough
              );
   if (EFI_ERROR (Status)) {
     DEBUG ((
@@ -65,19 +68,22 @@ SetCacheMtrr (
       ));
   }
 
-  TOM = AsmReadMsr64 (0xC001001A);
-  Status = MtrrSetMemoryAttribute (
-             0x100000,
-             TOM - 0x100000,
-             CacheWriteBack
-             );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "Error(%r) in setting CacheWriteBack for 0x100000-0x%lX\n",
-      Status,
-      TOM - 1
-      ));
+  TopOfMemory = AsmReadMsr64 (0xC001001A);
+  ASSERT (TopOfMemory > 0x100000);
+  if (TopOfMemory > 0x100000) {
+    Status = MtrrSetMemoryAttribute (
+               0x100000,
+               TopOfMemory - 0x100000,
+               CacheWriteBack
+               );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "Error(%r) in setting CacheWriteBack for 0x100000-0x%lX\n",
+        Status,
+        TopOfMemory - 1
+        ));
+    }
   }
 
   Status = MtrrSetMemoryAttribute (
@@ -114,6 +120,8 @@ SetCacheMtrrAfterEndOfPei (
   )
 {
   EFI_STATUS  Status;
+  UINT32      Mmio64Hi = 0, Mmio64Low = 0;
+  UINT64      ROM3MmioBase = 0;
 
   Status = MtrrSetMemoryAttribute (
              PcdGet32 (PcdFlashAreaBaseAddress),
@@ -127,6 +135,27 @@ SetCacheMtrrAfterEndOfPei (
       Status,
       PcdGet32 (PcdFlashAreaBaseAddress),
       PcdGet32 (PcdFlashAreaBaseAddress) + PcdGet32 (PcdFlashAreaSize)
+      ));
+  }
+
+  // Get ROM3 base addr
+  Mmio64Low    = MmioRead32 (FCH_SPI_BASE_ADDRESS + FCH_PMIOA_REG60);
+  Mmio64Low   &= 0xFC000000;
+  Mmio64Hi     = MmioRead32 (FCH_SPI_BASE_ADDRESS + FCH_PMIOA_REG64);
+  ROM3MmioBase = (UINT64)(Mmio64Low | LShiftU64 (Mmio64Hi, 32));
+
+  Status = MtrrSetMemoryAttribute (
+             ROM3MmioBase,
+             0x4000000,
+             CacheUncacheable
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Error(%r) in setting CacheUncacheable for 0x%X-0x%X\n",
+      Status,
+      ROM3MmioBase,
+      ROM3MmioBase + 0x4000000
       ));
   }
 
