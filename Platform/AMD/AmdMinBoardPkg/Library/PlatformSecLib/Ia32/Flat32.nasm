@@ -51,11 +51,6 @@ extern   ASM_PFX(BoardBeforeTempRamInit)
 extern   ASM_PFX(BoardAfterTempRamInitWrapper)
 
 
-; Following are fixed PCDs
-
-extern ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressHi))
-extern ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressLow))
-
 %define BSP_HEAP_STACK_BASE     FixedPcdGet32 (PcdTempRamBase)
 %define BSP_HEAP_STACK_SIZE     FixedPcdGet32 (PcdTempRamSize)
 %define FLASH_IMAGE_SIZE        FixedPcdGet32 (PcdFlashAreaSize)
@@ -183,19 +178,6 @@ ProtectedModeEntryPoint:
   ;
   JMP32  ASM_PFX(BoardBeforeTempRamInit)
   ;
-  ; Configure MMIO Base Address
-  ;
-  mov     ecx, 0x0C0010058
-  rdmsr
-  mov     ebx, eax
-  mov     eax, DWORD [ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressLow))]
-  or      eax, ebx
-  or      eax, MMIO_CFG_ENABLE
-  mov     edx, DWORD [ASM_PFX(PcdGet32 (PcdPciExpressBaseAddressHi))]
-  mov     ecx, 0x0C0010058
-  wrmsr
-
-  ;
   ; Set UEFI stack
   ;
   mov eax, BIST_VALUE         ; BIST value
@@ -216,10 +198,6 @@ StackReturn:
   lea ebx, [PlatformTemporaryStackBase]
   mov [ebx], esp
 
-  ;
-  ; Early board hooks
-  ;
-  call ASM_PFX(BoardAfterTempRamInitWrapper)
   ;
   ; Store the BIST value in EBP
   ;
@@ -259,6 +237,11 @@ PushBist:
   push eax
   movd eax, mm7
   push eax
+
+  ;
+  ; Early board hooks
+  ;
+  call ASM_PFX(BoardAfterTempRamInitWrapper)
 
   ;
   ; Pass Control into the PEI Core

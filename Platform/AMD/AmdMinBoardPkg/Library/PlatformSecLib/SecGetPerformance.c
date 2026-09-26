@@ -2,18 +2,21 @@
   Sample to provide SecGetPerformance function.
 
   Copyright (c) 2017 - 2019, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <PiPei.h>
 #include <Ppi/SecPerformance.h>
-#include <Ppi/TopOfTemporaryRam.h>
 #include <Ppi/SecPlatformInformation.h>
-#include <Library/BaseMemoryLib.h>
 #include <Library/TimerLib.h>
 #include <Library/DebugLib.h>
+
+UINT32 *
+AsmSecPlatformGetTemporaryStackBase (
+  VOID
+  );
 
 /**
   This interface conveys performance information out of the Security (SEC) phase into PEI.
@@ -39,30 +42,16 @@ SecGetPerformance (
   OUT      FIRMWARE_SEC_PERFORMANCE  *Performance
   )
 {
-  UINT32      Size;
-  UINT32      Count;
-  UINTN       TopOfTemporaryRam;
-  UINT64      Ticker;
-  VOID        *TopOfTemporaryRamPpi;
-  EFI_STATUS  Status;
+  UINT32  *TopOfStack;
+  UINT32  Count;
+  UINT32  TscHigh;
+  UINT32  TscLow;
+  UINT64  Ticker;
 
-  DEBUG ((DEBUG_INFO, "SecGetPerformance\n"));
-
-  Status = (*PeiServices)->LocatePpi (
-                             PeiServices,
-                             &gTopOfTemporaryRamPpiGuid,
-                             0,
-                             NULL,
-                             (VOID **)&TopOfTemporaryRamPpi
-                             );
-  if (EFI_ERROR (Status)) {
-    return EFI_NOT_FOUND;
-  }
+  DEBUG ((DEBUG_INFO, "SecGetPerformance Enter.\n"));
 
   //
-  // |--------------| <- TopOfTemporaryRam
-  // | SEC PEI HAND |
-  // |--------------|
+  // |--------------| <- TopOfStack
   // |Number of BSPs|
   // |--------------|
   // |     BIST     |
@@ -75,14 +64,18 @@ SecGetPerformance (
   // |--------------|
   //
 
-  //
-  // AMD push the EFI_SEC_PEI_HAND_OFF first to the stack.
-  //
-  TopOfTemporaryRam     = (UINT32)(UINTN)TopOfTemporaryRamPpi - sizeof (EFI_SEC_PEI_HAND_OFF);
-  TopOfTemporaryRam    -= sizeof (UINT32) * 2;
-  Count                 = *(UINT32 *)(UINTN)(TopOfTemporaryRam);
-  Size                  = Count * sizeof (IA32_HANDOFF_STATUS);
-  Ticker                = *(UINT64 *)(TopOfTemporaryRam - sizeof (Count) - Size - sizeof (UINT32));
+  TopOfStack = AsmSecPlatformGetTemporaryStackBase ();
+
+  Count   = *(TopOfStack - 1);
+  TscHigh = *(TopOfStack - 2 - Count);
+  TscLow  = *(TopOfStack - 3 - Count);
+
+  DEBUG ((DEBUG_INFO, "SEC TSC Low = 0x%X\n", TscLow));
+  DEBUG ((DEBUG_INFO, "SEC TSC High = 0x%X\n", TscHigh));
+
+  Ticker                = LShiftU64 ((UINT64)TscHigh, 32) | (UINT64)TscLow;
   Performance->ResetEnd = GetTimeInNanoSecond (Ticker);
+
+  DEBUG ((DEBUG_INFO, "SEC SecGetPerformance Exit.\n"));
   return EFI_SUCCESS;
 }

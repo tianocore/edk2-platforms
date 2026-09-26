@@ -7,9 +7,7 @@
 
 **/
 #include <PiPei.h>
-#include <Ppi/SecPlatformInformation.h>
 #include <Ppi/SecPerformance.h>
-#include <Library/LocalApicLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 
@@ -44,7 +42,7 @@ PEI_SEC_PERFORMANCE_PPI  mSecPerformancePpi = {
 EFI_PEI_PPI_DESCRIPTOR  mPeiSecPlatformPpi[] = {
   {
     EFI_PEI_PPI_DESCRIPTOR_PPI,
-    &gTopOfTemporaryRamPpiGuid,
+    &gAmdTopOfTemporaryRamPpiGuid,
     NULL // To be patched later.
   },
   {

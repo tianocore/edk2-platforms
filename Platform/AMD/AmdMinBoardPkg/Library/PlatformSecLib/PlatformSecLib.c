@@ -1,25 +1,38 @@
 /** @file
 Platform SEC Library.
 
+  Copyright (C) 2023 - 2026, Advanced Micro Devices, Inc. All rights reserved.
   Copyright (c) 2013 - 2015, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <PiPei.h>
 #include <Ppi/SecPlatformInformation.h>
-#include <Ppi/TemporaryRamSupport.h>
 #include <Library/PcdLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/HobLib.h>
-#include <Library/MtrrLib.h>
 #include <Library/SecBoardInitLib.h>
 #include <Library/TestPointCheckLib.h>
+#include <Register/ArchitecturalMsr.h>
 
-#include <AGESA.h>
+#define SYS_CFG  0xC0010010ul
+
+// CPU Build Configuration structures and definitions
+
+#define AMD_AP_MTRR_FIX64K_00000  0x00000250ul
+#define AMD_AP_MTRR_FIX16K_80000  0x00000258ul
+#define AMD_AP_MTRR_FIX16K_A0000  0x00000259ul
+#define AMD_AP_MTRR_FIX4K_C0000   0x00000268ul
+#define AMD_AP_MTRR_FIX4K_C8000   0x00000269ul
+#define AMD_AP_MTRR_FIX4K_D0000   0x0000026Aul
+#define AMD_AP_MTRR_FIX4K_D8000   0x0000026Bul
+#define AMD_AP_MTRR_FIX4K_E0000   0x0000026Cul
+#define AMD_AP_MTRR_FIX4K_E8000   0x0000026Dul
+#define AMD_AP_MTRR_FIX4K_F0000   0x0000026Eul
+#define AMD_AP_MTRR_FIX4K_F8000   0x0000026Ful
 
 //
 // Bitfield Description : Not shared between threads.
@@ -27,8 +40,6 @@ Platform SEC Library.
 // This bit should be set to 1 during BIOS initialization of the fixed MTRRs, then cleared to 0 for operation.
 //
 #define SYS_CFG_MTRR_FIX_DRAM_MOD_EN_OFFSET  19       // Refer to AMD64 Architecture Programming manual.
-#define SYS_CFG_MTRR_FIX_DRAM_MOD_EN_WIDTH   1        // Refer to AMD64 Architecture Programming manual.
-#define SYS_CFG_MTRR_FIX_DRAM_MOD_EN_MASK    0x80000  // Refer to AMD64 Architecture Programming manual.
 
 VOID
 AsmSecPlatformDisableTemporaryMemory (
@@ -67,6 +78,7 @@ SecStartup (
 **/
 VOID
 EFIAPI
+/* coverity[cert_dcl40_c_violation] */
 ProcessLibraryConstructorList (
   VOID
   );
@@ -96,23 +108,24 @@ PlatformSecLibStartup (
     SYS_CFG_MTRR_FIX_DRAM_MOD_EN_OFFSET,
     0x1
     );
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX64k_00000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX16k_80000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX16k_A0000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_C0000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_C8000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_D0000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_D8000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_E0000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_E8000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_F0000, 0x1E1E1E1E1E1E1E1E);
-  AsmWriteMsr64 (AMD_AP_MTRR_FIX4k_F8000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX64K_00000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX16K_80000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX16K_A0000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_C0000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_C8000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_D0000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_D8000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_E0000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_E8000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_F0000, 0x1E1E1E1E1E1E1E1E);
+  AsmWriteMsr64 (AMD_AP_MTRR_FIX4K_F8000, 0x1E1E1E1E1E1E1E1E);
   AsmMsrBitFieldAnd64 (
     SYS_CFG,
     SYS_CFG_MTRR_FIX_DRAM_MOD_EN_OFFSET,
     SYS_CFG_MTRR_FIX_DRAM_MOD_EN_OFFSET,
     0x0
     );
+  AsmMsrOr64 (MSR_IA32_APIC_BASE, BIT11);
 
   //
   // Pass control to SecCore module passing in the base address and size
@@ -144,11 +157,12 @@ SecPlatformInformation (
   OUT   EFI_SEC_PLATFORM_INFORMATION_RECORD  *PlatformInformationRecord
   )
 {
-  UINT32             *BistPointer;
-  UINT32             BistSize;
-  UINT32             Count;
-  EFI_HOB_GUID_TYPE  *GuidHob;
-  UINT32             *TopOfStack;
+  VOID                    *BistPointer;
+  UINT32                  BistSize;
+  UINT32                  Count;
+  UINT32                  BistOffset;
+  EFI_HOB_GENERIC_HEADER  *GuidHob;
+  UINT32                  *TopOfStack;
 
   DEBUG ((DEBUG_INFO, "%a: - ENTRY\n", __func__));
 
@@ -157,6 +171,8 @@ SecPlatformInformation (
   GuidHob = GetFirstGuidHob (&gEfiSecPlatformInformationPpiGuid);
   if (GuidHob != NULL) {
     DEBUG ((DEBUG_INFO, " Found GuidHob!\n"));
+    // We will ignore INT31-C issues where the conversion is not from a signed data type to an unsigned one as these kinds of conversions are routine in low-level firmware
+    /* coverity[cert_int31_c_violation] */
     BistSize    = GET_GUID_HOB_DATA_SIZE (GuidHob);
     BistPointer = GET_GUID_HOB_DATA (GuidHob);
     DEBUG ((
@@ -172,10 +188,17 @@ SecPlatformInformation (
     // This routine copies the BIST information to the buffer pointed by
     // PlatformInformationRecord for output.
     //
-    TopOfStack  = AsmSecPlatformGetTemporaryStackBase ();
-    Count       = *(TopOfStack - 1);
-    BistSize    = Count * sizeof (IA32_HANDOFF_STATUS);
-    BistPointer = (UINT32 *)(UINTN)((UINTN)TopOfStack - sizeof (Count) - BistSize);
+    TopOfStack = AsmSecPlatformGetTemporaryStackBase ();
+    Count      = *(TopOfStack - 1);
+    BistSize   = Count * sizeof (IA32_HANDOFF_STATUS);
+    if ((MAX_UINT32 - sizeof (Count)) > BistSize) {
+      BistOffset = sizeof (Count) + BistSize;
+    } else {
+      ASSERT (FALSE);
+      return EFI_BAD_BUFFER_SIZE;
+    }
+
+    BistPointer = (VOID *)(UINTN)((UINTN)TopOfStack - BistOffset);
 
     //
     // Copy Data from Stack to Hob to avoid data is lost after memory is ready.
@@ -197,6 +220,8 @@ SecPlatformInformation (
     DEBUG ((DEBUG_INFO, " Reading the built GuidHob... "));
     if (GuidHob != NULL) {
       DEBUG ((DEBUG_INFO, "OK!\n"));
+      // We will ignore INT31-C issues where the conversion is not from a signed data type to an unsigned one as these kinds of conversions are routine in low-level firmware
+      /* coverity[cert_int31_c_violation] */
       BistSize    = GET_GUID_HOB_DATA_SIZE (GuidHob);
       BistPointer = GET_GUID_HOB_DATA (GuidHob);
     } else {
@@ -260,9 +285,15 @@ BoardAfterTempRamInitWrapper (
   VOID
   )
 {
-  BoardAfterTempRamInit ();
-  TestPointTempMemoryFunction (
-    (VOID *)(UINTN)PcdGet32 (PcdTempRamBase),
-    (VOID *)(UINTN)(PcdGet32 (PcdTempRamBase) + PcdGet32 (PcdTempRamSize))
-    );
+  VOID  *RamStartAddr;
+  VOID  *RamEndAddr;
+
+  RamStartAddr = (VOID *)(UINTN)PcdGet32 (PcdTempRamBase);
+  if ((MAX_UINT32 - PcdGet32 (PcdTempRamSize)) > PcdGet32 (PcdTempRamBase)) {
+    RamEndAddr = (VOID *)(UINTN)(PcdGet32 (PcdTempRamBase) + PcdGet32 (PcdTempRamSize));
+    BoardAfterTempRamInit ();
+    TestPointTempMemoryFunction (RamStartAddr, RamEndAddr);
+  } else {
+    ASSERT (FALSE);
+  }
 }

@@ -25,7 +25,6 @@
 [LibraryClasses]
   SpcrDeviceLib|AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
   ReportFvLib|AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
-  PlatformSecLib|AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
 
 [LibraryClasses.common]
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
@@ -36,6 +35,9 @@
   RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
   UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+
+[LibraryClasses.common.SEC]
+  PlatformSecLib|AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
 
 [LibraryClasses.common.PEIM]
   SetCacheMtrrLib|AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
@@ -48,13 +50,11 @@
 [Components]
   AmdMinBoardPkg/Library/SpcrDeviceLib/SpcrDeviceLib.inf
 
-[Components.IA32, Components.X64]
-  AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
-
 [Components.IA32]
-  AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
-  AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
   AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
+  AmdMinBoardPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
+  AmdMinBoardPkg/Library/PlatformSecLib/PlatformSecLib.inf
+  AmdMinBoardPkg/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
 [Components.X64]
   AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
