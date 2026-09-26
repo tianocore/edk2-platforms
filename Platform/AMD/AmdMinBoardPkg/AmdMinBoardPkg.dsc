@@ -57,7 +57,6 @@
   AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [Components.X64]
-  AmdMinBoardPkg/PciHotPlug/PciHotPlugInit.inf
   AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
 
 # to make PcdSet64S working

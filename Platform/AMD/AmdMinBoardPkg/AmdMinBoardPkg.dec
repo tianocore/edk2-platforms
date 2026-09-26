@@ -34,18 +34,6 @@
   gAmdBoardBdsBootOptionPriorityProtocolGuid = { 0x5806db97, 0x5303, 0x409f, { 0x8f, 0x09, 0xab, 0x29, 0xd8, 0x07, 0xa3, 0xf1}}
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
-  #
-  # PCI HotPlug Resource Padding
-  #
-  # PCI bus padding, number of bus to reserve, default 2 bus
-  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadBus|2|UINT8|0x10000003
-  # IO Resource padding in bytes, default 4KB
-  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadIo|0x00001000|UINT32|0x10000000
-  # Non-PreFetch Memory padding in bytes, default 1MB
-  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadMem|0x00100000|UINT32|0x10000002
-  # PreFetch Memory padding in bytes, default 2MB
-  gAmdMinBoardPkgTokenSpaceGuid.PcdPciHotPlugResourcePadPMem|0x00200000|UINT32|0x10000001
-
   # PCDs to support loading of FV above 4GB address space
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase            |0x0000000000000000|UINT64|0x10000004
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase              |0x0000000000000000|UINT64|0x10000005
