@@ -36,10 +36,6 @@
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   # PCDs to support loading of FV above 4GB address space
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase            |0x0000000000000000|UINT64|0x10000004
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase              |0x0000000000000000|UINT64|0x10000005
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase            |0x0000000000000000|UINT64|0x10000006
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase    |0x0000000000000000|UINT64|0x10000007
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize    |0x00000000|UINT32|0x10000008
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset  |0x00000000|UINT32|0x10000009
 
@@ -61,3 +57,6 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdMmioCfgBusRange                   |0x00000008|UINT32|0x1000000D   # 8 = 256MB, 7 = 128MB, and 6 = 64MB
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressLow          |0xE0000000|UINT32|0x1000000E   # Lower 32 bit address of PCIe config base.
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressHi           |0x00000000|UINT32|0x1000000F   # Upper 32 bit address of PCIe config base.
+
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+  gAmdMinBoardPkgTokenSpaceGuid.PcdFlashFvAdvancedSecurityBase       |0x00000000|UINT32|0x10000012

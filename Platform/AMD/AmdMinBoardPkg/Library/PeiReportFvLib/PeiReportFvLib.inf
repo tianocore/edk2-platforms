@@ -1,11 +1,8 @@
-###
-#  Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
-###
-
 ### @file
 # Component information file for the Report Firmware Volume (FV) library.
 #
 # Copyright (c) 2018 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -18,6 +15,7 @@
   VERSION_STRING                 = 1.0
   MODULE_TYPE                    = PEIM
   LIBRARY_CLASS                  = ReportFvLib
+  SUPPORTED_ARCHITECTURES        = IA32
 
 [LibraryClasses]
   BaseMemoryLib
@@ -35,11 +33,7 @@
   PeiReportFvLib.c
 
 [Pcd]
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedBase         ## CONSUMES
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityBase ## CONSUMES
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize ## CONSUMES
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvOsBootBase           ## CONSUMES
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvUefiBootBase         ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage                      ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress           ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize                  ## CONSUMES
@@ -57,4 +51,6 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootBase            ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            ## CONSUMES
-  gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode             ## CONSUMES
+  gAmdMinBoardPkgTokenSpaceGuid.PcdFlashFvAdvancedSecurityBase    ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryBase           ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize           ## CONSUMES
