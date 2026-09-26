@@ -1,13 +1,12 @@
 /** @file
   Defines AMD memory info hob.
 
-  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef AMD_MEMORY_INFO_HOB_H_
-#define AMD_MEMORY_INFO_HOB_H_
+#pragma once
 
 #pragma pack (push, 1)
 
@@ -47,4 +46,14 @@ typedef struct  {
 /// Memory attribute in the memory range descriptor = RESERVED
 #define AMD_MEMORY_ATTRIBUTE_RESERVED  0x4
 
-#endif
+/// Memory attribute in the memory range descriptor = GPU_SP
+#define AMD_MEMORY_ATTRIBUTE_GPU_SP  0x6
+
+/// Memory attribute in the memory range descriptor = HBM
+#define AMD_MEMORY_ATTRIBUTE_HBM  0xC
+
+/// Memory attribute in the memory range descriptor = PERSISTENT_MEMORY
+#define AMD_MEMORY_ATTRIBUTE_PERSISTENT_MEMORY  0xF
+
+/// Memory attribute in the memory range descriptor = ReservedX4PushWrite
+#define AMD_MEMORY_ATTRIBUTE_RESERVED_X4_PUSH_WRITE  0x10

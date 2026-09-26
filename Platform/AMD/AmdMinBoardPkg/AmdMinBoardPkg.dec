@@ -43,6 +43,11 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecuritySize    |0x00000000|UINT32|0x10000008
   gAmdMinBoardPkgTokenSpaceGuid.PcdAmdFlashFvAdvancedSecurityOffset  |0x00000000|UINT32|0x10000009
 
+  # SMRAM size
+  # Holds the SMRAM area size, which is reserved for SMRAM operation
+  # default value 128MB
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize                  |0x08000000|UINT32|0x20000100
+
   # PCDs of temp memory address
   gAmdMinBoardPkgTokenSpaceGuid.PcdTempRamBase                       |0x00030000|UINT32|0x1000000A
   gAmdMinBoardPkgTokenSpaceGuid.PcdTempRamSize                       |0x00020000|UINT32|0x1000000B
@@ -56,8 +61,3 @@
   gAmdMinBoardPkgTokenSpaceGuid.PcdMmioCfgBusRange                   |0x00000008|UINT32|0x1000000D   # 8 = 256MB, 7 = 128MB, and 6 = 64MB
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressLow          |0xE0000000|UINT32|0x1000000E   # Lower 32 bit address of PCIe config base.
   gAmdMinBoardPkgTokenSpaceGuid.PcdPciExpressBaseAddressHi           |0x00000000|UINT32|0x1000000F   # Upper 32 bit address of PCIe config base.
-
-  # SMRAM size
-  # Holds the SMRAM area size, which is reserved for SMRAM operation
-  # default value 128MB
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize                  |0x08000000|UINT64|0x20000100

@@ -1,14 +1,13 @@
 /** @file
   BoardInitLib library implementation for pre-mem PEI phase.
 
-Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
+Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <Library/BoardInitLib.h>
 #include <Library/PeiServicesLib.h>
-#include <Library/DebugLib.h>
 #include <Library/PcdLib.h>
 #include "PeiMemoryInit.h"
 
@@ -102,9 +101,11 @@ BoardInitBeforeMemoryInit (
   EFI_STATUS  Status;
 
   Status = PeiServicesNotifyPpi (&mNotifyList);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
   Status = SetPcieBaseSize ();
-  ASSERT_EFI_ERROR (Status);
   return (Status);
 }
 

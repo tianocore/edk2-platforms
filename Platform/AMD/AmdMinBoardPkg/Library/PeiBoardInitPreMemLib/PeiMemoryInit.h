@@ -1,12 +1,11 @@
 /** @file
   This file contains definitions required for memory initialization in PEI phase.
 
-  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
-#ifndef PEI_MEMORY_INIT_PEI_H_
-#define PEI_MEMORY_INIT_PEI_H_
+#pragma once
 
 #include <Uefi/UefiBaseType.h>
 #include <Pi/PiPeiCis.h>
@@ -36,7 +35,7 @@
 /**
   A Callback routine only AmdMemoryInfoHob is ready.
 
-  @retval EFI_SUCCESS   Platform Pre Memory initialization is successful.
+  @retval EFI_SUCCESS   Platform Pre Memory initialization is successfull.
           EFI_STATUS    Various failure from underlying routine calls.
 **/
 EFI_STATUS
@@ -46,5 +45,3 @@ EndofAmdMemoryInfoHobPpiGuidCallBack (
   IN EFI_PEI_NOTIFY_DESCRIPTOR  *NotifyDescriptor,
   IN VOID                       *Ppi
   );
-
-#endif // PEI_MEMORY_INIT_PEI_H_

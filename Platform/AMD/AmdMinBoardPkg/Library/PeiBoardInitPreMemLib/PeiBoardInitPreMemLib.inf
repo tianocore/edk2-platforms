@@ -1,7 +1,7 @@
 ## @file
 # Board Init Library for AMD Platforms.
 #
-# Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
+# Copyright (C) 2023 - 2024 Advanced Micro Devices, Inc. All rights reserved
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -14,6 +14,7 @@
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = BoardInitLib
+  SUPPORTED_ARCHITECTURES        = IA32
 
 [LibraryClasses]
   BaseLib
@@ -25,6 +26,8 @@
   AmdMinBoardPkg/AmdMinBoardPkg.dec
   MdePkg/MdePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+  SecurityPkg/SecurityPkg.dec
 
 [Sources]
   AmdMemoryInfoHob.h
@@ -41,5 +44,10 @@
   gPeiPlatformMemorySizePpiGuid                                     ## CONSUMES
 
 [Pcd]
-  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize                    ## CONSUMES
+
+[FixedPcd]
+  gAmdMinBoardPkgTokenSpaceGuid.PcdAmdSmramAreaSize                 ## CONSUMES
+  gPcAtChipsetPkgTokenSpaceGuid.PcdHpetBaseAddress                  ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdIoApicAddress                    ## CONSUMES
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress                   ## CONSUMES
