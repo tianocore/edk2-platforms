@@ -43,6 +43,7 @@
   BoardInitLib|AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
+  BoardBdsHookLib|AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
   BoardInitLib|AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
 
 [Components]
@@ -57,6 +58,7 @@
   AmdMinBoardPkg/Library/PeiBoardInitPreMemLib/PeiBoardInitPreMemLib.inf
 
 [Components.X64]
+  AmdMinBoardPkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
   AmdMinBoardPkg/Library/DxeBoardInitLib/DxeBoardInitLib.inf
 
 # to make PcdSet64S working

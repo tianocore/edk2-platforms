@@ -30,8 +30,9 @@
 [Ppis]
   gTopOfTemporaryRamPpiGuid      = { 0x2f3962b2, 0x57c5, 0x44ec, { 0x9e, 0xfc, 0xa6, 0x9f, 0xd3, 0x02, 0x03, 0x2b}}
 
-[Protocols]
-  gAmdBoardBdsBootOptionPriorityProtocolGuid = { 0x5806db97, 0x5303, 0x409f, { 0x8f, 0x09, 0xab, 0x29, 0xd8, 0x07, 0xa3, 0xf1}}
+[LibraryClasses]
+  ##  @libraryclass    Provide services to platform BDS hook.
+  BoardBdsHookLib|Include/Library/AmdBoardBdsHookLib.h
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   # PCDs to support loading of FV above 4GB address space

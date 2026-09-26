@@ -2,36 +2,25 @@
   Header file for BDS Hook Library
 
   Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2024-2025 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 - 2025, Advanced Micro Devices, Inc. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#ifndef BOARD_BDS_HOOK_H_
-#define BOARD_BDS_HOOK_H_
+#pragma once
 
 #include <PiDxe.h>
 #include <Protocol/DevicePath.h>
-#include <Protocol/SimpleNetwork.h>
-#include <Protocol/PciRootBridgeIo.h>
-#include <Protocol/LoadFile.h>
 #include <Protocol/PciIo.h>
-#include <Protocol/CpuIo2.h>
 #include <Protocol/LoadedImage.h>
-#include <Protocol/DiskInfo.h>
 #include <Protocol/GraphicsOutput.h>
-#include <Protocol/UgaDraw.h>
 #include <Protocol/GenericMemoryTest.h>
-#include <Protocol/DevicePathToText.h>
 #include <Protocol/FirmwareVolume2.h>
-#include <Protocol/SimpleFileSystem.h>
+#include <Protocol/AmdBootOptionPriorityProtocol.h>
 
-#include <Guid/CapsuleVendor.h>
-#include <Guid/MemoryTypeInformation.h>
 #include <Guid/GlobalVariable.h>
 #include <Guid/MemoryOverwriteControl.h>
-#include <Guid/FileInfo.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiBootServicesTableLib.h>
@@ -43,95 +32,34 @@
 #include <Library/DevicePathLib.h>
 #include <Library/UefiLib.h>
 #include <Library/HobLib.h>
-#include <Library/DxeServicesLib.h>
 #include <Library/DxeServicesTableLib.h>
 #include <Library/PrintLib.h>
-#include <Library/HiiLib.h>
-#include <Library/CapsuleLib.h>
 #include <Library/PerformanceLib.h>
 
 #include <IndustryStandard/Pci30.h>
-#include <IndustryStandard/PciCodeId.h>
 #include <Protocol/PciEnumerationComplete.h>
 
 ///
 /// For boot order override.
 ///
-#define IPMI_BOOT_OVERRIDE_VAR_NAME  L"IpmiBootOverride"
-#define IS_FIRST_BOOT_VAR_NAME       L"IsFirstBoot"
-#define UEFI_HARD_DRIVE_NAME         L"UEFI Hard Drive"
+#define IS_FIRST_BOOT_VAR_NAME  L"IsFirstBoot"
+#define UEFI_HARD_DRIVE_NAME    L"UEFI Hard Drive"
+#define BOOT_DEVICE_LIST_STR    L"Boot Device List"
+#define ENTER_SETUP_STR         L"Enter Setup"
 
 ///
-/// ConnectType
+/// CERT-C scan flags all the macros starting with 'E' as DCL37-C issues, even
+/// though these macros are not defined in errno.h and other C Standard library files.
+/// These issues are false positives.
 ///
-#define CONSOLE_OUT  0x00000001
-#define STD_ERROR    0x00000002
-#define CONSOLE_IN   0x00000004
-#define CONSOLE_ALL  (CONSOLE_OUT | CONSOLE_IN | STD_ERROR)
-
-extern EFI_GUID       gUefiShellFileGuid;
-extern EFI_BOOT_MODE  gBootMode;
-
-#define gPciRootBridge \
-  { \
-    { \
-      ACPI_DEVICE_PATH, \
-      ACPI_DP, \
-      { \
-        (UINT8) (sizeof (ACPI_HID_DEVICE_PATH)), \
-        (UINT8) ((sizeof (ACPI_HID_DEVICE_PATH)) >> 8) \
-      }, \
-    }, \
-    EISA_PNP_ID (0x0A03), \
-    0 \
-  }
-
-#define gEndEntire \
+// coverity[cert_dcl37_c_violation]
+#define END_ENTIRE_DEVICE_PATH \
   { \
     END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { END_DEVICE_PATH_LENGTH, 0 } \
   }
 
-typedef struct {
-  EFI_DEVICE_PATH_PROTOCOL    *DevicePath;
-  UINTN                       ConnectType;
-} BDS_CONSOLE_CONNECT_ENTRY;
-
-//
-// Platform Root Bridge
-//
-typedef struct {
-  ACPI_HID_DEVICE_PATH        PciRootBridge;
-  EFI_DEVICE_PATH_PROTOCOL    End;
-} PLATFORM_ROOT_BRIDGE_DEVICE_PATH;
-
-//
-// Below is the platform console device path
-//
-typedef struct {
-  ACPI_HID_DEVICE_PATH        PciRootBridge;
-  PCI_DEVICE_PATH             IsaBridge;
-  ACPI_HID_DEVICE_PATH        Keyboard;
-  EFI_DEVICE_PATH_PROTOCOL    End;
-} PLATFORM_KEYBOARD_DEVICE_PATH;
-
-typedef struct {
-  ACPI_HID_DEVICE_PATH        PciRootBridge;
-  PCI_DEVICE_PATH             PciDevice;
-  EFI_DEVICE_PATH_PROTOCOL    End;
-} PLATFORM_ONBOARD_CONTROLLER_DEVICE_PATH;
-
-typedef struct {
-  ACPI_HID_DEVICE_PATH        PciRootBridge;
-  PCI_DEVICE_PATH             Pci0Device;
-  EFI_DEVICE_PATH_PROTOCOL    End;
-} PLATFORM_PEG_ROOT_CONTROLLER_DEVICE_PATH;
-
-typedef struct {
-  ACPI_HID_DEVICE_PATH        PciRootBridge;
-  PCI_DEVICE_PATH             PciBridge;
-  PCI_DEVICE_PATH             PciDevice;
-  EFI_DEVICE_PATH_PROTOCOL    End;
-} PLATFORM_PCI_CONTROLLER_DEVICE_PATH;
+extern EFI_GUID       gUefiShellFileGuid;
+extern EFI_BOOT_MODE  gBootMode;
 
 //
 // Below is the boot option device path
@@ -254,4 +182,30 @@ AddConsoleVariable (
   IN EFI_DEVICE_PATH  *ConsoleDevicePath
   );
 
-#endif //BOARD_BDS_HOOK_H_
+/**
+  Returns the boot option type of a device.
+
+  @param[in] DevicePath         The path of device whose boot option type
+                                should be returned.
+  @retval MAX_UINT8             Device type not found.
+  @retval < MAX_UINT8           Device type found.
+**/
+UINT8
+EFIAPI
+BootOptionType (
+  IN EFI_DEVICE_PATH_PROTOCOL  *DevicePath
+  );
+
+/**
+  Handles possible IPMI boot overrides by modifying the current list of boot options.
+  Uses sorting function installed in BootOptionPriorityProtocol if the protocol is installed
+  and a valid IPMI override is detected.
+
+  @retval  EFI_SUCCESS              Successfully updated the current boot order, or not necessary.
+  @retval  EFI_OUT_OF_RESOURCES     Failed to allocate memory.
+  @retval  Other errors             Failed to apply the override to the current boot order.
+**/
+EFI_STATUS
+HandleIpmiBootOverride (
+  VOID
+  );

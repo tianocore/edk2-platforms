@@ -2,7 +2,7 @@
   Driver for Platform Boot Options support.
 
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -20,12 +20,14 @@ EFI_GUID  mBootMenuFile = {
 
 BOOLEAN    mContinueBoot  = FALSE;
 BOOLEAN    mBootMenuBoot  = FALSE;
-BOOLEAN    mPxeBoot       = FALSE;
 BOOLEAN    mHotKeypressed = FALSE;
 EFI_EVENT  HotKeyEvent    = NULL;
 
 UINTN  mBootMenuOptionNumber;
 UINTN  mSetupOptionNumber;
+
+CHAR16  mBootDeviceListStr[] = BOOT_DEVICE_LIST_STR;
+CHAR16  mEnterSetupStr[]     = ENTER_SETUP_STR;
 
 /**
   This function will create a SHELL BootOption to boot.
@@ -269,6 +271,7 @@ RegisterFvBootOption (
 {
   EFI_STATUS                    Status;
   UINTN                         OptionIndex;
+  INTN                          OptionIndexInt;
   EFI_BOOT_MANAGER_LOAD_OPTION  NewOption;
   EFI_BOOT_MANAGER_LOAD_OPTION  *BootOptions;
   UINTN                         BootOptionCount;
@@ -278,12 +281,20 @@ RegisterFvBootOption (
   if (!EFI_ERROR (Status)) {
     BootOptions = EfiBootManagerGetLoadOptions (&BootOptionCount, LoadOptionTypeBoot);
 
-    OptionIndex = PlatformFindLoadOption (&NewOption, BootOptions, BootOptionCount);
-
-    if (OptionIndex == -1) {
-      Status = EfiBootManagerAddLoadOptionVariable (&NewOption, Position);
-      ASSERT_EFI_ERROR (Status);
+    if (BootOptions != NULL) {
+      OptionIndexInt = PlatformFindLoadOption (&NewOption, BootOptions, BootOptionCount);
     } else {
+      OptionIndexInt = -1;
+    }
+
+    if (OptionIndexInt == -1) {
+      Status = EfiBootManagerAddLoadOptionVariable (&NewOption, Position);
+      if (EFI_ERROR (Status)) {
+        DEBUG ((DEBUG_ERROR, "%a: Failed to add load option variable: %r\n", __func__, Status));
+        return LoadOptionNumberUnassigned;
+      }
+    } else {
+      OptionIndex            = (UINTN)OptionIndexInt;
       NewOption.OptionNumber = BootOptions[OptionIndex].OptionNumber;
     }
 
@@ -314,7 +325,10 @@ PlatformBootManagerWaitCallback (
   // Pause on PAUSE key
   //
   Status = gBS->HandleProtocol (gST->ConsoleInHandle, &gEfiSimpleTextInputExProtocolGuid, (VOID **)&TxtInEx);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to handle protocol: %r\n", __func__, Status));
+    return;
+  }
 
   PausePressed = FALSE;
 
@@ -362,13 +376,14 @@ RegisterDefaultBootOption (
 
   ShellData     = NULL;
   ShellDataSize = 0;
-  CopyMem (&gUefiShellFileGuid, PcdGetPtr (PcdShellFile), sizeof (GUID));
-  RegisterFvBootOption (&gUefiShellFileGuid, (CHAR16 *)PcdGetPtr (PcdShellFileDesc), (UINTN)-1, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
+
+  CopyGuid (&gUefiShellFileGuid, (CONST GUID *)PcdGetPtr (PcdShellFile));
+  RegisterFvBootOption (&gUefiShellFileGuid, (CHAR16 *)PcdGetPtr (PcdShellFileDesc), MAX_UINTN, LOAD_OPTION_ACTIVE, (UINT8 *)ShellData, ShellDataSize);
 
   //
   // Boot Menu
   //
-  mBootMenuOptionNumber = RegisterFvBootOption (&mBootMenuFile, L"Boot Device List", (UINTN)-1, LOAD_OPTION_CATEGORY_APP | LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN, NULL, 0);
+  mBootMenuOptionNumber = RegisterFvBootOption (&mBootMenuFile, mBootDeviceListStr, MAX_UINTN, LOAD_OPTION_CATEGORY_APP | LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN, NULL, 0);
 
   if (mBootMenuOptionNumber == LoadOptionNumberUnassigned) {
     DEBUG ((DEBUG_INFO, "BootMenuOptionNumber (%d) should not be same to LoadOptionNumberUnassigned(%d).\n", mBootMenuOptionNumber, LoadOptionNumberUnassigned));
@@ -377,7 +392,7 @@ RegisterDefaultBootOption (
   //
   // Boot Manager Menu
   //
-  mSetupOptionNumber = RegisterFvBootOption (&mUiFile, L"Enter Setup", (UINTN)-1, LOAD_OPTION_CATEGORY_APP | LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN, NULL, 0);
+  mSetupOptionNumber = RegisterFvBootOption (&mUiFile, mEnterSetupStr, MAX_UINTN, LOAD_OPTION_CATEGORY_APP | LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN, NULL, 0);
 }
 
 /**
@@ -486,11 +501,12 @@ RegisterStaticHotkey (
   Returns the boot option type of a device.
 
   @param[in] DevicePath         The DevicePath whose boot option type is
-                                to be returned
-  @retval -1                    Device type not found
-  @retval > -1                  Device type found
+                                to be returned.
+  @retval MAX_UINT8             Device type not found.
+  @retval < MAX_UINT8           Device type found.
 **/
 UINT8
+EFIAPI
 BootOptionType (
   IN EFI_DEVICE_PATH_PROTOCOL  *DevicePath
   )
@@ -522,7 +538,7 @@ BootOptionType (
     }
   }
 
-  return (UINT8)-1;
+  return MAX_UINT8;
 }
 
 /**
@@ -532,16 +548,16 @@ BootOptionType (
   @retval
     OptionType                 EFI
     ------------------------------------
-    PXE                         2
+    HDD                         2
     DVD                         4
     USB                         6
     NVME                        7
-    HDD                         8
+    PXE                         8
     EFI Shell                   9
     Others                      100
 
 **/
-UINTN
+INTN
 BootOptionPriority (
   IN CONST EFI_BOOT_MANAGER_LOAD_OPTION  *BootOption
   )
@@ -554,7 +570,7 @@ BootOptionPriority (
     case MSG_VLAN_DP:
     case MSG_IPv4_DP:
     case MSG_IPv6_DP:
-      return 2;
+      return 8;
 
     case MSG_SATA_DP:
     case MSG_ATAPI_DP:
@@ -566,7 +582,7 @@ BootOptionPriority (
       return 6;
   }
 
-  if (StrCmp (BootOption->Description, (CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
+  if (StrCmp (BootOption->Description, (CONST CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
     if (PcdGetBool (PcdBootToShellOnly)) {
       return 0;
     }
@@ -575,7 +591,7 @@ BootOptionPriority (
   }
 
   if (StrCmp (BootOption->Description, UEFI_HARD_DRIVE_NAME) == 0) {
-    return 8;
+    return 2;
   }
 
   return 100;
@@ -597,7 +613,7 @@ BootOptionPriority (
     EFI Shell                   9
     Others                      100
 **/
-UINTN
+INTN
 PxeBootOptionPriority (
   IN CONST EFI_BOOT_MANAGER_LOAD_OPTION  *BootOption
   )
@@ -622,7 +638,7 @@ PxeBootOptionPriority (
       return 6;
   }
 
-  if (StrCmp (BootOption->Description, (CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
+  if (StrCmp (BootOption->Description, (CONST CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
     if (PcdGetBool (PcdBootToShellOnly)) {
       return 0;
     }
@@ -651,7 +667,7 @@ PxeBootOptionPriority (
     EFI Shell                   9
     Others                      100
 **/
-UINTN
+INTN
 HddBootOptionPriority (
   IN CONST EFI_BOOT_MANAGER_LOAD_OPTION  *BootOption
   )
@@ -678,7 +694,7 @@ HddBootOptionPriority (
       return 6;
   }
 
-  if (StrCmp (BootOption->Description, (CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
+  if (StrCmp (BootOption->Description, (CONST CHAR16 *)PcdGetPtr (PcdShellFileDesc)) == 0) {
     if (PcdGetBool (PcdBootToShellOnly)) {
       return 0;
     }
@@ -709,8 +725,8 @@ CompareBootOption (
   IN CONST VOID  *Right
   )
 {
-  return BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
-         BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
+  return BootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
+         BootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
 }
 
 /**
@@ -729,8 +745,8 @@ CompareBootOptionPxePriority (
   IN CONST VOID  *Right
   )
 {
-  return PxeBootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
-         PxeBootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
+  return PxeBootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
+         PxeBootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
 }
 
 /**
@@ -749,6 +765,6 @@ CompareBootOptionHddPriority (
   IN CONST VOID  *Right
   )
 {
-  return HddBootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
-         HddBootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
+  return HddBootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Left) -
+         HddBootOptionPriority ((CONST EFI_BOOT_MANAGER_LOAD_OPTION *)Right);
 }

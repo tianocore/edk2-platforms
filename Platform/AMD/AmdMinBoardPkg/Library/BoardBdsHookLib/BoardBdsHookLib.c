@@ -3,28 +3,27 @@
   implementation instance of the BDS hook library
 
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#include <Guid/EventGroup.h>
-#include <Library/IoLib.h>
-#include <Library/PciLib.h>
 #include <Library/UefiBootManagerLib.h>
 #include <Library/Tcg2PhysicalPresenceLib.h>
-#include <Library/IpmiBaseLib.h>
-#include <Library/IpmiCommandLib.h>
-#include <Protocol/BlockIo.h>
-#include <Protocol/UsbIo.h>
 #include <Protocol/PciEnumerationComplete.h>
-#include <IndustryStandard/Ipmi.h>
-#include <Library/AmdBoardBdsHookLib.h>
 #include "BoardBdsHook.h"
 
-#ifdef INTERNAL_IDS
-  #include <Register/Amd/Msr.h>
-#endif
+#define MSR_CPUID_NAME_STRING0  0xC0010030ul        // First CPUID namestring register
+#define MSR_CPUID_NAME_STRING1  0xC0010031ul
+#define MSR_CPUID_NAME_STRING2  0XC0010032ul
+#define MSR_CPUID_NAME_STRING3  0xC0010033ul
+#define MSR_CPUID_NAME_STRING4  0xC0010034ul
+#define MSR_CPUID_NAME_STRING5  0xC0010035ul        // Last CPUID namestring register
+
+CHAR16  *mConsoleVar[]            = { L"ConIn", L"ConOut" };
+CHAR16  mBootCurrentStr[]         = L"BootCurrent";
+CHAR16  mMemOverwriteRequestStr[] = MEMORY_OVERWRITE_REQUEST_VARIABLE_NAME;
+CHAR16  mIsFirstBootStr[]         = IS_FIRST_BOOT_VAR_NAME;
 
 GLOBAL_REMOVE_IF_UNREFERENCED EFI_BOOT_MODE  gBootMode;
 BOOLEAN                                      gPPRequireUIConfirm;
@@ -46,7 +45,7 @@ GLOBAL_REMOVE_IF_UNREFERENCED USB_CLASS_FORMAT_DEVICE_PATH  gUsbClassKeyboardDev
     SUBCLASS_BOOT,    // DeviceSubClass
     PROTOCOL_KEYBOARD // DeviceProtocol
   },
-  gEndEntire
+  END_ENTIRE_DEVICE_PATH
 };
 
 #ifdef INTERNAL_IDS
@@ -80,7 +79,7 @@ IsMorBitSet (
   //
   DataSize = sizeof (MorControl);
   Status   = gRT->GetVariable (
-                    MEMORY_OVERWRITE_REQUEST_VARIABLE_NAME,
+                    mMemOverwriteRequestStr,
                     &gEfiMemoryOverwriteControlDataGuid,
                     NULL,
                     &DataSize,
@@ -104,8 +103,8 @@ IsMorBitSet (
 VOID
 EFIAPI
 DumpDevicePath (
-  IN CHAR16           *Name,
-  IN EFI_DEVICE_PATH  *DevicePath
+  IN CONST CHAR16           *Name,
+  IN CONST EFI_DEVICE_PATH  *DevicePath
   )
 {
   CHAR16  *Str;
@@ -132,7 +131,7 @@ IsTrustedConsole (
   IN EFI_DEVICE_PATH_PROTOCOL  *Device
   )
 {
-  VOID                      *TrustedConsoleDevicepath;
+  EFI_DEVICE_PATH_PROTOCOL  *TrustedConsoleDevicepath;
   EFI_DEVICE_PATH_PROTOCOL  *TempDevicePath;
   EFI_DEVICE_PATH_PROTOCOL  *Instance;
   UINTN                     Size;
@@ -148,7 +147,7 @@ IsTrustedConsole (
 
   switch (ConsoleType) {
     case ConIn:
-      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleInputDevicePath));
+      TrustedConsoleDevicepath = DuplicateDevicePath ((CONST EFI_DEVICE_PATH_PROTOCOL *)PcdGetPtr (PcdTrustedConsoleInputDevicePath));
       break;
     case ConOut:
       //
@@ -166,7 +165,7 @@ IsTrustedConsole (
         TempDevicePath = NextDevicePathNode (TempDevicePath);
       }
 
-      TrustedConsoleDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
+      TrustedConsoleDevicepath = DuplicateDevicePath ((CONST EFI_DEVICE_PATH_PROTOCOL *)PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
       break;
     default:
       ASSERT (FALSE);
@@ -491,7 +490,7 @@ GetGraphicsController (
   EFI_HANDLE                *PciHandles;
   UINTN                     PciHandlesSize;
   EFI_DEVICE_PATH_PROTOCOL  *DevicePath;
-  UINT32                    NumDevices;
+  UINTN                     NumDevices;
 
   if ((VgaDevicesCount == NULL) || (VgaDevices == NULL)) {
     return EFI_INVALID_PARAMETER;
@@ -509,8 +508,12 @@ GetGraphicsController (
     return Status;
   }
 
+  if (PciHandlesSize >= (MAX_UINTN - 1)/ sizeof (EFI_HANDLE)) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
   *VgaDevices = AllocateZeroPool (sizeof (EFI_HANDLE) * PciHandlesSize);
-  if (VgaDevices == NULL) {
+  if (*VgaDevices == NULL) {
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -532,6 +535,12 @@ GetGraphicsController (
         ((!NeedTrustedConsole) && (!IsTrustedConsole (ConOut, DevicePath))))
     {
       VgaDevices[0][NumDevices] = PciHandles[Index];
+
+      // check for overflow
+      if (NumDevices == MAX_UINT32) {
+        return EFI_OUT_OF_RESOURCES;
+      }
+
       NumDevices++;
     }
   }
@@ -566,6 +575,7 @@ UpdateGraphicConOut (
 
   Count           = 0;
   VgaDevicesCount = 0;
+  VgaDevices      = NULL;
 
   //
   // Update ConOut variable
@@ -574,7 +584,7 @@ UpdateGraphicConOut (
   if (Status == EFI_SUCCESS) {
     GetEfiGlobalVariable2 (L"ConOut", (VOID **)&ConOutDevicePath, NULL);
     if (ConOutDevicePath != NULL) {
-      DumpDevicePath (L"Original ConOut variable", ConOutDevicePath);
+      DumpDevicePath ((CONST CHAR16 *)L"Original ConOut variable", ConOutDevicePath);
       FreePool (ConOutDevicePath);
     }
 
@@ -595,7 +605,7 @@ UpdateGraphicConOut (
           UpdatedConOutDevicePath = UpdateGopDevicePath (ConOutDevicePath, GopDevicePath);
           if (UpdatedConOutDevicePath != NULL) {
             gRT->SetVariable (
-                   L"ConOut",
+                   mConsoleVar[1],
                    &gEfiGlobalVariableGuid,
                    EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_BOOTSERVICE_ACCESS,
                    GetDevicePathSize (UpdatedConOutDevicePath),
@@ -610,13 +620,15 @@ UpdateGraphicConOut (
         FreePool (GopDevicePath);
       }
     }
+  }
 
+  if (VgaDevices != NULL) {
     FreePool (VgaDevices);
   }
 
   GetEfiGlobalVariable2 (L"ConOut", (VOID **)&ConOutDevicePath, NULL);
   if (ConOutDevicePath != NULL) {
-    DumpDevicePath (L"Final ConOut variable", ConOutDevicePath);
+    DumpDevicePath ((CONST CHAR16 *)L"Final ConOut variable", ConOutDevicePath);
     FreePool (ConOutDevicePath);
   }
 }
@@ -629,24 +641,23 @@ ConnectTrustedConsole (
   VOID
   )
 {
-  EFI_DEVICE_PATH_PROTOCOL  *Consoles;
-  EFI_DEVICE_PATH_PROTOCOL  *TempDevicePath;
-  EFI_DEVICE_PATH_PROTOCOL  *Instance;
-  EFI_DEVICE_PATH_PROTOCOL  *Next;
-  UINTN                     Size;
-  UINTN                     Index;
-  EFI_HANDLE                Handle;
-  EFI_STATUS                Status;
-  CHAR16                    *ConsoleVar[] = { L"ConIn", L"ConOut" };
-  VOID                      *TrustedConsoleDevicepath;
+  EFI_DEVICE_PATH_PROTOCOL        *Consoles;
+  EFI_DEVICE_PATH_PROTOCOL        *TempDevicePath;
+  EFI_DEVICE_PATH_PROTOCOL        *Instance;
+  EFI_DEVICE_PATH_PROTOCOL        *Next;
+  UINTN                           Size;
+  UINTN                           Index;
+  EFI_HANDLE                      Handle;
+  EFI_STATUS                      Status;
+  CONST EFI_DEVICE_PATH_PROTOCOL  *TrustedConsoleDevicepath;
 
   TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleInputDevicePath);
-  DumpDevicePath (L"TrustedConsoleIn", TrustedConsoleDevicepath);
+  DumpDevicePath ((CONST CHAR16 *)L"TrustedConsoleIn", TrustedConsoleDevicepath);
   TrustedConsoleDevicepath = PcdGetPtr (PcdTrustedConsoleOutputDevicePath);
-  DumpDevicePath (L"TrustedConsoleOut", TrustedConsoleDevicepath);
+  DumpDevicePath ((CONST CHAR16 *)L"TrustedConsoleOut", TrustedConsoleDevicepath);
 
-  for (Index = 0; Index < sizeof (ConsoleVar) / sizeof (ConsoleVar[0]); Index++) {
-    GetEfiGlobalVariable2 (ConsoleVar[Index], (VOID **)&Consoles, NULL);
+  for (Index = 0; Index < sizeof (mConsoleVar) / sizeof (mConsoleVar[0]); Index++) {
+    GetEfiGlobalVariable2 (mConsoleVar[Index], (VOID **)&Consoles, NULL);
 
     TempDevicePath = Consoles;
     do {
@@ -655,7 +666,7 @@ ConnectTrustedConsole (
         break;
       }
 
-      if (IsTrustedConsole (Index, Instance)) {
+      if (IsTrustedConsole ((CONSOLE_TYPE)Index, Instance)) {
         if (IsUsbShortForm (Instance)) {
           ConnectUsbShortFormDevicePath (Instance);
         } else {
@@ -701,7 +712,7 @@ ConnectTrustedStorage (
   VOID
   )
 {
-  VOID                      *TrustedStorageDevicepath;
+  EFI_DEVICE_PATH_PROTOCOL  *TrustedStorageDevicepath;
   EFI_DEVICE_PATH_PROTOCOL  *TempDevicePath;
   EFI_DEVICE_PATH_PROTOCOL  *Instance;
   UINTN                     Size;
@@ -709,7 +720,7 @@ ConnectTrustedStorage (
   EFI_STATUS                Status;
   EFI_HANDLE                DeviceHandle;
 
-  TrustedStorageDevicepath = DuplicateDevicePath (PcdGetPtr (PcdTrustedStorageDevicePath));
+  TrustedStorageDevicepath = DuplicateDevicePath ((CONST EFI_DEVICE_PATH_PROTOCOL *)PcdGetPtr (PcdTrustedStorageDevicePath));
   DumpDevicePath (L"TrustedStorage", TrustedStorageDevicepath);
 
   TempDevicePath = TrustedStorageDevicepath;
@@ -770,7 +781,7 @@ BootCurrentIsInternalShell (
   //
   VarSize = sizeof (UINT16);
   Status  = gRT->GetVariable (
-                   L"BootCurrent",
+                   mBootCurrentStr,
                    &gEfiGlobalVariableGuid,
                    NULL,
                    &VarSize,
@@ -793,7 +804,7 @@ BootCurrentIsInternalShell (
   Ptr            = BootOption;
   Ptr           += sizeof (UINT32);
   Ptr           += sizeof (UINT16);
-  Ptr           += StrSize ((CHAR16 *)Ptr);
+  Ptr           += StrSize ((CHAR16 *)(VOID *)Ptr);
   TempDevicePath = (EFI_DEVICE_PATH_PROTOCOL *)Ptr;
   LastDeviceNode = TempDevicePath;
   while (!IsDevicePathEnd (TempDevicePath)) {
@@ -917,7 +928,11 @@ ChangeModeForInternalShell (
           // then check if current text mode is same with new text mode.
           //
           Status = SimpleTextOut->QueryMode (SimpleTextOut, SimpleTextOut->Mode->Mode, &CurrentColumn, &CurrentRow);
-          ASSERT_EFI_ERROR (Status);
+          if (EFI_ERROR (Status)) {
+            DEBUG ((DEBUG_ERROR, "%a: Failed to query mode: %r\n", __func__, Status));
+            return Status;
+          }
+
           if ((CurrentColumn == mShellModeColumn) && (CurrentRow == mShellModeRow)) {
             //
             // Current text mode is same with new text mode, text mode need not be change.
@@ -936,15 +951,25 @@ ChangeModeForInternalShell (
                   // New text mode is supported, set it.
                   //
                   Status = SimpleTextOut->SetMode (SimpleTextOut, Index);
-                  ASSERT_EFI_ERROR (Status);
+                  if (EFI_ERROR (Status)) {
+                    DEBUG ((DEBUG_ERROR, "%a: Failed to set mode: %r\n", __func__, Status));
+                    return Status;
+                  }
+
                   //
                   // Update text mode PCD.
                   //
                   Status = PcdSet32S (PcdConOutColumn, mShellModeColumn);
-                  ASSERT_EFI_ERROR (Status);
+                  if (EFI_ERROR (Status)) {
+                    DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdConOutColumn: %r\n", __func__, Status));
+                    return Status;
+                  }
 
                   Status = PcdSet32S (PcdConOutRow, mShellModeRow);
-                  ASSERT_EFI_ERROR (Status);
+                  if (EFI_ERROR (Status)) {
+                    DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdConOutRow: %r\n", __func__, Status));
+                    return Status;
+                  }
 
                   FreePool (Info);
                   return EFI_SUCCESS;
@@ -973,16 +998,28 @@ ChangeModeForInternalShell (
             // and produce new text mode based on new resolution.
             //
             Status = PcdSet32S (PcdVideoHorizontalResolution, mShellHorizontalResolution);
-            ASSERT_EFI_ERROR (Status);
+            if (EFI_ERROR (Status)) {
+              DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdVideoHorizontalResolution: %r\n", __func__, Status));
+              return Status;
+            }
 
             Status = PcdSet32S (PcdVideoVerticalResolution, mShellVerticalResolution);
-            ASSERT_EFI_ERROR (Status);
+            if (EFI_ERROR (Status)) {
+              DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdVideoVerticalResolution: %r\n", __func__, Status));
+              return Status;
+            }
 
             Status = PcdSet32S (PcdConOutColumn, mShellModeColumn);
-            ASSERT_EFI_ERROR (Status);
+            if (EFI_ERROR (Status)) {
+              DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdConOutColumn: %r\n", __func__, Status));
+              return Status;
+            }
 
             Status = PcdSet32S (PcdConOutRow, mShellModeRow);
-            ASSERT_EFI_ERROR (Status);
+            if (EFI_ERROR (Status)) {
+              DEBUG ((DEBUG_ERROR, "%a: Failed to set PcdConOutRow: %r\n", __func__, Status));
+              return Status;
+            }
 
             Status = gBS->LocateHandleBuffer (
                             ByProtocol,
@@ -1198,6 +1235,7 @@ BdsPciEnumCompleteCallback (
   VOID                      *ProtocolPointer;
   EFI_DEVICE_PATH_PROTOCOL  *VarConOut;
   EFI_DEVICE_PATH_PROTOCOL  *VarConIn;
+  UINT32                    CoverageLevel;
 
   Status = EFI_SUCCESS;
 
@@ -1241,11 +1279,11 @@ BdsPciEnumCompleteCallback (
     //
     if ((VarConOut == NULL) || (VarConIn == NULL)) {
       if (PcdGetSize (PcdTrustedConsoleOutputDevicePath) >= sizeof (EFI_DEVICE_PATH_PROTOCOL)) {
-        AddConsoleVariable (ConOut, PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
+        AddConsoleVariable (ConOut, (EFI_DEVICE_PATH *)PcdGetPtr (PcdTrustedConsoleOutputDevicePath));
       }
 
       if (PcdGetSize (PcdTrustedConsoleInputDevicePath) >= sizeof (EFI_DEVICE_PATH_PROTOCOL)) {
-        AddConsoleVariable (ConIn, PcdGetPtr (PcdTrustedConsoleInputDevicePath));
+        AddConsoleVariable (ConIn, (EFI_DEVICE_PATH *)PcdGetPtr (PcdTrustedConsoleInputDevicePath));
       }
     }
   }
@@ -1286,7 +1324,13 @@ BdsPciEnumCompleteCallback (
   // We should make all UEFI memory and GCD information populated before ExitPmAuth.
   // SMM may consume these information.
   //
-  MemoryTest ((EXTENDMEM_COVERAGE_LEVEL)PcdGet32 (PcdPlatformMemoryCheckLevel));
+  CoverageLevel = PcdGet32 (PcdPlatformMemoryCheckLevel);
+
+  if (CoverageLevel > MAXLEVEL) {
+    CoverageLevel = IGNORE;
+  }
+
+  MemoryTest ((EXTENDMEM_COVERAGE_LEVEL)CoverageLevel);
 }
 
 /**
@@ -1392,180 +1436,6 @@ BdsBeforeConsoleBeforeEndOfDxeGuidCallback (
 }
 
 /**
-  Handles possible IPMI boot overrides by modifying the LoadOptions variable.
-  Uses sorting function installed in BootOptionPriorityProtocol if the protocol
-  is installed and a valid IPMI override is detected.
-
-  @retval  EFI_SUCCESS    Boot override successful, or not necessary.
-  @retval  EFI_NOT_FOUND  Attempted to override boot to an unsupported boot option.
-**/
-EFI_STATUS
-HandleIpmiBootOverride (
-  VOID
-  )
-{
-  UINT8                                        NvIpmiBootOverride;
-  UINT8                                        Index;
-  UINT8                                        CurrentIpmiBootOverride;
-  UINT8                                        *GetBootOptionsBuffer;
-  UINT8                                        *SetBootOptionsBuffer;
-  UINTN                                        BootOptionCount;
-  UINTN                                        DataSize;
-  IPMI_GET_BOOT_OPTIONS_REQUEST                BootOptionsRequest;
-  IPMI_GET_BOOT_OPTIONS_RESPONSE               *BootOptionsResponse;
-  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5       *BootOptionsParameterData;
-  IPMI_SET_BOOT_OPTIONS_REQUEST                *SetBootOptionsRequest;
-  IPMI_SET_BOOT_OPTIONS_RESPONSE               SetBootOptionsResponse;
-  IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5       *SetBootOptionsParameterData;
-  EFI_BOOT_MANAGER_LOAD_OPTION                 *LoadOptionToManipulate;
-  EFI_BOOT_MANAGER_LOAD_OPTION                 *BootOptions;
-  EFI_STATUS                                   Status;
-  AMD_BOARD_BDS_BOOT_OPTION_PRIORITY_PROTOCOL  *BootOptionPriorityProtocol;
-  EFI_HANDLE                                   *BootPriorityHandles;
-  UINTN                                        BootPriorityCount;
-  UINTN                                        BootPriorityIndex;
-  BOOLEAN                                      ValidBootPriorityOverride;
-
-  ZeroMem (&BootOptionsRequest, sizeof (IPMI_GET_BOOT_OPTIONS_REQUEST));
-  ZeroMem (&SetBootOptionsResponse, sizeof (IPMI_SET_BOOT_OPTIONS_RESPONSE));
-
-  LoadOptionToManipulate    = NULL;
-  Status                    = EFI_SUCCESS;
-  ValidBootPriorityOverride = FALSE;
-  // setup buffers
-  GetBootOptionsBuffer = (UINT8 *)AllocateZeroPool (sizeof (BootOptionsResponse) + sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
-  SetBootOptionsBuffer = (UINT8 *)AllocateZeroPool (sizeof (SetBootOptionsRequest) + sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
-
-  // setup parameter data
-  BootOptionsRequest.ParameterSelector.Bits.ParameterSelector = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
-  BootOptionsResponse                                         = (IPMI_GET_BOOT_OPTIONS_RESPONSE *)&GetBootOptionsBuffer[0];
-  Status                                                      = IpmiGetSystemBootOptions (&BootOptionsRequest, BootOptionsResponse);
-  BootOptionsParameterData                                    = (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5 *)BootOptionsResponse->ParameterData;
-
-  if (EFI_ERROR (Status)) {
-    Status = EFI_UNSUPPORTED;
-    goto end;
-  }
-
-  // setup SetBootOptions parameter data
-  SetBootOptionsRequest       = (IPMI_SET_BOOT_OPTIONS_REQUEST *)&SetBootOptionsBuffer[0];
-  SetBootOptionsParameterData = (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5 *)SetBootOptionsRequest->ParameterData;
-
-  BootOptions = EfiBootManagerGetLoadOptions (&BootOptionCount, LoadOptionTypeBoot);
-
-  // if received valid IPMI data, then override boot option
-  if (!BootOptionsResponse->ParameterValid.Bits.ParameterValid && BootOptionsParameterData->Data1.Bits.BootFlagValid) {
-    // get non volatile IpmiBootOverride variable
-    DataSize = sizeof (UINT8);
-    Status   = gRT->GetVariable (
-                      IPMI_BOOT_OVERRIDE_VAR_NAME,
-                      &gEfiCallerIdGuid,
-                      NULL,
-                      &DataSize,
-                      &NvIpmiBootOverride
-                      );
-    if (EFI_ERROR (Status)) {
-      NvIpmiBootOverride = IPMI_BOOT_DEVICE_SELECTOR_NO_OVERRIDE;
-    }
-
-    CurrentIpmiBootOverride = BootOptionsParameterData->Data2.Bits.BootDeviceSelector;
-
-    // Handle platform specific boot priority override
-    Status = gBS->LocateHandleBuffer (
-                    ByProtocol,
-                    &gAmdBoardBdsBootOptionPriorityProtocolGuid,
-                    NULL,
-                    &BootPriorityCount,
-                    &BootPriorityHandles
-                    );
-
-    if (!EFI_ERROR (Status)) {
-      for (BootPriorityIndex = 0; BootPriorityIndex < BootPriorityCount; BootPriorityIndex++) {
-        Status = gBS->HandleProtocol (
-                        BootPriorityHandles[BootPriorityIndex],
-                        &gAmdBoardBdsBootOptionPriorityProtocolGuid,
-                        (VOID **)&BootOptionPriorityProtocol
-                        );
-        if (!EFI_ERROR (Status) &&
-            (BootOptionPriorityProtocol->IpmiBootDeviceSelectorType == CurrentIpmiBootOverride))
-        {
-          DEBUG ((DEBUG_INFO, "Valid BootOptionPriority Override detected\n"));
-          ValidBootPriorityOverride = TRUE;
-          break;
-        }
-      }
-    }
-
-    if (CurrentIpmiBootOverride == IPMI_BOOT_DEVICE_SELECTOR_BIOS_SETUP) {
-      DEBUG ((DEBUG_INFO, "[Bds]BiosSetup option override detected via IPMI\n"));
-      // need to find boot option corresponding to BiosSetup
-      for (Index = 0; Index < BootOptionCount; Index++) {
-        if ((StrCmp (BootOptions[Index].Description, L"Enter Setup") == 0) && (BootOptions[Index].Attributes == (LOAD_OPTION_CATEGORY_APP | LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN))) {
-          LoadOptionToManipulate = &BootOptions[Index];
-        } else if (StrCmp (BootOptions[Index].Description, L"Enter Setup") == 0) {
-          // delete duplicate BiosSetup Menu option
-          EfiBootManagerDeleteLoadOptionVariable (BootOptions[Index].OptionNumber, LoadOptionTypeBoot);
-        }
-      }
-
-      if (LoadOptionToManipulate == NULL) {
-        Status = EFI_UNSUPPORTED;
-        goto end;
-      }
-
-      // have Load option for bios setup, now update loadoptions
-      Status                              = EfiBootManagerDeleteLoadOptionVariable (LoadOptionToManipulate->OptionNumber, LoadOptionTypeBoot);
-      LoadOptionToManipulate->Attributes &= LOAD_OPTION_CATEGORY_BOOT;
-      LoadOptionToManipulate->Attributes |= (LOAD_OPTION_ACTIVE | LOAD_OPTION_HIDDEN);
-      Status                              = EfiBootManagerAddLoadOptionVariable (LoadOptionToManipulate, 0); // add back in loadoptions in 0th index (first option)
-    } else if (CurrentIpmiBootOverride == IPMI_BOOT_DEVICE_SELECTOR_PXE) {
-      DEBUG ((DEBUG_INFO, "[Bds]PXE option override detected via IPMI\n"));
-
-      if (ValidBootPriorityOverride) {
-        EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, BootOptionPriorityProtocol->Compare);
-      } else {
-        EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, CompareBootOptionPxePriority);
-      }
-    } else if (CurrentIpmiBootOverride == IPMI_BOOT_DEVICE_SELECTOR_HARDDRIVE) {
-      DEBUG ((DEBUG_INFO, "[Bds]HDD option override detected via IPMI\n"));
-      if (ValidBootPriorityOverride) {
-        EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, BootOptionPriorityProtocol->Compare);
-      } else {
-        EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, CompareBootOptionHddPriority);
-      }
-    } else if ((CurrentIpmiBootOverride == IPMI_BOOT_DEVICE_SELECTOR_NO_OVERRIDE) && (CurrentIpmiBootOverride != NvIpmiBootOverride)) {
-      // delete BiosSetup option corresponding to the override
-      Status = EfiBootManagerDeleteLoadOptionVariable (BootOptions[0].OptionNumber, LoadOptionTypeBoot);
-      // re sort boot options
-      EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, CompareBootOption);
-    }
-
-    // if Ipmi override not persistent, reset boot option to None and persistent to true
-    if (!BootOptionsParameterData->Data1.Bits.PersistentOptions) {
-      SetBootOptionsRequest->ParameterValid.Bits.ParameterSelector = IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS;
-      CopyMem (SetBootOptionsParameterData, BootOptionsParameterData, sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5));
-      SetBootOptionsParameterData->Data1.Bits.PersistentOptions  = 1;                                     // persistent
-      SetBootOptionsParameterData->Data2.Bits.BootDeviceSelector = IPMI_BOOT_DEVICE_SELECTOR_NO_OVERRIDE; // revert to no override
-      Status                                                     = IpmiSetSystemBootOptions (SetBootOptionsRequest, &SetBootOptionsResponse);
-    }
-
-    Status = gRT->SetVariable (
-                    IPMI_BOOT_OVERRIDE_VAR_NAME,
-                    &gEfiCallerIdGuid,
-                    EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS,
-                    sizeof (UINT8),
-                    &CurrentIpmiBootOverride
-                    );
-  }
-
-end:
-  // Free buffers
-  FreePool (GetBootOptionsBuffer);
-  FreePool (SetBootOptionsBuffer);
-  return Status;
-}
-
-/**
   After console ready before boot option event callback.
 
   @param[in] Event      The Event this notify function registered to.
@@ -1630,7 +1500,7 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
       EfiBootManagerRefreshAllBootOption ();
       DataSize = sizeof (BOOLEAN);
       Status   = gRT->GetVariable (
-                        IS_FIRST_BOOT_VAR_NAME,
+                        mIsFirstBootStr,
                         &gEfiCallerIdGuid,
                         NULL,
                         &DataSize,
@@ -1650,7 +1520,7 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
         EfiBootManagerSortLoadOptionVariable (LoadOptionTypeBoot, CompareBootOption);
         IsFirstBoot = FALSE;
         Status      = gRT->SetVariable (
-                             IS_FIRST_BOOT_VAR_NAME,
+                             mIsFirstBootStr,
                              &gEfiCallerIdGuid,
                              EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS,
                              sizeof (BOOLEAN),
@@ -1684,7 +1554,7 @@ PrintSocOpnInfo (
   CHAR16  OpnChar[(sizeof (UINT64) / sizeof (UINT8)) * (MSR_CPUID_NAME_STRING5 - MSR_CPUID_NAME_STRING0 + 1) + 1];
   UINT32  Msr;
   UINT64  Value;
-  UINTN   CharIndex;
+  UINT32  CharIndex;
   UINTN   ByteIndex;
 
   CharIndex = 0;
@@ -1693,6 +1563,11 @@ PrintSocOpnInfo (
     for (ByteIndex = 0; ByteIndex < (sizeof (UINT64) / sizeof (UINT8)); ByteIndex++) {
       OpnChar[CharIndex] = (Value & 0xFF);
       CharIndex++;
+      // CharIndex wrapped around
+      if (CharIndex > MAX_UINT32-1) {
+        return EFI_OUT_OF_RESOURCES;
+      }
+
       Value = RShiftU64 (Value, 8);
     }
   }
