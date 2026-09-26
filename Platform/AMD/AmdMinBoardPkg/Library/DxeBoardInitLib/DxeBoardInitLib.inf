@@ -1,9 +1,9 @@
 ## @file
 #  Implements BoardInitLib Library Class in DXE phase.
 #
-# Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved.
 #
-# SPDX-License-Identifier: BSD-2-Clause-Patent
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
 [Defines]
@@ -14,37 +14,32 @@
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = BoardInitLib
   CONSTRUCTOR                    = DxeBoardInitLibConstructor
+  SUPPORTED_ARCHITECTURES        = X64
 
 [LibraryClasses]
   BaseLib
   DebugLib
-  LocalApicLib
+  DxeServicesTableLib
   PcdLib
-  PcieConfigLib
-  PlatformSocLib
-  SortLib
+  UefiBootServicesTableLib
 
 [Packages]
-  AmdPlatformPkg/AmdPlatformPkg.dec
-  MdeModulePkg/MdeModulePkg.dec
+  AgesaPkg/AgesaPkg.dec
   MdePkg/MdePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
-  UefiCpuPkg/UefiCpuPkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
 
 [Sources]
   DxeBoardInitLib.c
   DxeBoardInitLibInternal.c
-  MadtAcpiTablePatch.c
   DxeBoardInitLibInternal.h
 
-[Protocols]
-  gEfiAcpiSdtProtocolGuid
-  gEfiAcpiTableProtocolGuid
-  gEfiMpServiceProtocolGuid
-
 [Pcd]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
-  gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuSocketCount
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFchCfgAcpiPm1EvtBlkAddr
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFchCfgAcpiPm1CntBlkAddr
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFchCfgAcpiPmTmrBlkAddr
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFchCfgAcpiGpe0BlkAddr
+  gEfiAmdAgesaPkgTokenSpaceGuid.PcdAmdFchCfgSmiCmdPortAddr
 
 [DEPEX]
   gEfiMpServiceProtocolGuid

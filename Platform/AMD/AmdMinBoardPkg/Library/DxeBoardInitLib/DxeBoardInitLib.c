@@ -1,15 +1,13 @@
 /** @file
   BoardInitLib library implementation for DXE phase.
 
-  Copyright (C) 2023 - 2025 Advanced Micro Devices, Inc. All rights reserved
+  Copyright (C) 2023 - 2026 Advanced Micro Devices, Inc. All rights reserved
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 
 #include <Library/BoardInitLib.h>
-#include <Library/PcdLib.h>
-#include <Library/DebugLib.h>
-#include <Library/DxeServicesTableLib.h>
 #include "DxeBoardInitLibInternal.h"
 
 EFI_HANDLE        mImageHandle;
@@ -168,9 +166,12 @@ BoardInitAfterPciEnumeration (
 
   Status = ReserveLegacyVgaIoSpace ();
   DEBUG ((DEBUG_INFO, "ReserveLegacyVgaIoSpace...%r.\n", Status));
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
 
-  Status = ReservePcieExtendedConfigSpace (mImageHandle, mSystemTable);
-  DEBUG ((DEBUG_INFO, "ReservePcieExtendedConfigSpace...%r.\n", Status));
+  Status = ReserveFadtIoResources (mImageHandle);
+  DEBUG ((DEBUG_INFO, "ReserveFadtIoResources...%r.\n", Status));
 
   return Status;
 }
@@ -187,30 +188,6 @@ BoardInitReadyToBoot (
   VOID
   )
 {
-  EFI_STATUS  Status;
-
-  Status = UpdateReinstallAcpiTable (
-             EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
-             (PATCH_ACPITABLE)FadtAcpiTablePatch
-             );
-  DEBUG ((DEBUG_INFO, "Patching FADT ACPI Table ... Status = %r.\n", Status));
-
-  Status = UpdateReinstallAcpiTable (
-             EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
-             (PATCH_ACPITABLE)MadtAcpiTablePatch
-             );
-  DEBUG ((DEBUG_INFO, "Patching MADT ACPI Table ... Status = %r.\n", Status));
-
-  UpdateReinstallAcpiTable (
-    EFI_ACPI_6_5_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-    (PATCH_ACPITABLE)AcpiTableAmlUpdate
-    );
-
-  UpdateReinstallAcpiTable (
-    EFI_ACPI_6_5_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
-    (PATCH_ACPITABLE)AcpiTableAmlUpdate
-    );
-
   return EFI_SUCCESS;
 }
 
