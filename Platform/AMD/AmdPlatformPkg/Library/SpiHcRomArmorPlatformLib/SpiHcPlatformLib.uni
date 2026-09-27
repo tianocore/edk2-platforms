@@ -1,8 +1,10 @@
-// /*****************************************************************************
-//  *
-//  * Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
-//  *
-//  *
+## @file
+#  UNI file of AMD SPI Host controller library
+#
+#  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
 
 #string STR_PROPERTIES_MODULE_NAME
 #language en-US   "AMD SPI Host controller library"

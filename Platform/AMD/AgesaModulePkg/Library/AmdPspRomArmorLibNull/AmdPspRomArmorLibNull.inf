@@ -12,7 +12,7 @@
   FILE_GUID                      = 7351EAC0-4587-FED8-2788-BF9DA2ADCA6E
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = AmdPspRomArmorLibNull
+  LIBRARY_CLASS                  = AmdPspRomArmorLib
 
 [Sources.common]
   AmdPspRomArmorLibNull.c

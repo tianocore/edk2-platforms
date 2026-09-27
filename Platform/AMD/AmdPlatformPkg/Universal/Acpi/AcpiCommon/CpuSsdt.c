@@ -87,6 +87,18 @@ SortByCcd (
   return 0;
 }
 
+/**
+  Build the APIC ID to ACPI UID map used when generating CPU SSDT entries.
+
+  Queries EFI_MP_SERVICES_PROTOCOL for each processor's information, sorts
+  the entries by CCD location, and assigns each processor a sequential
+  ACPI UID.
+
+  @retval EFI_SUCCESS           The map was generated successfully.
+  @retval EFI_NOT_FOUND         The MP Services protocol could not be located.
+  @retval EFI_OUT_OF_RESOURCES  Failed to allocate the map.
+  @retval other                 An error returned by MP Services.
+**/
 EFI_STATUS
 GenerateApicIdtoUidMap (
   VOID

@@ -6,8 +6,7 @@
 
 **/
 
-#ifndef AMD_SMM_SPI_HC_STATE_PROTOCOL_H_
-#define AMD_SMM_SPI_HC_STATE_PROTOCOL_H_
+#pragma once
 
 typedef struct _SMM_EFI_SPI_HC_STATE_PROTOCOL SMM_EFI_SPI_HC_STATE_PROTOCOL;
 
@@ -103,5 +102,3 @@ struct _SMM_EFI_SPI_HC_STATE_PROTOCOL {
 };
 
 extern EFI_GUID  gAmdSpiHcStateProtocolGuid;
-
-#endif // AMD_SMM_SPI_HC_STATE_PROTOCOL_H__

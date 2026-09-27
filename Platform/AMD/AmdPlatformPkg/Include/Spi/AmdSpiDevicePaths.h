@@ -6,8 +6,7 @@
 
 **/
 
-#ifndef AMD_SPI_DEVICE_PATHS_H_
-#define AMD_SPI_DEVICE_PATHS_H_
+#pragma once
 
 #include <Base.h>
 #include <Protocol/SpiConfiguration.h>
@@ -37,5 +36,3 @@ typedef struct {
       { 0x4 }                                                     \
     }                                                             \
   }
-
-#endif // AMD_SPI_DEVICE_PATHS_H_

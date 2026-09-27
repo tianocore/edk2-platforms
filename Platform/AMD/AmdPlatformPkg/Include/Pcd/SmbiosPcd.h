@@ -6,8 +6,7 @@
 
 **/
 
-#ifndef AMD_SMBIOS_PCD_H_
-#define AMD_SMBIOS_PCD_H_
+#pragma once
 
 #include <IndustryStandard/SmBios.h>
 #include <Uefi.h>
@@ -64,5 +63,3 @@ typedef struct {
 typedef struct {
   SMBIOS_ONBOARD_DEV_EXT_INFO_RECORD    SmbiosOnboardDevExtInfos[AMD_SMBIOS_TYPE41_MAX_ONBOARD_DEVICES];
 } SMBIOS_ONBOARD_DEV_EXT_INFO_ARRAY;
-
-#endif // AMD_SMBIOS_PCD_H_

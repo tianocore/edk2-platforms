@@ -18,7 +18,7 @@ EFI_LBA  mFvbEndingLba;
 UINTN    mFvbEndingLbaOffset;
 
 /**
-  Initial FVB parameters
+  Initial FVB parameters.
 
   @retval EFI_SUCCESS       Driver initialization succeeded
   @retval all others        Driver initialization failed

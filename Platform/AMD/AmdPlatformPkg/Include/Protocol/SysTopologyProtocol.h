@@ -1,11 +1,11 @@
-/*****************************************************************************
- *
- * Copyright (C) 2016-2025 Advanced Micro Devices, Inc. All rights reserved.
- *
- * SPDX-License-Identifier: BSD-2-Clause-Patent
- *
- *******************************************************************************
- */
+/** @file
+  System topology report protocol definitions.
+
+  Copyright (C) 2016-2025 Advanced Micro Devices, Inc. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
 
 #pragma once
 
@@ -59,8 +59,8 @@ typedef struct _SYS_TOPOLOGY_PCIE {
 } SYS_TOPOLOGY_PCIE;
 
 typedef enum {
-  SATA_STORAGE,
-  NVME_STORAGE
+  SataStorage,
+  NvmeStorage
 } MEDIA_TYPE;
 
 typedef struct _SYS_TOPOLOGY_STORAGE {
@@ -170,7 +170,7 @@ typedef
 
 typedef
   EFI_STATUS
-(EFIAPI *EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_BIOS_Version)(
+(EFIAPI *EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_BIOS_VERSION)(
   EFI_SYS_TOPOLOGY_PROTOCOL    *This,
   SYS_TOPOLOGY_REPORT_CONTEXT *Report
   );
@@ -182,7 +182,7 @@ struct _EFI_SYS_TOPOLOGY_PROTOCOL {
   EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_STORAGE_DEVICES    CollectStorageDevices;
   EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_CXL_DEVICES        CollectCxlDevices;
   EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_MEMORY_DEVICES     CollectMemoryDevices;
-  EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_BIOS_Version       CollectBiosVersion;
+  EFI_SYS_TOPOLOGY_PROTOCOL_COLLECT_BIOS_VERSION       CollectBiosVersion;
 };
 
 extern EFI_GUID  gEfiSysTopologyProtocolGuid;

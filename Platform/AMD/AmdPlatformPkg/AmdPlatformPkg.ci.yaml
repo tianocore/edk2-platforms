@@ -1,0 +1,411 @@
+## @file
+# CI configuration for AmdPlatformPkg
+#
+# Copyright (C) 2024 - 2026, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+{
+    "PrEval": {
+        "DscPath": "AmdPlatformPkg.dsc",
+    },
+    ## options defined .pytool/Plugin/LicenseCheck
+    "LicenseCheck": {
+        "IgnoreFiles": []
+    },
+    "EccCheck": {
+        ## Exception sample looks like below:
+        ## "ExceptionList": [
+        ##     "<ErrorID>", "<KeyWord>"
+        ## ]
+        ## ECC runs without the full PACKAGES_PATH so it cannot resolve library
+        ## classes from external packages (MdePkg, MdeModulePkg, SecurityPkg,
+        ## UefiCpuPkg, etc.).  This produces false-positive [10002], [10006], and
+        ## [10022] errors for every standard EDK2 library class used by modules in
+        ## this package.  The keyword for these three error codes is the library
+        ## class name, so each class that generates false positives is listed once
+        ## per error code below.
+        "ExceptionList": [
+            "10002", "AmdPostCodeLib",
+            "10002", "BaseLib",
+            "10002", "BaseMemoryLib",
+            "10002", "BootLogoLib",
+            "10002", "CapsuleLib",
+            "10002", "DebugLib",
+            "10002", "DevicePathLib",
+            "10002", "DxeServicesLib",
+            "10002", "DxeServicesTableLib",
+            "10002", "HiiLib",
+            "10002", "HobLib",
+            "10002", "HstiLib",
+            "10002", "IoLib",
+            "10002", "LockBoxLib",
+            "10002", "MemoryAllocationLib",
+            "10002", "MmServicesTableLib",
+            "10002", "PcdLib",
+            "10002", "PciLib",
+            "10002", "PciSegmentLib",
+            "10002", "PeimEntryPoint",
+            "10002", "PlatformHookLib",
+            "10002", "PrintLib",
+            "10002", "SmmMemLib",
+            "10002", "SmmRelocationLib",
+            "10002", "Tcg2PhysicalPresenceLib",
+            "10002", "TcgStorageOpalLib",
+            "10002", "TimerLib",
+            "10002", "UefiBootManagerLib",
+            "10002", "UefiBootServicesTableLib",
+            "10002", "UefiDriverEntryPoint",
+            "10002", "UefiLib",
+            "10002", "UefiRuntimeServicesTableLib",
+            "10006", "AmdPostCodeLib",
+            "10006", "BaseLib",
+            "10006", "BaseMemoryLib",
+            "10006", "BootLogoLib",
+            "10006", "CapsuleLib",
+            "10006", "DebugLib",
+            "10006", "DevicePathLib",
+            "10006", "DxeServicesLib",
+            "10006", "DxeServicesTableLib",
+            "10006", "HiiLib",
+            "10006", "HobLib",
+            "10006", "HstiLib",
+            "10006", "IoLib",
+            "10006", "LockBoxLib",
+            "10006", "MemoryAllocationLib",
+            "10006", "MmServicesTableLib",
+            "10006", "PcdLib",
+            "10006", "PciLib",
+            "10006", "PciSegmentLib",
+            "10006", "PeimEntryPoint",
+            "10006", "PlatformHookLib",
+            "10006", "PrintLib",
+            "10006", "SmmMemLib",
+            "10006", "SmmRelocationLib",
+            "10006", "Tcg2PhysicalPresenceLib",
+            "10006", "TcgStorageOpalLib",
+            "10006", "TimerLib",
+            "10006", "UefiBootManagerLib",
+            "10006", "UefiBootServicesTableLib",
+            "10006", "UefiDriverEntryPoint",
+            "10006", "UefiLib",
+            "10006", "UefiRuntimeServicesTableLib",
+            "10022", "AmdPostCodeLib",
+            "10022", "BaseLib",
+            "10022", "BaseMemoryLib",
+            "10022", "BootLogoLib",
+            "10022", "CapsuleLib",
+            "10022", "DebugLib",
+            "10022", "DevicePathLib",
+            "10022", "DxeServicesLib",
+            "10022", "DxeServicesTableLib",
+            "10022", "HiiLib",
+            "10022", "HobLib",
+            "10022", "HstiLib",
+            "10022", "IoLib",
+            "10022", "LockBoxLib",
+            "10022", "MemoryAllocationLib",
+            "10022", "MmServicesTableLib",
+            "10022", "PcdLib",
+            "10022", "PciLib",
+            "10022", "PciSegmentLib",
+            "10022", "PeimEntryPoint",
+            "10022", "PlatformHookLib",
+            "10022", "PrintLib",
+            "10022", "SmmMemLib",
+            "10022", "SmmRelocationLib",
+            "10022", "Tcg2PhysicalPresenceLib",
+            "10022", "TcgStorageOpalLib",
+            "10022", "TimerLib",
+            "10022", "UefiBootManagerLib",
+            "10022", "UefiBootServicesTableLib",
+            "10022", "UefiDriverEntryPoint",
+            "10022", "UefiLib",
+            "10022", "UefiRuntimeServicesTableLib",
+            "10002", "AlwaysFalseDepexLib",
+            "10002", "AmdCpmGpioInitFinishedDepexLib",
+            "10002", "AmdPspTcgDonePeiDepexLib",
+            "10002", "SerialPortLib",
+            "10002", "SmmCoreAmdSpiHcHookLib",
+            "10002", "SmmCorePlatformHookLib",
+            "10002", "SmmServicesTableLib",
+            "10002", "SpiHcPlatformLib",
+            "10006", "AlwaysFalseDepexLib",
+            "10006", "AmdCpmGpioInitFinishedDepexLib",
+            "10006", "AmdPspTcgDonePeiDepexLib",
+            "10006", "SerialPortLib",
+            "10006", "SmmCoreAmdSpiHcHookLib",
+            "10006", "SmmCorePlatformHookLib",
+            "10006", "SmmServicesTableLib",
+            "10006", "SpiHcPlatformLib",
+            "10022", "AlwaysFalseDepexLib",
+            "10022", "AmdCpmGpioInitFinishedDepexLib",
+            "10022", "AmdPspTcgDonePeiDepexLib",
+            "10022", "SerialPortLib",
+            "10022", "SmmCoreAmdSpiHcHookLib",
+            "10022", "SmmCorePlatformHookLib",
+            "10022", "SmmServicesTableLib",
+            "10022", "SpiHcPlatformLib",
+            ## [10002]/[10006]/[10022]: AGESA-sourced library classes not declared in
+            ## AmdPlatformPkg.dec.  ECC cannot resolve them without the full PACKAGES_PATH.
+            "10002", "AmdEmulationAutoDetectLib",
+            "10002", "AmdPspRomArmorLib",
+            "10002", "PlatformPspRomArmorWhitelistLib",
+            "10002", "SmnAccessLib",
+            "10006", "AmdEmulationAutoDetectLib",
+            "10006", "AmdPspRomArmorLib",
+            "10006", "PlatformPspRomArmorWhitelistLib",
+            "10006", "SmnAccessLib",
+            "10022", "AmdEmulationAutoDetectLib",
+            "10022", "AmdPspRomArmorLib",
+            "10022", "PlatformPspRomArmorWhitelistLib",
+            "10022", "SmnAccessLib",
+            ## [10002]/[10006]/[10022]: PeiServicesLib is declared in MdePkg.dec.
+            ## ECC cannot verify PEIM module type compatibility without the full DSC context.
+            "10002", "PeiServicesLib",
+            "10006", "PeiServicesLib",
+            "10022", "PeiServicesLib",
+            ## [10002]/[10006]/[10022]: NbioCommonDxeLib, NbioHandleLib, NetLib,
+            ## and PcieConfigLib are library classes AmdBdsBootConfigLib.inf
+            ## depends on that are declared in AgesaModulePkg/NetworkPkg's own
+            ## .dec files, not AmdPlatformPkg.dec.  ECC cannot resolve
+            ## cross-package library classes or their module-type compatibility
+            ## without the full PACKAGES_PATH.
+            "10002", "NbioCommonDxeLib",
+            "10002", "NbioHandleLib",
+            "10002", "NetLib",
+            "10002", "PcieConfigLib",
+            "10006", "NbioCommonDxeLib",
+            "10006", "NbioHandleLib",
+            "10006", "NetLib",
+            "10006", "PcieConfigLib",
+            "10022", "NbioCommonDxeLib",
+            "10022", "NbioHandleLib",
+            "10022", "NetLib",
+            "10022", "PcieConfigLib",
+            ## [10002]/[10006]/[10022]: AmlLib (DynamicTablesPkg.dec), SortLib
+            ## (MdeModulePkg.dec), TpmPlatformHierarchyLib and Tpm2CommandLib
+            ## (SecurityPkg.dec) are cross-package library classes; FchEspiCmdLib,
+            ## AmdRdeDirectoryLib, and AmdRdeMediaLib are AGESA-sourced classes
+            ## (AgesaModulePkg.dec); PlatformSocLib is declared in
+            ## AmdPlatformPkg.dec itself. In every case ECC's per-package scan
+            ## can't resolve the library class or verify module-type
+            ## compatibility without the full PACKAGES_PATH/DSC context.
+            "10002", "AmlLib",
+            "10002", "SortLib",
+            "10002", "TpmPlatformHierarchyLib",
+            "10002", "Tpm2CommandLib",
+            "10002", "FchEspiCmdLib",
+            "10002", "AmdRdeDirectoryLib",
+            "10002", "AmdRdeMediaLib",
+            "10002", "PlatformSocLib",
+            "10006", "AmlLib",
+            "10006", "SortLib",
+            "10006", "TpmPlatformHierarchyLib",
+            "10006", "Tpm2CommandLib",
+            "10006", "FchEspiCmdLib",
+            "10006", "AmdRdeDirectoryLib",
+            "10006", "AmdRdeMediaLib",
+            "10006", "PlatformSocLib",
+            "10022", "AmlLib",
+            "10022", "SortLib",
+            "10022", "TpmPlatformHierarchyLib",
+            "10022", "Tpm2CommandLib",
+            "10022", "FchEspiCmdLib",
+            "10022", "AmdRdeDirectoryLib",
+            "10022", "AmdRdeMediaLib",
+            "10022", "PlatformSocLib",
+            ## [4002]/[5001]/[5002]/[5005]: GetResetSpiSpeed is declared weak
+            ## (__attribute__((weak))) so unit tests can override it; the GCC
+            ## weak attribute must sit between the return type and EFIAPI, which
+            ## breaks ECC's comment-adjacency parser for the function header.
+            ## Moving the attribute elsewhere causes a GCC compile error
+            ## ("attributes should be specified before the declarator"), so the
+            ## construct itself cannot be reformatted to satisfy ECC.
+            "4002", "GetResetSpiSpeed",
+            "5001", "GetResetSpiSpeed",
+            "5002", "GetResetSpiSpeed",
+            "5005", "GetResetSpiSpeed"
+        ],
+        ## Both file path and directory path are accepted.
+        "IgnoreFiles": [
+        ]
+    },
+    ## options defined ci/Plugin/CompilerPlugin
+    "CompilerPlugin": {
+        "DscPath": "AmdPlatformPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestCompilerPlugin
+    ## Disabled until Test/AmdPlatformPkgHostTest.dsc (GoogleTest unit tests +
+    ## Mock library stubs) is available.
+    "HostUnitTestCompilerPlugin-skip": {
+        "DscPath": "Test/AmdPlatformPkgHostTest.dsc"
+    },
+
+    ## options defined ci/Plugin/CharEncodingCheck
+    "CharEncodingCheck": {
+        "IgnoreFiles": []
+    },
+
+    ## options defined ci/Plugin/DependencyCheck
+    "DependencyCheck-skip": {
+        "AcceptableDependencies": [
+            "AgesaModulePkg/AgesaCommonModulePkg.dec",
+            "AgesaModulePkg/AgesaModuleFchPkg.dec",
+            "AgesaModulePkg/AgesaModuleNbioPkg.dec",
+            "AgesaModulePkg/AgesaModulePspPkg.dec",
+            "AgesaPkg/AgesaPkg.dec",
+            "AmdCpmPkg/AmdCpmPkg.dec",
+            "AmdPlatformPkg/AmdPlatformPkg.dec",
+            "DynamicTablesPkg/DynamicTablesPkg.dec",
+            "MdeModulePkg/MdeModulePkg.dec",
+            "MdePkg/MdePkg.dec",
+            "MinPlatformPkg/MinPlatformPkg.dec",
+            "NetworkPkg/NetworkPkg.dec",
+            "PcAtChipsetPkg/PcAtChipsetPkg.dec",
+            "RedfishPkg/RedfishPkg.dec",
+            "SecurityPkg/SecurityPkg.dec",
+            "SpcrFeaturePkg/SpcrFeaturePkg.dec",
+            "UefiCpuPkg/UefiCpuPkg.dec"
+        ],
+        # For host based unit tests
+        "AcceptableDependencies-HOST_APPLICATION":[
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
+        # For UEFI shell based apps
+        "AcceptableDependencies-UEFI_APPLICATION":[],
+        "IgnoreInf": []
+    },
+
+    ## options defined ci/Plugin/DscCompleteCheck
+    "DscCompleteCheck": {
+        "IgnoreInf": [
+            ## Only consumed by board-level DSCs (GenoaBoard/TurinBoard
+            ## ProjectCommon.inc.dsc), not built by AmdPlatformPkg.dsc itself.
+            "AmdPlatformPkg/Universal/Acpi/AcpiCommon/AcpiCommon.inf"
+        ],
+        "DscPath": "AmdPlatformPkg.dsc"
+    },
+    ## options defined ci/Plugin/HostUnitTestDscCompleteCheck
+    "HostUnitTestDscCompleteCheck-skip": {
+        "IgnoreInf": [
+        ],
+        "DscPath": "Test/AmdPlatformPkgHostTest.dsc"
+    },
+
+    ## options defined ci/Plugin/GuidCheck
+    "GuidCheck": {
+        "IgnoreGuidName": [],
+        "IgnoreGuidValue": [],
+        "IgnoreFoldersAndFiles": [],
+        "IgnoreDuplicates": []
+    },
+
+    ## options defined ci/Plugin/LibraryClassCheck
+    "LibraryClassCheck": {
+        "IgnoreHeaderFile": []
+    },
+
+    ## options defined ci/Plugin/SpellCheck
+    "SpellCheck": {
+        "AuditOnly": False,         # If True, only audit the files, do not fail the build
+        "IgnoreStandardPaths": [     # Standard Plugin defined paths that should be ignore
+        ##    "*.c", "*.asm", "*.h", "*.nasm", "*.s", "*.asl", "*.inf"
+        ],
+        "IgnoreFiles": [             # use gitignore syntax to ignore errors in matching files
+        ],
+        "ExtendWords": [           # words to extend to the dictionary for this package
+            "cfmws",
+            "mpras",
+            "opensil",
+            "qilian",
+            "acpissdtusbtemplate",
+            "acpissdtsysdev",
+            "amdcrb",
+            "agesa",
+            "coverity",
+            "defaultdb",
+            "defaultdbx",
+            "deviceid",
+            "eisaid",
+            "flashid",
+            "iomux",
+            "jedec",
+            "oemid",
+            "pmioa",
+            "ppread",
+            "rdsfdp",
+            "smdbg",
+            "ssdtproc",
+            "eeprom",
+            "gpiox",
+            "agpio",
+            "sgpio",
+            "acpimmio",
+            "glink",
+            "ehci's",
+            "uhci's",
+            "slpbtn",
+            # These 3 keywords added by EDKIIUS-224 as WA, (featuers, fwcode, vnextcs).
+            # Key words come from AGESA-v10, will remove them if AGESA-v10 fix the naming.
+            "featuers",
+            "fwcode",
+            "vnextcs",
+            # These 2 keywords added by EDKIIUS-228 as WA, they are come from PSP_CAPSULE_HOOK_FLAG_SXINFO_CLRSMMLCK.
+            "SXINFO",
+            "CLRSMMLCK",
+            # These keywords added by OpalPassword driver, and these names are defined in EDK2.
+            "mpsmin",
+            "qprio",
+            "cqhdbl",
+            "criocq",
+            "criosq",
+            "dstrd",
+            "iocqes",
+            "iosqes",
+            "sqtdbl",
+            "ssvid",
+            "nvmhci",
+            # PlatformBootManager
+            "regac",
+            "pdecode",
+            "systopology",
+            "systopologyreportprotocol",
+            "tnvmcap",
+            "RDIMM",
+            "DDR5",
+            "aslcc",
+            # PspPreTcgEventLogPei: possessive of Tcg2Dxe driver name, and TCG_PCRINDEX type
+            "dxe's",
+            "PCRINDEX",
+            # AcpiCommon/SpiHcRomArmorPlatformLib register/field names and comment words
+            "aslpp",
+            "dinternal",
+            "gobal",
+            "pcieport",
+            "pecify",
+            "rxbytecount",
+            "txbytecount",
+            "vfrpp"
+            ],
+        "AdditionalIncludePaths": [] # Additional paths to spell check relative to package root (wildcards supported)
+    },
+    "DebugMacroCheck": {
+      "StringSubstitutions": {
+          # Reason: Expansion of macro that contains a print specifier.
+          # AMD can write its own print specifier.
+          # "AMD_PRINT": "0x%lx"
+      }
+    },
+    "CodeQlAnalyze": {
+        "AuditOnly": False,          # Fail the build if there are errors.
+        "QuerySpecifiers": "",       # Query specifiers to pass to CodeQL CLI.
+        "Filters": [                 # Inclusion/exclusion filters
+            "-**/MdePkg/**/*",               # outside the scope of this package
+            "-**/MdeModulePkg/**/*",         # outside the scope of this package
+            "-**/SecurityPkg/**/*",          # outside the scope of this package
+            "-**/CryptoPkg/**/*",            # outside the scope of this package
+            "-**/PcdValueInit/**/*",         # From Build directory, Build/AmdPlatformPkg/DEBUG_GCC/PcdValueInit/PcdValueInit.c
+            "-**/UnitTestFrameworkPkg/**/*"  # third-party test framework (cmocka, googletest); not in scope
+        ]
+    }
+}

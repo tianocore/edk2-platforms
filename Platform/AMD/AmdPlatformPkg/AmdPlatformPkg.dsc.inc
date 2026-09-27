@@ -18,10 +18,12 @@
 !endif
 
 [LibraryClasses.Common]
+  AlwaysFalseDepexLib|AmdPlatformPkg/Library/BaseAlwaysFalseDepexLib/BaseAlwaysFalseDepexLib.inf
   TimerLib|AmdPlatformPkg/Library/CcxTscTimerLib/BaseTscTimerLib.inf
-  AmdPostCodeLib|AmdPlatformPkg/Library/AmdPostCodeLibNull/AmdPostCodeLibNull.inf
   !if $(SIMNOW_PORT80_DEBUG) == TRUE AND $(SIMNOW_SUPPORT) == TRUE
     SerialPortLib|AmdPlatformPkg/Library/EmulatorSerialPort80RedirectLib/EmulatorSerialPort80Redirect.inf
+  !else
+    SerialPortLib|AmdPlatformPkg/Library/SimulatorSerialPortLibPort80/SimulatorSerialPortLibPort80.inf
   !endif
 
 [LibraryClasses.Common.PEIM, LibraryClasses.Common.PEI_CORE]
@@ -36,43 +38,49 @@
 
 [LibraryClasses.Common.DXE_DRIVER]
   RedfishPlatformCredentialLib|AmdPlatformPkg/Library/PlatformRedfishCredentialLib/PlatformRedfishCredentialLib.inf
-  AmdEmulationAutoDetectLib|AgesaModulePkg/Library/AmdEmulationAutoDetectLibNull/AmdEmulationAutoDetectLibNull.inf
-  AmdRdeDirectoryLib|AgesaModulePkg/Library/AmdRdeDirectoryLib/AmdRdeDirectoryLib.inf
-  AmdRdeMediaLib|AgesaModulePkg/Library/AmdRdeMediaLibNull/AmdRdeMediaLibNull.inf
   !if $(ROM_ARMOR_ENABLED) == TRUE
     SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibDxe.inf
+  !else
+    SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibDxe.inf
   !endif
 
 [LibraryClasses.Common.DXE_SMM_DRIVER]
-  AmdEmulationAutoDetectLib|AgesaModulePkg/Library/AmdEmulationAutoDetectLibNull/AmdEmulationAutoDetectLibNull.inf
-  AmdRdeDirectoryLib|AgesaModulePkg/Library/AmdRdeDirectoryLib/AmdRdeDirectoryLib.inf
-  AmdRdeMediaLib|AgesaModulePkg/Library/AmdRdeMediaLibNull/AmdRdeMediaLibNull.inf
   !if $(ROM_ARMOR_ENABLED) == TRUE
     SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcRomArmorPlatformLib/SpiHcPlatformLibSmm.inf
+  !else
+    SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibSmm.inf
   !endif
 
-
 [LibraryClasses.Common.SMM_CORE]
+  SmmCoreAmdSpiHcHookLib|AmdPlatformPkg/Library/SmmCoreAmdSpiHcHookLib/SmmCoreAmdSpiHcHookLib.inf
+  SmmCorePlatformHookLib|AmdPlatformPkg/Library/SmmCorePlatformHookLib/SmmCorePlatformHookLib.inf
 
 [Components.IA32]
-  AmdPlatformPkg/Universal/Psp/PspPreTcgEventLogPei/PspPreTcgEventLogPei.inf
-  AmdPlatformPkg/Universal/RestoreDefaultPei/RestoreDefault.inf
   AmdPlatformPkg/Universal/BoardId/Pei/AmdBoardIdPei.inf
   AmdPlatformPkg/Universal/BoardIdValidatePei/BoardIdValidatePei.inf
   AmdPlatformPkg/Universal/Hob/PlatformHobPei/PlatformHobPei.inf
+  AmdPlatformPkg/Universal/Psp/PspPreTcgEventLogPei/PspPreTcgEventLogPei.inf
+  AmdPlatformPkg/Universal/RestoreDefaultPei/RestoreDefault.inf
   AmdPlatformPkg/Universal/SmmRelocatePei/SmmRelocatePei.inf
 
 [Components.X64]
   AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
   AmdPlatformPkg/Universal/BoardId/Dxe/AmdBoardIdDxe.inf
-  AmdPlatformPkg/Universal/Pci/PciLegacy/PciLegacy.inf
-  AmdPlatformPkg/Universal/Pci/PciHotPlug/PciHotPlugInit.inf
-  AmdPlatformPkg/Universal/PlatformCipherDxe/PlatformCipherDxe.inf
+  AmdPlatformPkg/Universal/HiiConfigRouting/AmdConfigRouting.inf
   AmdPlatformPkg/Universal/Hsti/PlatformHstiDxe/PlatformHstiDxe.inf
+  AmdPlatformPkg/Universal/LogoDxe/LogoDxe.inf
   AmdPlatformPkg/Universal/NvStoreRestoreDefaultSmm/NvStoreRestoreDefaultSmm.inf
-  AmdPlatformPkg/Universal/SysTopologyReport/Dxe/SysTopologyReportDxe.inf
-  AmdPlatformPkg/Universal/Tpm/Tcg2PlatformDxe/Tcg2PlatformDxe.inf
-  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableDxe.inf
-  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableSmm.inf
+  AmdPlatformPkg/Universal/Pci/PciHotPlug/PciHotPlugInit.inf
+  AmdPlatformPkg/Universal/Pci/PciLegacy/PciLegacy.inf
+  AmdPlatformPkg/Universal/PlatformCipherDxe/PlatformCipherDxe.inf
+  AmdPlatformPkg/Universal/SecureBoot/SecureBootDefaultKeysInit/SecureBootDefaultKeysInit.inf
+  AmdPlatformPkg/Universal/SmbiosCommonDxe/SmbiosCommonDxe.inf
+  AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigDxe.inf
+  AmdPlatformPkg/Universal/Spi/BoardSpiConfig/BoardSpiConfigSmm.inf
+  AmdPlatformPkg/Universal/Spi/EspiNorFlash/EspiNorFlashSmm.inf
   AmdPlatformPkg/Universal/Spi/SpiFvb/RdeResponse/SpiFvbRdeResponseDxe.inf
   AmdPlatformPkg/Universal/Spi/SpiFvb/RdeResponse/SpiFvbRdeResponseSmm.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableDxe.inf
+  AmdPlatformPkg/Universal/Spi/SpiFvb/Variable/SpiFvbVariableSmm.inf
+  AmdPlatformPkg/Universal/SysTopologyReport/Dxe/SysTopologyReportDxe.inf
+  AmdPlatformPkg/Universal/Tpm/Tcg2PlatformDxe/Tcg2PlatformDxe.inf

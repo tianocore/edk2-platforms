@@ -8,8 +8,7 @@
 
 **/
 
-#ifndef AMD_IO_APIC_H_
-#define AMD_IO_APIC_H_
+#pragma once
 
 ///
 /// I/O APIC Register Offsets
@@ -45,43 +44,41 @@
 ///
 typedef union {
   struct {
-    UINT32  Reserved0:24;
-    UINT32  Identification:8;
+    UINT32    Reserved0      : 24;
+    UINT32    Identification : 8;
   } Bits;
-  UINT32  Uint32;
+  UINT32    Uint32;
 } IO_APIC_IDENTIFICATION_REGISTER;
 
 typedef union {
   struct {
-    UINT32  Version:8;
-    UINT32  Reserved0:8;
-    UINT32  MaximumRedirectionEntry:8;
-    UINT32  Reserved1:8;
+    UINT32    Version                 : 8;
+    UINT32    Reserved0               : 8;
+    UINT32    MaximumRedirectionEntry : 8;
+    UINT32    Reserved1               : 8;
   } Bits;
-  UINT32  Uint32;
+  UINT32    Uint32;
 } IO_APIC_VERSION_REGISTER;
 
 typedef union {
   struct {
-    UINT32  Vector:          8;
-    UINT32  DeliveryMode:    3;
-    UINT32  DestinationMode: 1;
-    UINT32  DeliveryStatus:  1;
-    UINT32  Polarity:        1;
-    UINT32  RemoteIRR:       1;
-    UINT32  TriggerMode:     1;
-    UINT32  Mask:            1;
-    UINT32  Reserved0:       15;
-    UINT32  Reserved1:       24;
-    UINT32  DestinationID:   8;
+    UINT32    Vector          : 8;
+    UINT32    DeliveryMode    : 3;
+    UINT32    DestinationMode : 1;
+    UINT32    DeliveryStatus  : 1;
+    UINT32    Polarity        : 1;
+    UINT32    RemoteIRR       : 1;
+    UINT32    TriggerMode     : 1;
+    UINT32    Mask            : 1;
+    UINT32    Reserved0       : 15;
+    UINT32    Reserved1       : 24;
+    UINT32    DestinationID   : 8;
   } Bits;
   struct {
-    UINT32  Low;
-    UINT32  High;
+    UINT32    Low;
+    UINT32    High;
   } Uint32;
-  UINT64  Uint64;
+  UINT64    Uint64;
 } IO_APIC_REDIRECTION_TABLE_ENTRY;
 
 #pragma pack()
-
-#endif

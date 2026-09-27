@@ -200,6 +200,7 @@ class Settings(CiBuildSettingsManager, UpdateSettingsManager, SetupSettingsManag
         pkgpath.append(os.path.join(relpath, "edk2"))
         pkgpath.append(os.path.join(relpath, "edk2-platforms"))
         pkgpath.append(os.path.join(relpath, "edk2-platforms", "Features"))
+        pkgpath.append(os.path.join(relpath, "edk2-platforms", "Platform"))
         pkgpath.append(os.path.join(relpath, "edk2-platforms", "Platform", "AMD"))
         pkgpath.append(os.path.join(relpath, "edk2-platforms", "Features", "Intel", "Debugging"))
         pkgpath.append(os.path.join(relpath, "edk2-platforms", "Features", "Intel", "Network"))

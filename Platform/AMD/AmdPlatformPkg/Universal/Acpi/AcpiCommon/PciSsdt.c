@@ -196,7 +196,7 @@ InternalInsertRootBridgeInterrupts (
   Insert Root Bridge resources into the AML table
 
   @param[in]      RootBridge  - Single Root Bridge instance
-  @param[in,out]  Crs         - AmlLib tree node for CRS
+  @param[in,out]  CrsNode     - AmlLib tree node for CRS
 
   @retval         EFI_SUCCESS, various EFI FAILUREs.
 **/
@@ -414,7 +414,7 @@ InternalInsertRootBridgeResources (
                NULL
                );
 
-        Status = AmlCodeGenRdQWordMemory (
+    Status = AmlCodeGenRdQWordMemory (
                FALSE,
                TRUE,
                TRUE,
@@ -731,7 +731,9 @@ InternalInsertRootPorts (
 /**
   Insert CXL Root Bridge Port into the AML table
 
-  @param[in,out]  PciNode    - AmlLib table node
+  @param[in]      RootBridgeHead   - Array of Root Bridge instances
+  @param[in]      RootBridgeCount  - Number of entries in RootBridgeHead
+  @param[in,out]  PciNode          - AmlLib table node
 
   @retval         EFI_SUCCESS, various EFI FAILUREs.
 **/

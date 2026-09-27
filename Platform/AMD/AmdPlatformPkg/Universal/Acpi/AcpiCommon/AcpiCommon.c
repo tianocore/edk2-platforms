@@ -24,16 +24,16 @@ EFI_ACPI_SDT_PROTOCOL    *mAcpiSdtProtocol;
 EFI_STATUS
 EFIAPI
 GetExistingAcpiTable (
-  IN      UINT32                  Signature,
-  IN      UINT64                  OemTableId,
-     OUT  EFI_ACPI_SDT_HEADER     **Table
-)
+  IN      UINT32            Signature,
+  IN      UINT64            OemTableId,
+  OUT  EFI_ACPI_SDT_HEADER  **Table
+  )
 {
-  EFI_STATUS                  Status;
-  UINTN                       Index;
-  EFI_ACPI_SDT_HEADER         *LocalTable;
-  EFI_ACPI_TABLE_VERSION      LocalVersion;
-  UINTN                       LocalTableKey;
+  EFI_STATUS              Status;
+  UINTN                   Index;
+  EFI_ACPI_SDT_HEADER     *LocalTable;
+  EFI_ACPI_TABLE_VERSION  LocalVersion;
+  UINTN                   LocalTableKey;
 
   Status = EFI_NOT_FOUND;
   *Table = NULL;
@@ -47,9 +47,11 @@ GetExistingAcpiTable (
     if (!(LocalTable->Signature == Signature)) {
       continue;
     }
+
     // Accept table if OemTableId is zero.
-    if (OemTableId == 0 ||
-        CompareMem (&LocalTable->OemTableId, &OemTableId, 8) == 0) {
+    if ((OemTableId == 0) ||
+        (CompareMem (&LocalTable->OemTableId, &OemTableId, 8) == 0))
+    {
       *Table = LocalTable;
       return EFI_SUCCESS;
     }

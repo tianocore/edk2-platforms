@@ -846,7 +846,7 @@ CollectNvmeDrives (
         CreateStorageEntry (&Entry);
         Storage = Entry.Storage;
 
-        Storage->MediaType = NVME_STORAGE;
+        Storage->MediaType = NvmeStorage;
 
         Status = AddString (
                    (SYS_TOPOLOGY_ENTRY_CONTEXT *)&Entry,
@@ -1006,7 +1006,7 @@ CollectSataDrives (
       CreateStorageEntry (&Entry);
       Storage = Entry.Storage;
 
-      Storage->MediaType = SATA_STORAGE;
+      Storage->MediaType = SataStorage;
 
       FixSataStr (IdentifyData.ModelName, 40);
       FixSataStr (IdentifyData.SerialNo, 20);

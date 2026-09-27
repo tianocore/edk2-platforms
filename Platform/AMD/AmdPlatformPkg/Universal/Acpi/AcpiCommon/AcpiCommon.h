@@ -7,8 +7,7 @@
 
 **/
 
-#ifndef ACPI_COMMON_H_
-#define ACPI_COMMON_H_
+#pragma once
 
 #include <IndustryStandard/Acpi.h>
 #include <Library/BaseLib.h>
@@ -22,10 +21,10 @@
 #include <Protocol/AcpiTable.h>
 #include <Uefi.h>
 
-#define AMD_DSDT_OEMID         SIGNATURE_64 ('A', 'm', 'd', 'T','a','b','l','e')
-#define CREATOR_REVISION       2
-#define MAX_LOCAL_STRING_SIZE  20
-#define OEM_REVISION_NUMBER    0
+#define AMD_DSDT_OEMID                       SIGNATURE_64 ('A', 'm', 'd', 'T','a','b','l','e')
+#define CREATOR_REVISION                     2
+#define MAX_LOCAL_STRING_SIZE                20
+#define OEM_REVISION_NUMBER                  0
 #define CXL_EARLY_DISCOVERY_TABLE_SIGNATURE  SIGNATURE_32 ('C', 'E', 'D', 'T') /// "CEDT" CXL Early Discovery Table
 
 extern  EFI_ACPI_TABLE_PROTOCOL  *mAcpiTableProtocol;
@@ -43,10 +42,10 @@ extern  EFI_ACPI_SDT_PROTOCOL    *mAcpiSdtProtocol;
 EFI_STATUS
 EFIAPI
 GetExistingAcpiTable (
-  IN      UINT32                  Signature,
-  IN      UINT64                  OemTableId,
-     OUT  EFI_ACPI_SDT_HEADER     **Table
-);
+  IN      UINT32            Signature,
+  IN      UINT64            OemTableId,
+  OUT  EFI_ACPI_SDT_HEADER  **Table
+  );
 
 /**
   Appends generated AML to an existing ACPI Table
@@ -116,5 +115,3 @@ EFIAPI
 InstallAcpiSpmiTable (
   VOID
   );
-
-#endif // ACPI_COMMON_H__

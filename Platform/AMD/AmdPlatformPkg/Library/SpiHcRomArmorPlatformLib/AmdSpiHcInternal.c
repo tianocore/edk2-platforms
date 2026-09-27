@@ -4,6 +4,8 @@
 
   Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
 
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
 **/
 #include <Library/BaseLib.h>
 #include <Library/IoLib.h>

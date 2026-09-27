@@ -6,8 +6,7 @@
 
 **/
 
-#ifndef AMD_SMM_CORE_PLATFORM_HOOK_LIB_
-#define AMD_SMM_CORE_PLATFORM_HOOK_LIB_
+#pragma once
 
 /**
   This is the prototype of SMM Dispatcher hook before.
@@ -63,5 +62,3 @@ RegisterSmmDispatcherHook (
   IN  AMD_SMM_DISPATCH_HOOK_AFTER     SmmDispatchHookAfter OPTIONAL,
   IN  AMD_SMM_DISPATCH_HOOK_PRIORITY  Priority
   );
-
-#endif // AMD_SMM_CORE_PLATFORM_HOOK_LIB_

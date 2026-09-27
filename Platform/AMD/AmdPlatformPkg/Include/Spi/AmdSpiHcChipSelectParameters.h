@@ -6,8 +6,7 @@
 
 **/
 
-#ifndef AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
-#define AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
+#pragma once
 
 #include <Base.h>
 
@@ -20,5 +19,3 @@ typedef struct _CHIP_SELECT_PARAMETERS {
 
 #define CHIP_SELECT_1  { (UINT8)~((UINT8)0x03), 0x0 }
 #define CHIP_SELECT_2  { (UINT8)~((UINT8)0x03), 0x1 }
-
-#endif // AMD_SPI_HC_CHIP_SELECT_PARAMETERS_H_
