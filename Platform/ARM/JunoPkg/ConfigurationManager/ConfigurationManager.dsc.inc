@@ -14,4 +14,10 @@
 
 [Components.common]
   # Configuration Manager
-  Platform/ARM/JunoPkg/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
+  Platform/ARM/JunoPkg/ConfigurationManager/ConfigurationManagerDxe/ConfigurationManagerDxe.inf {
+!if $(ENABLE_TPM) == TRUE
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+!endif
+  }
