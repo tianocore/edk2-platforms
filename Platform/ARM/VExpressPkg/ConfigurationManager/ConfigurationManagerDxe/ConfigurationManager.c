@@ -164,7 +164,14 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       SMBIOS_TYPE_PROCESSOR_INFORMATION,
       CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType04),
       NULL
-    }
+    },
+#ifdef ENABLE_TPM
+    {
+      SMBIOS_TYPE_TPM_DEVICE,
+      CREATE_STD_SMBIOS_TABLE_GEN_ID (EStdSmbiosTableIdType43),
+      NULL
+    },
+#endif
   },
 
   // Boot architecture information

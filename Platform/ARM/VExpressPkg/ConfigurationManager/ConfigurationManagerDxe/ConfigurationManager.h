@@ -142,7 +142,11 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 #define PLAT_ACPI_TABLE_COUNT       12
 #endif
 
+#ifdef ENABLE_TPM
+#define PLAT_SMBIOS_TABLE_COUNT     3
+#else
 #define PLAT_SMBIOS_TABLE_COUNT     2
+#endif
 
 /** The number of platform generic timer blocks
 */
