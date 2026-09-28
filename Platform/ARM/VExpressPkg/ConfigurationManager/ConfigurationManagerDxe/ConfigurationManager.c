@@ -22,6 +22,7 @@
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
+#include <IndustryStandard/UefiTcgPlatform.h>
 #include <IndustryStandard/Tpm2Acpi.h>
 #include <IndustryStandard/Tpm20.h>
 #include <IndustryStandard/TpmPtp.h>
@@ -36,6 +37,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/SmbiosSmcLib.h>
+#include <Library/Tpm2CommandLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Protocol/AcpiTable.h>
 #include <Protocol/ConfigurationManagerProtocol.h>
@@ -1351,6 +1353,103 @@ CopyString (
 }
 
 #ifdef ENABLE_TPM
+#define NUMBER_OF_TPM_VENDOR_STRING_PROP (TPM_PT_VENDOR_STRING_4 - TPM_PT_VENDOR_STRING_1 + 1)
+
+/** Populate TPM device information
+
+  @param [in]  PlatformRepo      Pointer to the Configuration Manager Protocol.
+
+  @retval EFI_SUCCESS            Success
+  @retval Others                 Error to get information from TPM device.
+*/
+STATIC
+EFI_STATUS
+EFIAPI
+PopulatePlatformTpmDevInfo (
+  IN EDKII_PLATFORM_REPOSITORY_INFO  *PlatformRepo
+  )
+{
+  EFI_STATUS                         Status;
+  CM_ARCH_COMMON_TPM_DEVICE_INFO     *TpmDevInfo;
+  UINT32                             ManufactureId;
+  TPMS_CAPABILITY_DATA               TpmCap;
+  TPMI_YES_NO                        MoreData;
+  UINTN                              Idx;
+
+  TpmDevInfo = &PlatformRepo->TpmDevInfo;
+
+  Status = Tpm2GetCapabilityFirmwareVersion (
+             &TpmDevInfo->FirmwareVersion1,
+             &TpmDevInfo->FirmwareVersion2
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to get TPM firmware-version information. Status=%r\n",
+      Status
+      ));
+    return Status;
+  }
+
+  Status = Tpm2GetCapabilityManufactureID (&ManufactureId);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to get TPM ManufactureId information. Status=%r\n",
+      Status
+      ));
+    return Status;
+  }
+
+  CopyMem (TpmDevInfo->VendorId, &ManufactureId, sizeof (TpmDevInfo->VendorId));
+
+  Status = Tpm2GetCapability (
+             TPM_CAP_TPM_PROPERTIES,
+             TPM_PT_VENDOR_STRING_1,
+             NUMBER_OF_TPM_VENDOR_STRING_PROP,
+             &MoreData,
+             &TpmCap
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "Failed to get TPM VENDOR_STRING information. Status=%r\n",
+      Status
+      ));
+    return Status;
+  }
+
+  /*
+   * Copy vendor string properties into description.
+   */
+  for (Idx = 0; Idx < NUMBER_OF_TPM_VENDOR_STRING_PROP; Idx++) {
+    if (*(CHAR8 *)&TpmCap.data.tpmProperties.tpmProperty[Idx].value == '\0') {
+      break;
+    }
+
+    CopyMem (
+      TpmDevInfo->Description + (Idx * sizeof (UINT32)),
+      &TpmCap.data.tpmProperties.tpmProperty[Idx].value,
+      sizeof (UINT32)
+      );
+  }
+
+  TpmDevInfo->Tpm2DeviceBaseAddress = FixedPcdGet64 (PcdTpmBaseAddress);
+  TpmDevInfo->Tpm2DeviceSize = PcdGet32 (PcdTpmCrbRegionSize);
+  TpmDevInfo->TpmDeviceInfoToken = REFERENCE_TOKEN (TpmDevInfo);
+  TpmDevInfo->MajorSpecVersion = TCG_EfiSpecIDEventStruct_SPEC_VERSION_MAJOR_TPM2;
+  TpmDevInfo->MinorSpecVersion = TCG_EfiSpecIDEventStruct_SPEC_VERSION_MINOR_TPM2;
+  /*
+   * fTPM doesn't support the 1.2 and 2.0 switching and
+   * there is no firmware interface to figure out whether to support
+   * switchin 1.2 and 2.0. Therefore, Set BIT 2 which means
+   * TPM Device Characteristics are not supported and set other bits as 0.
+   */
+  TpmDevInfo->Characteristics = BIT2;
+
+  return EFI_SUCCESS;
+}
+
 STATIC
 EFI_STATUS
 EFIAPI
@@ -1359,7 +1458,6 @@ PopulatePlatformTpmInfoSpmMm (
   )
 {
   CM_ARCH_COMMON_TPM2_INTERFACE_INFO *TpmInfo;
-  CM_ARCH_COMMON_TPM2_DEVICE_INFO    *TpmDevInfo;
   EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC Tpm2ArmSmcParam;
 
   TpmInfo = &PlatformRepo->TpmInfo;
@@ -1373,10 +1471,6 @@ PopulatePlatformTpmInfoSpmMm (
   // Temporary, no event log right now before UEFI boot...
   TpmInfo->Laml = 0x00;
   TpmInfo->Lasa = 0x00;
-
-  TpmDevInfo = &PlatformRepo->TpmDevInfo;
-  TpmDevInfo->Tpm2DeviceBaseAddress =  FixedPcdGet64 (PcdTpmBaseAddress);
-  TpmDevInfo->Tpm2DeviceSize = PcdGet32 (PcdTpmCrbRegionSize);
 
   if (FixedPcdGetBool (PcdTpmUseSipSmc)) {
     ZeroMem (
@@ -1525,7 +1619,6 @@ PopulatePlatformTpmInfoFfa (
 {
   EFI_STATUS Status;
   CM_ARCH_COMMON_TPM2_INTERFACE_INFO *TpmInfo;
-  CM_ARCH_COMMON_TPM2_DEVICE_INFO    *TpmDevInfo;
   EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_FFA Tpm2ArmFfaParam;
   EFI_TPM2_ACPI_START_METHOD_SPECIFIC_PARAMETERS_ARM_SMC Tpm2ArmSmcParam;
   UINT16 TpmPartId;
@@ -1546,10 +1639,6 @@ PopulatePlatformTpmInfoFfa (
   // Temporary, no event log right now before UEFI boot...
   TpmInfo->Laml = 0x00;
   TpmInfo->Lasa = 0x00;
-
-  TpmDevInfo = &PlatformRepo->TpmDevInfo;
-  TpmDevInfo->Tpm2DeviceBaseAddress =  FixedPcdGet64 (PcdTpmBaseAddress);
-  TpmDevInfo->Tpm2DeviceSize = PcdGet32 (PcdTpmCrbRegionSize);
 
   if (!FixedPcdGetBool (PcdTpmUseSipSmc)) {
     ZeroMem (
@@ -1626,6 +1715,11 @@ PopulatePlatformTpmInfo (
   )
 {
   EFI_STATUS Status;
+
+  Status = PopulatePlatformTpmDevInfo (PlatformRepo);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
 
   if (IsFfaSupported ()) {
     Status = PopulatePlatformTpmInfoFfa (PlatformRepo);
@@ -2493,7 +2587,7 @@ GetArchCommonNameSpaceObject (
                  );
       break;
 
-    case EArchCommonObjTpm2DeviceInfo:
+    case EArchCommonObjTpmDeviceInfo:
       Status = HandleCmObject (
                  CmObjectId,
                  &PlatformRepo->TpmDevInfo,

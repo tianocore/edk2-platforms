@@ -449,6 +449,11 @@
     <PcdsFixedAtBuild>
       gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x1c090000
       gArmPlatformTokenSpaceGuid.PL011UartInterrupt|0x25
+!if $(ENABLE_TPM) == TRUE
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+!endif
   }
 
   ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
