@@ -36,3 +36,11 @@
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   gOptionRomPkgTokenSpaceGuid.PcdDriverSupportedEfiVersion|0x0002000a|UINT32|0x00010003
 
+[PcdsFeatureFlag]
+  ## Indicates if FtdiUsbSerialDxe automatically connects TerminalDxe and attaches
+  #  Console protocols to enable dynamic console splitting.
+  #   TRUE  - Automatically attach console protocols and connect ConSplitter.<BR>
+  #   FALSE - Do not automatically attach console protocols.<BR>
+  # @Prompt Auto-attach console protocols for dynamic console splitting.
+  gOptionRomPkgTokenSpaceGuid.PcdFtdiAutoAttachConsole|TRUE|BOOLEAN|0x00010004
+
