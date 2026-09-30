@@ -154,7 +154,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 //
 // FTDI timeout
 //
-#define FTDI_TIMEOUT       16
+#define FTDI_TIMEOUT       50
 
 //
 // FTDI FIFO depth
