@@ -1,0 +1,41 @@
+## @file
+#  Discover TPM resources and install gOvmfTpmDiscoveredPpiGuid.
+#
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 1.29
+  BASE_NAME                      = TpmDiscoverPei
+  FILE_GUID                      = 8F3A9BCE-1D74-4A62-BE85-7C91F2D4E8A3
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = TpmDiscoverPeimEntryPoint
+
+[Sources]
+  TpmDiscoverPeim.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  OvmfPkg/OvmfPkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  FdtLib
+  HobLib
+  PcdLib
+  PeimEntryPoint
+  PeiServicesLib
+
+[Pcd]
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress
+
+[Ppis]
+  gOvmfTpmDiscoveredPpiGuid                      ## PRODUCES
+
+[Depex]
+  gEfiPeiMemoryDiscoveredPpiGuid
