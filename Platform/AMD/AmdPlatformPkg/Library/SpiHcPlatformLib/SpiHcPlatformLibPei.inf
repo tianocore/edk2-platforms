@@ -1,0 +1,45 @@
+## @file
+#  SpiHcPlatformLibrary PEIM inf
+#
+#  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION               = 1.30
+  BASE_NAME                 = SpiHcPlatformLibPei
+  FILE_GUID                 = 6B2E9C41-7F0A-4D8B-9E2C-1A3D5F7B0C64
+  MODULE_TYPE               = PEIM
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 1.10
+  LIBRARY_CLASS             = SpiHcPlatformLib
+
+[Packages]
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  PcdLib
+  PciSegmentLib
+  TimerLib
+
+[Sources]
+  SpiHcPlatformLibPei.c
+  SpiHcPlatformLib.c
+  SpiHcInternal.h
+  SpiHcInternal.c
+
+[FixedPcd]
+  gAmdPlatformPkgTokenSpaceGuid.PcdAmdSpiRetryCount
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSpiNorFlashOperationDelayMicroseconds
+
+[Depex]
+  TRUE

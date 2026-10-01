@@ -32,6 +32,7 @@
   AmdCpmGpioInitFinishedDepexLib|AmdPlatformPkg/Library/AmdCpmGpioInitFinishedDepexLib/AmdCpmGpioInitFinishedDepexLib.inf
 
 [LibraryClasses.Common.PEIM]
+  SpiHcPlatformLib|AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibPei.inf
 
 [LibraryClasses.Common.DXE_CORE, LibraryClasses.Common.DXE_DRIVER, LibraryClasses.Common.DXE_RUNTIME_DRIVER, LibraryClasses.Common.DXE_SMM_DRIVER, LibraryClasses.Common.SMM_CORE, LibraryClasses.Common.UEFI_DRIVER, LibraryClasses.Common.UEFI_APPLICATION]
   TimerLib|AmdPlatformPkg/Library/CcxTscTimerLib/DxeTscTimerLib.inf
@@ -62,6 +63,7 @@
   AmdPlatformPkg/Universal/Psp/PspPreTcgEventLogPei/PspPreTcgEventLogPei.inf
   AmdPlatformPkg/Universal/RestoreDefaultPei/RestoreDefault.inf
   AmdPlatformPkg/Universal/SmmRelocatePei/SmmRelocatePei.inf
+  AmdPlatformPkg/Universal/Spi/BoardSpiConfigPei/BoardSpiConfigPei.inf
 
 [Components.X64]
   AmdPlatformPkg/DynamicTables/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
