@@ -44,6 +44,7 @@
 
 [Guids]
   gTpm2ServiceFfaGuid
+  gArmTpmCrbInfoHobGuid
 
 [Depex]
   TRUE
