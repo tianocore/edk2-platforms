@@ -243,32 +243,18 @@ VTdSetAttribute (
   DEBUG ((DEBUG_VERBOSE, "PCI(S%x.B%x.D%x.F%x) ", Segment, SourceId.Bits.Bus, SourceId.Bits.Device, SourceId.Bits.Function));
   DEBUG ((DEBUG_VERBOSE, "(0x%lx~0x%lx) - %lx\n", DeviceAddress, Length, IoMmuAccess));
 
-  if (mAcpiDmarTable == NULL) {
-    //
-    // Record the entry to driver global variable.
-    // As such once VTd is activated, the setting can be adopted.
-    //
-    if ((PcdGet8 (PcdVTdPolicyPropertyMask) & BIT2) != 0) {
-      //
-      // Force no IOMMU access attribute request recording before DMAR table is installed.
-      //
-      return EFI_NOT_READY;
-    }
-    Status = RequestAccessAttribute (Segment, SourceId, DeviceAddress, Length, IoMmuAccess);
-  } else {
-    PERF_CODE (
-      AsciiSPrint (PerfToken, sizeof(PerfToken), "S%04xB%02xD%02xF%01x", Segment, SourceId.Bits.Bus, SourceId.Bits.Device, SourceId.Bits.Function);
-      Identifier = (Segment << 16) | SourceId.Uint16;
-      PERF_START_EX (gImageHandle, PerfToken, "IntelVTD", 0, Identifier);
-    );
+  PERF_CODE (
+    AsciiSPrint (PerfToken, sizeof(PerfToken), "S%04xB%02xD%02xF%01x", Segment, SourceId.Bits.Bus, SourceId.Bits.Device, SourceId.Bits.Function);
+    Identifier = (Segment << 16) | SourceId.Uint16;
+    PERF_START_EX (gImageHandle, PerfToken, "IntelVTD", 0, Identifier);
+  );
 
-    Status = SetAccessAttribute (Segment, SourceId, DeviceAddress, Length, IoMmuAccess);
+  Status = SetAccessAttribute (Segment, SourceId, DeviceAddress, Length, IoMmuAccess);
 
-    PERF_CODE (
-      Identifier = (Segment << 16) | SourceId.Uint16;
-      PERF_END_EX (gImageHandle, PerfToken, "IntelVTD", 0, Identifier);
-    );
-  }
+  PERF_CODE (
+    Identifier = (Segment << 16) | SourceId.Uint16;
+    PERF_END_EX (gImageHandle, PerfToken, "IntelVTD", 0, Identifier);
+  );
 
   if (!EFI_ERROR(Status)) {
     SyncDeviceHandleToMapInfo (
@@ -332,6 +318,10 @@ IoMmuSetAttribute (
   EFI_PHYSICAL_ADDRESS  DeviceAddress;
   UINTN                 NumberOfPages;
   EFI_TPL               OriginalTpl;
+
+  if (!mVtdInitialized) {
+    return EFI_NOT_READY;
+  }
 
   OriginalTpl = gBS->RaiseTPL (VTD_TPL_LEVEL);
 
