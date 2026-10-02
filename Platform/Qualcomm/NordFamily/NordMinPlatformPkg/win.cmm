@@ -1,0 +1,44 @@
+;  @file
+;
+;  Windows size, position configuration in T32. Overwrite to the desired
+;  T32 setting using store windows to option.
+;
+;  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+;  SPDX-License-Identifier: BSD-2-Clause-Patent
+;
+
+B::
+
+TOOLBAR   ON
+STATUSBAR ON
+FramePOS 8.4286 4.0 235. 65.
+WinPAGE.RESet
+
+WinPAGE.Create P000
+WinCLEAR
+
+WinPOS 155.57 -0.41667 75. 40. 0. 0. W001
+r /sl
+
+WinPOS 155.43 42.667 75. 25. 5. 0. W002
+v.f
+
+;WinPOS 69.143 39.231 120. 25. 0. 0. W005
+WinPOS 3.0 34.917 221. 26. 0. 0. W005
+
+TERM.METHOD DCC3
+TERM.RESET
+TERM.SIZE 220. 10000
+TERM.SCROLL ON
+;TERM.MODE VT100
+TERM.MODE STRING
+TERM.GATE
+SCREEN.ALWAYS
+ 
+WinPOS 0.71429 -0.33333 151. 67. 24. 1. W000
+WinTABS 10. 32. 25.
+D.L
+
+WinPAGE.select P000
+ 
+ENDDO

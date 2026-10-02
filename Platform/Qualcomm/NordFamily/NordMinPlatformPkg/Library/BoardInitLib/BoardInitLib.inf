@@ -1,0 +1,26 @@
+## @file
+#  NordMinPlatformPkg BoardInitLib instance
+#
+#  Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BoardInitLib
+  FILE_GUID                      = 70EE7BD9-08FF-4D0E-AA7B-4320844F939A
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardInitLib
+
+[Sources]
+  BoardInitLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  NordMinPlatformPkg/NordMinPlatformPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  PcdLib
