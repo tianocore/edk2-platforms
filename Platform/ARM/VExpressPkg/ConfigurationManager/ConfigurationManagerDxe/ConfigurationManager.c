@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2017 - 2025, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2026, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -107,6 +107,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtCpuTopology),
       NULL
     },
+    // SSDT PL050 Keyboard/Mouse Table
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtPl050),
+      NULL
+    },
     // PPTT Table
     {
       EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,
@@ -184,6 +191,26 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
 
   // Power management profile information
   { EFI_ACPI_6_5_PM_PROFILE_ENTERPRISE_SERVER },    // PowerManagement Profile
+
+  // PL050 keyboard/mouse interfaces.
+  {
+    {
+      FALSE,                           // IsMouse
+      FVP_PL050_KEYBOARD_BASE_ADDRESS, // BaseAddress
+      {
+        FVP_PL050_KEYBOARD_IRQ, // Interrupt
+        BIT0 // ResourceConsumer, Level, ActiveHigh, Exclusive
+      }
+    },
+    {
+      TRUE,                         // IsMouse
+      FVP_PL050_MOUSE_BASE_ADDRESS, // BaseAddress
+      {
+        FVP_PL050_MOUSE_IRQ, // Interrupt
+        BIT0 // ResourceConsumer, Level, ActiveHigh, Exclusive
+      }
+    }
+  },
 
   /* GIC CPU Interface information
      GIC_ENTRY (CPUInterfaceNumber, Mpidr, PmuIrq, VGicIrq, EnergyEfficiency)
@@ -1838,6 +1865,9 @@ InitializePlatformRepository (
 
     PlatformRepo->DbgSerialPort.Interrupt = FVP_GICV5_DBG_IRQ;
 
+    PlatformRepo->Pl050Info[0].Interrupt.Interrupt = FVP_GICV5_PL050_KEYBOARD_IRQ;
+    PlatformRepo->Pl050Info[1].Interrupt.Interrupt = FVP_GICV5_PL050_MOUSE_IRQ;
+
     PlatformRepo->SmmuV3Info.IdMappingCount = 2;
     PlatformRepo->SmmuV3Info.Flags |= EFI_ACPI_IORT_SMMUv3_FLAG_DEVICEID_VALID;
     PlatformRepo->SmmuV3Info.DeviceIdMappingIndex = 1; // DeviceIdMapping[1]
@@ -2683,6 +2713,16 @@ GetArmNameSpaceObject (
                  &PlatformRepo->BootArchInfo,
                  sizeof (PlatformRepo->BootArchInfo),
                  1,
+                 CmObject
+                 );
+      break;
+
+    case EArmObjPl050Info:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->Pl050Info,
+                 sizeof (PlatformRepo->Pl050Info),
+                 ARRAY_SIZE (PlatformRepo->Pl050Info),
                  CmObject
                  );
       break;

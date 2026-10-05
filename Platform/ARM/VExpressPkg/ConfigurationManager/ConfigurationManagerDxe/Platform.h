@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2017 - 2019, ARM Limited. All rights reserved.
+  Copyright (c) 2017 - 2026, ARM Limited. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -97,6 +97,12 @@
                                           SBSA_WATCHDOG_ACTIVE_HIGH    | \
                                           SBSA_WATCHDOG_LEVEL_TRIGGERED)
 
+// PL050 keyboard and mouse interfaces
+#define FVP_PL050_KEYBOARD_BASE_ADDRESS  0x1C060000
+#define FVP_PL050_MOUSE_BASE_ADDRESS     0x1C070000
+#define FVP_PL050_KEYBOARD_IRQ           44
+#define FVP_PL050_MOUSE_IRQ              45
+
 // GICv5
 #define FVP_GICV5_INTERRUPT_TYPE_SHIFT            (29)
 #define FVP_GICV5_INTERRUPT_TYPE_PPI              (1 << FVP_GICV5_INTERRUPT_TYPE_SHIFT)
@@ -124,6 +130,9 @@
 
 #define FVP_GICV5_SPCR_IRQ                    (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x05)
 #define FVP_GICV5_DBG_IRQ                     (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x06)
+
+#define FVP_GICV5_PL050_KEYBOARD_IRQ          (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x0c)
+#define FVP_GICV5_PL050_MOUSE_IRQ             (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x0d)
 
 #define FVP_GICV5_SMMU3_EVENT_IRQ             (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x4a)
 #define FVP_GICV5_SMMU3_PRI_IRQ               (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x4b)

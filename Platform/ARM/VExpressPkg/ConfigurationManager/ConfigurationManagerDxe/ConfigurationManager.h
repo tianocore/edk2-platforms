@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2017 - 2025, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2026, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -137,9 +137,9 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 /** The number of ACPI tables to install
 */
 #ifdef ENABLE_TPM
-#define PLAT_ACPI_TABLE_COUNT       13
+#define PLAT_ACPI_TABLE_COUNT  14
 #else
-#define PLAT_ACPI_TABLE_COUNT       12
+#define PLAT_ACPI_TABLE_COUNT  13
 #endif
 
 #ifdef ENABLE_TPM
@@ -147,6 +147,10 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 #else
 #define PLAT_SMBIOS_TABLE_COUNT     2
 #endif
+
+/** The number of PL050 keyboard/mouse interfaces.
+*/
+#define PLAT_PL050_COUNT  2
 
 /** The number of platform generic timer blocks
 */
@@ -244,6 +248,9 @@ typedef struct PlatformRepositoryInfo {
 
   /// Power management profile information
   CM_ARCH_COMMON_POWER_MANAGEMENT_PROFILE_INFO  PmProfileInfo;
+
+  /// PL050 keyboard/mouse interface information
+  CM_ARM_PL050_INFO                     Pl050Info[PLAT_PL050_COUNT];
 
   /// GIC CPU interface information
   CM_ARM_GICC_INFO                      GicCInfo[PLAT_CPU_COUNT];
