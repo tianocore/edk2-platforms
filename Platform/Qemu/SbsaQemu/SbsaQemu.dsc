@@ -269,6 +269,8 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/RuntimeCryptLib.inf
 
+  MapMmioLib|MdeModulePkg/Library/MapMmioLib/MapMmioLib.inf
+
 ###################################################################################################
 # BuildOptions Section - Define the module specific tool chain flags that should be used as
 #                        the default flags for a module. These flags are appended to any
