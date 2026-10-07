@@ -70,23 +70,17 @@
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
 
 [LibraryClasses.common.DXE_CORE]
-  DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
-  HobLib|MdePkg/Library/DxeCoreHobLib/DxeCoreHobLib.inf
-  MemoryAllocationLib|MdeModulePkg/Library/DxeCoreMemoryAllocationLib/DxeCoreMemoryAllocationLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
-  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   PciHostBridgeLib|Platform/ARM/SgiPkg/Library/PciHostBridgeLib/PciHostBridgeLib.inf
   PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
   PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
   PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
-  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 !if $(TARGET) != RELEASE
   DebugLib|MdePkg/Library/DxeRuntimeDebugLibSerialPort/DxeRuntimeDebugLibSerialPort.inf
 !endif

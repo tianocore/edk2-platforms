@@ -302,7 +302,6 @@
 !if $(TARGET) != RELEASE
   DebugLib|MdePkg/Library/DxeRuntimeDebugLibSerialPort/DxeRuntimeDebugLibSerialPort.inf
 !endif
-  VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
 
 [BuildOptions]
   GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG

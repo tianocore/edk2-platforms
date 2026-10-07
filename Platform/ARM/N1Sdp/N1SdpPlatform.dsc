@@ -61,9 +61,6 @@
   ReportStatusCodeLib|MdePkg/Library/BaseReportStatusCodeLibNull/BaseReportStatusCodeLibNull.inf
 
 [LibraryClasses.common.DXE_CORE]
-  DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
-  HobLib|MdePkg/Library/DxeCoreHobLib/DxeCoreHobLib.inf
-  MemoryAllocationLib|MdeModulePkg/Library/DxeCoreMemoryAllocationLib/DxeCoreMemoryAllocationLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
 
 [LibraryClasses.common.DXE_DRIVER]
@@ -72,7 +69,6 @@
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 !if $(TARGET) != RELEASE
   DebugLib|MdePkg/Library/DxeRuntimeDebugLibSerialPort/DxeRuntimeDebugLibSerialPort.inf
 !endif
