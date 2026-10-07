@@ -16,11 +16,6 @@
 [LibraryClasses.common]
   ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmTransferListLib|MdePkg/Library/ArmTransferListLib/ArmTransferListLib.inf
-  BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
-  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-  ImagePropertiesRecordLib|MdeModulePkg/Library/ImagePropertiesRecordLib/ImagePropertiesRecordLib.inf
   FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
 
   # Ramdisk Support

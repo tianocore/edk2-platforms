@@ -36,9 +36,6 @@
   ArmLib|MdePkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|UefiCpuPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmPlatformLib|Silicon/ARM/NeoverseN1Soc/Library/PlatformLib/PlatformLib.inf
-  BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
-  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
 
   # file explorer library support
