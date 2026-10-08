@@ -87,6 +87,7 @@ EfiLibSetElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiSetElogData (
   IN  EFI_SM_ELOG_PROTOCOL  *This,
   IN  UINT8                 *ElogData,
@@ -182,6 +183,7 @@ EfiLibGetElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiGetElogData (
   IN EFI_SM_ELOG_PROTOCOL  *This,
   IN UINT8                 *ElogData,
@@ -261,6 +263,7 @@ EfiLibEraseElogData (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiEraseElogData (
   IN EFI_SM_ELOG_PROTOCOL  *This,
   IN EFI_SM_ELOG_TYPE      DataType,
@@ -334,6 +337,7 @@ EfiLibActivateElog (
 
 **/
 EFI_STATUS
+EFIAPI
 EfiActivateElog (
   IN EFI_SM_ELOG_PROTOCOL  *This,
   IN  EFI_SM_ELOG_TYPE     DataType,
