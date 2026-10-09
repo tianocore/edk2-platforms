@@ -269,6 +269,7 @@ typedef struct {
 
 #define MAX_MMCFW_MODULE_ENTRY   0x02
 
+#define DEFAULT_TOP_FLASH_ADDRESS  0x100000000ull
 #define TOP_FLASH_ADDRESS  (gFitTableContext.TopFlashAddressRemapValue)
 
 #define MEMORY_TO_FLASH(FileBuffer, FvBuffer, FvSize)  \
@@ -1180,7 +1181,7 @@ GetFitEntryNumber (
     //
     // no remapping
     //
-    gFitTableContext.TopFlashAddressRemapValue = 0x100000000;
+    gFitTableContext.TopFlashAddressRemapValue = DEFAULT_TOP_FLASH_ADDRESS;
   }
   printf ("Top Flash Address Value : 0x%llx\n", (unsigned long long) gFitTableContext.TopFlashAddressRemapValue);
   //
@@ -3939,6 +3940,8 @@ FitView (
     Error (NULL, 0, 0, "Unable to open file", "%s", argv[2]);
     goto exitFunc;
   }
+
+  gFitTableContext.TopFlashAddressRemapValue = DEFAULT_TOP_FLASH_ADDRESS;
 
   // no -f option, use default FIT pointer offset
   if (argc == 3) {
