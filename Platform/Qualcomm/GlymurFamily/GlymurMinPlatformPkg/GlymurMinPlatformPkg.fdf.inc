@@ -14,7 +14,32 @@
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress      = 0xA7000000
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
 
-!include GlymurMinPlatformPkg/Include/Fdf/FlashMap.fdf.inc
+#
+# Glymur-specific flash sizes. Offsets and derived base addresses are supplied
+# by the shared QualcommMinPlatformPkg flash map below.
+#
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize   = 0x0003C000
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize = 0x00004000
+
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize          = 0x00060000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize       = 0x00010000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize               = 0x00010000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize               = 0x00020000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize               = 0x00020000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize         = 0x00080000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspSize                = 0x00020000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize           = 0x000C0000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize             = 0x00040000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize           = 0x00080000
+
+!include QualcommMinPlatformPkg/Include/Fdf/FlashMap.fdf.inc
+
+#
+# NV storage base addresses for the GlymurVars FD.
+#
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase   = gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase = gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize + gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase   = gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase + gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 
 #
 # Note: GlymurVars FD is currently not used
