@@ -3931,6 +3931,7 @@ FitView (
   UINT32                        BiosRegionBaseOffset;
   FLASH_MAP_0_REGISTER          FlashMap0;
   FLASH_REGION_1_BIOS_REGISTER  FlashRegion1;
+  UINT64                        FitTableAddress;
 
   //
   // Step 1: Read input file
@@ -4007,6 +4008,21 @@ FitView (
   // Close the Input file
   //
   fclose (FpIn);
+
+  if ((gFitTableContext.FitTablePointerOffset < sizeof (UINT32)) ||
+      (gFitTableContext.FitTablePointerOffset > FvRecoveryFileSize)) {
+    Error (NULL, 0, 0, "No FIT table found", "FIT pointer offset 0x%x is outside the image", gFitTableContext.FitTablePointerOffset);
+    Status = STATUS_ERROR;
+    goto exitFunc;
+  }
+
+  FitTableAddress = *(UINT32 *)(FileBuffer + FvRecoveryFileSize - gFitTableContext.FitTablePointerOffset);
+  if ((FitTableAddress < TOP_FLASH_ADDRESS - FvRecoveryFileSize) ||
+      (FitTableAddress + sizeof (FIRMWARE_INTERFACE_TABLE_ENTRY) > TOP_FLASH_ADDRESS)) {
+    Error (NULL, 0, 0, "No FIT table found", "FIT pointer 0x%08x is outside the image", (UINT32)FitTableAddress);
+    Status = STATUS_ERROR;
+    goto exitFunc;
+  }
 
   //
   // For debug
