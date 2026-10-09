@@ -1,0 +1,13 @@
+## @file
+#  NordMinPlatformPkg FDF file
+#
+#  Copyright (c) 2022 Theo Jehl<BR>
+#  Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress      = 0xD8D00000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x380000
+
+!include NordMinPlatformPkg/NordMinPlatformPkg.fdf.inc
