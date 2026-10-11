@@ -1,7 +1,7 @@
 /** @file
   Header file for Config Block Lib implementation
 
-  Copyright (c) 2019 - 2020 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2019 - 2026 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -59,6 +59,64 @@ GetConfigBlock (
   IN     VOID      *ConfigBlockTableAddress,
   IN     EFI_GUID  *ConfigBlockGuid,
   OUT    VOID      **ConfigBlockAddress
+  );
+
+/**
+  Retrieve a Config Block by type GUID and instance GUID.
+
+  Walks the config block table matching GuidHob.Name against ConfigBlockGuid.
+  Among matching blocks, returns the one whose Attributes has
+  CONFIG_BLOCK_HEADER2_ATTRIBUTE (BIT0) set and whose Namespace matches
+  the provided Namespace GUID. Config blocks that use the original
+  CONFIG_BLOCK_HEADER format are never returned by this API, even if
+  ConfigBlockGuid matches. Use GetConfigBlock() for those instead.
+
+  @param[in]   ConfigBlockTableAddress  Pointer to the config block table.
+  @param[in]   ConfigBlockGuid          IP type GUID (matches GuidHob.Name).
+  @param[in]   Namespace                Scoping GUID (matches Header2.Namespace).
+                                        Namespace can be a UUID v4 GUID to
+                                        disambiguate between different logical
+                                        partitions, or a UUID v5 GUID derived
+                                        from a UUID v4 GUID and an instance
+                                        index when more than one instance of a
+                                        logical partition exists.
+  @param[out]  ConfigBlockAddress       On success, pointer to the matching config block.
+
+  @retval EFI_SUCCESS               Config block found.
+  @retval EFI_NOT_FOUND             No matching block exists.
+  @retval EFI_INVALID_PARAMETER     A required pointer argument is NULL.
+**/
+EFI_STATUS
+EFIAPI
+GetConfigBlockByInstance (
+  IN     VOID      *ConfigBlockTableAddress,
+  IN     EFI_GUID  *ConfigBlockGuid,
+  IN     EFI_GUID  *Namespace,
+  OUT    VOID      **ConfigBlockAddress
+  );
+
+/**
+  Retrieve the next config block in a config block table.
+
+  Starts the search after CurrentConfigBlock (or from the beginning if NULL).
+  If ConfigBlockGuid is non-NULL, only blocks matching that GUID are returned.
+
+  @param[in]           ConfigBlockTableAddress  Pointer to the config block table.
+  @param[in, optional] ConfigBlockGuid          If non-NULL, filter by IP type GUID.
+  @param[in, optional] CurrentConfigBlock       Starting point. NULL returns the first match.
+  @param[out]          NextConfigBlock          On success, pointer to the next matching block.
+
+  @retval EFI_SUCCESS               Next config block found.
+  @retval EFI_NOT_FOUND             No further matching block exists.
+  @retval EFI_INVALID_PARAMETER     ConfigBlockTableAddress or NextConfigBlock is NULL.
+**/
+EFI_STATUS
+EFIAPI
+GetNextConfigBlock (
+  IN            VOID      *ConfigBlockTableAddress,
+  IN  OPTIONAL  EFI_GUID  *ConfigBlockGuid,
+  IN  OPTIONAL  VOID      *CurrentConfigBlock,
+  OUT           VOID      **NextConfigBlock
   );
 
 #endif // _CONFIG_BLOCK_LIB_H_
