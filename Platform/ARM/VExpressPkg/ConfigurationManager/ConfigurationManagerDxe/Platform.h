@@ -119,6 +119,10 @@
 
 #define FVP_GICV5_IWB_CONF_FRAME_BASE         (0x2f000000)
 #define FVP_GICV5_IWB_GSIV_BASE               (FVP_GICV5_GSI_TYPE_IWB)
+#define FVP_SMC91X_SIZE                (0x00010000)
+#define FVP_SMC91X_IRQ                 (0x2F)
+#define FVP_GICV5_SMC91X_IRQ           (FVP_GICV5_INTERRUPT_TYPE_SPI | 0x0F)
+
 
 #define FVP_GICV5_PMU_IRQ                     (FVP_GICV5_INTERRUPT_TYPE_PPI | 0x17)
 #define FVP_GICV5_VGIC_IRQ                    (FVP_GICV5_INTERRUPT_TYPE_PPI | 0x19)
@@ -150,4 +154,3 @@
 #define FVP_GICV5_PCIE_IWB3_IRQ               (FVP_GICV5_IWB_GSIV_BASE | 0xab)
 
 #endif // PLATFORM_H__
-

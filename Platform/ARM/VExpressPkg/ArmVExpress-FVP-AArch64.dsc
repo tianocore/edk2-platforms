@@ -135,6 +135,11 @@
   # Only one core enters UEFI, and PSCI is implemented in EL3 by TF-A
   gArmPlatformTokenSpaceGuid.PcdCoreCount|1
 
+!ifndef EDK2_ENABLE_SMSC_91X
+  # SMSC LAN91x Ethernet controller
+  gArmVExpressTokenSpaceGuid.PcdLan91xDxeBaseAddress|0x1A000000
+!endif
+
   #
   # NV Storage PCDs. Use base of 0x0C000000 for NOR1
   #

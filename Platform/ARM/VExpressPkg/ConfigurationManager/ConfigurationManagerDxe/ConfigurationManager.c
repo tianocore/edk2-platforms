@@ -136,6 +136,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       NULL,
     },
 #endif
+    // SSDT table describing the SMC91X network device
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtSmc91x),
+      NULL
+    },
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
@@ -337,6 +344,16 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     EFI_ACPI_DBG2_PORT_SUBTYPE_SERIAL_ARM_SBSA_GENERIC_UART,  // Port subtype
     0x1000,                                                   // Address length
     EFI_ACPI_6_3_DWORD,                                       // Access size
+  },
+
+  // SMC91X network device
+  {
+    FixedPcdGet32 (PcdLan91xDxeBaseAddress),
+    FVP_SMC91X_SIZE,
+    {
+      FVP_SMC91X_IRQ,
+      0 // Level, ActiveHigh
+    }
   },
 
   // GIC ITS
@@ -1788,8 +1805,8 @@ InitialiseProcStrings (
 
   @param [in]  This        Pointer to the Configuration Manager Protocol.
 
-  @retval
-    EFI_SUCCESS   Success
+  @retval EFI_SUCCESS  The platform repository was initialized.
+  @return An error from platform information initialization.
 **/
 STATIC
 EFI_STATUS
@@ -1846,6 +1863,8 @@ InitializePlatformRepository (
 
   if (PlatformRepo->HasGicV5) {
     // GICv5 uses different interrupts to previous GICs
+    PlatformRepo->Smc91xInfo.Interrupt.Interrupt = FVP_GICV5_SMC91X_IRQ;
+
     for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
       PlatformRepo->GicCInfo[Index].PerformanceInterruptGsiv = FVP_GICV5_PMU_IRQ;
       PlatformRepo->GicCInfo[Index].VGICMaintenanceInterrupt = FVP_GICV5_VGIC_IRQ;
@@ -2517,6 +2536,16 @@ GetArchCommonNameSpaceObject (
                  CmObjectId,
                  &PlatformRepo->DbgSerialPort,
                  sizeof (PlatformRepo->DbgSerialPort),
+                 1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjSmc91xInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 &PlatformRepo->Smc91xInfo,
+                 sizeof (PlatformRepo->Smc91xInfo),
                  1,
                  CmObject
                  );

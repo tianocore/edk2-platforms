@@ -137,9 +137,9 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 /** The number of ACPI tables to install
 */
 #ifdef ENABLE_TPM
-#define PLAT_ACPI_TABLE_COUNT  14
+#define PLAT_ACPI_TABLE_COUNT  15
 #else
-#define PLAT_ACPI_TABLE_COUNT  13
+#define PLAT_ACPI_TABLE_COUNT  14
 #endif
 
 #ifdef ENABLE_TPM
@@ -280,6 +280,9 @@ typedef struct PlatformRepositoryInfo {
 
   /// Serial port information for the DBG2 UART port
   CM_ARCH_COMMON_SERIAL_PORT_INFO       DbgSerialPort;
+
+  /// SMC91X network device information
+  CM_ARCH_COMMON_SMC91X_INFO                      Smc91xInfo;
 
   /// GIC ITS information
   CM_ARM_GIC_ITS_INFO                   GicItsInfo;
