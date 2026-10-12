@@ -426,10 +426,8 @@
   # use the TTY terminal type
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
 
-!ifdef EDK2_ENABLE_SMSC_91X
   # Ethernet (SMSC 91C111)
   gArmVExpressTokenSpaceGuid.PcdLan91xDxeBaseAddress|0x1A000000
-!endif
 
 !if $(SECURE_BOOT_ENABLE) == TRUE
   # override the default values from SecurityPkg to ensure images from all sources are verified in secure boot
