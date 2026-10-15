@@ -13,7 +13,7 @@
   PLATFORM_NAME               = QemuOpenBoardPkg
   PLATFORM_VERSION            = 0.1
   SUPPORTED_ARCHITECTURES     = IA32 | X64
-  FLASH_DEFINITION            = $(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
+  FLASH_DEFINITION            = Platform/Qemu/$(PLATFORM_NAME)/$(PLATFORM_NAME).fdf
   OUTPUT_DIRECTORY            = Build/$(PLATFORM_NAME)
   BUILD_TARGETS               = DEBUG | RELEASE | NOOPT
   SKUID_IDENTIFIER            = ALL
@@ -58,12 +58,12 @@
 # CorePeiLib, and CoreDxeLib.
 # Optional MinPlatformPkg features should be enabled after this
 #
-!include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+!include Platform/MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
 #
 # Commonly used MinPlatform feature configuration logic that maps functionity to stage
 #
-!include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
+!include Platform/Intel/BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
 [PcdsFixedAtBuild]
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel                      | 0x802A00C7
@@ -127,13 +127,13 @@
   !endif
 
 # Include Common libraries and then stage specific libraries and components
-!include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
-!include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
-!include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
-!include QemuOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
-!include QemuOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
-!include QemuOpenBoardPkg/Include/Dsc/Stage3.dsc.inc
-!include QemuOpenBoardPkg/Include/Dsc/Stage4.dsc.inc
+!include Platform/MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
+!include Platform/MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
+!include Platform/MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
+!include Platform/Qemu/QemuOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
+!include Platform/Qemu/QemuOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
+!include Platform/Qemu/QemuOpenBoardPkg/Include/Dsc/Stage3.dsc.inc
+!include Platform/Qemu/QemuOpenBoardPkg/Include/Dsc/Stage4.dsc.inc
 
 [LibraryClasses.Common]
   QemuOpenFwCfgLib        | QemuOpenBoardPkg/Library/QemuOpenFwCfgLib/QemuOpenFwCfgLib.inf
