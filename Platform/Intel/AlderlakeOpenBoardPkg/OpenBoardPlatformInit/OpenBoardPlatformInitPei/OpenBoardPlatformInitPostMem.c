@@ -1,7 +1,7 @@
 /** @file
   Source code file for OpenBoard Platform Init PEI module
 
-   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+   Copyright (c) 2022 - 2026, Intel Corporation. All rights reserved.<BR>
    SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -9,7 +9,6 @@
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/PeiServicesLib.h>
-#include <Core/Pei/PeiMain.h>
 #include <Ppi/GraphicsPlatformPolicyPpi.h>
 #include <Library/PeiGetFvInfoLib.h>
 
@@ -110,24 +109,44 @@ OpenBoardPlatformInitPostMemEntryPoint (
   )
 {
   EFI_STATUS                       Status;
-  PEI_CORE_INSTANCE                *PrivateData;
-  UINTN                            CurrentFv;
-  PEI_CORE_FV_HANDLE               *CoreFvHandle;
+  EFI_PEI_FV_HANDLE                 FvHandle;
+  EFI_PEI_FILE_HANDLE               CurrentFileHandle;
+  UINTN                             FvInstance;
   VOID                             *HobData;
 
   //
   // Build a HOB to show current FV location for SA policy update code to consume.
   //
-  PrivateData = PEI_CORE_INSTANCE_FROM_PS_THIS(PeiServices);
-  CurrentFv = PrivateData->CurrentPeimFvCount;
-  CoreFvHandle = &(PrivateData->Fv[CurrentFv]);
+  FvHandle = NULL;
+  for (FvInstance = 0; ; FvInstance++) {
+    Status = PeiServicesFfsFindNextVolume (FvInstance, &FvHandle);
+    if (EFI_ERROR (Status)) {
+      break;
+    }
+
+    CurrentFileHandle = NULL;
+    while (!EFI_ERROR (PeiServicesFfsFindNextFile (EFI_FV_FILETYPE_ALL, FvHandle, &CurrentFileHandle))) {
+      if (CurrentFileHandle == FileHandle) {
+        break;
+      }
+    }
+
+    if (CurrentFileHandle == FileHandle) {
+      Status = EFI_SUCCESS;
+      break;
+    }
+  }
+  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
 
   HobData = BuildGuidHob (
              &gPlatformInitFvLocationGuid,
-             sizeof (VOID *)
+             sizeof (EFI_PEI_FV_HANDLE)
              );
   ASSERT (HobData != NULL);
-  CopyMem (HobData, (VOID *) &CoreFvHandle, sizeof (VOID *));
+  CopyMem (HobData, (VOID *) &FvHandle, sizeof (EFI_PEI_FV_HANDLE));
 
   //
   // Install mPeiGraphicsPlatformPpi

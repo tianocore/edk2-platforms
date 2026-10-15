@@ -1,15 +1,16 @@
 /** @file
   Helper Library for PEI Graphics PEIM
 
-   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+   Copyright (c) 2022 - 2026, Intel Corporation. All rights reserved.<BR>
    SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include <Library/PeiGetFvInfoLib.h>
+#include <Guid/FirmwareFileSystem2.h>
 #include <Ppi/FirmwareVolume.h>
 #include <Pi/PiPeiCis.h>
-#include <Core/Pei/PeiMain.h>
+#include <Library/DebugLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Library/HobLib.h>
 
@@ -34,7 +35,7 @@ PeiGetSectionFromFv (
   EFI_STATUS                           Status;
   EFI_PEI_FIRMWARE_VOLUME_PPI          *FvPpi;
   EFI_FV_FILE_INFO                     FvFileInfo;
-  PEI_CORE_FV_HANDLE                   *CoreFvHandle;
+  EFI_PEI_FV_HANDLE                    FvHandle;
   EFI_PEI_FILE_HANDLE                  FileHandle;
   EFI_GUID                             *FileGuid;
   EFI_COMMON_SECTION_HEADER            *Section;
@@ -51,13 +52,13 @@ PeiGetSectionFromFv (
 
   GuidHob = GetFirstGuidHob (&gPlatformInitFvLocationGuid);
   if (GuidHob != NULL) {
-    HobData = *(VOID **)GET_GUID_HOB_DATA(GuidHob);
-    CoreFvHandle = (PEI_CORE_FV_HANDLE *) HobData;
+    HobData = GET_GUID_HOB_DATA(GuidHob);
+    FvHandle = *(EFI_PEI_FV_HANDLE *) HobData;
 
     //
     // File typically resides in current FV or previous FV, so searching both of them.
     //
-    Status = FvPpi->FindFileByName (FvPpi, &NameGuid, &CoreFvHandle->FvHandle, &FileHandle);
+    Status = FvPpi->FindFileByName (FvPpi, &NameGuid, &FvHandle, &FileHandle);
 
     if (!EFI_ERROR(Status) && FileHandle != NULL) {
 
