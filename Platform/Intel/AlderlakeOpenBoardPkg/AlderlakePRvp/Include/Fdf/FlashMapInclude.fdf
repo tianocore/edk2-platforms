@@ -1,7 +1,7 @@
 ## @file
 #  FDF file of Platform.
 #
-#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   Copyright (c) 2022 - 2026, Intel Corporation. All rights reserved.<BR>
 #   SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -28,20 +28,20 @@ SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize      = 0x000300
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset            = 0x000E0000  # Flash addr (0xFF0E0000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize              = 0x002E0000  #
 SET gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalOffset               = 0x003C0000  # Flash addr (0xFF3C0000)
-SET gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalSize                 = 0x00360000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset            = 0x00720000  # Flash addr (0xFF720000)
+SET gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalSize                 = 0x00350000  #
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset            = 0x00710000  # Flash addr (0xFF710000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize              = 0x00090000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset              = 0x007B0000  # Flash addr (0xFF7B0000)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset              = 0x007A0000  # Flash addr (0xFF7A0000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize                = 0x000A0000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset            = 0x00850000  # Flash addr (0xFF850000)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset            = 0x00840000  # Flash addr (0xFF840000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize              = 0x00180000  #
 
-SET gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesOffset       = 0x009D0000  # Flash addr (0xFF9D0000)
+SET gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesOffset       = 0x009C0000  # Flash addr (0xFF9C0000)
 SET gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesSize         = 0x00080000  # Keep 0x80000 or larger
-SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset          = 0x00A50000  # Flash addr (0xFFA50000)
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset          = 0x00A40000  # Flash addr (0xFFA40000)
 SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize            = 0x00230000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset          = 0x00C80000  # Flash addr (0xFFC80000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize            = 0x00060000  #
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset          = 0x00C70000  # Flash addr (0xFFC70000)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize            = 0x00070000  #
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSOffset                = 0x00CE0000  # Flash addr (0xFFCE0000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize                  = 0x000A0000
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMOffset                = 0x00D80000  # Flash addr (0xFFD80000)
