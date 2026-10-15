@@ -49,7 +49,7 @@ SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase   = gEfiMdeModu
   BaseAddress   = 0xFF800000
   Size          = 0x80000
   ErasePolarity = 1
-  BlockSize     = 0x800|gGlymurMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize
+  BlockSize     = 0x800|gQualcommMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize
   NumBlocks     = 0x100
 
   #

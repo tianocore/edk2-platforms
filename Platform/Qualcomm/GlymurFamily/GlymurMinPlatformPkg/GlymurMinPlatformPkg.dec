@@ -19,5 +19,3 @@
 [Guids]
   gGlymurMinPlatformPkgTokenSpaceGuid                     = { 0x121b20c4, 0xa3dc, 0x4b8f, { 0xb6, 0x94, 0x03, 0xc7, 0xf4, 0x76, 0x51, 0x2b } }
 
-[PcdsFixedAtBuild]
-  gGlymurMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize   |0|UINT16|0x00000004

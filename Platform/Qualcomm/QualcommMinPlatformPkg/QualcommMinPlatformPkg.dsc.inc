@@ -7,6 +7,7 @@
 ##
 
 [LibraryClasses.Common]
+  BoardInitLib|QualcommMinPlatformPkg/Library/BoardInitLib/BoardInitLib.inf
   SerialPortLib|Silicon/Qualcomm/Library/GeniSerialPortLib/GeniSerialPortLib.inf
   ReportFvLib|QualcommMinPlatformPkg/Library/PeiReportFvLib/PeiReportFvLib.inf
   GptLib|MdeModulePkg/Library/GptLib/GptLib.inf

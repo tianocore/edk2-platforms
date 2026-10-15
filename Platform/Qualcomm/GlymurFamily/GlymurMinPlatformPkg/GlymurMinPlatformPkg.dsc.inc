@@ -141,5 +141,4 @@
   gQualcommMinPlatformPkgTokenSpaceGuid.PcdTrace32DdrSize                 | 0x00005000
 
 [LibraryClasses.Common]
-  BoardInitLib            | GlymurMinPlatformPkg/Library/BoardInitLib/BoardInitLib.inf
   PlatformHookLib         | MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf

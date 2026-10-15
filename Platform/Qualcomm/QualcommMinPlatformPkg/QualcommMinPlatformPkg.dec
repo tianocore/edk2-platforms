@@ -37,6 +37,8 @@
   #  @Prompt Maximum Memory
   gQualcommMinPlatformPkgTokenSpaceGuid.PcdMaxMemory                   | 0x1000000000 | UINT64  | 0xA1000000
 
+  gQualcommMinPlatformPkgTokenSpaceGuid.PcdFdVarBlockSize              | 0            | UINT16  | 0x00000004
+
   #
   # SoC Internal Memory - IMEM
   #
