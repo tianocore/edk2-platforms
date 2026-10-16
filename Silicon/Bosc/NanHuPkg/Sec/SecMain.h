@@ -31,6 +31,7 @@
 #include <Library/PrePiHobListPointerLib.h>
 #include <Library/SerialPortLib.h>
 #include <Register/RiscV64/RiscVImpl.h>
+#include <Guid/RiscVSecHobData.h>
 
 /**
   Entry point to the C language phase of SEC. After the SEC assembly

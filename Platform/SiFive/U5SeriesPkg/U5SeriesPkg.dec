@@ -14,9 +14,6 @@
   PACKAGE_GUID                   = AD6E43CA-7FED-4CEA-8151-68B2C5F12B3A
   PACKAGE_VERSION                = 1.0
 
-[Includes]
-  Include
-
 [LibraryClasses]
 
 [Guids]
