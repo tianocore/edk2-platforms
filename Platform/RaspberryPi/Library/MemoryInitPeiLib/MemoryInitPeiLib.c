@@ -85,6 +85,23 @@ AddUnmappedMemoryRegion (
 
 STATIC
 VOID
+AddMmioMemoryRegion (
+  IN ARM_MEMORY_REGION_DESCRIPTOR *Desc
+)
+{
+  BuildResourceDescriptorHob (
+    EFI_RESOURCE_MEMORY_MAPPED_IO,
+    EFI_RESOURCE_ATTRIBUTE_PRESENT |
+    EFI_RESOURCE_ATTRIBUTE_INITIALIZED |
+    EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE |
+    EFI_RESOURCE_ATTRIBUTE_TESTED,
+    Desc->PhysicalBase,
+    Desc->Length
+  );
+}
+
+STATIC
+VOID
 AddReservedMemoryRegion (
   IN ARM_MEMORY_REGION_DESCRIPTOR *Desc
   )
@@ -103,6 +120,7 @@ void (*AddRegion[]) (IN ARM_MEMORY_REGION_DESCRIPTOR *Desc) = {
   AddBasicMemoryRegion,
   AddRuntimeServicesRegion,
   AddReservedMemoryRegion,
+  AddMmioMemoryRegion,
   };
 
 /*++
