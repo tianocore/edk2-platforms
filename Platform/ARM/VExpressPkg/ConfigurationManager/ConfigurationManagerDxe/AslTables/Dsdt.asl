@@ -35,17 +35,6 @@ DefinitionBlock("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARM-VEXP", 1) {
       Return (Arg3)
     }
 
-    // SMC91X
-    Device (NET0) {
-      Name (_HID, "LNRO0003")
-      Name (_UID, 0)
-
-      Name (_CRS, ResourceTemplate () {
-        Memory32Fixed (ReadWrite, 0x1a000000, 0x00010000)
-        Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {0x2F}
-      })
-    }
-
     // VIRTIO block device
     Device (VIRT) {
       Name (_HID, "LNRO0005")

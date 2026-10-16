@@ -92,6 +92,7 @@
 
   gArmVExpressTokenSpaceGuid.PcdTpmSipSmcId
   gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc
+  gArmVExpressTokenSpaceGuid.PcdLan91xDxeBaseAddress
 
 [Pcd]
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
