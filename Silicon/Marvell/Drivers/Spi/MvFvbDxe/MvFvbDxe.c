@@ -872,6 +872,16 @@ MvFvbEraseBlocks (
         return EFI_DEVICE_ERROR;
       }
 
+      if (!FlashInstance->IsMemoryMapped) {
+        SetMem (
+          (VOID *)(FlashInstance->RegionBaseAddress +
+                   (FlashInstance->StartLba + StartingLba) *
+                   FlashInstance->Media.BlockSize),
+          FlashInstance->Media.BlockSize,
+          0xFF
+          );
+      }
+
       // Move to the next Lba
       StartingLba++;
       NumOfLba--;
@@ -978,6 +988,14 @@ MvFvbPrepareFvHeader (
                                                 FlashInstance->FvbSize);
     if (EFI_ERROR (Status)) {
       return Status;
+    }
+
+    if (!FlashInstance->IsMemoryMapped) {
+      SetMem (
+        (VOID *)FlashInstance->RegionBaseAddress,
+        FlashInstance->FvbSize,
+        0xFF
+        );
     }
 
     // Install all appropriate headers
