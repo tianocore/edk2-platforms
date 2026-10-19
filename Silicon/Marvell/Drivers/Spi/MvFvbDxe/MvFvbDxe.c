@@ -1040,6 +1040,7 @@ MvFvbConfigureFlashInstance (
   FlashInstance->IsMemoryMapped = PcdGetBool (PcdSpiMemoryMapped);
   FlashInstance->FvbSize = VariableSize + FtwWorkingSize + FtwSpareSize;
   FlashInstance->FvbOffset = PcdGet32 (PcdSpiVariableOffset);
+  FlashInstance->Size = FlashInstance->FvbSize;
 
   FlashInstance->Media.MediaId = 0;
   FlashInstance->Media.BlockSize = FlashInstance->SpiDevice.Info->SectorSize;
