@@ -278,27 +278,27 @@ GetPlatformMemorySize (
   // Accumulate maximum amount of memory needed
   //
 
-  DEBUG((DEBUG_ERROR, "PEI_MIN_MEMORY_SIZE:%dKB \n", DivU64x32(*MemorySize,1024)));
-  DEBUG((DEBUG_ERROR, "IndexNumber:%d MemoryDataNumber%d \n", IndexNumber,DataSize/ sizeof (EFI_MEMORY_TYPE_INFORMATION)));
+  DEBUG((DEBUG_INFO, "PEI_MIN_MEMORY_SIZE:%dKB \n", DivU64x32(*MemorySize,1024)));
+  DEBUG((DEBUG_INFO, "IndexNumber:%d MemoryDataNumber%d \n", IndexNumber,DataSize/ sizeof (EFI_MEMORY_TYPE_INFORMATION)));
   if (EFI_ERROR (Status)) {
     //
     // Start with minimum memory
     //
     for (Index = 0; Index < IndexNumber; Index++) {
-      DEBUG((DEBUG_ERROR, "Index[%d].Type = %d .NumberOfPages=0x%x\n", Index,mDefaultMemoryTypeInformation[Index].Type,mDefaultMemoryTypeInformation[Index].NumberOfPages));
+      DEBUG((DEBUG_INFO, "Index[%d].Type = %d .NumberOfPages=0x%x\n", Index,mDefaultMemoryTypeInformation[Index].Type,mDefaultMemoryTypeInformation[Index].NumberOfPages));
       *MemorySize += mDefaultMemoryTypeInformation[Index].NumberOfPages * EFI_PAGE_SIZE;
     }
-    DEBUG((DEBUG_ERROR, "No memory type,  Total platform memory:%dKB \n", DivU64x32(*MemorySize,1024)));
+    DEBUG((DEBUG_INFO, "No memory type,  Total platform memory:%dKB \n", DivU64x32(*MemorySize,1024)));
   } else {
     //
     // Start with at least 0x200 pages of memory for the DXE Core and the DXE Stack
     //
     for (Index = 0; Index < IndexNumber; Index++) {
-      DEBUG((DEBUG_ERROR, "Index[%d].Type = %d .NumberOfPages=0x%x\n", Index,MemoryData[Index].Type,MemoryData[Index].NumberOfPages));
+      DEBUG((DEBUG_INFO, "Index[%d].Type = %d .NumberOfPages=0x%x\n", Index,MemoryData[Index].Type,MemoryData[Index].NumberOfPages));
       *MemorySize += MemoryData[Index].NumberOfPages * EFI_PAGE_SIZE;
 
     }
-    DEBUG((DEBUG_ERROR, "has memory type,  Total platform memory:%dKB \n", DivU64x32(*MemorySize,1024)));
+    DEBUG((DEBUG_INFO, "has memory type,  Total platform memory:%dKB \n", DivU64x32(*MemorySize,1024)));
   }
 
   return EFI_SUCCESS;
