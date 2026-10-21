@@ -1,0 +1,40 @@
+# @file
+#  Copyright (c) 2025 Intel Corporation. All rights reserved. <BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = OpenBootloaderSmmPkg
+  PACKAGE_GUID                   = 47D83051-4B36-4771-94FB-27B54435F143
+  PACKAGE_VERSION                = 0.91
+
+[Includes]
+Include
+
+[Guids]
+  gCpPlatFlashTokenSpaceGuid                          = { 0xc9c39664, 0x96dd, 0x4c5c, { 0xaf, 0xd7, 0xcd, 0x65, 0x76, 0x29, 0xcf, 0xb0 }}
+  gSiPkgTokenSpaceGuid                                = { 0x977c97c1, 0x47e1, 0x4b6b, {0x96, 0x69, 0x43, 0x66, 0x99, 0xcb, 0xe4, 0x5b }}
+  gEfiBootloaderMmHobListGuid                         = { 0x4d0bf606, 0xb62d, 0x41d2, { 0x8e, 0x76, 0xe0, 0xfb, 0xfe, 0xa0, 0xf6, 0x28 } }
+
+[Protocols]
+  gPchSmmSpi2ProtocolGuid                              = { 0x56521f06, 0xa62,  0x4822, { 0x99, 0x63, 0xdf, 0x1,  0x9d, 0x72, 0xc7, 0xe1 }}
+  ## Include Include/Protocol/FspWrapperNvsProtocol.h
+  gFspWrapperNonVolatileStorageProtocolGuid           = { 0xd2e8223a, 0x7201, 0x45ad, { 0x89, 0x5c, 0x81, 0x6d, 0x88, 0x1f, 0xd9, 0x33 }}
+  gPchSmmSpiProtocolGuid                              =  {0x56521f06, 0xa62, 0x4822,  {0x99, 0x63, 0xdf, 0x1, 0x9d, 0x72, 0xc7, 0xe1}}
+
+[PcdsFixedAtBuild]
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmBase                  |0xFF000000 |UINT32|0x50000260
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmSize                  |0x00020000 |UINT32|0x50000261
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmSize                  |0xFF000000 |UINT32|0x50000262
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmOffset                |0x00000000 |UINT32|0x50000263
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmBase                  |0xFF000000 |UINT32|0x50000264
+  gPlatformTokenSpaceGuid.PcdPdaEnable                              |FALSE      |BOOLEAN|0x50000265
+
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFspNvsRegionBase               |0xFE560000 |UINT32|0x50000351
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFspNvsRegionOffset             |0x1F60000 |UINT32|0x50000352
+  gCpPlatFlashTokenSpaceGuid.PcdFlashFspNvsRegionSize               |0x00080000 |UINT32|0x50000353
+  gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress                           |0x500      |UINT16|0x50000354
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel                  |0x80000000 |UINT32|0x50000355
