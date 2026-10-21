@@ -143,6 +143,13 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtSmc91x),
       NULL
     },
+    // SSDT tables describing Virtio MMIO block and network devices
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtVirtioMmioDevice),
+      NULL
+    },
     // Note: The last 3 tables in this list are for FVP RevC only.
     // IORT Table - FVP RevC
     {
@@ -353,6 +360,32 @@ EDKII_PLATFORM_REPOSITORY_INFO  VExpressPlatRepositoryInfo = {
     {
       FVP_SMC91X_IRQ,
       0 // Level, ActiveHigh
+    }
+  },
+
+  // Virtio MMIO devices: block (UID 0) and network (UID 1).
+  {
+    {
+      FixedPcdGet32 (PcdVirtioBlkBaseAddress),
+      FixedPcdGet32 (PcdVirtioBlkSize),
+      {
+        FixedPcdGet32 (PcdVirtioBlkInterrupt),
+        // ResourceConsumer, Level, ActiveHigh, Exclusive.
+        EFI_ACPI_EXTENDED_INTERRUPT_FLAG_PRODUCER_CONSUMER_MASK
+      },
+      // Use non-coherent DMA until FVP device coherency is confirmed.
+      FALSE, // CacheCoherent
+    },
+    {
+      FixedPcdGet32 (PcdVirtioNetBaseAddress),
+      FixedPcdGet32 (PcdVirtioNetSize),
+      {
+        FixedPcdGet32 (PcdVirtioNetInterrupt),
+        // ResourceConsumer, Level, ActiveHigh, Exclusive.
+        EFI_ACPI_EXTENDED_INTERRUPT_FLAG_PRODUCER_CONSUMER_MASK
+      },
+      // Use non-coherent DMA until FVP device coherency is confirmed.
+      FALSE, // CacheCoherent
     }
   },
 
@@ -1864,6 +1897,8 @@ InitializePlatformRepository (
   if (PlatformRepo->HasGicV5) {
     // GICv5 uses different interrupts to previous GICs
     PlatformRepo->Smc91xInfo.Interrupt.Interrupt = FVP_GICV5_SMC91X_IRQ;
+    PlatformRepo->VirtioMmioDeviceInfo[0].Interrupt.Interrupt = FVP_GICV5_VIRTIO_BLOCK_IRQ;
+    PlatformRepo->VirtioMmioDeviceInfo[1].Interrupt.Interrupt = FVP_GICV5_VIRTIO_NET_IRQ;
 
     for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
       PlatformRepo->GicCInfo[Index].PerformanceInterruptGsiv = FVP_GICV5_PMU_IRQ;
@@ -2547,6 +2582,16 @@ GetArchCommonNameSpaceObject (
                  &PlatformRepo->Smc91xInfo,
                  sizeof (PlatformRepo->Smc91xInfo),
                  1,
+                 CmObject
+                 );
+      break;
+
+    case EArchCommonObjVirtioMmioDeviceInfo:
+      Status = HandleCmObject (
+                 CmObjectId,
+                 PlatformRepo->VirtioMmioDeviceInfo,
+                 sizeof (PlatformRepo->VirtioMmioDeviceInfo),
+                 ARRAY_SIZE (PlatformRepo->VirtioMmioDeviceInfo),
                  CmObject
                  );
       break;

@@ -1,10 +1,16 @@
 #/** @file
 # Arm Versatile Express package.
 #
-#  Copyright (c) 2012-2020, Arm Limited. All rights reserved.<BR>
+#  Copyright (c) 2012-2026, Arm Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
+#  @par Reference(s):
+#  - Arm FVP Base Memory Map
+#    https://support.arm.com/documentation/100966/1102-00/Programming-Reference-for-Base-FVPs/Base---memory
+#
+#  - Arm FVP Base Interrupt Assignments
+#    https://support.arm.com/documentation/100966/1102-00/Programming-Reference-for-Base-FVPs/Base---interrupt-assignments
 #**/
 
 [Defines]
@@ -72,3 +78,15 @@
 
   gArmVExpressTokenSpaceGuid.PcdTpmSipSmcId|0xC2000103|UINT32|0x00000030
   gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc|FALSE|BOOLEAN|0x00000031
+
+  # Virtio Block device
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkBaseAddress|0x1C130000|UINT32|0x00000032
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkSize|0x10000|UINT32|0x00000033
+
+  # Virtio Network device
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetBaseAddress|0x1C150000|UINT32|0x00000035
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetSize|0x10000|UINT32|0x00000036
+
+  # GICv3 defaults; CM interrupt fields are overridden at runtime for GICv5.
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkInterrupt|0x4A|UINT32|0x00000034
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetInterrupt|0x4C|UINT32|0x00000037
