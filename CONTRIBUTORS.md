@@ -19,14 +19,11 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Bob Feng               | bob.c.feng@intel.com             | [@BobCF](https://github.com/BobCF)                     |
 | caiyuqing379           | caiyuqing_hz@outlook.com         | [@caiyuqing379](https://github.com/caiyuqing379)       |
 | Chao Li                | lichao@loongson.cn               | [@kilaterlee](https://github.com/kilaterlee)           |
-| Chasel Chiu            | chasel.chiu@intel.com            | [@ChaselChiu](https://github.com/ChaselChiu)           |
 | Chuong Tran            | chuong@os.amperecomputing.com    | [@chuongtranle](https://github.com/chuongtranle)       |
 | dahogn                 | dahogn@hotmail.com               | [@dahogn](https://github.com/dahogn)                   |
-| Dandan Bi              | dandan.bi@intel.com              | [@dandanbi](https://github.com/dandanbi)               |
 | Daniel Schaefer        | git@danielschaefer.me            | [@JohnAZoidberg](https://github.com/JohnAZoidberg)     |
 | Deepika Kethi Reddy    | deepika.kethi.reddy@intel.com    | [@dkethire](https://github.com/dkethire)               |
 | Duke Zhai              | duke.zhai@amd.com                | [@mingxzha](https://github.com/mingxzha)               |
-| Eric Dong              | eric.dong@intel.com              | [@ydong10](https://github.com/ydong10)                 |
 | Eric Xing              | eric.xing@amd.com                | [@exinghr](https://github.com/exinghr)                 |
 | Graeme Gregory         | graeme@xora.org.uk               |                                                        |
 | Igniculus Fu           | igniculus.fu@amd.com             | [@fhh200000](https://github.com/fhh200000)             |
@@ -53,7 +50,6 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Pedro Falcato          | pedro.falcato@gmail.com          | [@heatd](https://github.com/heatd)                     |
 | Peng Xie               | xiepeng@phytium.com.cn           |                                                        |
 | Ran Wang               | wangran@bosc.ac.cn               |                                                        |
-| Ray Ni                 | ray.ni@intel.com                 | [@niruiyu](https://github.com/niruiyu)                 |
 | Ricardo Salveti        | ricardo.salveti@oss.qualcomm.com | [@ricardosalveti](https://github.com/ricardosalveti)   |
 | Rebecca Cran           | rebecca@os.amperecomputing.com   | [@bexcran](https://github.com/bexcran)                 |
 | Sai Chaganty           | rangasai.v.chaganty@intel.com    | [@SaiChaganty](https://github.com/SaiChaganty)         |

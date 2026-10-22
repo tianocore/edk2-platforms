@@ -45,19 +45,19 @@
 /Features/Ext4Pkg/** @heatd
 
 /Features/Intel/** @nate-desimone @SaiChaganty
-/Features/Intel/Debugging/** @nate-desimone @SaiChaganty @ydong10
+/Features/Intel/Debugging/** @nate-desimone @SaiChaganty
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty
-/Features/Intel/UserInterface/** @dandanbi @nate-desimone @SaiChaganty
+/Features/Intel/UserInterface/** @nate-desimone @SaiChaganty
 
 /Platform/Intel/** @nate-desimone @SaiChaganty
-/Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty @ydong10
+/Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty
 /Platform/MinPlatformPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
 
 /Silicon/Intel/** @nate-desimone @SaiChaganty
-/Silicon/Intel/IntelSiliconPkg/** @nate-desimone @niruiyu @SaiChaganty
+/Silicon/Intel/IntelSiliconPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/AlderlakeSiliconPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/SimicsX58SktPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/SimicsIch10Pkg/** @nate-desimone @SaiChaganty
@@ -82,7 +82,7 @@
 
 # OptionRomPkg
 # https://github.com/tianocore/tianocore.github.io/wiki/OptionRomPkg
-/Drivers/OptionRomPkg/** @niruiyu
+/Drivers/OptionRomPkg/** @mdkinney
 
 # Phytium platforms and silicon
 /Platform/Phytium/** @leiflindholm
