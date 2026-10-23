@@ -251,7 +251,7 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None, sk
             if os.name == 'nt' and toolchain is not None and \
                 toolchain.startswith ('CLANG') and 'BASETOOLS_MINGW_PATH' in config:
                 clean_command = ["mingw32-make", "-C",
-                                os.path.join(config["BASE_TOOLS_PATH"], "clean")]
+                                os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
             if os.name == "posix":
                 clean_command = ["make", "-C",
                                 os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
