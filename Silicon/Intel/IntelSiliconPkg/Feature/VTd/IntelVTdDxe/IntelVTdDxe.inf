@@ -78,7 +78,7 @@
   gIntelSiliconPkgTokenSpaceGuid.PcdVTdSupportAbortDmaMode  ## CONSUMES
 
 [Depex]
-  gEfiPciRootBridgeIoProtocolGuid
+  TRUE
 
 [UserExtensions.TianoCore."ExtraFiles"]
   IntelVTdDxeExtra.uni

@@ -157,6 +157,10 @@ IoMmuMap (
   BOOLEAN                                           NeedRemap;
   EFI_TPL                                           OriginalTpl;
 
+  if (!mVtdInitialized) {
+    return EFI_NOT_READY;
+  }
+
   if (NumberOfBytes == NULL || DeviceAddress == NULL ||
       Mapping == NULL) {
     DEBUG ((DEBUG_ERROR, "IoMmuMap: %r\n", EFI_INVALID_PARAMETER));
@@ -419,6 +423,10 @@ IoMmuAllocateBuffer (
 {
   EFI_STATUS                Status;
   EFI_PHYSICAL_ADDRESS      PhysicalAddress;
+
+  if (!mVtdInitialized) {
+    return EFI_NOT_READY;
+  }
 
   DEBUG ((DEBUG_VERBOSE, "IoMmuAllocateBuffer: ==> 0x%08x\n", Pages));
 
