@@ -1,0 +1,74 @@
+# @file
+#  Copyright (c) 2025 Intel Corporation. All rights reserved. <BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+[Defines]
+DEFINE PLATFORM_PKG             = ServerPlatformPkg
+DEFINE RESTRICTED_PKG           = ServerRestrictedPkg
+DEFINE SILICON_PKG              = ServerSiliconPkg
+DEFINE SECURITY_PKG             = ServerSecurityPkg
+DEFINE PLAT_NAME                = OpenBootloaderSmmPkg
+DEFINE RP_PKG                   = OakStream
+DEFINE OB_PKG                   = OakStreamOpenBoardPkg
+
+# 0x00000060 = (EFI_FIRMWARE_VOLUME_HEADER. HeaderLength + sizeof (EFI_FFS_FILE_HEADER))
+DEFINE FDF_FIRMWARE_HEADER_SIZE = 0x00000060
+
+
+################################################################################
+#
+#    FD FSP SMM Extension
+#
+# All FSP MM modules and other regions
+#
+################################################################################
+[FD.OPENBLSMM]
+BaseAddress   = 0xFE000000     | gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmBase        #The base address of the FLASH Device ( 4G - 32M )
+Size          = 0x00020000     | gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmSize        #The size in bytes of the FLASH Device ( 128KB )
+BlockSize     = 0x1000
+NumBlocks     = 0x20
+ErasePolarity = 1
+
+######################## Main FV/Region size definition ########################
+SET gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmSize              = 0x00020000
+SET gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmSize              = 0x00010000
+SET gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmOffset            = 0x00000000
+SET gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmBase              = 0xFF000000 # Need Update
+SET gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmBase              = gCpPlatFlashTokenSpaceGuid.PcdFlashFdOpenBlSmmBase + gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmOffset
+
+gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmOffset    |gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpenBlSmmSize
+FV = OpenBlSmmExtension
+
+#
+# Fsp Extentsion Package
+#
+[FV.OpenBlSmmExtension]
+!include $(OB_PKG)/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+FvNameGuid         = 40ab290f-8494-41cf-b302-31b178b4ce0c
+!include OpenBootloaderSmmPkg/Include/OpenBootloaderSmmPkg.fdf.inc
+
+################################################################################
+#
+# Rules are use with the [FV] section's module INF type to define
+# how an FFS file is created for a given INF file. The following Rule are the default
+# rules for the different module type. User can add the customized rules to define the
+# content of the FFS file.
+#
+################################################################################
+
+[Rule.Common.MM_CORE_STANDALONE]
+  FILE MM_CORE_STANDALONE = $(NAMED_GUID) {
+    PE32     PE32                    $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.MM_STANDALONE]
+  FILE MM_STANDALONE = $(NAMED_GUID) {
+    SMM_DEPEX    SMM_DEPEX Optional      $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32     PE32                    $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING="$(MODULE_NAME)" Optional
+    VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
