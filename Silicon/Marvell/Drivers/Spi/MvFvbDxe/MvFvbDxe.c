@@ -258,6 +258,14 @@ MvFvbValidateFvHeader (
     return EFI_NOT_FOUND;
   }
 
+  if ((FwVolHeader->BlockMap[0].Length != FlashInstance->Media.BlockSize) ||
+      (FwVolHeader->BlockMap[0].NumBlocks != FlashInstance->Media.LastBlock + 1)) {
+    DEBUG ((DEBUG_ERROR,
+      "%a: NOR geometry changed\n",
+      __func__));
+    return EFI_NOT_FOUND;
+  }
+
   VariableStoreHeader = (VOID *)((UINTN)FwVolHeader + FwVolHeader->HeaderLength);
 
   // Check the Variable Store Guid
