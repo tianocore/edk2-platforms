@@ -1,0 +1,63 @@
+## @file
+#
+# Marvell CN10K configuration UI driver. Publishes the HII form used to set
+# the watchdog, PCI1 bus, and ATF timer options and stores them in a
+# non-volatile variable and the corresponding PCDs.
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+# https://spdx.org/licenses
+#
+# Copyright (C) 2022-2026 Marvell
+#
+#
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ConfigUIDxe
+  MODULE_UNI_FILE                = ConfigUIDxe.uni
+  FILE_GUID                      = 419EB25F-360B-4FBE-B165-90FAC35BD4B5
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ConfigUIDxeInit
+
+[Sources]
+  ConfigUIDxe.c
+  ConfigUI.uni
+  ConfigUI.vfr
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+
+[LibraryClasses]
+  BaseLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  PrintLib
+  UefiLib
+  DevicePathLib
+
+[Guids]
+  gConfigUIDxeFormSetGuid
+
+[Pcd]
+  gCN10KPlatformTokenSpaceGuid.PcdDisableWatchdog
+  gCN10KPlatformTokenSpaceGuid.PcdDisablePci1Bus
+  gCN10KPlatformTokenSpaceGuid.PcdDisableAtfTimers
+
+[Protocols]
+  gEfiDevicePathProtocolGuid
+  gEfiHiiConfigRoutingProtocolGuid              ## CONSUMES
+  gEfiHiiConfigAccessProtocolGuid               ## PRODUCES
+  gEfiFormBrowser2ProtocolGuid                  ## CONSUMES
+  gEfiHiiDatabaseProtocolGuid                   ## CONSUMES
+  gCN10KConfigAppliedProtocolGuid               ## PRODUCES
+
+[Depex]
+  gEfiVariableArchProtocolGuid AND gEfiVariableWriteArchProtocolGuid
