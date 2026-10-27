@@ -1,0 +1,128 @@
+/** @file
+*
+* SPDX-License-Identifier: BSD-2-Clause-Patent
+* https://spdx.org/licenses
+*
+* Copyright (C) 2024-2026 Marvell
+*
+* MEMORY_SYSTEM_RESOURCE_PARTITIONING_MONITORING Table (MPAM Table)
+* According to ARM DEN0065A_MPAM_ACPI_2.0.pdf
+**/
+
+#include "Mpam.h" // EFI_ACPI_6_4_MPAM_MSC_NODE
+#include "AcpiCommon.h"             // MARVELL_ACPI_HEADER
+
+#define EFI_ACPI_MRVL_OEM_TABLE_ID     SIGNATURE_64('C','N','1','0','6', 0, 0, 0) // 8 bytes
+
+#define LLC_MSC_BASE 0x87E053001000 // Maps to TAD_CMN_MPAMF_IDR_NS (in HRM)
+#define LLC_MSC_REG_RANGE 0x2000
+#define LLC_MSC_INSTANCE 1
+
+#define DSS_MSC_BASE 0x87E1C0240000 // Maps to DDRCTL_REGB_CHB_MPAM_NS_MPAMF_IDR (in HRM)
+#define DSS_MSC_REG_RANGE 0xa10
+#define DSS_MSC_INSTANCE 6
+
+#define LLC_RIS_LTG 0x0  // Resource Instance Selector for LTG resource
+
+#pragma pack(push, 1)
+
+typedef struct {
+  EFI_ACPI_6_4_MPAM_MSC_NODE        MNode;
+  EFI_ACPI_6_4_MPAM_RESOURCE_NODE   RNode[1];
+} MPAM_MSC_NODE;
+
+// Structure definition reflect actual SoC hardware, so it's SoC specific.
+typedef struct _MPAM_TABLE {
+  EFI_ACPI_6_4_MEMORY_SYSTEM_RESOURCE_PARTITIONING_MONITORING_TABLE_HEADER Header;
+  MPAM_MSC_NODE NODE[DSS_MSC_INSTANCE + LLC_MSC_INSTANCE];
+} MPAM_TABLE;
+
+#define MPAM_RESOURCE_NODE(Ris_Idx, Locator_Type, Locator_Desc) {          \
+  (Ris_Idx + Locator_Type + Locator_Desc),  /* Identifier */               \
+  Ris_Idx,  /* RIS Index */                                                \
+  0,  /* Reserved1 */                                                      \
+  Locator_Type,  /* Locator type */                                        \
+  {                                                                        \
+   {Locator_Desc,0,},  /* Locator */                                       \
+  },                                                                       \
+  0,  /* Number of functional dependencies */                              \
+}
+
+#define MPAM_MSC_NODE(BaseAddress, RegRange, NumResouceNodes, Index) {     \
+  sizeof(MPAM_MSC_NODE),  /* Length */                                     \
+  EFI_ACPI_MPAM_INTERFACE_TYPE_MMIO,  /* Interface type */                 \
+  0,  /* Reserved */                                                       \
+  (Index + RegRange),  /* Identifier */                                    \
+  BaseAddress + (0x1000000 *  ((Index) & 0x7f)),  /* Base address  */      \
+  RegRange, /* MMIO size */                                                \
+  0,  /* Overflow interrupt */                                             \
+  0,  /* Overflow interrupt flags */                                       \
+  0,  /* Reserved1 */                                                      \
+  0,  /* Overflow interrupt affinity */                                    \
+  0,  /* Error interrupt */                                                \
+  0,  /* Error interrupt flags */                                          \
+  0,  /* Reserved2  */                                                     \
+  0,  /* Error interrupt affinity */                                       \
+  1,  /* MAX_NRDY_USEC */                                                  \
+  0,  /* Hardware ID of linked device */                                   \
+  0,  /* Instance ID of linked device */                                   \
+  NumResouceNodes   /* Number of resource nodes */                         \
+}
+
+static MPAM_TABLE Mpam = {
+  {
+    MARVELL_ACPI_HEADER (                        // Header
+      EFI_ACPI_6_4_MEMORY_SYSTEM_RESOURCE_PARTITIONING_MONITORING_TABLE_STRUCTURE_SIGNATURE,
+      MPAM_TABLE,                               // Length
+      1)                                       // Revision = 1 according to MPAM specification
+  },
+  {
+   {
+     MPAM_MSC_NODE(LLC_MSC_BASE, LLC_MSC_REG_RANGE, 1, 0), // LLC-Instance
+     {
+       MPAM_RESOURCE_NODE(LLC_RIS_LTG,0,1),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 0), // DSS-0
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 1), // DSS-1
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 2), // DSS-2
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 3), // DSS-3
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 4), // DSS-4
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+   {
+     MPAM_MSC_NODE(DSS_MSC_BASE, DSS_MSC_REG_RANGE, 1, 5), // DSS-5
+     {
+       MPAM_RESOURCE_NODE(0,1,0),
+     },
+   },
+  },
+};
+
+#pragma pack(pop)
+
+VOID* CONST ReferenceAcpiTable = &Mpam;
+
