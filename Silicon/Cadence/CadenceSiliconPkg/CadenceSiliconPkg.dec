@@ -1,0 +1,23 @@
+#/** @file
+#
+#  Cadence silicon package.
+#
+#  Copyright (c) 2025-2026 Marvell
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = CadenceSiliconPkg
+  PACKAGE_GUID                   = cade9970-2919-4c41-a4ea-48694e16995c
+  PACKAGE_VERSION                = 0.1
+
+[Includes]
+  Include
+
+[LibraryClasses]
+  ## @libraryclass Provides register-level access to the Cadence xSPI
+  #                  controller (mode control, STIG command engine and SDMA).
+  CadenceXspiLib|Include/Library/CadenceXspiLib.h
