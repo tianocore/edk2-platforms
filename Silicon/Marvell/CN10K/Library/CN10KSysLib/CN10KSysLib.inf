@@ -1,0 +1,64 @@
+#/* @file
+#  Copyright (c) 2011-2014, ARM Limited. All rights reserved.
+#  Copyright (c) 2026, Marvell. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#*/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CN10KSysLib
+  FILE_GUID                      = 7ea0f45b-0e06-4e45-8353-9c28b091a11c
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+  CONSTRUCTOR                    = CN10KConstructor
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  ArmLib
+  HobLib
+  IoLib
+  MemoryAllocationLib
+  SerialPortLib
+  SmcLib
+
+[Sources.common]
+  CN10K.c
+  CN10KMem.c
+
+[Sources.AARCH64]
+  AArch64/CN10KHelper.S
+
+[PCD]
+  gCN10KPlatformTokenSpaceGuid.PcdCoresPerNode
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdFdBaseAddress
+  gArmTokenSpaceGuid.PcdFdSize
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdArmPrimaryCore ## CONSUMES
+
+  gMarvellSiliconTokenSpaceGuid.PcdNodeIoBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdIoBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdNodeDramBase
+  gMarvellSiliconTokenSpaceGuid.PcdIoSize
+
+  gCN10KPlatformTokenSpaceGuid.PcdMaxCoresPerNode
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
+
+[Guids]
+  gFdtHobGuid
