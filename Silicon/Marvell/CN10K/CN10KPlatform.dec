@@ -1,0 +1,74 @@
+#/** @file
+#
+#  Copyright (c) 2021-2026, Marvell International All rights reserved.
+#  Copyright (c) 2016, Cavium Networks Inc. All rights reserved.
+#  Copyright (c) 2012-2015, ARM Limited. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = CN10KPlatformPkg
+  PACKAGE_GUID                   = A5F5A0C5-E3A3-43A1-B988-9048B2AAB002
+  PACKAGE_VERSION                = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+# Supported Module Types:
+#  BASE SEC PEI_CORE PEIM DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER DXE_SAL_DRIVER UEFI_DRIVER UEFI_APPLICATION
+#
+################################################################################
+[Includes]
+  Include                        # Root include for the package
+
+[Protocols]
+  gCN10KConfigAppliedProtocolGuid = { 0xD812DFD8, 0x0F33, 0x44FE, { 0x80, 0x5E, 0x8D, 0xEB, 0x20, 0x28, 0xAE, 0x33 } }
+
+[Guids.common]
+  gCN10KPlatformTokenSpaceGuid    =  { 0xB1D3263C, 0x83F1, 0x4CA1, { 0xA5, 0x06, 0x9D, 0x97, 0x4F, 0x55, 0xB5, 0x02 } }
+  gConfigUIDxeFormSetGuid          =  { 0x4F408752, 0xF3A7, 0x42E8, { 0xA3, 0x33, 0xBE, 0x87, 0x27, 0x2F, 0x6C, 0x30 } }
+
+[PcdsDynamic.common]
+  gCN10KPlatformTokenSpaceGuid.PcdNodeCount|1|UINT32|0x00000042
+  gCN10KPlatformTokenSpaceGuid.PcdCoresPerNode|24|UINT32|0x00000050
+
+  # Settings to disable generic watchdog and USB host controller
+  # Needed to boot Windows
+  gCN10KPlatformTokenSpaceGuid.PcdDisableWatchdog|FALSE|BOOLEAN|0x000000B4
+  gCN10KPlatformTokenSpaceGuid.PcdDisablePci1Bus|FALSE|BOOLEAN|0x000000B5
+  gCN10KPlatformTokenSpaceGuid.PcdDisableAtfTimers|FALSE|BOOLEAN|0x000000B6
+
+[PcdsFeatureFlag.common]
+  # Fixup the FDT or not
+  gCN10KPlatformTokenSpaceGuid.PcdFixupFdt|FALSE|BOOLEAN|0x00000022
+
+[PcdsFixedAtBuild.common]
+  gCN10KPlatformTokenSpaceGuid.PcdClustersPerNode|3|UINT32|0x00000051
+  gCN10KPlatformTokenSpaceGuid.PcdMaxNodes|2|UINT32|0x00000052
+  gCN10KPlatformTokenSpaceGuid.PcdMaxCoresPerNode|24|UINT32|0x00000054
+
+  gCN10KPlatformTokenSpaceGuid.PcdPllRefClock|50000000|UINT64|0x00000002
+  gCN10KPlatformTokenSpaceGuid.PcdEmmcWrapperBase64|0x824000000000|UINT64|0x0000000C
+  gCN10KPlatformTokenSpaceGuid.PcdEmmcBaseClockHz|200000000|UINT32|0x0000000D
+  gCN10KPlatformTokenSpaceGuid.PcdMPIControllerBase64|0x804000000000|UINT64|0x00000003
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorBusControllerOffs64|0x1000000000|UINT64|0x00000004
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorNumOfBusControllers|2|UINT32|0x00000005
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorChipSelect|0|UINT32|0x00000006
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorClkFrequency|0|UINT32|0x00000007
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorBlockSize|0|UINT32|0x00000008
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorBusControllerNum|0|UINT32|0x0000000A
+
+  # CN10K platform does not have LMC but DSS. PcdDssPerNode indicates the number of DSSs on single Soc.
+  gCN10KPlatformTokenSpaceGuid.PcdDssPerNode|3|UINT8|0x00000032
+
+  # Size in bytes of flash device which stores firmware (e.g. 16MB - 0x1000000, 32MB - 0x2000000, 64MB - 0x4000000, etc.)
+  # This value is reflected in SMBIOS Table 0: "BIOS ROM Size". This value should be adjusted to always reflect actual flash device size.
+  gCN10KPlatformTokenSpaceGuid.PcdFlashDeviceSize|0x4000000|UINT32|0x00000033
+
+  # Address of the SMMUX_IIDR register (SMMU0). The product ID and revision
+  # reported in SMBIOS Table 4 are decoded from this register.
+  gCN10KPlatformTokenSpaceGuid.PcdSmmuIidrAddress|0x830000000018|UINT64|0x0000007c
