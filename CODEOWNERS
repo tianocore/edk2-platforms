@@ -44,19 +44,19 @@
 
 /Features/Ext4Pkg/** @heatd
 
-/Features/Intel/** @nate-desimone @SaiChaganty
+/Features/Intel/** @nate-desimone @SaiChaganty @justin-t
 /Features/Intel/Debugging/** @nate-desimone @SaiChaganty
 /Features/Intel/OutOfBandManagement/IpmiFeaturePkg/** @nate-desimone @SaiChaganty
 /Features/Intel/UserInterface/** @nate-desimone @SaiChaganty
 
-/Platform/Intel/** @nate-desimone @SaiChaganty
+/Platform/Intel/** @nate-desimone @SaiChaganty @justin-t
 /Platform/Intel/BoardModulePkg/** @nate-desimone @SaiChaganty
 /Platform/MinPlatformPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/AlderlakeOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/SimicsOpenBoardPkg/** @nate-desimone @SaiChaganty
 /Platform/Intel/Tools/** @BobCF @lgao4 @nate-desimone @SaiChaganty
 
-/Silicon/Intel/** @nate-desimone @SaiChaganty
+/Silicon/Intel/** @nate-desimone @SaiChaganty @justin-t
 /Silicon/Intel/IntelSiliconPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/AlderlakeSiliconPkg/** @nate-desimone @SaiChaganty
 /Silicon/Intel/SimicsX58SktPkg/** @nate-desimone @SaiChaganty
