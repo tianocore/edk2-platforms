@@ -134,6 +134,10 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 */
 #define PLAT_CPU_COUNT              8
 
+/** Number of Virtio MMIO devices: block and network.
+*/
+#define PLAT_VIRTIO_MMIO_DEVICE_COUNT  2
+
 /** The number of ACPI tables to install
 */
 #ifdef ENABLE_TPM
@@ -283,6 +287,8 @@ typedef struct PlatformRepositoryInfo {
 
   /// SMC91X network device information
   CM_ARCH_COMMON_SMC91X_INFO                      Smc91xInfo;
+  /// Virtio MMIO block and network device information
+  CM_ARCH_COMMON_VIRTIO_MMIO_DEVICE_INFO          VirtioMmioDeviceInfo[PLAT_VIRTIO_MMIO_DEVICE_COUNT];
 
   /// GIC ITS information
   CM_ARM_GIC_ITS_INFO                   GicItsInfo;
