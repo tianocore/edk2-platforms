@@ -21,3 +21,7 @@
   ## @libraryclass Provides register-level access to the Cadence xSPI
   #                  controller (mode control, STIG command engine and SDMA).
   CadenceXspiLib|Include/Library/CadenceXspiLib.h
+
+  ## @libraryclass Provides PHY initialization and clock programming for the
+  #                  Cadence SD6 SDHCI controller.
+  CadenceSd6PhyLib|Include/Library/CadenceSd6PhyLib.h
