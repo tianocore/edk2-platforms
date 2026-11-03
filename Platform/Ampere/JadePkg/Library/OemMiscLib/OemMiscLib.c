@@ -183,14 +183,14 @@ OemGetCacheInformation (
   }
 
   // Cache Size
-  CacheSize16 = SmbiosCacheTable->MaximumCacheSize;
-  CacheSize32 = SmbiosCacheTable->MaximumCacheSize2;
+  CacheSize16 = SmbiosCacheTable->MaximumCacheSize.Size;
+  CacheSize32 = SmbiosCacheTable->MaximumCacheSize2.Size;
 
-  Granularity32 = CacheSize32 >> 31;
+  Granularity32 = SmbiosCacheTable->MaximumCacheSize2.Granularity64K;
   if (Granularity32 == 0) {
     CacheSize64 = CacheSize32;
   } else {
-    CacheSize64 = (CacheSize32 & (~BIT31)) * 64;
+    CacheSize64 = CacheSize32 * 64;
   }
 
   CacheSize64 *= GetNumberOfActiveCoresPerSocket (ProcessorIndex);
@@ -210,10 +210,14 @@ OemGetCacheInformation (
     CacheSize16 = 0xFFFF;
   }
 
-  SmbiosCacheTable->MaximumCacheSize  = CacheSize16;
-  SmbiosCacheTable->InstalledSize     = CacheSize16;
-  SmbiosCacheTable->MaximumCacheSize2 = CacheSize32;
-  SmbiosCacheTable->InstalledSize2    = CacheSize32;
+  SmbiosCacheTable->MaximumCacheSize.Size  = CacheSize16 & ~BIT15;
+  SmbiosCacheTable->MaximumCacheSize2.Size = CacheSize32 & ~BIT31;
+
+  SmbiosCacheTable->MaximumCacheSize.Granularity64K = ((CacheSize16 & BIT15) != 0);
+  SmbiosCacheTable->MaximumCacheSize2.Granularity64K = ((CacheSize32 & BIT31) != 0);
+
+  SmbiosCacheTable->InstalledSize          = SmbiosCacheTable->MaximumCacheSize;
+  SmbiosCacheTable->InstalledSize2         = SmbiosCacheTable->MaximumCacheSize2;
 
   return TRUE;
 }
