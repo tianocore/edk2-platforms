@@ -754,6 +754,13 @@
   MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
   EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf {
+    <LibraryClasses>
+      #
+      # NonCoherentIoMmuDxe is itself the IOMMU producer, so it must not
+      # consume the IOMMU protocol via IoMmuLib (would create a circular
+      # dependency through DmaLib). Use the null instance for this driver only.
+      #
+      IoMmuLib|MdeModulePkg/Library/IoMmuLibNull/IoMmuLibNull.inf
     <PcdsFixedAtBuild>
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset|0x00000000
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0xbfffffff

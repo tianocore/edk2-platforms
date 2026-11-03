@@ -86,7 +86,7 @@
   gIntelSiliconPkgTokenSpaceGuid.PcdVTdDxeLogBufferSize         ## CONSUMES
 
 [Depex]
-  gEfiPciRootBridgeIoProtocolGuid
+  TRUE
 
 [UserExtensions.TianoCore."ExtraFiles"]
   IntelVTdCoreDxeExtra.uni
