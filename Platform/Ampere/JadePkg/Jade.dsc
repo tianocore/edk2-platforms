@@ -293,6 +293,11 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/NVParamRuntimeDxe/NVParamRuntimeDxe.inf
 
   #
+  # System Firmware Update
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/SystemFirmwareUpdateDxe/SystemFirmwareUpdateDxe.inf
+
+  #
   # Redfish
   #
 !if $(REDFISH_ENABLE) == TRUE
