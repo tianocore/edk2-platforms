@@ -23,6 +23,8 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = Platform/Phytium/DurianPkg/DurianPkg.fdf
 
+!include MdePkg/MdeLibs.dsc.inc
+
 !include Silicon/Phytium/PhytiumCommonPkg/PhytiumCommonPkg.dsc.inc
 
 [LibraryClasses.common]
