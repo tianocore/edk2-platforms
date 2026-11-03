@@ -487,8 +487,8 @@ ARM_TYPE7_L1DATA L1Data_Type7 = {
     CacheErrorSingleBit,                            //ErrorCorrectionType
     CacheTypeData,                                  //SystemCacheType
     CacheAssociativity8Way,                         //Associativity
-    128,
-    128
+    {128, 0},
+    {128, 0}
   },
   TYPE7_L1DATA_STRINGS
 };
@@ -515,8 +515,8 @@ ARM_TYPE7_L1INS L1Ins_Type7 = {
     CacheErrorParity,                               //ErrorCorrectionType
     CacheTypeInstruction,                           //SystemCacheType
     CacheAssociativity8Way,                         //Associativity
-    128,
-    128
+    {128, 0},
+    {128, 0}
   },
   TYPE7_L1INS_STRINGS
 };
@@ -543,8 +543,8 @@ ARM_TYPE7_L2 L2_Type7 = {
     CacheErrorSingleBit,                            //ErrorCorrectionType
     CacheTypeUnified,                               //SystemCacheType
     CacheAssociativity8Way,                         //Associativity
-    4096,
-    4096
+    {4096, 0},
+    {4096, 0}
   },
   TYPE7_L2_STRINGS
 };
@@ -571,8 +571,8 @@ ARM_TYPE7_L3 L3_Type7 = {
     CacheErrorSingleBit,                            //ErrorCorrectionType
     CacheTypeUnified,                               //SystemCacheType
     CacheAssociativity8Way,                         //Associativity
-    4096,
-    4096
+    {4096, 0},
+    {4096, 0}
   },
   TYPE7_L3_STRINGS
 };
