@@ -14,9 +14,6 @@
   PACKAGE_GUID                   = 571229B8-6089-4F48-BCB2-38A8BC7F4C5D
   PACKAGE_VERSION                = 1.0
 
-[Includes]
-  Include
-
 [Guids]
   gKodiakMinPlatformPkgTokenSpaceGuid                     = { 0xa9d4f3c2, 0x1b7e, 0x4e6a, { 0x9f, 0x82, 0xd3, 0x6b, 0xa1, 0x58, 0xc4, 0x90 } }
 
