@@ -30,6 +30,7 @@
 #include <IndustryStandard/TpmPtp.h>
 #include <IndustryStandard/UefiTcgPlatform.h>
 
+#include <Guid/TpmCrbInfoHob.h>
 #include <Guid/Tpm2ServiceFfa.h>
 
 #define CRB_BUFFER_SIZE        (sizeof (PTP_CRB_REGISTERS) - OFFSET_OF (PTP_CRB_REGISTERS, CrbDataBuffer))
@@ -90,11 +91,12 @@ typedef struct {
   CHAR8            *HashName;
 } INTERNAL_HASH_INFO;
 
-STATIC VOID     *mTmpCommandBuffer;
-STATIC VOID     *mTmpResponseBuffer;
-STATIC VOID     *mEventLog;
-STATIC UINTN    mEventLogSize;
-STATIC BOOLEAN  mFtpmAvailable = FALSE;
+STATIC VOID                 *mTmpCommandBuffer;
+STATIC VOID                 *mTmpResponseBuffer;
+STATIC VOID                 *mEventLog;
+STATIC UINTN                mEventLogSize;
+STATIC BOOLEAN              mFtpmAvailable = FALSE;
+STATIC TPM_CRB_REGION_DESC  mCrbRegions[NUM_LOCALITIES];
 
 STATIC INTERNAL_HASH_INFO  mHashInfo[] = {
   { TPM_ALG_SHA256, HASH_ALG_SHA256, SHA256_DIGEST_SIZE, "SHA256" },
@@ -129,13 +131,7 @@ GetCrbBuffer (
     return NULL;
   }
 
-  if (Locality == SECURE_LOCALITY_START) {
-    CrbReg = (PTP_CRB_REGISTERS *)(FixedPcdGet64 (PcdTpmSecureCrbBase) +
-                                   ((Locality - SECURE_LOCALITY_START) * sizeof (PTP_CRB_REGISTERS)));
-  } else {
-    CrbReg = (PTP_CRB_REGISTERS *)(FixedPcdGet64 (PcdTpmBaseAddress) +
-                                   (Locality * sizeof (PTP_CRB_REGISTERS)));
-  }
+  CrbReg = (PTP_CRB_REGISTERS *)(mCrbRegions[Locality].VirtualAddress);
 
   switch (Type) {
     case CRB_REGISTER:
@@ -606,6 +602,54 @@ ExtendOneEventLog (
   *EventAddr       = NextEvent;
 
   return EFI_SUCCESS;
+}
+
+/**
+  Initailise CRB base addresses.
+
+**/
+STATIC
+VOID
+EFIAPI
+InitialiseCrbBaseAddresses (
+  VOID
+  )
+{
+  VOID                   *HobList;
+  EFI_HOB_GUID_TYPE      *GuidHob;
+  TPM_CRB_INFO_HOB_DATA  *Data;
+  UINTN                  Idx;
+
+  HobList = GetHobList ();
+  if (HobList == NULL) {
+    goto ExitHandler;
+  }
+
+  GuidHob = GetNextGuidHob (&gArmTpmCrbInfoHobGuid, HobList);
+  if (GuidHob == NULL) {
+    goto ExitHandler;
+  }
+
+  Data = GET_GUID_HOB_DATA (GuidHob);
+  if (Data->NumberOfLocality != NUM_LOCALITIES) {
+    DEBUG ((DEBUG_WARN, "%a: Invalid TpmCrbInfo Hob infomration.\n", __func__));
+    goto ExitHandler;
+  }
+
+  CopyMem (mCrbRegions, Data->CrbRegions, sizeof (TPM_CRB_REGION_DESC) * Data->NumberOfLocality);
+  return;
+
+ExitHandler:
+  for (Idx = 0; Idx < SECURE_LOCALITY_START; Idx++) {
+    mCrbRegions[Idx].PhysicalAddress = FixedPcdGet64 (PcdTpmBaseAddress) +
+                                       (sizeof (PTP_CRB_REGISTERS) * Idx);
+    mCrbRegions[Idx].VirtualAddress = mCrbRegions[Idx].PhysicalAddress;
+    mCrbRegions[Idx].Size           = sizeof (PTP_CRB_REGISTERS);
+  }
+
+  mCrbRegions[Idx].PhysicalAddress = FixedPcdGet64 (PcdTpmSecureCrbBase);
+  mCrbRegions[Idx].VirtualAddress  = mCrbRegions[Idx].PhysicalAddress;
+  mCrbRegions[Idx].Size            = sizeof (PTP_CRB_REGISTERS);
 }
 
 /**
@@ -1134,6 +1178,8 @@ TpmCrbFfaFtpmLibConstuctor (
   }
 
   mTmpResponseBuffer = ((VOID *)((UINTN)mTmpCommandBuffer) + CRB_BUFFER_SIZE);
+
+  InitialiseCrbBaseAddresses ();
 
   for (Locality = 0; Locality < NUM_LOCALITIES; Locality++) {
     Status = FtpmPseudoCrbInit (Locality);
