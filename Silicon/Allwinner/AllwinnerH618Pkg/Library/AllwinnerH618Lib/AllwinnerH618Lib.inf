@@ -1,0 +1,42 @@
+## @file
+#  Allwinner H618 Platform Memory and Board Initialization Library.
+#
+#  Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = AllwinnerH618Lib
+  FILE_GUID                      = A7F81240-E02A-4B6E-9712-421A626C0618
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ArmPlatformLib
+
+[Sources.common]
+  AllwinnerH618Mem.c
+
+[Sources.AArch64]
+  AArch64/ArmPlatformHelper.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  Silicon/Allwinner/AllwinnerH618Pkg/AllwinnerH618Pkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+[Ppis]
+  gArmMpCoreInfoPpiGuid
