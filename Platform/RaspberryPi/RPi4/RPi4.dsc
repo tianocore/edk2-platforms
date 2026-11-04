@@ -33,6 +33,39 @@
   DEFINE INCLUDE_TFTP_COMMAND    = FALSE
   DEFINE DEBUG_PRINT_ERROR_LEVEL = 0x8000004F
 
+  #
+  # Enable TPM2 CRB FF-A Service
+  #
+  DEFINE ENABLE_TPM              = FALSE
+
+  #
+  # Emit a TF-A BL1 + UEFI + FIP firmware image.
+  #
+  DEFINE RPI4_TFA_STAGED         = FALSE
+
+  #
+  # Reserve the TF-A BL32 region from normal-world memory.
+  #
+  DEFINE RPI4_TFA_SECURE_PAYLOAD = FALSE
+
+!if $(RPI4_TFA_SECURE_PAYLOAD) == TRUE
+!if $(RPI4_TFA_STAGED) != TRUE
+  !error "RPI4_TFA_SECURE_PAYLOAD requires RPI4_TFA_STAGED."
+!endif
+!endif
+
+!if $(ENABLE_TPM) == TRUE
+!if $(RPI4_TFA_SECURE_PAYLOAD) != TRUE
+  !error "ENABLE_TPM requires RPI4_TFA_SECURE_PAYLOAD."
+!endif
+!endif
+
+!if $(RPI4_TFA_STAGED) == TRUE
+!ifndef TFA_BUILD_ARTIFACTS
+  !error "RPI4_TFA_STAGED requires TFA_BUILD_ARTIFACTS."
+!endif
+!endif
+
 !ifndef TFA_BUILD_ARTIFACTS
   #
   # Default TF-A binary checked into edk2-non-osi.
@@ -44,7 +77,8 @@
   # on the firmware, being able to use a local TF-A build without extra copy
   # operations ends up being very helpful.
   #
-  DEFINE TFA_BUILD_BL31 = $(TFA_BUILD_ARTIFACTS)/bl31.bin
+  DEFINE TFA_BUILD_BL31     = $(TFA_BUILD_ARTIFACTS)/bl31.bin
+  DEFINE TFA_BUILD_ARMSTUB8 = $(TFA_BUILD_ARTIFACTS)/armstub8.bin
 !endif
 
 ################################################################################
@@ -113,6 +147,10 @@
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
   ArmSmcLib|MdePkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmTransferListLib|MdePkg/Library/ArmTransferListLib/ArmTransferListLib.inf
+!if $(ENABLE_TPM) == TRUE
+  ArmSvcLib|MdePkg/Library/ArmSvcLib/ArmSvcLib.inf
+  ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
+!endif
   ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
 
   # Dual serial port library
@@ -146,11 +184,28 @@
   # USB Libraries
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
 
+!if $(ENABLE_TPM) == TRUE
+  HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+  Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterDxe.inf
+  TpmCommLib|SecurityPkg/Library/TpmCommLib/TpmCommLib.inf
+  Tpm2HelpLib|SecurityPkg/Library/Tpm2HelpLib/Tpm2HelpLib.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PhysicalPresencePromptLib|SecurityPkg/Library/Tcg2PhysicalPresencePromptLib/Tcg2PhysicalPresencePromptLibConsole.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+!else
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+!else
+  TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
+!endif
+!endif
+
   #
   # Secure Boot dependencies
   #
 !if $(SECURE_BOOT_ENABLE) == TRUE
-  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
   AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
   SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
   SecureBootVariableProvisionLib|SecurityPkg/Library/SecureBootVariableProvisionLib/SecureBootVariableProvisionLib.inf
@@ -159,7 +214,6 @@
   # re-use the UserPhysicalPresent() dummy implementation from the ovmf tree
   PlatformSecureLib|OvmfPkg/Library/PlatformSecureLib/PlatformSecureLib.inf
 !else
-  TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
   AuthVariableLib|MdeModulePkg/Library/AuthVariableLibNull/AuthVariableLibNull.inf
 !endif
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
@@ -241,6 +295,15 @@
   GCC:*_*_*_ASLCC_FLAGS       = -DRPI_MODEL=4
   GCC:*_*_*_VFRPP_FLAGS       = -DRPI_MODEL=4
   GCC:RELEASE_*_*_CC_FLAGS    = -DMDEPKG_NDEBUG -DNDEBUG
+!if $(RPI4_TFA_STAGED) == TRUE
+  GCC:*_*_*_CC_FLAGS          = -DRPI4_TFA_STAGED
+!endif
+!if $(RPI4_TFA_SECURE_PAYLOAD) == TRUE
+  GCC:*_*_*_CC_FLAGS          = -DRPI4_TFA_SECURE_PAYLOAD
+!endif
+!if $(ENABLE_TPM) == TRUE
+  GCC:*_*_*_CC_FLAGS          = -DENABLE_TPM
+!endif
 
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]
   GCC:*_*_AARCH64_DLINK_FLAGS = -z common-page-size=0x10000
@@ -271,7 +334,12 @@
   #
   # Follows right after the FD image. (bump the size again)
   #
+!if $(RPI4_TFA_STAGED) == TRUE
+  gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress|0x005e0000
+  gRaspberryPiTokenSpaceGuid.PcdFdtSize|0x00020000
+!else
   gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress|0x003e0000
+!endif
 
 
   # DEBUG_ASSERT_ENABLED       0x01
@@ -389,15 +457,37 @@
   # Size of the region used by UEFI in permanent memory (Reserved 64MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x04000000
   #
-  # 0x00000000 - 0x001F0000  FD (PcdFdBaseAddress, PcdFdSize)
+!if $(RPI4_TFA_STAGED) == TRUE
+  # 0x00000000 - 0x00200000 TF-A BL1 and FIP
+  # 0x00200000 - 0x005B0000 UEFI FD contents
+  # 0x005B0000 - 0x005E0000 Reserved firmware space
+  # 0x005E0000 - 0x00600000 DTB (PcdFdtBaseAddress, PcdFdtSize)
+  # 0x00600000 - ...        RAM (PcdSystemMemoryBase, PcdSystemMemorySize)
+!else
+  # 0x00000000 - 0x003E0000 UEFI FD contents
   # 0x003E0000 - 0x00400000 DTB (PcdFdtBaseAddress, PcdFdtSize)
   # 0x00400000 - ...        RAM (PcdSystemMemoryBase, PcdSystemMemorySize)
+!endif
   #
-  # This matches PcdFvBaseAddress, since everything less is the FD, and
-  # will be reserved away.
+  # Everything below PcdSystemMemoryBase is part of the firmware layout and
+  # is reserved away.
   #
+!if $(RPI4_TFA_STAGED) == TRUE
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00600000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x3fa00000
+!else
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00400000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x3fc00000
+!endif
+
+!if $(ENABLE_TPM) == TRUE
+  #
+  # FF-A TPM pseudo-CRB window for localities 0 to 3.
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmBaseAddress|0x20000000
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmMaxAddress|0x20003fff
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmCrbRegionSize|0x4000
+!endif
 
   #
   # Device specific addresses
@@ -579,6 +669,17 @@
   #
   gRaspberryPiTokenSpaceGuid.PcdMiniUartClockRate|500000000
 
+[PcdsDynamicExDefault.common.DEFAULT]
+!if $(ENABLE_TPM) == TRUE
+  #
+  # TPM2 Device Instance for Tpm2DeviceRouterLib
+  #
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{GUID("17b862a4-1806-4faf-86b3-089a58353861")}|VOID*|0x10
+  gEfiSecurityPkgTokenSpaceGuid.PcdActiveTpmInterfaceType|0x02
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2HashAlgorithmBitmap|0x00000002 # Only support SHA256
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|5
+!endif
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform
@@ -593,6 +694,12 @@
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
       SerialPortLib|Platform/RaspberryPi/Library/DualSerialPortLib/DualSerialPortLib.inf
       PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLibNull.inf
+!if $(ENABLE_TPM) == TRUE
+      Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2DeviceSecLibFfa.inf
+      HashLib|SecurityPkg/Library/HashLibTpm2/HashLibTpm2PeilessSecLib.inf
+      PeilessSecMeasureLib|SecurityPkg/Library/PeilessSecMeasureLib/PeilessSecMeasureLib.inf
+      ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaSecLib.inf
+!endif
   }
 
   #
@@ -623,14 +730,22 @@
       NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
       DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
   }
-!if $(SECURE_BOOT_ENABLE) == TRUE
+!if $(SECURE_BOOT_ENABLE) == TRUE || $(ENABLE_TPM) == TRUE
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
     <LibraryClasses>
+!if $(SECURE_BOOT_ENABLE) == TRUE
       NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+!endif
+!if $(ENABLE_TPM) == TRUE
+      NULL|SecurityPkg/Library/DxeImageAuthenticationStatusLib/DxeImageAuthenticationStatusLib.inf
+      NULL|SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.inf
+!endif
   }
+!if $(SECURE_BOOT_ENABLE) == TRUE
   SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   SecurityPkg/EnrollFromDefaultKeysApp/EnrollFromDefaultKeysApp.inf
   SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
+!endif
 !else
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
 !endif
@@ -802,3 +917,20 @@
       UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
       UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibConOut.inf
   }
+
+  #
+  # Trusted Platform Module
+  #
+!if $(ENABLE_TPM) == TRUE
+  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  }
+
+  SecurityPkg/Tcg/Tcg2AcpiFfa/Tcg2AcpiFfa.inf {
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/Tpm2DeviceLibFfa/Tpm2InstanceLibFfa.inf
+  }
+!endif
