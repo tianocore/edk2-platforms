@@ -94,6 +94,14 @@
   gArmVExpressTokenSpaceGuid.PcdTpmUseSipSmc
   gArmVExpressTokenSpaceGuid.PcdLan91xDxeBaseAddress
 
+  # Virtio Block device
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkBaseAddress
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkSize
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetBaseAddress
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetSize
+  gArmVExpressTokenSpaceGuid.PcdVirtioBlkInterrupt
+  gArmVExpressTokenSpaceGuid.PcdVirtioNetInterrupt
+
 [Pcd]
   gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum
 
