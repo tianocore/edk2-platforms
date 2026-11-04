@@ -22,6 +22,10 @@
 //
 #define AW_H618_SID_BASE                0x03006000ULL
 #define AW_H618_SID_EFUSE_SIZE          0x00000200U
+#define AW_H618_SID_PRCTL_OFFSET        0x40U
+#define AW_H618_SID_RDKEY_OFFSET        0x60U
+#define AW_H618_SID_OP_LOCK             0xAC00U
+#define AW_H618_SID_READ_TRIG           0x0002U
 
 //
 // ARM Generic Interrupt Controller (GICv2 PL400)
