@@ -8,6 +8,10 @@
 
 /Platform/96Boards/** @ardbiesheuvel @leiflindholm
 
+# Allwinner / OrangePi
+/Silicon/Allwinner/** @leiflindholm
+/Platform/OrangePi/** @leiflindholm
+
 /Platform/AMD/** @abdattar @changab @pbgrimes
 
 /Platform/AMD/AgesaModulePkg/** @abdattar @changab @pbgrimes
