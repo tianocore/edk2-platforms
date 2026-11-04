@@ -1,0 +1,35 @@
+## @file
+#
+# Copyright (c) 2026 Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001D
+  BASE_NAME                      = HobLib
+  FILE_GUID                      = 8E92DD21-A851-48E0-AF2F-8436950AD84C
+  MODULE_TYPE                    = MM_STANDALONE
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  LIBRARY_CLASS                  = HobLib|MM_STANDALONE
+  CONSTRUCTOR                    = HobLibConstructor
+
+[Sources]
+  BootloaderMmHobLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IntelFsp2Pkg/IntelFsp2Pkg.dec
+  OpenBootloaderSmmPkg/OpenBootloaderSmmPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  MmServicesTableLib
+
+[Guids]
+  gEfiHobListGuid                               ## ALWAYS CONSUMES  ## SystemTable
+  gFspSmmBootLoaderFvContextHobGuid             ## ALWAYS CONSUMES
+  gEfiBootloaderMmHobListGuid                   ## ALWAYS CONSUMES
