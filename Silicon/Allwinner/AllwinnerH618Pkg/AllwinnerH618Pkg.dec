@@ -18,3 +18,7 @@
 
 [Guids]
   gAllwinnerH618TokenSpaceGuid   = { 0x020ccbc8, 0xdec1, 0x44fd, { 0xa8, 0xe3, 0xfb, 0x01, 0x1c, 0xcb, 0xd9, 0x37 } }
+
+[PcdsFixedAtBuild.common]
+  # RTC Base Address
+  gAllwinnerH618TokenSpaceGuid.PcdAllwinnerRtcBaseAddress|0x07000000|UINT32|0x00000001

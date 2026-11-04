@@ -30,6 +30,15 @@
 #define AW_H618_GIC_CPU_BASE            0x03022000ULL
 
 //
+// Real Time Clock (RTC)
+//
+#define AW_H618_RTC_LOSC_CTRL_REG       0x0000U
+#define AW_H618_RTC_DAY_REG             0x0010U
+#define AW_H618_RTC_HH_MM_SS_REG        0x0014U
+#define AW_H618_RTC_LOSC_DAY_ACCE       BIT7
+#define AW_H618_RTC_LOSC_HMS_ACCE       BIT8
+
+//
 // System Clocks
 //
 #define AW_H618_OSC24M_FREQ             24000000U
