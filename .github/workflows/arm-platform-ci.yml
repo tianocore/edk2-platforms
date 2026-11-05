@@ -1,0 +1,104 @@
+name: Run Shrinkwrap to Validate Arm Platform (FVP)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'Platform/ARM/**'
+      - '.github/workflows/arm-platform-ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: arm-platform-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  shrinkwrap:
+    runs-on: ubuntu-22.04-arm
+    timeout-minutes: 60
+    container: shrinkwraptool/base-full
+    env:
+      EDK2_PLATFORMS_REPOSITORY: ${{ github.event.pull_request.head.repo.clone_url || format('{0}/{1}.git', github.server_url, github.repository) }}
+      EDK2_PLATFORMS_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Required System Packages
+        run: |
+          apt-get update -qq
+          apt-get install -y git netcat-openbsd python3 python3-pip telnet wget
+
+      - name: Install Python Dependencies
+        run: pip3 install pyyaml termcolor tuxmake graphlib-backport
+
+      - name: Clone Shrinkwrap, Download Required Files, and Execute Tests
+        run: |
+          set -e  # Exit immediately if any command fails
+
+          # Clone Shrinkwrap repository
+          echo "Cloning Shrinkwrap repository..."
+          git clone --branch main \
+            https://git.gitlab.arm.com/tooling/shrinkwrap.git \
+            shrinkwrap
+
+          run_shrinkwrap() {
+            PYTHONPATH="$PWD/shrinkwrap/src${PYTHONPATH:+:$PYTHONPATH}" \
+              python3 -m shrinkwrap "$@"
+          }
+
+          # Verify Shrinkwrap installation
+          echo "Verifying Shrinkwrap installation..."
+          run_shrinkwrap --help
+
+          # Define URLs for Kernel Image and Root Filesystem
+          KERNEL_URL="https://files.kernelci.org/kbuild-gcc-14-arm64-6a2ec8d3dabb8c619d604b80/Image.gz"
+          ROOTFS_URL="https://storage.kernelci.org/images/rootfs/debian/bookworm/20240715.0/arm64/rootfs.ext4.xz"
+
+          # Download Kernel Image and Root Filesystem
+          echo "Downloading Kernel Image and Root Filesystem..."
+          cd shrinkwrap
+          wget -O Image.gz "$KERNEL_URL"
+          wget -O rootfs.ext4.xz "$ROOTFS_URL"
+          gunzip Image.gz
+          unxz rootfs.ext4.xz
+          cd -
+
+          # Merge the architecture overlay first.
+          run_shrinkwrap process \
+            --action=merge \
+            --overlay=arch/v9.4.yaml \
+            ns-edk2.yaml > ns-edk2-pr.yaml
+          cat > edk2-platforms-pr.yaml <<EOF
+          build:
+            edk2:
+              repo:
+                remote: https://github.com/tianocore/edk2.git
+                revision: master
+            edk2-platforms:
+              repo:
+                remote: $EDK2_PLATFORMS_REPOSITORY
+                revision: $EDK2_PLATFORMS_REVISION
+          EOF
+
+          echo "Runner architecture: $(uname -m)"
+          echo "edk2-platforms remote: $EDK2_PLATFORMS_REPOSITORY"
+          echo "edk2-platforms revision: $EDK2_PLATFORMS_REVISION"
+
+          echo "Starting Shrinkwrap Build..."
+          run_shrinkwrap -R null build \
+            --overlay=edk2-platforms-pr.yaml \
+            ns-edk2-pr.yaml
+
+          # Run Shrinkwrap Test Execution
+          echo "Executing Shrinkwrap Tests..."
+          run_shrinkwrap -R null run \
+            --overlay='{"run":{"params":{"-C bp.pl011_uart0.shutdown_tag": "login:"}}}' \
+            --rtvar=KERNEL=$PWD/shrinkwrap/Image \
+            --rtvar=ROOTFS=$PWD/shrinkwrap/rootfs.ext4 \
+            --rtvar=CMDLINE="console=ttyAMA0 earlycon=pl011,0x1c090000 root=/dev/vda1 ip=dhcp acpi=force" \
+            ns-edk2-pr.yaml
