@@ -881,6 +881,10 @@ AddNonFdRegions (
   DDRMemSize = 0;
 
   for (EntryIndex = 0; EntryIndex < EntryCount; EntryIndex++) {
+    if (EntryTable[EntryIndex].MemSize == 0) {
+      continue;
+    }
+
     DDRMemSize += EntryTable[EntryIndex].MemSize;
 
     RegionEndAddr = EntryTable[EntryIndex].MemBase +  EntryTable[EntryIndex].MemSize;

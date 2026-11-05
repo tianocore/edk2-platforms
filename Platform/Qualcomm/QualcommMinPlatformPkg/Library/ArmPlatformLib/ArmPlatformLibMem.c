@@ -224,6 +224,10 @@ GeneratePageTableRegionMap (
     // Skip entries which explicitly ask to be added as HOB only
     // Also skip entries that are marked as NoMap so a hole is created.
     BUILD_HOB_OPTION_TYPE  HobValue = MemRegions[MemoryRegionCount].BuildHobOption;
+    if (MemRegions[MemoryRegionCount].MemSize == 0) {
+      continue;
+    }
+
     if ((HobValue == HobOnlyNoCacheSetting) || (HobValue == NoMap) || (HobValue == AddDynamicMem)) {
       continue;
     }
