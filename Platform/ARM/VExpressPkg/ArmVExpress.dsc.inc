@@ -287,6 +287,7 @@
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   ArmFfaLib|MdeModulePkg/Library/ArmFfaLib/ArmFfaDxeLib.inf
+  DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
 !if $(ENABLE_FIRMWARE_UPDATE) == TRUE
