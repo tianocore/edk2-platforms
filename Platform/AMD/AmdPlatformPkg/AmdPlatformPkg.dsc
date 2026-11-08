@@ -135,6 +135,7 @@
 
 [Components.IA32]
   AmdPlatformPkg/Library/CcxTscTimerLib/PeiTscTimerLib.inf
+  AmdPlatformPkg/Library/SpiHcPlatformLib/SpiHcPlatformLibPei.inf
 
 [Components.X64]
   AmdPlatformPkg/DynamicTables/Library/Acpi/AcpiDsdtLib/AcpiDsdtLib.inf
