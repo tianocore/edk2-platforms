@@ -1,0 +1,13 @@
+// /** @file
+// Help strings for Allwinner H618 UEFI Shell commands.
+//
+// Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+// **/
+
+#langdef en-US "English"
+
+#string STR_GET_HELP_SIDDUMP      #language en-US ""
+".TH siddump 0 \"Dumps Allwinner H618 SID eFuse registers.\"\r\n"
+".SH NAME\r\n"
+"Dumps Allwinner H618 Security ID (SID) eFuse words at 0x03006000 (Usage: siddump [Offset] [Bytes]).\r\n"

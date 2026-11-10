@@ -1,0 +1,46 @@
+## @file
+#  OemMiscLib implementation for Allwinner H618 SoC.
+#
+#  Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = OemMiscLib
+  FILE_GUID                      = 6B19C618-3006-4D82-A123-03006000F618
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = OemMiscLib
+
+[Sources.common]
+  OemMiscLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Allwinner/AllwinnerH618Pkg/AllwinnerH618Pkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  IoLib
+  PcdLib
+  PrintLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+  gArmPlatformTokenSpaceGuid.PcdCoreCount
+  gArmTokenSpaceGuid.PcdEmbeddedControllerFirmwareRelease
+  gArmTokenSpaceGuid.PcdSystemBiosRelease
+
+[Protocols]
+  gEfiSmbiosProtocolGuid
