@@ -502,17 +502,17 @@ PrintChipInformation (
   VOID
   )
 {
-  EFI_STATUS        Status;
-  CHAR8             ChipIdStr[CHIPINFO_MAX_ID_LENGTH];
-  ChipInfoSkuType   Sku;
-  UINT32            NumClusters;
-  UINT32            BootCluster;
-  UINT32            BootCore;
-  UINT32            Cluster;
-  UINT32            Cores;
-  UINT32            Mask;
-  UINT32            Part;
-  BOOLEAN           Disabled;
+  EFI_STATUS       Status;
+  CHAR8            ChipIdStr[CHIPINFO_MAX_ID_LENGTH];
+  ChipInfoSkuType  Sku;
+  UINT32           NumClusters;
+  UINT32           BootCluster;
+  UINT32           BootCore;
+  UINT32           Cluster;
+  UINT32           Cores;
+  UINT32           Mask;
+  UINT32           Part;
+  BOOLEAN          Disabled;
 
   Status = ChipInfoInit ();
   if (EFI_ERROR (Status)) {
@@ -596,10 +596,10 @@ PrintPlatformInformation (
   VOID
   )
 {
-  EFI_STATUS                     Status;
-  PlatformInfoPlatformInfoType   PlatformInfo;
-  UINT32                         Value;
-  UINT32                         Key;
+  EFI_STATUS                    Status;
+  PlatformInfoPlatformInfoType  PlatformInfo;
+  UINT32                        Value;
+  UINT32                        Key;
 
   Status = PlatformInfoInit ();
   if (EFI_ERROR (Status)) {
