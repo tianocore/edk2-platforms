@@ -881,6 +881,10 @@ AddNonFdRegions (
   DDRMemSize = 0;
 
   for (EntryIndex = 0; EntryIndex < EntryCount; EntryIndex++) {
+    if (EntryTable[EntryIndex].MemSize == 0) {
+      continue;
+    }
+
     DDRMemSize += EntryTable[EntryIndex].MemSize;
 
     RegionEndAddr = EntryTable[EntryIndex].MemBase + EntryTable[EntryIndex].MemSize;
@@ -1064,6 +1068,10 @@ UpdateDynamicMemoryRegions (
       for (RamPartIndex = 0; RamPartIndex < RamPartTableEntryCount; RamPartIndex++) {
         UINT64  RamPartitionEntryEndAddress;
 
+        if (RamPartTableEntry[RamPartIndex].MemSize == 0) {
+          continue;
+        }
+
         RamPartitionEntryEndAddress = RamPartTableEntry[RamPartIndex].MemBase +
                                       RamPartTableEntry[RamPartIndex].MemSize;
         if ((RamPartitionEntryEndAddress >= mMemRegions[MemRgnCnt].MemBase) &&
@@ -1133,7 +1141,9 @@ AddUpperMemoryFromRamPartitions (
   HighestIndex = EntryCount; /* sentinel: no match */
 
   for (Index = 0; Index < EntryCount; Index++) {
-    if (EntryList[Index].MemBase > HighestBase) {
+    if ((EntryList[Index].MemSize != 0) &&
+        (EntryList[Index].MemBase > HighestBase))
+    {
       HighestBase  = EntryList[Index].MemBase;
       HighestSize  = EntryList[Index].MemSize;
       HighestIndex = Index;
