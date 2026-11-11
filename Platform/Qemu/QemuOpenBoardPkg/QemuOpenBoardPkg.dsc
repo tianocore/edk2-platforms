@@ -159,6 +159,7 @@
   QemuFwCfgLib            | OvmfPkg/Library/QemuFwCfgLib/QemuFwCfgDxeLib.inf
   QemuFwCfgSimpleParserLib| OvmfPkg/Library/QemuFwCfgSimpleParserLib/QemuFwCfgSimpleParserLib.inf
   MemEncryptSevLib        | OvmfPkg/Library/BaseMemEncryptSevLib/DxeMemEncryptSevLib.inf
+  AmdSevLib               | OvmfPkg/Library/AmdSevLib/DxeAmdSevLib.inf
   MemEncryptTdxLib        | OvmfPkg/Library/BaseMemEncryptTdxLib/BaseMemEncryptTdxLibNull.inf
   Tcg2PhysicalPresenceLib | OvmfPkg/Library/Tcg2PhysicalPresenceLibNull/DxeTcg2PhysicalPresenceLib.inf
   ResetSystemLib          | OvmfPkg/Library/ResetSystemLib/DxeResetSystemLib.inf
