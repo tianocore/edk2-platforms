@@ -39,7 +39,7 @@ STATIC UINTN                       mIntConfigTableEntryCount = 0;
   @return A pointer to the allocated buffer or NULL if allocation fails.
 
 **/
-STATIC VOID*
+STATIC VOID *
 AllocateZeroPoolNoFree (
   IN UINTN  AllocationSize
   )
@@ -131,9 +131,9 @@ AllocateConfigTableFromDT (
   OUT UINT64  *MaxPairCount
   )
 {
-  INT32           FdtStatus;
+  INT32                 FdtStatus;
   DTB_EXTN_NODE_HANDLE  Node;
-  UINTN           AllocSize;
+  UINTN                 AllocSize;
 
   FdtStatus = FdtGetNodeHandle (&Node, NodePath);
   if (FdtStatus != DTB_ERR_NOERROR) {
@@ -241,14 +241,14 @@ ParseIntConfigEntriesFromDT (
   VOID
   )
 {
-  EFI_STATUS      Status;
-  INT32           FdtStatus;
+  EFI_STATUS            Status;
+  INT32                 FdtStatus;
   DTB_EXTN_NODE_HANDLE  Node;
-  UINT64          MaxIntConfigPairCount;
-  UINT32          PropNameBufferSize;
-  CHAR8           *Buff;
-  CHAR8           *BuffWalk;
-  UINT64          Index;
+  UINT64                MaxIntConfigPairCount;
+  UINT32                PropNameBufferSize;
+  CHAR8                 *Buff;
+  CHAR8                 *BuffWalk;
+  UINT64                Index;
 
   MaxIntConfigPairCount = 0;
   PropNameBufferSize    = 0;
@@ -343,15 +343,15 @@ ParseStrConfigEntriesFromDT (
   VOID
   )
 {
-  EFI_STATUS      Status;
-  INT32           FdtStatus;
+  EFI_STATUS            Status;
+  INT32                 FdtStatus;
   DTB_EXTN_NODE_HANDLE  Node;
-  UINT64          MaxStrConfigPairCount;
-  UINT32          PropNameBufferSize;
-  CHAR8           *Buff;
-  CHAR8           *BuffWalk;
-  UINT64          Index;
-  UINT32          ValueBufferSize;
+  UINT64                MaxStrConfigPairCount;
+  UINT32                PropNameBufferSize;
+  CHAR8                 *Buff;
+  CHAR8                 *BuffWalk;
+  UINT64                Index;
+  UINT32                ValueBufferSize;
 
   MaxStrConfigPairCount = 0;
   PropNameBufferSize    = 0;
@@ -578,8 +578,8 @@ CheckOverlap (
 **/
 STATIC EFI_STATUS
 GetMemoryMapOfNode (
-  IN OUT DTB_EXTN_NODE_HANDLE   *Node,
-  OUT    MEM_REGION_INFO  *MemRegion
+  IN OUT DTB_EXTN_NODE_HANDLE  *Node,
+  OUT    MEM_REGION_INFO       *MemRegion
   )
 {
   EFI_STATUS  Status;
@@ -650,10 +650,10 @@ ParseMemoryMapEntriesFromDT (
   )
 {
   DTB_EXTN_NODE_HANDLE  Node;
-  EFI_STATUS      Status;
-  UINT32          MemEntryCount;
+  EFI_STATUS            Status;
+  UINT32                MemEntryCount;
   DTB_EXTN_NODE_HANDLE  *CachedMmapNode;
-  UINTN           MemIndex;
+  UINTN                 MemIndex;
 
   MemEntryCount  = 0;
   CachedMmapNode = NULL;
@@ -750,10 +750,10 @@ ParseRegisterMapEntriesFromDT (
   )
 {
   DTB_EXTN_NODE_HANDLE  Node;
-  EFI_STATUS      Status;
-  UINT32          RegisterEntryCount;
+  EFI_STATUS            Status;
+  UINT32                RegisterEntryCount;
   DTB_EXTN_NODE_HANDLE  *CachedMmapNode;
-  UINTN           RegIndex;
+  UINTN                 RegIndex;
 
   RegisterEntryCount = 0;
   CachedMmapNode     = NULL;
@@ -878,7 +878,7 @@ AddNonFdRegions (
   UINT64  DDRMemSize;
   UINTN   EntryIndex;
 
-  DDRMemSize    = 0;
+  DDRMemSize = 0;
 
   for (EntryIndex = 0; EntryIndex < EntryCount; EntryIndex++) {
     DDRMemSize += EntryTable[EntryIndex].MemSize;
@@ -934,7 +934,7 @@ AddNonFdRegionRemainder (
     return EFI_LOAD_ERROR;
   }
 
-  Status = RamPartitionGetPartitionEntryByAddr(mMemMapHigh, &NonFdRegion);
+  Status = RamPartitionGetPartitionEntryByAddr (mMemMapHigh, &NonFdRegion);
   if (EFI_ERROR (Status)) {
     if ((Status == EFI_NOT_FOUND) && mIsMemMapHighNoMap) {
       return EFI_SUCCESS;
@@ -984,7 +984,7 @@ AddFdRegionRemainder (
   EFI_STATUS       Status;
   UINT64           UefiFdBase;
 
-  UefiFdBase    = FixedPcdGet64 (PcdFdBaseAddress);
+  UefiFdBase = FixedPcdGet64 (PcdFdBaseAddress);
 
   Status = RamPartitionGetPartitionEntryByAddr (UefiFdBase, &FdRegion);
   if (EFI_ERROR (Status)) {
@@ -1045,7 +1045,7 @@ UpdateDynamicMemoryRegions (
   UINT32           MemRgnCnt;
 
   RamPartTableEntryCount = RAM_NUM_PART_ENTRIES;
-  Status = RamPartitionGetRamPartitions (&RamPartTableEntryCount, RamPartTableEntry);
+  Status                 = RamPartitionGetRamPartitions (&RamPartTableEntryCount, RamPartTableEntry);
   if (Status != EFI_SUCCESS) {
     ASSERT (Status == EFI_SUCCESS);
     return Status;
@@ -1471,7 +1471,7 @@ ValidateParsedMemoryRegions (
   RamPartitionIndex = 0;
 
   RamPartTableEntryCount = RAM_NUM_PART_ENTRIES;
-  Status = RamPartitionGetRamPartitions (&RamPartTableEntryCount, RamPartTableEntry);
+  Status                 = RamPartitionGetRamPartitions (&RamPartTableEntryCount, RamPartTableEntry);
   if (Status != EFI_SUCCESS) {
     ASSERT (Status == EFI_SUCCESS);
     return Status;
