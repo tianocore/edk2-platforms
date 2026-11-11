@@ -149,6 +149,11 @@ AddMemRegionHobs (
   }
 
   for (Index = 0; Index < MemRegionsCnt; Index++) {
+    // Skip zero-length regions so no empty resource or allocation HOBs are built.
+    if (MemRegions[Index].MemSize == 0) {
+      continue;
+    }
+
     switch (MemRegions[Index].BuildHobOption) {
       case AllocOnly:
         BuildMemoryHob (&MemRegions[Index]);
@@ -224,6 +229,10 @@ GeneratePageTableRegionMap (
     // Skip entries which explicitly ask to be added as HOB only
     // Also skip entries that are marked as NoMap so a hole is created.
     BUILD_HOB_OPTION_TYPE  HobValue = MemRegions[MemoryRegionCount].BuildHobOption;
+    if (MemRegions[MemoryRegionCount].MemSize == 0) {
+      continue;
+    }
+
     if ((HobValue == HobOnlyNoCacheSetting) || (HobValue == NoMap) || (HobValue == AddDynamicMem)) {
       continue;
     }
