@@ -127,7 +127,7 @@
 [Guids]
   gEfiGlobalVariableGuid                        ## CONSUMES
   gEfiHobListGuid                               ## CONSUMES
-  gEfiEndOfDxeEventGroupGuid                    ## CONSUMES
+  gEfiEventReadyToBootGuid                      ## CONSUMES
   gEfiAcpiTableGuid                             ## CONSUMES
 
 [Depex]
