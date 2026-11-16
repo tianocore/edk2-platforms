@@ -1,0 +1,54 @@
+## @file
+#  CN10K eMMC platform glue.
+#
+#  Registers the memory-mapped Cadence SD6 SDHCI controller as a
+#  non-discoverable SDHCI device and provides the Cadence specific
+#  EDKII_SD_MMC_OVERRIDE implementation.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  Copyright (C) 2024-2026 Marvell
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CN10KMmcDxe
+  FILE_GUID                      = 3A2239D8-D01A-468C-9EA8-0B020C0276C7
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeCN10KMmcDxe
+
+#
+# VALID_ARCHITECTURES            = AARCH64
+#
+
+[Sources]
+  CN10KMmcDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Cadence/CadenceSiliconPkg/CadenceSiliconPkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  IoLib
+  PcdLib
+  PrintLib
+  CadenceSd6PhyLib
+  NonDiscoverableDeviceRegistrationLib
+
+[Protocols]
+  gEdkiiSdMmcOverrideProtocolGuid               ## PRODUCES
+  gMrvlFdtClientProtocolGuid                    ## CONSUMES
+
+[Pcd]
+  gCN10KPlatformTokenSpaceGuid.PcdEmmcWrapperBase64  ## CONSUMES
+  gCN10KPlatformTokenSpaceGuid.PcdEmmcBaseClockHz     ## CONSUMES

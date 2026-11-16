@@ -1,0 +1,31 @@
+#/** @file
+#
+#  Cadence SD6 (SDHCI) PHY and clock control library.
+#
+#  Copyright (c) 2024-2026 Marvell
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CadenceSd6PhyLib
+  FILE_GUID                      = 83f35afd-41a0-416a-a716-c5c7bff87184
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = CadenceSd6PhyLib|DXE_DRIVER DXE_RUNTIME_DRIVER UEFI_DRIVER
+
+[Sources]
+  CadenceSd6Phy.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Cadence/CadenceSiliconPkg/CadenceSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  UefiBootServicesTableLib

@@ -258,6 +258,14 @@ MvFvbValidateFvHeader (
     return EFI_NOT_FOUND;
   }
 
+  if ((FwVolHeader->BlockMap[0].Length != FlashInstance->Media.BlockSize) ||
+      (FwVolHeader->BlockMap[0].NumBlocks != FlashInstance->Media.LastBlock + 1)) {
+    DEBUG ((DEBUG_ERROR,
+      "%a: NOR geometry changed\n",
+      __func__));
+    return EFI_NOT_FOUND;
+  }
+
   VariableStoreHeader = (VOID *)((UINTN)FwVolHeader + FwVolHeader->HeaderLength);
 
   // Check the Variable Store Guid
@@ -872,6 +880,16 @@ MvFvbEraseBlocks (
         return EFI_DEVICE_ERROR;
       }
 
+      if (!FlashInstance->IsMemoryMapped) {
+        SetMem (
+          (VOID *)(FlashInstance->RegionBaseAddress +
+                   (FlashInstance->StartLba + StartingLba) *
+                   FlashInstance->Media.BlockSize),
+          FlashInstance->Media.BlockSize,
+          0xFF
+          );
+      }
+
       // Move to the next Lba
       StartingLba++;
       NumOfLba--;
@@ -980,6 +998,14 @@ MvFvbPrepareFvHeader (
       return Status;
     }
 
+    if (!FlashInstance->IsMemoryMapped) {
+      SetMem (
+        (VOID *)FlashInstance->RegionBaseAddress,
+        FlashInstance->FvbSize,
+        0xFF
+        );
+    }
+
     // Install all appropriate headers
     Status = MvFvbInitFvAndVariableStoreHeaders (FlashInstance);
     if (EFI_ERROR (Status)) {
@@ -1040,6 +1066,7 @@ MvFvbConfigureFlashInstance (
   FlashInstance->IsMemoryMapped = PcdGetBool (PcdSpiMemoryMapped);
   FlashInstance->FvbSize = VariableSize + FtwWorkingSize + FtwSpareSize;
   FlashInstance->FvbOffset = PcdGet32 (PcdSpiVariableOffset);
+  FlashInstance->Size = FlashInstance->FvbSize;
 
   FlashInstance->Media.MediaId = 0;
   FlashInstance->Media.BlockSize = FlashInstance->SpiDevice.Info->SectorSize;
