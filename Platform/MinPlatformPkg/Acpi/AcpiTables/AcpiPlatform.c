@@ -1303,6 +1303,47 @@ VOID
   IN  VOID                    *Context
   );
 
+typedef struct {
+  UINT32    *Record;        ///< CRC array, one entry per included table
+  UINTN     RecordCount;    ///< number of entries in Record
+  UINTN     WriteIndex;     ///< next entry to write
+} ACPI_TABLE_CRC_CONTEXT;
+
+/**
+  Is this ACPI table excluded from the FACS hardware signature?
+
+  HardwareSignature exists so that OSPM can detect that the hardware configuration changed while
+  the system was in S4. These three tables do not describe configuration and all change across an
+  ordinary hibernate/resume pair on unchanged hardware, which makes the signature differ and the
+  resume be rejected:
+
+    BERT - boot error records. It is installed only on a boot that has unconsumed error data and
+           is absent on the next one. Its presence changes the table count, so it has to be left
+           out of the count as well as out of the digest.
+    PHAT - platform health assessment table. Its content can differ between a cold boot and an S4
+           resume, which is exactly the pair being compared.
+    BGRT - boot graphics resource table. It is installed at Ready to Boot only when a boot logo was
+           drawn, so a boot without a graphics console has no BGRT. Like BERT, its presence changes
+           the table count.
+
+  @param[in] Signature    ACPI table signature.
+
+  @retval TRUE            The table is excluded from the hardware signature.
+  @retval FALSE           The table takes part in the hardware signature.
+**/
+STATIC
+BOOLEAN
+IsAcpiTableExcludedFromHwSignature (
+  IN  UINT32  Signature
+  )
+{
+  return (BOOLEAN)(
+           (Signature == EFI_ACPI_6_5_BOOT_ERROR_RECORD_TABLE_SIGNATURE) ||
+           (Signature == EFI_ACPI_6_5_PLATFORM_HEALTH_ASSESSMENT_TABLE_SIGNATURE) ||
+           (Signature == EFI_ACPI_6_5_BOOT_GRAPHICS_RESOURCE_TABLE_SIGNATURE)
+           );
+}
+
 /**
   Enumerate all ACPI tables in RSDT/XSDT.
 
@@ -1311,7 +1352,7 @@ VOID
                                 4(RSDT) or 8(XSDT).
   @param[in] CallbackFunction   The pointer to GetAcpiTableCount/CalculateAcpiTableCrc.
   @param[in] Context            The pointer to UINTN for GetAcpiTableCount.
-                                The pointer to UINT32 array for CalculateAcpiTableCrc.
+                                The pointer to ACPI_TABLE_CRC_CONTEXT for CalculateAcpiTableCrc.
 **/
 VOID
 EnumerateAllAcpiTables (
@@ -1385,8 +1426,11 @@ EnumerateAllAcpiTables (
 /**
   Count the number of ACPI tables.
 
+  Tables excluded from the hardware signature are not counted, so that their presence cannot
+  change the count and therefore cannot change the signature.
+
   @param[in] Table        The pointer to ACPI table.
-  @param[in] TableIndex   The ACPI table index.
+  @param[in] TableIndex   The ACPI table index. Not used.
   @param[in] Context      The pointer to UINTN.
 **/
 VOID
@@ -1406,15 +1450,23 @@ GetAcpiTableCount (
     return;
   }
 
+  if (IsAcpiTableExcludedFromHwSignature (Table->Signature)) {
+    return;
+  }
+
   (*TableCount)++;
 }
 
 /**
   Calculate CRC based on each offset in the ACPI table.
 
+  Tables excluded from the hardware signature are skipped and consume no record slot. The record
+  is written at the context's compacted write index, not at the enumerator's TableIndex, so the
+  array stays dense and its length matches the count produced by GetAcpiTableCount.
+
   @param[in] Table        The pointer to ACPI table.
-  @param[in] TableIndex   The ACPI table index.
-  @param[in] Context      The pointer to UINT32 array.
+  @param[in] TableIndex   The ACPI table index. Not used as the record slot, see above.
+  @param[in] Context      The pointer to ACPI_TABLE_CRC_CONTEXT.
 **/
 VOID
 EFIAPI
@@ -1424,14 +1476,28 @@ CalculateAcpiTableCrc (
   IN  VOID                    *Context
   )
 {
-  UINT32  *TableCrcRecord;
+  ACPI_TABLE_CRC_CONTEXT  *CrcContext;
+  UINT32                  *TableCrcRecord;
 
-  TableCrcRecord = (UINT32 *)Context;
+  CrcContext     = (ACPI_TABLE_CRC_CONTEXT *)Context;
+  TableCrcRecord = CrcContext->Record;
 
   if (Table == NULL) {
     ASSERT (Table != NULL);
     return;
   }
+
+  if (IsAcpiTableExcludedFromHwSignature (Table->Signature)) {
+    return;
+  }
+
+  if (CrcContext->WriteIndex >= CrcContext->RecordCount) {
+    ASSERT (CrcContext->WriteIndex < CrcContext->RecordCount);
+    return;
+  }
+
+  TableIndex = CrcContext->WriteIndex;
+  CrcContext->WriteIndex++;
 
   //
   // Calculate CRC value.
@@ -1458,6 +1524,7 @@ IsAcpiTableChange (
   EFI_STATUS                                    Status;
   BOOLEAN                                       IsRsdt;
   UINTN                                         AcpiTableCount;
+  ACPI_TABLE_CRC_CONTEXT                        CrcContext;
   UINT32                                        *TableCrcRecord;
   EFI_ACPI_6_5_ROOT_SYSTEM_DESCRIPTION_POINTER  *Rsdp;
   EFI_ACPI_DESCRIPTION_HEADER                   *Rsdt;
@@ -1514,10 +1581,13 @@ IsAcpiTableChange (
   //
   // Calculate CRC for each ACPI table and set record.
   //
+  CrcContext.Record      = TableCrcRecord;
+  CrcContext.RecordCount = AcpiTableCount;
+  CrcContext.WriteIndex  = 0;
   if (IsRsdt) {
-    EnumerateAllAcpiTables (Rsdt, sizeof (UINT32), CalculateAcpiTableCrc, (VOID *)TableCrcRecord);
+    EnumerateAllAcpiTables (Rsdt, sizeof (UINT32), CalculateAcpiTableCrc, (VOID *)&CrcContext);
   } else {
-    EnumerateAllAcpiTables (Xsdt, sizeof (UINT64), CalculateAcpiTableCrc, (VOID *)TableCrcRecord);
+    EnumerateAllAcpiTables (Xsdt, sizeof (UINT64), CalculateAcpiTableCrc, (VOID *)&CrcContext);
   }
 
   //
@@ -1560,9 +1630,24 @@ UpdateLocalTable (
   }
 }
 
+/**
+  Compute the FACS hardware signature once the ACPI table set is complete.
+
+  This runs at Ready to Boot rather than at End of DXE. Some ACPI tables are installed before End
+  of DXE on a boot that loads default settings and after it on later boots, so digesting the tables
+  at End of DXE covers a different set depending on the boot, and OSPM sees a signature that changed
+  without any hardware changing.
+
+  Handlers registered on the Ready to Boot event group at the same TPL have no defined order, so a
+  table installed by another Ready to Boot handler may or may not be part of the signature. Both
+  boots of a hibernate/resume pair run the same image, so the set is the same on both.
+
+  @param[in] Event               The event that was signalled.
+  @param[in] ParentImageHandle   Not used.
+**/
 VOID
 EFIAPI
-AcpiEndOfDxeEvent (
+AcpiReadyToBootEvent (
   EFI_EVENT           Event,
   VOID                *ParentImageHandle
   )
@@ -1596,7 +1681,7 @@ InstallAcpiPlatform (
   )
 {
   EFI_STATUS                    Status;
-  EFI_EVENT                     EndOfDxeEvent;
+  EFI_EVENT                     ReadyToBootEvent;
 
   Status = gBS->LocateProtocol (&gEfiMpServiceProtocolGuid, NULL, (VOID **)&mMpService);
   ASSERT_EFI_ERROR (Status);
@@ -1605,15 +1690,15 @@ InstallAcpiPlatform (
   ASSERT_EFI_ERROR (Status);
 
   //
-  // Create an End of DXE event.
+  // Create a Ready to Boot event for the FACS hardware signature.
   //
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
                   TPL_CALLBACK,
-                  AcpiEndOfDxeEvent,
+                  AcpiReadyToBootEvent,
                   NULL,
-                  &gEfiEndOfDxeEventGroupGuid,
-                  &EndOfDxeEvent
+                  &gEfiEventReadyToBootGuid,
+                  &ReadyToBootEvent
                   );
   ASSERT_EFI_ERROR (Status);
 
