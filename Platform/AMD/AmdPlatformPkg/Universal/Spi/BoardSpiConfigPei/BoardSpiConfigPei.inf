@@ -1,0 +1,44 @@
+## @file
+#  Component description for the Board SPI Configuration PEIM.
+#
+#  Copyright (C) 2026 Advanced Micro Devices, Inc. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION               = 0x00010019
+  BASE_NAME                 = BoardSpiConfigPei
+  FILE_GUID                 = 9C4E1A73-8D62-4B0F-A5D3-2E7C9F146B85
+  MODULE_TYPE               = PEIM
+  VERSION_STRING            = 0.1
+  PI_SPECIFICATION_VERSION  = 0x0001000A
+  ENTRY_POINT               = BoardSpiConfigPeiEntry
+
+[Sources]
+  BoardSpiConfigPei.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AmdPlatformPkg/AmdPlatformPkg.dec
+  AgesaModulePkg/AgesaModuleFchPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  PcdLib
+  PeimEntryPoint
+  PeiServicesLib
+
+[Ppis]
+  gEfiPeiSpiConfigurationPpiGuid                   ## PRODUCES
+
+[Guids]
+  gEdk2JedecSfdpSpiPeiDriverGuid
+
+[Pcd]
+  gEfiAmdAgesaModulePkgTokenSpaceGuid.PcdResetSpiSpeed
+
+[Depex]
+  TRUE
