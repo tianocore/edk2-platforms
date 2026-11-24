@@ -1,0 +1,108 @@
+## @file
+# CI configuration for BoardModulePkg
+#
+# Copyright (c) Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+{
+    "PrEval": {
+        "DscPath": "BoardModulePkg.dsc",
+    },
+    ## options defined .pytool/Plugin/LicenseCheck
+    "LicenseCheck": {
+        "IgnoreFiles": []
+    },
+    "EccCheck": {
+        ## Exception sample looks like below:
+        ## "ExceptionList": [
+        ##     "<ErrorID>", "<KeyWord>"
+        ## ]
+        "ExceptionList": [
+        ],
+        ## Both file path and directory path are accepted.
+        "IgnoreFiles": [
+        ]
+    },
+    ## options defined .pytool/Plugin/CompilerPlugin
+    "CompilerPlugin": {
+        "DscPath": "BoardModulePkg.dsc"
+    },
+
+    ## options defined .pytool/Plugin/CharEncodingCheck
+    "CharEncodingCheck": {
+        "IgnoreFiles": [
+        ]
+    },
+
+    ## options defined .pytool/Plugin/DependencyCheck
+    "DependencyCheck": {
+        "AcceptableDependencies": [
+            "MdePkg/MdePkg.dec",
+            "MdeModulePkg/MdeModulePkg.dec",
+            "BoardModulePkg/BoardModulePkg.dec",
+            "SecurityPkg/SecurityPkg.dec",
+            "IntelSiliconPkg/IntelSiliconPkg.dec",
+            "MinPlatformPkg/MinPlatformPkg.dec"
+        ],
+        # For host based unit tests
+        "AcceptableDependencies-HOST_APPLICATION":[
+            "UnitTestFrameworkPkg/UnitTestFrameworkPkg.dec"
+        ],
+        # For UEFI shell based apps
+        "AcceptableDependencies-UEFI_APPLICATION":[],
+        "IgnoreInf": []
+    },
+
+    ## options defined .pytool/Plugin/DscCompleteCheck
+    "DscCompleteCheck": {
+        "IgnoreInf": [
+        ],
+        "DscPath": "BoardModulePkg.dsc"
+    },
+
+    ## options defined .pytool/Plugin/GuidCheck
+    "GuidCheck": {
+        "IgnoreGuidName": [],
+        "IgnoreGuidValue": ["00000000-0000-0000-0000-000000000000"],
+        "IgnoreFoldersAndFiles": [],
+        "IgnoreDuplicates": [
+        ]
+    },
+
+    ## options defined .pytool/Plugin/LibraryClassCheck
+    "LibraryClassCheck": {
+        "IgnoreLibraryClass": [
+        ],
+        "IgnoreHeaderFile": []
+    },
+
+    ## options defined .pytool/Plugin/SpellCheck
+    "SpellCheck": {
+        "AuditOnly": True,           # Fails test but run in AuditOnly mode to collect log
+        "IgnoreStandardPaths": [     # Standard Plugin defined paths that should be ignore
+            "*.c", "*.asm", "*.h", "*.nasm", "*.s", "*.asl", "*.inf"
+        ],
+        "IgnoreFiles": [             # use gitignore syntax to ignore errors in matching files
+            ""
+        ],
+        "ExtendWords": [           # words to extend to the dictionary for this package
+        ],
+        "AdditionalIncludePaths": [] # Additional paths to spell check relative to package root (wildcards supported)
+    },
+
+    ## options defined .pytool/Plugin/MarkdownLintCheck
+    "MarkdownLintCheck": {
+        "IgnoreFiles": [
+        ]            # package root relative file, folder, or glob pattern to ignore
+    },
+
+    ## options defined .pytool/Plugin/UncrustifyCheck
+    "UncrustifyCheck": {
+        "AuditOnly": True,
+    },
+
+    ## options defined .pytool/Plugin/LineEndingCheck
+    "LineEndingCheck": {
+        "IgnoreFiles": ["**/*"]   # Ignore all line endings to prevent non-visible merge delta from upstream
+    }
+}
