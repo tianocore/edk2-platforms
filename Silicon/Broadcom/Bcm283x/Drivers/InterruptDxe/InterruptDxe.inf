@@ -21,6 +21,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
   Silicon/Broadcom/Bcm283x/Bcm283x.dec
 
 [LibraryClasses]

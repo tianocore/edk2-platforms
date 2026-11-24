@@ -10,6 +10,8 @@
 UINT64                                  mBelow4GMemoryLimit;
 UINT64                                  mAbove4GMemoryLimit;
 
+BOOLEAN                                 mVtdInitialized = FALSE;
+
 EDKII_PLATFORM_VTD_POLICY_PROTOCOL      *mPlatformVTdPolicy;
 
 VTD_ACCESS_REQUEST                      *mAccessRequest = NULL;
@@ -459,8 +461,12 @@ InitializePlatformVTdPolicy (
 
 /**
   Setup VTd engine.
+
+  @retval EFI_SUCCESS      Setup completed and DMAR translation is enabled.
+  @retval EFI_NOT_READY    PCI enumeration is not yet complete; retry later.
+  @retval Other            Setup failed.
 **/
-VOID
+EFI_STATUS
 SetupVtd (
   VOID
   )
@@ -471,6 +477,10 @@ SetupVtd (
   UINT64          Below4GMemoryLimit;
   UINT64          Above4GMemoryLimit;
 
+  if (mVtdInitialized) {
+    return EFI_SUCCESS;
+  }
+
   //
   // PCI Enumeration must be done
   //
@@ -479,7 +489,9 @@ SetupVtd (
                   NULL,
                   &PciEnumerationComplete
                   );
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    return EFI_NOT_READY;
+  }
 
   ReturnUefiMemoryMap (&Below4GMemoryLimit, &Above4GMemoryLimit);
   Below4GMemoryLimit = ALIGN_VALUE_UP(Below4GMemoryLimit, SIZE_256MB);
@@ -494,7 +506,7 @@ SetupVtd (
   DEBUG ((DEBUG_INFO, "ParseDmarAcpiTable\n"));
   Status = ParseDmarAcpiTableDrhd ();
   if (EFI_ERROR (Status)) {
-    return;
+    return Status;
   }
 
   DumpVtdIfError ();
@@ -508,7 +520,7 @@ SetupVtd (
   DEBUG ((DEBUG_INFO, "SetupTranslationTable\n"));
   Status = SetupTranslationTable ();
   if (EFI_ERROR (Status)) {
-    return;
+    return Status;
   }
 
   InitializePlatformVTdPolicy ();
@@ -539,10 +551,13 @@ SetupVtd (
   DEBUG ((DEBUG_INFO, "EnableDmar\n"));
   Status = EnableDmar ();
   if (EFI_ERROR (Status)) {
-    return;
+    return Status;
   }
   DEBUG ((DEBUG_INFO, "DumpVtdRegs\n"));
   DumpVtdRegsAll ();
+
+  mVtdInitialized = TRUE;
+  return EFI_SUCCESS;
 }
 
 /**
@@ -564,14 +579,14 @@ AcpiNotificationFunc (
   EFI_STATUS          Status;
 
   Status = GetDmarAcpiTable ();
-  if (EFI_ERROR (Status)) {
-    if (Status == EFI_ALREADY_STARTED) {
-      gBS->CloseEvent (Event);
-    }
+  if (EFI_ERROR (Status) && (Status != EFI_ALREADY_STARTED)) {
     return;
   }
-  SetupVtd ();
-  gBS->CloseEvent (Event);
+
+  Status = SetupVtd ();
+  if (!EFI_ERROR (Status)) {
+    gBS->CloseEvent (Event);
+  }
 }
 
 /**
@@ -639,6 +654,8 @@ InitializeDmaProtection (
   EFI_EVENT   LegacyBootEvent;
   EFI_EVENT   EventAcpi10;
   EFI_EVENT   EventAcpi20;
+  EFI_EVENT   EventPciEnumComplete;
+  VOID        *PciEnumCompleteRegistration;
 
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
@@ -657,6 +674,25 @@ InitializeDmaProtection (
                   NULL,
                   &gEfiAcpi20TableGuid,
                   &EventAcpi20
+                  );
+  ASSERT_EFI_ERROR (Status);
+
+  //
+  // Also retry SetupVtd when gEfiPciEnumerationCompleteProtocolGuid appears,
+  // to cover the case where DMAR is installed before PCI enumeration completes.
+  //
+  Status = gBS->CreateEvent (
+                  EVT_NOTIFY_SIGNAL,
+                  VTD_TPL_LEVEL,
+                  AcpiNotificationFunc,
+                  NULL,
+                  &EventPciEnumComplete
+                  );
+  ASSERT_EFI_ERROR (Status);
+  Status = gBS->RegisterProtocolNotify (
+                  &gEfiPciEnumerationCompleteProtocolGuid,
+                  EventPciEnumComplete,
+                  &PciEnumCompleteRegistration
                   );
   ASSERT_EFI_ERROR (Status);
 
