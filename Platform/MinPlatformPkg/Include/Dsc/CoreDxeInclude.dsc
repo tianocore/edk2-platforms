@@ -87,7 +87,10 @@
 !endif
   }
 
-  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf {
+    <LibraryClasses>
+      ProcessCapsuleRuntimeLib|MdeModulePkg/Library/BaseProcessCapsuleRuntimeLib/BaseProcessCapsuleRuntimeLib.inf
+  }
 
   #UefiCpuPkg/CpuDxe/CpuDxe.inf
 

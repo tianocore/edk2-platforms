@@ -235,6 +235,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
 !endif
 
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/RuntimeCryptLib.inf
+  ProcessCapsuleRuntimeLib|MdeModulePkg/Library/BaseProcessCapsuleRuntimeLib/BaseProcessCapsuleRuntimeLib.inf
 
 ###################################################################################################
 # BuildOptions Section - Define the module specific tool chain flags that should be used as
