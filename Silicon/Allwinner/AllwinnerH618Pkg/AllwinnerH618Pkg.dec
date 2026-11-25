@@ -1,0 +1,24 @@
+## @file
+#  Allwinner H618 SoC Package.
+#
+#  Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = AllwinnerH618Pkg
+  PACKAGE_GUID                   = C7F4E182-3A65-42E1-9A39-08D23456F618
+  PACKAGE_VERSION                = 0.1
+
+[Includes]
+  Include
+
+[Guids]
+  gAllwinnerH618TokenSpaceGuid   = { 0x020ccbc8, 0xdec1, 0x44fd, { 0xa8, 0xe3, 0xfb, 0x01, 0x1c, 0xcb, 0xd9, 0x37 } }
+
+[PcdsFixedAtBuild.common]
+  # RTC Base Address
+  gAllwinnerH618TokenSpaceGuid.PcdAllwinnerRtcBaseAddress|0x07000000|UINT64|0x00000001

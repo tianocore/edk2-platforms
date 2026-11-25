@@ -5,6 +5,10 @@
 # EDK II Platforms reviewers
 # ==========================
 
+# Allwinner / OrangePi
+/Silicon/Allwinner/** @khaidox
+/Platform/OrangePi/** @khaidox
+
 # AMD VanGoghBoard
 /Platform/AMD/VanGoghBoard/** @fhh200000 @mingxzha @YSHRong
 

@@ -1,0 +1,39 @@
+## @file
+#  Allwinner H618 UEFI Shell commands.
+#
+#  Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = H618ShellCommandsLib
+  FILE_GUID                      = 8B2E9A74-3C51-4F18-9A42-6E1D8B3C5A91
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL|UEFI_APPLICATION
+  CONSTRUCTOR                    = H618ShellCommandsLibConstructor
+  DESTRUCTOR                     = H618ShellCommandsLibDestructor
+
+[Sources]
+  H618ShellCommandsLib.c
+  H618ShellCommandsLib.uni
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ShellPkg/ShellPkg.dec
+  Silicon/Allwinner/AllwinnerH618Pkg/AllwinnerH618Pkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  HiiLib
+  IoLib
+  MemoryAllocationLib
+  ShellCommandLib
+  ShellLib
+  UefiBootServicesTableLib
+  UefiLib

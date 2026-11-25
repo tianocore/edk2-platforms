@@ -33,6 +33,7 @@ out-of-sync with CODEOWNERS and/or REVIEWERS over time and need an occasional re
 | Jeremy Soller          | jeremy@system76.com              | [@jackpot51](https://github.com/jackpot51)             |
 | Kathappan Esakkithevar | kathappan.esakkithevar@intel.com | [@kesakkit](https://github.com/kesakkit)               |
 | Ken Yao                | ken.yao@amd.com                  | [@YSHRong](https://github.com/YSHRong)                 |
+| Khai Do                | dovankhai97@gmail.com            | [@khaidox](https://github.com/khaidox)                 |
 | Leif Lindholm          | quic_llindhol@quicinc.com        | [@leiflindholm](https://github.com/leiflindholm)       |
 | Liming Gao             | gaoliming@byosoft.com.cn         | [@lgao4](https://github.com/lgao4)                     |
 | Ling Jia               | jialing@phytium.com.cn           |                                                        |

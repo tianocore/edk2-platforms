@@ -1,0 +1,43 @@
+## @file
+#  Allwinner H618 Real Time Clock Library.
+#
+#  Copyright (c) 2026, Khai Do <dovankhai97@gmail.com>. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = AllwinnerRtcLib
+  FILE_GUID                      = 4D92A618-7000-4E13-9B24-07000000F618
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = RealTimeClockLib
+
+[Sources.common]
+  AllwinnerRtcLib.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Allwinner/AllwinnerH618Pkg/AllwinnerH618Pkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DxeServicesTableLib
+  IoLib
+  PcdLib
+  TimeBaseLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiRuntimeLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[FixedPcd]
+  gAllwinnerH618TokenSpaceGuid.PcdAllwinnerRtcBaseAddress
+
+[BuildOptions]
+  *_*_*_CC_FLAGS = -DBUILD_EPOCH=$(SOURCE_DATE_EPOCH)
