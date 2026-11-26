@@ -228,6 +228,7 @@ ConfigurePresetGen3 (
   UINT32            Idx;
   UINT32            LinkWidth;
   UINT32            Val;
+  UINT8             Preset;
 
   // Get the Secondary PCI Express Extended capability base address
   SpcieCapabilityBase = GetCapabilityBase (RootComplex, PcieIndex, TRUE, SPCIE_CAPABILITY_ID);
@@ -241,14 +242,20 @@ ConfigurePresetGen3 (
     return;
   }
 
+  if (RootComplex->PresetGen3[PcieIndex] == PRESET_INVALID) {
+    Preset = DEFAULT_GEN3_PRESET;
+  } else {
+    Preset = RootComplex->PresetGen3[PcieIndex];
+  }
+
   LinkWidth = RootComplex->Pcie[PcieIndex].MaxWidth;
 
   // Each register holds the Preset for 2 lanes
   for (Idx = 0; Idx < (LinkWidth / 2); Idx++) {
     LaneEqControlAddr = SpcieCapabilityBase + SPCIE_CAP_OFF_0C_REG + Idx * sizeof (UINT32);
     Val               = MmioRead32 (LaneEqControlAddr);
-    Val               = DSP_TX_PRESET0_SET (Val, DEFAULT_GEN3_PRESET);
-    Val               = DSP_TX_PRESET1_SET (Val, DEFAULT_GEN3_PRESET);
+    Val               = DSP_TX_PRESET0_SET (Val, Preset);
+    Val               = DSP_TX_PRESET1_SET (Val, Preset);
     MmioWrite32 (LaneEqControlAddr, Val);
   }
 }
