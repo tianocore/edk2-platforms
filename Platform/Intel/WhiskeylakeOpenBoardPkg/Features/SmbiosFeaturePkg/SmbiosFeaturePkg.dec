@@ -1,0 +1,1190 @@
+## @file
+# This package provides advanced feature functionality for System Management BIOS (SMBIOS).
+# This package should only depend on EDK II Core packages, IntelSiliconPkg, and MinPlatformPkg.
+#
+# The DEC files are used by the utilities that parse DSC and
+# INF files to generate AutoGen.c and AutoGen.h files
+# for the build infrastructure.
+#
+# Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION = 0x00010017
+  PACKAGE_NAME      = SmbiosFeaturePkg
+  PACKAGE_GUID      = 8CCEE569-02AD-4844-8725-F4C7966E320A
+  PACKAGE_VERSION   = 0.1
+
+[Includes]
+  Include
+
+[LibraryClasses]
+
+[Guids]
+  gSmbiosFeaturePkgTokenSpaceGuid  =  {0xc1530658, 0xe234, 0x4c13, {0xb6, 0x82, 0xd3, 0x87, 0x84, 0xf1, 0xd7, 0x16}}
+
+[PcdsFeatureFlag]
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|FALSE|BOOLEAN|0xA0000001
+
+[PcdsDynamic, PcdsDynamicEx]
+  #
+  # SMBIOS Type 0 BIOS Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation|{0x0}|SMBIOS_TABLE_TYPE0|0xD0000001 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.Vendor|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosVersion|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosSegment|0xF000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosReleaseDate|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosSize|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.PciIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.PlugAndPlayIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.BiosIsUpgradable|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.BiosShadowingAllowed|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.BootFromCdIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.SelectableBootIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.EDDSpecificationIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.Floppy525_12IsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.Floppy35_720IsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.Floppy35_288IsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.PrintScreenIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.Keyboard8042IsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.SerialIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.PrinterIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosCharacteristics.CgaMonoIsSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BIOSCharacteristicsExtensionBytes[0]|0x33
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BIOSCharacteristicsExtensionBytes[1]|0x0F
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.SystemBiosMajorRelease|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.SystemBiosMinorRelease|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.EmbeddedControllerFirmwareMajorRelease|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.EmbeddedControllerFirmwareMinorRelease|0x0
+  #
+  # SMBIOS Type 0 BIOS Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringBiosReleaseDate|"01/01/2019"|VOID*|0xD1000001
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringBiosVersion|"1.0"|VOID*|0xD1000002
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0StringVendor|"BIOS Vendor"|VOID*|0xD1000003
+
+  #
+  # SMBIOS Type 1 System Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation|{0x0}|SMBIOS_TABLE_TYPE1|0xD0000002 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.Manufacturer|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.ProductName|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.Version|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.SerialNumber|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.Uuid|{GUID("88888888-8887-8888-8888-878888888888")}
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.WakeUpType|SystemWakeupTypePowerSwitch
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.SKUNumber|0x5
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.Family|0x6
+  #
+  # SMBIOS Type 1 System Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringFamily|"System Family"|VOID*|0xD1000004
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringManufacturer|"System Manufacturer"|VOID*|0xD1000005
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringProductName|"System Product Name"|VOID*|0xD1000006
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringSerialNumber|"UNKNOWN"|VOID*|0xD1000007
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringSKUNumber|"System SKU Number"|VOID*|0xD1000008
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1StringVersion|"System Version"|VOID*|0xD1000009
+
+  #
+  # SMBIOS Type 2 Base Board Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation|{0x0}|SMBIOS_TABLE_TYPE2|0xD0000003 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.Manufacturer|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.ProductName|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.Version|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.SerialNumber|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.AssetTag|0x5
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.FeatureFlag.Motherboard|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.FeatureFlag.Replaceable|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.LocationInChassis|0x6
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2BaseBoardInformation.BoardType|BaseBoardTypeMotherBoard
+  #
+  # SMBIOS Type 2 Base Board Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringAssetTag|"Base Board Asset Tag"|VOID*|0xD100000A
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringLocationInChassis|"Part Component"|VOID*|0xD100000B
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringManufacturer|"Base Board Manufacturer"|VOID*|0xD100000C
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringProductName|"Base Board Product Name"|VOID*|0xD100000D
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringSerialNumber|"UNKNOWN"|VOID*|0xD100000E
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType2StringVersion|"Base Board Version"|VOID*|0xD100000F
+
+  #
+  # SMBIOS Type 3 System Enclosure Chassis
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis|{0x0}|SMBIOS_TABLE_TYPE3|0xD0000004 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.Manufacturer|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.Type|MiscChassisTypeRackMountChassis
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.Version|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.SerialNumber|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.AssetTag|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.BootupState|ChassisStateSafe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.PowerSupplyState|ChassisStateSafe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.ThermalState|ChassisStateSafe
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.SecurityStatus|ChassisSecurityStatusNone
+  #
+  # SMBIOS Type 3 System Enclosure Chassis Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringAssetTag|"Chassis Asset Tag"|VOID*|0xD1000010
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringManufacturer|"Chassis Manufacturer"|VOID*|0xD1000011
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringSerialNumber|"UNKNOWN"|VOID*|0xD1000012
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringSKUNumber|"Chassis SKU Number"|VOID*|0xD1000013
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3StringVersion|"Chassis Version"|VOID*|0xD1000014
+
+  #
+  # SMBIOS Type 4 Processor Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation|{0x0}|SMBIOS_TABLE_TYPE4|0xD0000005 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Socket|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorType|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorFamily|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorManufacturer|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorSteppingId|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorModel|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorFamily|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorType|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorReserved1|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorXModel|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorXFamily|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.Signature.ProcessorReserved2|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorFpu|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorVme|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorDe|0       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPse|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorTsc|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorMsr|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPae|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorMce|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorCx8|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorApic|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorReserved1|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorSep|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorMtrr|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPge|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorMca|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorCmov|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPat|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPse36|0    
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorPsn|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorClfsh|0    
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorReserved2|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorDs|0       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorAcpi|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorMmx|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorFxsr|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorSse|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorSse2|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorSs|0       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorReserved3|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorId.FeatureFlags.ProcessorTm|0       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorVersion|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Voltage.ProcessorVoltageCapability5V|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Voltage.ProcessorVoltageCapability3_3V|0    
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Voltage.ProcessorVoltageCapability2_9V|0    
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Voltage.ProcessorVoltageCapabilityReserved|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Voltage.ProcessorVoltageIndicateLegacy|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ExternalClock|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.MaxSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.CurrentSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.Status|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.ProcessorUpgrade|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.L1CacheHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.L2CacheHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.L3CacheHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.SerialNumber|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.AssetTag|0x5
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4ProcessorInformation.PartNumber|0x6
+  #
+  # SMBIOS Type 4 Processor Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringSocket|"Processor Socket"|VOID*|0xD1000015
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringManufacturer|"Processor Manufacturer"|VOID*|0xD1000016
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringVersion|"Processor Version"|VOID*|0xD1000017
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringSerialNumber|"Serial Number"|VOID*|0xD1000018
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringAssetTag|"Asset Tag"|VOID*|0xD1000019
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType4StringPartNumber|"Part Number"|VOID*|0xD100001A
+
+  #
+  # SMBIOS Type 5 Memory Controller
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController|{0x0}|SMBIOS_TABLE_TYPE5|0xD0000006 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrDetectMethod|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.Other|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.Unknown|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.None|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.SingleBitErrorCorrect|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.DoubleBitErrorCorrect|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.ErrCorrectCapability.ErrorScrubbing|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportInterleave|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.CurrentInterleave|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.MaxMemoryModuleSize|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportSpeed.Other|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportSpeed.Unknown|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportSpeed.SeventyNs|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportSpeed.SixtyNs|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportSpeed.FiftyNs|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.SupportMemoryType|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.MemoryModuleVoltage|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.AssociatedMemorySlotNum|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType5MemoryController.MemoryModuleConfigHandles[0]|0x1
+
+  #
+  # SMBIOS Type 6 Memory Module Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation|{0x0}|SMBIOS_TABLE_TYPE6|0xD0000007 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.BankConnections|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.ErrorStatus|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Other|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Unknown|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Standard|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.FastPageMode|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Edo|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Parity|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Ecc|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Simm|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Dimm|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.BurstEdo|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Sdram|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.CurrentMemoryType.Reserved|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.InstalledSize.InstalledOrEnabledSize|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.InstalledSize.SingleOrDoubleBank|0  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.EnabledSize.InstalledOrEnabledSize|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6MemoryModuleInformation.EnabledSize.SingleOrDoubleBank|0
+  #
+  # SMBIOS Type 6 Memory Module Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType6StringSocketDesignation|"Socket Designation"|VOID*|0xD100001B
+
+  #
+  # SMBIOS Type 7 Cache Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation|{0x0}|SMBIOS_TABLE_TYPE7|0xD0000008 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CacheConfiguration|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.MaximumCacheSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.InstalledSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Other|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Unknown|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.NonBurst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Burst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.PipelineBurst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Synchronous|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Asynchronous|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SupportedSRAMType.Reserved|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Other|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Unknown|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.NonBurst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Burst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.PipelineBurst|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Synchronous|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Asynchronous|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CurrentSRAMType.Reserved|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.CacheSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.ErrorCorrectionType|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.SystemCacheType|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.Associativity|0x0      
+  # Add for smbios 3.1.0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.MaximumCacheSize2|0xFFFF     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7CacheInformation.InstalledSize2|0xFFFF   
+  #
+  # SMBIOS Type 7 Cache Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType7StringSocketDesignation|"Socket Designation"|VOID*|0xD100001C
+
+
+
+  #
+  # SMBIOS Type 8 Port Connector Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation|{0x0}|SMBIOS_TABLE_TYPE8|0xD0000009 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation.InternalReferenceDesignator|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation.InternalConnectorType|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation.ExternalReferenceDesignator|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation.ExternalConnectorType|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8PortConnectorInformation.PortType|0x1
+  #
+  # SMBIOS Type 8 Port Connector Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8StringInternalReferenceDesignator|"Port Internal Reference Designator"|VOID*|0xD100001D
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType8StringExternalReferenceDesignator|"Port External Reference Designator"|VOID*|0xD100001E
+
+  #
+  # SMBIOS Type 9 System Slots
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots|{0x0}|SMBIOS_TABLE_TYPE9|0xD000000A {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotDesignation|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotType|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotDataBusWidth|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.CurrentUsage|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotLength|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotID|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.CharacteristicsUnknown|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.Provides50Volts|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.Provides33Volts|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.SharedSlot|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.PcCard16Supported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.CardBusSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.ZoomVideoSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics1.ModemRingResumeSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics2.PmeSignalSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics2.HotPlugDevicesSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics2.SmbusSignalSupported|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SlotCharacteristics2.BifurcationSupported|1
+  # Add for SMBIOS 2.6:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.SegmentGroupNum|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.BusNum|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.DevFuncNum|0xFF
+  # Add for SMBIOS 3.2:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.DataBusWidth|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.PeerGroupingCount|0x1
+  # MUSC_SLOT_PEER_GROUP:
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.PeerGroups[0].SegmentGroupNum|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.PeerGroups[0].BusNum|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.PeerGroups[0].DevFuncNum|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9SystemSlots.PeerGroups[0].DataBusWidth|0x1
+  #
+  # SMBIOS Type 9 System Slots Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType9StringSlotDesignation|"Desgnation of the slot"|VOID*|0xD100001F
+
+
+
+  #
+  # SMBIOS Type 10 On Board Devices Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10OnBoardDevicesInformation|{0x0}|SMBIOS_TABLE_TYPE10|0xD000000B {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10OnBoardDevicesInformation.Device[0].DeviceType|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10OnBoardDevicesInformation.Device[0].DescriptionString|0x1
+  #
+  # SMBIOS Type 10 On Board Devices Information String
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType10StringDescriptionString|"Description String Content"|VOID*|0xD1000020
+
+
+
+  #
+  # SMBIOS Type 11 OEM Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType11OEMStrings|{0x0}|SMBIOS_TABLE_TYPE11|0xD000000C {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  #
+  # SMBIOS Type 11 OEM Strings Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType11StringCount|"String Count"|VOID*|0xD1000021
+
+
+
+
+  #
+  # SMBIOS Type 12 System Configuration Options
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType12SystemConfigurationOptions|{0x0}|SMBIOS_TABLE_TYPE12|0xD000000D {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  #
+  # SMBIOS Type 12 System Configuration Options Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType12StringCount|"String Count"|VOID*|0xD1000022
+
+  #
+  # SMBIOS Type 13 BIOS Language Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation|{0x0}|SMBIOS_TABLE_TYPE13|0xD000000E {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.InstallableLanguages|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Flags|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[0]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[1]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[2]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[3]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[4]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[5]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[6]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[7]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[8]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[9]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[10]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[11]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[12]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[13]|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13BiosLanguageInformation.Reserved[14]|0x0
+  #
+  # SMBIOS Type 13 BIOS Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType13StringCurrentLanguages|"en|US|iso8859-1"|VOID*|0xD1000023
+
+  #
+  # SMBIOS Type 14 Group Associations
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14GroupAssociations|{0x0}|SMBIOS_TABLE_TYPE14|0xD000000F {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14GroupAssociations.Group[0].ItemType|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14GroupAssociations.Group[0].ItemHandle|0
+  #
+  # SMBIOS Type 14 BIOS Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType14StringGroupName|"Group Name"|VOID*|0xD1000024
+
+  #
+  # SMBIOS Type 15 System Event Log 
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog|{0x0}|SMBIOS_TABLE_TYPE15|0xD0000010 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogAreaLength|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogHeaderStartOffset|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogDataStartOffset|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.AccessMethod|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogStatus|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogChangeToken|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.AccessMethodAddress|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LogHeaderFormat|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.NumberOfSupportedLogTypeDescriptors|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.LengthOfLogTypeDescriptor|0x2 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType15SystemEventLog.NumberOfSupportedLogTypeDescriptors|0x00
+
+  #
+  # SMBIOS Type 16 Physical MemoryArray 
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray|{0x0}|SMBIOS_TABLE_TYPE16|0xD0000011 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.Location|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.Use|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.MemoryErrorCorrection|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.MaximumCapacity|0x80000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.MemoryErrorInformationHandle|0xFFFE
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.NumberOfMemoryDevices|0
+  # Add for smbios 2.7
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType16PhysicalMemoryArray.ExtendedMaximumCapacity|0x80000000
+
+  #
+  # SMBIOS Type 17 Memory Device
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice|{0x0}|SMBIOS_TABLE_TYPE17|0xD0000012 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryArrayHandle|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryErrorInformationHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TotalWidth|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.DataWidth|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.Size|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.FormFactor|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.DeviceSet|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryType|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Reserved|0    
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Other|0       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Unknown|1     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.FastPaged|0   
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.StaticColumn|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.PseudoStatic|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Rambus|0      
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Synchronous|0 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Cmos|0        
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Edo|0         
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.WindowDram|0  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.CacheDram|0   
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Nonvolatile|0 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Registered|0  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.Unbuffered|0  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.TypeDetail.LrDimm|0     
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.Speed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.Attributes|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ExtendedSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ConfiguredMemoryClockSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MinimumVoltage|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MaximumVoltage|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ConfiguredVoltage|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryTechnology|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.Reserved|0                       
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.Other|0                          
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.Unknown|1                        
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.VolatileMemory|0                 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.ByteAccessiblePersistentMemory|0 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.BlockAccessiblePersistentMemory|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Bits.Reserved2|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemoryOperatingModeCapability.Uint16|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ModuleManufacturerID|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ModuleProductID|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemorySubsystemControllerManufacturerID|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.MemorySubsystemControllerProductID|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.NonVolatileSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.VolatileSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.CacheSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.LogicalSize|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ExtendedSpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.ExtendedConfiguredMemorySpeed|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.DeviceLocator|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.BankLocator|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.Manufacturer|0x3
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.SerialNumber|0x4
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.AssetTag|0x5
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.PartNumber|0x6
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17MemoryDevice.FirmwareVersion|0x7
+  #
+  # SMBIOS Type 17 Memory Device Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringDeviceLocator|"Unknown String"|VOID*|0xD1000025
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringBankLocator|"Unknown String"|VOID*|0xD1000026
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringManufacturer|"Unknown String"|VOID*|0xD1000027
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringSerialNumber|"Unknown String"|VOID*|0xD1000028
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringAssetTag|"Unknown String"|VOID*|0xD1000029
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringPartNumber|"Unknown String"|VOID*|0xD100002A
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType17StringFirmwareVersion|"Unknown String"|VOID*|0xD100002B
+
+  #
+  # SMBIOS Type 18 32-bit Memory Error Information 
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation|{0x0}|SMBIOS_TABLE_TYPE18|0xD0000013 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.ErrorType|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.ErrorGranularity|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.ErrorOperation|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.VendorSyndrome|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.MemoryArrayErrorAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.DeviceErrorAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1832bitMemoryErrorInformation.ErrorResolution|0xFFFFFFFF
+
+  #
+  # SMBIOS Type 19 Memory Array Mapped Address
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress|{0x0}|SMBIOS_TABLE_TYPE19|0xD0000014 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.StartingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.EndingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.MemoryArrayHandle|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.PartitionWidth|0x0
+  # Add for smbios 2.7
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.ExtendedStartingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType19MemoryArrayMappedAddress.ExtendedEndingAddress|0xFFFFFFFF
+
+  #
+  # SMBIOS Type 20 Memory Device Mapped Address
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress|{0x0}|SMBIOS_TABLE_TYPE20|0xD0000015 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.StartingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.EndingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.MemoryDeviceHandle|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.MemoryArrayMappedAddressHandle|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.PartitionRowPosition|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.InterleavePosition|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.InterleavedDataDepth|0xFF
+  # Add for smbios 2.7
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.ExtendedStartingAddress|0xFFFFFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType20MemoryDeviceMappedAddress.ExtendedEndingAddress|0xFFFFFFFF
+
+  #
+  # SMBIOS Type 21 Pointing Device
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType21PointingDevice|{0x0}|SMBIOS_TABLE_TYPE21|0xD0000016 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType21PointingDevice.Type|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType21PointingDevice.Interface|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType21PointingDevice.NumberOfButtons|0x1
+
+  #
+  # SMBIOS Type 22 Portable Battery
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery|{0x0}|SMBIOS_TABLE_TYPE22|0xD0000017 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.DeviceChemistry|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.DeviceCapacity|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.DesignVoltage|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.MaximumErrorInBatteryData|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.SBDSSerialNumber|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.SBDSManufactureDate|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.DesignCapacityMultiplier|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22PortableBattery.OEMSpecific|0xFFFF
+  #
+  # SMBIOS Type 22 Portable Battery Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringLocation|"Location"|VOID*|0xD100002C
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringManufacturer|"Manufacturer"|VOID*|0xD100002D
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringManufactureDate|"Manufacture Date"|VOID*|0xD100002E
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSerialNumber|"Serial Number"|VOID*|0xD100002F
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringDeviceName|"Device Name"|VOID*|0xD1000030
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSBDSVersionNumber|"SBDS Version Number"|VOID*|0xD1000031
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType22StringSBDSDeviceChemistryStr|"SBDS Device Chemistry"|VOID*|0xD1000032
+
+  #
+  # SMBIOS Type 23 Hardware Security
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset|{0x0}|SMBIOS_TABLE_TYPE23|0xD0000018 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset.Capabilities|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset.ResetCount|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset.ResetLimit|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset.TimerInterval|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType23SystemReset.Timeout|0xFFFF
+
+  #
+  # SMBIOS Type 24 Hardware Security
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType24HardwareSecurity|{0x0}|SMBIOS_TABLE_TYPE24|0xD0000019 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType24HardwareSecurity.HardwareSecuritySettings|0x00000000
+
+  #
+  # SMBIOS Type 25 System Power Controls
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls|{0x0}|SMBIOS_TABLE_TYPE25|0xD000001A {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls.NextScheduledPowerOnMonth|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls.NextScheduledPowerOnDayOfMonth|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls.NextScheduledPowerOnHour|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls.NextScheduledPowerOnMinute|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType25SystemPowerControls.NextScheduledPowerOnSecond|0x1
+
+  #
+  # SMBIOS Type 26 Voltage Probe
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe|{0x0}|SMBIOS_TABLE_TYPE26|0xD000001B {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.LocationAndStatus.VoltageProbeSite|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.LocationAndStatus.VoltageProbeStatus|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.MaximumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.MinimumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.Resolution|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.Tolerance|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.Accuracy|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.OEMDefined|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26VoltageProbe.NominalValue|0x8000
+  #
+  # SMBIOS Type 26 Voltage Probe Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType26StringDescription|"Description"|VOID*|0xD1000033
+
+  #
+  # SMBIOS Type 27 Cooling Device
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice|{0x0}|SMBIOS_TABLE_TYPE27|0xD000001C {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.TemperatureProbeHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.DeviceTypeAndStatus.CoolingDevice|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.DeviceTypeAndStatus.CoolingDeviceStatus|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.CoolingUnitGroup|0x00 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.OEMDefined|0x0 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27CoolingDevice.NominalSpeed|0x8000  
+  #
+  # SMBIOS Type 27 Cooling Device Strings
+  #
+  # Add for smbios 2.7
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType27StringDescription|"Description"|VOID*|0xD1000034
+
+
+  #
+  # SMBIOS Type 28 Temperature Probe
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe|{0x0}|SMBIOS_TABLE_TYPE28|0xD000001D {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.LocationAndStatus.TemperatureProbeSite|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.LocationAndStatus.TemperatureProbeStatus|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.MaximumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.MinimumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.Resolution|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.Tolerance|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.Accuracy|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.OEMDefined|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28TemperatureProbe.NominalValue|0x8000
+  #
+  # SMBIOS Type 28 Temperature Probe Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType28StringDescription|"Description"|VOID*|0xD1000035
+
+  #
+  # SMBIOS Type 29 System Power Controls
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe|{0x0}|SMBIOS_TABLE_TYPE29|0xD000001E {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.Description|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.LocationAndStatus.ElectricalCurrentProbeSite|2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.LocationAndStatus.ElectricalCurrentProbeStatus|2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.MaximumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.MinimumValue|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.Resolution|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.Tolerance|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.Accuracy|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.OEMDefined|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29ElectricalCurrentProbe.NominalValue|0x8000
+  #
+  # SMBIOS Type 29 Electrical Current Probe Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType29StringDescription|"Unknown String"|VOID*|0xD1000036
+
+  #
+  # SMBIOS Type 30 Out-of-Band Remote Access
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType30OutOfBoundRemoteAccess|{0x0}|SMBIOS_TABLE_TYPE30|0xD000001F {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType30OutOfBoundRemoteAccess.Connections|0x0
+  #
+  # SMBIOS Type 30 Out-of-Band Remote Access String
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType30StringManufacturerName|"Manufacturer Name"|VOID*|0xD1000037
+
+  #
+  # SMBIOS Type 31 Boot Integrity Services (BIS) Entry Point
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint|{0x0}|SMBIOS_TABLE_TYPE31|0xD0000020 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.Checksum|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.Reserved1|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.Reserved2|0x0000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.BisEntry16|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.BisEntry32|0x00000000  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.Reserved3|0x0000000000000000  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType31BISEntryPoint.Reserved4|0x00000000
+
+  #
+  # SMBIOS Type 32 System Boot Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType32SystemBootInformation|{0x0}|SMBIOS_TABLE_TYPE32|0xD0000021 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType32SystemBootInformation.BootStatus|BootInformationStatusNoError
+
+  #
+  # SMBIOS Type 33 64-Bit Memory Error Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation|{0x0}|SMBIOS_TABLE_TYPE33|0xD0000022 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.ErrorType|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.ErrorGranularity|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.ErrorOperation|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.VendorSyndrome|0x00000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.MemoryArrayErrorAddress|0x8000000000000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.DeviceErrorAddress|0x8000000000000000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType33_64BitMemoryErrorInformation.ErrorResolution|0x80000000
+
+  #
+  # SMBIOS Type 34 Management Device
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice|{0x0}|SMBIOS_TABLE_TYPE34|0xD0000023 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice.Description|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice.Type|0x2
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice.Address|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34ManagementDevice.AddressType|0x2
+  #
+  # SMBIOS Type 34 Management Device Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType34StringDescription|"Unknown String"|VOID*|0xD1000038
+
+  #
+  # SMBIOS Type 35 Management Device Component
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent|{0x0}|SMBIOS_TABLE_TYPE35|0xD0000024 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent.Description|0x1  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent.ManagementDeviceHandle|0x0000  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent.ComponentHandle|0x0000  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35ManagementDeviceComponent.ThresholdHandle|0xFFFF
+
+  #
+  # SMBIOS Type 35 Management Device Component Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType35StringDescription|"Unknown String"|VOID*|0xD1000039
+
+  #
+  # SMBIOS Type 36 Management Device Threshold Data
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData|{0x0}|SMBIOS_TABLE_TYPE36|0xD0000025 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.LowerThresholdNonCritical|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.UpperThresholdNonCritical|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.LowerThresholdCritical|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.UpperThresholdCritical|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.LowerThresholdNonRecoverable|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType36ManagementDeviceThresholdData.UpperThresholdNonRecoverable|0x8000
+
+  #
+  # SMBIOS Type 37 Memory Channel Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation|{0x0}|SMBIOS_TABLE_TYPE37|0xD0000026 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation.ChannelType|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation.MaximumChannelLoad|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation.MemoryDeviceCount|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation.MemoryDevice[0].DeviceLoad|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType37MemoryChannelInformation.MemoryDevice[0].DeviceHandle|0x01
+
+  #
+  # SMBIOS Type 38 IPMI Device Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation|{0x0}|SMBIOS_TABLE_TYPE38|0xD0000027 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.InterfaceType|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.IPMISpecificationRevision|0x10
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.I2CSlaveAddress|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.NVStorageDeviceAddress|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.BaseAddress|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.BaseAddressModifier_InterruptInfo|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType38PimiDeviceInformation.InterruptNumber|0x0
+
+  #
+  # SMBIOS Type 39 System Power Supply
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply|{0x0}|SMBIOS_TABLE_TYPE39|0xD0000028 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerUnitGroup|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.MaxPowerCapacity|0x8000
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.PowerSupplyHotReplaceable|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.PowerSupplyPresent|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.PowerSupplyUnplugged|1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.InputVoltageRangeSwitch|0001
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.PowerSupplyStatus|001
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.PowerSupplyType|0001
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.PowerSupplyCharacteristics.Reserved|00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.InputVoltageProbeHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.CoolingDeviceHandle|0xFFFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SystemPowerSupply.InputCurrentProbeHandle|0xFFFF
+  #
+  # SMBIOS Type 39 System Power Supply String
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39StringLocation|"Location"|VOID*|0xD100003A
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39StringDeviceName|"Device Name"|VOID*|0xD100003B
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39Manufacturer|"Manufacturer"|VOID*|0xD100003C
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39SerialNumber|"Serial Number"|VOID*|0xD100003D
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39AssetTagNumber|"Tag Number"|VOID*|0xD100003E
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39ModelPartNumber|"Part Number"|VOID*|0xD100003F
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType39RevisionLevel|"Revision Level"|VOID*|0xD1000040
+
+  #
+  # SMBIOS Type 40 Additional Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation|{0x0}|SMBIOS_TABLE_TYPE40|0xD0000029 {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.NumberOfAdditionalInformationEntries|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.AdditionalInfoEntries[0].EntryLength|0x6  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.AdditionalInfoEntries[0].ReferencedHandle|0x01  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.AdditionalInfoEntries[0].ReferencedOffset|0x0 
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.AdditionalInfoEntries[0].EntryString|0x1
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40AdditionalInformation.AdditionalInfoEntries[0].Value[0]|0x0
+  #
+  # SMBIOS Type 40 Additional Information Strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType40StringEntryString|"Entry String Content"|VOID*|0xD1000041
+
+  #
+  # SMBIOS Type 41 Onboard devices extended information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation|{0x0}|SMBIOS_TABLE_TYPE41|0xD000002A {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation.DeviceType|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation.DeviceTypeInstance|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation.SegmentGroupNum|0x0FF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation.BusNum|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41OnboardDevicesExtendedInformation.DevFuncNum|0
+  #
+  # SMBIOS Type 41 Onboard devices extended information strings
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType41StringReferenceDesignation|"Reference Designation"|VOID*|0xD1000042
+
+  #
+  # SMBIOS Type 42 Management Controller Host Interface
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface|{0x0}|SMBIOS_TABLE_TYPE42|0xD000002B {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceType|0xF0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceTypeSpecificDataLength|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceTypeSpecificData[0]|0xF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceTypeSpecificData[1]|0xF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceTypeSpecificData[2]|0xF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType42ManagementControllerHostInterface.InterfaceTypeSpecificData[3]|0xF
+
+  #
+  # SMBIOS Type 43 TMP Device
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice|{0x0}|SMBIOS_TABLE_TYPE43|0xD000002C {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.VendorID[0]|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.VendorID[1]|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.VendorID[2]|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.VendorID[3]|0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.MajorSpecVersion|0x02
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.MinorSpecVersion|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.FirmwareVersion1|0x01
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.FirmwareVersion2|0x00
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.Characteristics|0x0
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43TMPDevice.OemDefined|0x0
+  #
+  # SMBIOS Type 43 TMP DEVICE String
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType43StringDescription|"Description"|VOID*|0xD1000043
+
+  #
+  # SMBIOS Type 44 Processor Additional Information
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType44ProcessorAdditionalInformation|{0x0}|SMBIOS_TABLE_TYPE44|0xD000002D {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  }  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType44ProcessorAdditionalInformation.RefHandle|0xFF
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType44ProcessorAdditionalInformation.ProcessorSpecificBlock.Length|0x00  
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType44ProcessorAdditionalInformation.ProcessorSpecificBlock.ProcessorArchType|0x00
+
+  #
+  # SMBIOS Type 126 Inactive
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType126Inactive|{0x0}|SMBIOS_TABLE_TYPE126|0xD000002E {
+    <HeaderFiles>
+      IndustryStandard/SmBios.h
+    <Packages>
+      MdePkg/MdePkg.dec
+      #SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      WhiskeylakeOpenBoardPkg/Features/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  } 
