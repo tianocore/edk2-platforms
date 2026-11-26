@@ -30,3 +30,15 @@ using a PuTTY Terminal
 
 See CompatibleDevices.txt for a list of devices which have been confirmed to work with this 
 driver.
+
+=== CONSOLE INTEGRATION ===
+
+By default, the driver automatically binds TerminalDxe and installs Console
+Device protocols (gEfiConsoleInDeviceGuid, gEfiConsoleOutDeviceGuid, and
+gEfiStandardErrorDeviceGuid) on child terminal handles, connecting them to
+ConSplitter. This enables the USB serial adapter to be used immediately as a
+system console (both input and output) when loaded dynamically after platform
+BDS (e.g. by bootloaders such as systemd-boot or from the UEFI Shell).
+
+This behavior can be controlled at build time using the Feature PCD:
+  gOptionRomPkgTokenSpaceGuid.PcdFtdiAutoAttachConsole (default: TRUE)
