@@ -209,7 +209,7 @@ root@localhost# tpm2_createprimary -C o -c /etc/tpm-luks/test_primary.ctx
 
 # Sealing the secret.data with PCR-256 index 0.
 root@localhost# tpm2_createpolicy --policy-pcr -l sha256:0 -L /etc/tpm-luks/policy.digest
-root@localhost# tpm2_create -C /etc/tpm-luks/test_primary.ctx -u /etc/tpm-luks/test_seal.pub -r /etc/tpm-luks/test_seal.priv -L policy.digest -i secret.data
+root@localhost# tpm2_create -C /etc/tpm-luks/test_primary.ctx -u /etc/tpm-luks/test_seal.pub -r /etc/tpm-luks/test_seal.priv -L /etc/tpm-luks/policy.digest -i /etc/tpm-luks/secret.data
 ```
 
 2.1.2) Create unsealing scripts
@@ -229,13 +229,13 @@ root@localhost# chmod +x /etc/tpm-luks/test_unseal.sh
 2.1.3) Prepare device
 ```
 # Prepare 512MB block device
-root@localhost# dd if=/dev/zero of=manual.img bs=1M count=512
+root@localhost# dd if=/dev/zero of=/root/test/manual.img bs=1M count=512
 
 # Set keyfile for block device (or diskfile)
-root@localhost# cryptsetup luksFormat manuel.img --type luks2 --key-file /etc/tpm-luks/secret.data
+root@localhost# cryptsetup luksFormat /root/test/manual.img --type luks2 --key-file /etc/tpm-luks/secret.data
 
 # confirm
-root@localhost# cryptsetup luksDump manual.img
+root@localhost# cryptsetup luksDump /root/test/manual.img
 ```
 
 2.1.4) Setting /etc/crypttab
@@ -245,7 +245,7 @@ root@localhost# cat /etc/crypttab
 
 # <target name>   <source device>       <key file>    <options>
 ...
-testdev0 /home/levi/work/test/tpm/disk/manual.img none luks,keyscript=/etc/tpm-luks/test_unseal.sh
+testdev0 /root/test/manual.img none luks,keyscript=/etc/tpm-luks/test_unseal.sh
 ```
 
 2.1.5) Map encrypted block device
@@ -269,20 +269,9 @@ loop0                       7:0    0   512M  0 loop
 
 2.1.6) Remove encrypted block device
 ```
-# add entry for prepared device
-root@localhost# cryptdisks_start testdev0
- * Starting crypto disk...
- * testdev0 (starting)...
- * testdev0 (started)...                     [ OK ]
-
-root@localhost# lsblk
-NAME                      MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
-...
-loop0                       7:0    0   512M  0 loop
-└─testdev0                252:1    0   496M  0 crypt
-...
-
-# testdev0 can be used for fdisk, mkfs, mount or etc...
+root@localhost# sudo cryptdisks_stop testdev0
+ * Stopping crypto disk...
+ * testdev0 (stopping)...                     [ OK ]
 ```
 
 2.2) Using Clevis
