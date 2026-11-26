@@ -1,0 +1,40 @@
+#
+#  Copyright (c) 2015, Cavium Inc.
+#  Copyright (c) 2013-2014, ARM Limited. All rights reserved.
+#  Copyright (c) 2026, Marvell. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CN10KConfigLib
+  FILE_GUID                      = fee427a7-816a-4636-bb81-a640c8288f28
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = CN10KConfigLib|DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SAL_DRIVER SMM_CORE DXE_SMM_DRIVER UEFI_APPLICATION UEFI_DRIVER PEIM PEI_CORE SEC
+
+[Sources.common]
+  CN10KConfigLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  FdtLib
+  HobLib
+  PrintLib
+
+[Guids]
+  gFdtHobGuid
+
+[Protocols]
+
+[FixedPcd]
+  gMarvellSiliconTokenSpaceGuid.PcdFdtConfigRootNode
+[Depex]
+  TRUE

@@ -1,0 +1,33 @@
+## @file
+#
+#  PCI Host Bridge and PCI Segment Information Library instance for
+#  Marvell CN10K SoCs
+#
+#  Copyright (c) 2026, Marvell. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = CN10KPciLib
+  FILE_GUID                      = ea072682-13ea-4565-8ef5-d0a7e04f8e29
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciSegmentInfoLib|DXE_DRIVER
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+[Sources]
+  PciSegmentInfoLib.c
+  PciHostBridgeLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  IoLib
+  MemoryAllocationLib

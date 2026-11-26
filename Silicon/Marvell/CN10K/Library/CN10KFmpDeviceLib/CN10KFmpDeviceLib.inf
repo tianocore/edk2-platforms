@@ -1,0 +1,42 @@
+#/** @file
+#
+#  Marvell CN10K FMP device library. Forwards capsule images to the secure
+#  monitor for programming the boot SPI NOR flash.
+#
+#  Copyright (c) 2025-2026 Marvell
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CN10KFmpDeviceLib
+  FILE_GUID                      = 5b3d1c8e-9a47-4f2b-b6e0-7c1a2d3e4f58
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FmpDeviceLib|DXE_DRIVER UEFI_DRIVER
+
+[Sources.common]
+  CN10KFmpDeviceLib.c
+
+[Packages]
+  FmpDevicePkg/FmpDevicePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  CN10KConfigLib
+  SmcLib
+  DebugLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+
+[FixedPcd]
+  gCN10KPlatformTokenSpaceGuid.PcdFlashDeviceSize
+  gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceBuildTimeLowestSupportedVersion

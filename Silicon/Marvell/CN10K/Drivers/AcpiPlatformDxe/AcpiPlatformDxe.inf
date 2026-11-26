@@ -1,0 +1,53 @@
+#/** @file
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#  https://spdx.org/licenses
+#
+#  Copyright (C) 2025-2026 Marvell
+#  Module definition file for Marvell ACPI Platform DXE driver
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AcpiPlatformDxe
+  FILE_GUID                      = cb933912-df8f-4305-b1f9-7b44fa11395c
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = AcpiPlatformEntryPoint
+
+[Sources]
+  AcpiPlatform.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+  DynamicTablesPkg/DynamicTablesPkg.dec
+
+[LibraryClasses]
+  UefiLib
+  BaseMemoryLib
+  CN10KConfigLib
+  UefiDriverEntryPoint
+  AmlLib
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                     ## CONSUMES
+  gMrvlFdtClientProtocolGuid                    ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiTableStorageFile    ## CONSUMES
+
+  gCN10KPlatformTokenSpaceGuid.PcdNodeCount
+  gCN10KPlatformTokenSpaceGuid.PcdCoresPerNode
+
+  gCN10KPlatformTokenSpaceGuid.PcdDisableWatchdog
+  gCN10KPlatformTokenSpaceGuid.PcdDisablePci1Bus
+
+[Depex]
+  gEfiAcpiTableProtocolGuid   AND
+  gMrvlFdtClientProtocolGuid  AND
+  gCN10KConfigAppliedProtocolGuid

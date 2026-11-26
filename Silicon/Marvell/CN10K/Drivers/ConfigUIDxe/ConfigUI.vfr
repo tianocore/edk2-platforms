@@ -1,0 +1,51 @@
+//## @file
+//#
+//# SPDX-License-Identifier: BSD-2-Clause-Patent
+//# https://spdx.org/licenses
+//#
+//# Copyright (C) 2022-2026 Marvell
+//#
+//#
+
+#include "NvDataStruct.h"
+
+#define EFI_CONFIG_UI_DXE_GUID \
+  { \
+    0x4F408752, 0xF3A7, 0x42E8, {0xA3, 0x33, 0xBE, 0x87, 0x27, 0x2F, 0x6C, 0x30} \
+  }
+
+formset
+  guid      = EFI_CONFIG_UI_DXE_GUID,
+  title     = STRING_TOKEN(STR_FORM_SET_TITLE),
+  help      = STRING_TOKEN(STR_FORM_SET_TITLE_HELP),
+  classguid = EFI_HII_PLATFORM_SETUP_FORMSET_GUID,
+
+  //
+  // Define a Buffer Storage (EFI_IFR_VARSTORE)
+  //
+  varstore CN10K_CONFIG_NV_DATA,      // This is the data structure type
+    name  = CN10KConfigVar,              // Define referenced name in vfr
+    guid  = EFI_CONFIG_UI_DXE_GUID;         // GUID of this buffer storage
+
+  form formid = 1,
+    title  = STRING_TOKEN(STR_FORM_SET_TITLE);
+
+    checkbox varid   = CN10KConfigVar.DisableWatchdog,
+             prompt   = STRING_TOKEN(STR_WD),
+             help     = STRING_TOKEN(STR_FORM_WD_HELP),
+             flags    = CHECKBOX_DEFAULT | INTERACTIVE,
+    endcheckbox;
+
+    checkbox varid   = CN10KConfigVar.DisablePci1Bus,
+             prompt   = STRING_TOKEN(STR_PCI1),
+             help     = STRING_TOKEN(STR_FORM_PCI1_HELP),
+             flags    = CHECKBOX_DEFAULT | INTERACTIVE,
+    endcheckbox;
+
+    checkbox varid   = CN10KConfigVar.DisableAtfTimers,
+             prompt   = STRING_TOKEN(STR_TIMER),
+             help     = STRING_TOKEN(STR_FORM_TIMER_HELP),
+             flags    = CHECKBOX_DEFAULT | INTERACTIVE,
+    endcheckbox;
+  endform;
+endformset;

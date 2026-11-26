@@ -1,0 +1,63 @@
+#/** @file
+#
+#  Marvell CN10K xSPI DXE driver. Produces the Marvell SPI master and SPI flash
+#  protocols on top of the Cadence xSPI controller.
+#
+#  Copyright (c) 2025-2026 Marvell
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CN10KSpiDxe
+  FILE_GUID                      = 4f8e2c91-7a3d-4b6e-9c1f-2d5a8b0e6f73
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = CN10KSpiEntryPoint
+
+[Sources]
+  CN10KSpiDxe.c
+  CN10KSpiDxe.h
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Cadence/CadenceSiliconPkg/CadenceSiliconPkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  CadenceXspiLib
+  DebugLib
+  DxeServicesTableLib
+  IoLib
+  MemoryAllocationLib
+  NorFlashInfoLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  gMarvellSpiMasterProtocolGuid
+  gMarvellSpiFlashProtocolGuid
+
+[FixedPcd]
+  gCN10KPlatformTokenSpaceGuid.PcdFlashDeviceSize
+  gCN10KPlatformTokenSpaceGuid.PcdMPIControllerBase64
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorBusControllerNum
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorBusControllerOffs64
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorChipSelect
+  gCN10KPlatformTokenSpaceGuid.PcdSpiNorClkFrequency
+
+[Depex]
+  TRUE

@@ -1,0 +1,27 @@
+//## @file
+//#
+//# SPDX-License-Identifier: BSD-2-Clause-Patent
+//# https://spdx.org/licenses
+//#
+//# Copyright (C) 2022-2026 Marvell
+//#
+//#
+
+#langdef en-US  "English"
+
+#string STR_NULL_STRING                 #language en-US ""
+
+#string STR_FORM_SET_TITLE              #language en-US "Marvell CN10K Configuration"
+#string STR_FORM_SET_TITLE_HELP         #language en-US "Marvell CN10K configuration."
+
+#string STR_FORM_WD_HELP                #language en-US  "Enable/Disable Generic Watchdog"
+#string STR_WD                          #language en-US  "Disable Generic Watchdog"
+#string STR_WD_HELP                     #language en-US  "Enable/Disable Generic Watchdog"
+
+#string STR_FORM_PCI1_HELP              #language en-US  "Enable/Disable PCI1 Bus"
+#string STR_PCI1                        #language en-US  "Disable PCI1 Bus"
+#string STR_PCI1_HELP                   #language en-US  "Enable/Disable PCI1 Bus"
+
+#string STR_FORM_TIMER_HELP             #language en-US  "Enable/Disable ATF timers"
+#string STR_TIMER                       #language en-US  "Disable ATF timers"
+#string STR_TIMER_HELP                  #language en-US  "Enable/Disable ATF timers"

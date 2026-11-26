@@ -1,0 +1,79 @@
+## @file
+# Platform SMBIOS driver that fills in the SMBIOS tables for CN10K.
+#
+# Copyright (c) 2021 Marvell
+# Copyright (c) 2015, Cavium Inc.
+# Copyright (c) 2012, Apple Inc. All rights reserved.
+# Copyright (c) 2026, Marvell. All rights reserved.
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmbiosPlatformDxe
+  FILE_GUID                      = 8E3A1152-5B14-4743-BB72-471AAEA59624
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmbiosPlatformDriverEntryPoint
+
+
+[Sources]
+  SmbiosPlatformDxe.c
+  Type0BiosInformation.c
+  Type1SystemInformation.c
+  Type2BaseboardInformation.c
+  Type3SystemEnclosure.c
+  Type4ProcessorInformation.c
+  Type7CacheInformation.c
+  Type8PortConnectorInformation.c
+  Type9SystemSlots.c
+  Type11OemStrings.c
+  Type12SystemConfigurationOptions.c
+  Type16PhysicalMemoryArray.c
+  Type17MemoryDevice.c
+  Type19MemoryArrayMappedAddress.c
+  Type20MemoryDeviceMappedAddress.c
+  Type23SystemReset.c
+  Type32SystemBootInformation.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ArmPkg/ArmPkg.dec
+  Silicon/Marvell/CN10K/CN10KPlatform.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
+
+[LibraryClasses]
+  IoLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+  PrintLib
+  CN10KConfigLib
+  SmcLib
+  FdtLib
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiSmbiosProtocolGuid    # PROTOCOL ALWAYS_CONSUMED
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareReleaseDateString
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+
+  gCN10KPlatformTokenSpaceGuid.PcdCoresPerNode
+
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+
+[FixedPcd]
+  gCN10KPlatformTokenSpaceGuid.PcdDssPerNode
+  gCN10KPlatformTokenSpaceGuid.PcdFlashDeviceSize
+  gCN10KPlatformTokenSpaceGuid.PcdSmmuIidrAddress
+
+[Depex]
+  gEfiSmbiosProtocolGuid
