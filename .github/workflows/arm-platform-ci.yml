@@ -1,0 +1,59 @@
+name: Run Shrinkwrap to Validate Arm Platform (FVP)
+
+on:
+  workflow_dispatch:  # Manually triggered workflow
+
+jobs:
+  shrinkwrap:
+    runs-on: ubuntu-22.04-arm
+    container: shrinkwraptool/base-full
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Required System Packages
+        run: |
+          apt-get update -qq
+          apt-get install -y git netcat-openbsd python3 python3-pip telnet wget
+
+      - name: Install Python Dependencies
+        run: pip3 install pyyaml termcolor tuxmake
+
+      - name: Clone Shrinkwrap, Download Required Files, and Execute Tests
+        run: |
+          set -e  # Exit immediately if any command fails
+
+          # Clone Shrinkwrap repository
+          echo "Cloning Shrinkwrap repository..."
+          git clone https://git.gitlab.arm.com/tooling/shrinkwrap.git
+          export PATH=$PWD/shrinkwrap/shrinkwrap:$PATH
+
+          # Verify Shrinkwrap installation
+          echo "Verifying Shrinkwrap installation..."
+          shrinkwrap --help || { echo "Shrinkwrap not found"; exit 1; }
+
+          # Define URLs for Kernel Image and Root Filesystem
+          KERNEL_URL="https://kciapistagingstorage1.file.core.windows.net/production/kbuild-gcc-12-arm64-kselftest-67bb89e7e3e60eeff6099cdc/Image?sv=2022-11-02&ss=f&srt=sco&sp=r&se=2026-10-18T13:36:18Z&st=2024-10-17T05:36:18Z&spr=https&sig=xFxYOOh5uXJWeN9I3YKAUvpGGQivo89HKZbD78gcxvc%3D"
+          ROOTFS_URL="https://storage.kernelci.org/images/rootfs/debian/bookworm/20240715.0/arm64/rootfs.ext4.xz"
+
+          # Download Kernel Image and Root Filesystem
+          echo "Downloading Kernel Image and Root Filesystem..."
+          cd shrinkwrap
+          wget -O Image "$KERNEL_URL"
+          wget -O rootfs.ext4.xz "$ROOTFS_URL"
+          unxz rootfs.ext4.xz
+          cd -
+
+          # Run Shrinkwrap Build Process
+          echo "Starting Shrinkwrap Build..."
+          shrinkwrap -R null build --overlay=arch/v9.4.yaml ns-edk2.yaml
+
+          # Run Shrinkwrap Test Execution
+          echo "Executing Shrinkwrap Tests..."
+          shrinkwrap -R null run \
+            --overlay='{"run":{"params":{"-C bp.pl011_uart0.shutdown_tag": "login:"}}}' \
+            --rtvar=KERNEL=$PWD/shrinkwrap/Image \
+            --rtvar=ROOTFS=$PWD/shrinkwrap/rootfs.ext4 \
+            --rtvar=CMDLINE="console=ttyAMA0 earlycon=pl011,0x1c090000 root=/dev/vda1 ip=dhcp acpi=force" \
+            ns-edk2.yaml
