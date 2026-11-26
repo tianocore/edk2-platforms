@@ -1,0 +1,48 @@
+## @file
+#
+# Copyright (c) 2026 Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = FspNvsStandaloneMm
+  FILE_GUID                      = 4E94D829-D98A-4930-AB4E-0D0FDEC2B209
+  MODULE_TYPE                    = MM_STANDALONE
+  PI_SPECIFICATION_VERSION       = 0x00010032
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = FspNvsStandaloneMmEntry
+
+[Sources]
+  FspNvsStandaloneMm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFsp2Pkg/IntelFsp2Pkg.dec
+  StandaloneMmPkg/StandaloneMmPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
+  OpenBootloaderSmmPkg/OpenBootloaderSmmPkg.dec
+
+
+[LibraryClasses]
+  StandaloneMmDriverEntryPoint
+  MmServicesTableLib
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  MemLib
+  IoLib
+  PcdLib
+  MemoryAllocationLib
+  TimerLib
+
+[Protocols]
+  gFspWrapperNonVolatileStorageProtocolGuid
+  gPchSmmSpiProtocolGuid
+
+[Depex]
+  gPchSmmSpiProtocolGuid
