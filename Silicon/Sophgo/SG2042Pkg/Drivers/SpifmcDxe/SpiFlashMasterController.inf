@@ -1,0 +1,51 @@
+#/** @file
+#
+#    Copyright (c) 2024, SOPHGO Inc. All rights reserved.
+#
+#    SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x00010006
+  BASE_NAME                      = SpifmcDxe
+  FILE_GUID                      = C46D01DF-1D9D-48E4-B6B3-B3FC004FE04E
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SpifmcEntryPoint
+
+[Sources.common]
+  SpiFlashMasterController.c
+  SpiFlashMasterController.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Silicon/Sophgo/Sophgo.dec
+
+[LibraryClasses]
+  IoLib
+  DebugLib
+  MemoryAllocationLib
+  NorFlashInfoLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeLib
+  DxeServicesTableLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  gSophgoSpiMasterProtocolGuid                                    ## PRODUCES
+
+[Pcd]
+  gSophgoTokenSpaceGuid.PcdSPIFMC0Base                            ## CONSUMES
+  gSophgoTokenSpaceGuid.PcdSPIFMC1Base                            ## CONSUMES
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuRiscVMmuMaxSatpMode             ## CONSUMES
+
+[Depex]
+  TRUE

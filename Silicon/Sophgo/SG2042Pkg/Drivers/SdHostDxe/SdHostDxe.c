@@ -25,7 +25,6 @@
 #include <Protocol/EmbeddedExternalDevice.h>
 #include <Protocol/BlockIo.h>
 #include <Protocol/DevicePath.h>
-#include <Include/MmcHost.h>
 
 #include "SdHci.h"
 

@@ -1,0 +1,67 @@
+/** @file
+  Memory mapped configuration space base address description table (MCFG)
+
+  The MCFG table provides the address of the PCI configuration space, which
+  is required by the OS to perform the PCIe bus enumeration.
+
+  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+  @par Specification Reference:
+    - http://www.pcisig.com/home
+**/
+
+#include <IndustryStandard/MemoryMappedConfigurationSpaceAccessTable.h>
+#include <Library/AcpiLib.h>
+#include <Library/PcdLib.h>
+#include "SG2042AcpiHeader.h"
+
+#pragma pack(1)
+typedef struct
+{
+  EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_BASE_ADDRESS_TABLE_HEADER Header;
+  EFI_ACPI_MEMORY_MAPPED_ENHANCED_CONFIGURATION_SPACE_BASE_ADDRESS_ALLOCATION_STRUCTURE Structure[3];
+} EFI_ACPI_PCI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE;
+#pragma pack()
+
+EFI_ACPI_PCI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE Mcfg = {
+  {
+    RISCV_ACPI_HEADER (
+      EFI_ACPI_6_5_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_PCI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_DESCRIPTION_TABLE,
+      EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_TABLE_REVISION
+    ),
+    EFI_ACPI_RESERVED_QWORD, // Reserved
+  },
+  {
+    // PCIe ECAM
+    {
+      0x4000000000,                                         // Base Address
+      0x0,                                                  // Segment Group Number
+      0x0,                                                  // Start Bus Number
+      0x3f,                                                 // End Bus Number
+      0x00000000,                                           // Reserved
+    },
+    {
+      0x43FC000000,                                         // Base Address
+      0x1,                                                  // Segment Group Number
+      0x40,                                                 // Start Bus Number
+      0x7f,                                                 // End Bus Number
+      0x00000000,                                           // Reserved
+    },
+    {
+      0x47F8000000,                                         // Base Address
+      0x2,                                                  // Segment Group Number
+      0x80,                                                 // Start Bus Number
+      0xff,                                                 // End Bus Number
+      0x00000000,                                           // Reserved
+    }
+  }
+};
+
+//
+// Reference the table being generated to prevent the optimizer from removing the
+// data structure from the executable
+//
+VOID* CONST ReferenceAcpiTable = &Mcfg;

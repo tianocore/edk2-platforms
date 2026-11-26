@@ -1,6 +1,7 @@
 ## @file
 #  FDF include file with Layout Regions that define an empty variable store.
 #
+#  Copyright (c) 2025, SOPHGO Inc. All rights reserved.<BR>
 #  Copyright (C) 2014, Red Hat, Inc.
 #  Copyright (c) 2006 - 2013, Intel Corporation. All rights reserved.<BR>
 #
@@ -9,7 +10,7 @@
 ##
 
 $(VARS_OFFSET)|$(VARS_SIZE)
-gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
+gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 #
 # NV_VARIABLE_STORE
 #
@@ -23,14 +24,14 @@ DATA = {
   #     { 0xA9, 0x85, 0x27, 0x47, 0x07, 0x5B, 0x4F, 0x50 }}
   0x8D, 0x2B, 0xF1, 0xFF, 0x96, 0x76, 0x8B, 0x4C,
   0xA9, 0x85, 0x27, 0x47, 0x07, 0x5B, 0x4F, 0x50,
-  # FvLength: 0x20000
-  0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+  # FvLength: 0x30000
+  0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
   # Signature "_FVH"       # Attributes
   0x5f, 0x46, 0x56, 0x48, 0xff, 0xfe, 0x04, 0x00,
   # HeaderLength # CheckSum # ExtHeaderOffset #Reserved #Revision
-  0x48, 0x00, 0x39, 0xF1, 0x00, 0x00, 0x00, 0x02,
-  # Blockmap[0]: 0x20 Blocks * 0x1000 Bytes / Block
-  0x00, 0x08, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00,
+  0x48, 0x00, 0x08, 0xF9, 0x00, 0x00, 0x00, 0x02,
+  # Blockmap[0]: 0x30 Blocks * 0x1000 Bytes / Block
+  0x30, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00,
   # Blockmap[1]: End
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   ## This is the VARIABLE_STORE_HEADER
@@ -47,16 +48,16 @@ DATA = {
   0x16, 0x36, 0xcf, 0xdd, 0x75, 0x32, 0x64, 0x41,
   0x98, 0xb6, 0xfe, 0x85, 0x70, 0x7f, 0xfe, 0x7d,
 !endif
-  # Size: 0x7000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) -
-  #         0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0x6fb8
+  # Size: 0x10000 (gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize) -
+  #         0x48 (size of EFI_FIRMWARE_VOLUME_HEADER) = 0xffb8
   # This can speed up the Variable Dispatch a bit.
-  0xB8, 0x6F, 0x00, 0x00,
+  0xB8, 0xFF, 0x00, 0x00,
   # FORMATTED: 0x5A #HEALTHY: 0xFE #Reserved: UINT16 #Reserved1: UINT32
   0x5A, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 }
 
 $(VARS_FTW_WORKING_OFFSET)|$(VARS_FTW_WORKING_SIZE)
-gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwWorkingBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
+gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 #
 #NV_FTW_WROK
 #
@@ -72,6 +73,6 @@ DATA = {
 }
 
 $(VARS_FTW_SPARE_OFFSET)|$(VARS_FTW_SPARE_SIZE)
-gUefiRiscVPlatformPkgTokenSpaceGuid.PcdPlatformFlashNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
+gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 #
 #NV_FTW_SPARE

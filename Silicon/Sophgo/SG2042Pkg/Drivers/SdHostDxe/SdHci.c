@@ -16,7 +16,6 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Include/MmcHost.h>
 
 #include "SdHci.h"
 
