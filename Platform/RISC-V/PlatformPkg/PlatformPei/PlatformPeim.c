@@ -59,6 +59,7 @@ FindInstallPeiMemory (
   VOID                         *HobList;
   EFI_PEI_HOB_POINTERS         Hob;
   EFI_PHYSICAL_ADDRESS         PeiMemoryBase;
+  EFI_STATUS                   Status;
 
   // Get the HOB list from PEI services
   HobList = GetHobList ();
@@ -86,7 +87,8 @@ FindInstallPeiMemory (
   }
 
   ASSERT (PeiMemoryBase != 0);
-  ASSERT_EFI_ERROR (PeiServicesInstallPeiMemory (PeiMemoryBase, PEI_MEMORY_SIZE));
+  Status = PeiServicesInstallPeiMemory (PeiMemoryBase, PEI_MEMORY_SIZE);
+  ASSERT_EFI_ERROR (Status);
 }
 
 /*
